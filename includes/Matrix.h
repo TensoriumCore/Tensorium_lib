@@ -7,15 +7,19 @@
 #include <immintrin.h>
 #include <stdexcept>
 #include <mutex>
-
+#include "CPU_id.hpp"
 
 template<typename K>
 class Matrix {
 	public:
 		size_t rows, cols;
 		aligned_vector<K> data;
-		constexpr static size_t BLOCK_SIZE = 64;
-		Matrix(size_t r, size_t c) : rows(r), cols(c), data(r * c, K()) {}
+		size_t block_size;
+		Matrix(size_t r, size_t c) 
+			: rows(r), cols(c), data(r * c, K()), block_size(detect_optimal_block_size()) {
+				std::cout << "Auto-selected BLOCK_SIZE = " << block_size << std::endl;
+			}
+
 
 
 		size_t size() const { 
@@ -131,7 +135,6 @@ class Matrix {
 				using Simd = simd::SimdTraits<K>;
 				using reg = typename Simd::reg;
 				const size_t simd_width = Simd::width;
-				constexpr size_t BLOCK_SIZE = 128;
 				constexpr size_t UNROLL = 128;
 
 				Matrix<K> result(rows, mat.cols);
@@ -144,10 +147,10 @@ class Matrix {
 				}
 
 				#pragma omp parallel for collapse(2) schedule(dynamic)
-				for (size_t ii = 0; ii < rows; ii += BLOCK_SIZE) {
-					for (size_t jj = 0; jj < mat.cols; jj += BLOCK_SIZE) {
-						const size_t i_end = std::min(ii + BLOCK_SIZE, rows);
-						const size_t j_end = std::min(jj + BLOCK_SIZE, mat.cols);
+				for (size_t ii = 0; ii < rows; ii += block_size) {
+					for (size_t jj = 0; jj < mat.cols; jj += block_size) {
+						const size_t i_end = std::min(ii + block_size, rows);
+						const size_t j_end = std::min(jj + block_size, mat.cols);
 						_mm_prefetch((const char *)&mat_transposed.data[jj * mat.rows], _MM_HINT_T0);
 						#pragma omp simd
 						for (size_t i = ii; i < i_end; ++i) {
