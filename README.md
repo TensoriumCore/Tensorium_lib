@@ -1,8 +1,8 @@
 # Morpheus_lib
 
-**Morpheus_lib** is a high-performance, header-only C++ linear algebra library with AVX2/FMA SIMD acceleration and native Python bindings via `pybind11`.
+**Morpheus_lib** is a high-performance, header-only C++ linear algebra library with AVX512/AVX2/FMA SIMD acceleration and native Python bindings via `pybind11`.
 
-It is designed to be fast, portable, and efficient in both C++ and Python environments, making it ideal for scientific computing, numerical simulations, and real-time applications.
+It is designed to be fast, portable, and efficient in both C++ and Python environments, making it usable for scientific computing, numerical simulations, and real-time applications.
 
 ## Highlights
 
