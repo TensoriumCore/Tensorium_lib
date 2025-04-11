@@ -1,28 +1,30 @@
 # Morpheus_lib
 
-**Morpheus_lib** is a high-performance C++ linear algebra library with SIMD vectorization (AVX2/FMA) and optional Python bindings via `pybind11`.
+**Morpheus_lib** is a high-performance, header-only C++ linear algebra library with AVX2/FMA SIMD acceleration and native Python bindings via `pybind11`.
 
-It provides fast and efficient implementations of `Vector` and `Matrix` operations using SIMD instructions, custom allocators for aligned memory, and highly optimized algorithms.
+It is designed to be fast, portable, and efficient in both C++ and Python environments, making it ideal for scientific computing, numerical simulations, and real-time applications.
 
-## Features
+## Highlights
 
-- Header-only SIMD linear algebra library
-- Aligned memory allocation using `posix_memalign`
-- Optimized `Vector` and `Matrix` operations (add, sub, scale, dot, norms, etc.)
-- AVX2/FMA acceleration (automatically dispatches to the best supported ISA)
-- Matrix × Matrix multiplication optimized with blocking, unrolling and OpenMP
-- Python bindings using `pybind11` for interactive usage and rapid testing
-- Optional comparison with BLAS (`cblas_sgemm`, `cblas_dgemm`)
+- Optimized `Vector` and `Matrix` classes with aligned memory
+- AVX2/FMA SIMD acceleration (fallback on SSE when needed)
+- Custom allocator using `posix_memalign` for proper vectorization
+- Matrix multiplication optimized with blocking, unrolling, and OpenMP
+- Python bindings using `pybind11` for seamless integration with Python
+- Optional benchmark against BLAS (OpenBLAS, MKL)
 
 ## Build Instructions
 
 ### Requirements
 
-- C++17 compiler with AVX2/FMA support
+- C++17 compiler with AVX2/FMA support (Intel compilers will be added later)
+- fopenmp
+- MPI
 - CMake ≥ 3.16
-- Python ≥ 3.8 (for bindings)
-- `pybind11`
-- `OpenBLAS` or another BLAS backend (optional, for benchmarks)
+- Python ≥ 3.8 (for Python bindings)
+- `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
+- OpenBLAS (optional, for benchmarking with BLAS)
+
 
 ### Build C++ Library and Python Module
 
@@ -63,4 +65,7 @@ d = scl(a, 2.5)
 print("a * 2.5 =", list(d))
 ```
 
-
+### Run tests
+```bash
+chmod +x setup.sh && ./setup.sh
+```
