@@ -42,9 +42,12 @@ void dispatch_simd(F&& f) {
     }
 }
 
+
+
+
 namespace detail {
 	__attribute__((always_inline, hot, flatten))
-	static inline float reduce_sum(__m256 acc) {
+	inline float reduce_sum(__m256 acc) {
 		__m128 low  = _mm256_castps256_ps128(acc);
 		__m128 high = _mm256_extractf128_ps(acc, 1);
 		__m128 sum = _mm_add_ps(low, high);
@@ -52,7 +55,18 @@ namespace detail {
 		sum = _mm_hadd_ps(sum, sum);
 		return _mm_cvtss_f32(sum);
 	}
+	__attribute__((always_inline, hot, flatten))
+	inline double reduce_sum(__m256d acc) {
+		__m128d low  = _mm256_castpd256_pd128(acc);
+		__m128d high = _mm256_extractf128_pd(acc, 1);
+		__m128d sum = _mm_add_pd(low, high);
+		double r[2];
+		_mm_storeu_pd(r, sum);
+		return r[0] + r[1];
+	}
+
 }
+
 
 template <typename T, std::size_t Alignment>
 struct AlignedAllocator {
@@ -89,3 +103,40 @@ template<typename K>
 using aligned_vector = std::vector<K, AlignedAllocator<K, 32>>;
 
 
+namespace simd {
+
+	template<typename T> struct SimdTraits;
+
+	template<>
+		struct SimdTraits<float> {
+			using reg = __m256;
+			static constexpr size_t width = 8;
+			static inline reg set1(float x)				{ return _mm256_set1_ps(x); }
+			static inline reg load(const float* ptr)	{ return _mm256_load_ps(ptr); }
+			static inline void store(float* ptr, reg x)	{ _mm256_store_ps(ptr, x); }
+			static inline reg zero()					{ return _mm256_setzero_ps(); }
+			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_fmadd_ps(a, b, c); }
+			static inline reg add(reg a, reg b)			{ return _mm256_add_ps(a, b); }
+			static inline reg mul(reg a, reg b)			{ return _mm256_mul_ps(a, b); }
+			static inline reg sub(reg a, reg b)			{ return _mm256_sub_ps(a, b); }
+			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_ps(a, b); }
+			static inline void store_stream(float* ptr, reg x) { _mm256_stream_ps(ptr, x); }
+		};
+
+	template<>
+		struct SimdTraits<double> {
+			using reg = __m256d;
+			static constexpr size_t width = 4;
+			static inline reg set1(double x)            { return _mm256_set1_pd(x); }
+			static inline reg load(const double* ptr)   { return _mm256_load_pd(ptr); }
+			static inline void store(double* ptr, reg x){ _mm256_store_pd(ptr, x); }
+			static inline reg zero()                    { return _mm256_setzero_pd(); }
+			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_fmadd_pd(a, b, c); }
+			static inline reg add(reg a, reg b)         { return _mm256_add_pd(a, b); }
+			static inline reg mul(reg a, reg b)         { return _mm256_mul_pd(a, b); }
+			static inline reg sub(reg a, reg b)			{ return _mm256_sub_pd(a, b); }
+			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_pd(a, b); }
+			static inline void store_stream(double* ptr, reg x) { _mm256_stream_pd(ptr, x); }
+		};
+
+} 

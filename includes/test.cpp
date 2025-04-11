@@ -47,7 +47,6 @@ int bench() {
 
 	std::cout << "\n=== Benchmarking ===\n";
 	std::cout << "Benchmarking AVX2 mul_mat() for size " << N << "x" << N << "\n";
-
 	auto start = std::chrono::high_resolution_clock::now();
 	Matrix<float> C = A.mul_mat(B);
 	auto end = std::chrono::high_resolution_clock::now();

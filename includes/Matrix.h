@@ -16,10 +16,11 @@ class Matrix {
 		aligned_vector<K> data;
 		constexpr static size_t BLOCK_SIZE = 64;
 		Matrix(size_t r, size_t c) : rows(r), cols(c), data(r * c, K()) {}
+
+
 		size_t size() const { 
 			return rows * cols; 
 		}
-
 
 		K& operator()(size_t i, size_t j) { return data[i * cols + j]; }
 		const K& operator()(size_t i, size_t j) const { return data[i * cols + j]; }
@@ -34,26 +35,31 @@ class Matrix {
 		}
 
 
+
 		__attribute__((always_inline, hot, flatten))
 			inline void add(const Matrix &m) {
-				if (rows != m.rows || cols != m.cols) 
+				if (rows != m.rows || cols != m.cols)
 					throw std::invalid_argument("Matrix sizes do not match");
+
+				using Simd = simd::SimdTraits<K>;
+				using reg = typename Simd::reg;
+				const size_t simd_width = Simd::width;
 
 				size_t n = size();
 				size_t i = 0;
 
 				_mm_prefetch((const char *)&m.data[0], _MM_HINT_T0);
 
-				for (; i + 15 < n; i += 16) {
-					__m256 a0 = _mm256_load_ps(&data[i]);
-					__m256 b0 = _mm256_load_ps(&m.data[i]);
-					a0 = _mm256_add_ps(a0, b0);
-					_mm256_store_ps(&data[i], a0);
+				for (; i + 2 * simd_width - 1 < n; i += 2 * simd_width) {
+					reg a0 = Simd::load(&data[i]);
+					reg b0 = Simd::load(&m.data[i]);
+					a0 = Simd::add(a0, b0);
+					Simd::store(&data[i], a0);
 
-					__m256 a1 = _mm256_load_ps(&data[i + 8]);
-					__m256 b1 = _mm256_load_ps(&m.data[i + 8]);
-					a1 = _mm256_add_ps(a1, b1);
-					_mm256_store_ps(&data[i + 8], a1);
+					reg a1 = Simd::load(&data[i + simd_width]);
+					reg b1 = Simd::load(&m.data[i + simd_width]);
+					a1 = Simd::add(a1, b1);
+					Simd::store(&data[i + simd_width], a1);
 				}
 
 				for (; i < n; ++i)
@@ -61,25 +67,29 @@ class Matrix {
 			}
 
 
+
 		__attribute__((always_inline, hot, flatten))
 			inline void sub(const Matrix &m) {
 				if (rows != m.rows || cols != m.cols) 
 					throw std::invalid_argument("Matrix sizes do not match");
+				using Simd = simd::SimdTraits<K>;
+				using reg = typename Simd::reg;
+				const size_t simd_width = Simd::width;
 
 				size_t n = size();
 				size_t i = 0;
 
 				_mm_prefetch((const char *)&m.data[0], _MM_HINT_T0);
 				for (; i + 15 < n; i += 16) {
-					__m256 a0 = _mm256_load_ps(&data[i]);
-					__m256 b0 = _mm256_load_ps(&m.data[i]);
-					a0 = _mm256_sub_ps(a0, b0);
-					_mm256_store_ps(&data[i], a0);
+					reg a0 = Simd::load(&data[i]);
+					reg b0 = Simd::load(&m.data[i]);
+					a0 = Simd::sub(a0, b0);
+					Simd::store(&data[i], a0);
 
-					__m256 a1 = _mm256_load_ps(&data[i + 8]);
-					__m256 b1 = _mm256_load_ps(&m.data[i + 8]);
-					a1 = _mm256_sub_ps(a1, b1);
-					_mm256_store_ps(&data[i + 8], a1);
+					reg a1 = Simd::load(&data[i + 8]);
+					reg b1 = Simd::load(&m.data[i + 8]);
+					a1 = Simd::sub(a1, b1);
+					Simd::store(&data[i + 8], a1);
 				}
 				for (; i < size(); ++i) {
 					data[i] -= m.data[i];
@@ -88,21 +98,23 @@ class Matrix {
 
 
 		__attribute__((always_inline, hot, flatten))
-			inline void scl(float a) {
+			inline void scl(K a) {
 				size_t n = size();
 				size_t i = 0;
-
+				using Simd = simd::SimdTraits<K>;
+				using reg = typename Simd::reg;
+				const size_t simd_width = Simd::width;
 				_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-				__m256 scalar = _mm256_set1_ps(a);
+				reg scalar = Simd::set1(a);
 
 				for (; i + 15 < n; i += 16) {
-					__m256 v0 = _mm256_load_ps(&data[i]);
-					v0 = _mm256_mul_ps(v0, scalar);
-					_mm256_store_ps(&data[i], v0);
+					reg v0 = Simd::load(&data[i]);
+					v0 = Simd::mul(v0, scalar);
+					Simd::store(&data[i], v0);
 
-					__m256 v1 = _mm256_load_ps(&data[i + 8]);
-					v1 = _mm256_mul_ps(v1, scalar);
-					_mm256_store_ps(&data[i + 8], v1);
+					reg v1 = Simd::load(&data[i + 8]);
+					v1 = Simd::mul(v1, scalar);
+					Simd::store(&data[i + 8], v1);
 				}
 
 				for (; i < n; ++i)
@@ -111,13 +123,16 @@ class Matrix {
 
 
 		__attribute__((always_inline, hot, flatten))
-			inline Matrix<float> mul_mat(const Matrix<float>& mat) const {
+			inline Matrix mul_mat(const Matrix<K>& mat) const {
 				if (cols != mat.rows) {
 					throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 				}
 
-				constexpr size_t BLOCK_SIZE = 16; 
-				constexpr size_t UNROLL = 16; 
+				using Simd = simd::SimdTraits<K>;
+				using reg = typename Simd::reg;
+				const size_t simd_width = Simd::width;
+				constexpr size_t BLOCK_SIZE = 128;
+				constexpr size_t UNROLL = 128;
 
 				Matrix<K> result(rows, mat.cols);
 				Matrix<K> mat_transposed(mat.cols, mat.rows);
@@ -127,54 +142,57 @@ class Matrix {
 						mat_transposed(j, i) = mat(i, j);
 					}
 				}
-#pragma omp parallel for schedule(dynamic)
+
+				#pragma omp parallel for collapse(2) schedule(dynamic)
 				for (size_t ii = 0; ii < rows; ii += BLOCK_SIZE) {
 					for (size_t jj = 0; jj < mat.cols; jj += BLOCK_SIZE) {
-						size_t i_end = std::min(ii + BLOCK_SIZE, rows);
-						size_t j_end = std::min(jj + BLOCK_SIZE, mat.cols);
-
+						const size_t i_end = std::min(ii + BLOCK_SIZE, rows);
+						const size_t j_end = std::min(jj + BLOCK_SIZE, mat.cols);
+						_mm_prefetch((const char *)&mat_transposed.data[jj * mat.rows], _MM_HINT_T0);
+						#pragma omp simd
 						for (size_t i = ii; i < i_end; ++i) {
-							for (size_t j = jj; j + (UNROLL-1) < j_end; j += UNROLL) {
-								__m256 sum0 = _mm256_setzero_ps();
-								__m256 sum1 = _mm256_setzero_ps();
-								__m256 sum2 = _mm256_setzero_ps();
-								__m256 sum3 = _mm256_setzero_ps();
+							for (size_t j = jj; j + UNROLL - 1 < j_end; j += UNROLL) {
+								reg sum0 = Simd::zero();
+								reg sum1 = Simd::zero();
+								reg sum2 = Simd::zero();
+								reg sum3 = Simd::zero();
 
-								const float* a_ptr = &data[i * cols];
-								const float* b_ptr0 = &mat_transposed.data[j * mat.rows];
-								const float* b_ptr1 = b_ptr0 + mat.rows;
-								const float* b_ptr2 = b_ptr1 + mat.rows;
-								const float* b_ptr3 = b_ptr2 + mat.rows;
+								const K* a_ptr = &data[i * cols];
+								const K* b_ptr0 = &mat_transposed.data[j * mat.rows];
+								const K* b_ptr1 = b_ptr0 + mat.rows;
+								const K* b_ptr2 = b_ptr1 + mat.rows;
+								const K* b_ptr3 = b_ptr2 + mat.rows;
 
 								size_t k = 0;
-								for (; k + 7 < cols; k += 8) {
-									__m256 a = _mm256_loadu_ps(a_ptr + k);
+								for (; k + simd_width - 1 < cols; k += simd_width) {
+									reg a = Simd::load(a_ptr + k);
 
-									__m256 b0 = _mm256_set1_ps(b_ptr0[k]);
-									__m256 b1 = _mm256_set1_ps(b_ptr1[k]);
-									__m256 b2 = _mm256_set1_ps(b_ptr2[k]);
-									__m256 b3 = _mm256_set1_ps(b_ptr3[k]);
+									reg b0 = Simd::set1(b_ptr0[k]);
+									reg b1 = Simd::set1(b_ptr1[k]);
+									reg b2 = Simd::set1(b_ptr2[k]);
+									reg b3 = Simd::set1(b_ptr3[k]);
 
-									sum0 = _mm256_fmadd_ps(a, b0, sum0);
-									sum1 = _mm256_fmadd_ps(a, b1, sum1);
-									sum2 = _mm256_fmadd_ps(a, b2, sum2);
-									sum3 = _mm256_fmadd_ps(a, b3, sum3);
+									sum0 = Simd::fmadd(a, b0, sum0);
+									sum1 = Simd::fmadd(a, b1, sum1);
+									sum2 = Simd::fmadd(a, b2, sum2);
+									sum3 = Simd::fmadd(a, b3, sum3);
 								}
 
-								float sum_array0[8], sum_array1[8], sum_array2[8], sum_array3[8];
-								_mm256_storeu_ps(sum_array0, sum0);
-								_mm256_storeu_ps(sum_array1, sum1);
-								_mm256_storeu_ps(sum_array2, sum2);
-								_mm256_storeu_ps(sum_array3, sum3);
+								K sum_array0[simd_width], sum_array1[simd_width],
+								sum_array2[simd_width], sum_array3[simd_width];
+								Simd::store(sum_array0, sum0);
+								Simd::store(sum_array1, sum1);
+								Simd::store(sum_array2, sum2);
+								Simd::store(sum_array3, sum3);
 
-								float total0 = sum_array0[0] + sum_array0[1] + sum_array0[2] + sum_array0[3] +
-									sum_array0[4] + sum_array0[5] + sum_array0[6] + sum_array0[7];
-								float total1 = sum_array1[0] + sum_array1[1] + sum_array1[2] + sum_array1[3] +
-									sum_array1[4] + sum_array1[5] + sum_array1[6] + sum_array1[7];
-								float total2 = sum_array2[0] + sum_array2[1] + sum_array2[2] + sum_array2[3] +
-									sum_array2[4] + sum_array2[5] + sum_array2[6] + sum_array2[7];
-								float total3 = sum_array3[0] + sum_array3[1] + sum_array3[2] + sum_array3[3] +
-									sum_array3[4] + sum_array3[5] + sum_array3[6] + sum_array3[7];
+								K total0 = K(0), total1 = K(0), total2 = K(0), total3 = K(0);		
+								#pragma omp simd reduction(+:total0,total1,total2,total3)
+								for (size_t s = 0; s < simd_width; ++s) {
+									total0 += sum_array0[s];
+									total1 += sum_array1[s];
+									total2 += sum_array2[s];
+									total3 += sum_array3[s];
+								}
 
 								for (; k < cols; ++k) {
 									total0 += a_ptr[k] * b_ptr0[k];
@@ -183,14 +201,14 @@ class Matrix {
 									total3 += a_ptr[k] * b_ptr3[k];
 								}
 
-								result(i, j)   = total0;
-								result(i, j+1) = total1;
-								result(i, j+2) = total2;
-								result(i, j+3) = total3;
+								result(i, j)     = total0;
+								result(i, j + 1) = total1;
+								result(i, j + 2) = total2;
+								result(i, j + 3) = total3;
 							}
 
-							for (size_t j = j_end - (j_end-jj)%UNROLL; j < j_end; ++j) {
-								float sum = 0.0f;
+							for (size_t j = j_end - (j_end - jj) % UNROLL; j < j_end; ++j) {
+								K sum = K(0);
 								for (size_t k = 0; k < cols; ++k) {
 									sum += data[i * cols + k] * mat_transposed(j, k);
 								}
