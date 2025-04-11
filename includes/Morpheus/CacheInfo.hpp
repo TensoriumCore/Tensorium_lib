@@ -8,10 +8,10 @@ namespace morpheus {
 
 class CacheInfo {
 public:
-    static int getL1CacheSize();       // in bytes
-    static int getL2CacheSize();       // in bytes
-    static int getL3CacheSize();       // in bytes
-    static int getCacheLineSize();     // in bytes
+    static int getL1CacheSize(); 
+    static int getL2CacheSize();  
+    static int getL3CacheSize(); 
+    static int getCacheLineSize(); 
 };
 
 #if defined(__x86_64__) || defined(_M_X64)
@@ -25,7 +25,7 @@ inline void cpuid(int info[4], int function_id, int subfunction_id = 0) {
 
 inline int CacheInfo::getCacheLineSize() {
     int info[4];
-    cpuid(info, 0x4, 0); // L1 data cache
+    cpuid(info, 0x4, 0);
     int line_size = (info[1] & 0xFFF) + 1;
     return line_size;
 }
@@ -63,7 +63,6 @@ inline int CacheInfo::getL3CacheSize() {
 
 #else
 
-// For non-x86 platforms (ARM, etc), return dummy values or extend with /sys
 inline int CacheInfo::getCacheLineSize() { return 64; }
 inline int CacheInfo::getL1CacheSize()   { return 32 * 1024; }
 inline int CacheInfo::getL2CacheSize()   { return 256 * 1024; }
@@ -71,4 +70,4 @@ inline int CacheInfo::getL3CacheSize()   { return 8 * 1024 * 1024; }
 
 #endif
 
-} // namespace morpheus
+}
