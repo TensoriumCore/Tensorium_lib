@@ -4,8 +4,8 @@
 #include <cmath>
 #include <vector>
 #include <immintrin.h>
-#include "Matrix.h"
-#include "SIMD.h"
+#include "../../includes/Morpheus/Matrix.hpp"
+#include "../../includes/Morpheus/SIMD.h"
 
 #include <cblas.h> 
 
@@ -14,10 +14,10 @@ void benchmark_blas_vs_custom(size_t N) {
     using Clock = std::chrono::high_resolution_clock;
     using duration = std::chrono::duration<double>;
 
-    Matrix<K> A(N, N);
-    Matrix<K> B(N, N);
-    Matrix<K> C_custom(N, N);
-    Matrix<K> C_blas(N, N);
+    morpheus::Matrix<K> A(N, N);
+    morpheus::Matrix<K> B(N, N);
+    morpheus::Matrix<K> C_custom(N, N);
+    morpheus::Matrix<K> C_blas(N, N);
 
     for (size_t i = 0; i < A.size(); ++i) A.data[i] = static_cast<K>(1.0);
     for (size_t i = 0; i < B.size(); ++i) B.data[i] = static_cast<K>(1.0);
@@ -65,8 +65,8 @@ void benchmark_blas_vs_custom(size_t N) {
 }
 
 int main() {
-	size_t N = 8192; 
-	benchmark_blas_vs_custom<float>(N);
-	benchmark_blas_vs_custom<double>(N);
-	return 0;
+    size_t N = 8192;
+    benchmark_blas_vs_custom<float>(N);
+    benchmark_blas_vs_custom<double>(N);
+    return 0;
 }
