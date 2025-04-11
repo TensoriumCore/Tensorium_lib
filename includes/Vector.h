@@ -16,6 +16,8 @@ class Vector {
 
 		Vector(size_t n) : data(n, K()) {}
 		Vector(std::initializer_list<K> init) : data(init) {}
+		using Simd = simd::SimdTraits<K>;
+		using reg = typename Simd::reg;
 
 		size_t size() const {
 			return data.size();
@@ -38,15 +40,15 @@ class Vector {
 				_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 
 				for (; i + 15 < n; i += 16) {
-					__m256 a0 = _mm256_load_ps(&data[i]);
-					__m256 b0 = _mm256_load_ps(&v.data[i]);
-					a0 = _mm256_add_ps(a0, b0);
-					_mm256_store_ps(&data[i], a0);
+					reg a0 = simd::SimdTraits<float>::load(&data[i]);
+					reg b0 = simd::SimdTraits<float>::load(&v.data[i]);
+					a0 = simd::SimdTraits<float>::add(a0, b0);
+					simd::SimdTraits<float>::store(&data[i], a0);
 
-					__m256 a1 = _mm256_load_ps(&data[i + 8]);
-					__m256 b1 = _mm256_load_ps(&v.data[i + 8]);
-					a1 = _mm256_add_ps(a1, b1);
-					_mm256_store_ps(&data[i + 8], a1);
+					reg a1 = simd::SimdTraits<float>::load(&data[i + 8]);
+					reg b1 = simd::SimdTraits<float>::load(&v.data[i + 8]);
+					a1 = simd::SimdTraits<float>::add(a1, b1);
+					simd::SimdTraits<float>::store(&data[i + 8], a1);
 				}
 
 				for (; i < n; ++i)
@@ -63,15 +65,15 @@ class Vector {
 
 				_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 				for (; i + 15 < n; i += 16) {
-					__m256 a0 = _mm256_load_ps(&data[i]);
-					__m256 b0 = _mm256_load_ps(&v.data[i]);
-					a0 = _mm256_sub_ps(a0, b0);
-					_mm256_store_ps(&data[i], a0);
+					reg a0 = simd::SimdTraits<float>::load(&data[i]);
+					reg b0 = simd::SimdTraits<float>::load(&v.data[i]);
+					a0 = simd::SimdTraits<float>::sub(a0, b0);
+					simd::SimdTraits<float>::store(&data[i], a0);
 
-					__m256 a1 = _mm256_load_ps(&data[i + 8]);
-					__m256 b1 = _mm256_load_ps(&v.data[i + 8]);
-					a1 = _mm256_sub_ps(a1, b1);
-					_mm256_store_ps(&data[i + 8], a1);
+					reg a1 = simd::SimdTraits<float>::load(&data[i + 8]);
+					reg b1 = simd::SimdTraits<float>::load(&v.data[i + 8]);
+					a1 = simd::SimdTraits<float>::sub(a1, b1);
+					simd::SimdTraits<float>::store(&data[i + 8], a1);
 				}
 
 				for (; i < n; ++i)
@@ -86,17 +88,17 @@ class Vector {
 				size_t i = 0;
 
 				_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-				__m256 scalar = _mm256_set1_ps(a);
+				reg scalar = simd::SimdTraits<float>::set1(a);
 				float* __restrict out = &data[0];
 
 				for (; i + 15 < n; i += 16) {
-					__m256 v0 = _mm256_load_ps(out + i);
-					v0 = _mm256_mul_ps(v0, scalar);
-					_mm256_store_ps(out + i, v0);
+					reg v0 = simd::SimdTraits<float>::load(out + i);
+					v0 = simd::SimdTraits<float>::mul(v0, scalar);
+					simd::SimdTraits<float>::store(out + i, v0);
 
-					__m256 v1 = _mm256_load_ps(out + i + 8);
-					v1 = _mm256_mul_ps(v1, scalar);
-					_mm256_store_ps(out + i + 8, v1);
+					reg v1 = simd::SimdTraits<float>::load(out + i + 8);
+					v1 = simd::SimdTraits<float>::mul(v1, scalar);
+					simd::SimdTraits<float>::store(out + i + 8, v1);
 				}
 
 				for (; i < n; ++i)
@@ -123,13 +125,13 @@ class Vector {
 				size_t i = 0;
 				constexpr size_t W = 8;
 				for (; i + W - 1 < n; i += W) {
-					__m256 acc = _mm256_setzero_ps();
+					reg acc = simd::SimdTraits<float>::zero();
 					for (size_t j = 0; j < u.size(); ++j) {
-						__m256 v = _mm256_loadu_ps(&u[j].data[i]);
-						__m256 c = _mm256_set1_ps(coefs[j]);
-						acc = _mm256_fmadd_ps(v, c, acc); 
+						reg v = simd::SimdTraits<float>::load(&u[j].data[i]);
+						reg c = simd::SimdTraits<float>::set1(coefs[j]);
+						acc = simd::SimdTraits<float>::fmadd(v, c, acc); 
 					}
-					_mm256_stream_ps(&result.data[i], acc);
+					simd::SimdTraits<float>::store_stream(&result.data[i], acc);
 				}
 
 				for (; i < n; ++i) {
@@ -150,18 +152,18 @@ class Vector {
 				const size_t n = a.size();
 				Vector<float> result(n);
 
-				const __m256 vt = _mm256_set1_ps(t);
-				const __m256 vt1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), vt);
+				const reg vt = simd::SimdTraits<float>::set1(t);
+				const reg vt1 = simd::SimdTraits<float>::sub(simd::SimdTraits<float>::set1(1.0f), vt);
 
 				size_t i = 0;
 				_mm_prefetch((const char *)&a.data[0], _MM_HINT_T0);
 				for (; i + 7 < n; i += 8) {
-					__m256 va = _mm256_load_ps(&a.data[i]);
-					__m256 vb = _mm256_load_ps(&b.data[i]);
+					reg va = simd::SimdTraits<float>::load(&a.data[i]);
+					reg vb = simd::SimdTraits<float>::load(&b.data[i]);
 
-					__m256 r = _mm256_fmadd_ps(vb, vt, _mm256_mul_ps(va, vt1));
+					reg r = simd::SimdTraits<float>::fmadd(vb, vt, simd::SimdTraits<float>::mul(va, vt1));
 
-					_mm256_stream_ps(&result.data[i], r);	
+					simd::SimdTraits<float>::store_stream(&result.data[i], r);	
 				}
 
 				for (; i < n; ++i)
@@ -178,15 +180,15 @@ class Vector {
 
 				const size_t n = size();
 				size_t i = 0;
-				__m256 acc = _mm256_setzero_ps();
+				reg acc = simd::SimdTraits<float>::zero();
 
 				const float* __restrict a_ptr = &data[0];
 				const float* __restrict b_ptr = &v.data[0];
 				_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 				for (; i + 7 < n; i += 8) {
-					__m256 a = _mm256_load_ps(a_ptr + i);
-					__m256 b = _mm256_load_ps(b_ptr + i);
-					acc = _mm256_fmadd_ps(a, b, acc);
+					reg a = simd::SimdTraits<float>::load(a_ptr + i);
+					reg b = simd::SimdTraits<float>::load(b_ptr + i);
+					acc = simd::SimdTraits<float>::fmadd(a, b, acc);
 				}
 
 				float result = detail::reduce_sum(acc);
@@ -203,14 +205,14 @@ class Vector {
 				size_t n = size();
 				size_t i = 0;
 
-				__m256 acc = _mm256_setzero_ps();
-				__m256 sign_mask = _mm256_set1_ps(-0.0f);
+				reg acc = simd::SimdTraits<float>::zero();
+				reg sign_mask = simd::SimdTraits<float>::set1(-0.0f);
 				const float* __restrict v_ptr = &data[0];
 				_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 				for (; i + 7 < n; i += 8) {
-					__m256 v = _mm256_load_ps(v_ptr + i);
-					__m256 abs_v = _mm256_andnot_ps(sign_mask, v);
-					acc = _mm256_add_ps(acc, abs_v);
+					reg v = simd::SimdTraits<float>::load(v_ptr + i);
+					reg abs_v = simd::SimdTraits<float>::andnot(sign_mask, v);
+					acc = simd::SimdTraits<float>::add(acc, abs_v);
 				}
 
 				float result = detail::reduce_sum(acc);
@@ -227,12 +229,12 @@ class Vector {
 				size_t n = size();
 				size_t i = 0;
 
-				__m256 acc = _mm256_setzero_ps();
+				reg acc = simd::SimdTraits<float>::zero();
 				const float* __restrict v_ptr = &data[0];
 				_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 				for (; i + 7 < n; i += 8) {
-					__m256 v = _mm256_load_ps(v_ptr + i);
-					acc = _mm256_fmadd_ps(v, v, acc);
+					reg v = simd::SimdTraits<float>::load(v_ptr + i);
+					acc = simd::SimdTraits<float>::fmadd(v, v, acc);
 				}
 
 				float result = detail::reduce_sum(acc);
@@ -250,13 +252,13 @@ class Vector {
 				size_t n = size();
 				size_t i = 0;
 
-				__m256 max_v = _mm256_setzero_ps();
-				__m256 sign_mask = _mm256_set1_ps(-0.0f);
+				reg max_v = simd::SimdTraits<float>::zero();
+				reg sign_mask = simd::SimdTraits<float>::set1(-0.0f);
 				const float* __restrict v_ptr = &data[0];
 				_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 				for (; i + 7 < n; i += 8) {
-					__m256 v = _mm256_load_ps(v_ptr + i);
-					__m256 abs_v = _mm256_andnot_ps(sign_mask, v);
+					reg v = simd::SimdTraits<float>::load(v_ptr + i);
+					reg abs_v = simd::SimdTraits<float>::andnot(sign_mask, v);
 					max_v = _mm256_max_ps(max_v, abs_v);
 				}
 
