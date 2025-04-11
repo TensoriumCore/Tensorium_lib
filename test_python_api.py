@@ -1,8 +1,6 @@
 import sys
 sys.path.append("pybuild")
 from morpheus import Vector, add, sub, scl
-
-from morpheus import Vector, add, sub, scl
 import morpheus
 
 v = morpheus.Vector([1.0, 2.0, 3.0])
