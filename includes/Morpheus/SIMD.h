@@ -11,59 +11,66 @@ struct sse_t    { static constexpr size_t width = 4;  using reg = __m128;  stati
 struct avx2_t   { static constexpr size_t width = 8;  using reg = __m256;  static constexpr size_t alignment = 32; };
 struct avx512_t { static constexpr size_t width = 16; using reg = __m512;  static constexpr size_t alignment = 64; };
 
+namespace morpheus {
+
+	struct avx2_t {
+		static constexpr size_t width = 8;
+		using reg = __m256;
+		static constexpr size_t alignment = 32;
+	};
+}
+
 inline bool supports_avx512() {
-    int regs[4];
-    __cpuid_count(7, 0, regs[0], regs[1], regs[2], regs[3]);
-    return (regs[1] & (1 << 16));
+	int regs[4];
+	__cpuid_count(7, 0, regs[0], regs[1], regs[2], regs[3]);
+	return (regs[1] & (1 << 16));
 }
 
 inline bool supports_avx2() {
-    int regs[4];
-    __cpuid_count(7, 0, regs[0], regs[1], regs[2], regs[3]);
-    return (regs[1] & (1 << 5));
+	int regs[4];
+	__cpuid_count(7, 0, regs[0], regs[1], regs[2], regs[3]);
+	return (regs[1] & (1 << 5));
 }
 
 inline bool supports_sse() {
-    int regs[4];
-    __cpuid_count(1, 0, regs[0], regs[1], regs[2], regs[3]);
-    return (regs[3] & (1 << 25));
+	int regs[4];
+	__cpuid_count(1, 0, regs[0], regs[1], regs[2], regs[3]);
+	return (regs[3] & (1 << 25));
 }
 
 template<typename F>
 void dispatch_simd(F&& f) {
-    if (supports_avx512()) {
-        f(avx512_t{});
-    } else if (supports_avx2()) {
-        f(avx2_t{});
-    } else if (supports_sse()) {
-        f(sse_t{});
-    } else {
-        throw std::runtime_error("No supported SIMD ISA (SSE/AVX2/AVX512).");
-    }
+	if (supports_avx512()) {
+		f(avx512_t{});
+	} else if (supports_avx2()) {
+		f(avx2_t{});
+	} else if (supports_sse()) {
+		f(sse_t{});
+	} else {
+		throw std::runtime_error("No supported SIMD ISA (SSE/AVX2/AVX512).");
+	}
 }
-
-
 
 
 namespace detail {
 	__attribute__((always_inline, hot, flatten))
-	inline float reduce_sum(__m256 acc) {
-		__m128 low  = _mm256_castps256_ps128(acc);
-		__m128 high = _mm256_extractf128_ps(acc, 1);
-		__m128 sum = _mm_add_ps(low, high);
-		sum = _mm_hadd_ps(sum, sum);
-		sum = _mm_hadd_ps(sum, sum);
-		return _mm_cvtss_f32(sum);
-	}
+		inline float reduce_sum(__m256 acc) {
+			__m128 low  = _mm256_castps256_ps128(acc);
+			__m128 high = _mm256_extractf128_ps(acc, 1);
+			__m128 sum = _mm_add_ps(low, high);
+			sum = _mm_hadd_ps(sum, sum);
+			sum = _mm_hadd_ps(sum, sum);
+			return _mm_cvtss_f32(sum);
+		}
 	__attribute__((always_inline, hot, flatten))
-	inline double reduce_sum(__m256d acc) {
-		__m128d low  = _mm256_castpd256_pd128(acc);
-		__m128d high = _mm256_extractf128_pd(acc, 1);
-		__m128d sum = _mm_add_pd(low, high);
-		double r[2];
-		_mm_storeu_pd(r, sum);
-		return r[0] + r[1];
-	}
+		inline double reduce_sum(__m256d acc) {
+			__m128d low  = _mm256_castpd256_pd128(acc);
+			__m128d high = _mm256_extractf128_pd(acc, 1);
+			__m128d sum = _mm_add_pd(low, high);
+			double r[2];
+			_mm_storeu_pd(r, sum);
+			return r[0] + r[1];
+		}
 
 }
 
