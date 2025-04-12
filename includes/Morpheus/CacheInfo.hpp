@@ -53,7 +53,7 @@ inline int CacheInfo::getL2CacheSize() {
 
 inline int CacheInfo::getL3CacheSize() {
     int info[4];
-    cpuid(info, 0x4, 3); // subleaf 3 = L3
+    cpuid(info, 0x4, 3); 
     int ways = ((info[1] >> 22) & 0x3FF) + 1;
     int partitions = ((info[1] >> 12) & 0x3FF) + 1;
     int line_size = (info[1] & 0xFFF) + 1;
