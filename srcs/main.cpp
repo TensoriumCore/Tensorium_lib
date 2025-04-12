@@ -115,13 +115,13 @@ int main() {
 		}
 
 	std::cout << "\n[m1] + [m2]:\n";
-	add(m1, m2).print();
+	add_mat(m1, m2).print();
 
 	std::cout << "\n[m1] - [m2]:\n";
-	sub(m1, m2).print();
+	sub_mat(m1, m2).print();
 
 	std::cout << "\n[m1] * 2.0:\n";
-	scl(m1, 2.0f).print();
+	scl_mat(m1, 2.0f).print();
 
 	std::cout << "\n=== Matrix and Vector Tests ===\n";
 	comb();
