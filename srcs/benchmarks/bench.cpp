@@ -5,7 +5,7 @@
 #include <vector>
 #include <immintrin.h>
 #include "../../includes/Morpheus/Matrix.hpp"
-#include "../../includes/Morpheus/SIMD.h"
+#include "../../includes/Morpheus/SIMD.hpp"
 
 #include <cblas.h> 
 

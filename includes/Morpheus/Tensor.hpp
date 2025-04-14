@@ -5,7 +5,7 @@
 #include <vector>
 #include <cassert>
 #include <cmath>
-#include "SIMD.h"
+#include "SIMD.hpp"
 
 namespace morpheus {
 	template<typename K, std::size_t Rank>

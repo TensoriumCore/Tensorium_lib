@@ -38,16 +38,15 @@ int comb() {
 	return 0;
 }
 
-#include "../includes/Morpheus/Tensor.h"
+#include "../includes/Morpheus/Tensor.hpp"
 
 int test_tensor()
 {
 	using namespace morpheus;
 
-	std::array<size_t, 3> shape = {3, 3, 3}; // Tensor 3D
+	std::array<size_t, 3> shape = {3, 3, 3};
 	Tensor<float, 3> T3(shape);
 
-	// Remplissage du tenseur avec une valeur simple : T(i,j,k) = i + j + k
 	for (size_t i = 0; i < 3; ++i) {
 		for (size_t j = 0; j < 3; ++j) {
 			for (size_t k = 0; k < 3; ++k) {
@@ -69,7 +68,6 @@ int test_tensor()
 		std::cout << "\n";
 	}
 
-	// === Contraction sur indices (1, 2) : trace des matrices 3x3 dans la 3e dim ===
 	auto T_contracted = T3.contract<1, 2>();
 
 	std::cout << "=== Contraction T(i,j,j) => Tensor 1D ===\n";
