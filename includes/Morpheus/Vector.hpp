@@ -4,7 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <immintrin.h>
-#include "SIMD.h"
+#include "SIMD.hpp"
 #include <mutex>
 
 
@@ -14,7 +14,6 @@ namespace morpheus {
 			public:
 				aligned_vector<K> data;
 
-			
 				Vector(const std::vector<K>& vec) : data(vec.begin(), vec.end()) {}
 				K& operator[](size_t i) { return data[i]; }
 				const K& operator[](size_t i) const { return data[i]; }
@@ -60,7 +59,6 @@ namespace morpheus {
 							data[i] += v.data[i];
 					}
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline void sub(const Vector &v) {
 						if (v.size() != size()) 
@@ -88,8 +86,6 @@ namespace morpheus {
 							data[i] -= v.data[i];
 					}
 
-
-
 				__attribute__((always_inline, hot, flatten))
 					inline void scl(float a) {
 						size_t n = size();
@@ -114,8 +110,6 @@ namespace morpheus {
 						for (; i < n; ++i)
 							out[i] *= a;
 					}
-
-
 
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<float> linear_combination(const std::vector<Vector<float>> &u, 
@@ -189,7 +183,6 @@ namespace morpheus {
 						return result;
 					}
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline float dot(const Vector<float>& v) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -218,7 +211,6 @@ namespace morpheus {
 						return result;
 					}
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_1() const {
 						size_t n = size();
@@ -244,7 +236,6 @@ namespace morpheus {
 						return result;
 					}
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_2() const {
 						size_t n = size();
@@ -267,8 +258,6 @@ namespace morpheus {
 
 						return std::sqrt(result);
 					}
-
-
 
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_inf() const {

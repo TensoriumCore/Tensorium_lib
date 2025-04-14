@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SIMD.h"
+#include "SIMD.hpp"
 #include <iostream>
 #include <cmath>
 #include <vector>

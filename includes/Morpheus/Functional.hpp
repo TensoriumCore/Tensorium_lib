@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector.hpp"
 #include "Matrix.hpp"
-#include "Tensor.h"
+#include "Tensor.hpp"
 
 namespace morpheus {
 
