@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector.hpp"
 #include "Matrix.hpp"
+#include "Tensor.h"
 
 namespace morpheus {
 
@@ -74,4 +75,14 @@ namespace morpheus {
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
 		return A.mul_mat(B); 
 	}
+
+	// === TENSOR OPS ===
+	template<typename K, std::size_t Rank>
+		template <size_t I, size_t J>
+		Tensor<K, Rank - 2> Tensor<K, Rank>::contract() const {
+			static_assert(I < Rank && J < Rank && I != J, "Invalid contraction indices");
+			return contract_simd(*this, I, J);
+		}
+
+
 }

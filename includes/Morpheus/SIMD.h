@@ -10,13 +10,26 @@
 struct sse_t    { static constexpr size_t width = 4;  using reg = __m128;  static constexpr size_t alignment = 16; };
 struct avx2_t   { static constexpr size_t width = 8;  using reg = __m256;  static constexpr size_t alignment = 32; };
 struct avx512_t { static constexpr size_t width = 16; using reg = __m512;  static constexpr size_t alignment = 64; };
+#ifdef __AVX512F__
+using DefaultISA = avx512_t;
+#define ALIGN 64
+#define SIMD_WIDTH 16
+#elif defined(__AVX2__)
+using DefaultISA = avx2_t;
+#define ALIGN 32
+#define SIMD_WIDTH 8
+#else
+using DefaultISA = sse_t;
+#define ALIGN 16
+#define SIMD_WIDTH 4
+#endif
 
 namespace morpheus {
 
 	struct avx2_t {
-		static constexpr size_t width = 8;
+		static constexpr size_t width = SIMD_WIDTH;
 		using reg = __m256;
-		static constexpr size_t alignment = 32;
+		static constexpr size_t alignment = ALIGN;
 	};
 }
 
@@ -37,6 +50,9 @@ inline bool supports_sse() {
 	__cpuid_count(1, 0, regs[0], regs[1], regs[2], regs[3]);
 	return (regs[3] & (1 << 25));
 }
+
+
+
 
 template<typename F>
 void dispatch_simd(F&& f) {
@@ -71,7 +87,22 @@ namespace detail {
 			_mm_storeu_pd(r, sum);
 			return r[0] + r[1];
 		}
-
+	__attribute__((always_inline, hot, flatten))
+		inline uint64_t reduce_sum(__m256i acc) {
+			__m128i low  = _mm256_castsi256_si128(acc);
+			__m128i high = _mm256_extractf128_si256(acc, 1);
+			__m128i sum = _mm_add_epi64(low, high);
+			uint64_t r[2];
+			_mm_storeu_si128(reinterpret_cast<__m128i*>(r), sum);
+			return r[0] + r[1];
+		}
+	__attribute__((always_inline, hot, flatten))
+		inline float reduce_sum(__m512 acc) {
+			__m256 low  = _mm512_castps512_ps256(acc);
+			__m256 high = _mm512_extractf32x8_ps(acc, 1);
+			__m256 sum = _mm256_add_ps(low, high);
+			return reduce_sum(sum);
+		}
 }
 
 
@@ -112,10 +143,13 @@ using aligned_vector = std::vector<K, AlignedAllocator<K, 32>>;
 
 namespace simd {
 
-	template<typename T> struct SimdTraits;
+
+	template<typename T, typename ISA = DefaultISA>
+		struct SimdTraits;
+
 
 	template<>
-		struct SimdTraits<float> {
+		struct SimdTraits<float, avx2_t> {
 			using reg = __m256;
 			static constexpr size_t width = 8;
 			static inline reg set1(float x)				{ return _mm256_set1_ps(x); }
@@ -128,10 +162,13 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm256_sub_ps(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_ps(a, b); }
 			static inline void store_stream(float* ptr, reg x) { _mm256_stream_ps(ptr, x); }
+			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d) {
+				return _mm256_set_epi64x(a, b, c, d);
+			}
 		};
 
 	template<>
-		struct SimdTraits<double> {
+		struct SimdTraits<double, avx2_t> {
 			using reg = __m256d;
 			static constexpr size_t width = 4;
 			static inline reg set1(double x)            { return _mm256_set1_pd(x); }
@@ -144,6 +181,46 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm256_sub_pd(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_pd(a, b); }
 			static inline void store_stream(double* ptr, reg x) { _mm256_stream_pd(ptr, x); }
+			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d) {
+				return _mm256_set_epi64x(a, b, c, d);
+			}
 		};
 
+	template<>
+		struct SimdTraits<uint64_t, avx2_t> {
+			using reg = __m256i;
+			static constexpr size_t width = 4;
+			static inline reg set1(uint64_t x)			{ return _mm256_set1_epi64x(x); }
+			static inline reg load(const uint64_t* ptr)	{ return _mm256_load_si256(reinterpret_cast<const __m256i*>(ptr)); }
+			static inline void store(uint64_t* ptr, reg x) { _mm256_store_si256(reinterpret_cast<__m256i*>(ptr), x); }
+			static inline reg zero()					{ return _mm256_setzero_si256(); }
+			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_add_epi64(_mm256_mullo_epi64(a, b), c); }
+			static inline reg add(reg a, reg b)			{ return _mm256_add_epi64(a, b); }
+			static inline reg mul(reg a, reg b)			{ return _mm256_mul_pd(a, b); }
+			static inline reg sub(reg a, reg b)			{ return _mm256_sub_epi64(a, b); }
+			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_si256(a, b); }
+			static inline void store_stream(uint64_t* ptr, reg x) { _mm256_stream_si256(reinterpret_cast<__m256i*>(ptr), x); }
+			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d) {
+				return _mm256_set_epi64x(a, b, c, d);
+			}
+		};
+
+	template<>
+		struct SimdTraits<float, avx512_t> {
+			using reg = __m512;
+			static constexpr size_t width = 16;
+			static inline reg set1(float x)				{ return _mm512_set1_ps(x); }
+			static inline reg load(const float* ptr)	{ return _mm512_load_ps(ptr); }
+			static inline void store(float* ptr, reg x)	{ _mm512_store_ps(ptr, x); }
+			static inline reg zero()					{ return _mm512_setzero_ps(); }
+			static inline reg fmadd(reg a, reg b, reg c){ return _mm512_fmadd_ps(a, b, c); }
+			static inline reg add(reg a, reg b)			{ return _mm512_add_ps(a, b); }
+			static inline reg mul(reg a, reg b)			{ return _mm512_mul_ps(a, b); }
+			static inline reg sub(reg a, reg b)			{ return _mm512_sub_ps(a, b); }
+			static inline reg andnot(reg a, reg b)		{ return _mm512_andnot_ps(a, b); }
+			static inline void store_stream(float* ptr, reg x) { _mm512_stream_ps(ptr, x); }
+			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d, int64_t e, int64_t f, int64_t g, int64_t h) {
+				return _mm512_set_epi64(a, b, c, d, e, f, g, h);
+			}
+		};
 } 
