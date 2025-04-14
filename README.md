@@ -65,6 +65,7 @@ d = scl(a, 2.5)
 print("a * 2.5 =", list(d))
 ```
 
+
 ### Run tests
 ```bash
 chmod +x setup.sh && ./setup.sh
