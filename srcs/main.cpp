@@ -38,7 +38,47 @@ int comb() {
 	return 0;
 }
 
+#include "../includes/Morpheus/Tensor.h"
 
+int test_tensor()
+{
+	using namespace morpheus;
+
+	std::array<size_t, 3> shape = {3, 3, 3}; // Tensor 3D
+	Tensor<float, 3> T3(shape);
+
+	// Remplissage du tenseur avec une valeur simple : T(i,j,k) = i + j + k
+	for (size_t i = 0; i < 3; ++i) {
+		for (size_t j = 0; j < 3; ++j) {
+			for (size_t k = 0; k < 3; ++k) {
+				T3({i, j, k}) = static_cast<float>(i + j + k);
+			}
+		}
+	}
+
+	std::cout << "=== Tenseur 3D T(i,j,k) ===\n";
+	for (size_t i = 0; i < 3; ++i) {
+		std::cout << "i = " << i << "\n";
+		for (size_t j = 0; j < 3; ++j) {
+			std::cout << "[ ";
+			for (size_t k = 0; k < 3; ++k) {
+				std::cout << T3({i, j, k}) << " ";
+			}
+			std::cout << "]\n";
+		}
+		std::cout << "\n";
+	}
+
+	// === Contraction sur indices (1, 2) : trace des matrices 3x3 dans la 3e dim ===
+	auto T_contracted = T3.contract<1, 2>();
+
+	std::cout << "=== Contraction T(i,j,j) => Tensor 1D ===\n";
+	for (size_t i = 0; i < 3; ++i) {
+		std::cout << "T(" << i << ") = " << T_contracted({i}) << "\n";
+	}
+
+	return 0;
+}
 
 int bench() {
 	constexpr size_t N = 8192;
@@ -166,7 +206,8 @@ int main() {
 
 	std::cout << "Matrix C (A * B):\n";
 	C.print();
-
+	std::cout << "\n=== Test Tensor ===\n";
+	test_tensor();
 	std::cout << "\n=== Benchmarking ===\n";
 	bench();
 

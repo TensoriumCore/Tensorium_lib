@@ -20,8 +20,7 @@ namespace morpheus {
 				const K& operator[](size_t i) const { return data[i]; }
 				Vector(size_t n) : data(n, K()) {}
 				Vector(std::initializer_list<K> init) : data(init) {}
-				using Simd = simd::SimdTraits<K>;
-				using reg = typename Simd::reg;
+
 
 				size_t size() const {
 					return data.size();
@@ -37,22 +36,24 @@ namespace morpheus {
 					inline void add(const Vector &v) {
 						if (v.size() != size())
 							throw std::invalid_argument("Vector sizes do not match");
-
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
 						size_t n = size();
 						size_t i = 0;
 
 						_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 
 						for (; i + 15 < n; i += 16) {
-							reg a0 = simd::SimdTraits<float>::load(&data[i]);
-							reg b0 = simd::SimdTraits<float>::load(&v.data[i]);
-							a0 = simd::SimdTraits<float>::add(a0, b0);
-							simd::SimdTraits<float>::store(&data[i], a0);
+							reg a0 = Simd::load(&data[i]);
+							reg b0 = Simd::load(&v.data[i]);
+							a0 = Simd::add(a0, b0);
+							Simd::store(&data[i], a0);
 
-							reg a1 = simd::SimdTraits<float>::load(&data[i + 8]);
-							reg b1 = simd::SimdTraits<float>::load(&v.data[i + 8]);
-							a1 = simd::SimdTraits<float>::add(a1, b1);
-							simd::SimdTraits<float>::store(&data[i + 8], a1);
+							reg a1 = Simd::load(&data[i + 8]);
+							reg b1 = Simd::load(&v.data[i + 8]);
+							a1 = Simd::add(a1, b1);
+							Simd::store(&data[i + 8], a1);
 						}
 
 						for (; i < n; ++i)
@@ -64,20 +65,23 @@ namespace morpheus {
 					inline void sub(const Vector &v) {
 						if (v.size() != size()) 
 							throw std::invalid_argument("Vector sizes do not match");
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
 						size_t n = size();
 						size_t i = 0;
 
 						_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 						for (; i + 15 < n; i += 16) {
-							reg a0 = simd::SimdTraits<float>::load(&data[i]);
-							reg b0 = simd::SimdTraits<float>::load(&v.data[i]);
-							a0 = simd::SimdTraits<float>::sub(a0, b0);
-							simd::SimdTraits<float>::store(&data[i], a0);
+							reg a0 = Simd::load(&data[i]);
+							reg b0 = Simd::load(&v.data[i]);
+							a0 = Simd::sub(a0, b0);
+							Simd::store(&data[i], a0);
 
-							reg a1 = simd::SimdTraits<float>::load(&data[i + 8]);
-							reg b1 = simd::SimdTraits<float>::load(&v.data[i + 8]);
-							a1 = simd::SimdTraits<float>::sub(a1, b1);
-							simd::SimdTraits<float>::store(&data[i + 8], a1);
+							reg a1 = Simd::load(&data[i + 8]);
+							reg b1 = Simd::load(&v.data[i + 8]);
+							a1 = Simd::sub(a1, b1);
+							Simd::store(&data[i + 8], a1);
 						}
 
 						for (; i < n; ++i)
@@ -90,19 +94,21 @@ namespace morpheus {
 					inline void scl(float a) {
 						size_t n = size();
 						size_t i = 0;
-
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-						reg scalar = simd::SimdTraits<float>::set1(a);
+						reg scalar = Simd::set1(a);
 						float* __restrict out = &data[0];
 
 						for (; i + 15 < n; i += 16) {
-							reg v0 = simd::SimdTraits<float>::load(out + i);
-							v0 = simd::SimdTraits<float>::mul(v0, scalar);
-							simd::SimdTraits<float>::store(out + i, v0);
+							reg v0 = Simd::load(out + i);
+							v0 = Simd::mul(v0, scalar);
+							Simd::store(out + i, v0);
 
-							reg v1 = simd::SimdTraits<float>::load(out + i + 8);
-							v1 = simd::SimdTraits<float>::mul(v1, scalar);
-							simd::SimdTraits<float>::store(out + i + 8, v1);
+							reg v1 = Simd::load(out + i + 8);
+							v1 = Simd::mul(v1, scalar);
+							Simd::store(out + i + 8, v1);
 						}
 
 						for (; i < n; ++i)
@@ -114,6 +120,10 @@ namespace morpheus {
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<float> linear_combination(const std::vector<Vector<float>> &u, 
 							const std::vector<float> &coefs) {
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+
 						if (u.size() != coefs.size())
 							throw std::invalid_argument("Mismatched number of vectors and coefficients");
 						if (u.empty())
@@ -129,13 +139,13 @@ namespace morpheus {
 						size_t i = 0;
 						constexpr size_t W = 8;
 						for (; i + W - 1 < n; i += W) {
-							reg acc = simd::SimdTraits<float>::zero();
+							reg acc = Simd::zero();
 							for (size_t j = 0; j < u.size(); ++j) {
-								reg v = simd::SimdTraits<float>::load(&u[j].data[i]);
-								reg c = simd::SimdTraits<float>::set1(coefs[j]);
-								acc = simd::SimdTraits<float>::fmadd(v, c, acc); 
+								reg v = Simd::load(&u[j].data[i]);
+								reg c = Simd::set1(coefs[j]);
+								acc = Simd::fmadd(v, c, acc); 
 							}
-							simd::SimdTraits<float>::store_stream(&result.data[i], acc);
+							Simd::store_stream(&result.data[i], acc);
 						}
 
 						for (; i < n; ++i) {
@@ -152,22 +162,25 @@ namespace morpheus {
 					static inline Vector<float> lerp(const Vector<float>& a, const Vector<float>& b, float t) {
 						if (a.size() != b.size())
 							throw std::invalid_argument("Vector sizes do not match");
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
 
 						const size_t n = a.size();
 						Vector<float> result(n);
 
-						const reg vt = simd::SimdTraits<float>::set1(t);
-						const reg vt1 = simd::SimdTraits<float>::sub(simd::SimdTraits<float>::set1(1.0f), vt);
+						const reg vt = Simd::set1(t);
+						const reg vt1 = Simd::sub(Simd::set1(1.0f), vt);
 
 						size_t i = 0;
 						_mm_prefetch((const char *)&a.data[0], _MM_HINT_T0);
 						for (; i + 7 < n; i += 8) {
-							reg va = simd::SimdTraits<float>::load(&a.data[i]);
-							reg vb = simd::SimdTraits<float>::load(&b.data[i]);
+							reg va = Simd::load(&a.data[i]);
+							reg vb = Simd::load(&b.data[i]);
 
-							reg r = simd::SimdTraits<float>::fmadd(vb, vt, simd::SimdTraits<float>::mul(va, vt1));
+							reg r = Simd::fmadd(vb, vt, Simd::mul(va, vt1));
 
-							simd::SimdTraits<float>::store_stream(&result.data[i], r);	
+							Simd::store_stream(&result.data[i], r);	
 						}
 
 						for (; i < n; ++i)
@@ -179,20 +192,22 @@ namespace morpheus {
 
 				__attribute__((always_inline, hot, flatten))
 					inline float dot(const Vector<float>& v) const {
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
 						if (v.size() != size())
 							throw std::invalid_argument("Vector sizes do not match");
-
 						const size_t n = size();
 						size_t i = 0;
-						reg acc = simd::SimdTraits<float>::zero();
+						reg acc = Simd::zero();
 
 						const float* __restrict a_ptr = &data[0];
 						const float* __restrict b_ptr = &v.data[0];
 						_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
 						for (; i + 7 < n; i += 8) {
-							reg a = simd::SimdTraits<float>::load(a_ptr + i);
-							reg b = simd::SimdTraits<float>::load(b_ptr + i);
-							acc = simd::SimdTraits<float>::fmadd(a, b, acc);
+							reg a = Simd::load(a_ptr + i);
+							reg b = Simd::load(b_ptr + i);
+							acc = Simd::fmadd(a, b, acc);
 						}
 
 						float result = detail::reduce_sum(acc);
@@ -208,15 +223,17 @@ namespace morpheus {
 					inline float norm_1() const {
 						size_t n = size();
 						size_t i = 0;
-
-						reg acc = simd::SimdTraits<float>::zero();
-						reg sign_mask = simd::SimdTraits<float>::set1(-0.0f);
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+						reg acc = Simd::zero();
+						reg sign_mask = Simd::set1(-0.0f);
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 						for (; i + 7 < n; i += 8) {
-							reg v = simd::SimdTraits<float>::load(v_ptr + i);
-							reg abs_v = simd::SimdTraits<float>::andnot(sign_mask, v);
-							acc = simd::SimdTraits<float>::add(acc, abs_v);
+							reg v = Simd::load(v_ptr + i);
+							reg abs_v = Simd::andnot(sign_mask, v);
+							acc = Simd::add(acc, abs_v);
 						}
 
 						float result = detail::reduce_sum(acc);
@@ -232,13 +249,15 @@ namespace morpheus {
 					inline float norm_2() const {
 						size_t n = size();
 						size_t i = 0;
-
-						reg acc = simd::SimdTraits<float>::zero();
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+						reg acc = Simd::zero();
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 						for (; i + 7 < n; i += 8) {
-							reg v = simd::SimdTraits<float>::load(v_ptr + i);
-							acc = simd::SimdTraits<float>::fmadd(v, v, acc);
+							reg v = Simd::load(v_ptr + i);
+							acc = Simd::fmadd(v, v, acc);
 						}
 
 						float result = detail::reduce_sum(acc);
@@ -255,14 +274,16 @@ namespace morpheus {
 					inline float norm_inf() const {
 						size_t n = size();
 						size_t i = 0;
-
-						reg max_v = simd::SimdTraits<float>::zero();
-						reg sign_mask = simd::SimdTraits<float>::set1(-0.0f);
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+						reg max_v = Simd::zero();
+						reg sign_mask = Simd::set1(-0.0f);
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
 						for (; i + 7 < n; i += 8) {
-							reg v = simd::SimdTraits<float>::load(v_ptr + i);
-							reg abs_v = simd::SimdTraits<float>::andnot(sign_mask, v);
+							reg v = Simd::load(v_ptr + i);
+							reg abs_v = Simd::andnot(sign_mask, v);
 							max_v = _mm256_max_ps(max_v, abs_v);
 						}
 

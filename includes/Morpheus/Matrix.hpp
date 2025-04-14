@@ -45,7 +45,7 @@ namespace morpheus {
 						if (rows != m.rows || cols != m.cols)
 							throw std::invalid_argument("Matrix sizes do not match");
 
-						using Simd = simd::SimdTraits<K>;
+						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
 
@@ -76,7 +76,7 @@ namespace morpheus {
 					inline void sub(const Matrix &m) {
 						if (rows != m.rows || cols != m.cols) 
 							throw std::invalid_argument("Matrix sizes do not match");
-						using Simd = simd::SimdTraits<K>;
+						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
 
@@ -105,7 +105,7 @@ namespace morpheus {
 					inline void scl(K a) {
 						size_t n = size();
 						size_t i = 0;
-						using Simd = simd::SimdTraits<K>;
+						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
@@ -132,7 +132,7 @@ namespace morpheus {
 							throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 						}
 
-						using Simd = simd::SimdTraits<K>;
+						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
 						constexpr size_t UNROLL = 128;
