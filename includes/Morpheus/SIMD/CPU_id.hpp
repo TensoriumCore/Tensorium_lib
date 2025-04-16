@@ -18,7 +18,7 @@ inline std::string get_cpu_brand() {
 inline size_t detect_optimal_block_size() {
     std::string brand = get_cpu_brand();
 
-    if (brand.find("Xeon Phi") != std::string::npos) return 32;   
+    if (brand.find("Xeon Phi") != std::string::npos) return 256;   
     if (brand.find("Xeon")     != std::string::npos) return 128;
     if (brand.find("Ryzen")    != std::string::npos) return 96;
     if (brand.find("Apple")    != std::string::npos) return 64;
