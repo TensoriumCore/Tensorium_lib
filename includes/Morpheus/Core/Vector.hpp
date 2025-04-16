@@ -3,10 +3,9 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <immintrin.h>
-#include "SIMD.hpp"
-#include <mutex>
-
+#include "../SIMD/SIMD.hpp" 
+#include "../SIMD/CPU_id.hpp" 
+#include "../SIMD/Allocator.hpp"
 
 namespace morpheus {
 	template<typename K>
@@ -273,7 +272,7 @@ namespace morpheus {
 						for (; i + 7 < n; i += 8) {
 							reg v = Simd::load(v_ptr + i);
 							reg abs_v = Simd::andnot(sign_mask, v);
-							max_v = _mm256_max_ps(max_v, abs_v);
+							max_v = Simd::max(max_v, abs_v);
 						}
 
 						float result = detail::reduce_sum(max_v);

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "SIMD.hpp"
 #include <iostream>
 #include <cmath>
 #include <vector>
 #include <immintrin.h>
-#include <stdexcept>
-#include <mutex>
-#include "CPU_id.hpp"
+
+#include "../SIMD/SIMD.hpp" 
+#include "../SIMD/CPU_id.hpp" 
+#include "../SIMD/Allocator.hpp"
 
 namespace morpheus {
 	template<typename K>

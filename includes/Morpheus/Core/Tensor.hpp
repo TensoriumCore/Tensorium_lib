@@ -5,7 +5,9 @@
 #include <vector>
 #include <cassert>
 #include <cmath>
-#include "SIMD.hpp"
+#include "../SIMD/SIMD.hpp" 
+#include "../SIMD/CPU_id.hpp" 
+#include "../SIMD/Allocator.hpp"
 
 namespace morpheus {
 	template<typename K, std::size_t Rank>
@@ -59,9 +61,10 @@ namespace morpheus {
 					std::cout << ")\n";
 				}
 
+
 				__attribute__((always_inline, hot, flatten))
 					inline size_t flatten_index_simd(const size_t* indices, const size_t* strides) const {
-						using Simd = simd::SimdTraits<uint64_t>; 
+						using Simd = simd::SimdTraits<size_t, DefaultISA>;
 						using reg = typename Simd::reg;
 						constexpr size_t W = Simd::width / sizeof(size_t);
 
@@ -80,7 +83,6 @@ namespace morpheus {
 						return acc;
 					}
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline size_t flatten_index(const std::array<size_t, Rank>& indices) const {
 						return flatten_index_simd(indices.data(), strides.data());
@@ -92,9 +94,10 @@ namespace morpheus {
 						assert(i < Rank && j < Rank && i != j);
 						assert(t.dimensions[i] == t.dimensions[j]);
 
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						constexpr size_t W = Simd::width / sizeof(K);
+						using SimdIndex = simd::SimdTraits<size_t, DefaultISA>;
+						using SimdValue = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename SimdValue::reg;
+						constexpr size_t W = SimdValue::width;
 
 						std::array<size_t, Rank - 2> new_dims;
 						size_t d_idx = 0;
@@ -121,7 +124,7 @@ namespace morpheus {
 
 							const size_t dim = t.dimensions[i];
 							size_t k = 0;
-							reg acc = Simd::zero();
+							reg acc = SimdValue::zero();
 
 							for (; k + W - 1 < dim; k += W) {
 								alignas(64) size_t k_vec[W];
@@ -135,8 +138,8 @@ namespace morpheus {
 								for (size_t w = 0; w < W; ++w)
 									vals[w] = t(indices);
 
-								reg vec = Simd::load(vals);
-								acc = Simd::add(acc, vec);
+								reg vec = SimdValue::load(vals);
+								acc = SimdValue::add(acc, vec);
 							}
 
 							K sum = detail::reduce_sum(acc);
@@ -156,7 +159,6 @@ namespace morpheus {
 
 						return result;
 					}
-
 				template <size_t I, size_t J>
 					Tensor<K, Rank - 2> contract() const;
 

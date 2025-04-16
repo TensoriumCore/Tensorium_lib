@@ -9,7 +9,12 @@ INC_DIR     = includes
 OBJ_DIR     = build
 
 CFLAGS      = -O3 -std=c++17 -mfma -mavx2 -mtune=native -fopenmp -I$(INC_DIR)
+AVX512_FLAGS = -O3 -std=c++17 -mfma -mavx512f -mavx512dq -mavx512bw -mavx512vl -mtune=native -fopenmp -I$(INC_DIR)
 BLAS_FLAGS  = -lblas -lm -lopenblas
+
+ifeq ($(AVX512), true)
+    CFLAGS := $(AVX512_FLAGS)
+endif
 
 ifeq ($(VERBOSE), true)
     CFLAGS += -D VERBOSE
