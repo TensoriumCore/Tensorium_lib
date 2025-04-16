@@ -24,6 +24,11 @@ ifeq ($(DEBUG), true)
     CFLAGS += -g
 endif
 
+ifeq ($(USE_MPI), true)
+    CFLAGS += -DMORPHEUS_USE_MPI
+    LDFLAGS += -lmpi
+endif
+
 SRC     = $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
 OBJ     = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 

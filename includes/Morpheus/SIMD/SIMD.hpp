@@ -116,12 +116,12 @@ namespace detail {
 			return reduce_sum(sum);
 		}
 	__attribute__((always_inline, hot, flatten))
-		inline uint64_t reduce_sum(__m512i acc) {
-			__m256i low  = _mm512_castsi512_si256(acc);
-			__m256i high = _mm512_extractf64x4_pd(acc, 1);
-			__m256i sum = _mm256_add_epi64(low, high);
-			return reduce_sum(sum);
-		}
+	inline uint64_t reduce_sum(__m512i acc) {
+		__m256i low  = _mm512_castsi512_si256(acc);
+		__m256i high = _mm512_extracti64x4_epi64(acc, 1);  
+		__m256i sum = _mm256_add_epi64(low, high);
+		return reduce_sum(sum);  
+	}
 	__attribute__((always_inline, hot, flatten))
 		inline float reduce_sum(__m128 acc) {
 			__m128 sum = _mm_hadd_ps(acc, acc);
@@ -153,9 +153,6 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm256_sub_ps(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_ps(a, b); }
 			static inline void store_stream(float* ptr, reg x) { _mm256_stream_ps(ptr, x); }
-			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d) {
-				return _mm256_set_epi64x(a, b, c, d);
-			}
 			static inline reg max(reg a, reg b)		{ return _mm256_max_ps(a, b); }
 		};
 
@@ -173,9 +170,6 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm256_sub_pd(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_pd(a, b); }
 			static inline void store_stream(double* ptr, reg x) { _mm256_stream_pd(ptr, x); }
-			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d) {
-				return _mm256_set_epi64x(a, b, c, d);
-			}
 			static inline reg max(reg a, reg b)		{ return _mm256_max_pd(a, b); }
 		};
 
@@ -221,9 +215,6 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm512_sub_ps(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm512_andnot_ps(a, b); }
 			static inline void store_stream(float* ptr, reg x) { _mm512_stream_ps(ptr, x); }
-			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d, int64_t e, int64_t f, int64_t g, int64_t h) {
-				return _mm512_set_epi64(a, b, c, d, e, f, g, h);
-			}
 			static inline reg max(reg a, reg b)		{ return _mm512_max_ps(a, b); }
 		};
 
@@ -241,9 +232,6 @@ namespace simd {
 			static inline reg sub(reg a, reg b)			{ return _mm512_sub_pd(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm512_andnot_pd(a, b); }
 			static inline void store_stream(double* ptr, reg x) { _mm512_stream_pd(ptr, x); }
-			static inline reg set_epi64(int64_t a, int64_t b, int64_t c, int64_t d, int64_t e, int64_t f, int64_t g, int64_t h) {
-				return _mm512_set_epi64(a, b, c, d, e, f, g, h);
-			}
 			static inline reg max(reg a, reg b)		{ return _mm512_max_pd(a, b); }
 		};
 
