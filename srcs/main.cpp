@@ -225,15 +225,44 @@ int main() {
 	B(2, 0) = 0.0; B(2, 1) = 0.0; B(2, 2) = 1.0;
 
 	Matrix<float> C = A.mul_mat(B);
+	std::cout << "\n=== Matrix Multiplication (Analytic Test) ===\n";
+
+	Matrix<float> M1(2, 2);
+	Matrix<float> M2(2, 2);
+
+	M1(0, 0) = 1.0f; M1(0, 1) = 2.0f;
+	M1(1, 0) = 3.0f; M1(1, 1) = 4.0f;
+
+	M2(0, 0) = 5.0f; M2(0, 1) = 6.0f;
+	M2(1, 0) = 7.0f; M2(1, 1) = 8.0f;
+
+	Matrix<float> M3 = M1.mul_mat(M2);
+
+	std::cout << "Expected:\n[19 22]\n[43 50]\n";
+	std::cout << "Result:\n";
+	M3.print();
 
 	std::cout << "Matrix C (A * B):\n";
 	C.print();
-	std::cout << "\n=== Test Tensor ===\n";
-	test_tensor();
-
 	test_transpose_matrix();
 	std::cout << "\n=== Benchmarking ===\n";
 	bench();
+	Matrix<float> expected(2, 2);
+	expected(0, 0) = 19.0f; expected(0, 1) = 22.0f;
+	expected(1, 0) = 43.0f; expected(1, 1) = 50.0f;
+
+	bool ok = true;
+	for (size_t i = 0; i < 2; ++i)
+		for (size_t j = 0; j < 2; ++j)
+			if (std::fabs(M3(i, j) - expected(i, j)) > 1e-4f) {
+				ok = false;
+				std::cout << "Mismatch at (" << i << ", " << j << "): got " << M3(i, j) << ", expected " << expected(i, j) << "\n";
+			}
+
+	if (ok)
+		std::cout << "[PASS] Matrix multiplication result is correct.\n";
+	else
+		std::cerr << "[FAIL] Matrix multiplication mismatch.\n";
 
 	return 0;
 }

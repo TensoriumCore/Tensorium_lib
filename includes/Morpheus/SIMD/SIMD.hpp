@@ -13,7 +13,7 @@ struct avx512_t { static constexpr size_t width = 16; using reg = __m512;  stati
 #ifdef __AVX512F__
 using DefaultISA = avx512_t;
 #define ALIGN 64
-#define SIMD_WIDTH 16
+#define SIMD_WIDTH 8
 #elif defined(__AVX2__)
 using DefaultISA = avx2_t;
 #define ALIGN 32
@@ -71,7 +71,14 @@ void dispatch_simd(F&& f) {
 	}
 }
 
-
+inline __m256 extractf32x8_ps_fallback(__m512 v, int imm8) {
+    alignas(64) float tmp[16];
+    _mm512_store_ps(tmp, v);
+    if (imm8 == 0)
+        return _mm256_load_ps(&tmp[0]);   
+    else
+        return _mm256_load_ps(&tmp[8]); 
+}
 
 namespace detail {
 	__attribute__((always_inline, hot, flatten))
@@ -89,7 +96,7 @@ namespace detail {
 			__m128d high = _mm256_extractf128_pd(acc, 1);
 			__m128d sum = _mm_add_pd(low, high);
 			double r[2];
-			_mm_storeu_pd(r, sum);
+			_mm_store_pd(r, sum);
 			return r[0] + r[1];
 		}
 	__attribute__((always_inline, hot, flatten))
@@ -98,13 +105,17 @@ namespace detail {
 			__m128i high = _mm256_extractf128_si256(acc, 1);
 			__m128i sum = _mm_add_epi64(low, high);
 			uint64_t r[2];
-			_mm_storeu_si128(reinterpret_cast<__m128i*>(r), sum);
+			_mm_store_si128(reinterpret_cast<__m128i*>(r), sum);
 			return r[0] + r[1];
 		}
 	__attribute__((always_inline, hot, flatten))
 		inline float reduce_sum(__m512 acc) {
 			__m256 low  = _mm512_castps512_ps256(acc);
+#if defined(__AVX512DQ__)
 			__m256 high = _mm512_extractf32x8_ps(acc, 1);
+#else
+			__m256 high = extractf32x8_ps_fallback(acc, 1);
+#endif
 			__m256 sum = _mm256_add_ps(low, high);
 			return reduce_sum(sum);
 		}
@@ -130,6 +141,14 @@ namespace detail {
 		}
 }
 
+
+static inline __m512 andnot_fallback(__m512 a, __m512 b) {
+    __m512i a_bits = _mm512_castps_si512(a);
+    __m512i not_a_bits = _mm512_xor_si512(a_bits, _mm512_set1_epi32(-1)); 
+    __m512i b_bits = _mm512_castps_si512(b);
+    __m512i result_bits = _mm512_and_si512(not_a_bits, b_bits);
+    return _mm512_castsi512_ps(result_bits);
+}
 
 
 namespace simd {
@@ -213,7 +232,11 @@ namespace simd {
 			static inline reg add(reg a, reg b)			{ return _mm512_add_ps(a, b); }
 			static inline reg mul(reg a, reg b)			{ return _mm512_mul_ps(a, b); }
 			static inline reg sub(reg a, reg b)			{ return _mm512_sub_ps(a, b); }
+#if defined(__AVX512DQ__)
 			static inline reg andnot(reg a, reg b)		{ return _mm512_andnot_ps(a, b); }
+#else
+			static inline reg andnot(reg a, reg b)		{ return andnot_fallback(a, b); }
+#endif
 			static inline void store_stream(float* ptr, reg x) { _mm512_stream_ps(ptr, x); }
 			static inline reg max(reg a, reg b)		{ return _mm512_max_ps(a, b); }
 		};
@@ -243,9 +266,22 @@ namespace simd {
 			static inline reg load(const size_t* ptr)	{ return _mm512_load_si512(reinterpret_cast<const __m512i*>(ptr)); }
 			static inline void store(size_t* ptr, reg x) { _mm512_store_si512(reinterpret_cast<__m512i*>(ptr), x); }
 			static inline reg zero()					{ return _mm512_setzero_si512(); }
-			static inline reg fmadd(reg a, reg b, reg c){ return _mm512_add_epi64(_mm512_mullo_epi64(a, b), c); }
 			static inline reg add(reg a, reg b)			{ return _mm512_add_epi64(a, b); }
-			static inline reg mul(reg a, reg b)			{ return _mm512_mullo_epi64(a, b); }
+#if defined(__AVX512DQ__)
+			static inline reg mul(reg a, reg b) {
+				return _mm512_mullo_epi64(a, b);
+			}
+#else
+			static inline reg mul(reg a, reg b) {
+				alignas(64) uint64_t A[8], B[8], R[8];
+				_mm512_store_epi64(A, a);
+				_mm512_store_epi64(B, b);
+				for (int i = 0; i < 8; ++i) R[i] = A[i] * B[i];
+				return _mm512_load_epi64(R);
+			}
+#endif
+
+			static inline reg fmadd(reg a, reg b, reg c){ return _mm512_add_epi64(mul(a, b), c); }
 			static inline reg sub(reg a, reg b)			{ return _mm512_sub_epi64(a, b); }
 			static inline reg andnot(reg a, reg b)		{ return _mm512_andnot_si512(a, b); }
 			static inline void store_stream(size_t* ptr, reg x) { _mm512_stream_si512(reinterpret_cast<__m512i*>(ptr), x); }

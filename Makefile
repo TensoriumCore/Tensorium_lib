@@ -9,10 +9,10 @@ INC_DIR      = includes
 OBJ_DIR      = build
 
 CXX_STD      = -std=c++17
-BASE_FLAGS   = -O3 -fopenmp -mtune=native -I$(INC_DIR)
+BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR)
 
 AVX2_FLAGS   = -mfma -mavx2
-AVX512_FLAGS = -mfma -mavx512f -mavx512dq -mavx512bw -mavx512vl
+AVX512_FLAGS = -mfma -mavx512f 
 
 CFLAGS       = $(CXX_STD) $(BASE_FLAGS) $(AVX2_FLAGS)
 
@@ -34,8 +34,8 @@ ifeq ($(USE_MPI), true)
 endif
 
 ifeq ($(USE_KNL), true)
-	CFLAGS += -DUSE_KNL
-	LDFLAGS += -lhwloc -lhbwmalloc
+	CFLAGS += -DUSE_KNL -mtune=knl -mfma -mavx512f -mavx512cd
+	LDFLAGS += -lmemkind 
 endif
 
 SRC         = $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")

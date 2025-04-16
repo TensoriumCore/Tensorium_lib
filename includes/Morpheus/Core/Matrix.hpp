@@ -90,10 +90,10 @@ namespace morpheus {
 							a0 = Simd::sub(a0, b0);
 							Simd::store(&data[i], a0);
 
-							reg a1 = Simd::load(&data[i + 8]);
-							reg b1 = Simd::load(&m.data[i + 8]);
+							reg a1 = Simd::load(&data[i + simd_width]);
+							reg b1 = Simd::load(&m.data[i + simd_width]);
 							a1 = Simd::sub(a1, b1);
-							Simd::store(&data[i + 8], a1);
+							Simd::store(&data[i + simd_width], a1);
 						}
 						for (; i < size(); ++i) {
 							data[i] -= m.data[i];
@@ -116,9 +116,9 @@ namespace morpheus {
 							v0 = Simd::mul(v0, scalar);
 							Simd::store(&data[i], v0);
 
-							reg v1 = Simd::load(&data[i + 8]);
+							reg v1 = Simd::load(&data[i + simd_width]);
 							v1 = Simd::mul(v1, scalar);
-							Simd::store(&data[i + 8], v1);
+							Simd::store(&data[i + simd_width], v1);
 						}
 
 						for (; i < n; ++i)
@@ -135,18 +135,18 @@ namespace morpheus {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
-						constexpr size_t UNROLL = 128;
+						constexpr size_t UNROLL = 256;
 
 						Matrix<K> result(rows, mat.cols);
 						Matrix<K> mat_transposed(mat.cols, mat.rows);
-
+#pragma omp parallel for collapse(2)
 						for (size_t i = 0; i < mat.rows; ++i) {
 							for (size_t j = 0; j < mat.cols; ++j) {
 								mat_transposed(j, i) = mat(i, j);
 							}
 						}
 
-#pragma omp parallel for collapse(2) schedule(dynamic) shared(result)
+#pragma omp parallel for collapse(2) schedule(static) shared(result)
 						for (size_t ii = 0; ii < rows; ii += block_size) {
 							for (size_t jj = 0; jj < mat.cols; jj += block_size) {
 								const size_t i_end = std::min(ii + block_size, rows);
