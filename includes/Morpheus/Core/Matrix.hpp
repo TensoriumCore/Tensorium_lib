@@ -223,5 +223,56 @@ namespace morpheus {
 
 						return result;
 					}
+				__attribute__((always_inline, hot, flatten))
+					inline Matrix<K> transpose() const {
+						Matrix<K> result(cols, rows); 
+						if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
+							using ISA = DefaultISA;
+							using Simd = simd::SimdTraits<K, ISA>;
+
+							const size_t W = Simd::width;
+
+							if (rows % W == 0 && cols % W == 0) {
+								for (size_t i = 0; i < rows; i += W) {
+									for (size_t j = 0; j < cols; j += W) {
+										typename Simd::reg block[W];
+										for (size_t k = 0; k < W; ++k)
+											block[k] = Simd::load(&data[(i + k) * cols + j]);
+
+										alignas(ALIGN) K tmp[W][W];
+										for (size_t k = 0; k < W; ++k)
+											Simd::store(tmp[k], block[k]);
+
+										for (size_t x = 0; x < W; ++x)
+											for (size_t y = 0; y < W; ++y)
+												result(j + x, i + y) = tmp[y][x];
+									}
+								}
+								return result;
+							}
+						}
+
+						for (size_t i = 0; i < rows; ++i)
+							for (size_t j = 0; j < cols; ++j)
+								result(j, i) = operator()(i, j);
+
+						return result;
+					}
+
+				__attribute__((always_inline, hot, flatten))
+					inline Matrix<K> trace() const {
+						if (rows != cols) {
+							throw std::invalid_argument("Matrix is not square");
+						}
+
+						Matrix<K> result(1, 1);
+						result(0, 0) = K(0);
+
+						for (size_t i = 0; i < rows; ++i) {
+							result(0, 0) += operator()(i, i);
+						}
+
+						return result;
+					}
 		};
 }
