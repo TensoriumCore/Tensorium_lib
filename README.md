@@ -54,6 +54,7 @@ make -j4
 
 ```bash
 make                # Default AVX2
+make help	    # Show differents compile options 
 make AVX512=true    # AVX512
 make USE_KNL=true   # MCDRAM Memkind HBW (Xeon phi KNL)
 make DEBUG=true     # debug symbols
