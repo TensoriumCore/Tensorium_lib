@@ -48,10 +48,10 @@ namespace morpheus {
 							a0 = Simd::add(a0, b0);
 							Simd::store(&data[i], a0);
 
-							reg a1 = Simd::load(&data[i + 8]);
-							reg b1 = Simd::load(&v.data[i + 8]);
+							reg a1 = Simd::load(&data[i + simd_width]);
+							reg b1 = Simd::load(&v.data[i + simd_width]);
 							a1 = Simd::add(a1, b1);
-							Simd::store(&data[i + 8], a1);
+							Simd::store(&data[i + simd_width], a1);
 						}
 
 						for (; i < n; ++i)
@@ -75,10 +75,10 @@ namespace morpheus {
 							a0 = Simd::sub(a0, b0);
 							Simd::store(&data[i], a0);
 
-							reg a1 = Simd::load(&data[i + 8]);
-							reg b1 = Simd::load(&v.data[i + 8]);
+							reg a1 = Simd::load(&data[i + simd_width]);
+							reg b1 = Simd::load(&v.data[i + simd_width]);
 							a1 = Simd::sub(a1, b1);
-							Simd::store(&data[i + 8], a1);
+							Simd::store(&data[i + simd_width], a1);
 						}
 
 						for (; i < n; ++i)
@@ -101,9 +101,9 @@ namespace morpheus {
 							v0 = Simd::mul(v0, scalar);
 							Simd::store(out + i, v0);
 
-							reg v1 = Simd::load(out + i + 8);
+							reg v1 = Simd::load(out + i + simd_width);
 							v1 = Simd::mul(v1, scalar);
-							Simd::store(out + i + 8, v1);
+							Simd::store(out + i + simd_width, v1);
 						}
 
 						for (; i < n; ++i)
@@ -130,7 +130,7 @@ namespace morpheus {
 						Vector<float> result(n);
 
 						size_t i = 0;
-						constexpr size_t W = 8;
+						constexpr size_t W = simd_width;
 						for (; i + W - 1 < n; i += W) {
 							reg acc = Simd::zero();
 							for (size_t j = 0; j < u.size(); ++j) {
@@ -138,7 +138,7 @@ namespace morpheus {
 								reg c = Simd::set1(coefs[j]);
 								acc = Simd::fmadd(v, c, acc); 
 							}
-							Simd::store_stream(&result.data[i], acc);
+							Simd::store(&result.data[i], acc);
 						}
 
 						for (; i < n; ++i) {
@@ -167,7 +167,7 @@ namespace morpheus {
 
 						size_t i = 0;
 						_mm_prefetch((const char *)&a.data[0], _MM_HINT_T0);
-						for (; i + 7 < n; i += 8) {
+						for (; i + 7 < n; i += simd_width) {
 							reg va = Simd::load(&a.data[i]);
 							reg vb = Simd::load(&b.data[i]);
 
@@ -196,7 +196,7 @@ namespace morpheus {
 						const float* __restrict a_ptr = &data[0];
 						const float* __restrict b_ptr = &v.data[0];
 						_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
-						for (; i + 7 < n; i += 8) {
+						for (; i + 7 < n; i += simd_width) {
 							reg a = Simd::load(a_ptr + i);
 							reg b = Simd::load(b_ptr + i);
 							acc = Simd::fmadd(a, b, acc);
@@ -221,7 +221,7 @@ namespace morpheus {
 						reg sign_mask = Simd::set1(-0.0f);
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-						for (; i + 7 < n; i += 8) {
+						for (; i + 7 < n; i += simd_width) {
 							reg v = Simd::load(v_ptr + i);
 							reg abs_v = Simd::andnot(sign_mask, v);
 							acc = Simd::add(acc, abs_v);
@@ -245,7 +245,7 @@ namespace morpheus {
 						reg acc = Simd::zero();
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-						for (; i + 7 < n; i += 8) {
+						for (; i + 7 < n; i += simd_width) {
 							reg v = Simd::load(v_ptr + i);
 							acc = Simd::fmadd(v, v, acc);
 						}
@@ -269,7 +269,7 @@ namespace morpheus {
 						reg sign_mask = Simd::set1(-0.0f);
 						const float* __restrict v_ptr = &data[0];
 						_mm_prefetch((const char *)&data[0], _MM_HINT_T0);
-						for (; i + 7 < n; i += 8) {
+						for (; i + 7 < n; i += simd_width) {
 							reg v = Simd::load(v_ptr + i);
 							reg abs_v = Simd::andnot(sign_mask, v);
 							max_v = Simd::max(max_v, abs_v);

@@ -5,7 +5,6 @@
 #include <vector>
 
 #if defined(USE_KNL)
-# pragma message push_macro("USE_KNL")
 #include <hbwmalloc.h>
 #endif
 

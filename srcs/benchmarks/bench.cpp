@@ -62,7 +62,7 @@ void benchmark_blas_vs_custom(size_t N) {
 }
 
 int main() {
-    size_t N = 16384;
+    size_t N = 8192;
     benchmark_blas_vs_custom<float>(N);
     benchmark_blas_vs_custom<double>(N);
     return 0;
