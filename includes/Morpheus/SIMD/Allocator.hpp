@@ -4,6 +4,11 @@
 #include <cmath>
 #include <vector>
 
+#if defined(USE_KNL)
+# pragma message push_macro("USE_KNL")
+#include <hbwmalloc.h>
+#endif
+
 template <typename T, std::size_t Alignment>
 struct AlignedAllocator {
 	using value_type = T;
@@ -15,26 +20,34 @@ struct AlignedAllocator {
 	using difference_type = std::ptrdiff_t;
 
 	template <typename U>
-		struct rebind {
-			using other = AlignedAllocator<U, Alignment>;
-		};
+	struct rebind {
+		using other = AlignedAllocator<U, Alignment>;
+	};
 
 	AlignedAllocator() noexcept = default;
 	template <typename U>
-		AlignedAllocator(const AlignedAllocator<U, Alignment>&) noexcept {}
+	AlignedAllocator(const AlignedAllocator<U, Alignment>&) noexcept {}
 
 	[[nodiscard]] T* allocate(std::size_t n) {
 		void* ptr = nullptr;
+#if defined(USE_KNL)
+		if (hbw_posix_memalign(&ptr, Alignment, n * sizeof(T)) != 0)
+			throw std::bad_alloc();
+#else
 		if (posix_memalign(&ptr, Alignment, n * sizeof(T)) != 0)
 			throw std::bad_alloc();
+#endif
 		return reinterpret_cast<T*>(ptr);
 	}
 
 	void deallocate(T* p, std::size_t) noexcept {
+#if defined(USE_KNL)
+		hbw_free(p);
+#else
 		free(p);
+#endif
 	}
 };
 
 template<typename K>
 using aligned_vector = std::vector<K, AlignedAllocator<K, ALIGN>>;
-
