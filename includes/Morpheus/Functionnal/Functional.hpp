@@ -76,6 +76,16 @@ namespace morpheus {
 		return A.mul_mat(B); 
 	}
 
+	template <typename T>
+		Matrix<T> transpose_mat(const Matrix<T>& A) {
+			return A.transpose();
+	}
+
+	template <typename T>
+		Matrix<T> trace_mat(const Matrix<T>& A) {
+			return A.trace();
+	}
+
 	// === TENSOR OPS ===
 	template<typename K, std::size_t Rank>
 		template <size_t I, size_t J>
