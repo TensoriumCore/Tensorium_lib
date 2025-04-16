@@ -2,7 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <cmath>
-#include "../../includes/Morpheus/Matrix.hpp"
+#include "../../includes/Morpheus/Core/Matrix.hpp"
 
 #include <cblas.h> 
 
@@ -62,7 +62,7 @@ void benchmark_blas_vs_custom(size_t N) {
 }
 
 int main() {
-    size_t N = 8192;
+    size_t N = 16384;
     benchmark_blas_vs_custom<float>(N);
     benchmark_blas_vs_custom<double>(N);
     return 0;
