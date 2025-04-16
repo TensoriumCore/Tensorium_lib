@@ -1,8 +1,5 @@
 
-#include "../includes/Morpheus/Vector.hpp"
-#include "../includes/Morpheus/Matrix.hpp"
-#include "../includes/Morpheus/CacheInfo.hpp"
-#include "../includes/Morpheus/Functional.hpp"
+#include "../includes/Morpheus/Morpheus.hpp"
 
 using namespace morpheus;
 
@@ -38,7 +35,6 @@ int comb() {
 	return 0;
 }
 
-#include "../includes/Morpheus/Tensor.hpp"
 
 int test_tensor()
 {
@@ -107,16 +103,6 @@ int bench() {
 
 
 
-void cache_info() {
-	   using namespace morpheus;
-
-    std::cout << "Cache Line Size: " << CacheInfo::getCacheLineSize() << " bytes\n";
-    std::cout << "L1 Cache Size  : " << CacheInfo::getL1CacheSize() << " bytes\n";
-    std::cout << "L2 Cache Size  : " << CacheInfo::getL2CacheSize() << " bytes\n";
-    std::cout << "L3 Cache Size  : " << CacheInfo::getL3CacheSize() << " bytes\n";
-}
-
-
 
 
 int main() {
@@ -127,20 +113,19 @@ int main() {
 		std::cout << "SIMD selected: width=" << W << ", alignment=" << A << "\n";
 	});
 
-	cache_info();
 
 	std::cout << "\n=== Vector Tests ===\n";
 	Vector<float> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 	Vector<float> v2 = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
 	std::cout << "\n[v1] + [v2]:\n";
-	add(v1, v2).print();
+	morpheus::add_vec(v1, v2).print();
 
 	std::cout << "\n[v1] - [v2]:\n";
-	sub(v1, v2).print();
+	morpheus::sub_vec(v1, v2).print();
 
 	std::cout << "\n[v1] * 0.5:\n";
-	scl(v1, 0.5f).print();
+	morpheus::scl_vec(v1, 0.5f).print();
 
 	std::cout << "\n=== Matrix Tests ===\n";
 	Matrix<float> m1(2, 8); 
@@ -153,13 +138,13 @@ int main() {
 		}
 
 	std::cout << "\n[m1] + [m2]:\n";
-	add_mat(m1, m2).print();
+	morpheus::add_mat(m1, m2).print();
 
 	std::cout << "\n[m1] - [m2]:\n";
-	sub_mat(m1, m2).print();
+	morpheus::sub_mat(m1, m2).print();
 
 	std::cout << "\n[m1] * 2.0:\n";
-	scl_mat(m1, 2.0f).print();
+	morpheus::scl_mat(m1, 2.0f).print();
 
 	std::cout << "\n=== Matrix and Vector Tests ===\n";
 	comb();

@@ -2,10 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <cmath>
-#include <vector>
-#include <immintrin.h>
 #include "../../includes/Morpheus/Matrix.hpp"
-#include "../../includes/Morpheus/SIMD.hpp"
 
 #include <cblas.h> 
 

@@ -1,9 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
-#include "Morpheus/Vector.hpp"
-#include "Morpheus/Matrix.hpp"
-#include "Morpheus/Functional.hpp"
+#include "Morpheus/Morpheus.hpp"
 #include <sstream>
 #include <iostream>
 #include <omp.h>

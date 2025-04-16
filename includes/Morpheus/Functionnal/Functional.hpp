@@ -1,50 +1,50 @@
 #pragma once
-#include "Vector.hpp"
-#include "Matrix.hpp"
-#include "Tensor.hpp"
+#include "../Core/Vector.hpp"
+#include "../Core/Matrix.hpp"
+#include "../Core/Tensor.hpp"
 
 namespace morpheus {
 
 	// === VECTOR OPS ===
 	template <typename T>
-	Vector<T> add(const Vector<T>& a, const Vector<T>& b) {
+	Vector<T> add_vec(const Vector<T>& a, const Vector<T>& b) {
 		Vector<T> result = a;
 		result.add(b);
 		return result;
 	}
 
 	template <typename T>
-	Vector<T> sub(const Vector<T>& a, const Vector<T>& b) {
+	Vector<T> sub_vec(const Vector<T>& a, const Vector<T>& b) {
 		Vector<T> result = a;
 		result.sub(b);
 		return result;
 	}
 
 	template <typename T>
-	Vector<T> scl(const Vector<T>& a, T scalar) {
+	Vector<T> scl_vec(const Vector<T>& a, T scalar) {
 		Vector<T> result = a;
 		result.scl(scalar);
 		return result;
 	}
 
-	template <typename T> T norm1(const Vector<T>& a)   { return a.norm_1(); }
-	template <typename T> T norm2(const Vector<T>& a)   { return a.norm_2(); }
-	template <typename T> T normInf(const Vector<T>& a) { return a.norm_inf(); }
-	template <typename T> T dot(const Vector<T>& a, const Vector<T>& b) { return a.dot(b); }
-	template <typename T> T cosine(const Vector<T>& a, const Vector<T>& b) { return Vector<T>::angle_cos(a, b); }
+	template <typename T> T norm1_vec(const Vector<T>& a)   { return a.norm_1(); }
+	template <typename T> T norm2_vec(const Vector<T>& a)   { return a.norm_2(); }
+	template <typename T> T normInf_vec(const Vector<T>& a) { return a.norm_inf(); }
+	template <typename T> T dot_vec(const Vector<T>& a, const Vector<T>& b) { return a.dot(b); }
+	template <typename T> T cosine_vec(const Vector<T>& a, const Vector<T>& b) { return Vector<T>::angle_cos(a, b); }
 
 	template <typename T>
-	Vector<T> lerp(const Vector<T>& a, const Vector<T>& b, T t) {
+	Vector<T> lerp_vec(const Vector<T>& a, const Vector<T>& b, T t) {
 		return Vector<T>::lerp(a, b, t);
 	}
 
 	template <typename T>
-	Vector<T> linear_combination(const std::vector<Vector<T>>& u, const std::vector<T>& coef) {
+	Vector<T> linear_combination_vec(const std::vector<Vector<T>>& u, const std::vector<T>& coef) {
 		return Vector<T>::linear_combination(u, coef);
 	}
 
 	template <typename T>
-	Vector<T> cross(const Vector<T>& a, const Vector<T>& b) {
+	Vector<T> cross_vec(const Vector<T>& a, const Vector<T>& b) {
 		return Vector<T>::cross_product(a, b);
 	}
 
