@@ -3,44 +3,6 @@ import time
 
 sys.path.append("pybuild")
 from morpheus import *
-# === Vector Tests ===
-v = Vector([1.0, 2.0, 3.0])
-v2 = Vector([4.0, 5.0, 6.0])
-
-print("v =", v)
-print("len(v) =", len(v))
-print("v + v2 =", morph.add_vec(v, v2))
-print("v - v2 =", morph.sub_vec(v, v2))
-print("v * 2.0 =", morph.scl_vec(v, 2.0))
-print("dot(v, v2) =", morph.dot_vec(v, v2))
-print("norm_1(v) =", morph.norm_1(v))
-print("norm_2(v) =", morph.norm_2(v))
-print("norm_inf(v) =", morph.norm_inf(v))
-print("cosine(v, v2) =", morph.cosine(v, v2))
-print("lerp(v, v2, 0.5) =", morph.lerp(v, v2, 0.5))
-print("linear_combination([v, v2], [0.5, 1.5]) =", morph.linear_comb([v, v2], [0.5, 1.5]))
-
-# Cross product only for 3D
-v3d = Vector([1.0, 0.0, 0.0])
-w3d = Vector([0.0, 1.0, 0.0])
-print("cross_product(v3d, w3d) =", morph.cross(v3d, w3d))
-
-# === Matrix Tests ===
-matA = Matrix(2, 3)
-matA.fill([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
-
-matB = Matrix(2, 3)
-matB.fill([[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]])
-
-print("matA + matB =")
-morph.add_mat(matA, matB).print()
-
-print("matA - matB =")
-morph.sub_mat(matA, matB).print()
-
-print("matA * 2.0 =")
-morph.scl_mat(matA, 2.0).print()
-
 
 
 # === Repr
