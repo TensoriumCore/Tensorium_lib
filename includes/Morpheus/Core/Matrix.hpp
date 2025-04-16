@@ -146,7 +146,7 @@ namespace morpheus {
 							}
 						}
 
-#pragma omp parallel for collapse(2) schedule(dynamic)
+#pragma omp parallel for collapse(2) schedule(dynamic) shared(result)
 						for (size_t ii = 0; ii < rows; ii += block_size) {
 							for (size_t jj = 0; jj < mat.cols; jj += block_size) {
 								const size_t i_end = std::min(ii + block_size, rows);
@@ -223,6 +223,7 @@ namespace morpheus {
 
 						return result;
 					}
+
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix<K> transpose() const {
 						Matrix<K> result(cols, rows); 

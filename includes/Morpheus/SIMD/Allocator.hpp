@@ -1,4 +1,5 @@
 #pragma once
+#include "SIMD.hpp"
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -35,5 +36,5 @@ struct AlignedAllocator {
 };
 
 template<typename K>
-using aligned_vector = std::vector<K, AlignedAllocator<K, 32>>;
+using aligned_vector = std::vector<K, AlignedAllocator<K, ALIGN>>;
 

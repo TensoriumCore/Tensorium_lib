@@ -2,8 +2,7 @@ import sys
 import time
 
 sys.path.append("pybuild")
-from morpheus import Vector, Matrix, morph
-
+from morpheus import *
 # === Vector Tests ===
 v = Vector([1.0, 2.0, 3.0])
 v2 = Vector([4.0, 5.0, 6.0])

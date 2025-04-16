@@ -114,7 +114,7 @@ int test_tensor()
 }
 
 int bench() {
-	constexpr size_t N = 8192;
+	constexpr size_t N = 16384;
 	morpheus::Matrix<float> A(N, N);
 	morpheus::Matrix<float> B(N, N);
 
