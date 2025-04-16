@@ -95,7 +95,7 @@ help:
 	@echo "  re         - Rebuild everything"
 	@echo ""
 	@echo "Options:"
-	@echo "  AVX512=true - Enable AVX512 optimizations"
+	@echo "  AVX512=true  - Enable AVX512 optimizations"
 	@echo "  VERBOSE=true - Enable verbose output"
 	@echo "  DEBUG=true   - Enable debug symbols"
 	@echo "  USE_MPI=true - Enable MPI support"
