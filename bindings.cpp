@@ -78,17 +78,17 @@ PYBIND11_MODULE(morpheus, m) {
 		py::module_ morph = m.def_submodule("morph", "High-performance math operations");
 
 		// === Vector ops ===
-		morph.def("add", &add<float>, "Add two vectors");
-		morph.def("sub", &sub<float>, "Subtract two vectors");
-		morph.def("scl", &scl<float>, "Scale a vector by scalar");
-		morph.def("dot", &dot<float>, "Dot product between two vectors");
-		morph.def("norm_1", &norm1<float>, "L1 norm of vector");
-		morph.def("norm_2", &norm2<float>, "L2 norm of vector");
-		morph.def("norm_inf", &normInf<float>, "Infinity norm of vector");
-		morph.def("cosine", &cosine<float>, "Cosine similarity between vectors");
-		morph.def("lerp", &lerp<float>, "Linear interpolation between two vectors");
-		morph.def("linear_comb", &morpheus::linear_combination<float>, "Linear combination of vectors");
-		morph.def("cross", &cross<float>, "Cross product (only defined for 3D vectors)");
+		morph.def("add_vec", &add_vec<float>, "Add two vectors");
+		morph.def("sub_vec", &sub_vec<float>, "Subtract two vectors");
+		morph.def("scl_vec", &scl_vec<float>, "Scale a vector by scalar");
+		morph.def("dot_vec", &dot_vec<float>, "Dot product between two vectors");
+		morph.def("norm_1", &norm1_vec<float>, "L1 norm of vector");
+		morph.def("norm_2", &norm2_vec<float>, "L2 norm of vector");
+		morph.def("norm_inf", &normInf_vec<float>, "Infinity norm of vector");
+		morph.def("cosine", &cosine_vec<float>, "Cosine similarity between vectors");
+		morph.def("lerp", &lerp_vec<float>, "Linear interpolation between two vectors");
+		morph.def("linear_comb", &morpheus::linear_combination_vec<float>, "Linear combination of vectors");
+		morph.def("cross", &cross_vec<float>, "Cross product (only defined for 3D vectors)");
 
 		// === Matrix ops ===
 		morph.def("add_mat", &add_mat<float>, "Add two matrices");
