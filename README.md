@@ -32,9 +32,10 @@ This library is built with the goal of empowering projects that require both spe
 
 ### Requirements
 
-- C++17 compiler with AVX2/FMA support (Intel compilers will be added later)
+- C++17 compiler with AVX2/FMA support or AVX512 if avalaible on your plateform (Intel compilers will be added later)
 - fopenmp
 - MPI
+- libmemkind-dev (if you are using Xeon Phi knight landing CPU)
 - CMake ≥ 3.16
 - Python ≥ 3.8 (for Python bindings)
 - `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
