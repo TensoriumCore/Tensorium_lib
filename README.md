@@ -49,6 +49,18 @@ cd pybuild
 cmake ..
 make -j4
 ```
+
+### Build C++ only for special targets and options
+
+```bash
+make                # Default AVX2
+make AVX512=true    # AVX512
+make USE_KNL=true   # MCDRAM Memkind HBW (Xeon phi KNL)
+make DEBUG=true     # debug symbols
+make VERBOSE=true   # VERBOSE log
+make benchmark      # BLAS vs Morpheus mat_mult benchmark
+```
+
 The Python module will be created as a .so file in the pybuild/ directory.
 ### Exemple using in C++
 ```cpp
