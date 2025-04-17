@@ -2,7 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <cmath>
-#include "../../includes/Morpheus/Core/Matrix.hpp"
+#include "../../includes/Morpheus/Morpheus.hpp"
 
 #include <cblas.h> 
 
@@ -20,7 +20,7 @@ void benchmark_blas_vs_custom(size_t N) {
     for (size_t i = 0; i < B.size(); ++i) B.data[i] = static_cast<K>(1.0);
 
     auto start_custom = Clock::now();
-    C_custom = A.mul_mat(B);
+    C_custom = morpheus::mul_mat(A, B);
     auto end_custom = Clock::now();
 
     auto start_blas = Clock::now();
