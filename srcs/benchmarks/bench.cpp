@@ -1,13 +1,13 @@
-
 #include <iostream>
 #include <chrono>
 #include <cmath>
+#include <iomanip>
+#include <cblas.h>
 #include "../../includes/Morpheus/Morpheus.hpp"
-
-#include <cblas.h> 
+#include <fstream>
 
 template<typename K>
-void benchmark_blas_vs_custom(size_t N) {
+void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     using Clock = std::chrono::high_resolution_clock;
     using duration = std::chrono::duration<double>;
 
@@ -54,16 +54,31 @@ void benchmark_blas_vs_custom(size_t N) {
     for (size_t i = 0; i < C_custom.size(); ++i)
         max_error = std::max(max_error, std::abs(C_custom.data[i] - C_blas.data[i]));
 
-    std::cout << "\n=== Benchmarking Matrix Multiplication (N = " << N << ") ===\n";
-    std::cout << "Custom AVX2 Time : " << time_custom << " s  |  " << perf_custom << " GFLOP/s\n";
-    std::cout << "BLAS SGEMM Time  : " << time_blas   << " s  |  " << perf_blas   << " GFLOP/s\n";
-    std::cout << "Max abs error    : " << max_error << "\n";
-    std::cout << "Sample C_custom(0,0) = " << C_custom(0, 0) << "\n";
+    csv << (std::is_same<K, float>::value ? "float" : "double") << ","
+        << N << ","
+        << time_custom << ","
+        << time_blas << ","
+        << perf_custom << ","
+        << perf_blas << ","
+        << max_error << "\n";
+
+    std::cout << "N = " << N << " (" << (std::is_same<K, float>::value ? "float" : "double") << ") done.\n";
 }
 
+
 int main() {
-    size_t N = 8192;
-    benchmark_blas_vs_custom<float>(N);
-    benchmark_blas_vs_custom<double>(N);
+    std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192};
+
+    std::ofstream csv("benchmark_results.csv");
+    csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n";
+
+    for (size_t N : sizes) {
+        benchmark_blas_vs_custom<float>(N, csv);
+        benchmark_blas_vs_custom<double>(N, csv);
+    }
+
+    csv.close();
+    std::cout << "Benchmark results saved to benchmark_results.csv\n";
     return 0;
 }
+
