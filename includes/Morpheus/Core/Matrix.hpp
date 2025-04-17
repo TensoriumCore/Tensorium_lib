@@ -135,7 +135,7 @@ namespace morpheus {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						const size_t simd_width = Simd::width;
-						constexpr size_t UNROLL = 256;
+						constexpr size_t unroll = UNROLL;
 
 						Matrix<K> result(rows, mat.cols);
 						Matrix<K> mat_transposed(mat.cols, mat.rows);
@@ -154,7 +154,7 @@ namespace morpheus {
 								_mm_prefetch((const char *)&mat_transposed.data[jj * mat.rows], _MM_HINT_T0);
 #pragma omp simd
 								for (size_t i = ii; i < i_end; ++i) {
-									for (size_t j = jj; j + UNROLL - 1 < j_end; j += UNROLL) {
+									for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
 										reg sum0 = Simd::zero();
 										reg sum1 = Simd::zero();
 										reg sum2 = Simd::zero();
@@ -210,7 +210,7 @@ namespace morpheus {
 										result(i, j + 3) = total3;
 									}
 
-									for (size_t j = j_end - (j_end - jj) % UNROLL; j < j_end; ++j) {
+									for (size_t j = j_end - (j_end - jj) % unroll; j < j_end; ++j) {
 										K sum = K(0);
 										for (size_t k = 0; k < cols; ++k) {
 											sum += data[i * cols + k] * mat_transposed(j, k);
@@ -277,3 +277,9 @@ namespace morpheus {
 					}
 		};
 }
+
+namespace morpheus::matrix {
+	
+
+}
+

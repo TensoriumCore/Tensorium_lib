@@ -87,12 +87,16 @@ namespace morpheus {
 	}
 
 	// === TENSOR OPS ===
+
 	template<typename K, std::size_t Rank>
 		template <size_t I, size_t J>
-		Tensor<K, Rank - 2> Tensor<K, Rank>::contract() const {
+		Tensor<K, Rank - 2> Tensor<K, Rank>::contract_tensor() const {
 			static_assert(I < Rank && J < Rank && I != J, "Invalid contraction indices");
 			return contract_simd(*this, I, J);
 		}
 
-
+	template <typename K, std::size_t Rank>
+		Tensor<K, Rank> transpose_tensor(const Tensor<K, Rank>& T) {
+			return T.transpose_simd();
+		}
 }
