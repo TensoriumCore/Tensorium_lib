@@ -1,0 +1,33 @@
+[
+  {
+    "arguments": [
+      "/nix/store/svf4zn4qg9lsxfn4znyxk7nl80hlmgpm-clang-wrapper-17.0.6/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-fopenmp",
+      "-mtune=native",
+      "-g",
+      "-Iincludes",
+      "-mfma",
+      "-mavx2",
+      "-fPIC",
+      "-c",
+      "-I",
+      "/nfs/homes/ltouzali/.local/include/hdf5/include",
+      "-I",
+      "/nfs/homes/ltouzali/.local/include/hdf5/include",
+      "-I",
+      "/nfs/homes/ltouzali/.local/include/hdf5/include",
+      "-I",
+      "/include",
+      "-I",
+      ".",
+      "-o",
+      "build/main.o",
+      "srcs/main.cpp"
+    ],
+    "directory": "/nfs/homes/ltouzali/Desktop/Morpheus_lib",
+    "file": "/nfs/homes/ltouzali/Desktop/Morpheus_lib/srcs/main.cpp",
+    "output": "/nfs/homes/ltouzali/Desktop/Morpheus_lib/build/main.o"
+  }
+]

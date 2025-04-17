@@ -159,8 +159,37 @@ namespace morpheus {
 
 						return result;
 					}
+
 				template <size_t I, size_t J>
-					Tensor<K, Rank - 2> contract() const;
+					Tensor<K, Rank - 2> contract_tensor() const;
+
+					__attribute__((always_inline, hot, flatten))
+					Tensor<K, 2> transpose_simd() const {
+						const size_t rows = dimensions[0];
+						const size_t cols = dimensions[1];
+
+						Tensor<K, 2> result({cols, rows});
+
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						constexpr size_t W = Simd::width / sizeof(K);
+
+						for (size_t i = 0; i < rows; ++i) {
+							size_t j = 0;
+							for (; j + W - 1 < cols; j += W) {
+								reg vec = Simd::load(&(*this)({i, j}));
+
+								alignas(64) K temp[W];
+								Simd::store(temp, vec);
+								for (size_t k = 0; k < W; ++k)
+									result({j + k, i}) = temp[k];
+							}
+							for (; j < cols; ++j)
+								result({j, i}) = (*this)({i, j});
+						}
+
+						return result;
+					}
 
 		};
 }

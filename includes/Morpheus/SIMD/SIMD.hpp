@@ -14,14 +14,17 @@ struct avx512_t { static constexpr size_t width = 16; using reg = __m512;  stati
 using DefaultISA = avx512_t;
 #define ALIGN 64
 #define SIMD_WIDTH 8
+#define UNROLL 256
 #elif defined(__AVX2__)
 using DefaultISA = avx2_t;
 #define ALIGN 32
 #define SIMD_WIDTH 8
+#define UNROLL 128
 #else
 using DefaultISA = sse_t;
 #define ALIGN 16
 #define SIMD_WIDTH 4
+#define UNROLL 64
 #endif
 
 namespace morpheus {
