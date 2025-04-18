@@ -108,7 +108,7 @@ namespace morpheus::solver {
 		class Jacobi {
 			public:
 				aligned_vector<K> data;
-				static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-6, int max_iter = 1000) {
+				static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 5000) {
 					static_assert(std::is_floating_point<K>::value, "Jacobi solver requires floating-point type.");
 					assert(A.rows == A.cols && "Matrix A must be square");
 					assert(A.rows == b.size() && "Matrix/vector size mismatch");
@@ -123,7 +123,7 @@ namespace morpheus::solver {
 					for (int iter = 0; iter < max_iter; ++iter) {
 #pragma omp parallel for schedule(dynamic, 4) 
 						for (size_t i = 0; i < n; ++i) {
-							if (std::abs(A(i, i)) < 1e-6)
+							if (std::abs(A(i, i)) < 1e-10)
 								throw std::runtime_error("Jacobi: division by near-zero on diagonal, matrix likely not diagonally dominant.");
 
 							reg sum_vec = Simd::setzero();
@@ -175,7 +175,7 @@ namespace morpheus::solver {
 		class GaussSeidel {
 			public:
 				aligned_vector<K> data;
-				static Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-6, int max_iter = 1000);
+				static Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 5000);
 		};
 
 }
