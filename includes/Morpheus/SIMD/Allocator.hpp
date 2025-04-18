@@ -50,3 +50,14 @@ struct AlignedAllocator {
 
 template<typename K>
 using aligned_vector = std::vector<K, AlignedAllocator<K, ALIGN>>;
+
+template <typename T, std::size_t Alignment>
+bool operator==(const AlignedAllocator<T, Alignment>&, const AlignedAllocator<T, Alignment>&) noexcept {
+    return true;
+}
+
+template <typename T, std::size_t Alignment>
+bool operator!=(const AlignedAllocator<T, Alignment>&, const AlignedAllocator<T, Alignment>&) noexcept {
+    return false;
+}
+

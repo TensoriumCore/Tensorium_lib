@@ -2,6 +2,7 @@
 #include "../Core/Vector.hpp"
 #include "../Core/Matrix.hpp"
 #include "../Core/Tensor.hpp"
+#include "../Core/LinearSolver.hpp"
 
 namespace morpheus {
 
@@ -86,6 +87,11 @@ namespace morpheus {
 			return A.trace();
 	}
 
+	template <typename T>
+		Vector<T> mul_vec(const Matrix<T>& A, const Vector<T>& x) {
+			return A.mul_vec(x);
+	}
+
 	// === TENSOR OPS ===
 
 	template<typename K, std::size_t Rank>
@@ -99,4 +105,16 @@ namespace morpheus {
 		Tensor<K, Rank> transpose_tensor(const Tensor<K, Rank>& T) {
 			return T.transpose_simd();
 		}
+
+	// === LINEAR SOLVERS ===
+	template <typename T>
+		Vector<T> gauss_solve(const Matrix<T>& A, const Vector<T>& b) {
+			return solver::Gauss<T>::solve(A, b);
+		}
+
+	template <typename T>
+		Vector<T> jacobi_solve(const Matrix<T>& A, const Vector<T>& b, T tol = 1e-6, int max_iter = 1000) {
+			return solver::Jacobi<T>::solve(A, b, tol, max_iter);
+		}
+
 }

@@ -275,6 +275,35 @@ int main() {
 	std::cout << "Matrix C (A * B):\n";
 	C.print();
 	test_transpose_matrix();
+
+	Matrix<float> A_solve(2, 2);
+	A_solve(0, 0) = 2.0; A_solve(0, 1) = 1.0;
+	A_solve(1, 0) = 5.0; A_solve(1, 1) = 7.0;
+	Vector<float> b_solve = { 11.0, 13.0 };
+
+	Vector<float> x_solve = morpheus::gauss_solve(A_solve, b_solve);
+	std::cout << "Solution x:\n";
+	x_solve.print();
+
+	Vector<float> b_check = A_solve * x_solve;
+	std::cout << "Check Ax = b:\n";
+	b_check.print();
+	
+
+	Matrix<float> A2_solve(3, 3);
+	A2_solve(0, 0) = 10.0f; A2_solve(0, 1) = -1.0f; A2_solve(0, 2) = 2.0f;
+	A2_solve(1, 0) = -1.0f; A2_solve(1, 1) = 11.0f; A2_solve(1, 2) = -1.0f;
+	A2_solve(2, 0) = 2.0f;  A2_solve(2, 1) = -1.0f; A2_solve(2, 2) = 10.0f;
+
+	Vector<float> b2_solve = { 6.0f, 25.0f, -11.0f };
+
+	Vector<float> x2_solve = morpheus::jacobi_solve(A2_solve, b2_solve);
+	std::cout << "Solution x2:\n";	
+	x2_solve.print();
+	Vector<float> b2_check = morpheus::mul_vec(A2_solve, x2_solve);
+	std::cout << "Check Ax2 = b2:\n";
+	b2_check.print();
+
 	std::cout << "\n=== Benchmarking ===\n";
 	bench();
 	std::cout << "\n=== Test contraction ===\n";
