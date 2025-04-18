@@ -4,10 +4,11 @@
 #include <cmath>
 #include <vector>
 #include <immintrin.h>
-
+#include <cassert>
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
+#include "Vector.hpp"
 
 namespace morpheus {
 	template<typename K>
@@ -38,7 +39,25 @@ namespace morpheus {
 					}
 				}
 
+				void swap_rows(size_t i, size_t j) {
+					assert(i < rows && j < rows);
+					for (size_t k = 0; k < cols; ++k) {
+						std::swap((*this)(i, k), (*this)(j, k));
+					}
+				}
+				template <typename T>
+					Vector<T> operator*(const Vector<T>& v) const {
+						assert(cols == v.size() && "Matrix-Vector size mismatch");
+						Vector<T> result(rows);
+						for (auto& x : result) x = T(0);
 
+						for (size_t i = 0; i < rows; ++i) {
+							for (size_t j = 0; j < cols; ++j) {
+								result[i] += (*this)(i, j) * v[j];
+							}
+						}
+						return result;
+					}
 
 				__attribute__((always_inline, hot, flatten))
 					inline void add(const Matrix &m) {
@@ -224,6 +243,41 @@ namespace morpheus {
 						return result;
 					}
 
+
+				template<typename T>
+					__attribute__((always_inline, hot, flatten))
+					inline Vector<T> mul_vec(const Vector<T>& x) const {
+						using Simd = simd::SimdTraits<T, DefaultISA>;
+						using reg = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+
+						assert(cols == x.size());
+
+						Vector<T> result(rows, T(0));
+
+						for (size_t i = 0; i < rows; ++i) {
+							reg acc = Simd::zero();
+
+							size_t j = 0;
+							for (; j + simd_width - 1 < cols; j += simd_width) {
+								reg A_vec = Simd::load(&(*this)(i, j));
+								reg x_vec = Simd::load(&x[j]);
+								acc = Simd::fmadd(A_vec, x_vec, acc);
+							}
+
+							T sum = Simd::horizontal_add(acc);
+
+							for (; j < cols; ++j) {
+								sum += (*this)(i, j) * x[j];
+							}
+
+							result[i] = sum;
+						}
+
+						return result;
+					}
+
+
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix<K> transpose() const {
 						Matrix<K> result(cols, rows); 
@@ -276,10 +330,5 @@ namespace morpheus {
 						return result;
 					}
 		};
-}
-
-namespace morpheus::matrix {
-	
-
 }
 

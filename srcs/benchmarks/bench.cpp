@@ -4,7 +4,60 @@
 #include <iomanip>
 #include <cblas.h>
 #include "../../includes/Morpheus/Morpheus.hpp"
+#include "../../includes/Morpheus/Core/LinearSolver.hpp"
+#include "Morpheus/Functionnal/Functional.hpp"
+#include <lapacke.h>
 #include <fstream>
+#include <stdexcept>
+
+
+morpheus::Matrix<float> generate_diagonally_dominant_matrix(size_t n) {
+	morpheus::Matrix<float> A(n, n);
+	for (size_t i = 0; i < n; ++i) {
+		float row_sum = 0.0f;
+		for (size_t j = 0; j < n; ++j) {
+			if (i != j) {
+				A(i, j) = (std::rand() % 20 - 10);
+				row_sum += std::abs(A(i, j));
+			}
+		}
+		A(i, i) = row_sum + 10.0f; 
+	}
+	return A;
+}
+
+void benchmark_solver(size_t n) {
+    using namespace morpheus;
+
+    Matrix<float> A = generate_diagonally_dominant_matrix(n);
+    Vector<float> x_ref(n, 1.0f);                 
+    Vector<float> b = morpheus::mul_vec(A, x_ref);  
+
+    auto start = std::chrono::high_resolution_clock::now();
+    Vector<float> x_jacobi = morpheus::jacobi_solve(A, b); 
+    auto end = std::chrono::high_resolution_clock::now();
+    float jacobi_time = std::chrono::duration<float>(end - start).count();
+
+    start = std::chrono::high_resolution_clock::now();
+    Vector<float> x_gauss = morpheus::gauss_solve(A, b); 
+    end = std::chrono::high_resolution_clock::now();
+    float gauss_time = std::chrono::duration<float>(end - start).count();
+
+
+
+    Vector<float> bj = morpheus::mul_vec(A, x_jacobi); 
+    Vector<float> bg = morpheus::mul_vec(A, x_gauss);
+
+
+	Vector<float> diff_j = bj - b;
+	Vector<float> diff_g = bg - b;
+	float err_j = diff_j.norm_2();
+	float err_g = diff_g.norm_2();
+
+	std::cout << "n = " << n << " | Jacobi: " << jacobi_time << "s, err = " << err_j
+		<< " | Gauss: " << gauss_time << "s, err = " << err_g << "\n";
+
+}
 
 template<typename K>
 void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
@@ -67,18 +120,23 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
 
 
 int main() {
-    std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192};
-
-    std::ofstream csv("benchmark_results.csv");
-    csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n";
-
-    for (size_t N : sizes) {
-        benchmark_blas_vs_custom<float>(N, csv);
-        benchmark_blas_vs_custom<double>(N, csv);
+    /* std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192}; */
+    /*  */
+    /* std::ofstream csv("benchmark_results.csv"); */
+    /* csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n"; */
+    /*  */
+    /* for (size_t N : sizes) { */
+    /*     benchmark_blas_vs_custom<float>(N, csv); */
+    /*     benchmark_blas_vs_custom<double>(N, csv); */
+    /* } */
+    /*  */
+    /* csv.close(); */
+    /* std::cout << "Benchmark results saved to benchmark_results.csv\n"; */
+    /*  */
+	std::srand(42);
+    for (size_t n : {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384}) {
+        benchmark_solver(n);
     }
-
-    csv.close();
-    std::cout << "Benchmark results saved to benchmark_results.csv\n";
     return 0;
 }
 

@@ -166,8 +166,13 @@ namespace simd {
 			using reg = __m256;
 			static constexpr size_t width = 8;
 			static inline reg set1(float x)				{ return _mm256_set1_ps(x); }
+			static inline reg setzero() { return _mm256_setzero_ps(); }
+			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_ps(a, b, c); }
+			static inline float horizontal_add(reg v) { return detail::reduce_sum(v); }
 			static inline reg load(const float* ptr)	{ return _mm256_load_ps(ptr); }
+			static inline reg loadu(const float* ptr) { return _mm256_loadu_ps(ptr); }
 			static inline void store(float* ptr, reg x)	{ _mm256_store_ps(ptr, x); }
+			static inline void storeu(float* ptr, reg x) { _mm256_storeu_ps(ptr, x); }
 			static inline reg zero()					{ return _mm256_setzero_ps(); }
 			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_fmadd_ps(a, b, c); }
 			static inline reg add(reg a, reg b)			{ return _mm256_add_ps(a, b); }
@@ -183,8 +188,12 @@ namespace simd {
 			using reg = __m256d;
 			static constexpr size_t width = 4;
 			static inline reg set1(double x)            { return _mm256_set1_pd(x); }
+			static inline reg setzero()					{ return _mm256_setzero_pd(); }
+			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const double* ptr)   { return _mm256_load_pd(ptr); }
+			static inline reg loadu(const double* ptr)  { return _mm256_loadu_pd(ptr); }
 			static inline void store(double* ptr, reg x){ _mm256_store_pd(ptr, x); }
+			static inline void storeu(double* ptr, reg x){ _mm256_storeu_pd(ptr, x); }
 			static inline reg zero()                    { return _mm256_setzero_pd(); }
 			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_fmadd_pd(a, b, c); }
 			static inline reg add(reg a, reg b)         { return _mm256_add_pd(a, b); }
@@ -200,8 +209,12 @@ namespace simd {
 			using reg = __m256i;
 			static constexpr size_t width = 4;
 			static inline reg set1(uint64_t x)			{ return _mm256_set1_epi64x(x); }
+			static inline reg setzero()					{ return _mm256_setzero_si256(); }
+			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const uint64_t* ptr)	{ return _mm256_load_si256(reinterpret_cast<const __m256i*>(ptr)); }
+			static inline reg loadu(const uint64_t* ptr) { return _mm256_loadu_si256(reinterpret_cast<const __m256i*>(ptr)); }
 			static inline void store(uint64_t* ptr, reg x) { _mm256_store_si256(reinterpret_cast<__m256i*>(ptr), x); }
+			static inline void storeu(uint64_t* ptr, reg x) { _mm256_storeu_si256(reinterpret_cast<__m256i*>(ptr), x); }
 			static inline reg mul(reg a, reg b) {
 				alignas(32) size_t lhs[4], rhs[4], out[4];
 				_mm256_store_si256((__m256i*)lhs, a);
@@ -228,8 +241,12 @@ namespace simd {
 			using reg = __m512;
 			static constexpr size_t width = 16;
 			static inline reg set1(float x)				{ return _mm512_set1_ps(x); }
+			static inline reg setzero()					{ return _mm512_setzero_ps(); }
+			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const float* ptr)	{ return _mm512_load_ps(ptr); }
+			static inline reg loadu(const float* ptr)	{ return _mm512_loadu_ps(ptr); }
 			static inline void store(float* ptr, reg x)	{ _mm512_store_ps(ptr, x); }
+			static inline reg loadu_stream(const float* ptr) { return _mm512_loadu_ps(ptr); }
 			static inline reg zero()					{ return _mm512_setzero_ps(); }
 			static inline reg fmadd(reg a, reg b, reg c){ return _mm512_fmadd_ps(a, b, c); }
 			static inline reg add(reg a, reg b)			{ return _mm512_add_ps(a, b); }
@@ -249,8 +266,12 @@ namespace simd {
 			using reg = __m512d;
 			static constexpr size_t width = 8;
 			static inline reg set1(double x)            { return _mm512_set1_pd(x); }
+			static inline reg setzero()					{ return _mm512_setzero_pd(); }
+			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const double* ptr)   { return _mm512_load_pd(ptr); }
+			static inline reg loadu(const double* ptr)  { return _mm512_loadu_pd(ptr); }
 			static inline void store(double* ptr, reg x){ _mm512_store_pd(ptr, x); }
+			static inline reg loadu_stream(const double* ptr) { return _mm512_loadu_pd(ptr); }
 			static inline reg zero()                    { return _mm512_setzero_pd(); }
 			static inline reg fmadd(reg a, reg b, reg c){ return _mm512_fmadd_pd(a, b, c); }
 			static inline reg add(reg a, reg b)         { return _mm512_add_pd(a, b); }
@@ -266,8 +287,12 @@ namespace simd {
 			using reg = __m512i;
 			static constexpr size_t width = 8;
 			static inline reg set1(size_t x)			{ return _mm512_set1_epi64(x); }
+			static inline reg setzero()					{ return _mm512_setzero_si512(); }
+			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const size_t* ptr)	{ return _mm512_load_si512(reinterpret_cast<const __m512i*>(ptr)); }
+			static inline reg loadu(const size_t* ptr)	{ return _mm512_loadu_si512(reinterpret_cast<const __m512i*>(ptr)); }
 			static inline void store(size_t* ptr, reg x) { _mm512_store_si512(reinterpret_cast<__m512i*>(ptr), x); }
+			static inline void storeu(size_t* ptr, reg x) { _mm512_storeu_si512(reinterpret_cast<__m512i*>(ptr), x); }
 			static inline reg zero()					{ return _mm512_setzero_si512(); }
 			static inline reg add(reg a, reg b)			{ return _mm512_add_epi64(a, b); }
 #if defined(__AVX512DQ__)

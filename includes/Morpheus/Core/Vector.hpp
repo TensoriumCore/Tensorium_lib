@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <cassert>
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
@@ -19,10 +20,24 @@ namespace morpheus {
 				Vector(size_t n) : data(n, K()) {}
 				Vector(std::initializer_list<K> init) : data(init) {}
 
-
+				Vector(size_t n, K value) : data(n, value) {}
+				auto begin() { return data.begin(); }
+				auto end()   { return data.end(); }
+				auto begin() const { return data.begin(); }
+				auto end()   const { return data.end(); }
 				size_t size() const {
 					return data.size();
 				}
+				
+				__attribute__((always_inline, hot, flatten))
+					Vector<K> operator-(const Vector<K>& other) const {
+						assert(data.size() == other.data.size());
+						Vector<K> result(data.size());
+						for (size_t i = 0; i < data.size(); ++i)
+							result[i] = data[i] - other[i];
+						return result;
+					}
+
 
 				void print() const {
 					std::cout << "Vector size: " << size() << "\n";
