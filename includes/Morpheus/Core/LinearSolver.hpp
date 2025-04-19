@@ -68,7 +68,6 @@ namespace morpheus::solver {
 									reg ri1 = Simd::loadu(&M(i, k));
 									rj1 = Simd::sub(rj1, Simd::mul(factor_vec, ri1));
 									Simd::storeu(&M(j, k), rj1);
-
 									reg rj2 = Simd::loadu(&M(j, k + simd_width));
 									reg ri2 = Simd::loadu(&M(i, k + simd_width));
 									rj2 = Simd::sub(rj2, Simd::mul(factor_vec, ri2));
