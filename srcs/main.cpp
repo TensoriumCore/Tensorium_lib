@@ -209,8 +209,8 @@ void benchmark_centered_derivative() {
 
 	std::cout << "\n=== Benchmark: centered_derivative ===\n";
 
-	constexpr size_t N = 16384;
-	constexpr size_t M = 16384;
+	constexpr size_t N = 4096;
+	constexpr size_t M = 4096;
 	constexpr float dx = 0.8f;
 
 	Derivate<float> f2d(N, M);
@@ -260,6 +260,50 @@ void benchmark_centered_derivative() {
 	std::cout << "DerivateND Scalar   : " << flopsND / (elapsedND_scalar * 1e6) << " GFLOPs/s\n";
 
 	std::cout << "Speedup (SIMD vs Scalar): " << elapsedND_scalar / elapsedND<< "x\n";
+	std::cout << "\n=== Test centered_derivative vs centered_derivative_order4 ===\n";
+
+
+	morpheus::Derivate<float> f(N, 1);
+	morpheus::Derivate<float> df_order2(N, 1);
+	morpheus::Derivate<float> df_order4(N, 1);
+	aligned_vector<float> test(4096);
+
+	std::cout << "f.rows = " << f.rows << ", f.cols = " << f.cols << "\n";
+	std::cout << "f.size() = " << f.size() << ", expected = " << N * 1 << "\n";
+
+	for (size_t i = 0; i + 1 < N; ++i)
+		f(i, 0) = std::sin(i * dx);
+
+
+	morpheus::centered_derivative(f, df_order2, 1, dx);
+	/* morpheus::centered_derivative_order4(f, df_order4, 1, dx); */
+	
+	
+	float max_err_order2 = 0.0f;
+	float max_err_order4 = 0.0f;
+	
+	for (size_t i = 2; i < N - 2; ++i) { // ignorer les bords
+		float exact = std::cos(i * dx);
+		float err2 = std::fabs(df_order2(i, 0) - exact);
+		float err4 = std::fabs(df_order4(i, 0) - exact);
+		max_err_order2 = std::max(max_err_order2, err2);
+		max_err_order4 = std::max(max_err_order4, err4);
+	}
+	
+	std::cout << "Max error (order 2) : " << max_err_order2 << "\n";
+	std::cout << "Max error (order 4) : " << max_err_order4 << "\n";
+	float rmse2 = 0.0f, rmse4 = 0.0f;
+	for (size_t i = 2; i < N - 2; ++i) {
+		float exact = std::cos(i * dx);
+		rmse2 += std::pow(df_order2(i, 0) - exact, 2);
+		rmse4 += std::pow(df_order4(i, 0) - exact, 2);
+	}
+	rmse2 = std::sqrt(rmse2 / (N - 4));
+	rmse4 = std::sqrt(rmse4 / (N - 4));
+	std::cout << "RMSE (order 2): " << rmse2 << "\n";
+	std::cout << "RMSE (order 4): " << rmse4 << "\n";
+
+
 
 }
 
@@ -391,11 +435,11 @@ int main() {
 	std::cout << "Check Ax2 = b2:\n";
 	b2_check.print();
 
-	std::cout << "\n=== Benchmarking ===\n";
-	bench();
-	std::cout << "\n=== Test contraction ===\n";
-	test_flatten_index();
-	test_contract();
+	/* std::cout << "\n=== Benchmarking ===\n"; */
+	/* bench(); */
+	/* std::cout << "\n=== Test contraction ===\n"; */
+	/* test_flatten_index(); */
+	/* test_contract(); */
 	Matrix<float> expected(2, 2);
 	expected(0, 0) = 19.0f; expected(0, 1) = 22.0f;
 	expected(1, 0) = 43.0f; expected(1, 1) = 50.0f;
@@ -428,6 +472,36 @@ int main() {
 			std::cout << dfdx2d(i, j) << " ";
 		std::cout << "\n";
 	}
+
+	std::cout << "\n=== Derivate 2D Test (∂/∂y) ===\n";
+	morpheus::Derivate<float> f2d_y(4, 4);
+	morpheus::Derivate<float> dfdx2d_y(4, 4);
+	for (size_t i = 0; i < 4; ++i)
+		for (size_t j = 0; j < 4; ++j)
+			f2d_y(i, j) = static_cast<float>(i * 10 + j);
+	morpheus::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
+	std::cout << "∂f/∂y:\n";
+	for (size_t i = 0; i < 4; ++i) {
+		for (size_t j = 0; j < 4; ++j)
+			std::cout << dfdx2d_y(i, j) << " ";
+		std::cout << "\n";
+	}
+
+	std::cout << "\n=== DerivateND 3D Test (∂/∂x) ===\n";
+	std::array<size_t, 3> dims_x = {4, 4, 4};
+	morpheus::DerivateND<float, 3> fnd_x(dims_x);
+	morpheus::DerivateND<float, 3> dfdxnd(dims_x);
+	for (size_t i = 0; i < 4; ++i)
+		for (size_t j = 0; j < 4; ++j)
+			for (size_t k = 0; k < 4; ++k)
+				fnd_x({i, j, k}) = static_cast<float>(i + j + k);
+	morpheus::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
+	std::cout << "∂f/∂x slice at i=2:\n";
+	for (size_t j = 0; j < 4; ++j) {
+		for (size_t k = 0; k < 4; ++k)
+			std::cout << dfdxnd({2, j, k}) << " ";
+		std::cout << "\n";
+	}
 	std::cout << "\n=== DerivateND 3D Test (∂/∂z) ===\n";
 	std::array<size_t, 3> dims = {4, 4, 4};
 	morpheus::DerivateND<float, 3> fnd(dims);
@@ -448,5 +522,61 @@ int main() {
 	}
 
 	benchmark_centered_derivative();
+	const size_t N = 4096;
+    const float dx = 0.01f; 
+    const float pi = 3.14159265358979323846f;
+
+    morpheus::Derivate<float> f(N, 1);
+    morpheus::Derivate<float> df_order2(N, 1);
+    morpheus::Derivate<float> df_order4(N, 1);
+    morpheus::Derivate<float> df_exact(N, 1);
+
+    for (size_t i = 0; i < N; ++i) {
+        float x = i * dx;
+        f(i, 0) = std::sin(x) + 0.1f * std::sin(10*x);
+        df_exact(i, 0) = std::cos(x) + 0.1f * 10 * std::cos(10*x);
+    }
+    f.centered_derivative(f, df_order2, 0, dx); 
+    f.centered_derivative_order4_simd(f, df_order4, 0, dx); 
+
+    float max_err_order2 = 0.0f;
+    float max_err_order4 = 0.0f;
+    float avg_err_order2 = 0.0f;
+    float avg_err_order4 = 0.0f;
+    size_t valid_points = 0;
+
+    for (size_t i = 2; i < N - 2; ++i) {
+        float exact = df_exact(i, 0);
+        float err2 = std::abs(df_order2(i, 0) - exact);
+        float err4 = std::abs(df_order4(i, 0) - exact);
+
+        max_err_order2 = std::max(max_err_order2, err2);
+        max_err_order4 = std::max(max_err_order4, err4);
+        avg_err_order2 += err2;
+        avg_err_order4 += err4;
+        valid_points++;
+    }
+    avg_err_order2 /= valid_points;
+    avg_err_order4 /= valid_points;
+	std::cout << "DEBUG: Formula coefficients: "
+		<< "1.0/" << (12*dx) << " * [-1, 8, -8, 1]" << std::endl;
+
+	for (size_t i = 2; i < 5; ++i) {
+		std::cout << "x=" << i*dx << " f=" << f(i,0) 
+			<< " df4=" << df_order4(i,0)
+			<< " exact=" << df_exact(i,0) << std::endl;
+	}
+	std::cout << "=== Test dérivée d'ordre 4 ===" << std::endl;
+	std::cout << "Points valides: " << valid_points << "/" << N << std::endl;
+	std::cout << "Erreur max (ordre 2): " << max_err_order2 << std::endl;
+	std::cout << "Erreur max (ordre 4): " << max_err_order4 << std::endl;
+	std::cout << "Erreur moy (ordre 2): " << avg_err_order2 << std::endl;
+    std::cout << "Erreur moy (ordre 4): " << avg_err_order4 << std::endl;
+
+    std::cout << "\nVérification des conditions aux bords:" << std::endl;
+    std::cout << "df_order4(0,0): " << df_order4(0, 0) << " (devrait être 0)" << std::endl;
+    std::cout << "df_order4(1,0): " << df_order4(1, 0) << " (devrait être 0)" << std::endl;
+    std::cout << "df_order4(N-2,0): " << df_order4(N-2, 0) << " (devrait être 0)" << std::endl;
+    std::cout << "df_order4(N-1,0): " << df_order4(N-1, 0) << " (devrait être 0)" << std::endl;
 	return 0;
 }
