@@ -21,7 +21,9 @@ namespace morpheus {
 					: rows(r), cols(c), data(r * c, K()), block_size(detect_optimal_block_size()) {
 					}
 
-
+				using Simd = simd::SimdTraits<K, DefaultISA>;
+				using reg = typename Simd::reg;
+				const size_t simd_width = Simd::width;
 				size_t size() const { 
 					return rows * cols; 
 				}
@@ -144,124 +146,110 @@ namespace morpheus {
 					}
 
 
+
+				template<int UN>
+					static inline __attribute__((always_inline))
+					void microkernel4(size_t nCols,   
+							const K* __restrict a,
+							const K* const __restrict* b,
+							reg* sum)
+					{
+						constexpr size_t W = Simd::width;
+
+						for (size_t k = 0; k + W - 1 < nCols; k += W) {
+							reg av = Simd::load(a + k);
+
+#pragma unroll(UN)
+							for (int x = 0; x < UN; ++x)
+								sum[x] = Simd::fmadd(av, Simd::set1(b[x][k]), sum[x]);
+						}
+					}
+
+
+
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix mul_mat(const Matrix<K>& mat) const {
-						if (cols != mat.rows) {
+						if (cols != mat.rows)
 							throw std::invalid_argument("Matrix dimensions do not match for multiplication");
-						}
 
 						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						const size_t simd_width = Simd::width;
-						constexpr size_t unroll = UNROLL;
+						using reg  = typename Simd::reg;
+						constexpr size_t simd_width = Simd::width;
+						constexpr size_t unroll     = UNROLL;   
 
 						Matrix<K> result(rows, mat.cols);
 						Matrix<K> mat_transposed(mat.cols, mat.rows);
-#pragma omp parallel for collapse(2)
-						for (size_t ii = 0; ii < mat.rows; ii += 8)
-							for (size_t jj = 0; jj < mat.cols; jj += 8)
-								for (size_t i = 0; i < 8 && ii + i < mat.rows; ++i)
-									for (size_t j = 0; j < 8 && jj + j < mat.cols; ++j)
-										mat_transposed(jj + j, ii + i) = mat(ii + i, jj + j);
 
+#pragma omp parallel for schedule(static)
+						for (size_t i = 0; i < mat.rows; ++i)
+							for (size_t j = 0; j < mat.cols; ++j)
+								mat_transposed(j, i) = mat(i, j);
 
-#pragma omp parallel for collapse(2) schedule(static) shared(result)
+#pragma omp parallel for collapse(2) schedule(dynamic)
 						for (size_t ii = 0; ii < rows; ii += block_size) {
 							for (size_t jj = 0; jj < mat.cols; jj += block_size) {
 								const size_t i_end = std::min(ii + block_size, rows);
 								const size_t j_end = std::min(jj + block_size, mat.cols);
-#pragma omp simd
+
 								for (size_t i = ii; i < i_end; ++i) {
 									for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
+
+										const K* __restrict__ a_ptr  = &data[i * cols];
 									
-										reg sum0 = Simd::zero();
-										reg sum1 = Simd::zero();
-										reg sum2 = Simd::zero();
-										reg sum3 = Simd::zero();
+										reg sum0 = Simd::zero(), sum1 = Simd::zero();
+										reg sum2 = Simd::zero(), sum3 = Simd::zero();
+										reg* sum_arr[4] = { &sum0, &sum1, &sum2, &sum3 };
 
-										const K* __restrict__ a_ptr = &data[i * cols];
-										const K* __restrict__ b_ptr0 = &mat_transposed.data[j * mat.rows];
-										const K* __restrict__ b_ptr1 = b_ptr0 + mat.rows;
-										const K* __restrict__ b_ptr2 = b_ptr1 + mat.rows;
-										const K* __restrict__ b_ptr3 = b_ptr2 + mat.rows;
+										const K* __restrict__ b_ptr[4] = {
+											&mat_transposed.data[(j + 0) * mat.rows],
+											&mat_transposed.data[(j + 1) * mat.rows],
+											&mat_transposed.data[(j + 2) * mat.rows],
+											&mat_transposed.data[(j + 3) * mat.rows]
+										};
+#define UN 4
+										reg sum[UN];
+										microkernel4<UN>(cols, a_ptr, b_ptr, sum);
 
-										size_t k = 0;
-										for (; k + simd_width - 1 < cols; k += simd_width) {
-											_mm_prefetch((const char *)(a_ptr + k + simd_width), _MM_HINT_T0);
-											_mm_prefetch((const char *)(b_ptr0 + k + simd_width), _MM_HINT_T0);
-											reg a = Simd::loadu(a_ptr + k);
 
-											reg b0 = Simd::set1(b_ptr0[k]);
-											reg b1 = Simd::set1(b_ptr1[k]);
-											reg b2 = Simd::set1(b_ptr2[k]);
-											reg b3 = Simd::set1(b_ptr3[k]);
+										K total0 = Simd::horizontal_add(sum0);
+										K total1 = Simd::horizontal_add(sum1);
+										K total2 = Simd::horizontal_add(sum2);
+										K total3 = Simd::horizontal_add(sum3);
 
-											sum0 = Simd::fmadd(a, b0, sum0);
-											sum1 = Simd::fmadd(a, b1, sum1);
-											sum2 = Simd::fmadd(a, b2, sum2);
-											sum3 = Simd::fmadd(a, b3, sum3);
+										for (size_t k = (cols & ~(simd_width-1)); k < cols; ++k) {
+											K a_val = a_ptr[k];
+											total0 += a_val * b_ptr[0][k];
+											total1 += a_val * b_ptr[1][k];
+											total2 += a_val * b_ptr[2][k];
+											total3 += a_val * b_ptr[3][k];
 										}
 
-										K sum_array0[simd_width], sum_array1[simd_width],
-										sum_array2[simd_width], sum_array3[simd_width];
-										Simd::storeu(sum_array0, sum0);
-										Simd::storeu(sum_array1, sum1);
-										Simd::storeu(sum_array2, sum2);
-										Simd::storeu(sum_array3, sum3);
 
-										K total0 = K(0), total1 = K(0), total2 = K(0), total3 = K(0);		
-#pragma omp simd reduction(+:total0,total1,total2,total3)
-										for (size_t s = 0; s < simd_width; ++s) {
-											total0 += sum_array0[s];
-											total1 += sum_array1[s];
-											total2 += sum_array2[s];
-											total3 += sum_array3[s];
-										}
-
-										for (; k < cols; ++k) {
-											total0 += a_ptr[k] * b_ptr0[k];
-											total1 += a_ptr[k] * b_ptr1[k];
-											total2 += a_ptr[k] * b_ptr2[k];
-											total3 += a_ptr[k] * b_ptr3[k];
-										}
-
-										result(i, j)     = total0;
-										result(i, j + 1) = total1;
-										result(i, j + 2) = total2;
-										result(i, j + 3) = total3;
+										reg res_vec = Simd::set(total3, total2, total1, total0);
+										if (((uintptr_t)&result.data[i*cols+j] & 31) == 0)
+											Simd::stream(&result.data[i * result.cols + j], res_vec);
+										else
+											Simd::store(&result.data[i * result.cols + j], res_vec);
 									}
 
-
 									for (size_t j = j_end - (j_end - jj) % unroll; j < j_end; ++j) {
-										reg sum_vec = Simd::zero();
+										reg sum = Simd::zero();
 										const K* __restrict__ a_ptr = &data[i * cols];
 										const K* __restrict__ b_ptr = &mat_transposed.data[j * mat.rows];
 
 										size_t k = 0;
 										for (; k + simd_width - 1 < cols; k += simd_width) {
-											reg a = Simd::loadu(a_ptr + k);
-											reg b = Simd::loadu(b_ptr + k);
-											sum_vec = Simd::fmadd(a, b, sum_vec);
+											reg a = Simd::load(a_ptr + k);
+											reg b = Simd::load(b_ptr + k);
+											sum   = Simd::fmadd(a, b, sum);
 										}
-
-										K sum_array[simd_width];
-										Simd::storeu(sum_array, sum_vec);
-
-										K sum = K(0);
-#pragma omp simd reduction(+:sum)
-										for (size_t s = 0; s < simd_width; ++s)
-											sum += sum_array[s];
-
-										for (; k < cols; ++k)
-											sum += a_ptr[k] * b_ptr[k];
-
-										result(i, j) = sum;
+										K total = Simd::horizontal_add(sum);
+										for (; k < cols; ++k) total += a_ptr[k] * b_ptr[k];
+										result(i, j) = total;
 									}
-
 								}
 							}
 						}
-
 						return result;
 					}
 
