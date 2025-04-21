@@ -11,20 +11,27 @@
 #include <stdexcept>
 
 
-morpheus::Matrix<float> generate_diagonally_dominant_matrix(size_t n) {
+morpheus::Matrix<float> generate_diagonally_dominant_matrix(size_t n, float dominance_factor = 1.1f) {
 	morpheus::Matrix<float> A(n, n);
+	for (size_t i = 0; i < n; ++i) {
+		for (size_t j = i + 1; j < n; ++j) {
+			float value = static_cast<float>(std::rand()) / RAND_MAX / 2.0f - 1.0f;
+			value *= 10.0f;
+			A(i, j) = value;
+			A(j, i) = value;
+		}
+	}
 	for (size_t i = 0; i < n; ++i) {
 		float row_sum = 0.0f;
 		for (size_t j = 0; j < n; ++j) {
-			if (i != j) {
-				A(i, j) = (std::rand() % 20 - 10);
-				row_sum += std::abs(A(i, j));
-			}
+			if (i != j) row_sum += std::abs(A(i, j));
 		}
-		A(i, i) = row_sum + 10.0f; 
+		A(i, i) = row_sum * dominance_factor;
 	}
 	return A;
 }
+
+
 
 void benchmark_solver(size_t n) {
     using namespace morpheus;
@@ -120,23 +127,23 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
 
 
 int main() {
-    /* std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192}; */
-    /*  */
-    /* std::ofstream csv("benchmark_results.csv"); */
-    /* csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n"; */
-    /*  */
-    /* for (size_t N : sizes) { */
-    /*     benchmark_blas_vs_custom<float>(N, csv); */
-    /*     benchmark_blas_vs_custom<double>(N, csv); */
-    /* } */
-    /*  */
-    /* csv.close(); */
-    /* std::cout << "Benchmark results saved to benchmark_results.csv\n"; */
-    /*  */
-	std::srand(42);
-    for (size_t n : {32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384}) {
-        benchmark_solver(n);
+    std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192};
+    
+    std::ofstream csv("benchmark_results.csv");
+    csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n";
+    
+    for (size_t N : sizes) {
+        benchmark_blas_vs_custom<float>(N, csv);
+        benchmark_blas_vs_custom<double>(N, csv);
     }
+    
+    csv.close();
+    std::cout << "Benchmark results saved to benchmark_results.csv\n";
+    
+	std::srand(42);
+	    for (size_t n : {32, 64, 128, 256, 512, 1024, 2048}) {
+	        benchmark_solver(n);
+	    }
     return 0;
 }
 

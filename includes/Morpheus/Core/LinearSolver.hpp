@@ -15,91 +15,90 @@ namespace morpheus::solver {
 				size_t rows() const;
 				size_t block_size;
 				aligned_vector<K> data;
-
 				__attribute__((always_inline, hot, flatten))
-					static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b) {
-						static_assert(std::is_floating_point<K>::value, "Gauss solver only supports floating point types.");
-						assert(A.rows == A.cols && "Matrix A must be square");
-						assert(A.rows == b.size() && "Matrix/vector size mismatch");
+					static inline Vector<K> solve(const Matrix<K>& A_in, const Vector<K>& b_in) {
 
-						if (A.rows > 2048 || A.cols > 2048) {
-							std::cerr << "[warning] Switching to iterative Jacobi solver for large matrix (" << A.rows << "x" << A.cols << ")\n";
-							return Jacobi<K>::solve(A, b);
+						static_assert(std::is_floating_point<K>::value, "");
+						const size_t n = A_in.rows;
+
+						assert(n == A_in.cols && n == b_in.size());
+						if (A_in.rows >= 2048 || A_in.cols >= 2048)
+							Jacobi<K>::solve(A_in, b_in);
+
+						Matrix<double> M(n, n);
+						Vector<double> B(n);
+						for(size_t i = 0; i < n; ++i){
+							B[i] = b_in[i];
+							for(size_t j = 0; j < n; ++j)
+								M(i, j) = A_in(i, j);
 						}
 
-						size_t n = A.rows;
-						Matrix<K> M = A;
-						Vector<K> B = b;
-						Vector<K> x(n);
+						Vector<double> x_d(n);
+						using SimdD = simd::SimdTraits<double, DefaultISA>;
+						using regD   = typename SimdD::reg;
+						const size_t W = SimdD::width;
 
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						const size_t simd_width = Simd::width;
-
-						for (size_t i = 0; i < n; i++) {
-							size_t max_row = i;
-							K max_val = std::abs(M(i, i));
-							for (size_t j = i + 1; j < n; ++j) {
-								K abs_val = std::abs(M(j, i));
-								if (abs_val > max_val) {
-									max_val = abs_val;
-									max_row = j;
-								}
+						for(size_t i=0;i<n;++i){
+							size_t piv = i;
+							double maxv = std::abs(M(i,i));
+							for(size_t r=i+1;r<n;++r){
+								double v = std::abs(M(r,i));
+								if(v > maxv) { maxv=v; piv=r; }
+							}
+							if(maxv < 1e-12)
+								throw std::runtime_error("Pivot trop petit");
+							if(piv != i) {
+								M.swap_rows(i, piv);
+								std::swap(B[i], B[piv]);
 							}
 
-							if (max_row != i) {
-								M.swap_rows(i, max_row);
-								std::swap(B[i], B[max_row]);
-							}
+							constexpr size_t TILE = UNROLL;  
+#pragma omp parallel for schedule(dynamic, TILE)
+							for(size_t j = i + 1;j < n; ++j) {
+								double *rowj = &M(j, 0), * rowi = &M(i, 0);
+								double f = rowj[i] / rowi[i];
+								rowj[i] = 0.0;
 
-							K pivot = M(i, i);
-							if (pivot == K(0)) {
-								throw std::runtime_error("Matrix is singular.");
-							}
-
-#pragma omp parallel for schedule(dynamic, 4)
-							for (size_t j = i + 1; j < n; ++j) {
-								K factor = M(j, i) / pivot;
-								reg factor_vec = Simd::set1(factor);
-
-								size_t k = i;
-								for (; k + 2 * simd_width <= n; k += 2 * simd_width) {
-									reg rj1 = Simd::loadu(&M(j, k));
-									reg ri1 = Simd::loadu(&M(i, k));
-									rj1 = Simd::sub(rj1, Simd::mul(factor_vec, ri1));
-									Simd::storeu(&M(j, k), rj1);
-
-									reg rj2 = Simd::loadu(&M(j, k + simd_width));
-									reg ri2 = Simd::loadu(&M(i, k + simd_width));
-									rj2 = Simd::sub(rj2, Simd::mul(factor_vec, ri2));
-									Simd::storeu(&M(j, k + simd_width), rj2);
+								regD fv = SimdD::set1(f);
+								size_t k= i + 1;
+								for(; k + 4 * W <= n; k += 4 * W) {
+									for(int t = 0; t < 4; ++t){
+										size_t off = k + t * W;
+										regD mj = SimdD::loadu(rowj + off);
+										regD mi = SimdD::loadu(rowi + off);
+										mj = SimdD::sub(mj, SimdD::mul(fv, mi));
+										SimdD::storeu(rowj + off, mj);
+									}
 								}
-
-								for (; k < n; ++k) {
-									M(j, k) -= factor * M(i, k);
+								for(;k + W <= n; k += W) {
+									regD mj = SimdD::loadu(rowj + k);
+									regD mi = SimdD::loadu(rowi + k);
+									mj = SimdD::sub(mj, SimdD::mul(fv, mi));
+									SimdD::storeu(rowj + k, mj);
 								}
-
-								B[j] -= factor * B[i];
+								for(; k < n; ++k ) {
+									rowj[k] -= f * rowi[k];
+								}
+								B[j] -= f * B[i];
 							}
 						}
 
-						for (ssize_t i = static_cast<ssize_t>(n) - 1; i >= 0; --i) {
-							reg acc = Simd::setzero();
+						for(ssize_t i = n - 1; i >= 0; --i) {
+							double *rowi = &M(i, 0);
+							regD acc = SimdD::setzero();
 							size_t j = i + 1;
-							for (; j + simd_width - 1 < n; j += simd_width) {
-								reg mvec = Simd::loadu(&M(i, j));
-								reg xvec = Simd::loadu(&x[j]);
-								acc = Simd::fmadd(mvec, xvec, acc);
+							for(; j + W <= n; j += W) {
+								regD u = SimdD::loadu(rowi + j);
+								regD xv= SimdD::loadu(&x_d[j]);
+								acc = SimdD::fmadd(u, xv, acc);
 							}
-
-							K sum = Simd::horizontal_add(acc);
-							for (; j < n; ++j) {
-								sum += M(i, j) * x[j];
-							}
-
-							x[i] = (B[i] - sum) / M(i, i);
+							double sum = SimdD::horizontal_add(acc);
+							for(; j < n; ++j) sum += rowi[j] * x_d[j];
+							x_d[i] = (B[i] - sum) / rowi[i];
 						}
 
+						Vector<K> x(n);
+						for(size_t i = 0; i < n; ++i) x[i] = static_cast<K>(x_d[i]);
 						return x;
 					}
 		};
@@ -108,7 +107,7 @@ namespace morpheus::solver {
 		class Jacobi {
 			public:
 				aligned_vector<K> data;
-				static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 5000) {
+				static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 2000) {
 					static_assert(std::is_floating_point<K>::value, "Jacobi solver requires floating-point type.");
 					assert(A.rows == A.cols && "Matrix A must be square");
 					assert(A.rows == b.size() && "Matrix/vector size mismatch");
@@ -175,7 +174,7 @@ namespace morpheus::solver {
 		class GaussSeidel {
 			public:
 				aligned_vector<K> data;
-				static Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 5000);
+				static Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-8, int max_iter = 2000);
 		};
 
 }
