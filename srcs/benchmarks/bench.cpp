@@ -6,7 +6,6 @@
 #include "../../includes/Morpheus/Morpheus.hpp"
 #include "../../includes/Morpheus/Core/LinearSolver.hpp"
 #include "Morpheus/Functionnal/Functional.hpp"
-#include <lapacke.h>
 #include <fstream>
 #include <cmath>
 #include <algorithm>
@@ -88,32 +87,32 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     C_custom = morpheus::mul_mat(A, B);
     auto end_custom = Clock::now();
 
-    auto start_blas = Clock::now();
-    if constexpr (std::is_same<K, float>::value) {
-        cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                    N, N, N,
-                    1.0f,
-                    A.data.data(), N,
-                    B.data.data(), N,
-                    0.0f,
-                    C_blas.data.data(), N);
-    } else if constexpr (std::is_same<K, double>::value) {
-        cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                    N, N, N,
-                    1.0,
-                    A.data.data(), N,
-                    B.data.data(), N,
-                    0.0,
-                    C_blas.data.data(), N);
-    }
-    auto end_blas = Clock::now();
+    // auto start_blas = Clock::now();
+    // if constexpr (std::is_same<K, float>::value) {
+    //     cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
+    //                 N, N, N,
+    //                 1.0f,
+    //                 A.data.data(), N,
+    //                 B.data.data(), N,
+    //                 0.0f,
+    //                 C_blas.data.data(), N);
+    // } else if constexpr (std::is_same<K, double>::value) {
+    //     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
+    //                 N, N, N,
+    //                 1.0,
+    //                 A.data.data(), N,
+    //                 B.data.data(), N,
+    //                 0.0,
+    //                 C_blas.data.data(), N);
+    // }
+    // auto end_blas = Clock::now();
 
     double time_custom = duration(end_custom - start_custom).count();
-    double time_blas   = duration(end_blas - start_blas).count();
+    // double time_blas   = duration(end_blas - start_blas).count();
 
     double gflops = 2.0 * N * N * N / 1e9;
     double perf_custom = gflops / time_custom;
-    double perf_blas   = gflops / time_blas;
+    // double perf_blas   = gflops / time_blas;
 
     K max_error = K(0);
     for (size_t i = 0; i < C_custom.size(); ++i)
@@ -122,9 +121,9 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     csv << (std::is_same<K, float>::value ? "float" : "double") << ","
         << N << ","
         << time_custom << ","
-        << time_blas << ","
+        // << time_blas << ","
         << perf_custom << ","
-        << perf_blas << ","
+        // << perf_blas << ","
         << max_error << "\n";
 
     std::cout << "N = " << N << " (" << (std::is_same<K, float>::value ? "float" : "double") << ") done.\n";
@@ -189,10 +188,7 @@ int main() {
     std::ofstream csv("benchmark_results.csv");
     csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n";
     
-    for (size_t N : sizes) {
-        benchmark_blas_vs_custom<float>(N, csv);
-        benchmark_blas_vs_custom<double>(N, csv);
-    }
+        benchmark_blas_vs_custom<float>(16384, csv);
     
     csv.close();
     std::cout << "Benchmark results saved to benchmark_results.csv\n";
@@ -202,7 +198,7 @@ int main() {
 	/*         benchmark_solver(n); */
 	/*     } */
 
-		benchmark_matmul_range<float>(250, 1000, 250, 5);
+		// benchmark_matmul_range<float>(250, 100, 250, 5);
 
     return 0;
 }

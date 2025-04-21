@@ -166,6 +166,10 @@ namespace simd {
 			using reg = __m256;
 			static constexpr size_t width = 8;
 			static inline reg set1(float x)				{ return _mm256_set1_ps(x); }
+			static inline reg set(float a, float b, float c, float d) {
+				return _mm256_set_ps(a, b, c, d, a, b, c, d);
+			}
+			static inline void stream(float* ptr, reg x)	{ _mm256_stream_ps(ptr, x); }
 			static inline reg setzero() { return _mm256_setzero_ps(); }
 			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_ps(a, b, c); }
 			static inline float horizontal_add(reg v) { return detail::reduce_sum(v); }
@@ -188,6 +192,10 @@ namespace simd {
 			using reg = __m256d;
 			static constexpr size_t width = 4;
 			static inline reg set1(double x)            { return _mm256_set1_pd(x); }
+			static inline reg set(double a, double b, double c, double d) {
+				return _mm256_set_pd(a, b, c, d);
+			}
+			static inline void stream(double* ptr, reg x) { _mm256_stream_pd(ptr, x); }
 			static inline reg setzero()					{ return _mm256_setzero_pd(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const double* ptr)   { return _mm256_load_pd(ptr); }
@@ -209,6 +217,10 @@ namespace simd {
 			using reg = __m256i;
 			static constexpr size_t width = 4;
 			static inline reg set1(uint64_t x)			{ return _mm256_set1_epi64x(x); }
+			static inline reg set(uint64_t a, uint64_t b, uint64_t c, uint64_t d) {
+				return _mm256_set_epi64x(a, b, c, d);
+			}
+			static inline void stream(uint64_t* ptr, reg x) { _mm256_stream_si256(reinterpret_cast<__m256i*>(ptr), x); }
 			static inline reg setzero()					{ return _mm256_setzero_si256(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const uint64_t* ptr)	{ return _mm256_load_si256(reinterpret_cast<const __m256i*>(ptr)); }
@@ -241,6 +253,14 @@ namespace simd {
 			using reg = __m512;
 			static constexpr size_t width = 16;
 			static inline reg set1(float x)				{ return _mm512_set1_ps(x); }
+			static inline reg set(float a, float b, float c, float d,
+								  float e, float f, float g, float h,
+								  float i, float j, float k, float l,
+								  float m, float n, float o, float p) {
+				return _mm512_set_ps(a, b, c, d, e, f, g, h,
+									i, j, k, l, m, n, o, p);
+			}
+			static inline void stream(float* ptr, reg x)	{ _mm512_stream_ps(ptr, x); }
 			static inline reg setzero()					{ return _mm512_setzero_ps(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const float* ptr)	{ return _mm512_load_ps(ptr); }
@@ -266,6 +286,11 @@ namespace simd {
 			using reg = __m512d;
 			static constexpr size_t width = 8;
 			static inline reg set1(double x)            { return _mm512_set1_pd(x); }
+			static inline reg set(double a, double b, double c, double d,
+								  double e, double f, double g, double h) {
+				return _mm512_set_pd(a, b, c, d, e, f, g, h);
+			}
+			static inline void stream(double* ptr, reg x) { _mm512_stream_pd(ptr, x); }
 			static inline reg setzero()					{ return _mm512_setzero_pd(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const double* ptr)   { return _mm512_load_pd(ptr); }
@@ -287,6 +312,10 @@ namespace simd {
 			using reg = __m512i;
 			static constexpr size_t width = 8;
 			static inline reg set1(size_t x)			{ return _mm512_set1_epi64(x); }
+			static inline reg set(size_t a, size_t b, size_t c, size_t d,
+								  size_t e, size_t f, size_t g, size_t h) {
+				return _mm512_set_epi64(a, b, c, d, e, f, g, h);
+			}
 			static inline reg setzero()					{ return _mm512_setzero_si512(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
 			static inline reg load(const size_t* ptr)	{ return _mm512_load_si512(reinterpret_cast<const __m512i*>(ptr)); }
