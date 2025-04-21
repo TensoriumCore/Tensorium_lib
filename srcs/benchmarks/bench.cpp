@@ -8,8 +8,8 @@
 #include "Morpheus/Functionnal/Functional.hpp"
 #include <lapacke.h>
 #include <fstream>
-#include <stdexcept>
-
+#include <cmath>
+#include <algorithm>
 
 morpheus::Matrix<float> generate_diagonally_dominant_matrix(size_t n, float dominance_factor = 1.1f) {
 	morpheus::Matrix<float> A(n, n);
@@ -66,6 +66,8 @@ void benchmark_solver(size_t n) {
 
 }
 
+#include <random>  // à inclure si pas déjà fait
+
 template<typename K>
 void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     using Clock = std::chrono::high_resolution_clock;
@@ -76,8 +78,11 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     morpheus::Matrix<K> C_custom(N, N);
     morpheus::Matrix<K> C_blas(N, N);
 
-    for (size_t i = 0; i < A.size(); ++i) A.data[i] = static_cast<K>(1.0);
-    for (size_t i = 0; i < B.size(); ++i) B.data[i] = static_cast<K>(1.0);
+    std::mt19937 rng(42); 
+    std::uniform_real_distribution<K> dist(K(0), K(1));
+
+    for (size_t i = 0; i < A.size(); ++i) A.data[i] = dist(rng);
+    for (size_t i = 0; i < B.size(); ++i) B.data[i] = dist(rng);
 
     auto start_custom = Clock::now();
     C_custom = morpheus::mul_mat(A, B);
@@ -125,6 +130,58 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
     std::cout << "N = " << N << " (" << (std::is_same<K, float>::value ? "float" : "double") << ") done.\n";
 }
 
+template<typename K>
+void benchmark_matmul_range(
+    size_t startn,
+    size_t maxn,
+    size_t step,
+    size_t loops,
+    const std::string& out_csv = "benchmark_results2.csv"
+) {
+    using Clock = std::chrono::high_resolution_clock;
+    using duration = std::chrono::duration<double>;
+
+    std::ofstream csv(out_csv);
+    csv << "Size,Loop,Time(s),GFLOP/s\n";
+
+    for (size_t n = startn; n <= maxn; n += step) {
+        std::vector<double> times;
+        std::vector<double> gflops_list;
+
+        morpheus::Matrix<K> A(n, n);
+        morpheus::Matrix<K> B(n, n);
+
+        for (size_t i = 0; i < A.size(); ++i)
+            A.data[i] = static_cast<K>((rand() % 1000) / 1000.0);
+        for (size_t i = 0; i < B.size(); ++i)
+            B.data[i] = static_cast<K>((rand() % 1000) / 1000.0);
+
+        for (size_t loop = 0; loop < loops; ++loop) {
+            auto start = Clock::now();
+            auto C = A.mul_mat(B);
+            auto end = Clock::now();
+
+            double elapsed = duration(end - start).count();
+            double ops = 2.0 * n * n * n - n * n;
+            double gflops = ops / (elapsed * 1e9);
+
+            times.push_back(elapsed);
+            gflops_list.push_back(gflops);
+
+            csv << n << "," << loop << "," << elapsed << "," << gflops << "\n";
+        }
+
+        double avg = std::accumulate(gflops_list.begin(), gflops_list.end(), 0.0) / loops;
+        double peak = *std::max_element(gflops_list.begin(), gflops_list.end());
+
+        std::cout << "N = " << n
+                  << " | Avg = " << avg << " GFLOP/s"
+                  << " | Peak = " << peak << " GFLOP/s"
+                  << " | Last Time = " << times.back() << " s\n";
+    }
+
+    csv.close();
+}
 
 int main() {
     std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192};
@@ -140,10 +197,13 @@ int main() {
     csv.close();
     std::cout << "Benchmark results saved to benchmark_results.csv\n";
     
-	std::srand(42);
-	    for (size_t n : {32, 64, 128, 256, 512, 1024, 2048}) {
-	        benchmark_solver(n);
-	    }
+	/* std::srand(42); */
+	/*     for (size_t n : {32, 64, 128, 256, 512, 1024, 2048}) { */
+	/*         benchmark_solver(n); */
+	/*     } */
+
+		benchmark_matmul_range<float>(250, 1000, 250, 5);
+
     return 0;
 }
 

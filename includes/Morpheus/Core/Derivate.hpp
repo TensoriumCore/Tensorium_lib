@@ -83,7 +83,7 @@ namespace morpheus {
 									reg right = Simd::loadu(right_ptr);
 									reg diff  = Simd::sub(right, left);
 									reg res   = Simd::mul(diff, Simd::set1(inv_2dx));
-									Simd::store(out_ptr, res);
+									Simd::storeu(out_ptr, res);
 								}
 
 								for (; j < input.cols - 1; ++j)
@@ -112,7 +112,7 @@ namespace morpheus {
 
 
 				__attribute__((always_inline, hot, flatten))
-					inline void centered_derivative_order4_simd(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
+					inline void centered_derivative_order4(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg = typename Simd::reg;
 						constexpr size_t W = Simd::width;
@@ -243,7 +243,8 @@ namespace morpheus {
 				}
 
 				__attribute__((always_inline, hot, flatten))
-					inline void centered_derivative(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) const {
+					inline void centered_derivative(const DerivateND<K, Rank>& input, DerivateND<K,\
+													Rank>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
 						const size_t simd_width = Simd::width;
@@ -297,25 +298,86 @@ namespace morpheus {
 							reg backward = Simd::loadu(ptr_back);
 							reg diff = Simd::sub(forward, backward);
 							reg result = Simd::mul(diff, inv2dx);
-							Simd::store(out_ptr, result);
+							Simd::storeu(out_ptr, result);
 						}
 					}
 
 
 				__attribute__((always_inline, hot, flatten))
-					inline void centered_derivative_order4_simd(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
+					inline void centered_derivative_order4_rank(const DerivateND<K, Rank>& input,\
+																DerivateND<K, Rank>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
-						const size_t simd_width = Simd::width;
-					
+						constexpr size_t W = Simd::width;
+
 						const auto& shape = input.shape;
 						const size_t total = input.size();
 						const K inv_12dx = K(1) / (K(12) * dx);
-						const reg inv12dx = Simd::set1(inv_12dx);
-						const reg eight = Simd::set1(8.0f);
-						const reg one = Simd::set1(1.0f);
+						const reg inv = Simd::set1(inv_12dx);
 
-					}
+						std::array<size_t, Rank> strides;
+						strides[Rank - 1] = 1;
+						for (int i = Rank - 2; i >= 0; --i)
+							strides[i] = strides[i + 1] * shape[i + 1];
+
+						const size_t stride_axis = strides[axis];
+						const size_t dim_axis = shape[axis];
+
+#pragma omp parallel for schedule(static)
+						for (size_t flat = 0; flat < total; flat += W) {
+							bool safe = true;
+
+							for (size_t offset = 0; offset < W; ++offset) {
+								if (flat + offset >= total) {
+									safe = false;
+									break;
+								}
+
+								const size_t coord_axis = ((flat + offset) / stride_axis) % dim_axis;
+								if (coord_axis < 2 || coord_axis >= dim_axis - 2) {
+									safe = false;
+									break;
+								}
+							}
+
+							if (!safe) {
+								for (size_t offset = 0; offset < W && flat + offset < total; ++offset) {
+									size_t f = flat + offset;
+									size_t coord_axis = (f / stride_axis) % dim_axis;
+									if (coord_axis < 2 || coord_axis >= dim_axis - 2) {
+										output.data[f] = K(0);
+										continue;
+									}
+
+									K fm2 = input.data[f - 2 * stride_axis];
+									K fm1 = input.data[f - stride_axis];
+									K fp1 = input.data[f + stride_axis];
+									K fp2 = input.data[f + 2 * stride_axis];
+
+									output.data[f] = (-fp2 + 8 * fp1 - 8 * fm1 + fm2) * inv_12dx;
+								}
+								continue;
+							}
+
+							const K* ptr_m2 = input.data.data() + flat - 2 * stride_axis;
+							const K* ptr_m1 = input.data.data() + flat - stride_axis;
+							const K* ptr_p1 = input.data.data() + flat + stride_axis;
+							const K* ptr_p2 = input.data.data() + flat + 2 * stride_axis;
+							K* out_ptr      = output.data.data() + flat;
+
+							reg fm2 = Simd::loadu(ptr_m2);
+							reg fm1 = Simd::loadu(ptr_m1);
+							reg fp1 = Simd::loadu(ptr_p1);
+							reg fp2 = Simd::loadu(ptr_p2);
+
+							reg num = Simd::add(fm2, Simd::sub(Simd::mul(fp1, Simd::set1(8)), Simd::mul(fp2, Simd::set1(1))));
+							num = Simd::sub(num, Simd::mul(fm1, Simd::set1(8)));
+							reg res = Simd::mul(num, inv);
+
+							Simd::storeu(out_ptr, res);
+						}
+					} 
+
 		};
 
 }
