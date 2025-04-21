@@ -19,7 +19,6 @@ namespace morpheus {
 				size_t block_size;
 				Matrix(size_t r, size_t c) 
 					: rows(r), cols(c), data(r * c, K()), block_size(detect_optimal_block_size()) {
-						std::cout << "Auto-selected BLOCK_SIZE = " << block_size << std::endl;
 					}
 
 
