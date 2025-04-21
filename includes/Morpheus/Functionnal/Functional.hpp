@@ -108,6 +108,7 @@ namespace morpheus {
 		}
 
 	// === LINEAR SOLVERS ===
+
 	template <typename T>
 		Vector<T> gauss_solve(const Matrix<T>& A, const Vector<T>& b) {
 			return solver::Gauss<T>::solve(A, b);
@@ -125,6 +126,12 @@ namespace morpheus {
 	template<typename K>
 		inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
 			input.centered_derivative(input, output, axis, dx);
+		}
+
+
+	template<typename K>
+		inline void centered_derivative_order4(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
+			centered_derivative_order4(input, output, axis, dx);
 		}
 
 	template<typename K, size_t Rank>

@@ -30,32 +30,51 @@ namespace morpheus {
 				Derivate(const Matrix<K>& m)
 					: rows(m.rows), cols(m.cols), data(m.data), block_size(detect_optimal_block_size()) {}
 
+
+
 				K& operator()(size_t i, size_t j) {
+					if (i >= rows || j >= cols) {
+						std::cerr 
+							<< "[OOB] operator(): "
+							<< "i=" << i << " rows=" << rows
+							<< " | j=" << j << " cols=" << cols
+							<< "\n";
+					}
+					assert(i < rows && j < cols);
 					return data[i * cols + j];
 				}
 
+
 				const K& operator()(size_t i, size_t j) const {
+					assert(i < rows && j < cols && "Derivate::operator() const: indice hors bornes");
 					return data[i * cols + j];
 				}
+
 
 				size_t size() const {
 					return rows * cols;
 				}
+
 
 				__attribute__((always_inline, hot, flatten))
 					inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
 						const size_t simd_width = Simd::width;
-
 						const K inv_2dx = K(1) / (K(2) * dx);
 
-						if (axis == 1) { 
+						if (axis == 1) {
 #pragma omp parallel for
 							for (size_t i = 0; i < input.rows; ++i) {
-								size_t j = 1;
+								output(i, 0) = K(0);
 
-								for (; j + simd_width <= input.cols - 1; j += simd_width) {
+								size_t j = 1;
+								const size_t simd_end = (input.cols > simd_width + 1)
+									? (input.cols - simd_width - 1)
+									: 1;
+								for (; j < simd_end; j += simd_width) {
+									if (j + simd_width > input.cols - 1) break;
+
 									const K* left_ptr  = &input(i, j - 1);
 									const K* right_ptr = &input(i, j + 1);
 									K* out_ptr         = &output(i, j);
@@ -67,22 +86,19 @@ namespace morpheus {
 									Simd::store(out_ptr, res);
 								}
 
-								for (; j < input.cols - 1; ++j) {
+								for (; j < input.cols - 1; ++j)
 									output(i, j) = (input(i, j + 1) - input(i, j - 1)) * inv_2dx;
-								}
 
-								output(i, 0) = K(0);
 								output(i, input.cols - 1) = K(0);
 							}
 						}
 
 						else if (axis == 0) {
 #pragma omp parallel for
-							for (size_t i = 1; i < input.rows - 1; ++i) {
-								for (size_t j = 0; j < input.cols; ++j) {
+							for (size_t i = 1; i < input.rows - 1; ++i)
+								for (size_t j = 0; j < input.cols; ++j)
 									output(i, j) = (input(i + 1, j) - input(i - 1, j)) * inv_2dx;
-								}
-							}
+
 							for (size_t j = 0; j < input.cols; ++j) {
 								output(0, j) = K(0);
 								output(input.rows - 1, j) = K(0);
@@ -90,9 +106,102 @@ namespace morpheus {
 						}
 
 						else {
-							std::cerr << "Invalid axis: must be 0 or 1.\n";
-						}		
+							std::cerr << "[centered_derivative] Invalid axis: must be 0 or 1\n";
+						}
 					}
+
+
+				__attribute__((always_inline, hot, flatten))
+					inline void centered_derivative_order4_simd(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						constexpr size_t W = Simd::width;
+
+						const K inv_12dx = K(1) / (K(12) * dx);
+						const reg inv = Simd::set1(inv_12dx);
+						const reg eight = Simd::set1(8.0f);
+
+						if (axis == 1) {
+#pragma omp parallel for
+							for (size_t i = 0; i < input.rows; ++i) {
+								output(i, 0) = K(0);
+								output(i, 1) = K(0);
+
+								size_t j = 2;
+								for (; j + W <= input.cols - 2; j += W) {
+									const K* ptr_m2 = &input(i, j - 2);
+									const K* ptr_m1 = &input(i, j - 1);
+									const K* ptr_p1 = &input(i, j + 1);
+									const K* ptr_p2 = &input(i, j + 2);
+
+									reg fm2 = Simd::loadu(ptr_m2);
+									reg fm1 = Simd::loadu(ptr_m1);
+									reg fp1 = Simd::loadu(ptr_p1);
+									reg fp2 = Simd::loadu(ptr_p2);
+
+									reg term1 = Simd::mul(fp1, eight);
+									reg term2 = Simd::mul(fp2, Simd::set1(1.0f));
+									reg term3 = Simd::mul(fm1, eight);
+
+									reg num = Simd::sub(Simd::add(fm2, term1), term2);
+									num = Simd::sub(num, term3);
+									reg res = Simd::mul(num, inv);
+
+									Simd::storeu(&output(i, j), res);
+								}
+
+								for (; j < input.cols - 2; ++j) {
+									output(i, j) = (input(i, j - 2) - 8 * input(i, j - 1) + 
+											8 * input(i, j + 1) - input(i, j + 2)) * inv_12dx;
+								}
+
+								output(i, input.cols - 2) = K(0);
+								output(i, input.cols - 1) = K(0);
+							}
+						}
+						else if (axis == 0) {
+#pragma omp parallel for
+							for (size_t j = 0; j < input.cols; ++j) {
+								output(0, j) = K(0);
+								output(1, j) = K(0);
+
+								size_t i = 2;
+								for (; i + W <= input.rows - 2; i += W) {
+									const K* ptr_m2 = &input(i - 2, j);
+									const K* ptr_m1 = &input(i - 1, j);
+									const K* ptr_p1 = &input(i + 1, j);
+									const K* ptr_p2 = &input(i + 2, j);
+
+									reg fm2 = Simd::loadu(ptr_m2);
+									reg fm1 = Simd::loadu(ptr_m1);
+									reg fp1 = Simd::loadu(ptr_p1);
+									reg fp2 = Simd::loadu(ptr_p2);
+
+									reg term1 = Simd::mul(fp1, eight);
+									reg term2 = Simd::mul(fp2, Simd::set1(1.0f));
+									reg term3 = Simd::mul(fm1, eight);
+
+									reg num = Simd::sub(Simd::add(fm2, term1), term2);
+									num = Simd::sub(num, term3);
+									reg res = Simd::mul(num, inv);
+
+									Simd::storeu(&output(i, j), res);
+								}
+
+								for (; i < input.rows - 2; ++i) {
+									output(i, j) = (input(i - 2, j) - 8 * input(i - 1, j) + 
+											8 * input(i + 1, j) - input(i + 2, j)) * inv_12dx;
+								}
+
+								output(input.rows - 2, j) = K(0);
+								output(input.rows - 1, j) = K(0);
+							}
+						}
+						else {
+							std::cerr << "[SIMD Order4] Invalid axis: must be 0 or 1\n";
+						}
+					}
+
 		};
 
 
@@ -190,6 +299,22 @@ namespace morpheus {
 							reg result = Simd::mul(diff, inv2dx);
 							Simd::store(out_ptr, result);
 						}
+					}
+
+
+				__attribute__((always_inline, hot, flatten))
+					inline void centered_derivative_order4_simd(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg  = typename Simd::reg;
+						const size_t simd_width = Simd::width;
+					
+						const auto& shape = input.shape;
+						const size_t total = input.size();
+						const K inv_12dx = K(1) / (K(12) * dx);
+						const reg inv12dx = Simd::set1(inv_12dx);
+						const reg eight = Simd::set1(8.0f);
+						const reg one = Simd::set1(1.0f);
+
 					}
 		};
 
