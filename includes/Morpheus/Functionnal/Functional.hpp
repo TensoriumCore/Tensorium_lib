@@ -3,6 +3,7 @@
 #include "../Core/Matrix.hpp"
 #include "../Core/Tensor.hpp"
 #include "../Core/LinearSolver.hpp"
+#include "../Core/Derivate.hpp"
 
 namespace morpheus {
 
@@ -116,5 +117,18 @@ namespace morpheus {
 		Vector<T> jacobi_solve(const Matrix<T>& A, const Vector<T>& b, T tol = 1e-6, int max_iter = 1000) {
 			return solver::Jacobi<T>::solve(A, b, tol, max_iter);
 		}
+	
 
+
+	// === DERIVATIVES ===
+
+	template<typename K>
+		inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
+			input.centered_derivative(input, output, axis, dx);
+		}
+
+	template<typename K, size_t Rank>
+		inline void centered_derivative(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
+			input.centered_derivative(input, output, axis, dx);
+		}
 }

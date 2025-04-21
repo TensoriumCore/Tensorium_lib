@@ -176,6 +176,93 @@ int test_contract()
 }
 
 
+
+template<typename K, size_t Rank>
+void scalar_fallback_derivative_nd(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
+	const auto& shape = input.shape;
+	const size_t total = input.size();
+	const K inv_2dx = K(1) / (K(2) * dx);
+
+	std::array<size_t, Rank> strides;
+	strides[Rank - 1] = 1;
+	for (int i = Rank - 2; i >= 0; --i)
+		strides[i] = strides[i + 1] * shape[i + 1];
+
+	const size_t stride_axis = strides[axis];
+	const size_t dim_axis = shape[axis];
+
+	for (size_t flat = 0; flat < total; ++flat) {
+		const size_t coord_axis = (flat / stride_axis) % dim_axis;
+
+		if (coord_axis == 0 || coord_axis >= dim_axis - 1) {
+			output.data[flat] = K(0);
+			continue;
+		}
+
+		output.data[flat] = (input.data[flat + stride_axis] - input.data[flat - stride_axis]) * inv_2dx;
+	}
+}
+
+
+void benchmark_centered_derivative() {
+	using Clock = std::chrono::high_resolution_clock;
+
+	std::cout << "\n=== Benchmark: centered_derivative ===\n";
+
+	constexpr size_t N = 16384;
+	constexpr size_t M = 16384;
+	constexpr float dx = 0.8f;
+
+	Derivate<float> f2d(N, M);
+	Derivate<float> dfdx2d(N, M);
+
+	for (size_t i = 0; i < N; ++i)
+		for (size_t j = 0; j < M; ++j)
+			f2d(i, j) = static_cast<float>(i * 10 + j);
+
+	auto t0 = Clock::now();
+	morpheus::centered_derivative(f2d, dfdx2d, 0, dx);
+	auto t1 = Clock::now();
+
+	double elapsed2D = std::chrono::duration<double, std::milli>(t1 - t0).count();
+	std::cout << "Derivate<float> (2D): " << elapsed2D << " ms\n";
+
+	constexpr size_t D = 128;
+	std::array<size_t, 3> dims = {D, D, D};
+	DerivateND<float, 3> fnd(dims);
+	DerivateND<float, 3> dfdznd(dims);
+
+	for (size_t i = 0; i < D; ++i)
+		for (size_t j = 0; j < D; ++j)
+			for (size_t k = 0; k < D; ++k)
+				fnd({i, j, k}) = static_cast<float>(i + j + k);
+
+	t0 = Clock::now();
+	morpheus::centered_derivative(fnd, dfdznd, 2, dx);
+	t1 = Clock::now();
+	
+
+	double elapsedND = std::chrono::duration<double, std::milli>(t1 - t0).count();
+	std::cout << "DerivateND<float, 3>: " << elapsedND << " ms\n";
+
+	t0 = Clock::now();
+	scalar_fallback_derivative_nd(fnd, dfdznd, 2, dx);
+	t1 = Clock::now();
+	double elapsedND_scalar = std::chrono::duration<double, std::milli>(t1 - t0).count();
+	std::cout << "DerivateND<float, 3> [Scalar]: " << elapsedND_scalar << " ms\n";
+
+	double flops2D = 2.0 * N * M;
+	double flopsND = 2.0 * D * D * D;
+
+	std::cout << "\n--- Performance (GFLOPs/s) ---\n";
+	std::cout << "Derivate<float> (2D): " << flops2D / (elapsed2D * 1e6) << " GFLOPs/s\n";
+	std::cout << "DerivateND SIMD     : " << flopsND / (elapsedND * 1e6) << " GFLOPs/s\n";
+	std::cout << "DerivateND Scalar   : " << flopsND / (elapsedND_scalar * 1e6) << " GFLOPs/s\n";
+
+	std::cout << "Speedup (SIMD vs Scalar): " << elapsedND_scalar / elapsedND<< "x\n";
+
+}
+
 int main() {
 	dispatch_simd([](auto simd) {
 			using T = decltype(simd);
@@ -288,7 +375,7 @@ int main() {
 	Vector<float> b_check = A_solve * x_solve;
 	std::cout << "Check Ax = b:\n";
 	b_check.print();
-	
+
 
 	Matrix<float> A2_solve(3, 3);
 	A2_solve(0, 0) = 10.0f; A2_solve(0, 1) = -1.0f; A2_solve(0, 2) = 2.0f;
@@ -325,6 +412,41 @@ int main() {
 		std::cout << "[PASS] Matrix multiplication result is correct.\n";
 	else
 		std::cerr << "[FAIL] Matrix multiplication mismatch.\n";
+	std::cout << "\n=== Derivate 2D Test (∂/∂x) ===\n";
+	morpheus::Derivate<float> f2d(4, 4);
+	morpheus::Derivate<float> dfdx2d(4, 4);
 
+	for (size_t i = 0; i < 4; ++i)
+		for (size_t j = 0; j < 4; ++j)
+			f2d(i, j) = static_cast<float>(i * 10 + j);
+
+	morpheus::centered_derivative(f2d, dfdx2d, 0, 1.0f);
+
+	std::cout << "∂f/∂x:\n";
+	for (size_t i = 0; i < 4; ++i) {
+		for (size_t j = 0; j < 4; ++j)
+			std::cout << dfdx2d(i, j) << " ";
+		std::cout << "\n";
+	}
+	std::cout << "\n=== DerivateND 3D Test (∂/∂z) ===\n";
+	std::array<size_t, 3> dims = {4, 4, 4};
+	morpheus::DerivateND<float, 3> fnd(dims);
+	morpheus::DerivateND<float, 3> dfdznd(dims);
+
+	for (size_t i = 0; i < 4; ++i)
+		for (size_t j = 0; j < 4; ++j)
+			for (size_t k = 0; k < 4; ++k)
+				fnd({i, j, k}) = static_cast<float>(i + j + k);
+
+	morpheus::centered_derivative(fnd, dfdznd, 2, 1.0f);
+
+	std::cout << "∂f/∂z slice at k=2:\n";
+	for (size_t i = 0; i < 4; ++i) {
+		for (size_t j = 0; j < 4; ++j)
+			std::cout << dfdznd({i, j, 2}) << " ";
+		std::cout << "\n";
+	}
+
+	benchmark_centered_derivative();
 	return 0;
 }
