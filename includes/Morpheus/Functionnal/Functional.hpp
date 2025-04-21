@@ -138,4 +138,11 @@ namespace morpheus {
 		inline void centered_derivative(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
 			input.centered_derivative(input, output, axis, dx);
 		}
+
+
+	template<typename K, size_t Rank>
+		inline void centered_derivative_order4(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
+			input.centered_derivative_order4_rank(input, output, axis, dx);
+		}
+
 }

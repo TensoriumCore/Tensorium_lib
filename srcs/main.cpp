@@ -116,32 +116,44 @@ int test_flatten_index()
 }
 
 
+#include <random>
+#include <iostream>
+#include <chrono>
+
 int bench() {
-	constexpr size_t N = 8192;
-	morpheus::Matrix<float> A(N, N);
-	morpheus::Matrix<float> B(N, N);
+    constexpr size_t N = 8192;
+    morpheus::Matrix<float> A(N, N);
+    morpheus::Matrix<float> B(N, N);
 
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			A(i, j) = 1.0f, B(i, j) = 2.0f;
+    std::mt19937 rng(42);  
+    std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 
-	std::cout << "\n=== Benchmarking ===\n";
-	std::cout << "Benchmarking AVX2 mul_mat() for size " << N << "x" << N << "\n";
+    #pragma omp parallel for collapse(2)
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j) {
+            A(i, j) = dist(rng);
+            B(i, j) = dist(rng);
+        }
 
-	auto start = std::chrono::high_resolution_clock::now();
-	auto C = morpheus::mul_mat(A, B);
-	auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "\n=== Benchmarking (i7-10700) ===\n";
+    std::cout << "Matrix size: " << N << "x" << N << "\n";
 
-	double elapsed = std::chrono::duration<double>(end - start).count();
-	std::cout << "Time: " << elapsed << " seconds\n";
-	std::cout << "Sample result: C(0, 0) = " << C(0, 0) << "\n";
+    auto start = std::chrono::high_resolution_clock::now();
+    auto C = morpheus::mul_mat(A, B); 
+    auto end = std::chrono::high_resolution_clock::now();
 
-	double flops = 2.0 * N * N * N;
-	double gflops = flops / (1e9 * elapsed);
-	std::cout << "Performance: " << gflops << " GFLOP/s\n";
+    double elapsed = std::chrono::duration<double>(end - start).count();
+	double flops = 2.0 * static_cast<double>(N) * N * N;
+    double gflops = flops / (1e9 * elapsed) / 8;
 
-	return 0;
+    std::cout << "Time: " << elapsed << " s\n";
+    std::cout << "Performance: " << gflops << " GFLOP/s\n";
+    std::cout << "Sample C(0, 0): " << C(0, 0) << "\n";
+    std::cout << "Theoretical Peak (float, AVX2, 8c): ~280-300 GFLOP/s\n";
+
+    return 0;
 }
+
 
 int test_contract()
 {
@@ -204,108 +216,6 @@ void scalar_fallback_derivative_nd(const DerivateND<K, Rank>& input, DerivateND<
 }
 
 
-void benchmark_centered_derivative() {
-	using Clock = std::chrono::high_resolution_clock;
-
-	std::cout << "\n=== Benchmark: centered_derivative ===\n";
-
-	constexpr size_t N = 4096;
-	constexpr size_t M = 4096;
-	constexpr float dx = 0.8f;
-
-	Derivate<float> f2d(N, M);
-	Derivate<float> dfdx2d(N, M);
-
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < M; ++j)
-			f2d(i, j) = static_cast<float>(i * 10 + j);
-
-	auto t0 = Clock::now();
-	morpheus::centered_derivative(f2d, dfdx2d, 0, dx);
-	auto t1 = Clock::now();
-
-	double elapsed2D = std::chrono::duration<double, std::milli>(t1 - t0).count();
-	std::cout << "Derivate<float> (2D): " << elapsed2D << " ms\n";
-
-	constexpr size_t D = 128;
-	std::array<size_t, 3> dims = {D, D, D};
-	DerivateND<float, 3> fnd(dims);
-	DerivateND<float, 3> dfdznd(dims);
-
-	for (size_t i = 0; i < D; ++i)
-		for (size_t j = 0; j < D; ++j)
-			for (size_t k = 0; k < D; ++k)
-				fnd({i, j, k}) = static_cast<float>(i + j + k);
-
-	t0 = Clock::now();
-	morpheus::centered_derivative(fnd, dfdznd, 2, dx);
-	t1 = Clock::now();
-	
-
-	double elapsedND = std::chrono::duration<double, std::milli>(t1 - t0).count();
-	std::cout << "DerivateND<float, 3>: " << elapsedND << " ms\n";
-
-	t0 = Clock::now();
-	scalar_fallback_derivative_nd(fnd, dfdznd, 2, dx);
-	t1 = Clock::now();
-	double elapsedND_scalar = std::chrono::duration<double, std::milli>(t1 - t0).count();
-	std::cout << "DerivateND<float, 3> [Scalar]: " << elapsedND_scalar << " ms\n";
-
-	double flops2D = 2.0 * N * M;
-	double flopsND = 2.0 * D * D * D;
-
-	std::cout << "\n--- Performance (GFLOPs/s) ---\n";
-	std::cout << "Derivate<float> (2D): " << flops2D / (elapsed2D * 1e6) << " GFLOPs/s\n";
-	std::cout << "DerivateND SIMD     : " << flopsND / (elapsedND * 1e6) << " GFLOPs/s\n";
-	std::cout << "DerivateND Scalar   : " << flopsND / (elapsedND_scalar * 1e6) << " GFLOPs/s\n";
-
-	std::cout << "Speedup (SIMD vs Scalar): " << elapsedND_scalar / elapsedND<< "x\n";
-	std::cout << "\n=== Test centered_derivative vs centered_derivative_order4 ===\n";
-
-
-	morpheus::Derivate<float> f(N, 1);
-	morpheus::Derivate<float> df_order2(N, 1);
-	morpheus::Derivate<float> df_order4(N, 1);
-	aligned_vector<float> test(4096);
-
-	std::cout << "f.rows = " << f.rows << ", f.cols = " << f.cols << "\n";
-	std::cout << "f.size() = " << f.size() << ", expected = " << N * 1 << "\n";
-
-	for (size_t i = 0; i + 1 < N; ++i)
-		f(i, 0) = std::sin(i * dx);
-
-
-	morpheus::centered_derivative(f, df_order2, 1, dx);
-	/* morpheus::centered_derivative_order4(f, df_order4, 1, dx); */
-	
-	
-	float max_err_order2 = 0.0f;
-	float max_err_order4 = 0.0f;
-	
-	for (size_t i = 2; i < N - 2; ++i) { // ignorer les bords
-		float exact = std::cos(i * dx);
-		float err2 = std::fabs(df_order2(i, 0) - exact);
-		float err4 = std::fabs(df_order4(i, 0) - exact);
-		max_err_order2 = std::max(max_err_order2, err2);
-		max_err_order4 = std::max(max_err_order4, err4);
-	}
-	
-	std::cout << "Max error (order 2) : " << max_err_order2 << "\n";
-	std::cout << "Max error (order 4) : " << max_err_order4 << "\n";
-	float rmse2 = 0.0f, rmse4 = 0.0f;
-	for (size_t i = 2; i < N - 2; ++i) {
-		float exact = std::cos(i * dx);
-		rmse2 += std::pow(df_order2(i, 0) - exact, 2);
-		rmse4 += std::pow(df_order4(i, 0) - exact, 2);
-	}
-	rmse2 = std::sqrt(rmse2 / (N - 4));
-	rmse4 = std::sqrt(rmse4 / (N - 4));
-	std::cout << "RMSE (order 2): " << rmse2 << "\n";
-	std::cout << "RMSE (order 4): " << rmse4 << "\n";
-
-
-
-}
 
 int main() {
 	dispatch_simd([](auto simd) {
@@ -436,10 +346,10 @@ int main() {
 	b2_check.print();
 
 	/* std::cout << "\n=== Benchmarking ===\n"; */
-	/* bench(); */
-	/* std::cout << "\n=== Test contraction ===\n"; */
-	/* test_flatten_index(); */
-	/* test_contract(); */
+	bench();
+	std::cout << "\n=== Test contraction ===\n";
+	test_flatten_index();
+	test_contract();
 	Matrix<float> expected(2, 2);
 	expected(0, 0) = 19.0f; expected(0, 1) = 22.0f;
 	expected(1, 0) = 43.0f; expected(1, 1) = 50.0f;
@@ -513,6 +423,14 @@ int main() {
 				fnd({i, j, k}) = static_cast<float>(i + j + k);
 
 	morpheus::centered_derivative(fnd, dfdznd, 2, 1.0f);
+		std::cout << "∂f/∂z slice at k=2:\n";
+	for (size_t i = 0; i < 4; ++i) {
+		for (size_t j = 0; j < 4; ++j)
+			std::cout << dfdznd({i, j, 2}) << " ";
+		std::cout << "\n";
+	}
+
+	morpheus::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
 
 	std::cout << "∂f/∂z slice at k=2:\n";
 	for (size_t i = 0; i < 4; ++i) {
@@ -521,8 +439,7 @@ int main() {
 		std::cout << "\n";
 	}
 
-	benchmark_centered_derivative();
-	const size_t N = 4096;
+	const size_t N = 16384;
     const float dx = 0.01f; 
     const float pi = 3.14159265358979323846f;
 
@@ -537,7 +454,7 @@ int main() {
         df_exact(i, 0) = std::cos(x) + 0.1f * 10 * std::cos(10*x);
     }
     f.centered_derivative(f, df_order2, 0, dx); 
-    f.centered_derivative_order4_simd(f, df_order4, 0, dx); 
+    f.centered_derivative_order4(f, df_order4, 0, dx);
 
     float max_err_order2 = 0.0f;
     float max_err_order4 = 0.0f;
