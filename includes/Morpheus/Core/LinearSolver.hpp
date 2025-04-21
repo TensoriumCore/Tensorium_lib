@@ -69,6 +69,7 @@ namespace morpheus::solver {
 										mj = SimdD::sub(mj, SimdD::mul(fv, mi));
 										SimdD::storeu(rowj + off, mj);
 									}
+
 								}
 								for(;k + W <= n; k += W) {
 									regD mj = SimdD::loadu(rowj + k);
