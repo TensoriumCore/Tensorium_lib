@@ -3,7 +3,7 @@ BENCH_NAME   = benchmark
 LIB_NAME     = libmorpheus.so
 
 CC           = clang++
-SRC_DIR      = srcs
+SRC_DIR      = tests
 BENCH_DIR    = $(SRC_DIR)/benchmarks
 INC_DIR      = includes
 OBJ_DIR      = build

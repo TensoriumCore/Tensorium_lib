@@ -1,79 +1,11 @@
 
 #include "../includes/Morpheus/Morpheus.hpp"
-
+#include <random>
+#include <iostream>
+#include <chrono>
+#include <omp.h>
+#include <iomanip>
 using namespace morpheus;
-
-int comb() {
-	using ISA = morpheus::avx2_t;
-	constexpr size_t W = ISA::width;
-	using reg = ISA::reg;
-
-	std::cout << "\n=== Test linear_combination() ===\n";
-
-	std::vector<morpheus::Vector<float>> basis = {
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	};
-
-	std::vector<float> coefs = {2.0f, -1.0f, 3.5f};
-
-	auto result = morpheus::linear_combination_vec(basis, coefs);
-
-	std::cout << "Expected result: [2, -1, 3.5, 0, ..., 0]\n";
-	std::cout << "Result vector:\n";
-	result.print();
-
-	std::cout << "\n=== Test linear_combination() with different sizes ===\n";
-
-	auto a = morpheus::Vector<float>{0, 0, 0, 0, 0, 0, 0, 0};
-	auto b = morpheus::Vector<float>{1, 1, 1, 1, 1, 1, 1, 1};
-
-	auto mid = morpheus::lerp_vec(a, b, 0.5f);
-		mid.print();
-
-	return 0;
-}
-
-
-void test_transpose_matrix() {
-	std::cout << "\n=== Test Matrix::transpose() ===\n";
-
-	std::vector<std::pair<size_t, size_t>> sizes = {
-		{1, 1}, {1, 5}, {5, 1},
-		{2, 3}, {3, 2},
-		{4, 4},
-		{8, 8}, {16, 16},
-		{5, 7}, {7, 5}
-	};
-
-	for (auto [rows, cols] : sizes) {
-		Matrix<float> A(rows, cols);
-		for (size_t i = 0; i < rows; ++i)
-			for (size_t j = 0; j < cols; ++j)
-				A(i, j) = static_cast<float>(i * cols + j);
-
-		Matrix<float> At = morpheus::transpose_mat(A);
-
-		std::cout << "\nOriginal (" << rows << "x" << cols << "):\n";
-		A.print();
-		std::cout << "Transposed (" << At.rows << "x" << At.cols << "):\n";
-		At.print();
-
-		bool ok = true;
-		for (size_t i = 0; i < rows; ++i) {
-			for (size_t j = 0; j < cols; ++j) {
-				if (A(i, j) != At(j, i)) {
-					std::cerr << "Mismatch at (" << i << ", " << j << "): " 
-					          << A(i, j) << " != " << At(j, i) << "\n";
-					ok = false;
-				}
-			}
-		}
-
-		std::cout << (ok ? "[PASS]" : "[FAIL]") << " for size " << rows << "x" << cols << "\n";
-	}
-}
 
 
 int test_flatten_index()
@@ -116,11 +48,7 @@ int test_flatten_index()
 }
 
 
-#include <random>
-#include <iostream>
-#include <chrono>
-#include <omp.h>
-#include <iomanip>
+
 int bench() {
     constexpr std::size_t N = 16384;
     morpheus::Matrix<float> A(N, N);
@@ -178,6 +106,87 @@ int bench() {
     return 0;
 }
 
+
+int test_tensor_mul() {
+	bool success = true;
+
+	Tensor<float, 2> A({2, 2});
+	A({0,0}) = 1.0f;  A({0,1}) = 2.0f;
+	A({1,0}) = 3.0f;  A({1,1}) = 4.0f;
+
+	Tensor<float, 2> B({2, 2});
+	B({0,0}) = 10.0f; B({0,1}) = 20.0f;
+	B({1,0}) = 30.0f; B({1,1}) = 40.0f;
+
+	auto C = morpheus::mul_tensor(A, B);
+	C.print_shape();
+
+	struct {
+		std::array<size_t, 4> idx;
+		float expected;
+	} tests[] = {
+		{{0,0,0,0}, 1.0f * 10.0f},
+		{{0,1,1,0}, 2.0f * 30.0f},
+		{{1,0,0,1}, 3.0f * 20.0f},
+		{{1,1,1,1}, 4.0f * 40.0f}
+	};
+
+	for (const auto& t : tests) {
+		float val = C(t.idx);
+		if (std::abs(val - t.expected) > 1e-5f) {
+			std::cerr << "[×] Error at ";
+			for (size_t i : t.idx) std::cerr << i << " ";
+			std::cerr << ": expected " << t.expected << ", got " << val << '\n';
+			success = false;
+		}
+	}
+
+	for (size_t i = 0; i < 2; ++i)
+		for (size_t j = 0; j < 2; ++j)
+			for (size_t k = 0; k < 2; ++k)
+				for (size_t l = 0; l < 2; ++l) {
+					float expected = A({i,j}) * B({k,l});
+					float actual = C({i,j,k,l});
+					if (std::abs(expected - actual) > 1e-5f) {
+						std::cerr << "[×] Mismatch at (" << i << "," << j << "," << k << "," << l << "): "
+							<< "expected " << expected << ", got " << actual << '\n';
+						success = false;
+					}
+				}
+
+	if (success)
+		std::cout << "[✓] Tensor product test passed successfully.\n";
+
+	return success ? 0 : 1;
+}
+
+int benchmark_tensor_mul() {
+	constexpr size_t N = 128;
+
+	Tensor<float, 2> A({N, N});
+	Tensor<float, 2> B({N, N});
+	A.fill(1.0f);
+	B.fill(2.0f);
+
+	std::cout << "Benchmarking morpheus::mul_tensor() with size: " << N << " x " << N << " ...\n";
+
+	auto start = std::chrono::high_resolution_clock::now();
+	auto C = mul_tensor(A, B);  
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> elapsed = end - start;
+	std::cout << "[✓] Execution time: " << elapsed.count() << " s\n";
+
+	float err = 0;
+	for (size_t i = 0; i < N; ++i)
+		for (size_t j = 0; j < N; ++j)
+			for (size_t k = 0; k < N; ++k)
+				for (size_t l = 0; l < N; ++l) {
+					err += std::abs(C({i,j,k,l}) - 2.0f);
+				}
+	std::cout << "Total absolute error: " << err << "\n";
+	return 0;
+}
 
 int test_contract()
 {
@@ -248,7 +257,8 @@ int main() {
 			constexpr size_t A = T::alignment;
 			std::cout << "SIMD selected: width=" << W << ", alignment=" << A << "\n";
 			});
-
+	test_tensor_mul();
+	benchmark_tensor_mul();
 	//
 	// std::cout << "\n=== Vector Tests ===\n";
 	// Vector<float> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
