@@ -107,6 +107,12 @@ namespace morpheus {
 			return T.transpose_simd();
 		}
 
+
+	template<typename K, size_t R1, size_t R2>
+		inline Tensor<K, R1 + R2> mul_tensor(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
+			return Tensor<K, R1>::template tensor_product<R1, R2>(A, B);
+		}
+
 	// === LINEAR SOLVERS ===
 
 	template <typename T>

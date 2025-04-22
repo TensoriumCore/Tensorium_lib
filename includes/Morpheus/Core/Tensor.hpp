@@ -190,6 +190,98 @@ namespace morpheus {
 
 						return result;
 					}
+			
+			
 
+					template<size_t R1, size_t R2>
+						static inline Tensor<K, R1 + R2> tensor_product(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
+							using Simd = simd::SimdTraits<K, DefaultISA>;
+							using reg = typename Simd::reg;
+							constexpr size_t W = Simd::width / sizeof(K);
+							constexpr size_t R = R1 + R2;
+							constexpr size_t L3_BLOCK = 128;
+							constexpr size_t L1_BLOCK = 128;
+
+							std::array<size_t, R> shape;
+							for (size_t i = 0; i < R1; ++i) 
+								shape[i] = A.dimensions[i];
+							for (size_t i = 0; i < R2; ++i) 
+								shape[R1 + i] = B.dimensions[i];
+
+							Tensor<K, R> result(shape);
+
+#pragma omp parallel for collapse(2)
+							for (size_t a_outer = 0; a_outer < A.total_size; a_outer += L3_BLOCK) {
+								for (size_t b_outer = 0; b_outer < B.total_size; b_outer += L3_BLOCK) {
+									_mm_prefetch(&A.data[a_outer + L3_BLOCK], _MM_HINT_NTA);
+									_mm_prefetch(&B.data[b_outer + L3_BLOCK], _MM_HINT_NTA);
+									const size_t a_outer_end = std::min(a_outer + L3_BLOCK, A.total_size);
+									const size_t b_outer_end = std::min(b_outer + L3_BLOCK, B.total_size);
+
+									for (size_t a_inner = a_outer; a_inner < a_outer_end; a_inner += L1_BLOCK) {
+										for (size_t b_inner = b_outer; b_inner < b_outer_end; b_inner += L1_BLOCK) {
+											_mm_prefetch(&A.data[a_inner + L1_BLOCK], _MM_HINT_T0);
+											_mm_prefetch(&B.data[b_inner + L1_BLOCK], _MM_HINT_T0);
+											const size_t a_end = std::min(a_inner + L1_BLOCK, a_outer_end);
+											const size_t b_end = std::min(b_inner + L1_BLOCK, b_outer_end);
+
+											for (size_t a_flat = a_inner; a_flat < a_end; ++a_flat) {
+												std::array<size_t, R1> idx_A;
+												size_t tmp = a_flat;
+												for (ssize_t i = R1 - 1; i >= 0; --i) {
+													idx_A[i] = tmp % A.dimensions[i];
+													tmp /= A.dimensions[i];
+												}
+												K a_scalar = A(idx_A);
+												reg a_vec = Simd::set1(a_scalar);
+
+												for (size_t b_flat = b_inner; b_flat + W - 1 < b_end; b_flat += W) {
+													reg b_vec = Simd::loadu(&B.data[b_flat]);
+													reg c_vec = Simd::mul(a_vec, b_vec);
+
+													for (size_t w = 0; w < W; ++w) {
+														std::array<size_t, R2> idx_B;
+														std::array<size_t, R> idx_C;
+
+														size_t tmpb = b_flat + w;
+														for (ssize_t i = R2 - 1; i >= 0; --i) {
+															idx_B[i] = tmpb % B.dimensions[i];
+															tmpb /= B.dimensions[i];
+														}
+#pragma unroll(R1 + R2 - 1) 
+														for (size_t i = 0; i < R1; ++i)
+															idx_C[i] = idx_A[i];
+#pragma unroll(R1 + R2 - 1)
+														for (size_t i = 0; i < R2; ++i) 
+															idx_C[R1 + i] = idx_B[i];
+
+														result(idx_C) = Simd::extract(c_vec, w);
+													}
+												}
+
+												for (size_t b_flat = b_end - (b_end % W); b_flat < b_end; ++b_flat) {
+													std::array<size_t, R2> idx_B;
+													std::array<size_t, R> idx_C;
+
+													size_t tmpb = b_flat;
+													for (ssize_t i = R2 - 1; i >= 0; --i) {
+														idx_B[i] = tmpb % B.dimensions[i];
+														tmpb /= B.dimensions[i];
+													}
+													for (size_t i = 0; i < R1; ++i) 
+														idx_C[i] = idx_A[i];
+													for (size_t i = 0; i < R2; ++i) 
+														idx_C[R1 + i] = idx_B[i];
+
+													result(idx_C) = a_scalar * B(idx_B);
+												}
+											}
+										}
+									}
+								}
+							}
+
+							return result;
+						}
 		};
 }

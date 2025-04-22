@@ -75,15 +75,15 @@ namespace morpheus {
 						_mm_prefetch((const char *)&m.data[0], _MM_HINT_T0);
 
 						for (; i + 2 * simd_width - 1 < n; i += 2 * simd_width) {
-							reg a0 = Simd::loadu(&data[i]);
-							reg b0 = Simd::loadu(&m.data[i]);
+							reg a0 = Simd::load(&data[i]);
+							reg b0 = Simd::load(&m.data[i]);
 							a0 = Simd::add(a0, b0);
-							Simd::storeu(&data[i], a0);
+							Simd::store(&data[i], a0);
 
-							reg a1 = Simd::loadu(&data[i + simd_width]);
-							reg b1 = Simd::loadu(&m.data[i + simd_width]);
+							reg a1 = Simd::load(&data[i + simd_width]);
+							reg b1 = Simd::load(&m.data[i + simd_width]);
 							a1 = Simd::add(a1, b1);
-							Simd::storeu(&data[i + simd_width], a1);
+							Simd::store(&data[i + simd_width], a1);
 						}
 
 						for (; i < n; ++i)
@@ -105,15 +105,15 @@ namespace morpheus {
 
 						_mm_prefetch((const char *)&m.data[0], _MM_HINT_T0);
 						for (; i + 15 < n; i += 16) {
-							reg a0 = Simd::loadu(&data[i]);
-							reg b0 = Simd::loadu(&m.data[i]);
+							reg a0 = Simd::load(&data[i]);
+							reg b0 = Simd::load(&m.data[i]);
 							a0 = Simd::sub(a0, b0);
-							Simd::storeu(&data[i], a0);
+							Simd::store(&data[i], a0);
 
-							reg a1 = Simd::loadu(&data[i + simd_width]);
-							reg b1 = Simd::loadu(&m.data[i + simd_width]);
+							reg a1 = Simd::load(&data[i + simd_width]);
+							reg b1 = Simd::load(&m.data[i + simd_width]);
 							a1 = Simd::sub(a1, b1);
-							Simd::storeu(&data[i + simd_width], a1);
+							Simd::store(&data[i + simd_width], a1);
 						}
 						for (; i < size(); ++i) {
 							data[i] -= m.data[i];
@@ -132,13 +132,13 @@ namespace morpheus {
 						reg scalar = Simd::set1(a);
 
 						for (; i + 15 < n; i += 16) {
-							reg v0 = Simd::loadu(&data[i]);
+							reg v0 = Simd::load(&data[i]);
 							v0 = Simd::mul(v0, scalar);
-							Simd::storeu(&data[i], v0);
+							Simd::store(&data[i], v0);
 
-							reg v1 = Simd::loadu(&data[i + simd_width]);
+							reg v1 = Simd::load(&data[i + simd_width]);
 							v1 = Simd::mul(v1, scalar);
-							Simd::storeu(&data[i + simd_width], v1);
+							Simd::store(&data[i + simd_width], v1);
 						}
 
 						for (; i < n; ++i)
@@ -270,8 +270,8 @@ namespace morpheus {
 
 							size_t j = 0;
 							for (; j + simd_width - 1 < cols; j += simd_width) {
-								reg A_vec = Simd::loadu(&(*this)(i, j));
-								reg x_vec = Simd::loadu(&x[j]);
+								reg A_vec = Simd::load(&(*this)(i, j));
+								reg x_vec = Simd::load(&x[j]);
 								acc = Simd::fmadd(A_vec, x_vec, acc);
 							}
 
@@ -302,11 +302,11 @@ namespace morpheus {
 									for (size_t j = 0; j < cols; j += W) {
 										typename Simd::reg block[W];
 										for (size_t k = 0; k < W; ++k)
-											block[k] = Simd::loadu(&data[(i + k) * cols + j]);
+											block[k] = Simd::load(&data[(i + k) * cols + j]);
 
 										alignas(ALIGN) K tmp[W][W];
 										for (size_t k = 0; k < W; ++k)
-											Simd::storeu(tmp[k], block[k]);
+											Simd::store(tmp[k], block[k]);
 
 										for (size_t x = 0; x < W; ++x)
 											for (size_t y = 0; y < W; ++y)
