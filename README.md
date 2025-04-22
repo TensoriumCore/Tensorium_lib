@@ -24,8 +24,9 @@ This library is built with the goal of empowering projects that require both spe
 - AVX2/FMA SIMD acceleration (fallback on SSE when needed)
 - Custom allocator using `posix_memalign` for proper vectorization
 - OpenMP and MPI support
-- Matrix multiplication optimized with blocking, unrolling, and OpenMP
+- Matrix/Tensor multiplication optimized with blocking, unrolling, and OpenMP
 - Python bindings using `pybind11` for seamless integration with Python
+- A symbolic parser to compute problems with a LaTex structure (in comming)
 - Optional benchmark against BLAS (OpenBLAS, MKL)
 
 ## Build Instructions
