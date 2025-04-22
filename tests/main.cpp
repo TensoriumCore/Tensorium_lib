@@ -249,6 +249,16 @@ void scalar_fallback_derivative_nd(const DerivateND<K, Rank>& input, DerivateND<
 }
 
 
+void test_lexer(const std::string& input) {
+	Lexer lexer(input);
+	auto tokens = lexer.tokenize();
+
+	std::cout << "Input: " << input << "\n";
+	for (const auto& token : tokens) {
+		std::cout << "Token: \"" << token.value << "\" — type: " << static_cast<int>(token.type) << "\n";
+	}
+	std::cout << "------\n";
+}
 
 int main() {
 	dispatch_simd([](auto simd) {
@@ -259,6 +269,15 @@ int main() {
 			});
 	test_tensor_mul();
 	benchmark_tensor_mul();
+	Lexer lex(R"( \int x^2 + \partial_y T )");
+	for (const auto& tok : lex.tokenize()) {
+		std::cout << "Token: " << tok.value << " — type: " << static_cast<int>(tok.type) << "\n";
+	}
+	test_lexer("\\int x^2 + \\partial_y T");
+	test_lexer("\\alpha + \\beta - 3.14 * \\Gamma");
+	test_lexer("A_{\\mu\\nu} B^{\\rho\\sigma}");
+	test_lexer("f(x) = x^2 + 2*x + 1");
+	test_lexer("\\cdot \\otimes T");
 	//
 	// std::cout << "\n=== Vector Tests ===\n";
 	// Vector<float> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};

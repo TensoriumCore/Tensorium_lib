@@ -13,3 +13,5 @@
 #include "SIMD/Allocator.hpp"
 #include "SIMD/CacheInfo.hpp"
 #include "IO/MPI_init.hpp"
+#include "Symbolics/Latex.hpp"
+#include "Symbolics/Lexer.hpp"
