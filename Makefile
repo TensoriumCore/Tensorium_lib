@@ -12,7 +12,7 @@ CXX_STD      = -std=c++17
 BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR)
 
 AVX2_FLAGS   = -mfma -mavx2
-AVX512_FLAGS = -mfma -mavx512f 
+AVX512_FLAGS = -mfma -mavx512f
 
 CFLAGS       = $(CXX_STD) $(BASE_FLAGS) $(AVX2_FLAGS)
 
@@ -35,14 +35,15 @@ endif
 
 ifeq ($(USE_KNL), true)
 	CFLAGS += -DUSE_KNL -mtune=knl -mfma -mavx512f -mavx512cd
-	LDFLAGS += -lmemkind 
+	LDFLAGS += -lmemkind
 endif
 
-SRC         = $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
-OBJ         = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+# Filter all test .cpp files EXCEPT those in benchmarks/
+SRC         := $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
+OBJ         := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 
-LIB_SRC     = $(filter-out $(SRC_DIR)/main.cpp, $(SRC))
-LIB_OBJ     = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(LIB_SRC))
+LIB_SRC     := $(filter-out $(SRC_DIR)/main.cpp, $(SRC))
+LIB_OBJ     := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(LIB_SRC))
 
 BENCH_SRC   = $(BENCH_DIR)/bench.cpp
 BENCH_OBJ   = $(OBJ_DIR)/bench.o
@@ -82,23 +83,23 @@ fclean: clean
 	rm -f $(NAME) $(BENCH_NAME) $(LIB_NAME)
 
 help:
-	@echo "Makefile for Morpheus"
-	@echo "Usage:"
-	@echo "  make [target]"
-	@echo ""
-	@echo "Targets:"
-	@echo "  all        - Build the executable"
-	@echo "  benchmark  - Build the benchmark executable"
-	@echo "  lib        - Build the shared library"
-	@echo "  clean      - Remove object files and directories"
-	@echo "  fclean     - Remove all generated files (executables, libraries, object files)"
-	@echo "  re         - Rebuild everything"
-	@echo ""
-	@echo "Options:"
-	@echo "  AVX512=true  - Enable AVX512 optimizations"
-	@echo "  VERBOSE=true - Enable verbose output"
-	@echo "  DEBUG=true   - Enable debug symbols"
-	@echo "  USE_MPI=true - Enable MPI support"
-	@echo "  USE_KNL=true - Enable KNL support"
+	@echo \"Makefile for Morpheus\"
+	@echo \"Usage:\"
+	@echo \"  make [target]\"
+	@echo \"\"
+	@echo \"Targets:\"
+	@echo \"  all        - Build the executable\"
+	@echo \"  benchmark  - Build the benchmark executable\"
+	@echo \"  lib        - Build the shared library\"
+	@echo \"  clean      - Remove object files and directories\"
+	@echo \"  fclean     - Remove all generated files (executables, libraries, object files)\"
+	@echo \"  re         - Rebuild everything\"
+	@echo \"\"
+	@echo \"Options:\"
+	@echo \"  AVX512=true  - Enable AVX512 optimizations\"
+	@echo \"  VERBOSE=true - Enable verbose output\"
+	@echo \"  DEBUG=true   - Enable debug symbols\"
+	@echo \"  USE_MPI=true - Enable MPI support\"
+	@echo \"  USE_KNL=true - Enable KNL support\"
 
 re: fclean all
