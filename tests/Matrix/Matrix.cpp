@@ -80,47 +80,38 @@ int matrix_tests() {
 	B(0, 0) = 5.0f; B(0, 1) = 6.0f;
 	B(1, 0) = 7.0f; B(1, 1) = 8.0f;
 
-	std::cout << "\n=== Test add() ===\n";
 	Mat C = A;
 	C.add(B);
 	CHECK(std::abs(C(0, 0) - 6.0f) < 1e-4);
 	CHECK(std::abs(C(1, 1) - 12.0f) < 1e-4);
 
-	std::cout << "\n=== Test sub() ===\n";
 	C.sub(B);
 	CHECK(std::abs(C(0, 0) - A(0, 0)) < 1e-4);
 
-	std::cout << "\n=== Test scl() ===\n";
 	C.scl(2.0f);
 	CHECK(std::abs(C(0, 0) - 2.0f * A(0, 0)) < 1e-4);
 
-	std::cout << "\n=== Test mul_vec() ===\n";
 	Vec x = {1, 1};
 	Vec y = A.mul_vec(x);
 	CHECK(std::abs(y[0] - 3.0f) < 1e-4);
 	CHECK(std::abs(y[1] - 7.0f) < 1e-4);
 
-	std::cout << "\n=== Test operator*() ===\n";
 	Vec z = A * x;
 	CHECK(std::abs(z[0] - y[0]) < 1e-4);
 	CHECK(std::abs(z[1] - y[1]) < 1e-4);
 
-	std::cout << "\n=== Test transpose() ===\n";
 	Mat T = A.transpose();
 	CHECK(std::abs(T(0, 1) - A(1, 0)) < 1e-4);
 	CHECK(std::abs(T(1, 0) - A(0, 1)) < 1e-4);
 
-	std::cout << "\n=== Test swap_rows() ===\n";
 	Mat S = A;
 	S.swap_rows(0, 1);
 	CHECK(std::abs(S(0, 0) - A(1, 0)) < 1e-4);
 	CHECK(std::abs(S(1, 0) - A(0, 0)) < 1e-4);
 
-	std::cout << "\n=== Test trace() ===\n";
 	Mat tr = A.trace();
 	CHECK(std::abs(tr(0, 0) - (A(0, 0) + A(1, 1))) < 1e-4);
 
-	std::cout << "\n=== Test mul_mat() ===\n";
 	Mat M = A.mul_mat(B);
 	CHECK(std::abs(M(0, 0) - (1*5 + 2*7)) < 1e-4);
 	CHECK(std::abs(M(1, 1) - (3*6 + 4*8)) < 1e-4);
