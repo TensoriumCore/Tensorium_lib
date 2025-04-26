@@ -12,7 +12,7 @@ using namespace morpheus;
 
 
 int matrix_bench() {
-    constexpr std::size_t N = 16384;
+    constexpr std::size_t N = 8192;
     morpheus::Matrix<float> A(N, N);
     morpheus::Matrix<float> B(N, N);
 
@@ -63,7 +63,28 @@ int matrix_bench() {
 	std::cout << "C2(1,1): " << C2(1, 1) << "\n";
 	std::cout << "=== Benchmarking complete ===\n";
 	std::cout << "[✓] Benchmark test passed\n";
-
+	
+	Matrix<float> D(4, 4);
+	D(0, 0) = 1.0f; D(0, 1) = 2.0f; D(0, 2) = 3.0f; D(0, 3) = 4.0f;
+	D(1, 0) = 5.0f; D(1, 1) = 6.0f; D(1, 2) = 7.0f; D(1, 3) = 8.0f;
+	D(2, 0) = 9.0f; D(2, 1) = 10.0f; D(2, 2) = 11.0f; D(2, 3) = 12.0f;
+	D(3, 0) = 13.0f; D(3, 1) = 14.0f; D(3, 2) = 15.0f; D(3, 3) = 16.0f;
+	Matrix<float> E(4, 4);
+	E(0, 0) = 1.0f; E(0, 1) = 2.0f; E(0, 2) = 3.0f; E(0, 3) = 4.0f;
+	E(1, 0) = 5.0f; E(1, 1) = 6.0f; E(1, 2) = 7.0f; E(1, 3) = 8.0f;
+	E(2, 0) = 9.0f; E(2, 1) = 10.0f; E(2, 2) = 11.0f; E(2, 3) = 12.0f;
+	E(3, 0) = 13.0f; E(3, 1) = 14.0f; E(3, 2) = 15.0f; E(3, 3) = 16.0f;
+	
+	auto F = morpheus::mul_mat(D, E);
+	std::cout << "F(0,0): " << F(0, 0) << "\n";
+	std::cout << "F(0,1): " << F(0, 1) << "\n";
+	std::cout << "F(1,0): " << F(1, 0) << "\n";
+	std::cout << "F(1,1): " << F(1, 1) << "\n";
+	std::cout << "F(2,0): " << F(2, 0) << "\n";
+	std::cout << "F(2,1): " << F(2, 1) << "\n";
+	std::cout << "F(3,0): " << F(3, 0) << "\n";
+	std::cout << "F(3,1): " << F(3, 1) << "\n";
+	std::cout << "=== Benchmarking complete ===\n";
 
     return 0;
 }

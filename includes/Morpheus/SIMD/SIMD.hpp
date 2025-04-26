@@ -169,6 +169,12 @@ namespace simd {
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm256_set_ps(a, b, c, d, a, b, c, d);
 			}
+			static inline reg set8(
+					float a0, float a1, float a2, float a3,
+					float a4, float a5, float a6, float a7
+					) {
+				return _mm256_set_ps(a7, a6, a5, a4, a3, a2, a1, a0);
+			}
 			static inline float extract(reg x, size_t index) {
 				alignas(32) float values[8];
 				_mm256_storeu_ps(values, x);
@@ -190,6 +196,8 @@ namespace simd {
 			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_ps(a, b); }
 			static inline void store_stream(float* ptr, reg x) { _mm256_stream_ps(ptr, x); }
 			static inline reg max(reg a, reg b)		{ return _mm256_max_ps(a, b); }
+			static inline reg min(reg a, reg b)		{ return _mm256_min_ps(a, b); }
+
 		};
 
 	template<>

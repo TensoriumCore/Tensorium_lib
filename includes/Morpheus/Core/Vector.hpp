@@ -327,7 +327,5 @@ namespace morpheus {
 
 						return r;
 					}
-
-
 		};
 }
