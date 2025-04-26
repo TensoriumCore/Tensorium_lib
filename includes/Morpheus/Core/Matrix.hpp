@@ -23,7 +23,7 @@ namespace morpheus {
 
 				using Simd = simd::SimdTraits<K, DefaultISA>;
 				using reg = typename Simd::reg;
-				const size_t simd_width = Simd::width;
+				size_t simd_width = Simd::width;
 				size_t size() const { 
 					return rows * cols; 
 				}
@@ -171,6 +171,13 @@ namespace morpheus {
 					inline Matrix mul_mat(const Matrix<K>& mat) const {
 						if (cols != mat.rows)
 							throw std::invalid_argument("Matrix dimensions do not match for multiplication");
+						if (cols == 4 && mat.rows == 4 && mat.cols == 4)
+							return mul_mat_NxN<4>(mat);
+						if (cols == 8 && mat.rows == 8 && mat.cols == 8)
+							return mul_mat_NxN<8>(mat);
+						if (cols == 16 && mat.rows == 16 && mat.cols == 16)
+							return mul_mat_NxN<16>(mat);
+
 
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
@@ -253,6 +260,40 @@ namespace morpheus {
 						return result;
 					}
 
+				template<size_t N>
+					__attribute__((always_inline, flatten, hot))
+					inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
+						static_assert(N == 4 || N == 8 || N == 16, "Only small NxN matrices supported");
+
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg  = typename Simd::reg;
+						constexpr size_t simd_width = Simd::width;
+
+						Matrix<K> result(N, N);
+
+						reg a[N];
+						for (size_t i = 0; i < N; ++i) {
+							a[i] = Simd::load(&this->data[i * N]);
+						}
+
+						reg b[N];
+						for (size_t j = 0; j < N; ++j) {
+							b[j] = Simd::set(
+									mat.data[j + 0 * N],
+									mat.data[j + 1 * N],
+									mat.data[j + 2 * N],
+									mat.data[j + 3 * N]  
+									);
+						}
+
+						for (size_t i = 0; i < N; ++i) {
+							for (size_t j = 0; j < N; ++j) {
+								result.data[i*N + j] = Simd::horizontal_add(Simd::mul(a[i], b[j]));
+							}
+						}
+
+						return result;
+					}
 
 				template<typename T>
 					__attribute__((always_inline, hot, flatten))

@@ -12,6 +12,7 @@
 
 morpheus::Matrix<float> generate_diagonally_dominant_matrix(size_t n, float dominance_factor = 1.1f) {
 	morpheus::Matrix<float> A(n, n);
+	std::cout << "Generating diagonally dominant matrix of size " << n << "...\n";
 	for (size_t i = 0; i < n; ++i) {
 		for (size_t j = i + 1; j < n; ++j) {
 			float value = static_cast<float>(std::rand()) / RAND_MAX / 2.0f - 1.0f;
@@ -74,59 +75,59 @@ void benchmark_blas_vs_custom(size_t N, std::ofstream& csv) {
 
     morpheus::Matrix<K> A(N, N);
     morpheus::Matrix<K> B(N, N);
-    morpheus::Matrix<K> C_custom(N, N);
-    morpheus::Matrix<K> C_blas(N, N);
+	morpheus::Matrix<K> C_custom(N, N);
+	morpheus::Matrix<K> C_blas(N, N);
+	std::cout << "Benchmarking BLAS vs Custom for N = " << N << "...\n";	
+	std::mt19937 rng(42); 
+	std::uniform_real_distribution<K> dist(K(0), K(1));
 
-    std::mt19937 rng(42); 
-    std::uniform_real_distribution<K> dist(K(0), K(1));
+	for (size_t i = 0; i < A.size(); ++i) A.data[i] = dist(rng);
+	for (size_t i = 0; i < B.size(); ++i) B.data[i] = dist(rng);
 
-    for (size_t i = 0; i < A.size(); ++i) A.data[i] = dist(rng);
-    for (size_t i = 0; i < B.size(); ++i) B.data[i] = dist(rng);
+	auto start_custom = Clock::now();
+	C_custom = morpheus::mul_mat(A, B);
+	auto end_custom = Clock::now();
+	std::cout << "Custom multiplication done.\n";
+	auto start_blas = Clock::now();
+	if constexpr (std::is_same<K, float>::value) {
+		cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
+				N, N, N,
+				1.0f,
+				A.data.data(), N,
+				B.data.data(), N,
+				0.0f,
+				C_blas.data.data(), N);
+	} else if constexpr (std::is_same<K, double>::value) {
+		cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
+				N, N, N,
+				1.0,
+				A.data.data(), N,
+				B.data.data(), N,
+				0.0,
+				C_blas.data.data(), N);
+	}
+	auto end_blas = Clock::now();
 
-    auto start_custom = Clock::now();
-    C_custom = morpheus::mul_mat(A, B);
-    auto end_custom = Clock::now();
+	double time_custom = duration(end_custom - start_custom).count();
+	double time_blas   = duration(end_blas - start_blas).count();
 
-    // auto start_blas = Clock::now();
-    // if constexpr (std::is_same<K, float>::value) {
-    //     cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-    //                 N, N, N,
-    //                 1.0f,
-    //                 A.data.data(), N,
-    //                 B.data.data(), N,
-    //                 0.0f,
-    //                 C_blas.data.data(), N);
-    // } else if constexpr (std::is_same<K, double>::value) {
-    //     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-    //                 N, N, N,
-    //                 1.0,
-    //                 A.data.data(), N,
-    //                 B.data.data(), N,
-    //                 0.0,
-    //                 C_blas.data.data(), N);
-    // }
-    // auto end_blas = Clock::now();
+	double gflops = 2.0 * N * N * N / 1e9;
+	double perf_custom = gflops / time_custom;
+	double perf_blas   = gflops / time_blas;
 
-    double time_custom = duration(end_custom - start_custom).count();
-    // double time_blas   = duration(end_blas - start_blas).count();
+	K max_error = K(0);
+	for (size_t i = 0; i < C_custom.size(); ++i)
+		max_error = std::max(max_error, std::abs(C_custom.data[i] - C_blas.data[i]));
 
-    double gflops = 2.0 * N * N * N / 1e9;
-    double perf_custom = gflops / time_custom;
-    // double perf_blas   = gflops / time_blas;
+	csv << (std::is_same<K, float>::value ? "float" : "double") << ","
+		<< N << ","
+		<< time_custom << ","
+		<< time_blas << ","
+		<< perf_custom << ","
+		<< perf_blas << ","
+		<< max_error << "\n";
 
-    K max_error = K(0);
-    for (size_t i = 0; i < C_custom.size(); ++i)
-        max_error = std::max(max_error, std::abs(C_custom.data[i] - C_blas.data[i]));
-
-    csv << (std::is_same<K, float>::value ? "float" : "double") << ","
-        << N << ","
-        << time_custom << ","
-        // << time_blas << ","
-        << perf_custom << ","
-        // << perf_blas << ","
-        << max_error << "\n";
-
-    std::cout << "N = " << N << " (" << (std::is_same<K, float>::value ? "float" : "double") << ") done.\n";
+	std::cout << "N = " << N << " (" << (std::is_same<K, float>::value ? "float" : "double") << ") done.\n";
 }
 
 template<typename K>
@@ -184,21 +185,21 @@ void benchmark_matmul_range(
 
 int main() {
     std::vector<size_t> sizes = {512, 1024, 2048, 4096, 8192};
-    
+	std::cout << "Benchmarking matrix multiplication...\n"; 
     std::ofstream csv("benchmark_results.csv");
     csv << "Type,N,Time_Custom,Time_BLAS,GFLOPS_Custom,GFLOPS_BLAS,MaxAbsError\n";
     
-        benchmark_blas_vs_custom<float>(16384, csv);
+        benchmark_blas_vs_custom<float>(1024, csv);
     
     csv.close();
     std::cout << "Benchmark results saved to benchmark_results.csv\n";
     
-	/* std::srand(42); */
-	/*     for (size_t n : {32, 64, 128, 256, 512, 1024, 2048}) { */
-	/*         benchmark_solver(n); */
-	/*     } */
+	std::srand(42);
+	for (size_t n : {32, 64, 128, 256, 512, 1024, 2048}) {
+		benchmark_solver(n);
+	}
 
-		// benchmark_matmul_range<float>(250, 100, 250, 5);
+	benchmark_matmul_range<float>(250, 100, 250, 5);
 
     return 0;
 }
