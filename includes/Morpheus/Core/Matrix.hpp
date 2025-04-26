@@ -261,51 +261,6 @@ namespace morpheus {
 					}
 
 				template<size_t N>
-					__attribute__((always_inline))
-					static inline reg load_column(const Matrix<K>& mat, size_t col) {
-						if constexpr (Simd::width == 4) {
-							return Simd::set(
-									mat.data[col + 0 * N],
-									mat.data[col + 1 * N],
-									mat.data[col + 2 * N],
-									mat.data[col + 3 * N]
-									);
-						} else if constexpr (Simd::width == 8) {
-							return Simd::set(
-									mat.data[col + 0 * N],
-									mat.data[col + 1 * N],
-									mat.data[col + 2 * N],
-									mat.data[col + 3 * N],
-									mat.data[col + 4 * N],
-									mat.data[col + 5 * N],
-									mat.data[col + 6 * N],
-									mat.data[col + 7 * N]
-									);
-						} else if constexpr (Simd::width == 16) {
-							return Simd::set(
-									mat.data[col + 0 * N],
-									mat.data[col + 1 * N],
-									mat.data[col + 2 * N],
-									mat.data[col + 3 * N],
-									mat.data[col + 4 * N],
-									mat.data[col + 5 * N],
-									mat.data[col + 6 * N],
-									mat.data[col + 7 * N],
-									mat.data[col + 8 * N],
-									mat.data[col + 9 * N],
-									mat.data[col + 10 * N],
-									mat.data[col + 11 * N],
-									mat.data[col + 12 * N],
-									mat.data[col + 13 * N],
-									mat.data[col + 14 * N],
-									mat.data[col + 15 * N]
-									);
-						} else {
-							static_assert(Simd::width == 4 || Simd::width == 8, "Unsupported SIMD width");
-						}
-					}
-
-				template<size_t N>
 					__attribute__((always_inline, flatten, hot))
 					inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
 						static_assert(N == 4 || N == 8 || N == 16, "Only small NxN matrices supported");
@@ -318,12 +273,20 @@ namespace morpheus {
 
 						reg a[N];
 						for (size_t i = 0; i < N; ++i) {
-							a[i] = Simd::load(&this->data[i * N]);
+							if ((uintptr_t)&this->data[i * N] & 31) {
+								Simd::load(&this->data[i * N]);
+							}
+							a[i] = Simd::loadu(&this->data[i * N]);
 						}
 
 						reg b[N];
 						for (size_t j = 0; j < N; ++j) {
-							b[j] = load_column<N>(mat, j);
+							b[j] = Simd::set(
+									mat.data[j + 0 * N],
+									mat.data[j + 1 * N],
+									mat.data[j + 2 * N],
+									mat.data[j + 3 * N]  
+									);
 						}
 
 						for (size_t i = 0; i < N; ++i) {
