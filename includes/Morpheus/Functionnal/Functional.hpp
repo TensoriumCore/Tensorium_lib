@@ -6,7 +6,6 @@
 #include "../Core/Derivate.hpp"
 
 namespace morpheus {
-
 	// === VECTOR OPS ===
 	template <typename T>
 	Vector<T> add_vec(const Vector<T>& a, const Vector<T>& b) {
@@ -49,8 +48,6 @@ namespace morpheus {
 	Vector<T> cross_vec(const Vector<T>& a, const Vector<T>& b) {
 		return Vector<T>::cross_product(a, b);
 	}
-
-
 	// === MATRIX OPS ===
 	template <typename T>
 	Matrix<T> add_mat(const Matrix<T>& A, const Matrix<T>& B) {
@@ -92,9 +89,7 @@ namespace morpheus {
 		Vector<T> mul_vec(const Matrix<T>& A, const Vector<T>& x) {
 			return A.mul_vec(x);
 	}
-
 	// === TENSOR OPS ===
-
 	template<typename K, std::size_t Rank>
 		template <size_t I, size_t J>
 		Tensor<K, Rank - 2> Tensor<K, Rank>::contract_tensor() const {
@@ -112,9 +107,7 @@ namespace morpheus {
 		inline Tensor<K, R1 + R2> mul_tensor(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
 			return Tensor<K, R1>::template tensor_product<R1, R2>(A, B);
 		}
-
 	// === LINEAR SOLVERS ===
-
 	template <typename T>
 		Vector<T> gauss_solve(const Matrix<T>& A, const Vector<T>& b) {
 			return solver::Gauss<T>::solve(A, b);
@@ -124,11 +117,7 @@ namespace morpheus {
 		Vector<T> jacobi_solve(const Matrix<T>& A, const Vector<T>& b, T tol = 1e-6, int max_iter = 1000) {
 			return solver::Jacobi<T>::solve(A, b, tol, max_iter);
 		}
-	
-
-
 	// === DERIVATIVES ===
-
 	template<typename K>
 		inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
 			input.centered_derivative(input, output, axis, dx);
