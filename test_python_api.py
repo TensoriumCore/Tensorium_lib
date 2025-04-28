@@ -36,6 +36,48 @@ print("lerp(v, v2, 0.5) =", morph.lerp(v, v2, 0.5))
 print("\n=== morph functions ===")
 print(dir(morph))
 
+
+A = Matrix(3, 3)
+A.fill([
+    [1.0, 2.0, 3.0],
+    [0.0, 1.0, 4.0],
+    [5.0, 6.0, 0.0],
+])
+
+v = Vector([1.0, 2.0, 3.0])
+
+print("Matrix A:")
+print(A)
+
+print("\nAddition A + A:")
+print(morph.add_mat(A, A))
+
+print("\nSubtraction A - A:")
+print(morph.sub_mat(A, A))
+
+print("\nScaling A * 2:")
+print(morph.scl_mat(A, 2.0))
+
+print("\nMultiplication A * A:")
+print(morph.mul(A, A))
+
+print("\nTranspose of A:")
+print(morph.transpose_mat(A))
+
+print("\nTrace of A:")
+print(morph.trace_mat(A))
+
+print("\nMatrix A multiplied by vector v:")
+print(morph.mul_vec(A, v))
+
+print("\nInverse of A:")
+print(morph.inverse_mat(A))
+
+print("\nDeterminant of A:")
+print(morph.det_mat(A))
+
+print("\nRank of A:")
+print(morph.rank_mat(A))
 # === Benchmark
 def benchmark_large_matrix(N):
     print(f"\n=== Benchmarking Python × Morpheus (N = {N}) ===")
@@ -59,5 +101,40 @@ def benchmark_large_matrix(N):
     print(f"Time: {elapsed:.3f} s")
     print(f"Performance: {gflops:.2f} GFLOP/s")
     print(f"Sample result: C[0, 0] = {C[0, 0]} (Expected: {N})")
+
+
+
+def test_solver():
+    A = Matrix(3, 3)
+    B = Matrix(3, 3)
+
+    A.fill([
+        [2.0, 1.0, -1.0],
+        [-3.0, -1.0, 2.0],
+        [-2.0, 1.0, 2.0],
+    ])
+    
+    B.fill([
+        [10.0, 1.0, 1.0],
+        [2.0, 10.0, 1.0],
+        [2.0, 2.0, 10.0],
+    ])
+
+    b = Vector([8.0, -11.0, -3.0])   
+    b2 = Vector([12.0, 13.0, 14.0]) 
+
+    x_gauss = morph.gauss_solve(A, b)
+    print("Solution by Gauss:", x_gauss)
+
+    x_jacobi = morph.jacobi_solve(B, b2, tol=1e-6, max_iter=100)
+    print("Solution by Jacobi:", x_jacobi)
+
+    assert all(abs(x - y) < 1e-3 for x, y in zip(x_gauss, [2.0, 3.0, -1.0])), "Gauss failed"
+    assert all(abs(x - y) < 1e-3 for x, y in zip(x_jacobi, [1.0, 1.0, 1.0])), "Jacobi failed"
+
+    print("\n✅ Solver tests passed!")
+
+
+test_solver()
 
 benchmark_large_matrix(8192)

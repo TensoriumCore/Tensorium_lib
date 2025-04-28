@@ -216,6 +216,16 @@ int matrix_tests() {
 	std::cout << "U3_inv:\n";
 	U3_inv.print();
     CHECK(std::abs(d - (-2.0f)) < 1e-3f);
+
+	Matrix<float> G(3, 4);
+	G(0, 0) = 1; G(0, 1) = 2; G(0, 2) = 3; G(0, 3) = 4;
+	G(1, 0) = 2; G(1, 1) = 4; G(1, 2) = 6; G(1, 3) = 8;
+	G(2, 0) = 0; G(2, 1) = 0; G(2, 2) = 0; G(2, 3) = 0;
+
+	size_t r = G.rank();
+	std::cout << "Rank of A = " << r << "\n";
+	CHECK(r == 1);
+
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	return 0;

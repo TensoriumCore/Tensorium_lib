@@ -91,8 +91,20 @@ PYBIND11_MODULE(morpheus, m) {
 		morph.def("cross", &cross_vec<float>, "Cross product (only defined for 3D vectors)");
 
 		// === Matrix ops ===
+
 		morph.def("add_mat", &add_mat<float>, "Add two matrices");
 		morph.def("sub_mat", &sub_mat<float>, "Subtract two matrices");
 		morph.def("scl_mat", &scl_mat<float>, "Scale matrix by scalar");
 		morph.def("mul", &mul_mat<float>, "Multiply two matrices");
+		morph.def("transpose_mat", &transpose_mat<float>, "Transpose a matrix");
+		morph.def("trace_mat", &trace_mat<float>, "Trace of a matrix");
+		morph.def("mul_vec", &mul_vec<float>, "Multiply matrix by vector");
+		morph.def("inverse_mat", &inverse_mat<float>, "Inverse of a matrix");
+		morph.def("det_mat", &det_mat<float>, "Determinant of a matrix");
+		morph.def("rank_mat", &rank_mat<float>, "Rank of a matrix");
+
+		// === Solvers ===
+		morph.def("gauss_solve", &gauss_solve<float>, "Solve linear system with Gauss elimination");
+		morph.def("jacobi_solve", &jacobi_solve<float>, py::arg("A"), py::arg("b"), py::arg("tol") = 1e-6f, py::arg("max_iter") = 1000, "Solve linear system with Jacobi iterative method");
+
 }
