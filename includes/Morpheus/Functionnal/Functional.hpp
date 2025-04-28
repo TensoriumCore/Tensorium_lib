@@ -7,12 +7,27 @@
 
 namespace morpheus {
 	// === VECTOR OPS ===
+
+/*
+ * @brief Add two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Resulting vector
+ */
+
 	template <typename T>
 	Vector<T> add_vec(const Vector<T>& a, const Vector<T>& b) {
 		Vector<T> result = a;
 		result.add(b);
 		return result;
 	}
+
+/*
+ * @brief Subtract two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Resulting vector
+ */
 
 	template <typename T>
 	Vector<T> sub_vec(const Vector<T>& a, const Vector<T>& b) {
@@ -21,6 +36,13 @@ namespace morpheus {
 		return result;
 	}
 
+/*
+ * @brief Scale a vector by a scalar
+ * @param a Vector to scale
+ * @param scalar Scalar value
+ * @return Resulting vector
+ */
+
 	template <typename T>
 	Vector<T> scl_vec(const Vector<T>& a, T scalar) {
 		Vector<T> result = a;
@@ -28,33 +50,105 @@ namespace morpheus {
 		return result;
 	}
 
+/*
+ * @brief Normalize a vector
+ * @param a Vector to normalize
+ * @return Normalized vector
+ */
+
 	template <typename T> T norm1_vec(const Vector<T>& a)   { return a.norm_1(); }
+
+/*
+ * @brief Normalize 2 a vector
+ * @param a Vector to normalize
+ * @return Normalized vector
+ */
+
 	template <typename T> T norm2_vec(const Vector<T>& a)   { return a.norm_2(); }
+
+/*
+ * @brief Normalize inf a vector
+ * @param a Vector to normalize
+ * @return Normalized vector
+ */
+
 	template <typename T> T normInf_vec(const Vector<T>& a) { return a.norm_inf(); }
+	
+/*
+ * @brief Dot product of two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Dot product result
+ */
+
 	template <typename T> T dot_vec(const Vector<T>& a, const Vector<T>& b) { return a.dot(b); }
+/*
+ * Cosine of the angle between two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Cosine of the angle
+ */
+
 	template <typename T> T cosine_vec(const Vector<T>& a, const Vector<T>& b) { return Vector<T>::angle_cos(a, b); }
+/*
+ * Lerp between two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @param t Interpolation factor
+ * @return Interpolated vector
+ */
 
 	template <typename T>
 	Vector<T> lerp_vec(const Vector<T>& a, const Vector<T>& b, T t) {
 		return Vector<T>::lerp(a, b, t);
 	}
 
+/*
+ * Linear combination of multiple vectors
+ * @param u Vector of vectors
+ * @param coef Coefficients for the linear combination
+ * @return Resulting vector
+ */
+
 	template <typename T>
 	Vector<T> linear_combination_vec(const std::vector<Vector<T>>& u, const std::vector<T>& coef) {
 		return Vector<T>::linear_combination(u, coef);
 	}
 
+/*
+ * Cross product of two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Cross product result
+ */
+
 	template <typename T>
 	Vector<T> cross_vec(const Vector<T>& a, const Vector<T>& b) {
 		return Vector<T>::cross_product(a, b);
 	}
+
 	// === MATRIX OPS ===
+
+/*
+ * @brief Add two matrices
+ * @param A First matrix
+ * @param B Second matrix
+ * @return Resulting matrix
+ */
+
 	template <typename T>
 	Matrix<T> add_mat(const Matrix<T>& A, const Matrix<T>& B) {
 		Matrix<T> result = A;
 		result.add(B);
 		return result;
 	}
+
+/*
+ * @brief Subtract two matrices
+ * @param A First matrix
+ * @param B Second matrix
+ * @return Resulting matrix
+ */
 
 	template <typename T>
 	Matrix<T> sub_mat(const Matrix<T>& A, const Matrix<T>& B) {
@@ -63,6 +157,13 @@ namespace morpheus {
 		return result;
 	}
 
+/*
+ * @brief Scale a matrix by a scalar
+ * @param A Matrix to scale
+ * @param scalar Scalar value
+ * @return Resulting matrix
+ */
+
 	template <typename T>
 	Matrix<T> scl_mat(const Matrix<T>& A, T scalar) {
 		Matrix<T> result = A;
@@ -70,25 +171,62 @@ namespace morpheus {
 		return result;
 	}
 
+/*
+ * @brief Matrix multiplication
+ * @param A First matrix
+ * @param B Second matrix
+ * @return Resulting matrix
+ * @note Assumes A.cols() == B.rows()
+ * @note Uses SIMD for optimization
+ * @note OpenMP parallelization for large matrices, for small matrices, it is not worth the overhead
+ * @note (For matrix 4x4, 8x8 and 16x16, there's a SIMD fallback to ensure L1 and L2 cache storage)
+ */
+
 	template <typename T>
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
 		return A.mul_mat(B); 
 	}
+
+/*
+ * @brief Matrix transpose 
+ * @param A Matrix to transpose
+ */
 
 	template <typename T>
 		Matrix<T> transpose_mat(const Matrix<T>& A) {
 			return A.transpose();
 	}
 
+/*
+ * @brief Trace of a matrix
+ * @param A Matrix to trace
+ */
+
 	template <typename T>
 		Matrix<T> trace_mat(const Matrix<T>& A) {
 			return A.trace();
 	}
 
+/*
+ * @brief Multiply a matrix by a vector
+ * @param A Matrix
+ * @param x Vector
+ * @return Resulting vector
+ * @note Assumes A.cols() == x.size()
+ */
+
 	template <typename T>
 		Vector<T> mul_vec(const Matrix<T>& A, const Vector<T>& x) {
 			return A.mul_vec(x);
 	}
+
+/*
+ * @brief Inverse of a matrix
+ * @param A Matrix to invert
+ * @return Inverted matrix
+ * @note Assumes A is square
+ * @note Uses LU decomposition for inversion
+ */
 
 	template <typename T>
 	Matrix<T> inverse_mat(const Matrix<T>& A) {
@@ -98,6 +236,11 @@ namespace morpheus {
 	template <typename T>
 		T det_mat(const Matrix<T>& A) {
 			return A.det();
+	}
+	
+	template <typename T>
+		size_t rank_mat(const Matrix<T>& A) {
+			return A.rank();
 	}
 
 	// === TENSOR OPS ===
@@ -118,6 +261,7 @@ namespace morpheus {
 		inline Tensor<K, R1 + R2> mul_tensor(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
 			return Tensor<K, R1>::template tensor_product<R1, R2>(A, B);
 		}
+
 	// === LINEAR SOLVERS ===
 	template <typename T>
 		Vector<T> gauss_solve(const Matrix<T>& A, const Vector<T>& b) {
@@ -128,6 +272,7 @@ namespace morpheus {
 		Vector<T> jacobi_solve(const Matrix<T>& A, const Vector<T>& b, T tol = 1e-6, int max_iter = 1000) {
 			return solver::Jacobi<T>::solve(A, b, tol, max_iter);
 		}
+
 	// === DERIVATIVES ===
 	template<typename K>
 		inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {

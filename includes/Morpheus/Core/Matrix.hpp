@@ -498,6 +498,40 @@ namespace morpheus {
 
 						return det;
 					}
+
+				__attribute__((always_inline, hot, flatten))
+					inline size_t rank(K eps = K(1e-6)) const {
+						Matrix<K> M(*this); 
+						const size_t m = rows;
+						const size_t n = cols;
+						size_t r = 0;
+
+						for (size_t col = 0; col < n; ++col) {
+							size_t pivot_row = r;
+							for (size_t i = r; i < m; ++i) {
+								if (std::abs(M(i, col)) > std::abs(M(pivot_row, col)))
+									pivot_row = i;
+							}
+
+							if (std::abs(M(pivot_row, col)) <= eps)
+								continue;
+
+							if (pivot_row != r)
+								M.swap_rows(pivot_row, r);
+
+							for (size_t i = r + 1; i < m; ++i) {
+								auto f = M(i, col) / M(r, col);
+								M(i, col) = 0;
+								for (size_t j = col + 1; j < n; ++j)
+									M(i, j) -= f * M(r, j);
+							}
+
+							++r;
+						}
+
+						return r;
+					}
+
 		};
 }
 
