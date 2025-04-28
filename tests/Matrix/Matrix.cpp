@@ -136,6 +136,86 @@ int matrix_tests() {
 	Mat M = A.mul_mat(B);
 	CHECK(std::abs(M(0, 0) - (1*5 + 2*7)) < 1e-4);
 	CHECK(std::abs(M(1, 1) - (3*6 + 4*8)) < 1e-4);
+	std::cout << "Inverse test\n";
+    A(0, 0) = 4.0f; A(0, 1) = 7.0f;
+    A(1, 0) = 2.0f; A(1, 1) = 6.0f;
+
+    auto A_inv = inverse_mat(A);
+	CHECK(std::abs(A_inv(0, 0) - 0.6f) < 1e-3f);
+	CHECK(std::abs(A_inv(0, 1) - (-0.7f)) < 1e-3f);
+	CHECK(std::abs(A_inv(1, 0) - (-0.2f)) < 1e-3f);
+	CHECK(std::abs(A_inv(1, 1) - 0.4f) < 1e-3f);
+	CHECK(std::abs(A_inv(0, 0) * A(0, 0) + A_inv(0, 1) * A(1, 0) - 1.0f) < 1e-3f);
+	CHECK(std::abs(A_inv(0, 0) * A(0, 1) + A_inv(0, 1) * A(1, 1)) < 1e-3f);
+	CHECK(std::abs(A_inv(1, 0) * A(0, 0) + A_inv(1, 1) * A(1, 0)) < 1e-3f);
+
+	std::cout << "Inverse test\n";
+	std::cout << "A:\n";
+	for (std::size_t i = 0; i < 2; ++i) {
+		for (std::size_t j = 0; j < 2; ++j) {
+			std::cout << A(i, j) << " ";
+		}
+		std::cout << "\n";
+	}
+	std::cout << "A_inv:\n";
+	for (std::size_t i = 0; i < 2; ++i) {
+		for (std::size_t j = 0; j < 2; ++j) {
+			std::cout << A_inv(i, j) << " ";
+		}
+		std::cout << "\n";
+	}
+
+    Mat Id = A.mul_mat(A_inv);
+    CHECK(std::abs(Id(0, 0) - 1.0f) < 1e-3f);
+    CHECK(std::abs(Id(1, 1) - 1.0f) < 1e-3f);
+    CHECK(std::abs(Id(0, 1)) < 1e-3f);
+    CHECK(std::abs(Id(1, 0)) < 1e-3f);
+	std::cout << "Determinant test\n";
+	A(0, 0) = 1.0f; A(0, 1) = 2.0f;
+    A(1, 0) = 3.0f; A(1, 1) = 4.0f;
+
+    auto d = det_mat(A);
+	std::cout << "Determinant: " << d << "\n";
+	std::cout << "A:\n";	
+	A.print();
+	Mat U(3, 3);
+    U(0, 0) = 1.0f; U(0, 1) = 0.0f; U(0, 2) = 0.0f;
+    U(1, 0) = 0.0f; U(1, 1) = 1.0f; U(1, 2) = 0.0f;
+    U(2, 0) = 0.0f; U(2, 1) = 0.0f; U(2, 2) = 1.0f;
+
+    auto U_inv = inverse_mat(U);
+
+    for (size_t i = 0; i < 3; ++i)
+        for (size_t j = 0; j < 3; ++j)
+            CHECK(std::abs(U_inv(i, j) - (i == j ? 1.0f : 0.0f)) < 1e-3f);
+	std::cout << "U:\n";
+	U.print();
+	std::cout << "U_inv:\n";
+	U_inv.print();
+
+	Mat U2(3, 3);
+    U2(0, 0) = 2.0f; U2(0, 1) = 0.0f; U2(0, 2) = 0.0f;
+    U2(1, 0) = 0.0f; U2(1, 1) = 2.0f; U2(1, 2) = 0.0f;
+    U2(2, 0) = 0.0f; U2(2, 1) = 0.0f; U2(2, 2) = 2.0f;
+	auto U2_inv = inverse_mat(U2);	
+	for (size_t i = 0; i < 3; ++i)
+		for (size_t j = 0; j < 3; ++j)
+			CHECK(std::abs(U2_inv(i, j) - (i == j ? 0.5f : 0.0f)) < 1e-3f);
+	std::cout << "U2:\n";
+	U2.print();
+	std::cout << "U2_inv:\n";
+	U2_inv.print();
+	
+	Mat U3(3, 3);
+	U3(0, 0) = 8.0f; U3(0, 1) = 5.0f; U3(0, 2) = -2.0f;
+	U3(1, 0) = 4.0f; U3(1, 1) = 7.0f; U3(1, 2) = 20.0f;
+	U3(2, 0) = 7.0f; U3(2, 1) = 6.0f; U3(2, 2) = 1.0f;
+	auto U3_inv = inverse_mat(U3);
+	std::cout << "U3:\n";
+	U3.print();
+	std::cout << "U3_inv:\n";
+	U3_inv.print();
+    CHECK(std::abs(d - (-2.0f)) < 1e-3f);
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	return 0;

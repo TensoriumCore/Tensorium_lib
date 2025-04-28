@@ -383,6 +383,121 @@ namespace morpheus {
 
 						return result;
 					}
+
+				__attribute__((always_inline, hot, flatten))
+					inline Matrix<K> inverse() const {
+						if (rows != cols)
+							throw std::invalid_argument("Matrix must be square");
+
+						const auto n = rows;
+						Matrix<K> M(n, n);
+						Matrix<K> Inv(n, n);
+
+						for (auto i = decltype(n)(0); i < n; ++i) {
+							for (auto j = decltype(n)(0); j < n; ++j) {
+								M(i, j) = operator()(i, j);
+								Inv(i, j) = (i == j) ? K(1) : K(0);
+							}
+						}
+
+						using SimdT = simd::SimdTraits<K, DefaultISA>;
+						using regT  = typename SimdT::reg;
+						const auto W = SimdT::width;
+
+						for (auto i = decltype(n)(0); i < n; ++i) {
+							auto piv = i;
+							auto maxv = std::abs(M(i, i));
+							for (auto r = i + 1; r < n; ++r) {
+								auto v = std::abs(M(r, i));
+								if (v > maxv) { maxv = v; piv = r; }
+							}
+							if (maxv < static_cast<K>(1e-12))
+								throw std::runtime_error("Matrix is singular or nearly singular.");
+
+							if (piv != i) {
+								M.swap_rows(i, piv);
+								Inv.swap_rows(i, piv);
+							}
+
+							auto diag = M(i, i);
+							auto diag_inv = K(1) / diag;
+							for (auto j = 0u; j < n; ++j) {
+								M(i, j) *= diag_inv;
+								Inv(i, j) *= diag_inv;
+							}
+
+#pragma omp parallel for schedule(dynamic, UNROLL)
+							for (auto j = 0u; j < n; ++j) {
+								if (j != i) {
+									auto f = M(j, i);
+									for (auto k = 0u; k < n; ++k) {
+										M(j, k) -= f * M(i, k);
+										Inv(j, k) -= f * Inv(i, k);
+									}
+								}
+							}
+						}
+
+						return Inv;
+					}
+			
+				__attribute__((always_inline, hot, flatten))
+					inline K det() const {
+						if (rows != cols)
+							throw std::invalid_argument("Matrix must be square");
+
+						const size_t n = rows;
+						Matrix<K> M(n, n);
+						using SimdT = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename SimdT::reg;
+						const size_t simd_width = SimdT::width;
+
+						for (size_t i = 0; i < n; ++i)
+							for (size_t j = 0; j < n; ++j)
+								M(i, j) = operator()(i, j);
+
+						K det_sign = K(1);  
+
+						for (size_t i = 0; i < n; ++i) {
+							size_t piv = i;
+							auto maxv = std::abs(M(i, i));
+							for (size_t r = i + 1; r < n; ++r) {
+								auto v = std::abs(M(r, i));
+								if (v > maxv) { maxv = v; piv = r; }
+							}
+							if (maxv < static_cast<K>(1e-12))
+								return K(0); 
+
+							if (piv != i) {
+								M.swap_rows(i, piv);
+								det_sign = -det_sign;
+							}
+
+							for (size_t j = i + 1; j < n; ++j) {
+								auto f = M(j, i) / M(i, i);
+								M(j, i) = K(0);
+
+								auto f_vec = SimdT::set1(-f);
+								size_t k = i + 1;
+
+								for (; k + simd_width - 1 < n; k += simd_width) {
+									auto mjk = SimdT::load(&M(j, k));
+									auto mik = SimdT::load(&M(i, k));
+									mjk = SimdT::fmadd(f_vec, mik, mjk);  
+									SimdT::store(&M(j, k), mjk);
+								}
+								for (; k < n; ++k) {
+									M(j, k) -= f * M(i, k);
+								}
+							}
+						}
+
+						K det = det_sign;
+						for (size_t i = 0; i < n; ++i)
+							det *= M(i, i);
+
+						return det;
+					}
 		};
 }
 

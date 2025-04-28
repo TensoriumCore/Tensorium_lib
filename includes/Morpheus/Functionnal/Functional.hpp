@@ -89,6 +89,17 @@ namespace morpheus {
 		Vector<T> mul_vec(const Matrix<T>& A, const Vector<T>& x) {
 			return A.mul_vec(x);
 	}
+
+	template <typename T>
+	Matrix<T> inverse_mat(const Matrix<T>& A) {
+		return A.inverse();
+	}
+
+	template <typename T>
+		T det_mat(const Matrix<T>& A) {
+			return A.det();
+	}
+
 	// === TENSOR OPS ===
 	template<typename K, std::size_t Rank>
 		template <size_t I, size_t J>
