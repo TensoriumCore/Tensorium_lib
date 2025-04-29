@@ -542,4 +542,155 @@ namespace simd {
 			}
 		};
 
+	template<>
+		struct SimdTraits<std::complex<double>, sse_t> {
+			using reg = __m128d;
+			static constexpr size_t width = 1;
+
+			static inline reg set1(std::complex<double> x) {
+				return _mm_set_pd(x.imag(), x.real());
+			}
+			static inline reg load(const std::complex<double>* ptr) {
+				return _mm_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+			static inline reg loadu(const std::complex<double>* ptr) {
+				return _mm_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+			static inline void store(std::complex<double>* ptr, reg x) {
+				_mm_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+			static inline void storeu(std::complex<double>* ptr, reg x) {
+				_mm_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+			static inline reg add(reg a, reg b)		{ return _mm_add_pd(a, b); }
+			static inline reg sub(reg a, reg b)		{ return _mm_sub_pd(a, b); }
+			static inline reg mul(reg a, reg b) {
+				__m128d a_real = _mm_unpacklo_pd(a, a);
+				__m128d a_imag = _mm_unpackhi_pd(a, a);
+				__m128d b_real = _mm_unpacklo_pd(b, b);
+				__m128d b_imag = _mm_unpackhi_pd(b, b);
+
+				__m128d real = _mm_sub_pd(_mm_mul_pd(a_real, b_real), _mm_mul_pd(a_imag, b_imag));
+				__m128d imag = _mm_add_pd(_mm_mul_pd(a_real, b_imag), _mm_mul_pd(a_imag, b_real));
+
+				return _mm_unpacklo_pd(real, imag);
+			}	
+			static inline reg andnot(reg a, reg b)	{ return _mm_andnot_pd(a, b); }
+			static inline reg max(reg a, reg b)		{ return _mm_max_pd(a, b); }
+			static inline reg min(reg a, reg b)		{ return _mm_min_pd(a, b); }
+			static inline reg setzero()				{ return _mm_setzero_pd(); }
+		};
+
+	template<>
+		struct SimdTraits<std::complex<float>, avx2_t> {
+			using reg = __m256;
+			static constexpr size_t width = 4;
+			static inline reg set1(std::complex<float> x) {
+				return _mm256_set_ps(x.imag(), x.real(), x.imag(), x.real(),
+									 x.imag(), x.real(), x.imag(), x.real());
+			}
+			static inline reg load(const std::complex<float>* ptr) {
+				return _mm256_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+			static inline reg loadu(const std::complex<float>* ptr) {
+				return _mm256_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+			static inline void store(std::complex<float>* ptr, reg x) {
+				_mm256_store_ps(reinterpret_cast<float*>(ptr), x);
+			}
+			static inline void storeu(std::complex<float>* ptr, reg x) {
+				_mm256_storeu_ps(reinterpret_cast<float*>(ptr), x);
+			}
+			static inline reg add(reg a, reg b)		{ return _mm256_add_ps(a, b); }
+			static inline reg sub(reg a, reg b)		{ return _mm256_sub_ps(a, b); }
+			static inline reg mul(reg a, reg b) {
+				__m256 a_real = _mm256_shuffle_ps(a, a, _MM_SHUFFLE(2,0,2,0));
+				__m256 a_imag = _mm256_shuffle_ps(a, a, _MM_SHUFFLE(3,1,3,1));
+				__m256 b_real = _mm256_shuffle_ps(b, b, _MM_SHUFFLE(2,0,2,0));
+				__m256 b_imag = _mm256_shuffle_ps(b, b, _MM_SHUFFLE(3,1,3,1));
+
+				__m256 real = _mm256_sub_ps(_mm256_mul_ps(a_real, b_real), _mm256_mul_ps(a_imag, b_imag));
+				__m256 imag = _mm256_add_ps(_mm256_mul_ps(a_real, b_imag), _mm256_mul_ps(a_imag, b_real));
+
+				__m256 result = _mm256_unpacklo_ps(real, imag);
+				__m256 result_high = _mm256_unpackhi_ps(real, imag);
+
+				return _mm256_permute2f128_ps(result, result_high, 0x20);
+			}
+			static inline reg andnot(reg a, reg b)	{ return _mm256_andnot_ps(a, b); }
+			static inline reg max(reg a, reg b)		{ return _mm256_max_ps(a, b); }
+			static inline reg min(reg a, reg b)		{ return _mm256_min_ps(a, b); }
+			static inline reg setzero()				{ return _mm256_setzero_ps(); }
+			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_ps(a, b, c); }
+			static inline std::complex<float> horizontal_add(reg v) {
+				alignas(32) float values[8];
+				_mm256_storeu_ps(values, v);
+				return std::complex<float>(
+						values[0] + values[2] + values[4] + values[6],
+						values[1] + values[3] + values[5] + values[7]
+						);
+			}
+		};
+
+	template<>
+		struct SimdTraits<std::complex<double>, avx2_t> {
+			using reg = __m256d;
+			static constexpr size_t width = 2;
+			static inline reg set1(std::complex<double> x) {
+				return _mm256_set_pd(x.imag(), x.real(), x.imag(), x.real());
+			}
+			static inline reg load(const std::complex<double>* ptr) {
+				return _mm256_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+			static inline reg loadu(const std::complex<double>* ptr) {
+				return _mm256_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+			static inline void store(std::complex<double>* ptr, reg x) {
+				_mm256_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+			static inline void storeu(std::complex<double>* ptr, reg x) {
+				_mm256_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+			static inline reg add(reg a, reg b)		{ return _mm256_add_pd(a, b); }
+			static inline reg sub(reg a, reg b)		{ return _mm256_sub_pd(a, b); }
+			static inline reg mul(reg a, reg b) {
+				__m128d a_lo = _mm256_castpd256_pd128(a);
+				__m128d a_hi = _mm256_extractf128_pd(a, 1); 
+				__m128d b_lo = _mm256_castpd256_pd128(b);
+				__m128d b_hi = _mm256_extractf128_pd(b, 1);
+
+				__m128d a_lo_real = _mm_unpacklo_pd(a_lo, a_lo);
+				__m128d a_lo_imag = _mm_unpackhi_pd(a_lo, a_lo);
+				__m128d b_lo_real = _mm_unpacklo_pd(b_lo, b_lo);
+				__m128d b_lo_imag = _mm_unpackhi_pd(b_lo, b_lo);
+
+				__m128d real_lo = _mm_sub_pd(_mm_mul_pd(a_lo_real, b_lo_real), _mm_mul_pd(a_lo_imag, b_lo_imag));
+				__m128d imag_lo = _mm_add_pd(_mm_mul_pd(a_lo_real, b_lo_imag), _mm_mul_pd(a_lo_imag, b_lo_real));
+				__m128d result_lo = _mm_unpacklo_pd(real_lo, imag_lo);
+
+				__m128d a_hi_real = _mm_unpacklo_pd(a_hi, a_hi);
+				__m128d a_hi_imag = _mm_unpackhi_pd(a_hi, a_hi);
+				__m128d b_hi_real = _mm_unpacklo_pd(b_hi, b_hi);
+				__m128d b_hi_imag = _mm_unpackhi_pd(b_hi, b_hi);
+
+				__m128d real_hi = _mm_sub_pd(_mm_mul_pd(a_hi_real, b_hi_real), _mm_mul_pd(a_hi_imag, b_hi_imag));
+				__m128d imag_hi = _mm_add_pd(_mm_mul_pd(a_hi_real, b_hi_imag), _mm_mul_pd(a_hi_imag, b_hi_real));
+				__m128d result_hi = _mm_unpacklo_pd(real_hi, imag_hi);
+
+				return _mm256_insertf128_pd(_mm256_castpd128_pd256(result_lo), result_hi, 1);
+			}
+			static inline reg andnot(reg a, reg b)	{ return _mm256_andnot_pd(a, b); }
+			static inline reg max(reg a, reg b)		{ return _mm256_max_pd(a, b); }
+			static inline reg min(reg a, reg b)		{ return _mm256_min_pd(a, b); }
+			static inline reg setzero()				{ return _mm256_setzero_pd(); }
+			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_pd(a, b, c); }
+			static inline std::complex<double> horizontal_add(reg v) {
+				alignas(32) double values[4];
+				_mm256_storeu_pd(values, v);
+				return std::complex<double>(
+						values[0] + values[2],
+						values[1] + values[3]
+						);
+			}
+		};
 } 
