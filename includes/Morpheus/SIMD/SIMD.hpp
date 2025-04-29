@@ -6,6 +6,7 @@
 #include <cpuid.h>
 #include <memory>
 #include <stdexcept>
+#include <complex>
 
 struct sse_t    { static constexpr size_t width = 4;  using reg = __m128;  static constexpr size_t alignment = 16; };
 struct avx2_t   { static constexpr size_t width = 8;  using reg = __m256;  static constexpr size_t alignment = 32; };
@@ -59,20 +60,20 @@ inline bool supports_sse() {
 
 #include <iostream>
 template<typename F>
-void dispatch_simd(F&& f) {
-	if (supports_avx512()) {
-		std::cout << "[dispatch] Detected AVX512\n";
-		f(avx512_t{});
-	} else if (supports_avx2()) {
-		std::cout << "[dispatch] Detected AVX2\n";
-		f(avx2_t{});
-	} else if (supports_sse()) {
-		std::cout << "[dispatch] Detected SSE\n";
-		f(sse_t{});
-	} else {
-		throw std::runtime_error("No supported SIMD ISA (SSE/AVX2/AVX512).");
+	void dispatch_simd(F&& f) {
+		if (supports_avx512()) {
+			std::cout << "[dispatch] Detected AVX512\n";
+			f(avx512_t{});
+		} else if (supports_avx2()) {
+			std::cout << "[dispatch] Detected AVX2\n";
+			f(avx2_t{});
+		} else if (supports_sse()) {
+			std::cout << "[dispatch] Detected SSE\n";
+			f(sse_t{});
+		} else {
+			throw std::runtime_error("No supported SIMD ISA (SSE/AVX2/AVX512).");
+		}
 	}
-}
 
 inline __m256 extractf32x8_ps_fallback(__m512 v, int imm8) {
     alignas(64) float tmp[16];
@@ -82,6 +83,11 @@ inline __m256 extractf32x8_ps_fallback(__m512 v, int imm8) {
     else
         return _mm256_load_ps(&tmp[8]); 
 }
+
+
+/*
+ * REAL NUMBERS
+ */
 
 namespace detail {
 	__attribute__((always_inline, hot, flatten))
@@ -159,7 +165,108 @@ namespace simd {
 
 	template<typename T, typename ISA = DefaultISA>
 		struct SimdTraits;
+	template<>
+		struct SimdTraits<float, sse_t> {
+			using reg = __m128;
+			static constexpr size_t width = 4;
+			static inline reg set1(float x)				{ return _mm_set1_ps(x); }
+			static inline reg set(float a, float b, float c, float d) {
+				return _mm_set_ps(a, b, c, d);
+			}
+			static inline reg set4(
+					float a0, float a1, float a2, float a3
+					) {
+				return _mm_set_ps(a3, a2, a1, a0);
+			}
+			static inline float extract(reg x, size_t index) {
+				alignas(16) float values[4];
+				_mm_storeu_ps(values, x);
+				return values[index];
+			}
+			static inline void stream(float* ptr, reg x) { _mm_stream_ps(ptr, x); }
+			static inline reg setzero() { return _mm_setzero_ps(); }
+			static inline reg fma(reg a, reg b, reg c)   { return _mm_fmadd_ps(a, b, c); }
+			static inline float horizontal_add(reg v)    { return detail::reduce_sum(v); }
+			static inline reg load(const float* ptr)	 { return _mm_load_ps(ptr); }
+			static inline reg loadu(const float* ptr)	 { return _mm_loadu_ps(ptr); }
+			static inline void store(float* ptr, reg x)	 { _mm_store_ps(ptr, x); }
+			static inline void storeu(float* ptr, reg x) { _mm_storeu_ps(ptr, x); }
+			static inline reg zero()					 { return _mm_setzero_ps(); }
+			static inline reg fmadd(reg a, reg b, reg c) { return _mm_fmadd_ps(a, b, c); }
+			static inline reg add(reg a, reg b)			 { return _mm_add_ps(a, b); }
+			static inline reg mul(reg a, reg b)			 { return _mm_mul_ps(a, b); }
+			static inline reg sub(reg a, reg b)			 { return _mm_sub_ps(a, b); }
+			static inline reg andnot(reg a, reg b)		 { return _mm_andnot_ps(a, b); }
+			static inline void store_stream(float* ptr, reg x) { _mm_stream_ps(ptr, x); }
+			static inline reg max(reg a, reg b)			 { return _mm_max_ps(a, b); }
+			static inline reg min(reg a, reg b)			 { return _mm_min_ps(a, b); }
+		};
+	
+	template<>
+		struct SimdTraits<double, sse_t> {
+			using reg = __m128d;
+			static constexpr size_t width = 2;
+			static inline reg set1(double x)            { return _mm_set1_pd(x); } 
+			static inline reg set(double a, double b)	{ return _mm_set_pd(b, a); }
+			static inline double extract(reg x, size_t index) {
+				alignas(16) double values[2];
+				_mm_storeu_pd(values, x);
+				return values[index];
+			}
+			static inline void stream(double* ptr, reg x)	{ _mm_stream_pd(ptr, x); }
+			static inline reg setzero()						{ return _mm_setzero_pd(); }
+			static inline double horizontal_add(reg v)		{ return detail::reduce_sum(v); }
+			static inline reg load(const double* ptr)		{ return _mm_load_pd(ptr); }
+			static inline reg loadu(const double* ptr)		{ return _mm_loadu_pd(ptr); }
+			static inline void store(double* ptr, reg x)	{ _mm_store_pd(ptr, x); }
+			static inline void storeu(double* ptr, reg x)	{ _mm_storeu_pd(ptr, x); }
+			static inline reg zero()						{ return _mm_setzero_pd(); }
+			static inline reg fmadd(reg a, reg b, reg c)	{ return _mm_fmadd_pd(a, b, c); }
+			static inline reg add(reg a, reg b)				{ return _mm_add_pd(a, b); }
+			static inline reg mul(reg a, reg b)				{ return _mm_mul_pd(a, b); }
+			static inline reg sub(reg a, reg b)				{ return _mm_sub_pd(a, b); }
+			static inline reg andnot(reg a, reg b)			{ return _mm_andnot_pd(a, b); }
+			static inline void store_stream(double* ptr, reg x) { _mm_stream_pd(ptr, x); }
+			static inline reg max(reg a, reg b)				{ return _mm_max_pd(a, b); }
+			static inline reg min(reg a, reg b)				{ return _mm_min_pd(a, b); }
+		};
 
+	template<>
+		struct SimdTraits<size_t, sse_t> {
+			using reg = __m128i;
+			static constexpr size_t width = 2;
+			static inline reg set1(uint64_t x)				{ return _mm_set1_epi64x(x); }
+			static inline reg set(uint64_t a, uint64_t b)	{ return _mm_set_epi64x(b, a); }
+			static inline uint64_t extract(reg x, size_t index) {
+				alignas(16) uint64_t values[2];
+				_mm_storeu_si128(reinterpret_cast<__m128i*>(values), x);
+				return values[index];
+			}
+			static inline void stream(uint64_t* ptr, reg x) { _mm_stream_si128(reinterpret_cast<__m128i*>(ptr), x); }
+			static inline reg setzero()						{ return _mm_setzero_si128(); }
+			static inline float horizontal_add(reg v)		{ return detail::reduce_sum(v); }
+			static inline reg load(const uint64_t* ptr)		{ return _mm_load_si128(reinterpret_cast<const __m128i*>(ptr)); }
+			static inline reg loadu(const uint64_t* ptr)	{ return _mm_loadu_si128(reinterpret_cast<const __m128i*>(ptr)); }
+			static inline void store(uint64_t* ptr, reg x)	{ _mm_store_si128(reinterpret_cast<__m128i*>(ptr), x); }
+			static inline void storeu(uint64_t* ptr, reg x) { _mm_storeu_si128(reinterpret_cast<__m128i*>(ptr), x); }
+			static inline reg zero()						{ return _mm_setzero_si128(); }
+			static inline reg fmadd(reg a, reg b, reg c)	{ return _mm_add_epi64(mul(a, b), c); }
+			static inline reg mul(reg a, reg b) {
+				alignas(16) size_t lhs[2], rhs[2], out[2];
+				_mm_store_si128((__m128i*)lhs, a);
+				_mm_store_si128((__m128i*)rhs, b);
+				for (size_t i = 0; i < 2; ++i)
+					out[i] = lhs[i] * rhs[i];
+				return _mm_load_si128((__m128i*)out);
+			}
+			static inline reg add(reg a, reg b)				{ return _mm_add_epi64(a, b); }
+			static inline reg sub(reg a, reg b)				{ return _mm_sub_epi64(a, b); }
+			static inline reg andnot(reg a, reg b)			{ return _mm_andnot_si128(a, b); }
+			static inline void store_stream(uint64_t* ptr, reg x) { _mm_stream_si128(reinterpret_cast<__m128i*>(ptr), x); }
+			static inline reg set_epi64(int64_t a, int64_t b) { return _mm_set_epi64x(b, a); }
+			static inline reg max(reg a, reg b)				{ return _mm_max_epi64(a, b); }
+			static inline reg min(reg a, reg b)				{ return _mm_min_epi64(a, b); }
+		};
 
 	template<>
 		struct SimdTraits<float, avx2_t> {
@@ -181,22 +288,22 @@ namespace simd {
 				return values[index];
 			}
 			static inline void stream(float* ptr, reg x)	{ _mm256_stream_ps(ptr, x); }
-			static inline reg setzero() { return _mm256_setzero_ps(); }
-			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_ps(a, b, c); }
-			static inline float horizontal_add(reg v) { return detail::reduce_sum(v); }
-			static inline reg load(const float* ptr)	{ return _mm256_load_ps(ptr); }
-			static inline reg loadu(const float* ptr) { return _mm256_loadu_ps(ptr); }
-			static inline void store(float* ptr, reg x)	{ _mm256_store_ps(ptr, x); }
-			static inline void storeu(float* ptr, reg x) { _mm256_storeu_ps(ptr, x); }
-			static inline reg zero()					{ return _mm256_setzero_ps(); }
-			static inline reg fmadd(reg a, reg b, reg c){ return _mm256_fmadd_ps(a, b, c); }
-			static inline reg add(reg a, reg b)			{ return _mm256_add_ps(a, b); }
-			static inline reg mul(reg a, reg b)			{ return _mm256_mul_ps(a, b); }
-			static inline reg sub(reg a, reg b)			{ return _mm256_sub_ps(a, b); }
-			static inline reg andnot(reg a, reg b)		{ return _mm256_andnot_ps(a, b); }
+			static inline reg setzero()						{ return _mm256_setzero_ps(); }
+			static inline reg fma(reg a, reg b, reg c)		{ return _mm256_fmadd_ps(a, b, c); }
+			static inline float horizontal_add(reg v)		{ return detail::reduce_sum(v); }
+			static inline reg load(const float* ptr)		{ return _mm256_load_ps(ptr); }
+			static inline reg loadu(const float* ptr)		{ return _mm256_loadu_ps(ptr); }
+			static inline void store(float* ptr, reg x)		{ _mm256_store_ps(ptr, x); }
+			static inline void storeu(float* ptr, reg x)	{ _mm256_storeu_ps(ptr, x); }
+			static inline reg zero()						{ return _mm256_setzero_ps(); }
+			static inline reg fmadd(reg a, reg b, reg c)	{ return _mm256_fmadd_ps(a, b, c); }
+			static inline reg add(reg a, reg b)				{ return _mm256_add_ps(a, b); }
+			static inline reg mul(reg a, reg b)				{ return _mm256_mul_ps(a, b); }
+			static inline reg sub(reg a, reg b)				{ return _mm256_sub_ps(a, b); }
+			static inline reg andnot(reg a, reg b)			{ return _mm256_andnot_ps(a, b); }
 			static inline void store_stream(float* ptr, reg x) { _mm256_stream_ps(ptr, x); }
-			static inline reg max(reg a, reg b)		{ return _mm256_max_ps(a, b); }
-			static inline reg min(reg a, reg b)		{ return _mm256_min_ps(a, b); }
+			static inline reg max(reg a, reg b)				{ return _mm256_max_ps(a, b); }
+			static inline reg min(reg a, reg b)				{ return _mm256_min_ps(a, b); }
 
 		};
 
@@ -384,6 +491,55 @@ namespace simd {
 				return _mm512_set_epi64(a, b, c, d, e, f, g, h);
 			}
 			static inline reg max(reg a, reg b)		{ return _mm512_max_epi64(a, b); }
+		};
+
+/*
+ * COMPLEX NUMBERS
+ */
+
+	template<>
+		struct SimdTraits<std::complex<float>, sse_t> {
+			using reg = __m128;
+			static constexpr size_t width = 2;
+
+			static inline reg set1(std::complex<float> x) {
+				return _mm_set_ps(x.imag(), x.real(), x.imag(), x.real());
+			}
+			static inline reg load(const std::complex<float>* ptr) {
+				return _mm_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+			static inline reg loadu(const std::complex<float>* ptr) {
+				return _mm_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+			static inline void store(std::complex<float>* ptr, reg x) {
+				_mm_storeu_ps(reinterpret_cast<float*>(ptr), x);
+			}
+			static inline void storeu(std::complex<float>* ptr, reg x) {
+				_mm_storeu_ps(reinterpret_cast<float*>(ptr), x);
+			}
+			static inline reg add(reg a, reg b)		{ return _mm_add_ps(a, b); }
+			static inline reg sub(reg a, reg b)		{ return _mm_sub_ps(a, b); }
+			static inline reg mul(reg a, reg b) {
+				__m128 a_real = _mm_shuffle_ps(a, a, _MM_SHUFFLE(2,2,0,0));
+				__m128 a_imag = _mm_shuffle_ps(a, a, _MM_SHUFFLE(3,3,1,1));
+				__m128 b_real = _mm_shuffle_ps(b, b, _MM_SHUFFLE(2,2,0,0));
+				__m128 b_imag = _mm_shuffle_ps(b, b, _MM_SHUFFLE(3,3,1,1));
+
+				__m128 real = _mm_sub_ps(_mm_mul_ps(a_real, b_real), _mm_mul_ps(a_imag, b_imag));
+				__m128 imag = _mm_add_ps(_mm_mul_ps(a_real, b_imag), _mm_mul_ps(a_imag, b_real));
+
+				return _mm_unpacklo_ps(real, imag); 
+			}	
+			static inline reg andnot(reg a, reg b)	{ return _mm_andnot_ps(a, b); }
+			static inline reg max(reg a, reg b)		{ return _mm_max_ps(a, b); }
+			static inline reg min(reg a, reg b)		{ return _mm_min_ps(a, b); }
+			static inline reg setzero()				{ return _mm_setzero_ps(); }
+			static inline reg fma(reg a, reg b, reg c) { return _mm_fmadd_ps(a, b, c); }
+			static inline std::complex<float> horizontal_add(reg v) {
+				alignas(16) float values[4];
+				_mm_storeu_ps(values, v);
+				return std::complex<float>(values[0] + values[2], values[1] + values[3]);
+			}
 		};
 
 } 
