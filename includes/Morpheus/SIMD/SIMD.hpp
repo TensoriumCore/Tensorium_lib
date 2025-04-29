@@ -501,7 +501,9 @@ namespace simd {
 		struct SimdTraits<std::complex<float>, sse_t> {
 			using reg = __m128;
 			static constexpr size_t width = 2;
-
+			static inline reg set(std::complex<float> a, std::complex<float> b) {
+				return _mm_set_ps(b.imag(), a.real(), b.real(), a.imag());
+			}
 			static inline reg set1(std::complex<float> x) {
 				return _mm_set_ps(x.imag(), x.real(), x.imag(), x.real());
 			}
@@ -540,13 +542,21 @@ namespace simd {
 				_mm_storeu_ps(values, v);
 				return std::complex<float>(values[0] + values[2], values[1] + values[3]);
 			}
+			static inline void stream(std::complex<float>* ptr, reg x) {
+				_mm_stream_ps(reinterpret_cast<float*>(ptr), x); 
+			}
+			static inline void store_stream(std::complex<float>* ptr, reg x) {
+				_mm_stream_ps(reinterpret_cast<float*>(ptr), x);
+			}
 		};
 
 	template<>
 		struct SimdTraits<std::complex<double>, sse_t> {
 			using reg = __m128d;
 			static constexpr size_t width = 1;
-
+			static inline reg set(std::complex<double> a, std::complex<double> b) {
+				return _mm_set_pd(b.imag(), a.real());
+			}
 			static inline reg set1(std::complex<double> x) {
 				return _mm_set_pd(x.imag(), x.real());
 			}
@@ -574,7 +584,11 @@ namespace simd {
 				__m128d imag = _mm_add_pd(_mm_mul_pd(a_real, b_imag), _mm_mul_pd(a_imag, b_real));
 
 				return _mm_unpacklo_pd(real, imag);
-			}	
+			}
+			static inline reg fmadd(reg a, reg b, reg c) {
+				reg result = mul(a, b);
+				return _mm_add_pd(result, c);
+			}
 			static inline reg andnot(reg a, reg b)	{ return _mm_andnot_pd(a, b); }
 			static inline reg max(reg a, reg b)		{ return _mm_max_pd(a, b); }
 			static inline reg min(reg a, reg b)		{ return _mm_min_pd(a, b); }
@@ -584,10 +598,19 @@ namespace simd {
 	template<>
 		struct SimdTraits<std::complex<float>, avx2_t> {
 			using reg = __m256;
-			static constexpr size_t width = 4;
+			static constexpr size_t width = 8;
+			static inline reg set(std::complex<float> a, std::complex<float> b,
+					std::complex<float> c, std::complex<float> d) {
+				return _mm256_set_ps(
+						d.imag(), d.real(),
+						c.imag(), c.real(),
+						b.imag(), b.real(),
+						a.imag(), a.real()
+						);
+			}
 			static inline reg set1(std::complex<float> x) {
 				return _mm256_set_ps(x.imag(), x.real(), x.imag(), x.real(),
-									 x.imag(), x.real(), x.imag(), x.real());
+						x.imag(), x.real(), x.imag(), x.real());
 			}
 			static inline reg load(const std::complex<float>* ptr) {
 				return _mm256_loadu_ps(reinterpret_cast<const float*>(ptr));
@@ -600,6 +623,9 @@ namespace simd {
 			}
 			static inline void storeu(std::complex<float>* ptr, reg x) {
 				_mm256_storeu_ps(reinterpret_cast<float*>(ptr), x);
+			}
+			static inline void stream(std::complex<float>* ptr, reg x) {
+				_mm256_stream_ps(reinterpret_cast<float*>(ptr), x);
 			}
 			static inline reg add(reg a, reg b)		{ return _mm256_add_ps(a, b); }
 			static inline reg sub(reg a, reg b)		{ return _mm256_sub_ps(a, b); }
@@ -617,10 +643,15 @@ namespace simd {
 
 				return _mm256_permute2f128_ps(result, result_high, 0x20);
 			}
+			static inline reg fmadd(reg a, reg b , reg c) {
+				reg result = mul(a, b);
+				return _mm256_add_ps(result, c);
+			}
 			static inline reg andnot(reg a, reg b)	{ return _mm256_andnot_ps(a, b); }
 			static inline reg max(reg a, reg b)		{ return _mm256_max_ps(a, b); }
 			static inline reg min(reg a, reg b)		{ return _mm256_min_ps(a, b); }
 			static inline reg setzero()				{ return _mm256_setzero_ps(); }
+			static inline reg zero()				{ return _mm256_setzero_ps(); }
 			static inline reg fma(reg a, reg b, reg c) { return _mm256_fmadd_ps(a, b, c); }
 			static inline std::complex<float> horizontal_add(reg v) {
 				alignas(32) float values[8];
@@ -636,6 +667,12 @@ namespace simd {
 		struct SimdTraits<std::complex<double>, avx2_t> {
 			using reg = __m256d;
 			static constexpr size_t width = 2;
+			static inline reg set(std::complex<double> a, std::complex<double> b) {
+				return _mm256_set_pd(
+						b.imag(), b.real(),
+						a.imag(), a.real()
+						);
+			}
 			static inline reg set1(std::complex<double> x) {
 				return _mm256_set_pd(x.imag(), x.real(), x.imag(), x.real());
 			}
@@ -678,6 +715,10 @@ namespace simd {
 				__m128d result_hi = _mm_unpacklo_pd(real_hi, imag_hi);
 
 				return _mm256_insertf128_pd(_mm256_castpd128_pd256(result_lo), result_hi, 1);
+			}
+			static inline reg fmadd(reg a, reg b , reg c) {
+				reg result = mul(a, b);
+				return _mm256_add_pd(result, c);
 			}
 			static inline reg andnot(reg a, reg b)	{ return _mm256_andnot_pd(a, b); }
 			static inline reg max(reg a, reg b)		{ return _mm256_max_pd(a, b); }

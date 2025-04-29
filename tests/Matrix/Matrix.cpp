@@ -1,6 +1,6 @@
 #include "../test.hpp"
 using namespace morpheus;
-
+#include <complex>
 
 #define CHECK(expr) \
 	do { \
@@ -226,6 +226,36 @@ int matrix_tests() {
 	std::cout << "Rank of A = " << r << "\n";
 	CHECK(r == 1);
 
+	Matrix<std::complex<float>> Ac(2, 2);
+	Ac(0, 0) = {1.0f, 2.0f}; Ac(0, 1) = {3.0f, 4.0f};
+	Ac(1, 0) = {5.0f, 6.0f}; Ac(1, 1) = {7.0f, 8.0f};
+
+	Matrix<std::complex<float>> Bc(2, 2);
+	Bc(0, 0) = {8.0f, 7.0f}; Bc(0, 1) = {6.0f, 5.0f};
+	Bc(1, 0) = {4.0f, 3.0f}; Bc(1, 1) = {2.0f, 1.0f};
+
+	Matrix<std::complex<float>> Cc = Ac;
+	Cc.add(Bc);
+	std::cout << "A complex:\n";
+	Ac.print();
+	std::cout << "B complex:\n";
+	Bc.print();
+	std::cout << "C complex:\n";
+	Cc.print();
+	CHECK(std::abs(Cc(0, 0).real() - 9.0f) < 1e-4);
+	CHECK(std::abs(Cc(0, 0).imag() - 9.0f) < 1e-4);
+	CHECK(std::abs(Cc(1, 1).real() - 9.0f) < 1e-4);
+	CHECK(std::abs(Cc(1, 1).imag() - 9.0f) < 1e-4);
+	Cc.sub(Bc);
+	std::cout << "C complex after sub:\n";
+	Cc.print();
+	Cc.scl(2.0f);
+	std::cout << "C complex after scl:\n";
+	Cc.print();
+	Cc = morpheus::mul_mat(Ac, Bc);
+	std::cout << "C complex after mul:\n";
+	Cc.print();
+	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	return 0;
