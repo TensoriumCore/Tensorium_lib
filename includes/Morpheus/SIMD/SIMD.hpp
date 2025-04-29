@@ -186,7 +186,11 @@ namespace simd {
 			static inline void stream(float* ptr, reg x) { _mm_stream_ps(ptr, x); }
 			static inline reg setzero() { return _mm_setzero_ps(); }
 			static inline reg fma(reg a, reg b, reg c)   { return _mm_fmadd_ps(a, b, c); }
-			static inline float horizontal_add(reg v)    { return detail::reduce_sum(v); }
+			static inline float horizontal_add(reg v)    { 
+				alignas(16) float values[4];
+				_mm_store_ps(values, v);
+				return values[0] + values[1] + values[2] + values[3];
+			}
 			static inline reg load(const float* ptr)	 { return _mm_load_ps(ptr); }
 			static inline reg loadu(const float* ptr)	 { return _mm_loadu_ps(ptr); }
 			static inline void store(float* ptr, reg x)	 { _mm_store_ps(ptr, x); }
@@ -215,7 +219,11 @@ namespace simd {
 			}
 			static inline void stream(double* ptr, reg x)	{ _mm_stream_pd(ptr, x); }
 			static inline reg setzero()						{ return _mm_setzero_pd(); }
-			static inline double horizontal_add(reg v)		{ return detail::reduce_sum(v); }
+			static inline double horizontal_add(reg v)		{ 
+				alignas(16) double values[2];
+				_mm_store_pd(values, v);
+				return values[0] + values[1];
+			}
 			static inline reg load(const double* ptr)		{ return _mm_load_pd(ptr); }
 			static inline reg loadu(const double* ptr)		{ return _mm_loadu_pd(ptr); }
 			static inline void store(double* ptr, reg x)	{ _mm_store_pd(ptr, x); }
@@ -244,7 +252,11 @@ namespace simd {
 			}
 			static inline void stream(uint64_t* ptr, reg x) { _mm_stream_si128(reinterpret_cast<__m128i*>(ptr), x); }
 			static inline reg setzero()						{ return _mm_setzero_si128(); }
-			static inline float horizontal_add(reg v)		{ return detail::reduce_sum(v); }
+			static inline float horizontal_add(reg v)		{ 
+				alignas(16) uint64_t values[2];
+				_mm_store_si128(reinterpret_cast<__m128i*>(values), v);
+				return values[0] + values[1];
+			}
 			static inline reg load(const uint64_t* ptr)		{ return _mm_load_si128(reinterpret_cast<const __m128i*>(ptr)); }
 			static inline reg loadu(const uint64_t* ptr)	{ return _mm_loadu_si128(reinterpret_cast<const __m128i*>(ptr)); }
 			static inline void store(uint64_t* ptr, reg x)	{ _mm_store_si128(reinterpret_cast<__m128i*>(ptr), x); }
