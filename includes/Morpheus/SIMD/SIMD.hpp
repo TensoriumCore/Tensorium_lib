@@ -734,4 +734,178 @@ namespace simd {
 						);
 			}
 		};
+	template<>
+		struct SimdTraits<std::complex<float>, avx512_t> {
+			using reg = __m512;
+			static constexpr size_t width = 8; 
+
+			static inline reg set(std::complex<float> a, std::complex<float> b,
+					std::complex<float> c, std::complex<float> d,
+					std::complex<float> e, std::complex<float> f,
+					std::complex<float> g, std::complex<float> h) {
+				return _mm512_set_ps(
+						h.imag(), h.real(),
+						g.imag(), g.real(),
+						f.imag(), f.real(),
+						e.imag(), e.real(),
+						d.imag(), d.real(),
+						c.imag(), c.real(),
+						b.imag(), b.real(),
+						a.imag(), a.real()
+						);
+			}
+
+			static inline reg set1(std::complex<float> x) {
+				return _mm512_set_ps(
+						x.imag(), x.real(), x.imag(), x.real(),
+						x.imag(), x.real(), x.imag(), x.real(),
+						x.imag(), x.real(), x.imag(), x.real(),
+						x.imag(), x.real(), x.imag(), x.real()
+						);
+			}
+
+			static inline reg load(const std::complex<float>* ptr) {
+				return _mm512_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+
+			static inline reg loadu(const std::complex<float>* ptr) {
+				return _mm512_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+
+			static inline void store(std::complex<float>* ptr, reg x) {
+				_mm512_store_ps(reinterpret_cast<float*>(ptr), x);
+			}
+
+			static inline void storeu(std::complex<float>* ptr, reg x) {
+				_mm512_storeu_ps(reinterpret_cast<float*>(ptr), x);
+			}
+
+			static inline void stream(std::complex<float>* ptr, reg x) {
+				_mm512_stream_ps(reinterpret_cast<float*>(ptr), x);
+			}
+
+			static inline reg add(reg a, reg b) { return _mm512_add_ps(a, b); }
+			static inline reg sub(reg a, reg b) { return _mm512_sub_ps(a, b); }
+
+			static inline reg mul(reg a, reg b) {
+				__m512 a_real = _mm512_shuffle_ps(a, a, _MM_SHUFFLE(2,0,2,0));
+				__m512 a_imag = _mm512_shuffle_ps(a, a, _MM_SHUFFLE(3,1,3,1));
+				__m512 b_real = _mm512_shuffle_ps(b, b, _MM_SHUFFLE(2,0,2,0));
+				__m512 b_imag = _mm512_shuffle_ps(b, b, _MM_SHUFFLE(3,1,3,1));
+
+				__m512 real = _mm512_sub_ps(_mm512_mul_ps(a_real, b_real), _mm512_mul_ps(a_imag, b_imag));
+				__m512 imag = _mm512_add_ps(_mm512_mul_ps(a_real, b_imag), _mm512_mul_ps(a_imag, b_real));
+
+				return _mm512_unpacklo_ps(real, imag); 
+			}
+
+			static inline reg fma(reg a, reg b, reg c) {
+#if defined(__AVX512F__) && defined(__FMA__)
+				return _mm512_fmadd_ps(a, b, c);
+#else
+				reg result = mul(a, b);
+				return _mm512_add_ps(result, c);
+#endif
+			}
+
+			static inline reg setzero() { return _mm512_setzero_ps(); }
+			static inline reg zero() { return _mm512_setzero_ps(); }
+			static inline reg andnot(reg a, reg b) { return _mm512_andnot_ps(a, b); }
+			static inline reg max(reg a, reg b) { return _mm512_max_ps(a, b); }
+			static inline reg min(reg a, reg b) { return _mm512_min_ps(a, b); }
+
+			static inline std::complex<float> horizontal_add(reg v) {
+				alignas(64) float values[16];
+				_mm512_storeu_ps(values, v);
+				return std::complex<float>(
+						values[0] + values[2] + values[4] + values[6] +
+						values[8] + values[10] + values[12] + values[14],
+						values[1] + values[3] + values[5] + values[7] +
+						values[9] + values[11] + values[13] + values[15]
+						);
+			}
+		};
+	
+	template<>
+		struct SimdTraits<std::complex<double>, avx512_t> {
+			using reg = __m512d;
+			static constexpr size_t width = 4;
+
+			static inline reg set(std::complex<double> a, std::complex<double> b,
+					std::complex<double> c, std::complex<double> d) {
+				return _mm512_set_pd(
+						d.imag(), d.real(),
+						c.imag(), c.real(),
+						b.imag(), b.real(),
+						a.imag(), a.real()
+						);
+			}
+
+			static inline reg set1(std::complex<double> x) {
+				return _mm512_set_pd(
+						x.imag(), x.real(), x.imag(), x.real(),
+						x.imag(), x.real(), x.imag(), x.real()
+						);
+			}
+
+			static inline reg load(const std::complex<double>* ptr) {
+				return _mm512_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+
+			static inline reg loadu(const std::complex<double>* ptr) {
+				return _mm512_loadu_pd(reinterpret_cast<const double*>(ptr));
+			}
+
+			static inline void store(std::complex<double>* ptr, reg x) {
+				_mm512_store_pd(reinterpret_cast<double*>(ptr), x);
+			}
+
+			static inline void storeu(std::complex<double>* ptr, reg x) {
+				_mm512_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+
+			static inline void stream(std::complex<double>* ptr, reg x) {
+				_mm512_stream_pd(reinterpret_cast<double*>(ptr), x);
+			}
+
+			static inline reg add(reg a, reg b) { return _mm512_add_pd(a, b); }
+			static inline reg sub(reg a, reg b) { return _mm512_sub_pd(a, b); }
+
+			static inline reg mul(reg a, reg b) {
+				// shuffle les réels et imaginaires
+				__m512d a_real = _mm512_shuffle_pd(a, a, 0b00000000);
+				__m512d a_imag = _mm512_shuffle_pd(a, a, 0b11111111);
+				__m512d b_real = _mm512_shuffle_pd(b, b, 0b00000000);
+				__m512d b_imag = _mm512_shuffle_pd(b, b, 0b11111111);
+
+				__m512d real = _mm512_sub_pd(_mm512_mul_pd(a_real, b_real), _mm512_mul_pd(a_imag, b_imag));
+				__m512d imag = _mm512_add_pd(_mm512_mul_pd(a_real, b_imag), _mm512_mul_pd(a_imag, b_real));
+
+				return _mm512_unpacklo_pd(real, imag);
+			}
+
+			static inline reg fmadd(reg a, reg b, reg c) {
+#if defined(__AVX512F__) && defined(__FMA__)
+				return _mm512_fmadd_pd(a, b, c);
+#else
+				reg result = mul(a, b);
+				return _mm512_add_pd(result, c);
+#endif
+			}
+
+			static inline reg setzero() { return _mm512_setzero_pd(); }
+			static inline reg zero() { return _mm512_setzero_pd(); }
+			static inline reg andnot(reg a, reg b) { return _mm512_andnot_pd(a, b); }
+			static inline reg max(reg a, reg b) { return _mm512_max_pd(a, b); }
+			static inline reg min(reg a, reg b) { return _mm512_min_pd(a, b); }
+
+			static inline std::complex<double> horizontal_add(reg v) {
+				alignas(64) double values[8];
+				_mm512_storeu_pd(values, v);
+				return std::complex<double>(
+						values[0] + values[2] + values[4] + values[6],
+						values[1] + values[3] + values[5] + values[7]
+						);
+			}
+		};
 } 
