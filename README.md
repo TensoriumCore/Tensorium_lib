@@ -38,7 +38,6 @@ This library is built with the goal of empowering projects that require both spe
 - General relativity / differential geometry classes dans methods
 - Full MPI support 
 - SSE fallback (curently working on)
-- Complex type support (for complex algebra)
 - Spectral Methdods (Chebychev/Fourrier)
 - Backward FDM
 - Some optimizations
