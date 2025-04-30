@@ -9,6 +9,7 @@
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
 #include "Vector.hpp"
+#include "../MathUtils/MathsUtils.hpp"
 
 namespace morpheus {
 	template<typename K>
@@ -195,8 +196,8 @@ namespace morpheus {
 #pragma omp parallel for collapse(2) schedule(dynamic)
 						for (size_t ii = 0; ii < rows; ii += block_size) {
 							for (size_t jj = 0; jj < mat.cols; jj += block_size) {
-								const size_t i_end = std::min(ii + block_size, rows);
-								const size_t j_end = std::min(jj + block_size, mat.cols);
+								const size_t i_end = MathsUtils::_min(ii + block_size, rows);
+								const size_t j_end = MathsUtils::_min(jj + block_size, mat.cols);
 
 								for (size_t i = ii; i < i_end; ++i) {
 									for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
@@ -406,9 +407,9 @@ namespace morpheus {
 
 						for (auto i = decltype(n)(0); i < n; ++i) {
 							auto piv = i;
-							auto maxv = std::abs(M(i, i));
+							auto maxv = MathsUtils::_abs(M(i, i));
 							for (auto r = i + 1; r < n; ++r) {
-								auto v = std::abs(M(r, i));
+								auto v = MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
 							if (maxv < static_cast<K>(1e-12))
@@ -460,9 +461,9 @@ namespace morpheus {
 
 						for (size_t i = 0; i < n; ++i) {
 							size_t piv = i;
-							auto maxv = std::abs(M(i, i));
+							auto maxv = MathsUtils::_abs(M(i, i));
 							for (size_t r = i + 1; r < n; ++r) {
-								auto v = std::abs(M(r, i));
+								auto v = MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
 							if (maxv < static_cast<K>(1e-12))
@@ -509,11 +510,11 @@ namespace morpheus {
 						for (size_t col = 0; col < n; ++col) {
 							size_t pivot_row = r;
 							for (size_t i = r; i < m; ++i) {
-								if (std::abs(M(i, col)) > std::abs(M(pivot_row, col)))
+								if (MathsUtils::_abs(M(i, col)) > std::abs(M(pivot_row, col)))
 									pivot_row = i;
 							}
 
-							if (std::abs(M(pivot_row, col)) <= eps)
+							if (MathsUtils::_abs(M(pivot_row, col)) <= eps)
 								continue;
 
 							if (pivot_row != r)
