@@ -7,6 +7,7 @@
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
+#include "../MathUtils/MathsUtils.hpp"
 
 namespace morpheus {
 	template<typename K>
@@ -245,7 +246,7 @@ namespace morpheus {
 						float result = detail::reduce_sum(acc);
 
 						for (; i < n; ++i)
-							result += std::fabs(v_ptr[i]);
+							result += MathsUtils::_fabs(v_ptr[i]);
 
 						return result;
 					}
@@ -293,7 +294,7 @@ namespace morpheus {
 						float result = detail::reduce_sum(max_v);
 
 						for (; i < n; ++i)
-							result = std::max(result, std::fabs(v_ptr[i]));
+							result = MathsUtils::_max(result, MathsUtils::_fabs(v_ptr[i]));
 
 						return result;
 					}

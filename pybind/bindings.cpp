@@ -107,4 +107,9 @@ PYBIND11_MODULE(morpheus, m) {
 		morph.def("gauss_solve", &gauss_solve<float>, "Solve linear system with Gauss elimination");
 		morph.def("jacobi_solve", &jacobi_solve<float>, py::arg("A"), py::arg("b"), py::arg("tol") = 1e-6f, py::arg("max_iter") = 1000, "Solve linear system with Jacobi iterative method");
 
+
+
+		// === Matric 42 convention vector ===
+		morph.def("add", &add<float>, "Add two numbers");
+		morph.def("sub", &sub<float>, "Subtract two numbers");
 }
