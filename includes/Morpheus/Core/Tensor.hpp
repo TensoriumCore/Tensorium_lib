@@ -78,7 +78,15 @@ namespace morpheus {
 					}
 					std::cout << ")\n";
 				}
-
+				
+				void print() const {
+					for (size_t i = 0; i < dimensions[0]; ++i) {
+						for (size_t j = 0; j < dimensions[1]; ++j) {
+							std::cout << std::setw(10) << std::setprecision(4) << std::fixed << (*this)({i, j}) << " ";
+						}
+						std::cout << "\n";
+					}
+				}
 
 				__attribute__((always_inline, hot, flatten))
 					inline size_t flatten_index_simd(const size_t* indices, const size_t* strides) const {

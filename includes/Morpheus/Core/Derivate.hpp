@@ -376,10 +376,47 @@ namespace morpheus {
 
 							Simd::storeu(out_ptr, res);
 						}
-					} 
+					}
 
 		};
 
-}
 
+
+
+
+	template <typename Container>
+		inline Container richardson_derivative_container(
+				const Container& plus_h,
+				const Container& minus_h,
+				const Container& plus_half_h,
+				const Container& minus_half_h,
+				double h)
+		{
+			assert(plus_h.size() == minus_h.size());
+			assert(plus_h.size() == plus_half_h.size());
+			assert(plus_h.size() == minus_half_h.size());
+
+			Container out(plus_h);
+#pragma omp parallel for
+			for (size_t i = 0; i < plus_h.size(); ++i) {
+				auto diff_h    = (plus_h[i] - minus_h[i]) / (2.0 * h);
+				auto diff_half = (plus_half_h[i] - minus_half_h[i]) / h;
+				out[i] = (4.0 * diff_half - diff_h) / 3.0;
+			}
+			return out;
+		}
+	template <typename T>
+		inline T richardson_derivative(
+				const T& plus_h,
+				const T& minus_h,
+				const T& plus_half_h,
+				const T& minus_half_h,
+				double h)
+		{
+			T diff_h    = (plus_h - minus_h) / (2.0 * h);
+			T diff_half = (plus_half_h - minus_half_h) / h;
+			return (4.0 * diff_half - diff_h) / 3.0;
+		}
+
+}
 

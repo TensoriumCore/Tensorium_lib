@@ -15,3 +15,4 @@
 #include "Symbolics/Latex.hpp"
 #include "Symbolics/Parser.hpp"
 #include "Functionnal/FunctionnalRG.hpp"
+#include "DiffGeometry/RiemannTensor.hpp"
