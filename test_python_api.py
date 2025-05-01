@@ -3,6 +3,8 @@ import time
 
 sys.path.append("pybuild")
 from morpheus import *
+import morpheus as morph
+from mopheus import Vector, Matrix
 
 matA = Matrix(2, 3)
 matA.fill([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
