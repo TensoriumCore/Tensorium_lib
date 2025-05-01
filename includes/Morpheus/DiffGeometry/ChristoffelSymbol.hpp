@@ -37,15 +37,20 @@ namespace morpheus_RG {
 					std::fill(data.begin(), data.end(), value);
 				}
 
+
 				void print() const {
-					for (size_t i = 0; i < dim; ++i)
-						for (size_t j = 0; j < dim; ++j)
-							for (size_t k = 0; k < dim; ++k) {
-								for (size_t l = 0; l < dim; ++l)
-									std::cout << std::setw(10) << std::setprecision(6) << (*this)(i, j, k, l) << " ";
-								std::cout << "\n";
+					for (size_t l = 0; l < dim; ++l) {
+						std::cout << "Γ^" << l << "_{μν} :\n";
+						for (size_t i = 0; i < dim; ++i) {
+							for (size_t j = 0; j < dim; ++j) {
+								std::cout << std::setw(12) << std::setprecision(6) << std::fixed << (*this)(l, i, j, 0) << " ";
 							}
+							std::cout << "\n";
+						}
+						std::cout << "\n";
+					}
 				}
+
 
 				__attribute__((always_inline, hot, flatten))
 					static inline ChristoffelSym<T> compute_christoffel(
@@ -61,7 +66,7 @@ namespace morpheus_RG {
 						d_metric.fill(T(0));
 
 						morpheus::Vector<T> Xh = X, Xl = X;
-						morpheus::Tensor<T, 2> gh(dim, dim), gl(dim, dim);
+						morpheus::Tensor<T, 2> gh({dim, dim}), gl({dim, dim});
 
 						for (size_t mu = 0; mu < dim; ++mu) {
 							Xh = X;

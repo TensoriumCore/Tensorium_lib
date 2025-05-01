@@ -258,6 +258,35 @@ int matrix_tests() {
 	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
+	constexpr size_t dim = 4;
+
+	morpheus::Vector<double> X(dim);
+	X(0) = 0.0; 
+	X(1) = 10.0;
+	X(2) = M_PI / 2.0;
+	X(3) = 0.0;
+
+	morpheus::Tensor<double, 2> g({dim, dim});
+	morpheus::Tensor<double, 2> g_inv({dim, dim});
+
+	std::cout << "X = " << X(0) << " " << X(1) << " " << X(2) << " " << X(3) << "\n";
+
+	morpheus_RG::Metric<double> metric("kerr", 1.0, 0.8);
+	metric(X, g);
+
+	std::cout << "Metric tensor g at X = (t=0, r=10, θ=π/2, φ=0):\n";
+	g_inv = morpheus::inv_mat_tensor(g); 
+	g.print_shape();
+	auto gamma = morpheus::compute_christoffel
+	(
+			X, 1e-5, g, g_inv,
+			[&](const morpheus::Vector<double>& Xp, morpheus::Tensor<double, 2>& gout) {
+			metric(Xp, gout);}
+	);
+
+	std::cout << "Christoffel symbols Γ^λ_{μν} at X = (t=0, r=10, θ=π/2, φ=0):\n";
+	gamma.print();
+
 	return 0;
 }
 

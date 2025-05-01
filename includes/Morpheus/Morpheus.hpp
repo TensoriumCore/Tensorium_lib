@@ -14,3 +14,4 @@
 #include "IO/MPI_init.hpp"
 #include "Symbolics/Latex.hpp"
 #include "Symbolics/Parser.hpp"
+#include "Functionnal/FunctionnalRG.hpp"

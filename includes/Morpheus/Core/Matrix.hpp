@@ -412,8 +412,8 @@ namespace morpheus {
 								auto v = MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
-							if (maxv < static_cast<K>(1e-12))
-								throw std::runtime_error("Matrix is singular or nearly singular.");
+							/* if (maxv < static_cast<K>(1e-12)) */
+							/* 	throw std::runtime_error("Matrix is singular or nearly singular."); */
 
 							if (piv != i) {
 								M.swap_rows(i, piv);
