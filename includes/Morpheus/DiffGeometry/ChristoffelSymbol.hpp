@@ -13,6 +13,9 @@
 #include "../Core/Matrix.hpp"
 #include "../Core/Vector.hpp"
 #include "../Core/Tensor.hpp"
+#include "Metric.hpp"
+#include "../Functionnal/Functional.hpp"
+#include "../Functionnal/FunctionnalRG.hpp"
 
 namespace morpheus_RG {
 
@@ -105,4 +108,47 @@ namespace morpheus_RG {
 					}
 		};
 
-} 
+	template <typename T>
+		__attribute__((always_inline, hot, flatten))
+		inline morpheus::Tensor<T, 2> inv_mat_tensor_local(const morpheus::Tensor<T, 2>& g) {
+			const size_t d0 = g.dimensions[0];
+			const size_t d1 = g.dimensions[1];
+			morpheus::Matrix<T> mat({d0, d1});
+
+			for (size_t i = 0; i < d0; ++i)
+				for (size_t j = 0; j < d1; ++j)
+					mat(i, j) = g(i, j);
+
+			morpheus::Matrix<T> inv = mat.inverse();
+
+			morpheus::Tensor<T, 2> out({d0, d1});
+			for (size_t i = 0; i < d0; ++i)
+				for (size_t j = 0; j < d1; ++j)
+					out(i, j) = inv(i, j);
+
+			return out;
+		}
+
+	template<typename T>
+		__attribute__((always_inline, hot, flatten))
+		inline void calculate_christoffel_at_offset(
+				const morpheus::Vector<T>& X,
+				int direction,
+				T offset,
+				T h,
+				morpheus::Tensor<T, 2>& g,
+				morpheus::Tensor<T, 2>& g_inv,
+				morpheus_RG::ChristoffelSym<T>& Gamma_out,
+				const morpheus_RG::Metric<T>& metric
+				) {
+			morpheus::Vector<T> X_offset = X;
+			X_offset(direction) += offset;
+
+			metric(X_offset, g);
+			g_inv = morpheus_RG::inv_mat_tensor_local(g);
+
+			Gamma_out = morpheus_RG::ChristoffelSym<T>::compute_christoffel(X_offset, h, g, g_inv, metric);
+		}
+}
+
+
