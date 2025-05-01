@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <array>
+#include <iomanip>
+#include <vector>
 #include <cmath>
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
@@ -36,6 +39,17 @@ namespace morpheus {
 						total_size = total;
 					}
 
+				K& operator()(size_t i, size_t j) {
+					return data[i * dimensions[1] + j];
+				}
+
+				const K& operator()(size_t i, size_t j) const {
+					return data[i * dimensions[1] + j];
+				}
+				void resize(const std::array<size_t, 2>& dims) {
+					dimensions = dims;
+					data.resize(dims[0] * dims[1]);
+				}
 				K& operator()(const std::array<size_t, Rank>& indices) {
 					size_t index = flatten_index(indices);
 					assert(index < total_size);

@@ -30,6 +30,13 @@ namespace morpheus {
 					return data.size();
 				}
 				
+				K& operator()(size_t i) {
+					return data[i];
+				}
+
+				const K& operator()(size_t i) const {
+					return data[i];
+				}
 				__attribute__((always_inline, hot, flatten))
 					Vector<K> operator-(const Vector<K>& other) const {
 						assert(data.size() == other.data.size());
