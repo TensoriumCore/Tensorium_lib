@@ -36,5 +36,6 @@ int main() {
 	matrix_tests();
 	tensor_test();
 	vector_tests();
+
 	return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <cmath>
 #include <cassert>
@@ -20,6 +21,7 @@ namespace morpheus_RG {
 					: type(metric_type), M(mass), a(spin) {}
 
 				void operator()(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
+					std::cout << "Calling metric type = " << type << "\n";
 					if (type == "minkowski") {
 						compute_minkowski(g);
 					} else if (type == "schwarzschild") {
@@ -68,7 +70,7 @@ namespace morpheus_RG {
 					const T Sigma = r * r + a * a * cos_theta * cos_theta;
 					const T Delta = r * r - T(2) * M * r + a * a;
 
-					g.resize(4, 4);
+					g.resize({4, 4});
 					g.fill(T(0));
 
 					g(0, 0) = -(T(1) - (T(2) * M * r) / Sigma);
@@ -76,6 +78,7 @@ namespace morpheus_RG {
 					g(1, 1) = Sigma / Delta;
 					g(2, 2) = Sigma;
 					g(3, 3) = (r * r + a * a + T(2) * M * r * a * a * sin2 / Sigma) * sin2;
+					std::cout << "g(0,0) = " << g(0,0) << std::endl;
 				}
 		};
 } 
