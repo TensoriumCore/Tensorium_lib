@@ -278,11 +278,12 @@ int matrix_tests() {
 	g_inv = morpheus::inv_mat_tensor(g); 
 	g.print_shape();
 	g.print();
-	auto gamma = morpheus::compute_christoffel(X, 1e-5, g, g_inv, metric);
-	auto R = morpheus_RG::RiemannTensor<double>::compute(X, 1e-5, morpheus_RG::Metric<double>("kerr", 1.0, 0.8));
 	std::cout << "Christoffel symbols Γ^λ_{μν} at X = (t=0, r=10, θ=π/2, φ=0):\n";
+	auto gamma = morpheus::compute_christoffel(X, 1e-5, g, g_inv, metric);
 	gamma.print();
-	morpheus_RG::RiemannTensor<double>::print_componentwise(R);
+	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr", 1.0, 0.8));
+	morpheus::print_riemann_tensor(R);
+
 	return 0;
 }
 
