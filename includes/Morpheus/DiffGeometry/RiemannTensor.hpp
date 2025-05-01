@@ -8,7 +8,6 @@
 #include "../DiffGeometry/Metric.hpp"
 #include "../Core/Derivate.hpp"
 namespace morpheus_RG {
-
 	template <typename T>
 		class RiemannTensor {
 			public:
@@ -58,7 +57,7 @@ namespace morpheus_RG {
 					constexpr size_t dim = 4;
 					Tensor2D g({dim, dim});
 					metric(X, g);
-					Tensor2D g_inv = morpheus::inv_mat_tensor(g);
+					Tensor2D g_inv = morpheus_RG::inv_mat_tensor_local(g);
 
 					std::array<ChristoffelSym<T>, 4> gamma_ph {
 						ChristoffelSym<T>(h), ChristoffelSym<T>(h),
@@ -81,10 +80,10 @@ namespace morpheus_RG {
 						metric(Xh, gh);     metric(Xl, gl);
 						metric(Xh2, gh2);   metric(Xl2, gl2);
 
-						auto inv_gh  = morpheus::inv_mat_tensor(gh);
-						auto inv_gl  = morpheus::inv_mat_tensor(gl);
-						auto inv_gh2 = morpheus::inv_mat_tensor(gh2);
-						auto inv_gl2 = morpheus::inv_mat_tensor(gl2);
+						auto inv_gh  = morpheus_RG::inv_mat_tensor_local(gh);
+						auto inv_gl  = morpheus_RG::inv_mat_tensor_local(gl);
+						auto inv_gh2 = morpheus_RG::inv_mat_tensor_local(gh2);
+						auto inv_gl2 = morpheus_RG::inv_mat_tensor_local(gl2);
 
 						gamma_ph[mu]  = compute_christoffel(Xh,  h, gh,  inv_gh,  metric);
 						gamma_mh[mu]  = compute_christoffel(Xl,  h, gl,  inv_gl,  metric);

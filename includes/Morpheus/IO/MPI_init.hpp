@@ -65,7 +65,6 @@ namespace morpheus {
 
 #else // no MPI
 
-# pragma message "Morpheus MPI support is disabled. Please enable MPI support to use this feature."
 
 		inline void init(int*, char***) {}
 		inline void finalize() {}

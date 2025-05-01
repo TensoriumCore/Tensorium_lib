@@ -21,7 +21,6 @@ namespace morpheus_RG {
 					: type(metric_type), M(mass), a(spin) {}
 
 				void operator()(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
-					std::cout << "Calling metric type = " << type << "\n";
 					if (type == "minkowski") {
 						compute_minkowski(g);
 					} else if (type == "schwarzschild") {
@@ -78,7 +77,6 @@ namespace morpheus_RG {
 					g(1, 1) = Sigma / Delta;
 					g(2, 2) = Sigma;
 					g(3, 3) = (r * r + a * a + T(2) * M * r * a * a * sin2 / Sigma) * sin2;
-					std::cout << "g(0,0) = " << g(0,0) << std::endl;
 				}
 		};
 } 

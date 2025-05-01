@@ -4,6 +4,7 @@
 #include "../Core/Tensor.hpp"
 #include "../DiffGeometry/ChristoffelSymbol.hpp"
 #include "../DiffGeometry/Metric.hpp"
+#include "../DiffGeometry/RiemannTensor.hpp"
 
 namespace morpheus {
 
@@ -71,4 +72,18 @@ namespace morpheus {
 				metric(X, g);
 			}
 
+		template <typename T>
+			inline morpheus::Tensor<T, 4> compute_riemann_tensor(
+					const morpheus::Vector<T>& X,
+					T h,
+					const morpheus_RG::Metric<T>& metric)
+			{
+				return morpheus_RG::RiemannTensor<T>::compute(X, h, metric);
+			}
+
+		template <typename T>
+			inline void print_riemann_tensor(const morpheus::Tensor<T, 4>& R)
+			{
+				morpheus_RG::RiemannTensor<T>::print_componentwise(R);
+			}
 }
