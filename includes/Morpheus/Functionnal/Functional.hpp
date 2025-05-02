@@ -262,6 +262,11 @@ namespace morpheus {
 			return Tensor<K, R1>::template tensor_product<R1, R2>(A, B);
 		}
 
+	template <size_t I, size_t J, typename K, std::size_t Rank>
+		Tensor<K, Rank - 2> contract_tensor(const Tensor<K, Rank>& T) {
+			static_assert(I < Rank && J < Rank && I != J, "Invalid contraction indices");
+			return T.template contract_tensor<I, J>();
+		}
 	// === LINEAR SOLVERS ===
 	template <typename T>
 		Vector<T> gauss_solve(const Matrix<T>& A, const Vector<T>& b) {

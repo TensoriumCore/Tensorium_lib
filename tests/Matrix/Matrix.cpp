@@ -283,7 +283,11 @@ int matrix_tests() {
 	gamma.print();
 	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr", 1.0, 0.8));
 	morpheus::print_riemann_tensor(R);
-
+	 morpheus::contract_tensor<0, 1>(R);
+	std::cout << "Riemann tensor contracted:\n";
+	R.print_shape();
+	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
+	R.print();
 	return 0;
 }
 
