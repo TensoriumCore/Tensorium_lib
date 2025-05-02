@@ -1,5 +1,5 @@
 # Morpheus_lib
-### DISCLAMER 
+### !!!DISCLAMER!!! 
 Morpheus is still in the early development phase, and many of its features work, but I'm not yet convinced of the solidity of some of them (especially the tensor manipulations).
 The python binding is usable without any other python librairy, but I'm still working on it to make it all clean and usable using a simple pip3 install (see the Jupiter Notebook).
 
