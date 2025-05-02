@@ -137,6 +137,41 @@ def test_solver():
     print("\n✅ Solver tests passed!")
 
 
+def test_relativity_functions():
+    import numpy as np
+
+    # Point dans l'espace-temps (t=0, r=10, θ=π/2, φ=0)
+    X_np = np.array([0.0, 10.0, np.pi / 2.0, 0.0], dtype=np.float64)
+
+    # Création du tenseur de métrique et de son inverse via Morpheus (C++ côté)
+    metric_name = "kerr"
+    M = 1.0
+    a = 0.8
+
+    g_np = morph.compute_metric(X_np, metric_name, M, a)
+    ginv_np = morph.inverse(g_np)
+
+    print("\nMetric tensor g_{μν}:\n", g_np)
+    print("Inverse metric g^{μν}:\n", ginv_np)
+
+    # Calcul des symboles de Christoffel
+    Gamma = morph.compute_christoffel(X_np, g_np, ginv_np, metric_name, M, a)
+    print("\nChristoffel symbols Γ^λ_{μν}:\n", Gamma)
+
+    # Calcul du tenseur de Riemann
+    R = morph.compute_riemann_tensor(X_np, metric_name, M, a)
+    print("\nRiemann tensor R^λ_{μνρ}:\n", R)
+
+    # Vérification élémentaire
+    assert g_np.shape == (4, 4)
+    assert ginv_np.shape == (4, 4)
+    assert Gamma.shape == (4, 4, 4)
+    assert R.shape == (4, 4, 4, 4)
+
+    print("\n✅ Relativity pipeline tested successfully.")
+
+
+test_relativity_functions()
 test_solver()
 
 benchmark_large_matrix(8192)
