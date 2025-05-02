@@ -38,11 +38,19 @@ namespace morpheus {
 						data.resize(total);
 						total_size = total;
 					}
-
+				size_t flatten_index(size_t i, size_t j, size_t k, size_t l) const {
+					std::array<size_t, 4> idx = {i, j, k, l};
+					return flatten_index(idx);
+				}
 				K& operator()(size_t i, size_t j) {
 					return data[i * dimensions[1] + j];
 				}
 
+
+				K& operator()(size_t i, size_t j, size_t k, size_t l) {
+					std::array<size_t, 4> idx = {i, j, k, l};
+					return data[flatten_index(idx)];
+				}
 				const K& operator()(size_t i, size_t j) const {
 					return data[i * dimensions[1] + j];
 				}
@@ -66,6 +74,12 @@ namespace morpheus {
 					return data[index];
 				}
 
+				const K& operator()(size_t i, size_t j, size_t k, size_t l) const {
+					std::array<size_t, 4> idx = {i, j, k, l};
+					return data[flatten_index(idx)];
+				}
+
+
 				void fill(K value) {
 					std::fill(data.begin(), data.end(), value);
 				}
@@ -78,7 +92,7 @@ namespace morpheus {
 					}
 					std::cout << ")\n";
 				}
-				
+
 				void print() const {
 					for (size_t i = 0; i < dimensions[0]; ++i) {
 						for (size_t j = 0; j < dimensions[1]; ++j) {
