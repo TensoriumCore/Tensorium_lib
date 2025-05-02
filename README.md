@@ -1,4 +1,7 @@
 # Morpheus_lib
+### !!!DISCLAMER!!! 
+Morpheus is still in the early development phase, and many of its features work, but I'm not yet convinced of the solidity of some of them (especially the tensor manipulations).
+The python binding is usable without any other python librairy, but I'm still working on it to make it all clean and usable using a simple pip3 install (see the Jupiter Notebook).
 
 ![Screenshot from 2025-04-29 14-43-09](https://github.com/user-attachments/assets/41772890-d460-4f72-bda1-8cfc23eddfa3)
 
@@ -17,8 +20,8 @@ The core philosophy of Morpheus_lib is to combine:
 
 This library is built with the goal of empowering projects that require both speed and flexibility, such as:
 - Simulating curved spacetime and relativistic matter (e.g. BSSN formalism, GRHD, GRMHD),
-- Custom neural network training and inference on CPU,
-- Fast manipulation of large scientific datasets and image matrices,
+- Custom neural network training and inference on CPU (not really atm),
+- Fast manipulation of large scientific datasets and image matrices (not atm),
 - Research and education projects needing intuitive yet high-performance numerical tools.
 
 ## Highlights
@@ -51,7 +54,7 @@ This library is built with the goal of empowering projects that require both spe
 - MPI
 - libmemkind-dev (if you are using Xeon Phi knight landing CPU)
 - CMake ≥ 3.16
-- Python ≥ 3.8 (for Python bindings)
+- Python ≥ 3.10 (for Python bindings)
 - `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
 - OpenBLAS (optional, for benchmarking with BLAS)
 
@@ -64,6 +67,7 @@ cd pybuild
 cmake ..
 make -j4
 ```
+Then you can use it as the .ipynb show
 
 ### Build C++ only for special targets and options
 
