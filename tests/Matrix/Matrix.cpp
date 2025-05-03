@@ -288,7 +288,46 @@ int matrix_tests() {
 	R.print_shape();
 	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
 	R.print();
-	return 0;
+
+     constexpr std::size_t N = 1024;
+    constexpr double L = 1.0; 
+    constexpr double dx = L / N;
+    constexpr double two_pi = 2.0 * M_PI;
+
+    morpheus::Vector<std::complex<double>> f(N); 
+    morpheus::Vector<std::complex<double>> f_hat(N);
+    morpheus::Vector<std::complex<double>> df(N); 
+
+    for (std::size_t i = 0; i < N; ++i) {
+        double x = i * dx;
+        f[i] = std::sin(two_pi * x);
+    }
+
+    f_hat = f;
+    morpheus::forwardFFT(f_hat);
+
+    for (std::size_t k = 0; k < N; ++k) {
+        std::ptrdiff_t k_signed = (k <= N/2) ? k : k - N; 
+        std::complex<double> ik = std::complex<double>(0.0, two_pi * k_signed / L);
+        f_hat[k] *= ik;
+    }
+
+    df = f_hat;
+    morpheus::backwardFFT(df);  
+
+    double max_err = 0.0;
+    for (std::size_t i = 0; i < N; ++i) {
+        double x = i * dx;
+        double exact = two_pi * std::cos(two_pi * x);
+        double err = std::abs(df[i].real() - exact);
+		printf("x = %f, df = %f, exact = %f, err = %f\n", x, df[i].real(), exact, err);
+        if (err > max_err) max_err = err;
+    }
+
+    std::cout << "=== Dérivée spectrale de sin(2πx) ===\n";
+    std::cout << "Erreur max sur f'(x) = " << max_err << "\n";
+
+    return (max_err < 1e-12) ? 0 : 1;
 }
 
 
