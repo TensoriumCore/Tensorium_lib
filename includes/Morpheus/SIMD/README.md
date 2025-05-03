@@ -31,7 +31,7 @@ SIMD/
   - Complex numbers are supported
 - Auto-selection of best ISA at runtime or compile-time
 
-### aarch64 NEON are incomming !
+
 
 ### Allocator.hpp
 - Provides `aligned_allocator<T>` for STL compatibility
@@ -81,5 +81,5 @@ Fully functional and integrated into all math kernels of Morpheus, including `Ve
 - AVX / AVX2 (256-bit)
 - AVX512F / AVX512DQ (512-bit)
 - Optional hbw (High Bandwidth Memory) detection on Xeon Phi (KNL)
-
+- ### aarch64 NEON are incomming !
 
