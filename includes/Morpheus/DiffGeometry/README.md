@@ -8,7 +8,7 @@ The module enables:
 - Representation and manipulation of the spacetime metric
 - Computation of Christoffel symbols (first and second kind)
 - Construction of curvature tensors: Riemann, Ricci, and Ricci scalar
-- Implementation of the BSSN (conformal) formalism
+- Implementation of the BSSN (conformal) formalism setup for GRID 3+1 problems (To be done)
 
 ## Structure
 
