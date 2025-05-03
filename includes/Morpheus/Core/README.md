@@ -80,9 +80,3 @@ The module is stable and used across all parts of the Morpheus library. It is de
 
 - Matrix sizes are expected to fit in cache (optimized kernels exist for 4×4, 8×8, 16×16).
 - Tensor operations are layout-aware for compatibility with differential geometry modules.
-
-## References
-
-- E. Anderson et al., *LAPACK Users' Guide*
-- SIMD instruction sets: Intel Intrinsics Guide
-- G. Strang, *Introduction to Applied Mathematics*
