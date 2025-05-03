@@ -38,7 +38,13 @@ DiffGeometry/
 
 ## Status
 
-The module is functional and actively used in BSSN-based 3+1 simulations. Symbolic support for automatic tensor generation (via `Symbolics/`) is under development.
+The module is functional for 4D analytical problems and will be actively used in BSSN-based 3+1 simulations. Symbolic support for automatic tensor generation (via `Symbolics/`) is under development.
+
+## Current metrics
+
+- Minkowski
+- Schwarzschild
+- Kerr
 
 ## Example Usage to compute Riemann Tensor and contract to Ricci in Kerr metric 
 
