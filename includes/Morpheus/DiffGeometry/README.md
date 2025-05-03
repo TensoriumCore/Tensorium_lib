@@ -60,6 +60,6 @@ The module is functional and actively used in BSSN-based 3+1 simulations. Symbol
 	g_inv = morpheus::inv_mat_tensor(g); 
 	auto gamma = morpheus::compute_christoffel(X, 1e-5, g, g_inv, metric);
 	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr", 1.0, 0.8));
-    morpheus::contract_tensor<0, 1>(R);
+	morpheus::contract_tensor<0, 1>(R);
 ```
 
