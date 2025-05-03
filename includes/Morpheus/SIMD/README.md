@@ -1,6 +1,6 @@
 # Morpheus — SIMD Module
 
-This directory contains the low-level SIMD backend used throughout Morpheus for accelerating vector, matrix, and tensor operations. It provides abstraction layers over AVX, SSE, and AVX512 instructions, as well as runtime detection and alignment-aware memory allocation.
+This directory contains the low-level SIMD backend used throughout Morpheus to accelerate vector, matrix, and tensor operations. It provides abstraction layers over AVX, AVX2, AVX512, and SSE instruction sets, with automatic runtime detection and alignment-aware memory allocation. Writing separate code for each ISA is unnecessary — all operations are unified through `SimdTraits` with graceful fallback to the best supported instruction set.
 
 ## Purpose
 
@@ -49,10 +49,23 @@ SIMD/
 
 ```cpp
 using namespace morpheus::simd;
+using T    = float;
+using Simd = SimdTraits<T, DefaultISA>;
+using reg  = typename Simd::reg;
 
-SimdTraits<float, avx512_t>::vec a = set1<float, avx512_t>(3.0f);
-SimdTraits<float, avx512_t>::vec b = set1<float, avx512_t>(2.0f);
-auto c = add<float, avx512_t>(a, b); // SIMD add: c = a + b
+alignas(64) T a[Simd::width] = {1.0f, 2.0f, 3.0f, 4.0f,
+                                5.0f, 6.0f, 7.0f, 8.0f};
+alignas(64) T b[Simd::width] = {8.0f, 7.0f, 6.0f, 5.0f,
+                                4.0f, 3.0f, 2.0f, 1.0f};
+alignas(64) T result[Simd::width];
+
+reg va = Simd::load(a);
+reg vb = Simd::load(b);
+reg vr = Simd::add(va, vb);
+Simd::store(result, vr);
+
+for (std::size_t i = 0; i < Simd::width; ++i)
+    std::cout << "result[" << i << "] = " << result[i] << "\n";
 ```
 
 ## Status
@@ -66,8 +79,4 @@ Fully functional and integrated into all math kernels of Morpheus, including `Ve
 - AVX512F / AVX512DQ (512-bit)
 - Optional hbw (High Bandwidth Memory) detection on Xeon Phi (KNL)
 
-## References
 
-- Intel Intrinsics Guide: https://www.intel.com/content/www/us/en/docs/intrinsics-guide/
-- A. Fog, *Optimizing Software in C++*
-- Intel 64 and IA-32 Architectures Software Developer Manuals
