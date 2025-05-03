@@ -1,6 +1,6 @@
 # Morpheus — DiffGeometry Module
 
-This directory provides the core components for differential geometry computations in general relativity. It serves as the foundation for implementing the ADM and BSSN formalisms used in numerical relativity.
+This directory provides the core components for differential geometry computations in general relativity. It serves as the foundation for analytical 4D results and for implementing the ADM and BSSN formalisms used in numerical relativity.
 
 ## Purpose
 
