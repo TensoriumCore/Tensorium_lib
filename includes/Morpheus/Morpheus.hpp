@@ -6,6 +6,7 @@
 #include <chrono>
 #include "Core/Vector.hpp"
 #include "Core/Matrix.hpp"
+#include "Core/Spectral.hpp"
 #include "Core/Tensor.hpp"
 #include "Functionnal/Functional.hpp"
 #include "SIMD/CPU_id.hpp"

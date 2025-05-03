@@ -4,6 +4,7 @@
 #include "../Core/Tensor.hpp"
 #include "../Core/LinearSolver.hpp"
 #include "../Core/Derivate.hpp"
+#include "../Core/Spectral.hpp"
 
 namespace morpheus {
 	// === VECTOR OPS ===
@@ -299,6 +300,27 @@ namespace morpheus {
 	template<typename K, size_t Rank>
 		inline void centered_derivative_order4(const DerivateND<K, Rank>& input, DerivateND<K, Rank>& output, size_t axis, K dx) {
 			input.centered_derivative_order4_rank(input, output, axis, dx);
+		}
+	
+
+	//=== SPECTRAL METHODS ===
+
+	template<typename T>
+		inline void forwardFFT(morpheus::Vector<std::complex<T>>& data)
+		{
+			SpectralFFT<T>::forward(data);
+		}
+
+	template<typename T>
+		inline void backwardFFT(morpheus::Vector<std::complex<T>>& data)
+		{
+			SpectralFFT<T>::backward(data);
+		}
+
+	template<typename T>
+		inline void backwardFFP(morpheus::Vector<std::complex<T>>& data)
+		{
+			SpectralFFT<T>::backward(data);
 		}
 
 }

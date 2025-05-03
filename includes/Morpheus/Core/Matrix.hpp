@@ -47,6 +47,7 @@ namespace morpheus {
 						std::swap((*this)(i, k), (*this)(j, k));
 					}
 				}
+
 				template <typename T>
 					Vector<T> operator*(const Vector<T>& v) const {
 						assert(cols == v.size() && "Matrix-Vector size mismatch");
@@ -146,8 +147,6 @@ namespace morpheus {
 							data[i] *= a;
 					}
 
-
-
 				template<int UN>
 					static inline __attribute__((always_inline))
 					void microkernel4(size_t nCols,   
@@ -165,8 +164,6 @@ namespace morpheus {
 								sum[x] = Simd::fmadd(av, Simd::set1(b[x][k]), sum[x]);
 						}
 					}
-
-
 
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix mul_mat(const Matrix<K>& mat) const {
@@ -203,7 +200,7 @@ namespace morpheus {
 									for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
 
 										const K* __restrict__ a_ptr  = &data[i * cols];
-									
+
 										reg sum0 = Simd::zero(), sum1 = Simd::zero();
 										reg sum2 = Simd::zero(), sum3 = Simd::zero();
 										reg* sum_arr[4] = { &sum0, &sum1, &sum2, &sum3 };
@@ -441,7 +438,7 @@ namespace morpheus {
 
 						return Inv;
 					}
-			
+
 				__attribute__((always_inline, hot, flatten))
 					inline K det() const {
 						if (rows != cols)
