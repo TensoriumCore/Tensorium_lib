@@ -28,7 +28,10 @@ SIMD/
   - vector loads/stores (`load`, `store`, `setzero`, `broadcast`)
   - arithmetic (`add`, `sub`, `fmadd`, `mul`)
   - reductions (`horizontal_add`, etc.)
+  - Complex numbers are supported
 - Auto-selection of best ISA at runtime or compile-time
+
+### aarch64 NEON are incomming !
 
 ### Allocator.hpp
 - Provides `aligned_allocator<T>` for STL compatibility
