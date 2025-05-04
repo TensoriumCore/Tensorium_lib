@@ -53,23 +53,6 @@ namespace morpheus_RG {
 								}
 				}
 
-				static morpheus::Tensor<T, 2> contract_to_ricci(const Tensor4D& Riemann, const morpheus::Tensor<T, 2>& g_inv) {
-					constexpr size_t dim = 4;
-					morpheus::Tensor<T, 2> Ricci({dim, dim});
-					Ricci.fill(T(0));
-
-					for (size_t mu = 0; mu < dim; ++mu) {
-						for (size_t nu = 0; nu < dim; ++nu) {
-							for (size_t rho = 0; rho < dim; ++rho) {
-								for (size_t sigma = 0; sigma < dim; ++sigma) {
-									Ricci(mu, nu) += g_inv(rho, sigma) * Riemann(rho, sigma, mu, nu);
-								}
-							}
-						}
-					}
-
-					return Ricci;
-				}
 				static Tensor4D compute(const VectorT& X, T h, const Metric<T>& metric) {
 					constexpr size_t dim = 4;
 					Tensor2D g({dim, dim});

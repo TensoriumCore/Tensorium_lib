@@ -5,6 +5,7 @@
 #include "../DiffGeometry/ChristoffelSymbol.hpp"
 #include "../DiffGeometry/Metric.hpp"
 #include "../DiffGeometry/RiemannTensor.hpp"
+#include "../DiffGeometry/RicciTensor.hpp"
 
 namespace morpheus {
 
@@ -90,7 +91,22 @@ namespace morpheus {
 
 		template<typename T>
 			inline Tensor<T, 2> contract_riemann_to_ricci(const Tensor<T, 4>& R, const Tensor<T, 2>& ginv) {
-				return morpheus_RG::RiemannTensor<T>::contract_to_ricci(R, ginv);
+				return morpheus_RG::RicciTensor<T>::contract_to_ricci(R, ginv);
+			}
+		
+		template<typename T>
+			inline T compute_ricci_scalar(const Tensor<T, 2>& Ricci, const Tensor<T, 2>& ginv) {
+				return morpheus_RG::RicciTensor<T>::compute_ricci_scalar(Ricci, ginv);
+			}
+
+		template<typename T>
+			inline void print_ricci_tensor(const Tensor<T, 2>& R) {
+				morpheus_RG::RicciTensor<T>::print_componentwise(R);
+			}
+
+		template<typename T>
+			inline void print_ricci_scalar(const Tensor<T, 2>& Ricci, const Tensor<T, 2>& g_inv) {
+				morpheus_RG::RicciTensor<T>::print_ricci_scalar(Ricci, g_inv);
 			}
 
 }

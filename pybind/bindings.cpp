@@ -69,7 +69,6 @@ PYBIND11_MODULE(morpheus, m) {
             metric(X, g);
             return g;
         });
-
     morph.def("compute_christoffel", [](const Vector<double>& X,
                                          const morpheus::Tensor<double, 2>& g,
                                          const morpheus::Tensor<double, 2>& ginv,
@@ -78,14 +77,12 @@ PYBIND11_MODULE(morpheus, m) {
         auto metric = morpheus_RG::Metric<double>(metric_type, M, a);
         return morpheus::compute_christoffel(X, 1e-5, g, ginv, metric);
     });
-
     morph.def("compute_riemann_tensor", [](const Vector<double>& X,
                                             const std::string& metric_type,
                                             double M, double a) {
         auto metric = morpheus_RG::Metric<double>(metric_type, M, a);
         return morpheus::compute_riemann_tensor<double>(X, 1e-5, metric);
     });
-
 	morph.def("contract_riemann_to_ricci", 
 			[](const morpheus::Tensor<double, 4>& R, const morpheus::Tensor<double, 2>& ginv) {
 			return morpheus::contract_riemann_to_ricci(R, ginv);
@@ -93,6 +90,25 @@ PYBIND11_MODULE(morpheus, m) {
 			py::arg("riemann"), py::arg("g_inv"),
 			"Contract a Riemann tensor R_{ρσμν} to the Ricci tensor R_{μν} using g^{ρσ}"
 			);
+	morph.def("compute_ricci_scalar",
+			[](const morpheus::Tensor<double, 2>& Ricci, const morpheus::Tensor<double, 2>& ginv) {
+			return morpheus::compute_ricci_scalar(Ricci, ginv);
+			},
+			py::arg("ricci"), py::arg("g_inv"),
+			"Compute the Ricci scalar R from the Ricci tensor R_{μν} and the inverse metric g^{μν}"
+			);
+
+	// === Ricci Tensor display ===
+	morph.def("print_ricci_tensor", &morpheus::print_ricci_tensor<double>, 
+			py::arg("R"), "Print components of the Ricci tensor");
+
+
+	morph.def("print_ricci_scalar",
+			&morpheus::print_ricci_scalar<double>,
+			py::arg("Ricci_tensor"), py::arg("g_inv"),
+			"Print the Ricci scalar from Ricci tensor and inverse metric");
+
+
     morph.def("inv_mat_tensor", &morpheus::inv_mat_tensor<double>, "Inverse of a 2D tensor");
 
     py::class_<Vector<float>>(m, "Vector")
