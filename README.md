@@ -6,7 +6,7 @@ The python binding is usable without any other python librairy, but I'm still wo
 ![Screenshot from 2025-04-29 14-43-09](https://github.com/user-attachments/assets/41772890-d460-4f72-bda1-8cfc23eddfa3)
 
 
-**Morpheus_lib** is a high-performance scientific C++ library designed for demanding computational domains such as **numerical relativity**, **machine learning (ML)**, **deep learning (DL)**, **artificial intelligence (AI)**, and **scientific simulations**.
+**Morpheus_lib** is a high-performance scientific C++ library designed for demanding computational domains such as **numerical relativity**, **machine learning (ML)**, **deep learning (DL)** and general **scientific simulations**.
 
 It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:
 - **SIMD acceleration** (SSE, AVX2, AVX512),
