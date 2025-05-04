@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "../Core/Tensor.hpp"
 #include "../Core/Vector.hpp"
-
+#include <functional>
 namespace morpheus_RG {
 
 	template<typename T>
@@ -27,12 +27,23 @@ namespace morpheus_RG {
 						compute_schwarzschild(X, g);
 					} else if (type == "kerr") {
 						compute_kerr(X, g);
+					} else if (type == "flrw") {
+						compute_flrw(X, g);
+					} else if (type == "custom" && custom_metric_fn) {
+						custom_metric_fn(X, g);
 					} else {
 						throw std::invalid_argument("Unknown metric type: " + type);
 					}
 				}
 
 			private:
+				std::function<void(const morpheus::Vector<T>&, morpheus::Tensor<T, 2>&)> custom_metric_fn = nullptr;
+
+				void set_custom(std::function<void(const morpheus::Vector<T>&, morpheus::Tensor<T, 2>&)> fn) {
+					custom_metric_fn = std::move(fn);
+					type = "custom";
+				}
+
 				void compute_minkowski(morpheus::Tensor<T, 2>& g) const {
 					const size_t dim = 4;
 					g.resize(dim, dim);
@@ -78,5 +89,24 @@ namespace morpheus_RG {
 					g(2, 2) = Sigma;
 					g(3, 3) = (r * r + a * a + T(2) * M * r * a * a * sin2 / Sigma) * sin2;
 				}
+
+				void compute_flrw(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
+					assert(X.size() == 4);
+					const T t = X(0);
+					const T r = X(1);
+					const T theta = X(2);
+					const T sin_theta = std::sin(theta);
+
+					const T a_t = std::pow(t, T(2.0) / T(3.0));
+
+					g.resize(4, 4);
+					g.fill(T(0));
+
+					g(0, 0) = T(-1);
+					g(1, 1) = a_t * a_t;
+					g(2, 2) = a_t * a_t * r * r;
+					g(3, 3) = a_t * a_t * r * r * sin_theta * sin_theta;
+				}
+
 		};
 } 

@@ -258,43 +258,41 @@ namespace morpheus {
 						return result;
 					}
 
+
 				template<size_t N>
 					__attribute__((always_inline, flatten, hot))
 					inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
-						static_assert(N == 4 || N == 8 || N == 16, "Only small NxN matrices supported");
+						static_assert(N == 4 || N == 8 || N == 16, "Only 4, 8, 16 supported for fast path");
 
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
-						constexpr size_t simd_width = Simd::width;
+						constexpr size_t simd_width = Simd::width / sizeof(K);
 
 						Matrix<K> result(N, N);
 
-						reg a[N];
+						std::array<reg, N> A_rows;
 						for (size_t i = 0; i < N; ++i) {
-							if ((uintptr_t)&this->data[i * N] & 31) {
-								Simd::load(&this->data[i * N]);
-							}
-							a[i] = Simd::loadu(&this->data[i * N]);
+							A_rows[i] = Simd::loadu(&this->data[i * N]);
 						}
 
-						reg b[N];
+						std::array<reg, N> B_cols;
 						for (size_t j = 0; j < N; ++j) {
-							b[j] = Simd::set(
-									mat.data[j + 0 * N],
-									mat.data[j + 1 * N],
-									mat.data[j + 2 * N],
-									mat.data[j + 3 * N]  
-									);
+							alignas(64) K col_data[N];
+							for (size_t i = 0; i < N; ++i)
+								col_data[i] = mat(i, j);
+							B_cols[j] = Simd::loadu(col_data);
 						}
 
 						for (size_t i = 0; i < N; ++i) {
 							for (size_t j = 0; j < N; ++j) {
-								result.data[i*N + j] = Simd::horizontal_add(Simd::mul(a[i], b[j]));
+								reg prod = Simd::mul(A_rows[i], B_cols[j]);
+								result(i, j) = Simd::horizontal_add(prod);
 							}
 						}
 
 						return result;
 					}
+
 
 				template<typename T>
 					__attribute__((always_inline, hot, flatten))
@@ -409,8 +407,8 @@ namespace morpheus {
 								auto v = MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
-							/* if (maxv < static_cast<K>(1e-12)) */
-							/* 	throw std::runtime_error("Matrix is singular or nearly singular."); */
+							if (maxv < static_cast<K>(1e-6))
+								throw std::runtime_error("Matrix is singular or nearly singular.");
 
 							if (piv != i) {
 								M.swap_rows(i, piv);

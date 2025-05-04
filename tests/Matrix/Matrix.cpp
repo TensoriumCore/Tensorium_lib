@@ -57,10 +57,7 @@ int matrix_bench() {
 	B2(0, 0) = 5.0f; B2(0, 1) = 6.0f;
 	B2(1, 0) = 7.0f; B2(1, 1) = 8.0f;
 	auto C2 = morpheus::mul_mat(A2, B2);
-	std::cout << "C2(0,0): " << C2(0, 0) << "\n";
-	std::cout << "C2(0,1): " << C2(0, 1) << "\n";
-	std::cout << "C2(1,0): " << C2(1, 0) << "\n";
-	std::cout << "C2(1,1): " << C2(1, 1) << "\n";
+
 	std::cout << "=== Benchmarking complete ===\n";
 	std::cout << "[✓] Benchmark test passed\n";
 	
@@ -76,14 +73,6 @@ int matrix_bench() {
 	E(3, 0) = 13.0f; E(3, 1) = 14.0f; E(3, 2) = 15.0f; E(3, 3) = 16.0f;
 	
 	auto F = morpheus::mul_mat(D, E);
-	std::cout << "F(0,0): " << F(0, 0) << "\n";
-	std::cout << "F(0,1): " << F(0, 1) << "\n";
-	std::cout << "F(1,0): " << F(1, 0) << "\n";
-	std::cout << "F(1,1): " << F(1, 1) << "\n";
-	std::cout << "F(2,0): " << F(2, 0) << "\n";
-	std::cout << "F(2,1): " << F(2, 1) << "\n";
-	std::cout << "F(3,0): " << F(3, 0) << "\n";
-	std::cout << "F(3,1): " << F(3, 1) << "\n";
 	std::cout << "=== Benchmarking complete ===\n";
 
     return 0;
@@ -149,21 +138,6 @@ int matrix_tests() {
 	CHECK(std::abs(A_inv(0, 0) * A(0, 1) + A_inv(0, 1) * A(1, 1)) < 1e-3f);
 	CHECK(std::abs(A_inv(1, 0) * A(0, 0) + A_inv(1, 1) * A(1, 0)) < 1e-3f);
 
-	std::cout << "Inverse test\n";
-	std::cout << "A:\n";
-	for (std::size_t i = 0; i < 2; ++i) {
-		for (std::size_t j = 0; j < 2; ++j) {
-			std::cout << A(i, j) << " ";
-		}
-		std::cout << "\n";
-	}
-	std::cout << "A_inv:\n";
-	for (std::size_t i = 0; i < 2; ++i) {
-		for (std::size_t j = 0; j < 2; ++j) {
-			std::cout << A_inv(i, j) << " ";
-		}
-		std::cout << "\n";
-	}
 
     Mat Id = A.mul_mat(A_inv);
     CHECK(std::abs(Id(0, 0) - 1.0f) < 1e-3f);
@@ -175,9 +149,6 @@ int matrix_tests() {
     A(1, 0) = 3.0f; A(1, 1) = 4.0f;
 
     auto d = det_mat(A);
-	std::cout << "Determinant: " << d << "\n";
-	std::cout << "A:\n";	
-	A.print();
 	Mat U(3, 3);
     U(0, 0) = 1.0f; U(0, 1) = 0.0f; U(0, 2) = 0.0f;
     U(1, 0) = 0.0f; U(1, 1) = 1.0f; U(1, 2) = 0.0f;
@@ -188,10 +159,6 @@ int matrix_tests() {
     for (size_t i = 0; i < 3; ++i)
         for (size_t j = 0; j < 3; ++j)
             CHECK(std::abs(U_inv(i, j) - (i == j ? 1.0f : 0.0f)) < 1e-3f);
-	std::cout << "U:\n";
-	U.print();
-	std::cout << "U_inv:\n";
-	U_inv.print();
 
 	Mat U2(3, 3);
     U2(0, 0) = 2.0f; U2(0, 1) = 0.0f; U2(0, 2) = 0.0f;
@@ -201,20 +168,12 @@ int matrix_tests() {
 	for (size_t i = 0; i < 3; ++i)
 		for (size_t j = 0; j < 3; ++j)
 			CHECK(std::abs(U2_inv(i, j) - (i == j ? 0.5f : 0.0f)) < 1e-3f);
-	std::cout << "U2:\n";
-	U2.print();
-	std::cout << "U2_inv:\n";
-	U2_inv.print();
 	
 	Mat U3(3, 3);
 	U3(0, 0) = 8.0f; U3(0, 1) = 5.0f; U3(0, 2) = -2.0f;
 	U3(1, 0) = 4.0f; U3(1, 1) = 7.0f; U3(1, 2) = 20.0f;
 	U3(2, 0) = 7.0f; U3(2, 1) = 6.0f; U3(2, 2) = 1.0f;
 	auto U3_inv = inverse_mat(U3);
-	std::cout << "U3:\n";
-	U3.print();
-	std::cout << "U3_inv:\n";
-	U3_inv.print();
     CHECK(std::abs(d - (-2.0f)) < 1e-3f);
 
 	Matrix<float> G(3, 4);
@@ -236,25 +195,13 @@ int matrix_tests() {
 
 	Matrix<std::complex<float>> Cc = Ac;
 	Cc.add(Bc);
-	std::cout << "A complex:\n";
-	Ac.print();
-	std::cout << "B complex:\n";
-	Bc.print();
-	std::cout << "C complex:\n";
-	Cc.print();
 	CHECK(std::abs(Cc(0, 0).real() - 9.0f) < 1e-4);
 	CHECK(std::abs(Cc(0, 0).imag() - 9.0f) < 1e-4);
 	CHECK(std::abs(Cc(1, 1).real() - 9.0f) < 1e-4);
 	CHECK(std::abs(Cc(1, 1).imag() - 9.0f) < 1e-4);
 	Cc.sub(Bc);
-	std::cout << "C complex after sub:\n";
-	Cc.print();
 	Cc.scl(2.0f);
-	std::cout << "C complex after scl:\n";
-	Cc.print();
 	Cc = morpheus::mul_mat(Ac, Bc);
-	std::cout << "C complex after mul:\n";
-	Cc.print();
 	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
@@ -320,7 +267,6 @@ int matrix_tests() {
         double x = i * dx;
         double exact = two_pi * std::cos(two_pi * x);
         double err = std::abs(df[i].real() - exact);
-		printf("x = %f, df = %f, exact = %f, err = %f\n", x, df[i].real(), exact, err);
         if (err > max_err) max_err = err;
     }
 

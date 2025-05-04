@@ -34,8 +34,13 @@ PYBIND11_MODULE(morpheus, m) {
 
     py::module_ morph = m.def_submodule("morph", "High-performance math operations");
 
-    py::class_<morpheus::Tensor<double, 2>>(morph, "Tensor2d")
-        .def("print", &morpheus::Tensor<double, 2>::print);
+	py::class_<morpheus::Tensor<double, 2>>(morph, "Tensor2d")
+		.def("print", &morpheus::Tensor<double, 2>::print)
+		.def("contract", [](const morpheus::Tensor<double, 2>& T, size_t i, size_t j) {
+			if (i >= 2 || j >= 2 || i == j)
+				throw std::invalid_argument("Invalid contraction indices");
+				return contract_tensor<0,1>(T); // Remplace 0,1 par i,j si tu fais un dispatch dynamique
+			}, py::arg("i"), py::arg("j"), "Contract tensor along axes (i, j)");
 
     py::class_<morpheus::Tensor<double, 3>>(morph, "Tensor3d")
         .def("print", &morpheus::Tensor<double, 3>::print);
@@ -81,6 +86,13 @@ PYBIND11_MODULE(morpheus, m) {
         return morpheus::compute_riemann_tensor<double>(X, 1e-5, metric);
     });
 
+	morph.def("contract_riemann_to_ricci", 
+			[](const morpheus::Tensor<double, 4>& R, const morpheus::Tensor<double, 2>& ginv) {
+			return morpheus::contract_riemann_to_ricci(R, ginv);
+			},
+			py::arg("riemann"), py::arg("g_inv"),
+			"Contract a Riemann tensor R_{ρσμν} to the Ricci tensor R_{μν} using g^{ρσ}"
+			);
     morph.def("inv_mat_tensor", &morpheus::inv_mat_tensor<double>, "Inverse of a 2D tensor");
 
     py::class_<Vector<float>>(m, "Vector")
@@ -162,7 +174,28 @@ PYBIND11_MODULE(morpheus, m) {
     morph.def("linear_comb", &morpheus::linear_combination_vec<float>, "Linear combination of vectors");
     morph.def("cross", &cross_vec<float>, "Cross product (only defined for 3D vectors)");
 
-    morph.def("add_mat", &add_mat<float>, "Add two matrices");
+	morph.def("tensor_product", [](const morpheus::Tensor<double, 2>& A,
+				const morpheus::Tensor<double, 2>& B) {
+			return mul_tensor(A, B);
+			}, py::arg("A"), py::arg("B"), "Tensor (outer) product of two tensors");
+	morph.def("contract_tensor", [](const morpheus::Tensor<double, 4>& T, size_t i, size_t j) {
+			if (i >= 4 || j >= 4 || i == j)
+			throw std::invalid_argument("Invalid contraction indices");
+
+			if (i == 0 && j == 1) return contract_tensor<0,1>(T);
+			if (i == 0 && j == 2) return contract_tensor<0,2>(T);
+			if (i == 0 && j == 3) return contract_tensor<0,3>(T);
+			if (i == 1 && j == 2) return contract_tensor<1,2>(T);
+			if (i == 1 && j == 3) return contract_tensor<1,3>(T);
+			if (i == 2 && j == 3) return contract_tensor<2,3>(T);
+
+			throw std::invalid_argument("Unsupported contraction indices");
+			});
+	morph.def("tensor_product", [](const morpheus::Tensor<double, 2>& A,
+				const morpheus::Tensor<double, 2>& B) {
+			return mul_tensor(A, B);
+			}, py::arg("A"), py::arg("B"), "Tensor (outer) product of two tensors");
+	morph.def("add_mat", &add_mat<float>, "Add two matrices");
     morph.def("sub_mat", &sub_mat<float>, "Subtract two matrices");
     morph.def("scl_mat", &scl_mat<float>, "Scale matrix by scalar");
     morph.def("mul", &mul_mat<float>, "Multiply two matrices");
