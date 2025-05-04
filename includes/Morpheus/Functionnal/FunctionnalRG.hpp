@@ -86,4 +86,11 @@ namespace morpheus {
 			{
 				morpheus_RG::RiemannTensor<T>::print_componentwise(R);
 			}
+
+
+		template<typename T>
+			inline Tensor<T, 2> contract_riemann_to_ricci(const Tensor<T, 4>& R, const Tensor<T, 2>& ginv) {
+				return morpheus_RG::RiemannTensor<T>::contract_to_ricci(R, ginv);
+			}
+
 }
