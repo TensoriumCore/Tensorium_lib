@@ -11,12 +11,6 @@ int deriv_test() {
 
 	morpheus::centered_derivative(f2d, dfdx2d, 0, 1.0f);
 
-	for (size_t i = 0; i < 4; ++i) {
-		for (size_t j = 0; j < 4; ++j)
-			std::cout << dfdx2d(i, j) << " ";
-		std::cout << "\n";
-	}
-
 	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202y) ===\n";
 	morpheus::Derivate<float> f2d_y(4, 4);
 	morpheus::Derivate<float> dfdx2d_y(4, 4);
@@ -24,11 +18,7 @@ int deriv_test() {
 		for (size_t j = 0; j < 4; ++j)
 			f2d_y(i, j) = static_cast<float>(i * 10 + j);
 	morpheus::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
-	for (size_t i = 0; i < 4; ++i) {
-		for (size_t j = 0; j < 4; ++j)
-			std::cout << dfdx2d_y(i, j) << " ";
-		std::cout << "\n";
-	}
+
 
 	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202x) ===\n";
 	std::array<size_t, 3> dims = {4, 4, 4};
@@ -38,11 +28,7 @@ int deriv_test() {
 			for (size_t k = 0; k < 4; ++k)
 				fnd_x({i, j, k}) = float(i + j + k);
 	morpheus::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
-	for (size_t j = 0; j < 4; ++j) {
-		for (size_t k = 0; k < 4; ++k)
-			std::cout << dfdxnd({2, j, k}) << " ";
-		std::cout << "\n";
-	}
+
 
 	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202z) ===\n";
 	morpheus::DerivateND<float, 3> fnd(dims), dfdznd(dims);
@@ -51,19 +37,11 @@ int deriv_test() {
 			for (size_t k = 0; k < 4; ++k)
 				fnd({i, j, k}) = float(i + j + k);
 	morpheus::centered_derivative(fnd, dfdznd, 2, 1.0f);
-	for (size_t i = 0; i < 4; ++i) {
-		for (size_t j = 0; j < 4; ++j)
-			std::cout << dfdznd({i, j, 2}) << " ";
-		std::cout << "\n";
-	}
+
 
 	morpheus::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
 	std::cout << "\u2202f/\u2202z (ordre 4) slice at k=2:\n";
-	for (size_t i = 0; i < 4; ++i) {
-		for (size_t j = 0; j < 4; ++j)
-			std::cout << dfdznd({i, j, 2}) << " ";
-		std::cout << "\n";
-	}
+
 
 	const size_t N = 16384;
 	const float dx = 0.01f;
