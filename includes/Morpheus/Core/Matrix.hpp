@@ -147,6 +147,8 @@ namespace morpheus {
 							data[i] *= a;
 					}
 
+
+
 				template<int UN>
 					static inline __attribute__((always_inline))
 					void microkernel4(size_t nCols,   
@@ -155,15 +157,25 @@ namespace morpheus {
 							reg* sum)
 					{
 						constexpr size_t W = Simd::width;
+						size_t k = 0;
 
-						for (size_t k = 0; k + W - 1 < nCols; k += W) {
+						for (; k + W <= nCols; k += W) {
 							reg av = Simd::load(a + k);
-
 #pragma unroll(UN)
 							for (int x = 0; x < UN; ++x)
 								sum[x] = Simd::fmadd(av, Simd::set1(b[x][k]), sum[x]);
 						}
+
+						for (; k < nCols; ++k) {
+							K a_val = a[k];
+#pragma unroll(UN)
+							for (int x = 0; x < UN; ++x) {
+								sum[x] = Simd::add(sum[x], Simd::set1(a_val * b[x][k]));
+							}
+						}
 					}
+
+
 
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix mul_mat(const Matrix<K>& mat) const {
@@ -201,25 +213,22 @@ namespace morpheus {
 
 										const K* __restrict__ a_ptr  = &data[i * cols];
 
-										reg sum0 = Simd::zero(), sum1 = Simd::zero();
-										reg sum2 = Simd::zero(), sum3 = Simd::zero();
-										reg* sum_arr[4] = { &sum0, &sum1, &sum2, &sum3 };
 
-										const K* __restrict__ b_ptr[4] = {
+
+#define UN 4
+										reg sum[UN] = { Simd::zero(), Simd::zero(), Simd::zero(), Simd::zero() };
+										const K* __restrict__ b_ptr[UN] = {
 											&mat_transposed.data[(j + 0) * mat.rows],
 											&mat_transposed.data[(j + 1) * mat.rows],
 											&mat_transposed.data[(j + 2) * mat.rows],
 											&mat_transposed.data[(j + 3) * mat.rows]
 										};
-#define UN 4
-										reg sum[UN];
 										microkernel4<UN>(cols, a_ptr, b_ptr, sum);
+										K total0 = Simd::horizontal_add(sum[0]);
+										K total1 = Simd::horizontal_add(sum[1]);
+										K total2 = Simd::horizontal_add(sum[2]);
+										K total3 = Simd::horizontal_add(sum[3]);
 
-
-										K total0 = Simd::horizontal_add(sum0);
-										K total1 = Simd::horizontal_add(sum1);
-										K total2 = Simd::horizontal_add(sum2);
-										K total3 = Simd::horizontal_add(sum3);
 
 										for (size_t k = (cols & ~(simd_width-1)); k < cols; ++k) {
 											K a_val = a_ptr[k];

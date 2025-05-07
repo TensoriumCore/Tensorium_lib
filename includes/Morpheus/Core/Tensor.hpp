@@ -250,6 +250,7 @@ namespace morpheus {
 
 						Tensor<K, R> result(shape);
 
+						const size_t max_b_safe = B.data.size() - (W - 1);
 #pragma omp parallel for collapse(2)
 						for (size_t a_outer = 0; a_outer < A.total_size; a_outer += L3_BLOCK) {
 							for (size_t b_outer = 0; b_outer < B.total_size; b_outer += L3_BLOCK) {
@@ -264,7 +265,7 @@ namespace morpheus {
 										_mm_prefetch(&B.data[b_inner + L1_BLOCK], _MM_HINT_T0);
 										const size_t a_end = std::min(a_inner + L1_BLOCK, a_outer_end);
 										const size_t b_end = std::min(b_inner + L1_BLOCK, b_outer_end);
-
+										if (B.total_size < W){}
 										for (size_t a_flat = a_inner; a_flat < a_end; ++a_flat) {
 											std::array<size_t, R1> idx_A;
 											size_t tmp = a_flat;
@@ -275,31 +276,33 @@ namespace morpheus {
 											K a_scalar = A(idx_A);
 											reg a_vec = Simd::set1(a_scalar);
 
-											for (size_t b_flat = b_inner; b_flat + W - 1 < b_end; b_flat += W) {
-												reg b_vec = Simd::loadu(&B.data[b_flat]);
-												reg c_vec = Simd::mul(a_vec, b_vec);
+											if (b_inner < max_b_safe){
+												for (size_t b_flat = b_inner; b_flat + W <= b_end; b_flat += W) {
+													reg b_vec = Simd::loadu(&B.data[b_flat]);
+													reg c_vec = Simd::mul(a_vec, b_vec);
 
-												for (size_t w = 0; w < W; ++w) {
-													std::array<size_t, R2> idx_B;
-													std::array<size_t, R> idx_C;
+													for (size_t w = 0; w < W; ++w) {
+														std::array<size_t, R2> idx_B;
+														std::array<size_t, R> idx_C;
 
-													size_t tmpb = b_flat + w;
-													for (ssize_t i = R2 - 1; i >= 0; --i) {
-														idx_B[i] = tmpb % B.dimensions[i];
-														tmpb /= B.dimensions[i];
-													}
+														size_t tmpb = b_flat + w;
+														for (ssize_t i = R2 - 1; i >= 0; --i) {
+															idx_B[i] = tmpb % B.dimensions[i];
+															tmpb /= B.dimensions[i];
+														}
 #pragma unroll(R1 + R2 - 1) 
-													for (size_t i = 0; i < R1; ++i)
-														idx_C[i] = idx_A[i];
+														for (size_t i = 0; i < R1; ++i)
+															idx_C[i] = idx_A[i];
 #pragma unroll(R1 + R2 - 1)
-													for (size_t i = 0; i < R2; ++i) 
-														idx_C[R1 + i] = idx_B[i];
+														for (size_t i = 0; i < R2; ++i) 
+															idx_C[R1 + i] = idx_B[i];
 
-													result(idx_C) = Simd::extract(c_vec, w);
+														result(idx_C) = Simd::extract(c_vec, w);
+													}
 												}
 											}
 
-											for (size_t b_flat = b_end - (b_end % W); b_flat < b_end; ++b_flat) {
+											for (size_t b_flat = b_inner + ((b_end - b_inner) / W) * W; b_flat < b_end; ++b_flat){
 												std::array<size_t, R2> idx_B;
 												std::array<size_t, R> idx_C;
 
