@@ -5,8 +5,15 @@ LIB_NAME     = libmorpheus.so
 CC           = clang++
 SRC_DIR      = tests
 BENCH_DIR    = $(SRC_DIR)/benchmarks
+PLGIN_DIR    = Plugins
 INC_DIR      = includes
 OBJ_DIR      = build
+
+PLUGIN_SRC   = $(PLGIN_DIR)/MorpheusDispatchPlugin.cpp
+PLUGIN_OUT   = $(PLGIN_DIR)/MorpheusDispatchPlugin.so
+LLVM_CXXFLAGS:= $(shell llvm-config --cxxflags)
+LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
+CLANG_LIBS   := -lclangFrontend -lclangTooling -lclangBasic -lclangLex
 
 CXX_STD      = -std=c++17
 BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR)
@@ -15,91 +22,79 @@ AVX2_FLAGS   = -mfma -mavx2
 AVX512_FLAGS = -mfma -mavx512f
 
 CFLAGS       = $(CXX_STD) $(BASE_FLAGS) $(AVX2_FLAGS)
-
 ifeq ($(AVX512), true)
-	CFLAGS := $(CXX_STD) $(BASE_FLAGS) $(AVX512_FLAGS)
+  CFLAGS := $(CXX_STD) $(BASE_FLAGS) $(AVX512_FLAGS)
 endif
-
 ifeq ($(VERBOSE), true)
-	CFLAGS += -DVERBOSE
+  CFLAGS += -DVERBOSE
 endif
-
 ifeq ($(DEBUG), true)
-	CFLAGS += -g
+  CFLAGS += -g
 endif
-
 ifeq ($(USE_MPI), true)
-	CFLAGS += -DMORPHEUS_USE_MPI
-	LDFLAGS += -lmpi
+  CFLAGS += -DMORPHEUS_USE_MPI
+  LDFLAGS += -lmpi
 endif
-
 ifeq ($(USE_KNL), true)
-	CFLAGS += -DUSE_KNL -mtune=knl -mfma -mavx512f -mavx512cd
-	LDFLAGS += -lmemkind
+  CFLAGS += -DUSE_KNL -mtune=knl -mfma -mavx512f -mavx512cd
+  LDFLAGS += -lmemkind
 endif
 
-# Filter all test .cpp files EXCEPT those in benchmarks/
-SRC         := $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
-OBJ         := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+PLUGIN_FLAGS = -Xclang -load -Xclang $(PLUGIN_OUT) \
+               -Xclang -add-plugin -Xclang morpheus-dispatch
 
-LIB_SRC     := $(filter-out $(SRC_DIR)/main.cpp, $(SRC))
-LIB_OBJ     := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(LIB_SRC))
+SRC  := $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
+OBJ  := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
-BENCH_SRC   = $(BENCH_DIR)/bench.cpp
-BENCH_OBJ   = $(OBJ_DIR)/bench.o
+LIB_SRC := $(filter-out $(SRC_DIR)/main.cpp,$(SRC))
+LIB_OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(LIB_SRC))
 
-BLAS_FLAGS  = -lblas -lm -lopenblas
+BENCH_SRC = $(BENCH_DIR)/bench.cpp
+BENCH_OBJ = $(OBJ_DIR)/bench.o
 
-.PHONY: all clean fclean re benchmark lib help
+BLAS_FLAGS = -lblas -lm -lopenblas
 
-all: $(NAME)
+.PHONY: all clean fclean re benchmark lib help plugin plugin-test
+
+all: plugin $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR) plugin
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -fPIC -c $< -o $@
+	$(CC) $(CFLAGS) $(PLUGIN_FLAGS) -fPIC -c $< -o $@
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 benchmark: $(BENCH_OBJ)
-	$(CC) $(CFLAGS) -o $(BENCH_NAME) $^ $(BLAS_FLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(PLUGIN_FLAGS) -o $(BENCH_NAME) $^ $(BLAS_FLAGS) $(LDFLAGS)
 
-$(OBJ_DIR)/bench.o: $(BENCH_SRC) | $(OBJ_DIR)
+$(OBJ_DIR)/bench.o: $(BENCH_SRC) | $(OBJ_DIR) plugin
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -fPIC -c $< -o $@
+	$(CC) $(CFLAGS) $(PLUGIN_FLAGS) -fPIC -c $< -o $@
 
 lib: $(LIB_NAME)
 
 $(LIB_NAME): $(LIB_OBJ)
 	$(CC) $(CFLAGS) -shared -o $@ $^ $(LDFLAGS)
 
+plugin: $(PLUGIN_OUT)
+
+$(PLUGIN_OUT): $(PLUGIN_SRC)
+	$(CC) -fPIC -shared -o $@ $< $(LLVM_CXXFLAGS) $(LLVM_LDFLAGS) $(CLANG_LIBS)
+
+plugin-test: plugin
+	$(CC) -S -emit-llvm $(PLUGIN_FLAGS) Plugins/test.cpp -o Plugins/a.out
+
 clean:
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME) $(BENCH_NAME) $(LIB_NAME)
+	rm -f $(NAME) $(BENCH_NAME) $(LIB_NAME) $(PLUGIN_OUT) $(PLGIN_DIR)/a.out
 
 help:
-	@echo \"Makefile for Morpheus\"
-	@echo \"Usage:\"
-	@echo \"  make [target]\"
-	@echo \"\"
-	@echo \"Targets:\"
-	@echo \"  all        - Build the executable\"
-	@echo \"  benchmark  - Build the benchmark executable\"
-	@echo \"  lib        - Build the shared library\"
-	@echo \"  clean      - Remove object files and directories\"
-	@echo \"  fclean     - Remove all generated files (executables, libraries, object files)\"
-	@echo \"  re         - Rebuild everything\"
-	@echo \"\"
-	@echo \"Options:\"
-	@echo \"  AVX512=true  - Enable AVX512 optimizations\"
-	@echo \"  VERBOSE=true - Enable verbose output\"
-	@echo \"  DEBUG=true   - Enable debug symbols\"
-	@echo \"  USE_MPI=true - Enable MPI support\"
-	@echo \"  USE_KNL=true - Enable KNL support\"
+	@echo "Targets:  all benchmark lib plugin plugin-test clean fclean re"
 
 re: fclean all
