@@ -28,14 +28,23 @@ using DefaultISA = sse_t;
 #define UNROLL 64
 #endif
 
+
+template<typename T, std::size_t Align>
+struct alignas(Align) aligned_reg {
+	T value;
+};
 namespace morpheus {
 
 	struct avx2_t {
 		static constexpr size_t width = SIMD_WIDTH;
 		using reg = __m256;
 		static constexpr size_t alignment = ALIGN;
+		using reg_aligned = aligned_reg<reg, alignment>;
 	};
+
 }
+
+
 
 inline bool supports_avx512() {
 	int regs[4];
@@ -60,7 +69,7 @@ inline bool supports_sse() {
 
 #include <iostream>
 template<typename F>
-	void dispatch_simd(F&& f) {
+void dispatch_simd(F&& f) {
 		if (supports_avx512()) {
 			std::cout << "[dispatch] Detected AVX512\n";
 			f(avx512_t{});
@@ -169,6 +178,8 @@ namespace simd {
 		struct SimdTraits<float, sse_t> {
 			using reg = __m128;
 			static constexpr size_t width = 4;
+			static constexpr size_t alignment = 16;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(float x)				{ return _mm_set1_ps(x); }
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm_set_ps(a, b, c, d);
@@ -209,6 +220,8 @@ namespace simd {
 	template<>
 		struct SimdTraits<double, sse_t> {
 			using reg = __m128d;
+			static constexpr size_t alignment = 16;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static constexpr size_t width = 2;
 			static inline reg set1(double x)            { return _mm_set1_pd(x); } 
 			static inline reg set(double a, double b)	{ return _mm_set_pd(b, a); }
@@ -243,6 +256,8 @@ namespace simd {
 		struct SimdTraits<size_t, sse_t> {
 			using reg = __m128i;
 			static constexpr size_t width = 2;
+			static constexpr size_t alignment = 16;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(uint64_t x)				{ return _mm_set1_epi64x(x); }
 			static inline reg set(uint64_t a, uint64_t b)	{ return _mm_set_epi64x(b, a); }
 			static inline uint64_t extract(reg x, size_t index) {
@@ -284,6 +299,8 @@ namespace simd {
 		struct SimdTraits<float, avx2_t> {
 			using reg = __m256;
 			static constexpr size_t width = 8;
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(float x)				{ return _mm256_set1_ps(x); }
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm256_set_ps(a, b, c, d, a, b, c, d);
@@ -323,6 +340,8 @@ namespace simd {
 		struct SimdTraits<double, avx2_t> {
 			using reg = __m256d;
 			static constexpr size_t width = 4;
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(double x)            { return _mm256_set1_pd(x); }
 			static inline reg set(double a, double b, double c, double d) {
 				return _mm256_set_pd(a, b, c, d);
@@ -353,6 +372,8 @@ namespace simd {
 		struct SimdTraits<size_t, avx2_t> {
 			using reg = __m256i;
 			static constexpr size_t width = 4;
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(uint64_t x)			{ return _mm256_set1_epi64x(x); }
 			static inline reg set(uint64_t a, uint64_t b, uint64_t c, uint64_t d) {
 				return _mm256_set_epi64x(a, b, c, d);
@@ -394,6 +415,8 @@ namespace simd {
 		struct SimdTraits<float, avx512_t> {
 			using reg = __m512;
 			static constexpr size_t width = 16;
+			static constexpr size_t alignment = 64;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(float x)				{ return _mm512_set1_ps(x); }
 			static inline reg set(float a, float b, float c, float d,
 								  float e, float f, float g, float h,
@@ -432,6 +455,8 @@ namespace simd {
 		struct SimdTraits<double, avx512_t> {
 			using reg = __m512d;
 			static constexpr size_t width = 8;
+			static constexpr size_t alignment = 64;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(double x)            { return _mm512_set1_pd(x); }
 			static inline reg set(double a, double b, double c, double d,
 								  double e, double f, double g, double h) {
@@ -463,6 +488,8 @@ namespace simd {
 		struct SimdTraits<size_t, avx512_t> {
 			using reg = __m512i;
 			static constexpr size_t width = 8;
+			static constexpr size_t alignment = 64;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set1(size_t x)			{ return _mm512_set1_epi64(x); }
 			static inline reg set(size_t a, size_t b, size_t c, size_t d,
 								  size_t e, size_t f, size_t g, size_t h) {
@@ -513,6 +540,8 @@ namespace simd {
 		struct SimdTraits<std::complex<float>, sse_t> {
 			using reg = __m128;
 			static constexpr size_t width = 2;
+			static constexpr size_t alignment = 16;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<float> a, std::complex<float> b) {
 				return _mm_set_ps(b.imag(), a.real(), b.real(), a.imag());
 			}
@@ -566,6 +595,8 @@ namespace simd {
 		struct SimdTraits<std::complex<double>, sse_t> {
 			using reg = __m128d;
 			static constexpr size_t width = 1;
+			static constexpr size_t alignment = 16;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<double> a, std::complex<double> b) {
 				return _mm_set_pd(b.imag(), a.real());
 			}
@@ -611,6 +642,8 @@ namespace simd {
 		struct SimdTraits<std::complex<float>, avx2_t> {
 			using reg = __m256;
 			static constexpr size_t width = 8;
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<float> a, std::complex<float> b,
 					std::complex<float> c, std::complex<float> d) {
 				return _mm256_set_ps(
@@ -679,6 +712,8 @@ namespace simd {
 		struct SimdTraits<std::complex<double>, avx2_t> {
 			using reg = __m256d;
 			static constexpr size_t width = 2;
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<double> a, std::complex<double> b) {
 				return _mm256_set_pd(
 						b.imag(), b.real(),
@@ -750,7 +785,8 @@ namespace simd {
 		struct SimdTraits<std::complex<float>, avx512_t> {
 			using reg = __m512;
 			static constexpr size_t width = 8; 
-
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<float> a, std::complex<float> b,
 					std::complex<float> c, std::complex<float> d,
 					std::complex<float> e, std::complex<float> f,
@@ -842,7 +878,8 @@ namespace simd {
 		struct SimdTraits<std::complex<double>, avx512_t> {
 			using reg = __m512d;
 			static constexpr size_t width = 4;
-
+			static constexpr size_t alignment = 32;
+			using reg_aligned = aligned_reg<reg, alignment>;
 			static inline reg set(std::complex<double> a, std::complex<double> b,
 					std::complex<double> c, std::complex<double> d) {
 				return _mm512_set_pd(
