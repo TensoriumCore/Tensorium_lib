@@ -176,7 +176,6 @@ namespace morpheus {
 					}
 
 
-
 				__attribute__((always_inline, hot, flatten))
 					inline Matrix mul_mat(const Matrix<K>& mat) const {
 						if (cols != mat.rows)
@@ -273,35 +272,35 @@ namespace morpheus {
 					inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
 						static_assert(N == 4 || N == 8 || N == 16, "Only 4, 8, 16 supported for fast path");
 
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg  = typename Simd::reg;
-						constexpr size_t simd_width = Simd::width / sizeof(K);
+						using Simd        = simd::SimdTraits<K, DefaultISA>;
+						using reg         = typename Simd::reg;
+						using reg_aligned = typename Simd::reg_aligned;
 
 						Matrix<K> result(N, N);
 
-						std::array<reg, N> A_rows;
+						reg_aligned A_rows[N];
+						reg_aligned B_cols[N];
+
 						for (size_t i = 0; i < N; ++i) {
-							A_rows[i] = Simd::loadu(&this->data[i * N]);
+							A_rows[i].value = Simd::loadu(&this->data[i * N]);
 						}
 
-						std::array<reg, N> B_cols;
 						for (size_t j = 0; j < N; ++j) {
 							alignas(64) K col_data[N];
 							for (size_t i = 0; i < N; ++i)
 								col_data[i] = mat(i, j);
-							B_cols[j] = Simd::loadu(col_data);
+							B_cols[j].value = Simd::loadu(col_data);
 						}
 
 						for (size_t i = 0; i < N; ++i) {
 							for (size_t j = 0; j < N; ++j) {
-								reg prod = Simd::mul(A_rows[i], B_cols[j]);
+								reg prod = Simd::mul(A_rows[i].value, B_cols[j].value);
 								result(i, j) = Simd::horizontal_add(prod);
 							}
 						}
 
 						return result;
 					}
-
 
 				template<typename T>
 					__attribute__((always_inline, hot, flatten))
@@ -406,9 +405,6 @@ namespace morpheus {
 						}
 
 						using SimdT = simd::SimdTraits<K, DefaultISA>;
-						using regT  = typename SimdT::reg;
-						const auto W = SimdT::width;
-
 						for (auto i = decltype(n)(0); i < n; ++i) {
 							auto piv = i;
 							auto maxv = MathsUtils::_abs(M(i, i));
@@ -454,7 +450,6 @@ namespace morpheus {
 						const size_t n = rows;
 						Matrix<K> M(n, n);
 						using SimdT = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename SimdT::reg;
 						const size_t simd_width = SimdT::width;
 
 						for (size_t i = 0; i < n; ++i)
