@@ -154,9 +154,5 @@ print("lerp(v, v2, 0.5) =", morph.lerp(v, v2, 0.5))
 ```
 
 
-### Run tests
-```bash
-chmod +x setup.sh && ./setup.sh
-```
 
 
