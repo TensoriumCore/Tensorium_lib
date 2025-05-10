@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -96,17 +103,30 @@ $(function(){initNavTree('namespacemorpheus_1_1solver.html',''); initResizable()
   <div class="headertitle"><div class="title">morpheus::solver Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Namespace containing linear system solvers.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmorpheus_1_1solver_1_1Gauss.html">Gauss</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct Gaussian elimination solver with SIMD acceleration.  <a href="classmorpheus_1_1solver_1_1Gauss.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmorpheus_1_1solver_1_1GaussSeidel.html">GaussSeidel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Placeholder for Gauss–Seidel iterative solver.  <a href="classmorpheus_1_1solver_1_1GaussSeidel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html">Jacobi</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterative <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> solver with SIMD and OpenMP support.  <a href="classmorpheus_1_1solver_1_1Jacobi.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Namespace containing linear system solvers. </p>
+<p>This includes direct and iterative methods for solving linear systems of the form:  </p><p class="formulaDsp">
+\[
+Ax = b
+\]
+</p>
+ </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

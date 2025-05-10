@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -99,54 +106,73 @@ $(function(){initNavTree('classmorpheus_1_1solver_1_1Jacobi.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
+<p>Iterative <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> solver with SIMD and OpenMP support.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="LinearSolver_8hpp_source.html">LinearSolver.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::solver::Jacobi&lt; K &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1solver_1_1Jacobi__coll__graph.svg" width="223" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aeb84725a1f6ecaaf09984a77569eab89" id="r_aeb84725a1f6ecaaf09984a77569eab89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb84725a1f6ecaaf09984a77569eab89">solve</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">A</a>, const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;b, <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Tensor.html">tol</a>=1<a class="el" href="classmorpheus_1_1Tensor.html">e</a>-10, <a class="el" href="classmorpheus_1_1Tensor.html">int</a> <a class="el" href="classmorpheus_1_1Tensor.html">max_iter</a>=2000)</td></tr>
+<tr class="memitem:aeb84725a1f6ecaaf09984a77569eab89" id="r_aeb84725a1f6ecaaf09984a77569eab89"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb84725a1f6ecaaf09984a77569eab89">solve</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;A, const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; &amp;b, K tol=1e-10, int max_iter=2000)</td></tr>
+<tr class="memdesc:aeb84725a1f6ecaaf09984a77569eab89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the system using the <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> method.  <br /></td></tr>
 <tr class="separator:aeb84725a1f6ecaaf09984a77569eab89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a78f7f0cbcce337f6f75eecb26720c24e" id="r_a78f7f0cbcce337f6f75eecb26720c24e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78f7f0cbcce337f6f75eecb26720c24e">data</a></td></tr>
+<tr class="memitem:a78f7f0cbcce337f6f75eecb26720c24e" id="r_a78f7f0cbcce337f6f75eecb26720c24e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78f7f0cbcce337f6f75eecb26720c24e">data</a></td></tr>
 <tr class="separator:a78f7f0cbcce337f6f75eecb26720c24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename K&gt;<br />
+class morpheus::solver::Jacobi&lt; K &gt;</div><p>Iterative <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> solver with SIMD and OpenMP support. </p>
+<p>Iteratively solves \( Ax = b \) using the <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> method. Works best on diagonally dominant matrices.</p>
+<p>Update rule:  </p><p class="formulaDsp">
+\[
+x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j \ne i} A_{ij} x_j^{(k)} \right)
+\]
+</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Scalar type (must be floating-point) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aeb84725a1f6ecaaf09984a77569eab89" name="aeb84725a1f6ecaaf09984a77569eab89"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb84725a1f6ecaaf09984a77569eab89">&#9670;&#160;</a></span>solve()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html">morpheus::solver::Jacobi</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::solve </td>
+          <td class="memname">static <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html">morpheus::solver::Jacobi</a>&lt; K &gt;::solve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1<a class="el" href="classmorpheus_1_1Tensor.html">e</a>-10</span>, </span></td>
+          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1e-10</span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">2000</span></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">2000</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -156,18 +182,36 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Solve the system using the <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td><a class="el" href="classmorpheus_1_1Matrix.html" title="High-performance aligned matrix class with SIMD support.">Matrix</a> \( A \in \mathbb{R}^{n \times n} \) </td></tr>
+    <tr><td class="paramname">b</td><td>Right-hand side vector </td></tr>
+    <tr><td class="paramname">tol</td><td>Convergence tolerance (default = 1e-10) </td></tr>
+    <tr><td class="paramname">max_iter</td><td>Maximum number of iterations (default = 2000) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Solution vector \( x \) </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::runtime_error</td><td>if diagonal is zero or near-zero </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="reference">References <a class="el" href="classmorpheus_1_1Matrix.html#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="classmorpheus_1_1Matrix.html#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30">sigma</a>, and <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a09c5cb9e88d703b1a5570ae3a3f2781c">morpheus::jacobi_solve()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 1 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89_cgraph.svg" width="410" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 2 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89_icgraph.svg" width="416" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -179,10 +223,10 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html">morpheus::solver::Jacobi</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;K&gt; <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html">morpheus::solver::Jacobi</a>&lt; K &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">

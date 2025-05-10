@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Morpheus: Main Page</title>
+<title>Morpheus: Morpheus</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -90,10 +97,162 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Morpheus Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Morpheus </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_includes_2mainpage"></a></p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+!!!DISCLAMER!!!</h2>
+<p>Morpheus is still in the early development phase, and many of its features work, but I'm not yet convinced of the solidity of some of them (especially the tensor manipulations). The python binding is usable without any other python librairy, but I'm still working on it to make it all clean and usable using a simple pip3 install (see the Jupiter Notebook).</p>
+<p><b>Morpheus_lib</b> is a high-performance scientific C++ library designed for demanding computational domains such as <b>numerical relativity</b>, <b>machine learning (ML)</b>, <b>deep learning (DL)</b> and general <b>scientific simulations</b>.</p>
+<p>It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:</p><ul>
+<li><b>SIMD acceleration</b> (SSE, AVX2, AVX512),</li>
+<li><b>Multithreading</b> with OpenMP,</li>
+<li>And soon, <b>distributed computing</b> via MPI.</li>
+</ul>
+<p>The core philosophy of Morpheus_lib is to combine:</p><ul>
+<li><b>Raw performance</b>, through low-level SIMD optimization,</li>
+<li><b>Modularity and clarity</b>, using a modern, header-only C++17 design,</li>
+<li><b>Python interoperability</b>, via PyBind11, for seamless integration with scientific Python workflows.</li>
+</ul>
+<p>This library is built with the goal of empowering projects that require both speed and flexibility, such as:</p><ul>
+<li>Simulating curved spacetime and relativistic matter (e.g. BSSN formalism, GRHD, GRMHD),</li>
+<li>Custom neural network training and inference on CPU (not really atm),</li>
+<li>Fast manipulation of large scientific datasets and image matrices (not atm),</li>
+<li>Research and education projects needing intuitive yet high-performance numerical tools.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Highlights</h1>
+<ul>
+<li>Optimized <code>Tensor</code>, <code>Vector</code> and <code>Matrix</code> classes with aligned memory</li>
+<li>AVX2/FMA SIMD acceleration (fallback on SSE when needed)</li>
+<li>Custom allocator using <code>posix_memalign</code> for proper vectorization</li>
+<li>OpenMP and MPI support</li>
+<li>Matrix/Tensor multiplication optimized with blocking, unrolling, and OpenMP</li>
+<li>Python bindings using <code>pybind11</code> for seamless integration with Python</li>
+<li>A symbolic parser to compute problems with a LaTex structure (in comming)</li>
+<li>Optional benchmark against BLAS (OpenBLAS, MKL)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
+TODO</h1>
+<ul>
+<li>Symbolic LaTeX parser</li>
+<li>Tensor operators</li>
+<li>General relativity / differential geometry classes dans methods</li>
+<li>Full MPI support</li>
+<li>SSE fallback (curently working on)</li>
+<li>Spectral Methdods (Chebychev/Fourrier)</li>
+<li>Backward FDM</li>
+<li>Some optimizations</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Build Instructions</h1>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Requirements</h2>
+<ul>
+<li>C++17 compiler with AVX2/FMA support or AVX512 if avalaible on your plateform (Intel compilers will be added later)</li>
+<li>fopenmp</li>
+<li>MPI</li>
+<li>libmemkind-dev (if you are using Xeon Phi knight landing CPU)</li>
+<li>CMake ≥ 3.16</li>
+<li>Python ≥ 3.10 (for Python bindings)</li>
+<li><code>pybind11</code> installed (<code>pacman -S python-pybind11</code> on Arch, or <code>pip install pybind11 --user</code>)</li>
+<li>OpenBLAS (optional, for benchmarking with BLAS)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Build C++ Library and Python Module</h2>
+<div class="fragment"><div class="line">mkdir pybuild</div>
+<div class="line">cd pybuild</div>
+<div class="line">cmake ..</div>
+<div class="line">make -j4</div>
+</div><!-- fragment --><p> Then you can use it as the .ipynb show</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Build C++ only for special targets and options</h2>
+<div class="fragment"><div class="line">make                # Default AVX2</div>
+<div class="line">make help       # Show differents compile options </div>
+<div class="line">make AVX512=true    # AVX512</div>
+<div class="line">make USE_KNL=true   # MCDRAM Memkind HBW (Xeon phi KNL)</div>
+<div class="line">make DEBUG=true     # debug symbols</div>
+<div class="line">make VERBOSE=true   # VERBOSE log</div>
+<div class="line">make benchmark      # BLAS vs Morpheus mat_mult benchmark</div>
+</div><!-- fragment --><p>The Python module will be created as a .so file in the pybuild/ directory. </p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Exemple using in C++</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="Morpheus_8hpp.html">Morpheus.hpp</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    Vector&lt;float&gt; v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};</div>
+<div class="line">    Vector&lt;float&gt; v2 = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] + [v2]:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#af9926f14a7ebe29eb59247e85ca9d966">morpheus::add_vec</a>(v1, v2).print();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] - [v2]:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#aa4cdeeda976ba0c2d3672d7451113667">morpheus::sub_vec</a>(v1, v2).print();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] * 0.5:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#a1a2e7c9b09299ca68a111830951ae130">morpheus::scl_vec</a>(v1, 0.5f).print();</div>
+<div class="line"> </div>
+<div class="line">    Matrix&lt;float&gt; m1(2, 8); </div>
+<div class="line">    Matrix&lt;float&gt; m2(2, 8);</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m1.rows; ++i)</div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m1.cols; ++j) {</div>
+<div class="line">            m1(i, j) = i * 10 + j;</div>
+<div class="line">            m2(i, j) = 1.0f;</div>
+<div class="line">        }</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] + [m2]:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#a7f5b701665e512ce59bb2c1e8fca44e1">morpheus::add_mat</a>(m1, m2).print();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] - [m2]:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#a9298933e8e700a86412c1b9babdf90b9">morpheus::sub_mat</a>(m1, m2).print();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] * 2.0:\n&quot;</span>;</div>
+<div class="line">    <a class="code hl_function" href="namespacemorpheus.html#a4b6f20a0b50871333f193d3389f78401">morpheus::scl_mat</a>(m1, 2.0f).print();</div>
+<div class="line">}</div>
+<div class="ttc" id="aMorpheus_8hpp_html"><div class="ttname"><a href="Morpheus_8hpp.html">Morpheus.hpp</a></div></div>
+<div class="ttc" id="anamespacemorpheus_html_a1a2e7c9b09299ca68a111830951ae130"><div class="ttname"><a href="namespacemorpheus.html#a1a2e7c9b09299ca68a111830951ae130">morpheus::scl_vec</a></div><div class="ttdeci">Vector&lt; T &gt; scl_vec(const Vector&lt; T &gt; &amp;a, T scalar)</div><div class="ttdef"><b>Definition</b> Functional.hpp:48</div></div>
+<div class="ttc" id="anamespacemorpheus_html_a4b6f20a0b50871333f193d3389f78401"><div class="ttname"><a href="namespacemorpheus.html#a4b6f20a0b50871333f193d3389f78401">morpheus::scl_mat</a></div><div class="ttdeci">Matrix&lt; T &gt; scl_mat(const Matrix&lt; T &gt; &amp;A, T scalar)</div><div class="ttdef"><b>Definition</b> Functional.hpp:169</div></div>
+<div class="ttc" id="anamespacemorpheus_html_a7f5b701665e512ce59bb2c1e8fca44e1"><div class="ttname"><a href="namespacemorpheus.html#a7f5b701665e512ce59bb2c1e8fca44e1">morpheus::add_mat</a></div><div class="ttdeci">Matrix&lt; T &gt; add_mat(const Matrix&lt; T &gt; &amp;A, const Matrix&lt; T &gt; &amp;B)</div><div class="ttdef"><b>Definition</b> Functional.hpp:141</div></div>
+<div class="ttc" id="anamespacemorpheus_html_a9298933e8e700a86412c1b9babdf90b9"><div class="ttname"><a href="namespacemorpheus.html#a9298933e8e700a86412c1b9babdf90b9">morpheus::sub_mat</a></div><div class="ttdeci">Matrix&lt; T &gt; sub_mat(const Matrix&lt; T &gt; &amp;A, const Matrix&lt; T &gt; &amp;B)</div><div class="ttdef"><b>Definition</b> Functional.hpp:155</div></div>
+<div class="ttc" id="anamespacemorpheus_html_aa4cdeeda976ba0c2d3672d7451113667"><div class="ttname"><a href="namespacemorpheus.html#aa4cdeeda976ba0c2d3672d7451113667">morpheus::sub_vec</a></div><div class="ttdeci">Vector&lt; T &gt; sub_vec(const Vector&lt; T &gt; &amp;a, const Vector&lt; T &gt; &amp;b)</div><div class="ttdef"><b>Definition</b> Functional.hpp:34</div></div>
+<div class="ttc" id="anamespacemorpheus_html_af9926f14a7ebe29eb59247e85ca9d966"><div class="ttname"><a href="namespacemorpheus.html#af9926f14a7ebe29eb59247e85ca9d966">morpheus::add_vec</a></div><div class="ttdeci">Vector&lt; T &gt; add_vec(const Vector&lt; T &gt; &amp;a, const Vector&lt; T &gt; &amp;b)</div><div class="ttdef"><b>Definition</b> Functional.hpp:20</div></div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md9"></a>
+Example using in Python</h2>
+<div class="fragment"><div class="line"><span class="keyword">from</span> morpheus <span class="keyword">import</span> *</div>
+<div class="line"> </div>
+<div class="line">matA = Matrix(2, 3)</div>
+<div class="line">matA.fill([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])</div>
+<div class="line"> </div>
+<div class="line">matB = Matrix(2, 3)</div>
+<div class="line">matB.fill([[7.0, 8.0, 9.0], [10.0, 11.0, 12.0]])</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;matA + matB =&quot;</span>)</div>
+<div class="line">morph.add_mat(matA, matB).print()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;matA - matB =&quot;</span>)</div>
+<div class="line">morph.sub_mat(matA, matB).print()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;matA * 2.0 =&quot;</span>)</div>
+<div class="line">morph.scl_mat(matA, 2.0).print()</div>
+<div class="line"> </div>
+<div class="line">v = Vector([1.0, 2.0, 3.0])</div>
+<div class="line">v2 = Vector([4.0, 5.0, 6.0])</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;v =&quot;</span>, v)</div>
+<div class="line">print(<span class="stringliteral">&quot;len(v) =&quot;</span>, len(v))</div>
+<div class="line">print(<span class="stringliteral">&quot;v + v2 =&quot;</span>, morph.add_vec(v, v2))</div>
+<div class="line">print(<span class="stringliteral">&quot;v - v2 =&quot;</span>, morph.sub_vec(v, v2))</div>
+<div class="line">print(<span class="stringliteral">&quot;v * 2.0 =&quot;</span>, morph.scl_vec(v, 2.0))</div>
+<div class="line">print(<span class="stringliteral">&quot;dot(v, v2) =&quot;</span>, morph.dot_vec(v, v2))</div>
+<div class="line">print(<span class="stringliteral">&quot;norm_1(v) =&quot;</span>, morph.norm_1(v))</div>
+<div class="line">print(<span class="stringliteral">&quot;norm_2(v) =&quot;</span>, morph.norm_2(v))</div>
+<div class="line">print(<span class="stringliteral">&quot;norm_inf(v) =&quot;</span>, morph.norm_inf(v))</div>
+<div class="line">print(<span class="stringliteral">&quot;cosine(v, v2) =&quot;</span>, morph.cosine(v, v2))</div>
+<div class="line">print(<span class="stringliteral">&quot;lerp(v, v2, 0.5) =&quot;</span>, morph.lerp(v, v2, 0.5))</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"/>
 </div><!-- contents -->
 </div><!-- doc-content -->

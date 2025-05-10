@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -107,41 +114,41 @@ $(function(){initNavTree('classmorpheus_1_1Derivate.html',''); initResizable(); 
 <div class="dynheader">
 Collaboration diagram for morpheus::Derivate&lt; K &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Derivate__coll__graph.svg" width="192" height="592"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a7d5890084f43df62d7a96f5bf1da28db" id="r_a7d5890084f43df62d7a96f5bf1da28db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td></tr>
+<tr class="memitem:a7d5890084f43df62d7a96f5bf1da28db" id="r_a7d5890084f43df62d7a96f5bf1da28db"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> = typename Simd::reg</td></tr>
 <tr class="separator:a7d5890084f43df62d7a96f5bf1da28db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d5890084f43df62d7a96f5bf1da28db" id="r_a7d5890084f43df62d7a96f5bf1da28db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td></tr>
+<tr class="memitem:a7d5890084f43df62d7a96f5bf1da28db" id="r_a7d5890084f43df62d7a96f5bf1da28db"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> = typename Simd::reg</td></tr>
 <tr class="separator:a7d5890084f43df62d7a96f5bf1da28db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0f319d22f9633ee1c4a6d26ae78374f8" id="r_a0f319d22f9633ee1c4a6d26ae78374f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f319d22f9633ee1c4a6d26ae78374f8">Derivate</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> r, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">c</a>)</td></tr>
+<tr class="memitem:a0f319d22f9633ee1c4a6d26ae78374f8" id="r_a0f319d22f9633ee1c4a6d26ae78374f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f319d22f9633ee1c4a6d26ae78374f8">Derivate</a> (size_t r, size_t c)</td></tr>
 <tr class="memdesc:a0f319d22f9633ee1c4a6d26ae78374f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with explicit dimensions.  <br /></td></tr>
 <tr class="separator:a0f319d22f9633ee1c4a6d26ae78374f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af82edfdf4a3b13f6a47fd9f2028f917e" id="r_af82edfdf4a3b13f6a47fd9f2028f917e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af82edfdf4a3b13f6a47fd9f2028f917e">Derivate</a> (<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">m</a>)</td></tr>
+<tr class="memitem:af82edfdf4a3b13f6a47fd9f2028f917e" id="r_af82edfdf4a3b13f6a47fd9f2028f917e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af82edfdf4a3b13f6a47fd9f2028f917e">Derivate</a> (<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;m)</td></tr>
 <tr class="memdesc:af82edfdf4a3b13f6a47fd9f2028f917e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct from an existing matrix.  <br /></td></tr>
 <tr class="separator:af82edfdf4a3b13f6a47fd9f2028f917e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac85e7f2f239bc91772ecc43df8b691d0" id="r_ac85e7f2f239bc91772ecc43df8b691d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac85e7f2f239bc91772ecc43df8b691d0">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> i, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memitem:ac85e7f2f239bc91772ecc43df8b691d0" id="r_ac85e7f2f239bc91772ecc43df8b691d0"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac85e7f2f239bc91772ecc43df8b691d0">operator()</a> (size_t i, size_t j)</td></tr>
 <tr class="memdesc:ac85e7f2f239bc91772ecc43df8b691d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable access to an element.  <br /></td></tr>
 <tr class="separator:ac85e7f2f239bc91772ecc43df8b691d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73e9b78828b58c7046b68f004fd4e251" id="r_a73e9b78828b58c7046b68f004fd4e251"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73e9b78828b58c7046b68f004fd4e251">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> i, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>) <a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
+<tr class="memitem:a73e9b78828b58c7046b68f004fd4e251" id="r_a73e9b78828b58c7046b68f004fd4e251"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73e9b78828b58c7046b68f004fd4e251">operator()</a> (size_t i, size_t j) <a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
 <tr class="memdesc:a73e9b78828b58c7046b68f004fd4e251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const access to an element.  <br /></td></tr>
 <tr class="separator:a73e9b78828b58c7046b68f004fd4e251"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abecdfe51767105080a98c425466868cf" id="r_abecdfe51767105080a98c425466868cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abecdfe51767105080a98c425466868cf">size</a> () <a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
+<tr class="memitem:abecdfe51767105080a98c425466868cf" id="r_abecdfe51767105080a98c425466868cf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abecdfe51767105080a98c425466868cf">size</a> () <a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
 <tr class="memdesc:abecdfe51767105080a98c425466868cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of elements in the matrix.  <br /></td></tr>
 <tr class="separator:abecdfe51767105080a98c425466868cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca9eed3f1755e9e14fca1b7fdfbd0753" id="r_aca9eed3f1755e9e14fca1b7fdfbd0753"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca9eed3f1755e9e14fca1b7fdfbd0753">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="namespacemorpheus.html#a3e21ebc6020ca61352246c36630ad02d">centered_derivative</a>(<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;input</td></tr>
+<tr class="memitem:aca9eed3f1755e9e14fca1b7fdfbd0753" id="r_aca9eed3f1755e9e14fca1b7fdfbd0753"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca9eed3f1755e9e14fca1b7fdfbd0753">__attribute__</a> ((always_inline, hot, flatten)) inline void <a class="el" href="namespacemorpheus.html#a3e21ebc6020ca61352246c36630ad02d">centered_derivative</a>(<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;input</td></tr>
 <tr class="memdesc:aca9eed3f1755e9e14fca1b7fdfbd0753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute second-order centered derivative.  <br /></td></tr>
 <tr class="separator:aca9eed3f1755e9e14fca1b7fdfbd0753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96de941a9d37d052121443416181c9d2" id="r_a96de941a9d37d052121443416181c9d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96de941a9d37d052121443416181c9d2">if</a> (<a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a>==1)</td></tr>
 <tr class="separator:a96de941a9d37d052121443416181c9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8be6f3cad7b3346186e5f30af24f288" id="r_aa8be6f3cad7b3346186e5f30af24f288"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8be6f3cad7b3346186e5f30af24f288">if</a> (<a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a>==0)</td></tr>
 <tr class="separator:aa8be6f3cad7b3346186e5f30af24f288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dec60eaf6ff914841aab3daa0a6e721" id="r_a9dec60eaf6ff914841aab3daa0a6e721"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dec60eaf6ff914841aab3daa0a6e721">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="namespacemorpheus.html#aee47a33addf8f5b32455587352cb450a">centered_derivative_order4</a>(<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;input</td></tr>
+<tr class="memitem:a9dec60eaf6ff914841aab3daa0a6e721" id="r_a9dec60eaf6ff914841aab3daa0a6e721"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dec60eaf6ff914841aab3daa0a6e721">__attribute__</a> ((always_inline, hot, flatten)) inline void <a class="el" href="namespacemorpheus.html#aee47a33addf8f5b32455587352cb450a">centered_derivative_order4</a>(<a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;input</td></tr>
 <tr class="memdesc:a9dec60eaf6ff914841aab3daa0a6e721"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute fourth-order centered derivative.  <br /></td></tr>
 <tr class="separator:a9dec60eaf6ff914841aab3daa0a6e721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96de941a9d37d052121443416181c9d2" id="r_a96de941a9d37d052121443416181c9d2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96de941a9d37d052121443416181c9d2">if</a> (<a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a>==1)</td></tr>
@@ -151,31 +158,31 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:abac8f37f79fd89ca905a9918d3b2f7c2" id="r_abac8f37f79fd89ca905a9918d3b2f7c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abac8f37f79fd89ca905a9918d3b2f7c2">rows</a></td></tr>
+<tr class="memitem:abac8f37f79fd89ca905a9918d3b2f7c2" id="r_abac8f37f79fd89ca905a9918d3b2f7c2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abac8f37f79fd89ca905a9918d3b2f7c2">rows</a></td></tr>
 <tr class="separator:abac8f37f79fd89ca905a9918d3b2f7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58b0d2c81c82052655a7b466b730ad2f" id="r_a58b0d2c81c82052655a7b466b730ad2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58b0d2c81c82052655a7b466b730ad2f">cols</a></td></tr>
+<tr class="memitem:a58b0d2c81c82052655a7b466b730ad2f" id="r_a58b0d2c81c82052655a7b466b730ad2f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58b0d2c81c82052655a7b466b730ad2f">cols</a></td></tr>
 <tr class="separator:a58b0d2c81c82052655a7b466b730ad2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b674866206c31b787ad753bfa3f32e1" id="r_a8b674866206c31b787ad753bfa3f32e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b674866206c31b787ad753bfa3f32e1">data</a></td></tr>
+<tr class="memitem:a8b674866206c31b787ad753bfa3f32e1" id="r_a8b674866206c31b787ad753bfa3f32e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b674866206c31b787ad753bfa3f32e1">data</a></td></tr>
 <tr class="separator:a8b674866206c31b787ad753bfa3f32e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43c31aa5f14221f0f3c5a351854dbacd" id="r_a43c31aa5f14221f0f3c5a351854dbacd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43c31aa5f14221f0f3c5a351854dbacd">block_size</a></td></tr>
+<tr class="memitem:a43c31aa5f14221f0f3c5a351854dbacd" id="r_a43c31aa5f14221f0f3c5a351854dbacd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43c31aa5f14221f0f3c5a351854dbacd">block_size</a></td></tr>
 <tr class="separator:a43c31aa5f14221f0f3c5a351854dbacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86de4de7a73f1821b101a5f531a9ead9" id="r_a86de4de7a73f1821b101a5f531a9ead9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86de4de7a73f1821b101a5f531a9ead9">output</a></td></tr>
+<tr class="memitem:a86de4de7a73f1821b101a5f531a9ead9" id="r_a86de4de7a73f1821b101a5f531a9ead9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86de4de7a73f1821b101a5f531a9ead9">output</a></td></tr>
 <tr class="separator:a86de4de7a73f1821b101a5f531a9ead9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6e8004f1316484f1f58edcbc0ac4088" id="r_ad6e8004f1316484f1f58edcbc0ac4088"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td></tr>
+<tr class="memitem:ad6e8004f1316484f1f58edcbc0ac4088" id="r_ad6e8004f1316484f1f58edcbc0ac4088"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td></tr>
 <tr class="separator:ad6e8004f1316484f1f58edcbc0ac4088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a865b1cbc9808e74305fa9300bbaa1552" id="r_a865b1cbc9808e74305fa9300bbaa1552"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
+<tr class="memitem:a865b1cbc9808e74305fa9300bbaa1552" id="r_a865b1cbc9808e74305fa9300bbaa1552"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; size_t K <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a></td></tr>
 <tr class="separator:a865b1cbc9808e74305fa9300bbaa1552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29ede6396b53f82ed7023eec3c7f9c38" id="r_a29ede6396b53f82ed7023eec3c7f9c38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29ede6396b53f82ed7023eec3c7f9c38">simd_width</a> = Simd::width</td></tr>
+<tr class="memitem:a29ede6396b53f82ed7023eec3c7f9c38" id="r_a29ede6396b53f82ed7023eec3c7f9c38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29ede6396b53f82ed7023eec3c7f9c38">simd_width</a> = Simd::width</td></tr>
 <tr class="separator:a29ede6396b53f82ed7023eec3c7f9c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a310696cb2a405e97191895df2528f12d" id="r_a310696cb2a405e97191895df2528f12d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a310696cb2a405e97191895df2528f12d">inv_2dx</a> = <a class="el" href="classmorpheus_1_1Tensor.html">K</a>(1) / (<a class="el" href="classmorpheus_1_1Tensor.html">K</a>(2) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td></tr>
+<tr class="memitem:a310696cb2a405e97191895df2528f12d" id="r_a310696cb2a405e97191895df2528f12d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a310696cb2a405e97191895df2528f12d">inv_2dx</a> = K(1) / (K(2) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td></tr>
 <tr class="separator:a310696cb2a405e97191895df2528f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b8b8ea0f0b411bb311341bae2cb0301" id="r_a6b8b8ea0f0b411bb311341bae2cb0301"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a></td></tr>
 <tr class="separator:a6b8b8ea0f0b411bb311341bae2cb0301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb094a2baa598fe8f6c4e04083267054" id="r_afb094a2baa598fe8f6c4e04083267054"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a></td></tr>
+<tr class="memitem:afb094a2baa598fe8f6c4e04083267054" id="r_afb094a2baa598fe8f6c4e04083267054"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; size_t K&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a></td></tr>
 <tr class="separator:afb094a2baa598fe8f6c4e04083267054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd9a1f1f4371520629de9ed5c4a57f1d" id="r_abd9a1f1f4371520629de9ed5c4a57f1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">constexpr</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd9a1f1f4371520629de9ed5c4a57f1d">W</a> = Simd::width</td></tr>
+<tr class="memitem:abd9a1f1f4371520629de9ed5c4a57f1d" id="r_abd9a1f1f4371520629de9ed5c4a57f1d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd9a1f1f4371520629de9ed5c4a57f1d">W</a> = Simd::width</td></tr>
 <tr class="separator:abd9a1f1f4371520629de9ed5c4a57f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15451a4f5b5e5e30c30709be41f7c9bd" id="r_a15451a4f5b5e5e30c30709be41f7c9bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15451a4f5b5e5e30c30709be41f7c9bd">inv_12dx</a> = <a class="el" href="classmorpheus_1_1Tensor.html">K</a>(1) / (<a class="el" href="classmorpheus_1_1Tensor.html">K</a>(12) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td></tr>
+<tr class="memitem:a15451a4f5b5e5e30c30709be41f7c9bd" id="r_a15451a4f5b5e5e30c30709be41f7c9bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15451a4f5b5e5e30c30709be41f7c9bd">inv_12dx</a> = K(1) / (K(12) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td></tr>
 <tr class="separator:a15451a4f5b5e5e30c30709be41f7c9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2f56ca66c51cb0cfce2eeb18f68b40f" id="r_af2f56ca66c51cb0cfce2eeb18f68b40f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2f56ca66c51cb0cfce2eeb18f68b40f">inv</a> = Simd::set1(<a class="el" href="#a15451a4f5b5e5e30c30709be41f7c9bd">inv_12dx</a>)</td></tr>
 <tr class="separator:af2f56ca66c51cb0cfce2eeb18f68b40f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +190,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a822c35e509eccaffe83820edbb6be562"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename K&gt;<br />
 class morpheus::Derivate&lt; K &gt;</div><p>A 2D aligned matrix for numerical derivatives. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -198,10 +205,10 @@ class morpheus::Derivate&lt; K &gt;</div><p>A 2D aligned matrix for numerical de
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::reg = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::reg = typename Simd::reg</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -214,10 +221,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::reg = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::reg = typename Simd::reg</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -231,20 +238,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::Derivate </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::Derivate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>c</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>c</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -273,15 +280,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::Derivate </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::Derivate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -309,12 +316,12 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(always_inline, hot, flatten)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const &amp;</td>
         </tr>
       </table>
@@ -339,12 +346,12 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(always_inline, hot, flatten)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const &amp;</td>
         </tr>
       </table>
@@ -369,13 +376,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::if </td>
+          <td class="memname"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::if </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">=&#160;0</span></span></td><td>)</td>
           <td></td>
@@ -398,13 +405,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::if </td>
+          <td class="memname"><a class="el" href="#a6b8b8ea0f0b411bb311341bae2cb0301">else</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::if </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">=&#160;0</span></span></td><td>)</td>
           <td></td>
@@ -427,13 +434,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::if </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::if </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">=&#160;1</span></span></td><td>)</td>
           <td></td>
@@ -456,13 +463,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::if </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::if </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#ad6e8004f1316484f1f58edcbc0ac4088">axis</a></td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">=&#160;1</span></span></td><td>)</td>
           <td></td>
@@ -485,20 +492,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname">K &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -528,20 +535,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -571,13 +578,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::size </td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::size </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -604,10 +611,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::axis</td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::axis</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -620,10 +627,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::block_size</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::block_size</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -638,10 +645,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::cols</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::cols</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -656,10 +663,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::const</td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt;K&gt; size_t K <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -675,10 +682,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;K&gt; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -693,10 +700,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::dx</td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt;K&gt; size_t K <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::dx</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -711,10 +718,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::eight = Simd::set1(8.0f)</td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::eight = Simd::set1(8.0f)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -729,10 +736,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::else</td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::else</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -747,10 +754,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::inv = Simd::set1(<a class="el" href="#a15451a4f5b5e5e30c30709be41f7c9bd">inv_12dx</a>)</td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="#a7d5890084f43df62d7a96f5bf1da28db">reg</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::inv = Simd::set1(<a class="el" href="#a15451a4f5b5e5e30c30709be41f7c9bd">inv_12dx</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -765,10 +772,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::inv_12dx = <a class="el" href="classmorpheus_1_1Tensor.html">K</a>(1) / (<a class="el" href="classmorpheus_1_1Tensor.html">K</a>(12) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::inv_12dx = K(1) / (K(12) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -783,10 +790,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::inv_2dx = <a class="el" href="classmorpheus_1_1Tensor.html">K</a>(1) / (<a class="el" href="classmorpheus_1_1Tensor.html">K</a>(2) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> K <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::inv_2dx = K(1) / (K(2) * <a class="el" href="#afb094a2baa598fe8f6c4e04083267054">dx</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -801,10 +808,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::output</td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp; <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::output</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -819,10 +826,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::rows</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::rows</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -837,10 +844,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::simd_width = Simd::width</td>
+          <td class="memname"><a class="el" href="#a865b1cbc9808e74305fa9300bbaa1552">const</a> size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::simd_width = Simd::width</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -855,13 +862,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">constexpr</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::W = Simd::width</td>
+          <td class="memname">constexpr size_t <a class="el" href="classmorpheus_1_1Derivate.html">morpheus::Derivate</a>&lt; K &gt;::W = Simd::width</td>
         </tr>
       </table>
   </td>

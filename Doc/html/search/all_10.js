@@ -25,5 +25,8 @@ var searchData=
   ['print_5friemann_5ftensor_22',['print_riemann_tensor',['../namespacemorpheus.html#a5e92798d2d5c69660f09b3962c6d74a7',1,'morpheus']]],
   ['print_5fshape_23',['print_shape',['../classmorpheus_1_1Tensor.html#a996144e67afc3b3aba2b05d0aecae51a',1,'morpheus::Tensor']]],
   ['psi_24',['Psi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c',1,'Latex.hpp']]],
-  ['psi_25',['psi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26',1,'Latex.hpp']]]
+  ['psi_25',['psi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26',1,'Latex.hpp']]],
+  ['purpose_26',['Purpose',['../md_includes_2Morpheus_2Core_2README.html#autotoc_md11',1,'Purpose'],['../md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md24',1,'Purpose'],['../md_includes_2Morpheus_2SIMD_2README.html#autotoc_md33',1,'Purpose']]],
+  ['python_27',['Example using in Python',['../index.html#autotoc_md9',1,'']]],
+  ['python_20module_28',['Build C++ Library and Python Module',['../index.html#autotoc_md6',1,'']]]
 ];

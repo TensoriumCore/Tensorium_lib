@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -99,36 +106,50 @@ $(function(){initNavTree('classmorpheus_1_1SpectalChebyshev.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
+<p>Placeholder Chebyshev spectral method class.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Spectral_8hpp_source.html">Spectral.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::SpectalChebyshev&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectalChebyshev__coll__graph.svg" width="255" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a44d54ae71c1733d1af274f2f24cf8d9d" id="r_a44d54ae71c1733d1af274f2f24cf8d9d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44d54ae71c1733d1af274f2f24cf8d9d">Tensor2D</a> = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">T</a>, 2&gt;</td></tr>
+<tr class="memitem:a44d54ae71c1733d1af274f2f24cf8d9d" id="r_a44d54ae71c1733d1af274f2f24cf8d9d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44d54ae71c1733d1af274f2f24cf8d9d">Tensor2D</a> = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;T, 2&gt;</td></tr>
 <tr class="separator:a44d54ae71c1733d1af274f2f24cf8d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a323d7372583c9aa9dd31e7b456a2e75c" id="r_a323d7372583c9aa9dd31e7b456a2e75c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a323d7372583c9aa9dd31e7b456a2e75c">VectorT</a> = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">T</a>&gt;</td></tr>
+<tr class="memitem:a323d7372583c9aa9dd31e7b456a2e75c" id="r_a323d7372583c9aa9dd31e7b456a2e75c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a323d7372583c9aa9dd31e7b456a2e75c">VectorT</a> = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;T&gt;</td></tr>
 <tr class="separator:a323d7372583c9aa9dd31e7b456a2e75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:afcbec973098a3c87022bd8f28e144fff" id="r_afcbec973098a3c87022bd8f28e144fff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcbec973098a3c87022bd8f28e144fff">compute</a> (const <a class="el" href="#a323d7372583c9aa9dd31e7b456a2e75c">VectorT</a> &amp;<a class="el" href="classmorpheus_1_1Tensor.html">X</a>, <a class="el" href="classmorpheus_1_1Tensor.html">T</a> <a class="el" href="classmorpheus_1_1Tensor.html">h</a>, <a class="el" href="#a44d54ae71c1733d1af274f2f24cf8d9d">Tensor2D</a> &amp;result)</td></tr>
+<tr class="memitem:afcbec973098a3c87022bd8f28e144fff" id="r_afcbec973098a3c87022bd8f28e144fff"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcbec973098a3c87022bd8f28e144fff">compute</a> (const <a class="el" href="#a323d7372583c9aa9dd31e7b456a2e75c">VectorT</a> &amp;X, T h, <a class="el" href="#a44d54ae71c1733d1af274f2f24cf8d9d">Tensor2D</a> &amp;result)</td></tr>
+<tr class="memdesc:afcbec973098a3c87022bd8f28e144fff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy computation using Chebyshev-like cosine weights.  <br /></td></tr>
 <tr class="separator:afcbec973098a3c87022bd8f28e144fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
+class morpheus::SpectalChebyshev&lt; T &gt;</div><p>Placeholder Chebyshev spectral method class. </p>
+<p>This is a demonstration implementation for Chebyshev-based operator application.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Scalar type </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a44d54ae71c1733d1af274f2f24cf8d9d" name="a44d54ae71c1733d1af274f2f24cf8d9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44d54ae71c1733d1af274f2f24cf8d9d">&#9670;&#160;</a></span>Tensor2D</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </div>
+template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt;::Tensor2D = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">T</a>, 2&gt;</td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; T &gt;::Tensor2D = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;T, 2&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -141,10 +162,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </div>
+template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt;::VectorT = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">T</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; T &gt;::VectorT = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;T&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,20 +179,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </div>
+template&lt;typename T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt;::compute </td>
+          <td class="memname">static void <a class="el" href="classmorpheus_1_1SpectalChebyshev.html">morpheus::SpectalChebyshev</a>&lt; T &gt;::compute </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="#a323d7372583c9aa9dd31e7b456a2e75c">VectorT</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -186,11 +207,22 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Dummy computation using Chebyshev-like cosine weights. </p>
+<p>Fills the result matrix with \( \cos(X_i X_j) \cdot h \)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>Input vector (length must match dim) </td></tr>
+    <tr><td class="paramname">h</td><td>Scaling factor </td></tr>
+    <tr><td class="paramname">result</td><td>Output 2D tensor </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="reference">References <a class="el" href="classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576">morpheus::Tensor&lt; K, Rank &gt;::fill()</a>, and <a class="el" href="classmorpheus_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 1 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectalChebyshev_afcbec973098a3c87022bd8f28e144fff_cgraph.svg" width="694" height="99"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

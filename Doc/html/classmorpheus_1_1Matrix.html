@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -101,102 +108,140 @@ $(function(){initNavTree('classmorpheus_1_1Matrix.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
+<p>High-performance aligned matrix class with SIMD support.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Matrix_8hpp_source.html">Matrix.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::Matrix&lt; K &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix__coll__graph.svg" width="178" height="486"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac180587a736ddaf6b45dd8dc263d4176" id="r_ac180587a736ddaf6b45dd8dc263d4176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac180587a736ddaf6b45dd8dc263d4176">Simd</a> = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td></tr>
+<tr class="memitem:ac180587a736ddaf6b45dd8dc263d4176" id="r_ac180587a736ddaf6b45dd8dc263d4176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac180587a736ddaf6b45dd8dc263d4176">Simd</a> = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td></tr>
 <tr class="separator:ac180587a736ddaf6b45dd8dc263d4176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2988ddeb86caffd0b11be5a42214132" id="r_ae2988ddeb86caffd0b11be5a42214132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a> = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td></tr>
+<tr class="memitem:ae2988ddeb86caffd0b11be5a42214132" id="r_ae2988ddeb86caffd0b11be5a42214132"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a> = <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> Simd::reg</td></tr>
 <tr class="separator:ae2988ddeb86caffd0b11be5a42214132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4032d676dae5e988b1d902a5ed9a9bf2" id="r_a4032d676dae5e988b1d902a5ed9a9bf2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4032d676dae5e988b1d902a5ed9a9bf2">Matrix</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> r, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">c</a>)</td></tr>
+<tr class="memitem:a4032d676dae5e988b1d902a5ed9a9bf2" id="r_a4032d676dae5e988b1d902a5ed9a9bf2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4032d676dae5e988b1d902a5ed9a9bf2">Matrix</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> r, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">c</a>)</td></tr>
+<tr class="memdesc:a4032d676dae5e988b1d902a5ed9a9bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a matrix of size r × c, initialized with zeros.  <br /></td></tr>
 <tr class="separator:a4032d676dae5e988b1d902a5ed9a9bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9360ad4d79bc09c54f63aa81060bf267" id="r_a9360ad4d79bc09c54f63aa81060bf267"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">size</a> () const</td></tr>
+<tr class="memitem:a9360ad4d79bc09c54f63aa81060bf267" id="r_a9360ad4d79bc09c54f63aa81060bf267"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">size</a> () const</td></tr>
+<tr class="memdesc:a9360ad4d79bc09c54f63aa81060bf267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the total number of elements.  <br /></td></tr>
 <tr class="separator:a9360ad4d79bc09c54f63aa81060bf267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad522ddc1c4cd3037496211d01275168a" id="r_ad522ddc1c4cd3037496211d01275168a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad522ddc1c4cd3037496211d01275168a">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> i, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memitem:ad522ddc1c4cd3037496211d01275168a" id="r_ad522ddc1c4cd3037496211d01275168a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad522ddc1c4cd3037496211d01275168a">operator()</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> i, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">j</a>)</td></tr>
+<tr class="memdesc:ad522ddc1c4cd3037496211d01275168a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element access (mutable)  <br /></td></tr>
 <tr class="separator:ad522ddc1c4cd3037496211d01275168a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d30f7f5c803bed845d03715394ec155" id="r_a2d30f7f5c803bed845d03715394ec155"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d30f7f5c803bed845d03715394ec155">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> i, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>) const</td></tr>
+<tr class="memitem:a2d30f7f5c803bed845d03715394ec155" id="r_a2d30f7f5c803bed845d03715394ec155"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d30f7f5c803bed845d03715394ec155">operator()</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> i, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">j</a>) const</td></tr>
+<tr class="memdesc:a2d30f7f5c803bed845d03715394ec155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element access (const)  <br /></td></tr>
 <tr class="separator:a2d30f7f5c803bed845d03715394ec155"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa76f0994668c3ce44f2dd37b0c4c90b3" id="r_aa76f0994668c3ce44f2dd37b0c4c90b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">print</a> () const</td></tr>
+<tr class="memitem:aa76f0994668c3ce44f2dd37b0c4c90b3" id="r_aa76f0994668c3ce44f2dd37b0c4c90b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">print</a> () const</td></tr>
+<tr class="memdesc:aa76f0994668c3ce44f2dd37b0c4c90b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the matrix to stdout.  <br /></td></tr>
 <tr class="separator:aa76f0994668c3ce44f2dd37b0c4c90b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b2dfeb08ff63446f08da77d15daa345" id="r_a8b2dfeb08ff63446f08da77d15daa345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">swap_rows</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> i, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memitem:a8b2dfeb08ff63446f08da77d15daa345" id="r_a8b2dfeb08ff63446f08da77d15daa345"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">swap_rows</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> i, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">j</a>)</td></tr>
+<tr class="memdesc:a8b2dfeb08ff63446f08da77d15daa345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap two rows of the matrix.  <br /></td></tr>
 <tr class="separator:a8b2dfeb08ff63446f08da77d15daa345"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf93279975ac54ea5c709f9cea644ae7" id="r_acf93279975ac54ea5c709f9cea644ae7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </td></tr>
-<tr class="memitem:acf93279975ac54ea5c709f9cea644ae7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">operator*</a> (const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; &amp;v) const</td></tr>
+<tr class="memitem:acf93279975ac54ea5c709f9cea644ae7" id="r_acf93279975ac54ea5c709f9cea644ae7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; </td></tr>
+<tr class="memitem:acf93279975ac54ea5c709f9cea644ae7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">operator*</a> (const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; &amp;v) const</td></tr>
+<tr class="memdesc:acf93279975ac54ea5c709f9cea644ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector (naïve fallback)  <br /></td></tr>
 <tr class="separator:acf93279975ac54ea5c709f9cea644ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf09c23b90a388956443fd0f996cb394" id="r_acf09c23b90a388956443fd0f996cb394"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf09c23b90a388956443fd0f996cb394">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> add(const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classmorpheus_1_1Tensor.html">m</a>)</td></tr>
-<tr class="separator:acf09c23b90a388956443fd0f996cb394"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3788c2fb5036c1aa259bb03e72cf032e" id="r_a3788c2fb5036c1aa259bb03e72cf032e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> sub(const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classmorpheus_1_1Tensor.html">m</a>)</td></tr>
-<tr class="separator:a3788c2fb5036c1aa259bb03e72cf032e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32bde5ef7918d3ff94087ecf82c29322" id="r_a32bde5ef7918d3ff94087ecf82c29322"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32bde5ef7918d3ff94087ecf82c29322">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">scl</a>(<a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">a</a>)</td></tr>
-<tr class="separator:a32bde5ef7918d3ff94087ecf82c29322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02df64723a8eafa774c8a1971a1f2058" id="r_a02df64723a8eafa774c8a1971a1f2058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">for</a> (;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+W&lt;=<a class="el" href="classmorpheus_1_1Tensor.html">nCols</a>;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+=W)</td></tr>
+<tr class="memitem:af67338d848eea34222bd16ce5730de19" id="r_af67338d848eea34222bd16ce5730de19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af67338d848eea34222bd16ce5730de19">add</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">m</a>)</td></tr>
+<tr class="memdesc:af67338d848eea34222bd16ce5730de19"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix addition: this += m.  <br /></td></tr>
+<tr class="separator:af67338d848eea34222bd16ce5730de19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab1e18140352d3dec549f0e29ba85e7" id="r_a3ab1e18140352d3dec549f0e29ba85e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">sub</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">m</a>)</td></tr>
+<tr class="memdesc:a3ab1e18140352d3dec549f0e29ba85e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix subtraction: this -= m.  <br /></td></tr>
+<tr class="separator:a3ab1e18140352d3dec549f0e29ba85e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fab2b41426ba391c2aa1074087f38de" id="r_a3fab2b41426ba391c2aa1074087f38de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fab2b41426ba391c2aa1074087f38de">scl</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">a</a>)</td></tr>
+<tr class="memdesc:a3fab2b41426ba391c2aa1074087f38de"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place scalar multiplication: this *= a.  <br /></td></tr>
+<tr class="separator:a3fab2b41426ba391c2aa1074087f38de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02df64723a8eafa774c8a1971a1f2058" id="r_a02df64723a8eafa774c8a1971a1f2058"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">for</a> (;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+W&lt;=<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">nCols</a>;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+=W)</td></tr>
 <tr class="separator:a02df64723a8eafa774c8a1971a1f2058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5e30f0b9002b0287b5886d34f0f2188" id="r_aa5e30f0b9002b0287b5886d34f0f2188"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">for</a> (;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">nCols</a>;++<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>)</td></tr>
+<tr class="memitem:aa5e30f0b9002b0287b5886d34f0f2188" id="r_aa5e30f0b9002b0287b5886d34f0f2188"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">for</a> (;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">nCols</a>;++<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>)</td></tr>
 <tr class="separator:aa5e30f0b9002b0287b5886d34f0f2188"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5031915886165d57cc3cf1c0067a093a" id="r_a5031915886165d57cc3cf1c0067a093a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5031915886165d57cc3cf1c0067a093a">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> <a class="el" href="namespacemorpheus.html#a0944f0078af11522c2abb8f488fdb8ec">mul_mat</a>(const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">mat</a>) const</td></tr>
-<tr class="separator:a5031915886165d57cc3cf1c0067a093a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87c7b186c84ed6974abeaa890b1ce50b" id="r_a87c7b186c84ed6974abeaa890b1ce50b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> N&gt; </td></tr>
-<tr class="memitem:a87c7b186c84ed6974abeaa890b1ce50b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a87c7b186c84ed6974abeaa890b1ce50b">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">mul_mat_NxN</a>(const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">mat</a>) const</td></tr>
-<tr class="separator:a87c7b186c84ed6974abeaa890b1ce50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace27c82ae0ab741ef54500e157aab2ef" id="r_ace27c82ae0ab741ef54500e157aab2ef"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </td></tr>
-<tr class="memitem:ace27c82ae0ab741ef54500e157aab2ef"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ace27c82ae0ab741ef54500e157aab2ef">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; <a class="el" href="namespacemorpheus.html#a4429f93147f7895d9f5782820c56cbf8">mul_vec</a>(const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; &amp;x) const</td></tr>
-<tr class="separator:ace27c82ae0ab741ef54500e157aab2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af65ec12455850c160e0ac8095964c97a" id="r_af65ec12455850c160e0ac8095964c97a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af65ec12455850c160e0ac8095964c97a">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921a382eb179a7d78f25d89c085988b37e95">transpose</a>() const</td></tr>
-<tr class="separator:af65ec12455850c160e0ac8095964c97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2acf63723e93e19649a45eca5f80b6d" id="r_ac2acf63723e93e19649a45eca5f80b6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2acf63723e93e19649a45eca5f80b6d">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">trace</a>() const</td></tr>
-<tr class="separator:ac2acf63723e93e19649a45eca5f80b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad910b920efe34fa53ab0d133f093b407" id="r_ad910b920efe34fa53ab0d133f093b407"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad910b920efe34fa53ab0d133f093b407">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">inverse</a>() const</td></tr>
-<tr class="separator:ad910b920efe34fa53ab0d133f093b407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43c84857b2f6a6591229b93f1168b596" id="r_a43c84857b2f6a6591229b93f1168b596"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43c84857b2f6a6591229b93f1168b596">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Tensor.html">det</a>() const</td></tr>
-<tr class="separator:a43c84857b2f6a6591229b93f1168b596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6748cf61df0d4183bb0ee458b11044b" id="r_ad6748cf61df0d4183bb0ee458b11044b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">mul_mat</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; &amp;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">mat</a>) const</td></tr>
+<tr class="memdesc:ad6748cf61df0d4183bb0ee458b11044b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by another matrix using optimized SIMD path.  <br /></td></tr>
+<tr class="separator:ad6748cf61df0d4183bb0ee458b11044b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac23f5528f6fa1f5501c67e785d4cdf6d" id="r_ac23f5528f6fa1f5501c67e785d4cdf6d"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
+<tr class="memitem:ac23f5528f6fa1f5501c67e785d4cdf6d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">mul_mat_NxN</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;mat) const</td></tr>
+<tr class="memdesc:ac23f5528f6fa1f5501c67e785d4cdf6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialized fast multiplication for fixed-size square matrices (supports N = 4, 8, 16)  <br /></td></tr>
+<tr class="separator:ac23f5528f6fa1f5501c67e785d4cdf6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf2695756a732575fe279e377971de3c" id="r_aaf2695756a732575fe279e377971de3c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; </td></tr>
+<tr class="memitem:aaf2695756a732575fe279e377971de3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aaf2695756a732575fe279e377971de3c">mul_vec</a> (const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; &amp;x) const</td></tr>
+<tr class="memdesc:aaf2695756a732575fe279e377971de3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector using SIMD.  <br /></td></tr>
+<tr class="separator:aaf2695756a732575fe279e377971de3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8494c415e7f6eb847428b0071c848223" id="r_a8494c415e7f6eb847428b0071c848223"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8494c415e7f6eb847428b0071c848223">transpose</a> () const</td></tr>
+<tr class="memdesc:a8494c415e7f6eb847428b0071c848223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transpose \( A^T \) of the matrix.  <br /></td></tr>
+<tr class="separator:a8494c415e7f6eb847428b0071c848223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb46c5a4d03c0fb1eee02ea15bbe8341" id="r_abb46c5a4d03c0fb1eee02ea15bbe8341"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb46c5a4d03c0fb1eee02ea15bbe8341">trace</a> () const</td></tr>
+<tr class="memdesc:abb46c5a4d03c0fb1eee02ea15bbe8341"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the trace of a square matrix as a 1×1 matrix.  <br /></td></tr>
+<tr class="separator:abb46c5a4d03c0fb1eee02ea15bbe8341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8b3e449cd734fb5be50f1b5b69c04e" id="r_a0e8b3e449cd734fb5be50f1b5b69c04e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">inverse</a> () const</td></tr>
+<tr class="memdesc:a0e8b3e449cd734fb5be50f1b5b69c04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the matrix using Gauss–Jordan elimination.  <br /></td></tr>
+<tr class="separator:a0e8b3e449cd734fb5be50f1b5b69c04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fd335c18a780c70385e9ae1fece079f" id="r_a9fd335c18a780c70385e9ae1fece079f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">det</a> () const</td></tr>
+<tr class="memdesc:a9fd335c18a780c70385e9ae1fece079f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the determinant using Gaussian elimination.  <br /></td></tr>
+<tr class="separator:a9fd335c18a780c70385e9ae1fece079f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab082485d429f54230fbe26a8f4f73b4c" id="r_ab082485d429f54230fbe26a8f4f73b4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab082485d429f54230fbe26a8f4f73b4c">rank</a> (<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">eps</a>=<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>(1<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">e</a>-6)) const</td></tr>
+<tr class="memdesc:ab082485d429f54230fbe26a8f4f73b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the numerical rank of the matrix.  <br /></td></tr>
+<tr class="separator:ab082485d429f54230fbe26a8f4f73b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac87fbfe87a74e2e22841c3244e8fe359" id="r_ac87fbfe87a74e2e22841c3244e8fe359"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">int</a> UN&gt; </td></tr>
-<tr class="memitem:ac87fbfe87a74e2e22841c3244e8fe359"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac87fbfe87a74e2e22841c3244e8fe359">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">microkernel4</a>(<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">nCols</a></td></tr>
+<tr class="memitem:ac87fbfe87a74e2e22841c3244e8fe359" id="r_ac87fbfe87a74e2e22841c3244e8fe359"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">int</a> UN&gt; </td></tr>
+<tr class="memitem:ac87fbfe87a74e2e22841c3244e8fe359"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">static</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac87fbfe87a74e2e22841c3244e8fe359">__attribute__</a> ((<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">always_inline</a>)) <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">microkernel4</a>(<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">nCols</a></td></tr>
 <tr class="separator:ac87fbfe87a74e2e22841c3244e8fe359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9ed974722f5cca80e54ac0a5b8e6d4d1" id="r_a9ed974722f5cca80e54ac0a5b8e6d4d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">rows</a></td></tr>
+<tr class="memitem:a9ed974722f5cca80e54ac0a5b8e6d4d1" id="r_a9ed974722f5cca80e54ac0a5b8e6d4d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">rows</a></td></tr>
 <tr class="separator:a9ed974722f5cca80e54ac0a5b8e6d4d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a789e39e1d3d649399997e715c6a83b4e" id="r_a789e39e1d3d649399997e715c6a83b4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">cols</a></td></tr>
+<tr class="memitem:a789e39e1d3d649399997e715c6a83b4e" id="r_a789e39e1d3d649399997e715c6a83b4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">cols</a></td></tr>
 <tr class="separator:a789e39e1d3d649399997e715c6a83b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac0d6405443f08f72d5d26a948c89629" id="r_aac0d6405443f08f72d5d26a948c89629"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac0d6405443f08f72d5d26a948c89629">data</a></td></tr>
+<tr class="memitem:aac0d6405443f08f72d5d26a948c89629" id="r_aac0d6405443f08f72d5d26a948c89629"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac0d6405443f08f72d5d26a948c89629">data</a></td></tr>
 <tr class="separator:aac0d6405443f08f72d5d26a948c89629"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bf8d6f6ff2a6499fd3e81153705687f" id="r_a4bf8d6f6ff2a6499fd3e81153705687f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf8d6f6ff2a6499fd3e81153705687f">block_size</a></td></tr>
+<tr class="memitem:a4bf8d6f6ff2a6499fd3e81153705687f" id="r_a4bf8d6f6ff2a6499fd3e81153705687f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf8d6f6ff2a6499fd3e81153705687f">block_size</a></td></tr>
 <tr class="separator:a4bf8d6f6ff2a6499fd3e81153705687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0a973c8fb0a04f94388f4fedade7b71" id="r_ab0a973c8fb0a04f94388f4fedade7b71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">simd_width</a> = Simd::width</td></tr>
+<tr class="memitem:ab0a973c8fb0a04f94388f4fedade7b71" id="r_ab0a973c8fb0a04f94388f4fedade7b71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">simd_width</a> = Simd::width</td></tr>
 <tr class="separator:ab0a973c8fb0a04f94388f4fedade7b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eb5aa5a4041b53c9ba8140759ebdbc5" id="r_a4eb5aa5a4041b53c9ba8140759ebdbc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> *<a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">a</a></td></tr>
+<tr class="memitem:a4eb5aa5a4041b53c9ba8140759ebdbc5" id="r_a4eb5aa5a4041b53c9ba8140759ebdbc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">static</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> *<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">a</a></td></tr>
 <tr class="separator:a4eb5aa5a4041b53c9ba8140759ebdbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab599bf915a1647c7fcaab769f87d0e75" id="r_ab599bf915a1647c7fcaab769f87d0e75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> *<a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> *const <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab599bf915a1647c7fcaab769f87d0e75">b</a></td></tr>
+<tr class="memitem:ab599bf915a1647c7fcaab769f87d0e75" id="r_ab599bf915a1647c7fcaab769f87d0e75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">static</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> *<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> *const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab599bf915a1647c7fcaab769f87d0e75">b</a></td></tr>
 <tr class="separator:ab599bf915a1647c7fcaab769f87d0e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e9273947220a73fc85b85889e6c504b" id="r_a7e9273947220a73fc85b85889e6c504b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> *<a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> *const <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> <a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e9273947220a73fc85b85889e6c504b">sum</a></td></tr>
+<tr class="memitem:a7e9273947220a73fc85b85889e6c504b" id="r_a7e9273947220a73fc85b85889e6c504b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">static</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> *<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> *const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> <a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e9273947220a73fc85b85889e6c504b">sum</a></td></tr>
 <tr class="separator:a7e9273947220a73fc85b85889e6c504b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05b5a3268b957c1a2a954112997445e3" id="r_a05b5a3268b957c1a2a954112997445e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a> = 0</td></tr>
+<tr class="memitem:a05b5a3268b957c1a2a954112997445e3" id="r_a05b5a3268b957c1a2a954112997445e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a> = 0</td></tr>
 <tr class="separator:a05b5a3268b957c1a2a954112997445e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>&gt;<br />
+class morpheus::Matrix&lt; K &gt;</div><p>High-performance aligned matrix class with SIMD support. </p>
+<p>This class provides a dense matrix container with:</p><ul>
+<li>Aligned memory allocation for SIMD operations</li>
+<li>Fast matrix arithmetic (add, sub, scale)</li>
+<li>Optimized matrix-vector and matrix-matrix multiplication</li>
+<li>Support for inversion, determinant, transpose, and rank</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Scalar type (float, double, etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ae2988ddeb86caffd0b11be5a42214132" name="ae2988ddeb86caffd0b11be5a42214132"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2988ddeb86caffd0b11be5a42214132">&#9670;&#160;</a></span>reg</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::reg = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">using</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::reg = <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> Simd::reg</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -209,10 +254,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::Simd = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">using</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::Simd = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -226,20 +271,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::Matrix </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::Matrix </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>c</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>c</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -249,26 +294,28 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Construct a matrix of size r × c, initialized with zeros. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac87fbfe87a74e2e22841c3244e8fe359" name="ac87fbfe87a74e2e22841c3244e8fe359"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac87fbfe87a74e2e22841c3244e8fe359">&#9670;&#160;</a></span>__attribute__() <span class="overload">[1/11]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac87fbfe87a74e2e22841c3244e8fe359">&#9670;&#160;</a></span>__attribute__()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">int</a> UN&gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">int</a> UN&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">static</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">always_inline</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -281,290 +328,21 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">int</a> UN&gt; </d
 
 </div>
 </div>
-<a id="a87c7b186c84ed6974abeaa890b1ce50b" name="a87c7b186c84ed6974abeaa890b1ce50b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87c7b186c84ed6974abeaa890b1ce50b">&#9670;&#160;</a></span>__attribute__() <span class="overload">[2/11]</span></h2>
+<a id="af67338d848eea34222bd16ce5730de19" name="af67338d848eea34222bd16ce5730de19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af67338d848eea34222bd16ce5730de19">&#9670;&#160;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> N&gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::add </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a43c84857b2f6a6591229b93f1168b596" name="a43c84857b2f6a6591229b93f1168b596"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43c84857b2f6a6591229b93f1168b596">&#9670;&#160;</a></span>__attribute__() <span class="overload">[3/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 1 --></div>
-</div>
-
-</div>
-</div>
-<a id="a5031915886165d57cc3cf1c0067a093a" name="a5031915886165d57cc3cf1c0067a093a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5031915886165d57cc3cf1c0067a093a">&#9670;&#160;</a></span>__attribute__() <span class="overload">[4/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8">MathsUtils::_min()</a>, <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">morpheus::Matrix&lt; K &gt;::a</a>, <a class="el" href="#ab599bf915a1647c7fcaab769f87d0e75">morpheus::Matrix&lt; K &gt;::b</a>, <a class="el" href="#a4bf8d6f6ff2a6499fd3e81153705687f">morpheus::Matrix&lt; K &gt;::block_size</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, <a class="el" href="#a7e9273947220a73fc85b85889e6c504b">morpheus::Matrix&lt; K &gt;::sum</a>, <a class="el" href="Matrix_8hpp.html#ac207b6eba0ba8876d0c7e1c65028cc3b">UN</a>, and <a class="el" href="SIMD_8hpp.html#a870020ccb79b9bf241010e975e029bde">UNROLL</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 2 --></div>
-</div>
-
-</div>
-</div>
-<a id="ad910b920efe34fa53ab0d133f093b407" name="ad910b920efe34fa53ab0d133f093b407"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad910b920efe34fa53ab0d133f093b407">&#9670;&#160;</a></span>__attribute__() <span class="overload">[5/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 3 --></div>
-</div>
-
-</div>
-</div>
-<a id="ac2acf63723e93e19649a45eca5f80b6d" name="ac2acf63723e93e19649a45eca5f80b6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2acf63723e93e19649a45eca5f80b6d">&#9670;&#160;</a></span>__attribute__() <span class="overload">[6/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 4 --></div>
-</div>
-
-</div>
-</div>
-<a id="af65ec12455850c160e0ac8095964c97a" name="af65ec12455850c160e0ac8095964c97a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af65ec12455850c160e0ac8095964c97a">&#9670;&#160;</a></span>__attribute__() <span class="overload">[7/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="SIMD_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 5 --></div>
-</div>
-
-</div>
-</div>
-<a id="ace27c82ae0ab741ef54500e157aab2ef" name="ace27c82ae0ab741ef54500e157aab2ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace27c82ae0ab741ef54500e157aab2ef">&#9670;&#160;</a></span>__attribute__() <span class="overload">[8/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>, and <a class="el" href="#a7e9273947220a73fc85b85889e6c504b">morpheus::Matrix&lt; K &gt;::sum</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 6 --></div>
-</div>
-
-</div>
-</div>
-<a id="acf09c23b90a388956443fd0f996cb394" name="acf09c23b90a388956443fd0f996cb394"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf09c23b90a388956443fd0f996cb394">&#9670;&#160;</a></span>__attribute__() <span class="overload">[9/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const &amp;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 7 --></div>
-</div>
-
-</div>
-</div>
-<a id="a32bde5ef7918d3ff94087ecf82c29322" name="a32bde5ef7918d3ff94087ecf82c29322"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32bde5ef7918d3ff94087ecf82c29322">&#9670;&#160;</a></span>__attribute__() <span class="overload">[10/11]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -575,31 +353,40 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">morpheus::Matrix&lt; K &gt;::a</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
+<p>In-place matrix addition: this += m. </p>
+
+<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a7f5b701665e512ce59bb2c1e8fca44e1">morpheus::add_mat()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 8 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_af67338d848eea34222bd16ce5730de19_cgraph.svg" width="398" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_af67338d848eea34222bd16ce5730de19_icgraph.svg" width="379" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a3788c2fb5036c1aa259bb03e72cf032e" name="a3788c2fb5036c1aa259bb03e72cf032e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3788c2fb5036c1aa259bb03e72cf032e">&#9670;&#160;</a></span>__attribute__() <span class="overload">[11/11]</span></h2>
+<a id="a9fd335c18a780c70385e9ae1fece079f" name="a9fd335c18a780c70385e9ae1fece079f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fd335c18a780c70385e9ae1fece079f">&#9670;&#160;</a></span>det()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::det </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> const &amp;</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -609,11 +396,25 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
+<p>Compute the determinant using Gaussian elimination. </p>
+<p class="formulaDsp">
+\[
+\det A = \prod_{i=1}^n U_{ii} \quad \text{with } A = LU
+\]
+</p>
+ 
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, and <a class="el" href="namespacemorpheus.html#a80a98e1ae84fa1ec96d29486c2f83acc">morpheus::det_mat()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 9 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a9fd335c18a780c70385e9ae1fece079f_cgraph.svg" width="440" height="235"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a9fd335c18a780c70385e9ae1fece079f_icgraph.svg" width="372" height="63"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -624,15 +425,15 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::for </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::for </td>
           <td>(</td>
-          <td class="paramtype">;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+W&lt;=<a class="el" href="classmorpheus_1_1Tensor.html">nCols</a>;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+</td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">W</span></span></td><td>)</td>
+          <td class="paramtype">;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+W&lt;=<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">nCols</a>;<a class="el" href="#a05b5a3268b957c1a2a954112997445e3">k</a>+</td>          <td class="paramname"><span class="paramname"><span class="paramdefsep"> = </span><span class="paramdefval">W</span></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -653,13 +454,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::for </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::for </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -676,26 +477,22 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 
 </div>
 </div>
-<a id="ad522ddc1c4cd3037496211d01275168a" name="ad522ddc1c4cd3037496211d01275168a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad522ddc1c4cd3037496211d01275168a">&#9670;&#160;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="a0e8b3e449cd734fb5be50f1b5b69c04e" name="a0e8b3e449cd734fb5be50f1b5b69c04e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e8b3e449cd734fb5be50f1b5b69c04e">&#9670;&#160;</a></span>inverse()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::inverse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -705,13 +502,198 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>.</p>
+<p>Compute the inverse of the matrix using Gauss–Jordan elimination. </p>
+<p>Throws if the matrix is singular or not square. </p>
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad910b920efe34fa53ab0d133f093b407">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ac2acf63723e93e19649a45eca5f80b6d">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, and <a class="el" href="#af65ec12455850c160e0ac8095964c97a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e">morpheus_RG::__attribute__()</a>, <a class="el" href="namespacemorpheus.html#a55946403722bc5a1c408b5c20f177a26">morpheus::inv_mat_tensor()</a>, and <a class="el" href="namespacemorpheus.html#a2ba0e55adbcd8c127cc3ee7240530cd3">morpheus::inverse_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a0e8b3e449cd734fb5be50f1b5b69c04e_cgraph.svg" width="468" height="235"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 10 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a0e8b3e449cd734fb5be50f1b5b69c04e_icgraph.svg" width="456" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad6748cf61df0d4183bb0ee458b11044b" name="ad6748cf61df0d4183bb0ee458b11044b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6748cf61df0d4183bb0ee458b11044b">&#9670;&#160;</a></span>mul_mat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::mul_mat </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mat</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiply matrix by another matrix using optimized SIMD path. </p>
+<p>Uses blocking and micro-kernels to avoid cache bottleneck with FMA/AVX units repartition. Fast-paths exist for 4×4, 8×8, and 16×16. </p>
+
+<p class="reference">References <a class="el" href="classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8">MathsUtils::_min()</a>, <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">morpheus::Matrix&lt; K &gt;::a</a>, <a class="el" href="#ab599bf915a1647c7fcaab769f87d0e75">morpheus::Matrix&lt; K &gt;::b</a>, <a class="el" href="#a4bf8d6f6ff2a6499fd3e81153705687f">morpheus::Matrix&lt; K &gt;::block_size</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, <a class="el" href="#a7e9273947220a73fc85b85889e6c504b">morpheus::Matrix&lt; K &gt;::sum</a>, <a class="el" href="Matrix_8hpp.html#ac207b6eba0ba8876d0c7e1c65028cc3b">UN</a>, and <a class="el" href="SIMD_8hpp.html#a870020ccb79b9bf241010e975e029bde">UNROLL</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a0944f0078af11522c2abb8f488fdb8ec">morpheus::mul_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ad6748cf61df0d4183bb0ee458b11044b_cgraph.svg" width="431" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ad6748cf61df0d4183bb0ee458b11044b_icgraph.svg" width="414" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ac23f5528f6fa1f5501c67e785d4cdf6d" name="ac23f5528f6fa1f5501c67e785d4cdf6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac23f5528f6fa1f5501c67e785d4cdf6d">&#9670;&#160;</a></span>mul_mat_NxN()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename K &gt; </div>
+<div class="memtemplate">
+template&lt;size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; K &gt;::mul_mat_NxN </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mat</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Specialized fast multiplication for fixed-size square matrices (supports N = 4, 8, 16) </p>
+
+<p class="reference">References <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#aaf2695756a732575fe279e377971de3c">morpheus::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#ab082485d429f54230fbe26a8f4f73b4c">morpheus::Matrix&lt; K &gt;::rank()</a>, <a class="el" href="#abb46c5a4d03c0fb1eee02ea15bbe8341">morpheus::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ac23f5528f6fa1f5501c67e785d4cdf6d_cgraph.svg" width="180" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ac23f5528f6fa1f5501c67e785d4cdf6d_icgraph.svg" width="690" height="455"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aaf2695756a732575fe279e377971de3c" name="aaf2695756a732575fe279e377971de3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf2695756a732575fe279e377971de3c">&#9670;&#160;</a></span>mul_vec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::mul_vec </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiply matrix by a vector using SIMD. </p>
+<p>This is a faster alternative to operator* when available. </p>
+
+<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>, and <a class="el" href="#a7e9273947220a73fc85b85889e6c504b">morpheus::Matrix&lt; K &gt;::sum</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a4429f93147f7895d9f5782820c56cbf8">morpheus::mul_vec()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_aaf2695756a732575fe279e377971de3c_cgraph.svg" width="428" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_aaf2695756a732575fe279e377971de3c_icgraph.svg" width="408" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad522ddc1c4cd3037496211d01275168a" name="ad522ddc1c4cd3037496211d01275168a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad522ddc1c4cd3037496211d01275168a">&#9670;&#160;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &amp; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">::operator</a>() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Element access (mutable) </p>
+
+<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#abb46c5a4d03c0fb1eee02ea15bbe8341">morpheus::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a_icgraph.svg" width="730" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -722,20 +704,20 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname">const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &amp; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">::operator</a>() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -744,6 +726,8 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Element access (const) </p>
 
 <p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>.</p>
 
@@ -755,17 +739,17 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::operator* </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">::operator</a>* </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -776,11 +760,18 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Multiply matrix by a vector (naïve fallback) </p>
+<p class="formulaDsp">
+\[
+(Ax)_i = \sum_j A_{ij} x_j
+\]
+</p>
+ 
 <p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 11 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_acf93279975ac54ea5c709f9cea644ae7_cgraph.svg" width="435" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -791,13 +782,13 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::print </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::print </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -810,7 +801,96 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Print the matrix to stdout. </p>
+
 <p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
+
+</div>
+</div>
+<a id="ab082485d429f54230fbe26a8f4f73b4c" name="ab082485d429f54230fbe26a8f4f73b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab082485d429f54230fbe26a8f4f73b4c">&#9670;&#160;</a></span>rank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::rank </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a></td>          <td class="paramname"><span class="paramname"><em>eps</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>(1<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">e</a>-6)</span></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the numerical rank of the matrix. </p>
+<p>Performs row echelon reduction and counts non-zero pivots. </p>
+
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a52edd23638a57f727b66ff6a7388058f">morpheus::rank_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ab082485d429f54230fbe26a8f4f73b4c_cgraph.svg" width="448" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_ab082485d429f54230fbe26a8f4f73b4c_icgraph.svg" width="388" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a3fab2b41426ba391c2aa1074087f38de" name="a3fab2b41426ba391c2aa1074087f38de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fab2b41426ba391c2aa1074087f38de">&#9670;&#160;</a></span>scl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::scl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>In-place scalar multiplication: this *= a. </p>
+
+<p class="reference">References <a class="el" href="#a4eb5aa5a4041b53c9ba8140759ebdbc5">morpheus::Matrix&lt; K &gt;::a</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a4b6f20a0b50871333f193d3389f78401">morpheus::scl_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a3fab2b41426ba391c2aa1074087f38de_cgraph.svg" width="392" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a3fab2b41426ba391c2aa1074087f38de_icgraph.svg" width="367" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -820,13 +900,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::size </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::size </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -839,13 +919,58 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Return the total number of elements. </p>
+
 <p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#acf09c23b90a388956443fd0f996cb394">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a32bde5ef7918d3ff94087ecf82c29322">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, and <a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">morpheus::Matrix&lt; K &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af67338d848eea34222bd16ce5730de19">morpheus::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#a3fab2b41426ba391c2aa1074087f38de">morpheus::Matrix&lt; K &gt;::scl()</a>, and <a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">morpheus::Matrix&lt; K &gt;::sub()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 12 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267_icgraph.svg" width="598" height="143"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a3ab1e18140352d3dec549f0e29ba85e7" name="a3ab1e18140352d3dec549f0e29ba85e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab1e18140352d3dec549f0e29ba85e7">&#9670;&#160;</a></span>sub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::sub </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>In-place matrix subtraction: this -= m. </p>
+
+<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#ab0a973c8fb0a04f94388f4fedade7b71">morpheus::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a9298933e8e700a86412c1b9babdf90b9">morpheus::sub_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a3ab1e18140352d3dec549f0e29ba85e7_cgraph.svg" width="396" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a3ab1e18140352d3dec549f0e29ba85e7_icgraph.svg" width="376" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -856,20 +981,20 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::swap_rows </td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">void</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::swap_rows </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -879,13 +1004,101 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Swap two rows of the matrix. </p>
+
 <p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, and <a class="el" href="#ad910b920efe34fa53ab0d133f093b407">morpheus::Matrix&lt; K &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, and <a class="el" href="#ab082485d429f54230fbe26a8f4f73b4c">morpheus::Matrix&lt; K &gt;::rank()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 13 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a8b2dfeb08ff63446f08da77d15daa345_icgraph.svg" width="720" height="247"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="abb46c5a4d03c0fb1eee02ea15bbe8341" name="abb46c5a4d03c0fb1eee02ea15bbe8341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb46c5a4d03c0fb1eee02ea15bbe8341">&#9670;&#160;</a></span>trace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::trace </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the trace of a square matrix as a 1×1 matrix. </p>
+
+<p class="reference">References <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a2759560f3161aa1d7ab494384ac6c33f">morpheus::trace_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_abb46c5a4d03c0fb1eee02ea15bbe8341_cgraph.svg" width="446" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_abb46c5a4d03c0fb1eee02ea15bbe8341_icgraph.svg" width="396" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8494c415e7f6eb847428b0071c848223" name="a8494c415e7f6eb847428b0071c848223"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8494c415e7f6eb847428b0071c848223">&#9670;&#160;</a></span>transpose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::transpose </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the transpose \( A^T \) of the matrix. </p>
+
+<p class="reference">References <a class="el" href="SIMD_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a>, <a class="el" href="#a789e39e1d3d649399997e715c6a83b4e">morpheus::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aac0d6405443f08f72d5d26a948c89629">morpheus::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a05b5a3268b957c1a2a954112997445e3">morpheus::Matrix&lt; K &gt;::k</a>, <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">morpheus::Matrix&lt; K &gt;::mul_mat_NxN()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#a9ed974722f5cca80e54ac0a5b8e6d4d1">morpheus::Matrix&lt; K &gt;::rows</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#ae1e78fa78c3d01cf0aae1e3c347dd08a">morpheus::transpose_mat()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a8494c415e7f6eb847428b0071c848223_cgraph.svg" width="476" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Matrix_a8494c415e7f6eb847428b0071c848223_icgraph.svg" width="459" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -897,15 +1110,15 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmorpheus_1_1Tensor.html">K</a>* <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::a</td>
+          <td class="memname">const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>* <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::a</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a32bde5ef7918d3ff94087ecf82c29322">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, and <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, and <a class="el" href="#a3fab2b41426ba391c2aa1074087f38de">morpheus::Matrix&lt; K &gt;::scl()</a>.</p>
 
 </div>
 </div>
@@ -915,15 +1128,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmorpheus_1_1Tensor.html">K</a>* <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a>* const <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a>* <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::b</td>
+          <td class="memname">const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>* <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>* const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a>* <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::b</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, and <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>, and <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>.</p>
 
 </div>
 </div>
@@ -933,15 +1146,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::block_size</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::block_size</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>.</p>
 
 </div>
 </div>
@@ -951,15 +1164,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::cols</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::cols</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad910b920efe34fa53ab0d133f093b407">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ac2acf63723e93e19649a45eca5f80b6d">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#af65ec12455850c160e0ac8095964c97a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ace27c82ae0ab741ef54500e157aab2ef">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#acf09c23b90a388956443fd0f996cb394">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a2d30f7f5c803bed845d03715394ec155">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">morpheus::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">morpheus::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html#aeb84725a1f6ecaaf09984a77569eab89">morpheus::solver::Jacobi&lt; K &gt;::solve()</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af67338d848eea34222bd16ce5730de19">morpheus::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="namespacemorpheus.html#ac82b827e57d25a1f8ae82779b1d14136">morpheus::matrix_to_tensor()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#aaf2695756a732575fe279e377971de3c">morpheus::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a2d30f7f5c803bed845d03715394ec155">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">morpheus::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">morpheus::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#ab082485d429f54230fbe26a8f4f73b4c">morpheus::Matrix&lt; K &gt;::rank()</a>, <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html#aeb84725a1f6ecaaf09984a77569eab89">morpheus::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">morpheus::Matrix&lt; K &gt;::sub()</a>, <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>, <a class="el" href="#abb46c5a4d03c0fb1eee02ea15bbe8341">morpheus::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
 
 </div>
 </div>
@@ -969,15 +1182,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>&gt; <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#af65ec12455850c160e0ac8095964c97a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#acf09c23b90a388956443fd0f996cb394">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a32bde5ef7918d3ff94087ecf82c29322">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#a2d30f7f5c803bed845d03715394ec155">morpheus::Matrix&lt; K &gt;::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af67338d848eea34222bd16ce5730de19">morpheus::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#ad522ddc1c4cd3037496211d01275168a">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a2d30f7f5c803bed845d03715394ec155">morpheus::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a3fab2b41426ba391c2aa1074087f38de">morpheus::Matrix&lt; K &gt;::scl()</a>, <a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">morpheus::Matrix&lt; K &gt;::sub()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
 
 </div>
 </div>
@@ -987,15 +1200,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::k = 0</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::k = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad910b920efe34fa53ab0d133f093b407">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#af65ec12455850c160e0ac8095964c97a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
 
 </div>
 </div>
@@ -1005,15 +1218,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::rows</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::rows</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ad910b920efe34fa53ab0d133f093b407">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ac2acf63723e93e19649a45eca5f80b6d">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#af65ec12455850c160e0ac8095964c97a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ace27c82ae0ab741ef54500e157aab2ef">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#acf09c23b90a388956443fd0f996cb394">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">morpheus::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">morpheus::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html#aeb84725a1f6ecaaf09984a77569eab89">morpheus::solver::Jacobi&lt; K &gt;::solve()</a>, and <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af67338d848eea34222bd16ce5730de19">morpheus::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#a0e8b3e449cd734fb5be50f1b5b69c04e">morpheus::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="namespacemorpheus.html#ac82b827e57d25a1f8ae82779b1d14136">morpheus::matrix_to_tensor()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#aaf2695756a732575fe279e377971de3c">morpheus::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#acf93279975ac54ea5c709f9cea644ae7">morpheus::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#aa76f0994668c3ce44f2dd37b0c4c90b3">morpheus::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#ab082485d429f54230fbe26a8f4f73b4c">morpheus::Matrix&lt; K &gt;::rank()</a>, <a class="el" href="#a9360ad4d79bc09c54f63aa81060bf267">morpheus::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html#aeb84725a1f6ecaaf09984a77569eab89">morpheus::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">morpheus::Matrix&lt; K &gt;::sub()</a>, <a class="el" href="#a8b2dfeb08ff63446f08da77d15daa345">morpheus::Matrix&lt; K &gt;::swap_rows()</a>, <a class="el" href="#abb46c5a4d03c0fb1eee02ea15bbe8341">morpheus::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#a8494c415e7f6eb847428b0071c848223">morpheus::Matrix&lt; K &gt;::transpose()</a>.</p>
 
 </div>
 </div>
@@ -1023,15 +1236,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::simd_width = Simd::width</td>
+          <td class="memname"><a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">size_t</a> <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::simd_width = Simd::width</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a43c84857b2f6a6591229b93f1168b596">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ace27c82ae0ab741ef54500e157aab2ef">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#acf09c23b90a388956443fd0f996cb394">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a32bde5ef7918d3ff94087ecf82c29322">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, and <a class="el" href="#a3788c2fb5036c1aa259bb03e72cf032e">morpheus::Matrix&lt; K &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af67338d848eea34222bd16ce5730de19">morpheus::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#a9fd335c18a780c70385e9ae1fece079f">morpheus::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="#aaf2695756a732575fe279e377971de3c">morpheus::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#a3fab2b41426ba391c2aa1074087f38de">morpheus::Matrix&lt; K &gt;::scl()</a>, and <a class="el" href="#a3ab1e18140352d3dec549f0e29ba85e7">morpheus::Matrix&lt; K &gt;::sub()</a>.</p>
 
 </div>
 </div>
@@ -1041,17 +1254,17 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">typename</a> <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmorpheus_1_1Tensor.html">K</a>* <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> const <a class="el" href="classmorpheus_1_1Tensor.html">K</a>* const <a class="el" href="classmorpheus_1_1Tensor.html">__restrict</a> <a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a>* <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::sum</td>
+          <td class="memname">const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>* <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a>* const <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">__restrict</a> <a class="el" href="#ae2988ddeb86caffd0b11be5a42214132">reg</a>* <a class="el" href="classmorpheus_1_1Matrix.html">morpheus::Matrix</a>&lt; <a class="el" href="#ac23f5528f6fa1f5501c67e785d4cdf6d">K</a> &gt;::sum</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">                        <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> W = Simd::width</div>
+<div class="line">                         <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> W = Simd::width</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="#a5031915886165d57cc3cf1c0067a093a">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#ace27c82ae0ab741ef54500e157aab2ef">morpheus::Matrix&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, and <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a02df64723a8eafa774c8a1971a1f2058">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#aa5e30f0b9002b0287b5886d34f0f2188">morpheus::Matrix&lt; K &gt;::for()</a>, <a class="el" href="#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>, and <a class="el" href="#aaf2695756a732575fe279e377971de3c">morpheus::Matrix&lt; K &gt;::mul_vec()</a>.</p>
 
 </div>
 </div>

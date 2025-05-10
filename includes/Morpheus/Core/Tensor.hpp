@@ -13,18 +13,33 @@
 #include "../SIMD/Allocator.hpp"
 
 namespace morpheus {
+	/**
+	 * @brief Multi-dimensional tensor class with fixed rank and SIMD support
+	 *
+	 * This class provides high-performance operations on tensors of arbitrary rank,
+	 * supporting element-wise access, contraction, transposition, and tensor product,
+	 * all implemented with SIMD optimization and aligned memory.
+	 *
+	 * @tparam K Scalar type (e.g., float or double)
+	 * @tparam Rank Number of tensor dimensions
+	 */
 	template<typename K, std::size_t Rank>
 		class Tensor {
 			public:
 				using value_type = K;
+				/** @brief Dimensions of the tensor (e.g., {4,4,4,4}) */
 				std::array<size_t, Rank> dimensions;
 				size_t total_size;
 				aligned_vector<K> data;
 				size_t block_size;
 				std::array<size_t, Rank> strides;
-
+				/** @brief Default constructor */
 				Tensor() : total_size(0), block_size(128) {}
 
+				/**
+				 * @brief Construct tensor with given dimensions
+				 * @param dims Dimension sizes
+				 */
 				Tensor(const std::array<size_t, Rank>& dims)
 					: dimensions(dims), total_size(1), block_size(128) {
 						strides[Rank - 1] = 1;
@@ -61,14 +76,14 @@ namespace morpheus {
 					for (int64_t i = Rank - 2; i >= 0; --i)
 						strides[i] = strides[i + 1] * dimensions[i + 1];
 				}
-
+				/** @brief Resize 2D tensor */
 				void resize(const std::array<size_t, 2>& dims) {
 					dimensions = dims;
 					update_strides();
 					total_size = dims[0] * dims[1];
 					data.resize(total_size);
 				}
-
+				/** @brief Resize 2D tensor */
 				void resize(size_t d0, size_t d1) {
 					resize(std::array<size_t, 2>{d0, d1});
 				}
@@ -91,10 +106,12 @@ namespace morpheus {
 					return data[flatten_index(idx)];
 				}
 
+				/** @brief Fill tensor with a constant value */
 				void fill(K value) {
 					std::fill(data.begin(), data.end(), value);
 				}
 
+				/** @brief Print the shape (dimensions) of the tensor */
 				void print_shape() const {
 					std::cout << "Tensor shape: (";
 					for (size_t i = 0; i < Rank; ++i) {
@@ -104,6 +121,7 @@ namespace morpheus {
 					std::cout << ")\n";
 				}
 
+				/** @brief Print a 2D tensor (Rank == 2) */
 				void print() const {
 					for (size_t i = 0; i < dimensions[0]; ++i) {
 						for (size_t j = 0; j < dimensions[1]; ++j) {
@@ -114,6 +132,13 @@ namespace morpheus {
 				}
 
 				__attribute__((always_inline, hot, flatten))
+					/**
+					 * @brief Convert a multi-index into a flattened linear index using SIMD
+					 *
+					 * @param indices Array of indices
+					 * @param strides Array of strides
+					 * @return Flattened index
+					 */
 					inline size_t flatten_index_simd(const size_t* indices, const size_t* strides) const {
 						using Simd = simd::SimdTraits<size_t, DefaultISA>;
 						using reg = typename Simd::reg;
@@ -134,12 +159,29 @@ namespace morpheus {
 						return acc;
 					}
 
-				__attribute__((always_inline, hot, flatten))
+				__attribute__((always_inline, hot, flatten))				
+					/**
+					 * @brief Convert multi-index to flat index
+					 *
+					 * @param indices Array of indices
+					 * @return Flattened index
+					 */
 					inline size_t flatten_index(const std::array<size_t, Rank>& indices) const {
 						return flatten_index_simd(indices.data(), strides.data());
 					}
 
 				__attribute__((always_inline, hot, flatten))
+					/**
+					 * @brief Perform contraction over two indices using SIMD
+					 *
+					 * Contracts a tensor \f$ T_{i_1 \dots i_k i j i_{k+1} \dots i_n} \f$
+					 * to \f$ T'_{i_1 \dots i_k i_{k+1} \dots i_n} \f$
+					 *
+					 * @param t Input tensor
+					 * @param i First index to contract
+					 * @param j Second index to contract
+					 * @return Contracted tensor of rank (Rank - 2)
+					 */
 					Tensor<K, Rank - 2> contract_simd(const Tensor<K, Rank>& t, size_t i, size_t j) const {
 						static_assert(Rank >= 2, "Cannot contract tensor of rank < 2");
 						assert(i < Rank && j < Rank && i != j);
@@ -215,6 +257,12 @@ namespace morpheus {
 					Tensor<K, Rank - 2> contract_tensor() const;
 
 				__attribute__((always_inline, hot, flatten))
+					/**
+					 * @brief Transpose a 2D tensor using SIMD
+					 *
+					 * Only valid for tensors of rank 2.
+					 * @return Transposed tensor
+					 */
 					Tensor<K, 2> transpose_simd() const {
 						const size_t rows = dimensions[0];
 						const size_t cols = dimensions[1];
@@ -242,6 +290,21 @@ namespace morpheus {
 						return result;
 					}
 
+				/**
+				 * @brief Compute the tensor (outer) product of two tensors
+				 *
+				 * Resulting tensor has rank = R1 + R2.
+				 *
+				 * \f[
+				 * (A \otimes B)_{i_1 \dots i_R} = A_{i_1 \dots i_{R_1}} \cdot B_{i_{R_1 + 1} \dots i_R}
+				 * \f]
+				 *
+				 * @tparam R1 Rank of tensor A
+				 * @tparam R2 Rank of tensor B
+				 * @param A Tensor A
+				 * @param B Tensor B
+				 * @return Tensor product \f$ A \otimes B \f$
+				 */
 				template<size_t R1, size_t R2>
 					static inline Tensor<K, R1 + R2> tensor_product(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
 						using Simd = simd::SimdTraits<K, DefaultISA>;

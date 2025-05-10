@@ -1,0 +1,14 @@
+<map id="morpheus_RG::__attribute__" name="morpheus_RG::__attribute__">
+<area shape="rect" id="Node000001" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,120,210,148"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#a0e8b3e449cd734fb5be50f1b5b69c04e" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="258,120,450,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,131,242,131,242,137,210,137"/>
+<area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="542,5,671,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,117,426,80,497,42,525,32,527,37,499,47,429,84,375,122"/>
+<area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="522,81,691,126"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="450,119,505,113,506,118,451,125"/>
+<area shape="rect" id="Node000005" href="$classmorpheus_1_1Matrix.html#ad522ddc1c4cd3037496211d01275168a" title="Element access (mutable)" alt="" coords="502,149,711,177"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="451,142,486,147,486,152,450,148"/>
+<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="498,201,714,229"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="390,146,499,186,528,194,526,199,497,191,388,151"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="558,81,557,71,565,62,581,56,606,54,633,57,650,63,648,68,632,62,606,59,583,61,568,66,562,72,563,80"/>
+</map>

@@ -7,7 +7,21 @@
 #include "../DiffGeometry/ChristoffelSymbol.hpp"
 #include "../DiffGeometry/Metric.hpp"
 #include "../Core/Derivate.hpp"
+
+
 namespace morpheus_RG {
+/**
+ * @brief Computes the 4D Riemann curvature tensor \f$ R^\rho_{\ \sigma\mu\nu} \f$
+ *
+ * The following expression is used:
+ * \f[
+ * R^\rho_{\ \sigma\mu\nu} = \partial_\mu \Gamma^\rho_{\nu\sigma}
+ * - \partial_\nu \Gamma^\rho_{\mu\sigma}
+ * + \Gamma^\rho_{\mu\lambda} \Gamma^\lambda_{\nu\sigma}
+ * - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}
+ * \f]
+ */
+
 	template <typename T>
 		class RiemannTensor {
 			public:
@@ -52,7 +66,27 @@ namespace morpheus_RG {
 									}
 								}
 				}
-
+				/**
+				 * @brief Computes the 4D Riemann curvature tensor \f$ R^\rho_{\ \sigma\mu\nu} \f$
+				 *
+				 * This function numerically computes the full 4D Riemann tensor using finite difference approximations
+				 * (via Richardson extrapolation) on the Christoffel symbols computed from the metric tensor.
+				 *
+				 * The Riemann tensor is defined as:
+				 * \f[
+				 * R^\rho_{\ \sigma\mu\nu} =
+				 * \partial_\mu \Gamma^\rho_{\nu\sigma}
+				 * - \partial_\nu \Gamma^\rho_{\mu\sigma}
+				 * + \Gamma^\rho_{\mu\lambda} \Gamma^\lambda_{\nu\sigma}
+				 * - \Gamma^\rho_{\nu\lambda} \Gamma^\lambda_{\mu\sigma}
+				 * \f]
+				 *
+				 * @tparam T Scalar type (e.g., float or double)
+				 * @param X Coordinate vector \f$ X^\mu \f$ (4D)
+				 * @param h Spacing for finite difference approximations
+				 * @param metric A callable metric object (e.g. Kerr, Schwarzschild) implementing operator()(X, g)
+				 * @return A 4th-rank tensor \f$ R^\rho_{\ \sigma\mu\nu} \f$ stored as a Tensor4D object
+				 */
 				static Tensor4D compute(const VectorT& X, T h, const Metric<T>& metric) {
 					constexpr size_t dim = 4;
 					Tensor2D g({dim, dim});

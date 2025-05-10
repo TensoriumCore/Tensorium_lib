@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['b_0',['B',['../classmorpheus_1_1solver_1_1Gauss.html#a6236ff3a26c1334d0dfdb8262d0e636f',1,'morpheus::solver::Gauss']]],
-  ['b_1',['b',['../classmorpheus_1_1Matrix.html#ab599bf915a1647c7fcaab769f87d0e75',1,'morpheus::Matrix::b'],['../classmorpheus_1_1Vector.html#a968b49799692d713a6fdcf654587d40a',1,'morpheus::Vector::b']]],
+  ['b_0',['b',['../classmorpheus_1_1Matrix.html#ab599bf915a1647c7fcaab769f87d0e75',1,'morpheus::Matrix::b'],['../classmorpheus_1_1Vector.html#a968b49799692d713a6fdcf654587d40a',1,'morpheus::Vector::b']]],
+  ['b_1',['B',['../classmorpheus_1_1solver_1_1Gauss.html#a6236ff3a26c1334d0dfdb8262d0e636f',1,'morpheus::solver::Gauss']]],
   ['b_5fin_2',['b_in',['../classmorpheus_1_1solver_1_1Gauss.html#ac47ea1dc258a9caf03bdf0cf9de6a1db',1,'morpheus::solver::Gauss']]],
   ['backward_3',['backward',['../classmorpheus_1_1SpectralFFT.html#a8aa6f0097f5cb99fb73c1d4de0cadd83',1,'morpheus::SpectralFFT']]],
   ['backwardffp_4',['backwardFFP',['../namespacemorpheus.html#ab0d022c164f50fe46524e1af50e826d7',1,'morpheus']]],
@@ -15,5 +15,8 @@ var searchData=
   ['bit_5freverse_12',['bit_reverse',['../classmorpheus_1_1SpectralFFT.html#a2719a910e7f474b09c04e1c8856215b8',1,'morpheus::SpectralFFT']]],
   ['block_5fsize_13',['block_size',['../classmorpheus_1_1Derivate.html#a43c31aa5f14221f0f3c5a351854dbacd',1,'morpheus::Derivate::block_size'],['../classmorpheus_1_1DerivateND.html#a9820952c62f3558b2a0fa6de64a9d067',1,'morpheus::DerivateND::block_size'],['../classmorpheus_1_1solver_1_1Gauss.html#aed5d0343ab454c7753fc2a193537a94c',1,'morpheus::solver::Gauss::block_size'],['../classmorpheus_1_1Matrix.html#a4bf8d6f6ff2a6499fd3e81153705687f',1,'morpheus::Matrix::block_size'],['../classmorpheus_1_1Tensor.html#a3b56fad12e7755519da5c0198407d4cc',1,'morpheus::Tensor::block_size']]],
   ['bsnnmetricextract_2ehpp_14',['BSNNMetricExtract.hpp',['../BSNNMetricExtract_8hpp.html',1,'']]],
-  ['bssn_15',['BSSN',['../classmorpheus__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de',1,'morpheus_RG::Metric']]]
+  ['bssn_15',['BSSN',['../classmorpheus__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de',1,'morpheus_RG::Metric']]],
+  ['build_20c_20library_20and_20python_20module_16',['Build C++ Library and Python Module',['../index.html#autotoc_md6',1,'']]],
+  ['build_20c_20only_20for_20special_20targets_20and_20options_17',['Build C++ only for special targets and options',['../index.html#autotoc_md7',1,'']]],
+  ['build_20instructions_18',['Build Instructions',['../index.html#autotoc_md4',1,'']]]
 ];
