@@ -1,0 +1,9 @@
+<map id="morpheus_RG::RicciTensor::compute_ricci_scalar" name="morpheus_RG::RicciTensor::compute_ricci_scalar">
+<area shape="rect" id="Node000001" title="Computes the Ricci scalar curvature." alt="" coords="453,40,646,85"/>
+<area shape="rect" id="Node000002" href="$namespacemorpheus.html#acd25c732eaaec38938b3d6a667edd27e" title=" " alt="" coords="216,5,401,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="437,49,401,44,402,38,438,44"/>
+<area shape="rect" id="Node000003" href="$classmorpheus__RG_1_1RicciTensor.html#ae271ed0d688dc4a0e123a7cf05710206" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="212,75,405,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="438,81,406,86,405,80,437,76"/>
+<area shape="rect" id="Node000004" href="$namespacemorpheus.html#a79c0f50e63559be812d6efe96d21146c" title=" " alt="" coords="5,75,164,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="196,100,164,100,164,94,196,94"/>
+</map>

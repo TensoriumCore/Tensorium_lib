@@ -1,0 +1,8 @@
+<map id="morpheus::SpectralFFT::transform_impl" name="morpheus::SpectralFFT::transform_impl">
+<area shape="rect" id="Node000001" title="Internal FFT implementation (shared by forward/backward)" alt="" coords="5,36,176,81"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1SpectralFFT.html#a2719a910e7f474b09c04e1c8856215b8" title="Bit&#45;reversal permutation step." alt="" coords="224,5,394,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,44,208,39,208,44,176,49"/>
+<area shape="rect" id="Node000003" href="$classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="442,45,611,72"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="176,59,224,60,394,60,426,59,426,64,394,65,224,65,176,64"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="395,37,427,42,426,47,394,42"/>
+</map>
