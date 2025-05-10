@@ -1,0 +1,5 @@
+<map id="morpheus::solver::Jacobi::solve" name="morpheus::solver::Jacobi::solve">
+<area shape="rect" id="Node000001" title="Solve the system using the Jacobi method." alt="" coords="229,5,410,50"/>
+<area shape="rect" id="Node000002" href="$namespacemorpheus.html#a09c5cb9e88d703b1a5570ae3a3f2781c" title=" " alt="" coords="5,14,181,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,30,181,30,181,25,213,25"/>
+</map>

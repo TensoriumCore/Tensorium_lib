@@ -1,0 +1,5 @@
+<map id="morpheus::SpectralFFT::forward" name="morpheus::SpectralFFT::forward">
+<area shape="rect" id="Node000001" title="Perform forward FFT (in&#45;place)" alt="" coords="221,5,391,50"/>
+<area shape="rect" id="Node000002" href="$namespacemorpheus.html#ae221eff9667ffd1424b306662e20b1d3" title=" " alt="" coords="5,14,173,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,30,173,30,173,25,205,25"/>
+</map>

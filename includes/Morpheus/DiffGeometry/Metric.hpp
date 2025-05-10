@@ -9,7 +9,20 @@
 #include "../Core/Vector.hpp"
 #include <functional>
 namespace morpheus_RG {
-
+	/**
+	 * @brief A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr, etc.)
+	 *
+	 * This class provides access to several pre-implemented metrics (Minkowski, Schwarzschild, Kerr,
+	 * Kerr–Schild, FLRW), and supports user-defined metrics via a custom callable.
+	 *
+	 * It supports:
+	 * - Direct evaluation of the metric tensor \f$ g_{\mu\nu}(X^\lambda) \f$
+	 * - Extraction of ADM variables for BSSN formalism: lapse \f$ \alpha \f$, shift \f$ \beta^i \f$, and spatial metric \f$ \gamma_{ij} \f$
+	 *
+	 * The class is callable via `operator()` and adapts to the type of metric selected by `type`.
+	 *
+	 * @tparam T Scalar type (e.g., float or double)
+	 */
 	template<typename T>
 		class Metric {
 			public:
@@ -17,9 +30,23 @@ namespace morpheus_RG {
 				T M = T(1.0); 
 				T a = T(0.935);
 
+				/**
+				 * @brief Constructor
+				 * @param metric_type Name of the metric ("minkowski", "schwarzschild", "kerr", etc.)
+				 * @param mass Central mass (default = 1.0)
+				 * @param spin Spin parameter (only relevant for Kerr/Kerr–Schild)
+				 */
 				Metric(const std::string& metric_type = "minkowski", T mass = T(1.0), T spin = T(0.0))
 					: type(metric_type), M(mass), a(spin) {}
-
+				/**
+				 * @brief Evaluate the metric tensor \f$ g_{\mu\nu}(X^\lambda) \f$
+				 *
+				 * Dispatches to the appropriate metric implementation based on `type`.
+				 * Throws an exception if the type is unknown and no custom function is set.
+				 *
+				 * @param X 4D coordinate vector \f$ (t, r, \theta, \phi) \f$ or Cartesian if Kerr–Schild
+				 * @param g Output tensor to be filled with \f$ g_{\mu\nu} \f$
+				 */
 				void operator()(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
 					if (type == "minkowski") {
 						compute_minkowski(g);
@@ -30,7 +57,7 @@ namespace morpheus_RG {
 					} else if (type == "flrw") {
 						compute_flrw(X, g);
 					} else if (type == "kerr_schild") {
-							compute_kerr_schild(X, g);
+						compute_kerr_schild(X, g);
 					} else if (type == "custom" && custom_metric_fn) {
 						custom_metric_fn(X, g);
 					} else {
@@ -38,6 +65,19 @@ namespace morpheus_RG {
 					}
 				}
 
+				/**
+				 * @brief Extract BSSN 3+1 variables (lapse, shift, and spatial metric)
+				 *
+				 * Decomposes the 4D metric at point X into ADM form:
+				 * \f[
+				 * ds^2 = -\alpha^2 dt^2 + \gamma_{ij} (dx^i + \beta^i dt)(dx^j + \beta^j dt)
+				 * \f]
+				 *
+				 * @param X     4D coordinate vector \f$ X^\mu \f$
+				 * @param alpha Output scalar lapse function \f$ \alpha \f$
+				 * @param beta  Output shift vector \f$ \beta^i \f$
+				 * @param gamma Output 3x3 spatial metric \f$ \gamma_{ij} \f$
+				 */
 				inline void BSSN(const morpheus::Vector<T>& X,
 						T& alpha,
 						morpheus::Vector<T>& beta,
@@ -59,13 +99,20 @@ namespace morpheus_RG {
 							gamma(i, j) = g(i + 1, j + 1);
 				}
 			private:
+				/**
+				 * @brief Optional user-defined metric function (must accept X and fill g)
+				 */
 				std::function<void(const morpheus::Vector<T>&, morpheus::Tensor<T, 2>&)> custom_metric_fn = nullptr;
 
+				/**
+				 * @brief Set a custom metric callable function
+				 */
 				void set_custom(std::function<void(const morpheus::Vector<T>&, morpheus::Tensor<T, 2>&)> fn) {
 					custom_metric_fn = std::move(fn);
 					type = "custom";
 				}
 
+				/** @brief Minkowski metric in Cartesian coordinates */
 				void compute_minkowski(morpheus::Tensor<T, 2>& g) const {
 					const size_t dim = 4;
 					g.resize(dim, dim);
@@ -76,6 +123,7 @@ namespace morpheus_RG {
 					g(3, 3) = T(1);
 				}
 
+				/** @brief Schwarzschild metric in spherical coordinates */
 				void compute_schwarzschild(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
 					assert(X.size() == 4);
 					const T r = X(1);
@@ -91,6 +139,7 @@ namespace morpheus_RG {
 					g(3, 3) = r * r * sin_theta * sin_theta;
 				}
 
+				/** @brief Kerr metric in Boyer–Lindquist coordinates */
 				void compute_kerr(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
 					assert(X.size() == 4);
 					const T r = X(1);
@@ -112,6 +161,7 @@ namespace morpheus_RG {
 					g(3, 3) = (r * r + a * a + T(2) * M * r * a * a * sin2 / Sigma) * sin2;
 				}
 
+				/** @brief Flat FLRW metric in comoving spherical coordinates */
 				void compute_flrw(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
 					assert(X.size() == 4);
 					const T t = X(0);
@@ -130,6 +180,7 @@ namespace morpheus_RG {
 					g(3, 3) = a_t * a_t * r * r * sin_theta * sin_theta;
 				}
 
+				/** @brief Kerr–Schild radius extraction helper */
 				T kerr_schild_radius(T x, T y, T z) const {
 					const T r2 = x * x + y * y + z * z;
 					const T a2 = a * a;
@@ -138,6 +189,7 @@ namespace morpheus_RG {
 					return r;
 				}
 
+				/** @brief Kerr–Schild metric in Cartesian coordinates */
 				void compute_kerr_schild(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
 					assert(X.size() == 4);
 					const T x = X(1), y = X(2), z = X(3);

@@ -1,0 +1,46 @@
+# === Projet Morpheus : Configuration Doxygen ===
+
+PROJECT_NAME           = "Morpheus"
+OUTPUT_DIRECTORY       = Doc
+
+# Fichiers à inclure
+INPUT                  = includes
+FILE_PATTERNS          = *.hpp *.md
+RECURSIVE              = YES
+
+# Page principale
+USE_MDFILE_AS_MAINPAGE = includes/mainpage.md
+MARKDOWN_SUPPORT       = YES
+EXTENSION_MAPPING      = h=Cpp
+
+# Extraction complète
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# C++ optimisations
+OPTIMIZE_OUTPUT_FOR_CXX = YES
+
+# HTML uniquement
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_TREEVIEW      = YES
+USE_MATHJAX            = YES
+SOURCE_BROWSER         = NO
+INLINE_SOURCES         = NO
+
+# Affichage des relations
+SHOW_INCLUDE_FILES     = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+# Support Graphviz / DOT
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = svg
+DOT_MULTI_TARGETS      = YES
+DOT_CLEANUP            = YES
+UML_LOOK               = YES
+
+# Call graphs (fonctions appelées / appelantes)
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES

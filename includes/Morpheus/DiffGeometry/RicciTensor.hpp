@@ -8,13 +8,37 @@
 #include "../DiffGeometry/Metric.hpp"
 #include "../Core/Derivate.hpp"
 namespace morpheus_RG {
+	/**
+	 * @brief Computes the Ricci tensor and Ricci scalar from a 4D Riemann tensor.
+	 *
+	 * This class provides static methods to contract the Riemann tensor into the Ricci tensor,
+	 * compute the scalar curvature, and print these results.
+	 *
+	 * The Ricci tensor is obtained by contraction:
+	 * \f[
+	 * R_{\mu\nu} = R^\rho_{\ \mu\rho\nu} = g^{\rho\sigma} R_{\rho\sigma\mu\nu}
+	 * \f]
+	 *
+	 * The Ricci scalar is the trace:
+	 * \f[
+	 * R = g^{\mu\nu} R_{\mu\nu}
+	 * \f]
+	 */
 	template <typename T>
 		class RicciTensor {
 			public:
 				using Tensor4D = morpheus::Tensor<T, 4>;
 				using Tensor2D = morpheus::Tensor<T, 2>;
 				using VectorT  = morpheus::Vector<T>;
-
+				/**
+				 * @brief Contracts a 4D Riemann tensor into the 2D Ricci tensor.
+				 *
+				 * Uses the identity \f$ R_{\mu\nu} = g^{\rho\sigma} R_{\rho\sigma\mu\nu} \f$
+				 *
+				 * @param Riemann The Riemann tensor \f$ R_{\rho\sigma\mu\nu} \f$
+				 * @param g_inv The inverse metric \f$ g^{\rho\sigma} \f$
+				 * @return The Ricci tensor \f$ R_{\mu\nu} \f$
+				 */
 				static morpheus::Tensor<T, 2> contract_to_ricci(const Tensor4D& Riemann, const morpheus::Tensor<T, 2>& g_inv) {
 					constexpr size_t dim = 4;
 					morpheus::Tensor<T, 2> Ricci({dim, dim});
@@ -32,7 +56,15 @@ namespace morpheus_RG {
 
 					return Ricci;
 				}
-			
+				/**
+				 * @brief Computes the Ricci scalar curvature.
+				 *
+				 * Uses the trace formula: \f$ R = g^{\mu\nu} R_{\mu\nu} \f$
+				 *
+				 * @param Ricci The Ricci tensor \f$ R_{\mu\nu} \f$
+				 * @param g_inv The inverse metric \f$ g^{\mu\nu} \f$
+				 * @return The scalar curvature \f$ R \f$
+				 */
 				static double compute_ricci_scalar(const Tensor2D& Ricci, const morpheus::Tensor<T, 2>& g_inv) {
 					constexpr size_t dim = 4;
 					double R = 0.0;
@@ -43,7 +75,12 @@ namespace morpheus_RG {
 					}
 					return R;
 				}
-
+				/**
+				 * @brief Prints the Ricci tensor components with optional zero threshold.
+				 *
+				 * @param R The Ricci tensor
+				 * @param threshold Minimum value to display (default = 1e-12)
+				 */
 				static void print_componentwise(const Tensor2D& R, T threshold = 1e-12) {
 					constexpr size_t dim = 4;
 					std::cout << "\nRicci tensor components:\n";
@@ -58,7 +95,12 @@ namespace morpheus_RG {
 					}
 				}
 			
-					
+				/**
+				 * @brief Prints only the non-zero components of the Ricci tensor.
+				 *
+				 * @param R The Ricci tensor
+				 * @param name Optional tensor name label
+				 */
 				static void print(const Tensor2D& R, const std::string& name = "Ricci") {
 					constexpr size_t dim = 4;
 					std::cout << name << " tensor components:\n";
@@ -70,7 +112,13 @@ namespace morpheus_RG {
 							}
 						}
 				}
-
+				/**
+				 * @brief Prints non-zero components using both Ricci and inverse metric.
+				 *
+				 * @param R The Ricci tensor
+				 * @param g_inv The inverse metric
+				 * @param name Optional tensor name label
+				 */
 				static void print(const Tensor2D& R, const morpheus::Tensor<T, 2>& g_inv, const std::string& name = "Ricci") {
 					constexpr size_t dim = 4;
 					std::cout << name << " tensor components:\n";
@@ -83,6 +131,12 @@ namespace morpheus_RG {
 						}
 				}
 
+				/**
+				 * @brief Computes and prints the Ricci scalar from the tensor and metric.
+				 *
+				 * @param Ricci The Ricci tensor
+				 * @param g_inv The inverse metric
+				 */
 				static void print_ricci_scalar(const Tensor2D& Ricci, const morpheus::Tensor<T, 2>& g_inv) {
 					constexpr size_t dim = 4;
 					double R = compute_ricci_scalar(Ricci, g_inv);

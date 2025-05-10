@@ -4,18 +4,44 @@
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
-
+/**
+ * @brief Namespace containing linear system solvers
+ *
+ * This includes direct and iterative methods for solving
+ * linear systems of the form:
+ * \f[
+ * Ax = b
+ * \f]
+ */
 namespace morpheus::solver {
 	template<typename K>
 		class Jacobi;
 
+	/**
+	 * @brief Direct Gaussian elimination solver with SIMD acceleration
+	 *
+	 * This solver uses LU-style elimination with partial pivoting.
+	 * For large systems (\f$ n \geq 1024 \f$), it redirects to Jacobi.
+	 *
+	 * @tparam K Scalar type (must be floating-point)
+	 */
 	template<typename K>
 		class Gauss {
 			public:
 				size_t rows() const;
 				size_t block_size;
 				aligned_vector<K> data;
-
+				/**
+				 * @brief Solve the linear system \f$ Ax = b \f$
+				 * 
+				 * Performs Gaussian elimination followed by back-substitution.
+				 * Uses unrolled and SIMD-optimized loops for performance.
+				 *
+				 * @param A_in Input matrix \f$ A \in \mathbb{R}^{n \times n} \f$
+				 * @param b_in Right-hand side vector \f$ b \in \mathbb{R}^n \f$
+				 * @return Solution vector \f$ x \in \mathbb{R}^n \f$
+				 * @throws std::runtime_error if matrix is singular or ill-conditioned
+				 */
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<K> solve(const Matrix<K>& A_in, const Vector<K>& b_in) {
 						static_assert(std::is_floating_point<K>::value, "");
@@ -24,7 +50,7 @@ namespace morpheus::solver {
 						assert(n == A_in.cols && n == b_in.size());
 						if (A_in.rows >= 1024 || A_in.cols >= 1024)
 							return Jacobi<K>::solve(A_in, b_in);
-						
+
 						Matrix<K> M(n, n);
 						Vector<K> B(n);
 						for (auto i = decltype(n)(0); i < n; ++i) {
@@ -107,11 +133,33 @@ namespace morpheus::solver {
 						return x;
 					}
 		};
-
+	/**
+	 * @brief Iterative Jacobi solver with SIMD and OpenMP support
+	 *
+	 * Iteratively solves \f$ Ax = b \f$ using the Jacobi method.
+	 * Works best on diagonally dominant matrices.
+	 *
+	 * Update rule:
+	 * \f[
+	 * x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j \ne i} A_{ij} x_j^{(k)} \right)
+	 * \f]
+	 *
+	 * @tparam K Scalar type (must be floating-point)
+	 */
 	template<typename K>
 		class Jacobi {
 			public:
 				aligned_vector<K> data;
+				/**
+				 * @brief Solve the system using the Jacobi method
+				 *
+				 * @param A Matrix \f$ A \in \mathbb{R}^{n \times n} \f$
+				 * @param b Right-hand side vector
+				 * @param tol Convergence tolerance (default = 1e-10)
+				 * @param max_iter Maximum number of iterations (default = 2000)
+				 * @return Solution vector \f$ x \f$
+				 * @throws std::runtime_error if diagonal is zero or near-zero
+				 */
 				static inline Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-10, int max_iter = 2000) {
 					static_assert(std::is_floating_point<K>::value, "Jacobi solver requires floating-point type.");
 					assert(A.rows == A.cols && "Matrix A must be square");
@@ -175,10 +223,31 @@ namespace morpheus::solver {
 				}
 		};
 
+	/**
+	 * @brief Placeholder for Gauss–Seidel iterative solver
+	 *
+	 * The Gauss–Seidel method improves on Jacobi by using updated values as soon as they are available.
+	 *
+	 * Update rule:
+	 * \f[
+	 * x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j < i} A_{ij} x_j^{(k+1)} - \sum_{j > i} A_{ij} x_j^{(k)} \right)
+	 * \f]
+	 *
+	 * @tparam K Scalar type
+	 */
 	template<typename K>
 		class GaussSeidel {
 			public:
 				aligned_vector<K> data;
+				/**
+				 * @brief Solve the system using Gauss–Seidel method
+				 *
+				 * @param A Matrix \f$ A \in \mathbb{R}^{n \times n} \f$
+				 * @param b Right-hand side vector
+				 * @param tol Convergence tolerance
+				 * @param max_iter Max iterations allowed
+				 * @return Solution vector \f$ x \f$
+				 */
 				static Vector<K> solve(const Matrix<K>& A, const Vector<K>& b, K tol = 1e-8, int max_iter = 2000);
 		};
 

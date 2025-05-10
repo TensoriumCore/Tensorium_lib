@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -141,9 +148,9 @@ $(function(){initNavTree('SIMD_8hpp_source.html',''); initResizable(); });
 <div class="foldopen" id="foldopen00038" data-start="{" data-end="};">
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html">   38</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structmorpheus_1_1avx2__t.html">avx2_t</a> {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#ad9fafa330c17583a56caf944ab55cb88">   39</a></span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> width = <a class="code hl_define" href="SIMD_8hpp.html#a8d91ae35b0fa8c31a91dbbf75b3e2c06">SIMD_WIDTH</a>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#a35f21315ef6cda0404422d7a9e27bce9">   40</a></span>        <span class="keyword">using </span><a class="code hl_class" href="classmorpheus_1_1Tensor.html">reg</a> = <a class="code hl_class" href="classmorpheus_1_1Tensor.html">__m256</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#a35f21315ef6cda0404422d7a9e27bce9">   40</a></span>        <span class="keyword">using </span><a class="code hl_typedef" href="structmorpheus_1_1avx2__t.html#a35f21315ef6cda0404422d7a9e27bce9">reg</a> = __m256;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#afcf836a58037c7cb11b1796aab87ac6c">   41</a></span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> alignment = <a class="code hl_define" href="SIMD_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#afe3f8d168e4b91ef283af8ddefb90b74">   42</a></span>        <span class="keyword">using </span><a class="code hl_class" href="classmorpheus_1_1Tensor.html">reg_aligned</a> = <a class="code hl_class" href="classmorpheus_1_1Tensor.html">aligned_reg&lt;reg, alignment&gt;</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structmorpheus_1_1avx2__t.html#afe3f8d168e4b91ef283af8ddefb90b74">   42</a></span>        <span class="keyword">using </span><a class="code hl_struct" href="structaligned__reg.html">reg_aligned</a> = <a class="code hl_struct" href="structaligned__reg.html">aligned_reg&lt;reg, alignment&gt;</a>;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    };</div>
 </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
@@ -1286,10 +1293,9 @@ $(function(){initNavTree('SIMD_8hpp_source.html',''); initResizable(); });
 <div class="ttc" id="aSIMD_8hpp_html_a9e0088453ab18e6864831f0741d0fd3a"><div class="ttname"><a href="SIMD_8hpp.html#a9e0088453ab18e6864831f0741d0fd3a">supports_sse</a></div><div class="ttdeci">bool supports_sse()</div><div class="ttdef"><b>Definition</b> SIMD.hpp:61</div></div>
 <div class="ttc" id="aSIMD_8hpp_html_ac0fed462766738394c49deba3c54cdea"><div class="ttname"><a href="SIMD_8hpp.html#ac0fed462766738394c49deba3c54cdea">andnot_fallback</a></div><div class="ttdeci">static __m512 andnot_fallback(__m512 a, __m512 b)</div><div class="ttdef"><b>Definition</b> SIMD.hpp:163</div></div>
 <div class="ttc" id="aSIMD_8hpp_html_ae4ff5a07c6ff43ed11a3887ef7d524f2"><div class="ttname"><a href="SIMD_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a></div><div class="ttdeci">#define ALIGN</div><div class="ttdef"><b>Definition</b> SIMD.hpp:26</div></div>
-<div class="ttc" id="aclassmorpheus_1_1Tensor_html"><div class="ttname"><a href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a></div><div class="ttdef"><b>Definition</b> Tensor.hpp:17</div></div>
 <div class="ttc" id="anamespacedetail_html"><div class="ttname"><a href="namespacedetail.html">detail</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:101</div></div>
-<div class="ttc" id="anamespacemorpheus__RG_html_ab0ca8920bbff9c97630d0832a13a5b7e"><div class="ttname"><a href="namespacemorpheus__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e">morpheus_RG::__attribute__</a></div><div class="ttdeci">__attribute__((always_inline, hot, flatten)) inline morpheus</div><div class="ttdef"><b>Definition</b> ChristoffelSymbol.hpp:112</div></div>
-<div class="ttc" id="anamespacemorpheus_html"><div class="ttname"><a href="namespacemorpheus.html">morpheus</a></div><div class="ttdef"><b>Definition</b> Derivate.hpp:25</div></div>
+<div class="ttc" id="anamespacemorpheus__RG_html_ab0ca8920bbff9c97630d0832a13a5b7e"><div class="ttname"><a href="namespacemorpheus__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e">morpheus_RG::__attribute__</a></div><div class="ttdeci">__attribute__((always_inline, hot, flatten)) inline morpheus</div><div class="ttdoc">Compute the inverse of a 2D metric tensor using local matrix inversion.</div><div class="ttdef"><b>Definition</b> ChristoffelSymbol.hpp:163</div></div>
+<div class="ttc" id="anamespacemorpheus_html"><div class="ttname"><a href="namespacemorpheus.html">morpheus</a></div><div class="ttdoc">Namespace for spectral methods (FFT and Chebyshev)</div><div class="ttdef"><b>Definition</b> Derivate.hpp:25</div></div>
 <div class="ttc" id="anamespacesimd_html"><div class="ttname"><a href="namespacesimd.html">simd</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:172</div></div>
 <div class="ttc" id="astructaligned__reg_html"><div class="ttname"><a href="structaligned__reg.html">aligned_reg</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:33</div></div>
 <div class="ttc" id="astructaligned__reg_html_ac2f06be4ed5c38ff6e671e287639d4b1"><div class="ttname"><a href="structaligned__reg.html#ac2f06be4ed5c38ff6e671e287639d4b1">aligned_reg::value</a></div><div class="ttdeci">T value</div><div class="ttdef"><b>Definition</b> SIMD.hpp:34</div></div>
@@ -1302,6 +1308,7 @@ $(function(){initNavTree('SIMD_8hpp_source.html',''); initResizable(); });
 <div class="ttc" id="astructavx512__t_html_ab637e4e4e28e1a5fff76d1e3cdf3a2e5"><div class="ttname"><a href="structavx512__t.html#ab637e4e4e28e1a5fff76d1e3cdf3a2e5">avx512_t::width</a></div><div class="ttdeci">static constexpr size_t width</div><div class="ttdef"><b>Definition</b> SIMD.hpp:13</div></div>
 <div class="ttc" id="astructavx512__t_html_ac34982d9be02c2060a2b1e29beaca048"><div class="ttname"><a href="structavx512__t.html#ac34982d9be02c2060a2b1e29beaca048">avx512_t::alignment</a></div><div class="ttdeci">static constexpr size_t alignment</div><div class="ttdef"><b>Definition</b> SIMD.hpp:13</div></div>
 <div class="ttc" id="astructmorpheus_1_1avx2__t_html"><div class="ttname"><a href="structmorpheus_1_1avx2__t.html">morpheus::avx2_t</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:38</div></div>
+<div class="ttc" id="astructmorpheus_1_1avx2__t_html_a35f21315ef6cda0404422d7a9e27bce9"><div class="ttname"><a href="structmorpheus_1_1avx2__t.html#a35f21315ef6cda0404422d7a9e27bce9">morpheus::avx2_t::reg</a></div><div class="ttdeci">__m256 reg</div><div class="ttdef"><b>Definition</b> SIMD.hpp:40</div></div>
 <div class="ttc" id="astructsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4_html_a02cee935493b3d2cb41c1d6489daf745"><div class="ttname"><a href="structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#a02cee935493b3d2cb41c1d6489daf745">simd::SimdTraits&lt; double, avx2_t &gt;::loadu</a></div><div class="ttdeci">static reg loadu(const double *ptr)</div><div class="ttdef"><b>Definition</b> SIMD.hpp:358</div></div>
 <div class="ttc" id="astructsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4_html_a05301cfc25af60cf78421351b7e6f379"><div class="ttname"><a href="structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#a05301cfc25af60cf78421351b7e6f379">simd::SimdTraits&lt; double, avx2_t &gt;::fmadd</a></div><div class="ttdeci">static reg fmadd(reg a, reg b, reg c)</div><div class="ttdef"><b>Definition</b> SIMD.hpp:362</div></div>
 <div class="ttc" id="astructsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4_html_a139ba90a6e24192886def309510cf049"><div class="ttname"><a href="structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#a139ba90a6e24192886def309510cf049">simd::SimdTraits&lt; double, avx2_t &gt;::storeu</a></div><div class="ttdeci">static void storeu(double *ptr, reg x)</div><div class="ttdef"><b>Definition</b> SIMD.hpp:360</div></div>

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['r_0',['r',['../classmorpheus_1_1Vector.html#a74a1fbc296da452f70a56b3ae8063e2c',1,'morpheus::Vector']]],
-  ['rank_1',['rank',['../namespacemorpheus_1_1mpi.html#a5e00da417debea6e3a433a19eb1ad806',1,'morpheus::mpi']]],
+  ['rank_1',['rank',['../classmorpheus_1_1Matrix.html#ab082485d429f54230fbe26a8f4f73b4c',1,'morpheus::Matrix::rank()'],['../namespacemorpheus_1_1mpi.html#a5e00da417debea6e3a433a19eb1ad806',1,'morpheus::mpi::rank()']]],
   ['rank_5fmat_2',['rank_mat',['../namespacemorpheus.html#a52edd23638a57f727b66ff6a7388058f',1,'morpheus']]],
   ['recv_3',['recv',['../namespacemorpheus_1_1mpi.html#a1756988a048c464dd6ccc9b73585a8ac',1,'morpheus::mpi']]],
   ['reduce_4',['reduce',['../namespacemorpheus_1_1mpi.html#a1766be64ad0fd3c863f907ddb9c20ed2',1,'morpheus::mpi']]],

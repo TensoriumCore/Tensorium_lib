@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -101,103 +108,128 @@ $(function(){initNavTree('classmorpheus_1_1Tensor.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
+<p>Multi-dimensional tensor class with fixed rank and SIMD support.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Core_2Tensor_8hpp_source.html">Tensor.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::Tensor&lt; K, Rank &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor__coll__graph.svg" width="167" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ae35d4256f80886c4037f0b47b4e86733" id="r_ae35d4256f80886c4037f0b47b4e86733"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae35d4256f80886c4037f0b47b4e86733">value_type</a> = <a class="el" href="classmorpheus_1_1Tensor.html">K</a></td></tr>
+<tr class="memitem:ae35d4256f80886c4037f0b47b4e86733" id="r_ae35d4256f80886c4037f0b47b4e86733"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae35d4256f80886c4037f0b47b4e86733">value_type</a> = K</td></tr>
 <tr class="separator:ae35d4256f80886c4037f0b47b4e86733"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dde5a3888acb177e67fecef069e167d" id="r_a1dde5a3888acb177e67fecef069e167d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dde5a3888acb177e67fecef069e167d">reg</a> = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td></tr>
+<tr class="memitem:a1dde5a3888acb177e67fecef069e167d" id="r_a1dde5a3888acb177e67fecef069e167d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dde5a3888acb177e67fecef069e167d">reg</a> = typename Simd::reg</td></tr>
 <tr class="separator:a1dde5a3888acb177e67fecef069e167d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:add63eead7e596a891d704488cc73a7d0" id="r_add63eead7e596a891d704488cc73a7d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add63eead7e596a891d704488cc73a7d0">Tensor</a> ()</td></tr>
+<tr class="memdesc:add63eead7e596a891d704488cc73a7d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:add63eead7e596a891d704488cc73a7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa09fea5e7f36cfd81ccb7523305ff5c" id="r_aaa09fea5e7f36cfd81ccb7523305ff5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa09fea5e7f36cfd81ccb7523305ff5c">Tensor</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">dims</a>)</td></tr>
+<tr class="memitem:aaa09fea5e7f36cfd81ccb7523305ff5c" id="r_aaa09fea5e7f36cfd81ccb7523305ff5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa09fea5e7f36cfd81ccb7523305ff5c">Tensor</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;dims)</td></tr>
+<tr class="memdesc:aaa09fea5e7f36cfd81ccb7523305ff5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct tensor with given dimensions.  <br /></td></tr>
 <tr class="separator:aaa09fea5e7f36cfd81ccb7523305ff5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7875e0a5dd7b3d9c46752dd5adb31917" id="r_a7875e0a5dd7b3d9c46752dd5adb31917"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> k, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">l</a>) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:a7875e0a5dd7b3d9c46752dd5adb31917" id="r_a7875e0a5dd7b3d9c46752dd5adb31917"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a7875e0a5dd7b3d9c46752dd5adb31917"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0a90192eb31c6d8222c59d5e7fa52b" id="r_a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memitem:a5a0a90192eb31c6d8222c59d5e7fa52b" id="r_a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j)</td></tr>
 <tr class="separator:a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73a3454d73e66b458535433ce85130f3" id="r_a73a3454d73e66b458535433ce85130f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73a3454d73e66b458535433ce85130f3">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> k, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">l</a>)</td></tr>
+<tr class="memitem:a73a3454d73e66b458535433ce85130f3" id="r_a73a3454d73e66b458535433ce85130f3"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73a3454d73e66b458535433ce85130f3">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l)</td></tr>
 <tr class="separator:a73a3454d73e66b458535433ce85130f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acecceb84060aa29f6dddc330af1f045e" id="r_acecceb84060aa29f6dddc330af1f045e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acecceb84060aa29f6dddc330af1f045e">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:acecceb84060aa29f6dddc330af1f045e" id="r_acecceb84060aa29f6dddc330af1f045e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acecceb84060aa29f6dddc330af1f045e">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:acecceb84060aa29f6dddc330af1f045e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b785a936eaefd337d5d368a3e35d52d" id="r_a9b785a936eaefd337d5d368a3e35d52d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b785a936eaefd337d5d368a3e35d52d">update_strides</a> ()</td></tr>
+<tr class="memitem:a9b785a936eaefd337d5d368a3e35d52d" id="r_a9b785a936eaefd337d5d368a3e35d52d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b785a936eaefd337d5d368a3e35d52d">update_strides</a> ()</td></tr>
 <tr class="separator:a9b785a936eaefd337d5d368a3e35d52d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac20bcc7a4afe8b076aad9e31a34d6f3c" id="r_ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">resize</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, 2 &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">dims</a>)</td></tr>
+<tr class="memitem:ac20bcc7a4afe8b076aad9e31a34d6f3c" id="r_ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">resize</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, 2 &gt; &amp;dims)</td></tr>
+<tr class="memdesc:ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize 2D tensor.  <br /></td></tr>
 <tr class="separator:ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ffe3f07841a50baecaf29e6ecf939ab" id="r_a7ffe3f07841a50baecaf29e6ecf939ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ffe3f07841a50baecaf29e6ecf939ab">resize</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">d0</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">d1</a>)</td></tr>
+<tr class="memitem:a7ffe3f07841a50baecaf29e6ecf939ab" id="r_a7ffe3f07841a50baecaf29e6ecf939ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ffe3f07841a50baecaf29e6ecf939ab">resize</a> (size_t d0, size_t d1)</td></tr>
+<tr class="memdesc:a7ffe3f07841a50baecaf29e6ecf939ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize 2D tensor.  <br /></td></tr>
 <tr class="separator:a7ffe3f07841a50baecaf29e6ecf939ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f6c0907d9cf52d3f69729d2cece6c13" id="r_a3f6c0907d9cf52d3f69729d2cece6c13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f6c0907d9cf52d3f69729d2cece6c13">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">indices</a>)</td></tr>
+<tr class="memitem:a3f6c0907d9cf52d3f69729d2cece6c13" id="r_a3f6c0907d9cf52d3f69729d2cece6c13"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f6c0907d9cf52d3f69729d2cece6c13">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;indices)</td></tr>
 <tr class="separator:a3f6c0907d9cf52d3f69729d2cece6c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65ace646e6f565d314a39f4b1411e9ef" id="r_a65ace646e6f565d314a39f4b1411e9ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65ace646e6f565d314a39f4b1411e9ef">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">indices</a>) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:a65ace646e6f565d314a39f4b1411e9ef" id="r_a65ace646e6f565d314a39f4b1411e9ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65ace646e6f565d314a39f4b1411e9ef">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;indices) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a65ace646e6f565d314a39f4b1411e9ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5a7467653da30fea0b4ac8c27ebe706" id="r_ac5a7467653da30fea0b4ac8c27ebe706"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5a7467653da30fea0b4ac8c27ebe706">operator()</a> (<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">j</a>, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> k, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">l</a>) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:ac5a7467653da30fea0b4ac8c27ebe706" id="r_ac5a7467653da30fea0b4ac8c27ebe706"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5a7467653da30fea0b4ac8c27ebe706">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:ac5a7467653da30fea0b4ac8c27ebe706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70fb35ac409a7f95a4efe437d33cf576" id="r_a70fb35ac409a7f95a4efe437d33cf576"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">fill</a> (<a class="el" href="classmorpheus_1_1Tensor.html">K</a> value)</td></tr>
+<tr class="memitem:a70fb35ac409a7f95a4efe437d33cf576" id="r_a70fb35ac409a7f95a4efe437d33cf576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">fill</a> (K value)</td></tr>
+<tr class="memdesc:a70fb35ac409a7f95a4efe437d33cf576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill tensor with a constant value.  <br /></td></tr>
 <tr class="separator:a70fb35ac409a7f95a4efe437d33cf576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a996144e67afc3b3aba2b05d0aecae51a" id="r_a996144e67afc3b3aba2b05d0aecae51a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a996144e67afc3b3aba2b05d0aecae51a">print_shape</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:a996144e67afc3b3aba2b05d0aecae51a" id="r_a996144e67afc3b3aba2b05d0aecae51a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a996144e67afc3b3aba2b05d0aecae51a">print_shape</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memdesc:a996144e67afc3b3aba2b05d0aecae51a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the shape (dimensions) of the tensor.  <br /></td></tr>
 <tr class="separator:a996144e67afc3b3aba2b05d0aecae51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7f1ee59eea4024f6fa67dc1a3b26cc9" id="r_ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7f1ee59eea4024f6fa67dc1a3b26cc9">print</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:ac7f1ee59eea4024f6fa67dc1a3b26cc9" id="r_ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7f1ee59eea4024f6fa67dc1a3b26cc9">print</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memdesc:ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a 2D tensor (Rank == 2)  <br /></td></tr>
 <tr class="separator:ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff9a2f02efd8c58c0a3e7509b3f89739" id="r_aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">flatten_index_simd</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> *<a class="el" href="classmorpheus_1_1Tensor.html">indices</a></td></tr>
+<tr class="memitem:aff9a2f02efd8c58c0a3e7509b3f89739" id="r_aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a> ((always_inline, hot, flatten)) inline size_t flatten_index_simd(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> size_t *indices</td></tr>
+<tr class="memdesc:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a multi-index into a flattened linear index using SIMD.  <br /></td></tr>
 <tr class="separator:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a675364efae080330621757d3d82ad6c4" id="r_a675364efae080330621757d3d82ad6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675364efae080330621757d3d82ad6c4">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> - 1&lt; Rank;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+=<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a>)</td></tr>
 <tr class="separator:a675364efae080330621757d3d82ad6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67ce1898d424f7be8f008af6d0055db1" id="r_a67ce1898d424f7be8f008af6d0055db1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67ce1898d424f7be8f008af6d0055db1">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>&lt; Rank;++<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>) <a class="el" href="#a87528ee2093e17e62f713c329a5ec117">acc</a>+</td></tr>
 <tr class="separator:a67ce1898d424f7be8f008af6d0055db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e267aa0d410f44719ef0eb8fb5e5169" id="r_a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memItemLeft" align="right" valign="top">__attribute__((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">std</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e267aa0d410f44719ef0eb8fb5e5169">__attribute__</a> ((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a></td></tr>
+<tr class="memitem:a8e267aa0d410f44719ef0eb8fb5e5169" id="r_a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memItemLeft" align="right" valign="top">__attribute__((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e267aa0d410f44719ef0eb8fb5e5169">__attribute__</a> ((always_inline, hot, flatten)) <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K</td></tr>
+<tr class="memdesc:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert multi-index to flat index.  <br /></td></tr>
 <tr class="separator:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a3390d3b499e74ded35464d380bf18f" id="r_a8a3390d3b499e74ded35464d380bf18f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">std</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">transpose_simd</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:a8a3390d3b499e74ded35464d380bf18f" id="r_a8a3390d3b499e74ded35464d380bf18f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">transpose_simd</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a8a3390d3b499e74ded35464d380bf18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a" id="r_a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> R1, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> R2&gt; </td></tr>
-<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R1</a>+<a class="el" href="classmorpheus_1_1Tensor.html">R2</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">tensor_product</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R1</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">A</a>, <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R2</a> &gt; &amp;B)</td></tr>
+<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a" id="r_a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplParams" colspan="2">template&lt;size_t R1, size_t R2&gt; </td></tr>
+<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">tensor_product</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;A, <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;B)</td></tr>
+<tr class="memdesc:a9e2fc9372addcf2c1c385fca7108136a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the tensor (outer) product of two tensors.  <br /></td></tr>
 <tr class="separator:a9e2fc9372addcf2c1c385fca7108136a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a243335fd9e54d6a0133f2268e938dd17" id="r_a243335fd9e54d6a0133f2268e938dd17"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">dimensions</a></td></tr>
+<tr class="memitem:a243335fd9e54d6a0133f2268e938dd17" id="r_a243335fd9e54d6a0133f2268e938dd17"><td class="memItemLeft" align="right" valign="top">std::array&lt; size_t, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">dimensions</a></td></tr>
+<tr class="memdesc:a243335fd9e54d6a0133f2268e938dd17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimensions of the tensor (e.g., {4,4,4,4})  <br /></td></tr>
 <tr class="separator:a243335fd9e54d6a0133f2268e938dd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c7db9f5cf7495b26e226ff5316f9c07" id="r_a5c7db9f5cf7495b26e226ff5316f9c07"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">total_size</a></td></tr>
+<tr class="memitem:a5c7db9f5cf7495b26e226ff5316f9c07" id="r_a5c7db9f5cf7495b26e226ff5316f9c07"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">total_size</a></td></tr>
 <tr class="separator:a5c7db9f5cf7495b26e226ff5316f9c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9eef2b4f9f3bd86ebebfd7dae0776bb" id="r_aa9eef2b4f9f3bd86ebebfd7dae0776bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">data</a></td></tr>
+<tr class="memitem:aa9eef2b4f9f3bd86ebebfd7dae0776bb" id="r_aa9eef2b4f9f3bd86ebebfd7dae0776bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">data</a></td></tr>
 <tr class="separator:aa9eef2b4f9f3bd86ebebfd7dae0776bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b56fad12e7755519da5c0198407d4cc" id="r_a3b56fad12e7755519da5c0198407d4cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b56fad12e7755519da5c0198407d4cc">block_size</a></td></tr>
+<tr class="memitem:a3b56fad12e7755519da5c0198407d4cc" id="r_a3b56fad12e7755519da5c0198407d4cc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b56fad12e7755519da5c0198407d4cc">block_size</a></td></tr>
 <tr class="separator:a3b56fad12e7755519da5c0198407d4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acda835d088e6ada63992e1b9a63f6d58" id="r_acda835d088e6ada63992e1b9a63f6d58"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a></td></tr>
+<tr class="memitem:acda835d088e6ada63992e1b9a63f6d58" id="r_acda835d088e6ada63992e1b9a63f6d58"><td class="memItemLeft" align="right" valign="top">std::array&lt; size_t, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a></td></tr>
 <tr class="separator:acda835d088e6ada63992e1b9a63f6d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bf7e0d92f3c82f66151fb25f78528b0" id="r_a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> *<a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="memitem:a4bf7e0d92f3c82f66151fb25f78528b0" id="r_a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memItemLeft" align="right" valign="top">const size_t *<a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99ab9aa1650580da46ca3e1a21590cfe" id="r_a99ab9aa1650580da46ca3e1a21590cfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">constexpr</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> = Simd::width / <a class="el" href="classmorpheus_1_1Tensor.html">sizeof</a>(<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>)</td></tr>
+<tr class="memitem:a99ab9aa1650580da46ca3e1a21590cfe" id="r_a99ab9aa1650580da46ca3e1a21590cfe"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> = Simd::width / sizeof(size_t)</td></tr>
 <tr class="separator:a99ab9aa1650580da46ca3e1a21590cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87528ee2093e17e62f713c329a5ec117" id="r_a87528ee2093e17e62f713c329a5ec117"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87528ee2093e17e62f713c329a5ec117">acc</a> = 0</td></tr>
+<tr class="memitem:a87528ee2093e17e62f713c329a5ec117" id="r_a87528ee2093e17e62f713c329a5ec117"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87528ee2093e17e62f713c329a5ec117">acc</a> = 0</td></tr>
 <tr class="separator:a87528ee2093e17e62f713c329a5ec117"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a004a4099b2874acd9f719d47109367f1" id="r_a004a4099b2874acd9f719d47109367f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a> = 0</td></tr>
+<tr class="memitem:a004a4099b2874acd9f719d47109367f1" id="r_a004a4099b2874acd9f719d47109367f1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a> = 0</td></tr>
 <tr class="separator:a004a4099b2874acd9f719d47109367f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a812cb252c931f4e3da2d63b4b339639f" id="r_a812cb252c931f4e3da2d63b4b339639f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">return</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a812cb252c931f4e3da2d63b4b339639f">acc</a></td></tr>
+<tr class="memitem:a812cb252c931f4e3da2d63b4b339639f" id="r_a812cb252c931f4e3da2d63b4b339639f"><td class="memItemLeft" align="right" valign="top">return&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a812cb252c931f4e3da2d63b4b339639f">acc</a></td></tr>
 <tr class="separator:a812cb252c931f4e3da2d63b4b339639f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename K, std::size_t Rank&gt;<br />
+class morpheus::Tensor&lt; K, Rank &gt;</div><p>Multi-dimensional tensor class with fixed rank and SIMD support. </p>
+<p>This class provides high-performance operations on tensors of arbitrary rank, supporting element-wise access, contraction, transposition, and tensor product, all implemented with SIMD optimization and aligned memory.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Scalar type (e.g., float or double) </td></tr>
+    <tr><td class="paramname">Rank</td><td>Number of tensor dimensions </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a1dde5a3888acb177e67fecef069e167d" name="a1dde5a3888acb177e67fecef069e167d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1dde5a3888acb177e67fecef069e167d">&#9670;&#160;</a></span>reg</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::reg = <a class="el" href="classmorpheus_1_1Tensor.html">typename</a> Simd::reg</td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::reg = typename Simd::reg</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -210,10 +242,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">using</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::value_type = <a class="el" href="classmorpheus_1_1Tensor.html">K</a></td>
+          <td class="memname">using <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::value_type = K</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -227,13 +259,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::Tensor </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::Tensor </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -246,12 +278,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">morpheus::Tensor&lt; K, Rank &gt;::tensor_product()</a>, and <a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">morpheus::Tensor&lt; K, Rank &gt;::transpose_simd()</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 1 --></div>
-</div>
+<p>Default constructor. </p>
 
 </div>
 </div>
@@ -261,15 +288,15 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::Tensor </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::Tensor </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dims</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dims</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -279,6 +306,14 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Construct tensor with given dimensions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dims</td><td>Dimension sizes </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="reference">References <a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">morpheus::Tensor&lt; K, Rank &gt;::data</a>, <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>, <a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">morpheus::Tensor&lt; K, Rank &gt;::strides</a>, and <a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">morpheus::Tensor&lt; K, Rank &gt;::total_size</a>.</p>
 
@@ -291,16 +326,26 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::__attribute__ </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(always_inline, hot, flatten)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Convert a multi-index into a flattened linear index using SIMD. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">indices</td><td>Array of indices </td></tr>
+    <tr><td class="paramname">strides</td><td>Array of strides </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Flattened index </dd></dl>
 
 </div>
 </div>
@@ -310,16 +355,38 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">__attribute__((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">std</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::__attribute__ </td>
+          <td class="memname">__attribute__((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(always_inline, hot, flatten)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Convert multi-index to flat index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">indices</td><td>Array of indices </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Flattened index</dd></dl>
+<p>Perform contraction over two indices using SIMD</p>
+<p>Contracts a tensor \( T_{i_1 \dots i_k i j i_{k+1} \dots i_n} \) to \( T&#39;_{i_1 \dots i_k i_{k+1} \dots i_n} \)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>Input tensor </td></tr>
+    <tr><td class="paramname">i</td><td>First index to contract </td></tr>
+    <tr><td class="paramname">j</td><td>Second index to contract </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Contracted tensor of rank (Rank - 2)</dd></dl>
+<p>Transpose a 2D tensor using SIMD</p>
+<p>Only valid for tensors of rank 2. </p><dl class="section return"><dt>Returns</dt><dd>Transposed tensor </dd></dl>
 
 </div>
 </div>
@@ -329,15 +396,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::fill </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::fill </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -348,13 +415,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Fill tensor with a constant value. </p>
+
 <p class="reference">References <a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">morpheus::Tensor&lt; K, Rank &gt;::data</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classmorpheus__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3">morpheus_RG::RiemannTensor&lt; T &gt;::compute()</a>, <a class="el" href="classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff">morpheus::SpectalChebyshev&lt; T &gt;::compute()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d">morpheus_RG::Metric&lt; T &gt;::compute_flrw()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b">morpheus_RG::Metric&lt; T &gt;::compute_kerr()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a">morpheus_RG::Metric&lt; T &gt;::compute_kerr_schild()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51">morpheus_RG::Metric&lt; T &gt;::compute_minkowski()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da">morpheus_RG::Metric&lt; T &gt;::compute_schwarzschild()</a>, and <a class="el" href="classmorpheus__RG_1_1RicciTensor.html#a44fc38559a9676b115447a59fd50910b">morpheus_RG::RicciTensor&lt; T &gt;::contract_to_ricci()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 2 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576_icgraph.svg" width="700" height="542"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -365,30 +434,30 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::flatten_index </td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::flatten_index </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -404,12 +473,12 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 3 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a7875e0a5dd7b3d9c46752dd5adb31917_cgraph.svg" width="198" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 4 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a7875e0a5dd7b3d9c46752dd5adb31917_icgraph.svg" width="455" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -420,13 +489,13 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::for </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::for </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -449,10 +518,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::for </td>
+          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::for </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -468,15 +537,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname">K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>indices</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>indices</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -491,7 +560,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 5 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a3f6c0907d9cf52d3f69729d2cece6c13_cgraph.svg" width="455" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -502,15 +571,15 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>indices</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>indices</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -525,7 +594,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 6 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a65ace646e6f565d314a39f4b1411e9ef_cgraph.svg" width="455" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -536,20 +605,20 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname">K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -569,20 +638,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -602,30 +671,30 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname">K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -639,7 +708,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 7 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a73a3454d73e66b458535433ce85130f3_cgraph.svg" width="455" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -650,30 +719,30 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;<a class="el" href="#add63eead7e596a891d704488cc73a7d0">::operator</a>() </td>
+          <td class="memname"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>k</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>l</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -687,7 +756,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 8 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_ac5a7467653da30fea0b4ac8c27ebe706_cgraph.svg" width="455" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -698,13 +767,13 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::print </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::print </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -716,6 +785,8 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Print a 2D tensor (Rank == 2) </p>
 
 <p class="reference">References <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, and <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>.</p>
 
@@ -727,13 +798,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::print_shape </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::print_shape </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -745,6 +816,8 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Print the shape (dimensions) of the tensor. </p>
 
 <p class="reference">References <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, and <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>.</p>
 
@@ -756,15 +829,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::resize </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::resize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dims</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dims</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -775,18 +848,20 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Resize 2D tensor. </p>
+
 <p class="reference">References <a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">morpheus::Tensor&lt; K, Rank &gt;::data</a>, <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">morpheus::Tensor&lt; K, Rank &gt;::total_size</a>, and <a class="el" href="#a9b785a936eaefd337d5d368a3e35d52d">morpheus::Tensor&lt; K, Rank &gt;::update_strides()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff">morpheus::SpectalChebyshev&lt; T &gt;::compute()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d">morpheus_RG::Metric&lt; T &gt;::compute_flrw()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b">morpheus_RG::Metric&lt; T &gt;::compute_kerr()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a">morpheus_RG::Metric&lt; T &gt;::compute_kerr_schild()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51">morpheus_RG::Metric&lt; T &gt;::compute_minkowski()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da">morpheus_RG::Metric&lt; T &gt;::compute_schwarzschild()</a>, <a class="el" href="#a7ffe3f07841a50baecaf29e6ecf939ab">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="classmorpheus_1_1Vector.html#a2804bc480f438d89055f87e8b6ca383b">morpheus::Vector&lt; K &gt;::resize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff">morpheus::SpectalChebyshev&lt; T &gt;::compute()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d">morpheus_RG::Metric&lt; T &gt;::compute_flrw()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b">morpheus_RG::Metric&lt; T &gt;::compute_kerr()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a">morpheus_RG::Metric&lt; T &gt;::compute_kerr_schild()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51">morpheus_RG::Metric&lt; T &gt;::compute_minkowski()</a>, <a class="el" href="classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da">morpheus_RG::Metric&lt; T &gt;::compute_schwarzschild()</a>, and <a class="el" href="#a7ffe3f07841a50baecaf29e6ecf939ab">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 9 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c_cgraph.svg" width="432" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 10 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c_icgraph.svg" width="666" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -797,20 +872,20 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::resize </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::resize </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>d0</em>, </span></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>d0</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>d1</em></span>&#160;)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>d1</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -820,11 +895,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
+<p>Resize 2D tensor. </p>
+
 <p class="reference">References <a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 11 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a7ffe3f07841a50baecaf29e6ecf939ab_cgraph.svg" width="663" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -835,22 +912,22 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> R1, <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> R2&gt; </div>
+template&lt;size_t R1, size_t R2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R1</a>+<a class="el" href="classmorpheus_1_1Tensor.html">R2</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::tensor_product </td>
+          <td class="memname">static <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::tensor_product </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R1</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, <a class="el" href="classmorpheus_1_1Tensor.html">R2</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -860,12 +937,30 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> R1, <a 
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">morpheus::Tensor&lt; K, Rank &gt;::data</a>, <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>, <a class="el" href="#add63eead7e596a891d704488cc73a7d0">morpheus::Tensor&lt; K, Rank &gt;::Tensor()</a>, <a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">morpheus::Tensor&lt; K, Rank &gt;::total_size</a>, and <a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">morpheus::Tensor&lt; K, Rank &gt;::W</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 12 --></div>
-</div>
+<p>Compute the tensor (outer) product of two tensors. </p>
+<p>Resulting tensor has rank = R1 + R2.</p>
+<p class="formulaDsp">
+\[
+(A \otimes B)_{i_1 \dots i_R} = A_{i_1 \dots i_{R_1}} \cdot B_{i_{R_1 + 1} \dots i_R}
+\]
+</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">R1</td><td>Rank of tensor A </td></tr>
+    <tr><td class="paramname">R2</td><td>Rank of tensor B </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td><a class="el" href="classmorpheus_1_1Tensor.html" title="Multi-dimensional tensor class with fixed rank and SIMD support.">Tensor</a> A </td></tr>
+    <tr><td class="paramname">B</td><td><a class="el" href="classmorpheus_1_1Tensor.html" title="Multi-dimensional tensor class with fixed rank and SIMD support.">Tensor</a> B </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classmorpheus_1_1Tensor.html" title="Multi-dimensional tensor class with fixed rank and SIMD support.">Tensor</a> product \( A \otimes B \) </dd></dl>
+
+<p class="reference">References <a class="el" href="#aa9eef2b4f9f3bd86ebebfd7dae0776bb">morpheus::Tensor&lt; K, Rank &gt;::data</a>, <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>, <a class="el" href="#a5c7db9f5cf7495b26e226ff5316f9c07">morpheus::Tensor&lt; K, Rank &gt;::total_size</a>, and <a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">morpheus::Tensor&lt; K, Rank &gt;::W</a>.</p>
 
 </div>
 </div>
@@ -875,13 +970,13 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((<a class="el" href="classmorpheus_1_1Tensor.html">always_inline</a>, <a class="el" href="classmorpheus_1_1Tensor.html">hot</a>, <a class="el" href="classmorpheus_1_1Tensor.html">flatten</a>)) <a class="el" href="classmorpheus_1_1Tensor.html">inline</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">std</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::transpose_simd </td>
+          <td class="memname"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::transpose_simd </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -894,18 +989,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>, <a class="el" href="#add63eead7e596a891d704488cc73a7d0">morpheus::Tensor&lt; K, Rank &gt;::Tensor()</a>, and <a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">morpheus::Tensor&lt; K, Rank &gt;::W</a>.</p>
+<p class="reference">References <a class="el" href="#a243335fd9e54d6a0133f2268e938dd17">morpheus::Tensor&lt; K, Rank &gt;::dimensions</a>, <a class="el" href="#a004a4099b2874acd9f719d47109367f1">morpheus::Tensor&lt; K, Rank &gt;::i</a>, and <a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">morpheus::Tensor&lt; K, Rank &gt;::W</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#a942435fbed57720116b51adf54c03bcd">morpheus::transpose_tensor()</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><!-- SVG 13 --></div>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 14 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a8a3390d3b499e74ded35464d380bf18f_icgraph.svg" width="464" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -916,13 +1006,13 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">void</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::update_strides </td>
+          <td class="memname">void <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::update_strides </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -941,7 +1031,7 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 15 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor_a9b785a936eaefd337d5d368a3e35d52d_icgraph.svg" width="903" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -953,10 +1043,10 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::acc = 0</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::acc = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -971,10 +1061,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">return</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::acc</td>
+          <td class="memname">return <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::acc</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -987,10 +1077,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::block_size</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::block_size</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1003,10 +1093,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>* <a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::const</td>
+          <td class="memname">const size_t* <a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1022,15 +1112,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;K&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="classmorpheus_1_1Vector.html#a58b417136d0748ae33aec91dea780f74">morpheus::Vector&lt; K &gt;::__attribute__()</a>, <a class="el" href="classmorpheus_1_1Vector.html#a4a68658d2190eb9640b2c8967cea1052">morpheus::Vector&lt; K &gt;::__attribute__()</a>, <a class="el" href="classmorpheus_1_1Vector.html#a1a3dad17bf44bdd7a7042e90310bad0d">morpheus::Vector&lt; K &gt;::__attribute__()</a>, <a class="el" href="classmorpheus_1_1Vector.html#af20c65938bc3c3521df4c69fc0f29fc6">morpheus::Vector&lt; K &gt;::__attribute__()</a>, <a class="el" href="classmorpheus_1_1Vector.html#ab70263b8579322fb95224c9e38cd3e2a">morpheus::Vector&lt; K &gt;::__attribute__()</a>, <a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">morpheus::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="classmorpheus_1_1Vector.html#aa219c05084119a6893779590337cf75c">morpheus::Vector&lt; K &gt;::for()</a>, <a class="el" href="#a3f6c0907d9cf52d3f69729d2cece6c13">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a65ace646e6f565d314a39f4b1411e9ef">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#acecceb84060aa29f6dddc330af1f045e">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a73a3454d73e66b458535433ce85130f3">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#ac5a7467653da30fea0b4ac8c27ebe706">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="#aaa09fea5e7f36cfd81ccb7523305ff5c">morpheus::Tensor&lt; K, Rank &gt;::Tensor()</a>, and <a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">morpheus::Tensor&lt; K, Rank &gt;::tensor_product()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">morpheus::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#a3f6c0907d9cf52d3f69729d2cece6c13">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a65ace646e6f565d314a39f4b1411e9ef">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#acecceb84060aa29f6dddc330af1f045e">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#a73a3454d73e66b458535433ce85130f3">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#ac5a7467653da30fea0b4ac8c27ebe706">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="#aaa09fea5e7f36cfd81ccb7523305ff5c">morpheus::Tensor&lt; K, Rank &gt;::Tensor()</a>, and <a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">morpheus::Tensor&lt; K, Rank &gt;::tensor_product()</a>.</p>
 
 </div>
 </div>
@@ -1040,13 +1130,15 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::dimensions</td>
+          <td class="memname">std::array&lt;size_t, Rank&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::dimensions</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Dimensions of the tensor (e.g., {4,4,4,4}) </p>
 
 <p class="reference">Referenced by <a class="el" href="namespacemorpheus__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e">morpheus_RG::__attribute__()</a>, <a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#acecceb84060aa29f6dddc330af1f045e">morpheus::Tensor&lt; K, Rank &gt;::operator()()</a>, <a class="el" href="#ac7f1ee59eea4024f6fa67dc1a3b26cc9">morpheus::Tensor&lt; K, Rank &gt;::print()</a>, <a class="el" href="#a996144e67afc3b3aba2b05d0aecae51a">morpheus::Tensor&lt; K, Rank &gt;::print_shape()</a>, <a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">morpheus::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="#aaa09fea5e7f36cfd81ccb7523305ff5c">morpheus::Tensor&lt; K, Rank &gt;::Tensor()</a>, <a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">morpheus::Tensor&lt; K, Rank &gt;::tensor_product()</a>, <a class="el" href="namespacemorpheus.html#a15b00fa3ba8c6814edc03f1cf58badd2">morpheus::tensor_to_matrix()</a>, <a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">morpheus::Tensor&lt; K, Rank &gt;::transpose_simd()</a>, and <a class="el" href="#a9b785a936eaefd337d5d368a3e35d52d">morpheus::Tensor&lt; K, Rank &gt;::update_strides()</a>.</p>
 
@@ -1058,10 +1150,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::i = 0</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::i = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1076,10 +1168,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>, Rank&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::strides</td>
+          <td class="memname">std::array&lt;size_t, Rank&gt; <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::strides</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1094,10 +1186,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::total_size</td>
+          <td class="memname">size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::total_size</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1112,13 +1204,13 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
+template&lt;typename K , std::size_t Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">constexpr</a> <a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a>, Rank &gt;::W = Simd::width / <a class="el" href="classmorpheus_1_1Tensor.html">sizeof</a>(<a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>)</td>
+          <td class="memname">constexpr size_t <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt; K, Rank &gt;::W = Simd::width / sizeof(size_t)</td>
         </tr>
       </table>
   </td>

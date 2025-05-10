@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -99,54 +106,73 @@ $(function(){initNavTree('classmorpheus_1_1solver_1_1GaussSeidel.html',''); init
 </div><!--header-->
 <div class="contents">
 
+<p>Placeholder for Gauss–Seidel iterative solver.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="LinearSolver_8hpp_source.html">LinearSolver.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::solver::GaussSeidel&lt; K &gt;:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1solver_1_1GaussSeidel__coll__graph.svg" width="264" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a70265528e84b8a0283ce786b7f03d027" id="r_a70265528e84b8a0283ce786b7f03d027"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70265528e84b8a0283ce786b7f03d027">solve</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classmorpheus_1_1Tensor.html">A</a>, const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;b, <a class="el" href="classmorpheus_1_1Tensor.html">K</a> <a class="el" href="classmorpheus_1_1Tensor.html">tol</a>=1<a class="el" href="classmorpheus_1_1Tensor.html">e</a>-8, <a class="el" href="classmorpheus_1_1Tensor.html">int</a> <a class="el" href="classmorpheus_1_1Tensor.html">max_iter</a>=2000)</td></tr>
+<tr class="memitem:a70265528e84b8a0283ce786b7f03d027" id="r_a70265528e84b8a0283ce786b7f03d027"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70265528e84b8a0283ce786b7f03d027">solve</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;A, const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; &amp;b, K tol=1e-8, int max_iter=2000)</td></tr>
+<tr class="memdesc:a70265528e84b8a0283ce786b7f03d027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the system using Gauss–Seidel method.  <br /></td></tr>
 <tr class="separator:a70265528e84b8a0283ce786b7f03d027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ada1faea86b2571b468722b00579ebff1" id="r_ada1faea86b2571b468722b00579ebff1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada1faea86b2571b468722b00579ebff1">data</a></td></tr>
+<tr class="memitem:ada1faea86b2571b468722b00579ebff1" id="r_ada1faea86b2571b468722b00579ebff1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada1faea86b2571b468722b00579ebff1">data</a></td></tr>
 <tr class="separator:ada1faea86b2571b468722b00579ebff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename K&gt;<br />
+class morpheus::solver::GaussSeidel&lt; K &gt;</div><p>Placeholder for Gauss–Seidel iterative solver. </p>
+<p>The Gauss–Seidel method improves on <a class="el" href="classmorpheus_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> by using updated values as soon as they are available.</p>
+<p>Update rule:  </p><p class="formulaDsp">
+\[
+x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j &lt; i} A_{ij} x_j^{(k+1)} - \sum_{j &gt; i} A_{ij} x_j^{(k)} \right)
+\]
+</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Scalar type </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a70265528e84b8a0283ce786b7f03d027" name="a70265528e84b8a0283ce786b7f03d027"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70265528e84b8a0283ce786b7f03d027">&#9670;&#160;</a></span>solve()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; <a class="el" href="classmorpheus_1_1solver_1_1GaussSeidel.html">morpheus::solver::GaussSeidel</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::solve </td>
+          <td class="memname">static <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; <a class="el" href="classmorpheus_1_1solver_1_1GaussSeidel.html">morpheus::solver::GaussSeidel</a>&lt; K &gt;::solve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1<a class="el" href="classmorpheus_1_1Tensor.html">e</a>-8</span>, </span></td>
+          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1e-8</span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">2000</span></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">2000</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -155,6 +181,18 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Solve the system using Gauss–Seidel method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td><a class="el" href="classmorpheus_1_1Matrix.html" title="High-performance aligned matrix class with SIMD support.">Matrix</a> \( A \in \mathbb{R}^{n \times n} \) </td></tr>
+    <tr><td class="paramname">b</td><td>Right-hand side vector </td></tr>
+    <tr><td class="paramname">tol</td><td>Convergence tolerance </td></tr>
+    <tr><td class="paramname">max_iter</td><td>Max iterations allowed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Solution vector \( x \) </dd></dl>
 
 </div>
 </div>
@@ -165,10 +203,10 @@ template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a cl
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmorpheus_1_1Tensor.html">typename</a> <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt; </div>
+template&lt;typename K &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classmorpheus_1_1Tensor.html">K</a>&gt; <a class="el" href="classmorpheus_1_1solver_1_1GaussSeidel.html">morpheus::solver::GaussSeidel</a>&lt; <a class="el" href="classmorpheus_1_1Tensor.html">K</a> &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;K&gt; <a class="el" href="classmorpheus_1_1solver_1_1GaussSeidel.html">morpheus::solver::GaussSeidel</a>&lt; K &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -7,5 +7,8 @@ var searchData=
   ['update_5fstrides_4',['update_strides',['../classmorpheus_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d',1,'morpheus::Tensor']]],
   ['upsilon_5',['Upsilon',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feaefbc93c5b70630ff04c9b7ef15cfdc02',1,'Latex.hpp']]],
   ['upsilon_6',['upsilon',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea36ea51c3032c76487abc87f239bffead',1,'Latex.hpp']]],
-  ['uxy_7',['uxy',['../classmorpheus_1_1Vector.html#a8b90e94187bd7290b5d452915f37291d',1,'morpheus::Vector']]]
+  ['usage_7',['Usage',['../md_includes_2Morpheus_2Core_2README.html#autotoc_md20',1,'Example Usage'],['../md_includes_2Morpheus_2SIMD_2README.html#autotoc_md40',1,'Example Usage']]],
+  ['using_20in_20c_8',['Exemple using in C++',['../index.html#autotoc_md8',1,'']]],
+  ['using_20in_20python_9',['Example using in Python',['../index.html#autotoc_md9',1,'']]],
+  ['uxy_10',['uxy',['../classmorpheus_1_1Vector.html#a8b90e94187bd7290b5d452915f37291d',1,'morpheus::Vector']]]
 ];

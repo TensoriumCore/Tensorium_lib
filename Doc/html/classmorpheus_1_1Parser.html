@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -104,7 +111,7 @@ $(function(){initNavTree('classmorpheus_1_1Parser.html',''); initResizable(); })
 <div class="dynheader">
 Collaboration diagram for morpheus::Parser:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Parser__coll__graph.svg" width="162" height="272"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -113,29 +120,29 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa95ea4565d5ec68b051543e7a18493cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae47f6da0a0bfb6caf988f644f72f38e" id="r_aae47f6da0a0bfb6caf988f644f72f38e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae47f6da0a0bfb6caf988f644f72f38e">parse_expression</a> ()</td></tr>
 <tr class="separator:aae47f6da0a0bfb6caf988f644f72f38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ef7e4ccd93bbd6f93091ece73f9c965" id="r_a0ef7e4ccd93bbd6f93091ece73f9c965"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ef7e4ccd93bbd6f93091ece73f9c965">parse_expression</a> (<a class="el" href="classmorpheus_1_1Tensor.html">int</a> <a class="el" href="classmorpheus_1_1Tensor.html">precedence</a>=0)</td></tr>
+<tr class="memitem:a0ef7e4ccd93bbd6f93091ece73f9c965" id="r_a0ef7e4ccd93bbd6f93091ece73f9c965"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ef7e4ccd93bbd6f93091ece73f9c965">parse_expression</a> (int precedence=0)</td></tr>
 <tr class="separator:a0ef7e4ccd93bbd6f93091ece73f9c965"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:adba410f009f61f36bd5cdc4c3b70e2d5" id="r_adba410f009f61f36bd5cdc4c3b70e2d5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adba410f009f61f36bd5cdc4c3b70e2d5">parse_primary</a> ()</td></tr>
 <tr class="separator:adba410f009f61f36bd5cdc4c3b70e2d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233a83f6f353c41a04ad7515ba48b86b" id="r_a233a83f6f353c41a04ad7515ba48b86b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a233a83f6f353c41a04ad7515ba48b86b">parse_binary_rhs</a> (<a class="el" href="classmorpheus_1_1Tensor.html">int</a> <a class="el" href="classmorpheus_1_1Tensor.html">prec</a>, std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt; <a class="el" href="classmorpheus_1_1Tensor.html">lhs</a>)</td></tr>
+<tr class="memitem:a233a83f6f353c41a04ad7515ba48b86b" id="r_a233a83f6f353c41a04ad7515ba48b86b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a233a83f6f353c41a04ad7515ba48b86b">parse_binary_rhs</a> (int prec, std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt; lhs)</td></tr>
 <tr class="separator:a233a83f6f353c41a04ad7515ba48b86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a591251408fefa9f4404903824d3a36dc" id="r_a591251408fefa9f4404903824d3a36dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structToken.html">Token</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a591251408fefa9f4404903824d3a36dc">peek</a> () const</td></tr>
 <tr class="separator:a591251408fefa9f4404903824d3a36dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acff9882d0079f9dec81d1168314b3772" id="r_acff9882d0079f9dec81d1168314b3772"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structToken.html">Token</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acff9882d0079f9dec81d1168314b3772">get</a> ()</td></tr>
 <tr class="separator:acff9882d0079f9dec81d1168314b3772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6eb70158e02db5f21dfa7e58d377e5" id="r_a8f6eb70158e02db5f21dfa7e58d377e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f6eb70158e02db5f21dfa7e58d377e5">eof</a> () const</td></tr>
+<tr class="memitem:a8f6eb70158e02db5f21dfa7e58d377e5" id="r_a8f6eb70158e02db5f21dfa7e58d377e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f6eb70158e02db5f21dfa7e58d377e5">eof</a> () const</td></tr>
 <tr class="separator:a8f6eb70158e02db5f21dfa7e58d377e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6046a427916981626c23efbcab4f266d" id="r_a6046a427916981626c23efbcab4f266d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6046a427916981626c23efbcab4f266d">get_precedence</a> (<a class="el" href="Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921">TokenType</a> t) const</td></tr>
+<tr class="memitem:a6046a427916981626c23efbcab4f266d" id="r_a6046a427916981626c23efbcab4f266d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6046a427916981626c23efbcab4f266d">get_precedence</a> (<a class="el" href="Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921">TokenType</a> t) const</td></tr>
 <tr class="separator:a6046a427916981626c23efbcab4f266d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ad506b33eb1def3fbbc7745e2c68a672b" id="r_ad506b33eb1def3fbbc7745e2c68a672b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structToken.html">Token</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad506b33eb1def3fbbc7745e2c68a672b">tokens</a></td></tr>
 <tr class="separator:ad506b33eb1def3fbbc7745e2c68a672b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad34a3db9a02a09daf2b88eb0f52ae493" id="r_ad34a3db9a02a09daf2b88eb0f52ae493"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad34a3db9a02a09daf2b88eb0f52ae493">pos</a></td></tr>
+<tr class="memitem:ad34a3db9a02a09daf2b88eb0f52ae493" id="r_ad34a3db9a02a09daf2b88eb0f52ae493"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad34a3db9a02a09daf2b88eb0f52ae493">pos</a></td></tr>
 <tr class="separator:ad34a3db9a02a09daf2b88eb0f52ae493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -175,7 +182,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">bool</a> morpheus::Parser::eof </td>
+          <td class="memname">bool morpheus::Parser::eof </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -229,7 +236,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">int</a> morpheus::Parser::get_precedence </td>
+          <td class="memname">int morpheus::Parser::get_precedence </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921">TokenType</a></td>          <td class="paramname"><span class="paramname"><em>t</em></span></td><td>)</td>
           <td> const</td>
@@ -258,7 +265,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt; morpheus::Parser::parse_binary_rhs </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>prec</em>, </span></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>prec</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -277,7 +284,7 @@ Private Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 1 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b_icgraph.svg" width="416" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -311,7 +318,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="structmorpheus_1_1ASTNode.html">ASTNode</a> &gt; morpheus::Parser::parse_expression </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmorpheus_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>precedence</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span></td><td>)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>precedence</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -326,7 +333,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 2 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965_cgraph.svg" width="416" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -358,7 +365,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 3 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5_icgraph.svg" width="416" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -401,7 +408,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">size_t</a> morpheus::Parser::pos</td>
+          <td class="memname">size_t morpheus::Parser::pos</td>
         </tr>
       </table>
   </td>

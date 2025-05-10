@@ -15,8 +15,19 @@
 #include "Matrix.hpp"
 #include "../MathUtils/MathsUtils.hpp"
 #include <numbers>
-
+/**
+ * @brief Namespace for spectral methods (FFT and Chebyshev)
+ *
+ * This module provides fast spectral transforms such as FFT and placeholder Chebyshev methods.
+ */
 namespace morpheus {
+	/**
+	 * @brief Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm
+	 *
+	 * Performs in-place FFT or inverse FFT on complex-valued vectors whose size is a power of 2.
+	 *
+	 * @tparam T Underlying scalar type (e.g., float or double)
+	 */
 	template<typename T>
 		class SpectralFFT {
 			public:
@@ -24,11 +35,25 @@ namespace morpheus {
 				using VectorT   = morpheus::Vector<T>;
 				using C         = std::complex<T>;
 				using CVectorT  = morpheus::Vector<C>;
-
+				/**
+				 * @brief Perform forward FFT (in-place)
+				 *
+				 * @param a Input/output complex vector (must have power-of-two size)
+				 */
 				static inline void forward(CVectorT& a)  { transform_impl(a, false); }
+				/**
+				 * @brief Perform inverse FFT (in-place)
+				 *
+				 * @param a Input/output complex vector (must have power-of-two size)
+				 */
 				static inline void backward(CVectorT& a) { transform_impl(a, true ); }
 
 			private:
+				/**
+				 * @brief Internal FFT implementation (shared by forward/backward)
+				 * @param a Vector to transform
+				 * @param inverse Whether to perform inverse FFT
+				 */
 				static void transform_impl(CVectorT& a, bool inverse)
 				{
 					const std::size_t N = a.size();
@@ -64,7 +89,10 @@ namespace morpheus {
 						for (std::size_t i = 0; i < N; ++i) a[i] *= invN;
 					}
 				}
-
+				/**
+				 * @brief Bit-reversal permutation step
+				 * @param a Vector to reorder
+				 */
 				static void bit_reverse(CVectorT& a)
 				{
 					const std::size_t N = a.size();
@@ -76,13 +104,28 @@ namespace morpheus {
 					}
 				}
 		};
-
+	/**
+	 * @brief Placeholder Chebyshev spectral method class
+	 *
+	 * This is a demonstration implementation for Chebyshev-based operator application.
+	 *
+	 * @tparam T Scalar type
+	 */
 	template<typename T>
 		class SpectalChebyshev {
 			public:
 				using Tensor2D = morpheus::Tensor<T, 2>;
 				using VectorT  = morpheus::Vector<T>;
 
+				/**
+				 * @brief Dummy computation using Chebyshev-like cosine weights
+				 *
+				 * Fills the result matrix with \f$ \cos(X_i X_j) \cdot h \f$
+				 *
+				 * @param X Input vector (length must match dim)
+				 * @param h Scaling factor
+				 * @param result Output 2D tensor
+				 */
 				static void compute(const VectorT& X, T h, Tensor2D& result) {
 					const size_t dim = 4;
 					result.resize(dim, dim);

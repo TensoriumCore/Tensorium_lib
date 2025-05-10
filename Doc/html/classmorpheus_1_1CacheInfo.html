@@ -18,6 +18,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -102,18 +109,18 @@ $(function(){initNavTree('classmorpheus_1_1CacheInfo.html',''); initResizable();
 <div class="dynheader">
 Collaboration diagram for morpheus::CacheInfo:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 0 --></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1CacheInfo__coll__graph.svg" width="162" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f5a05f97797852038415a58bff5d963" id="r_a1f5a05f97797852038415a58bff5d963"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f5a05f97797852038415a58bff5d963">getL1CacheSize</a> ()</td></tr>
+<tr class="memitem:a1f5a05f97797852038415a58bff5d963" id="r_a1f5a05f97797852038415a58bff5d963"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f5a05f97797852038415a58bff5d963">getL1CacheSize</a> ()</td></tr>
 <tr class="separator:a1f5a05f97797852038415a58bff5d963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aa28993e2e483d309b2337b16d6dfab" id="r_a5aa28993e2e483d309b2337b16d6dfab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aa28993e2e483d309b2337b16d6dfab">getL2CacheSize</a> ()</td></tr>
+<tr class="memitem:a5aa28993e2e483d309b2337b16d6dfab" id="r_a5aa28993e2e483d309b2337b16d6dfab"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aa28993e2e483d309b2337b16d6dfab">getL2CacheSize</a> ()</td></tr>
 <tr class="separator:a5aa28993e2e483d309b2337b16d6dfab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd06115ce01c5b87edae33512e172dd5" id="r_abd06115ce01c5b87edae33512e172dd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd06115ce01c5b87edae33512e172dd5">getL3CacheSize</a> ()</td></tr>
+<tr class="memitem:abd06115ce01c5b87edae33512e172dd5" id="r_abd06115ce01c5b87edae33512e172dd5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd06115ce01c5b87edae33512e172dd5">getL3CacheSize</a> ()</td></tr>
 <tr class="separator:abd06115ce01c5b87edae33512e172dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2551823a9c760c63ad69f75ca7a58ad" id="r_aa2551823a9c760c63ad69f75ca7a58ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Tensor.html">static</a> <a class="el" href="classmorpheus_1_1Tensor.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2551823a9c760c63ad69f75ca7a58ad">getCacheLineSize</a> ()</td></tr>
+<tr class="memitem:aa2551823a9c760c63ad69f75ca7a58ad" id="r_aa2551823a9c760c63ad69f75ca7a58ad"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2551823a9c760c63ad69f75ca7a58ad">getCacheLineSize</a> ()</td></tr>
 <tr class="separator:aa2551823a9c760c63ad69f75ca7a58ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -127,7 +134,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">int</a> morpheus::CacheInfo::getCacheLineSize </td>
+          <td class="memname">int morpheus::CacheInfo::getCacheLineSize </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -152,7 +159,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">int</a> morpheus::CacheInfo::getL1CacheSize </td>
+          <td class="memname">int morpheus::CacheInfo::getL1CacheSize </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -177,7 +184,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">int</a> morpheus::CacheInfo::getL2CacheSize </td>
+          <td class="memname">int morpheus::CacheInfo::getL2CacheSize </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -202,7 +209,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmorpheus_1_1Tensor.html">int</a> morpheus::CacheInfo::getL3CacheSize </td>
+          <td class="memname">int morpheus::CacheInfo::getL3CacheSize </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
