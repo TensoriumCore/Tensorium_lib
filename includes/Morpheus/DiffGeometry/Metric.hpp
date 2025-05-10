@@ -29,6 +29,8 @@ namespace morpheus_RG {
 						compute_kerr(X, g);
 					} else if (type == "flrw") {
 						compute_flrw(X, g);
+					} else if (type == "kerr_schild") {
+							compute_kerr_schild(X, g);
 					} else if (type == "custom" && custom_metric_fn) {
 						custom_metric_fn(X, g);
 					} else {
@@ -128,5 +130,48 @@ namespace morpheus_RG {
 					g(3, 3) = a_t * a_t * r * r * sin_theta * sin_theta;
 				}
 
+				T kerr_schild_radius(T x, T y, T z) const {
+					const T r2 = x * x + y * y + z * z;
+					const T a2 = a * a;
+					const T term = std::sqrt((r2 - a2) * (r2 - a2) + 4 * a2 * z * z);
+					const T r = std::sqrt(0.5 * (r2 - a2 + term));
+					return r;
+				}
+
+				void compute_kerr_schild(const morpheus::Vector<T>& X, morpheus::Tensor<T, 2>& g) const {
+					assert(X.size() == 4);
+					const T x = X(1), y = X(2), z = X(3);
+
+					const T r = kerr_schild_radius(x, y, z);
+					const T cos_theta = (r > 1e-14) ? z / r : 0.0;
+					const T denom = r * r + a * a * cos_theta * cos_theta;
+					const T H = (denom > 1e-14) ? (M * r) / denom : 0.0;
+
+					const T denom_vec = r * r + a * a;
+					T lx = (denom_vec > 1e-14) ? (r * x + a * y) / denom_vec : 0.0;
+					T ly = (denom_vec > 1e-14) ? (r * y - a * x) / denom_vec : 0.0;
+					T lz = (r > 1e-14) ? z / r : 0.0;
+
+					T norm_l = std::sqrt(lx * lx + ly * ly + lz * lz);
+					if (norm_l > 1e-14) {
+						lx /= norm_l;
+						ly /= norm_l;
+						lz /= norm_l;
+					}
+
+					g.resize({4, 4});
+					g.fill(0);
+
+					g(0, 0) = -1.0;
+					g(1, 1) = 1.0;
+					g(2, 2) = 1.0;
+					g(3, 3) = 1.0;
+
+					const std::array<T, 4> l = {1.0, lx, ly, lz};
+
+					for (size_t mu = 0; mu < 4; ++mu)
+						for (size_t nu = 0; nu < 4; ++nu)
+							g(mu, nu) += 2.0 * H * l[mu] * l[nu];
+				}
 		};
 } 

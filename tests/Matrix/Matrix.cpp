@@ -218,7 +218,7 @@ int matrix_tests() {
 
 	std::cout << "X = " << X(0) << " " << X(1) << " " << X(2) << " " << X(3) << "\n";
 
-	morpheus_RG::Metric<double> metric("kerr", 1.0, 0.8);
+	morpheus_RG::Metric<double> metric("kerr_schild", 1.0, 0.0);
 	metric(X, g);
 
 	std::cout << "Metric tensor g at X = (t=0, r=10, θ=π/2, φ=0):\n";
@@ -228,7 +228,7 @@ int matrix_tests() {
 	std::cout << "Christoffel symbols Γ^λ_{μν} at X = (t=0, r=10, θ=π/2, φ=0):\n";
 	auto gamma = morpheus::compute_christoffel(X, 1e-5, g, g_inv, metric);
 	gamma.print();
-	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr", 1.0, 0.8));
+	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr_schild", 1.0, 0.8));
 	morpheus::print_riemann_tensor(R);
 	 morpheus::contract_tensor<0, 1>(R);
 	std::cout << "Riemann tensor contracted:\n";
