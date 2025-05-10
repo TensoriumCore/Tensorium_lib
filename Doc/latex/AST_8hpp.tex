@@ -1,0 +1,45 @@
+\doxysection{includes/\+Morpheus/\+Symbolics/\+AST.hpp File Reference}
+\hypertarget{AST_8hpp}{}\label{AST_8hpp}\index{includes/Morpheus/Symbolics/AST.hpp@{includes/Morpheus/Symbolics/AST.hpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include "{}Latex.\+hpp"{}}\newline
+Include dependency graph for AST.\+hpp\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmorpheus_1_1ASTNode}{morpheus\+::\+ASTNode}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Parser}{morpheus\+::\+Parser}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus}{morpheus}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{morpheus\+::\+ASTNode\+Type}} \{ \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f}{morpheus\+::\+Number}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793}{morpheus\+::\+Symbol}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39}{morpheus\+::\+Binary\+Op}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8}{morpheus\+::\+Unary\+Op}}
+, \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca}{morpheus\+::\+Function\+Call}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200}{morpheus\+::\+Subscript}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7}{morpheus\+::\+Superscript}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd}{morpheus\+::\+Derivative}}
+, \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e}{morpheus\+::\+Integral}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae}{morpheus\+::\+Tensor\+Symbol}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{morpheus\+::print\+\_\+ast}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{node}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{indent}}=0)
+\end{DoxyCompactItemize}

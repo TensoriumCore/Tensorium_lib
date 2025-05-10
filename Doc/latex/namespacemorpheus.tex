@@ -1,0 +1,699 @@
+\doxysection{morpheus Namespace Reference}
+\hypertarget{namespacemorpheus}{}\label{namespacemorpheus}\index{morpheus@{morpheus}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus_1_1mpi}{mpi}}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus_1_1solver}{solver}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}}
+\item 
+struct \mbox{\hyperlink{structmorpheus_1_1avx2__t}{avx2\+\_\+t}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1CacheInfo}{Cache\+Info}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}
+\begin{DoxyCompactList}\small\item\em A 2D aligned matrix for numerical derivatives. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}
+\begin{DoxyCompactList}\small\item\em A multi-\/dimensional aligned tensor for numerical derivatives. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Parser}{Parser}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1SpectalChebyshev}{Spectal\+Chebyshev}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{Spectral\+FFT}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNode\+Type}} \{ \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f}{Number}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793}{Symbol}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39}{Binary\+Op}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8}{Unary\+Op}}
+, \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca}{Function\+Call}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200}{Subscript}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7}{Superscript}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd}{Derivative}}
+, \newline
+\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e}{Integral}}
+, \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae}{Tensor\+Symbol}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \mbox{\hyperlink{namespacemorpheus_a47cf67841ca834dde92b69e9a7078fa9}{richardson\+\_\+derivative\+\_\+container}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+\begin{DoxyCompactList}\small\item\em Richardson extrapolation for vectors or containers. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{richardson\+\_\+derivative}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+\begin{DoxyCompactList}\small\item\em Richardson extrapolation for scalar values. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_af9926f14a7ebe29eb59247e85ca9d966}{add\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_aa4cdeeda976ba0c2d3672d7451113667}{sub\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a1a2e7c9b09299ca68a111830951ae130}{scl\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_ac602e395cc3c3114f5fea2836dc0aa90}{norm1\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a6575e74e4f04f1d923a2b7caee2d1b1e}{norm2\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a9b66a4923bf8f9855d86269d632a1ce7}{norm\+Inf\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a7f25c4d1440b2d589c64b9156f48824f}{dot\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a4c3e05e39a897a421cbb3085c558b934}{cosine\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a3e63a52c9cc63b03ef1109bbac541953}{lerp\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} t)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a08de3e53d9f237bcf3b66675c97c2a1d}{linear\+\_\+combination\+\_\+vec}} (const std\+::vector$<$ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{u}}, const std\+::vector$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{coef}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_ae8fdbc8b1b3dd97d57e2fe0da57cd439}{cross\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&a, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a7f5b701665e512ce59bb2c1e8fca44e1}{add\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&B)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a9298933e8e700a86412c1b9babdf90b9}{sub\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&B)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a4b6f20a0b50871333f193d3389f78401}{scl\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec}{mul\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&B)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_ae1e78fa78c3d01cf0aae1e3c347dd08a}{transpose\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a2759560f3161aa1d7ab494384ac6c33f}{trace\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a4429f93147f7895d9f5782820c56cbf8}{mul\+\_\+vec}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&x)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a2ba0e55adbcd8c127cc3ee7240530cd3}{inverse\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a80a98e1ae84fa1ec96d29486c2f83acc}{det\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} \mbox{\hyperlink{namespacemorpheus_a52edd23638a57f727b66ff6a7388058f}{rank\+\_\+mat}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , std\+::size\+\_\+t Rank$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \mbox{\hyperlink{namespacemorpheus_a942435fbed57720116b51adf54c03bcd}{transpose\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} R1, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} R2$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R1}}+\mbox{\hyperlink{classmorpheus_1_1Tensor}{R2}} $>$ \mbox{\hyperlink{namespacemorpheus_a95d1671f12bab84d3df9b978680af800}{mul\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R1}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R2}} $>$ \&B)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} I, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} J, \mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , std\+::size\+\_\+t Rank$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank -\/ 2 $>$ \mbox{\hyperlink{namespacemorpheus_a553a15a4ad1c795c18ce3ed04dfaf840}{contract\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a695ad97fedbe4dfae664ab86846df19e}{gauss\+\_\+solve}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c}{jacobi\+\_\+solve}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&b, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{tol}}=1\mbox{\hyperlink{classmorpheus_1_1Tensor}{e}}-\/6, \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{max\+\_\+iter}}=1000)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a3e21ebc6020ca61352246c36630ad02d}{centered\+\_\+derivative}} (const \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&input, \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&output, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} axis, \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} dx)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\+\_\+derivative\+\_\+order4}} (const \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&input, \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&output, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} axis, \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} dx)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} Rank$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_abd23db42b0f3a314f7d9584c425ea0c8}{centered\+\_\+derivative}} (const \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&input, \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&output, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} axis, \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} dx)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} Rank$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a00bb29dfdd8925bf97c100e381660404}{centered\+\_\+derivative\+\_\+order4}} (const \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&input, \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&output, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} axis, \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} dx)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ae221eff9667ffd1424b306662e20b1d3}{forward\+FFT}} (\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&data)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ad5478f49e42b2f281d15e67587dfd92d}{backward\+FFT}} (\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&data)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ab0d022c164f50fe46524e1af50e826d7}{backward\+FFP}} (\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&data)
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}{inv\+\_\+mat\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\+\_\+to\+\_\+matrix}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}{matrix\+\_\+to\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} $>$ }\\\mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{morpheus\+\_\+\+RG\+::\+Christoffel\+Sym}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a16c823b33c29fcc4b19533a7ef41822e}{compute\+\_\+christoffel}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g\+\_\+inv}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} \&\&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric\+\_\+generator}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ad37fcae31cc6fcfb74ef0726257004d2}{generate\+\_\+metric}} (const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \mbox{\hyperlink{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd}{compute\+\_\+riemann\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}}, const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7}{print\+\_\+riemann\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7}{contract\+\_\+riemann\+\_\+to\+\_\+ricci}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e}{compute\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb}{print\+\_\+ricci\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c}{print\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g\+\_\+inv}})
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\+\_\+ast}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{node}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{indent}}=0)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca} 
+\index{morpheus@{morpheus}!ASTNodeType@{ASTNodeType}}
+\index{ASTNodeType@{ASTNodeType}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{ASTNodeType}{ASTNodeType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{enum}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{class}} \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{morpheus\+::\+ASTNode\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Number@{Number}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Number@{Number}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f} 
+Number&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Symbol@{Symbol}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Symbol@{Symbol}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793} 
+Symbol&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BinaryOp@{BinaryOp}!morpheus@{morpheus}}\index{morpheus@{morpheus}!BinaryOp@{BinaryOp}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39} 
+Binary\+Op&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UnaryOp@{UnaryOp}!morpheus@{morpheus}}\index{morpheus@{morpheus}!UnaryOp@{UnaryOp}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8} 
+Unary\+Op&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FunctionCall@{FunctionCall}!morpheus@{morpheus}}\index{morpheus@{morpheus}!FunctionCall@{FunctionCall}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca} 
+Function\+Call&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Subscript@{Subscript}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Subscript@{Subscript}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200} 
+Subscript&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Superscript@{Superscript}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Superscript@{Superscript}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7} 
+Superscript&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Derivative@{Derivative}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Derivative@{Derivative}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd} 
+Derivative&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Integral@{Integral}!morpheus@{morpheus}}\index{morpheus@{morpheus}!Integral@{Integral}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e} 
+Integral&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TensorSymbol@{TensorSymbol}!morpheus@{morpheus}}\index{morpheus@{morpheus}!TensorSymbol@{TensorSymbol}}}\Hypertarget{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae}\label{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae} 
+Tensor\+Symbol&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacemorpheus_a7f5b701665e512ce59bb2c1e8fca44e1}\label{namespacemorpheus_a7f5b701665e512ce59bb2c1e8fca44e1} 
+\index{morpheus@{morpheus}!add\_mat@{add\_mat}}
+\index{add\_mat@{add\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{add\_mat()}{add\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::add\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{B }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_af9926f14a7ebe29eb59247e85ca9d966}\label{namespacemorpheus_af9926f14a7ebe29eb59247e85ca9d966} 
+\index{morpheus@{morpheus}!add\_vec@{add\_vec}}
+\index{add\_vec@{add\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{add\_vec()}{add\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::add\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ab0d022c164f50fe46524e1af50e826d7}\label{namespacemorpheus_ab0d022c164f50fe46524e1af50e826d7} 
+\index{morpheus@{morpheus}!backwardFFP@{backwardFFP}}
+\index{backwardFFP@{backwardFFP}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{backwardFFP()}{backwardFFP()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::backward\+FFP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::backward()}}.
+
+Here is the call graph for this function\+:
+% FIG 0
+\Hypertarget{namespacemorpheus_ad5478f49e42b2f281d15e67587dfd92d}\label{namespacemorpheus_ad5478f49e42b2f281d15e67587dfd92d} 
+\index{morpheus@{morpheus}!backwardFFT@{backwardFFT}}
+\index{backwardFFT@{backwardFFT}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{backwardFFT()}{backwardFFT()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::backward\+FFT (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::backward()}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+\Hypertarget{namespacemorpheus_a3e21ebc6020ca61352246c36630ad02d}\label{namespacemorpheus_a3e21ebc6020ca61352246c36630ad02d} 
+\index{morpheus@{morpheus}!centered\_derivative@{centered\_derivative}}
+\index{centered\_derivative@{centered\_derivative}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{centered\_derivative()}{centered\_derivative()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::centered\+\_\+derivative (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{input,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{output,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}}}]{axis,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}}]{dx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_abd23db42b0f3a314f7d9584c425ea0c8}\label{namespacemorpheus_abd23db42b0f3a314f7d9584c425ea0c8} 
+\index{morpheus@{morpheus}!centered\_derivative@{centered\_derivative}}
+\index{centered\_derivative@{centered\_derivative}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{centered\_derivative()}{centered\_derivative()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} Rank$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::centered\+\_\+derivative (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{input,  }\item[{\mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{output,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}}}]{axis,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}}]{dx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}\label{namespacemorpheus_aee47a33addf8f5b32455587352cb450a} 
+\index{morpheus@{morpheus}!centered\_derivative\_order4@{centered\_derivative\_order4}}
+\index{centered\_derivative\_order4@{centered\_derivative\_order4}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{centered\_derivative\_order4()}{centered\_derivative\_order4()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::centered\+\_\+derivative\+\_\+order4 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{input,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Derivate}{Derivate}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{output,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}}}]{axis,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}}]{dx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\+\_\+derivative\+\_\+order4()}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\+\_\+derivative\+\_\+order4()}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{namespacemorpheus_a00bb29dfdd8925bf97c100e381660404}\label{namespacemorpheus_a00bb29dfdd8925bf97c100e381660404} 
+\index{morpheus@{morpheus}!centered\_derivative\_order4@{centered\_derivative\_order4}}
+\index{centered\_derivative\_order4@{centered\_derivative\_order4}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{centered\_derivative\_order4()}{centered\_derivative\_order4()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} Rank$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::centered\+\_\+derivative\+\_\+order4 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{input,  }\item[{\mbox{\hyperlink{classmorpheus_1_1DerivateND}{Derivate\+ND}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{output,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}}}]{axis,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}}]{dx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_a16c823b33c29fcc4b19533a7ef41822e}\label{namespacemorpheus_a16c823b33c29fcc4b19533a7ef41822e} 
+\index{morpheus@{morpheus}!compute\_christoffel@{compute\_christoffel}}
+\index{compute\_christoffel@{compute\_christoffel}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{compute\_christoffel()}{compute\_christoffel()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} $>$ \\
+\mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{morpheus\+\_\+\+RG\+::\+Christoffel\+Sym}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::compute\+\_\+christoffel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{g,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{g\+\_\+inv,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} \&\&}]{metric\+\_\+generator }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e}\label{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e} 
+\index{morpheus@{morpheus}!compute\_ricci\_scalar@{compute\_ricci\_scalar}}
+\index{compute\_ricci\_scalar@{compute\_ricci\_scalar}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{compute\_ricci\_scalar()}{compute\_ricci\_scalar()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::compute\+\_\+ricci\+\_\+scalar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{Ricci,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{ginv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::compute\+\_\+ricci\+\_\+scalar()}}.
+
+Here is the call graph for this function\+:
+% FIG 4
+\Hypertarget{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd}\label{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd} 
+\index{morpheus@{morpheus}!compute\_riemann\_tensor@{compute\_riemann\_tensor}}
+\index{compute\_riemann\_tensor@{compute\_riemann\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{compute\_riemann\_tensor()}{compute\_riemann\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ morpheus\+::compute\+\_\+riemann\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{h,  }\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{metric }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor$<$ T $>$\+::compute()}}.
+
+Here is the call graph for this function\+:
+% FIG 5
+\Hypertarget{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7}\label{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7} 
+\index{morpheus@{morpheus}!contract\_riemann\_to\_ricci@{contract\_riemann\_to\_ricci}}
+\index{contract\_riemann\_to\_ricci@{contract\_riemann\_to\_ricci}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{contract\_riemann\_to\_ricci()}{contract\_riemann\_to\_ricci()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ morpheus\+::contract\+\_\+riemann\+\_\+to\+\_\+ricci (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&}]{R,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{ginv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::contract\+\_\+to\+\_\+ricci()}}.
+
+Here is the call graph for this function\+:
+% FIG 6
+\Hypertarget{namespacemorpheus_a553a15a4ad1c795c18ce3ed04dfaf840}\label{namespacemorpheus_a553a15a4ad1c795c18ce3ed04dfaf840} 
+\index{morpheus@{morpheus}!contract\_tensor@{contract\_tensor}}
+\index{contract\_tensor@{contract\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{contract\_tensor()}{contract\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} I, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} J, \mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , std\+::size\+\_\+t Rank$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank -\/ 2 $>$ morpheus\+::contract\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{T }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a4c3e05e39a897a421cbb3085c558b934}\label{namespacemorpheus_a4c3e05e39a897a421cbb3085c558b934} 
+\index{morpheus@{morpheus}!cosine\_vec@{cosine\_vec}}
+\index{cosine\_vec@{cosine\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{cosine\_vec()}{cosine\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::cosine\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ae8fdbc8b1b3dd97d57e2fe0da57cd439}\label{namespacemorpheus_ae8fdbc8b1b3dd97d57e2fe0da57cd439} 
+\index{morpheus@{morpheus}!cross\_vec@{cross\_vec}}
+\index{cross\_vec@{cross\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{cross\_vec()}{cross\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::cross\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a80a98e1ae84fa1ec96d29486c2f83acc}\label{namespacemorpheus_a80a98e1ae84fa1ec96d29486c2f83acc} 
+\index{morpheus@{morpheus}!det\_mat@{det\_mat}}
+\index{det\_mat@{det\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{det\_mat()}{det\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::det\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a7f25c4d1440b2d589c64b9156f48824f}\label{namespacemorpheus_a7f25c4d1440b2d589c64b9156f48824f} 
+\index{morpheus@{morpheus}!dot\_vec@{dot\_vec}}
+\index{dot\_vec@{dot\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{dot\_vec()}{dot\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::dot\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ae221eff9667ffd1424b306662e20b1d3}\label{namespacemorpheus_ae221eff9667ffd1424b306662e20b1d3} 
+\index{morpheus@{morpheus}!forwardFFT@{forwardFFT}}
+\index{forwardFFT@{forwardFFT}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{forwardFFT()}{forwardFFT()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::forward\+FFT (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ std\+::complex$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::forward()}}.
+
+Here is the call graph for this function\+:
+% FIG 7
+\Hypertarget{namespacemorpheus_a695ad97fedbe4dfae664ab86846df19e}\label{namespacemorpheus_a695ad97fedbe4dfae664ab86846df19e} 
+\index{morpheus@{morpheus}!gauss\_solve@{gauss\_solve}}
+\index{gauss\_solve@{gauss\_solve}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{gauss\_solve()}{gauss\_solve()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::gauss\+\_\+solve (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ad37fcae31cc6fcfb74ef0726257004d2}\label{namespacemorpheus_ad37fcae31cc6fcfb74ef0726257004d2} 
+\index{morpheus@{morpheus}!generate\_metric@{generate\_metric}}
+\index{generate\_metric@{generate\_metric}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{generate\_metric()}{generate\_metric()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::generate\+\_\+metric (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{metric,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{g }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}\label{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26} 
+\index{morpheus@{morpheus}!inv\_mat\_tensor@{inv\_mat\_tensor}}
+\index{inv\_mat\_tensor@{inv\_mat\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{inv\_mat\_tensor()}{inv\_mat\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ morpheus\+::inv\+\_\+mat\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{g }\end{DoxyParamCaption})}
+
+
+
+References \mbox{\hyperlink{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}{matrix\+\_\+to\+\_\+tensor()}}, and \mbox{\hyperlink{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\+\_\+to\+\_\+matrix()}}.
+
+Here is the call graph for this function\+:
+% FIG 8
+\Hypertarget{namespacemorpheus_a2ba0e55adbcd8c127cc3ee7240530cd3}\label{namespacemorpheus_a2ba0e55adbcd8c127cc3ee7240530cd3} 
+\index{morpheus@{morpheus}!inverse\_mat@{inverse\_mat}}
+\index{inverse\_mat@{inverse\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{inverse\_mat()}{inverse\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::inverse\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c}\label{namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c} 
+\index{morpheus@{morpheus}!jacobi\_solve@{jacobi\_solve}}
+\index{jacobi\_solve@{jacobi\_solve}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{jacobi\_solve()}{jacobi\_solve()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::jacobi\+\_\+solve (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{tol = {\ttfamily 1\mbox{\hyperlink{classmorpheus_1_1Tensor}{e}}-\/6},  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}}}]{max\+\_\+iter = {\ttfamily 1000} }\end{DoxyParamCaption})}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}{morpheus\+::solver\+::\+Jacobi$<$ K $>$\+::solve()}}.
+
+Here is the call graph for this function\+:
+% FIG 9
+\Hypertarget{namespacemorpheus_a3e63a52c9cc63b03ef1109bbac541953}\label{namespacemorpheus_a3e63a52c9cc63b03ef1109bbac541953} 
+\index{morpheus@{morpheus}!lerp\_vec@{lerp\_vec}}
+\index{lerp\_vec@{lerp\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{lerp\_vec()}{lerp\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::lerp\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{t }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a08de3e53d9f237bcf3b66675c97c2a1d}\label{namespacemorpheus_a08de3e53d9f237bcf3b66675c97c2a1d} 
+\index{morpheus@{morpheus}!linear\_combination\_vec@{linear\_combination\_vec}}
+\index{linear\_combination\_vec@{linear\_combination\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{linear\_combination\_vec()}{linear\_combination\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::linear\+\_\+combination\+\_\+vec (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ $>$ \&}]{u,  }\item[{const std\+::vector$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{coef }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}\label{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136} 
+\index{morpheus@{morpheus}!matrix\_to\_tensor@{matrix\_to\_tensor}}
+\index{matrix\_to\_tensor@{matrix\_to\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{matrix\_to\_tensor()}{matrix\_to\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ morpheus\+::matrix\+\_\+to\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{mat }\end{DoxyParamCaption})}
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}{inv\+\_\+mat\+\_\+tensor()}}.
+
+Here is the caller graph for this function\+:
+% FIG 10
+\Hypertarget{namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec}\label{namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec} 
+\index{morpheus@{morpheus}!mul\_mat@{mul\_mat}}
+\index{mul\_mat@{mul\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{mul\_mat()}{mul\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::mul\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{B }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a95d1671f12bab84d3df9b978680af800}\label{namespacemorpheus_a95d1671f12bab84d3df9b978680af800} 
+\index{morpheus@{morpheus}!mul\_tensor@{mul\_tensor}}
+\index{mul\_tensor@{mul\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{mul\_tensor()}{mul\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} R1, \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} R2$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R1}}+\mbox{\hyperlink{classmorpheus_1_1Tensor}{R2}} $>$ morpheus\+::mul\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R1}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{R2}} $>$ \&}]{B }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_a4429f93147f7895d9f5782820c56cbf8}\label{namespacemorpheus_a4429f93147f7895d9f5782820c56cbf8} 
+\index{morpheus@{morpheus}!mul\_vec@{mul\_vec}}
+\index{mul\_vec@{mul\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{mul\_vec()}{mul\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::mul\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{x }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ac602e395cc3c3114f5fea2836dc0aa90}\label{namespacemorpheus_ac602e395cc3c3114f5fea2836dc0aa90} 
+\index{morpheus@{morpheus}!norm1\_vec@{norm1\_vec}}
+\index{norm1\_vec@{norm1\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{norm1\_vec()}{norm1\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::norm1\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a6575e74e4f04f1d923a2b7caee2d1b1e}\label{namespacemorpheus_a6575e74e4f04f1d923a2b7caee2d1b1e} 
+\index{morpheus@{morpheus}!norm2\_vec@{norm2\_vec}}
+\index{norm2\_vec@{norm2\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{norm2\_vec()}{norm2\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::norm2\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a9b66a4923bf8f9855d86269d632a1ce7}\label{namespacemorpheus_a9b66a4923bf8f9855d86269d632a1ce7} 
+\index{morpheus@{morpheus}!normInf\_vec@{normInf\_vec}}
+\index{normInf\_vec@{normInf\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{normInf\_vec()}{normInf\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::norm\+Inf\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}\label{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e} 
+\index{morpheus@{morpheus}!print\_ast@{print\_ast}}
+\index{print\_ast@{print\_ast}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{print\_ast()}{print\_ast()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::print\+\_\+ast (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \&}]{node,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}}}]{indent = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\+\_\+ast()}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\+\_\+ast()}}.
+
+Here is the call graph for this function\+:
+% FIG 11
+Here is the caller graph for this function\+:
+% FIG 12
+\Hypertarget{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c}\label{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c} 
+\index{morpheus@{morpheus}!print\_ricci\_scalar@{print\_ricci\_scalar}}
+\index{print\_ricci\_scalar@{print\_ricci\_scalar}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{print\_ricci\_scalar()}{print\_ricci\_scalar()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::print\+\_\+ricci\+\_\+scalar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{Ricci,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{g\+\_\+inv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::print\+\_\+ricci\+\_\+scalar()}}.
+
+Here is the call graph for this function\+:
+% FIG 13
+\Hypertarget{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb}\label{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb} 
+\index{morpheus@{morpheus}!print\_ricci\_tensor@{print\_ricci\_tensor}}
+\index{print\_ricci\_tensor@{print\_ricci\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{print\_ricci\_tensor()}{print\_ricci\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::print\+\_\+ricci\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::print\+\_\+componentwise()}}.
+
+Here is the call graph for this function\+:
+% FIG 14
+\Hypertarget{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7}\label{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7} 
+\index{morpheus@{morpheus}!print\_riemann\_tensor@{print\_riemann\_tensor}}
+\index{print\_riemann\_tensor@{print\_riemann\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{print\_riemann\_tensor()}{print\_riemann\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::print\+\_\+riemann\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor$<$ T $>$\+::print\+\_\+componentwise()}}.
+
+Here is the call graph for this function\+:
+% FIG 15
+\Hypertarget{namespacemorpheus_a52edd23638a57f727b66ff6a7388058f}\label{namespacemorpheus_a52edd23638a57f727b66ff6a7388058f} 
+\index{morpheus@{morpheus}!rank\_mat@{rank\_mat}}
+\index{rank\_mat@{rank\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{rank\_mat()}{rank\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} morpheus\+::rank\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}\label{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b} 
+\index{morpheus@{morpheus}!richardson\_derivative@{richardson\_derivative}}
+\index{richardson\_derivative@{richardson\_derivative}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{richardson\_derivative()}{richardson\_derivative()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} morpheus\+::richardson\+\_\+derivative (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&}]{plus\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&}]{minus\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&}]{plus\+\_\+half\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&}]{minus\+\_\+half\+\_\+h,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{double}}}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Richardson extrapolation for scalar values. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Scalar type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em plus\+\_\+h} & f(x + h) \\
+\hline
+{\em minus\+\_\+h} & f(x -\/ h) \\
+\hline
+{\em plus\+\_\+half\+\_\+h} & f(x + h/2) \\
+\hline
+{\em minus\+\_\+half\+\_\+h} & f(x -\/ h/2) \\
+\hline
+{\em h} & Step size. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Richardson-\/extrapolated scalar derivative. 
+\end{DoxyReturn}
+
+
+Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor$<$ T $>$\+::compute()}}.
+
+Here is the caller graph for this function\+:
+% FIG 16
+\Hypertarget{namespacemorpheus_a47cf67841ca834dde92b69e9a7078fa9}\label{namespacemorpheus_a47cf67841ca834dde92b69e9a7078fa9} 
+\index{morpheus@{morpheus}!richardson\_derivative\_container@{richardson\_derivative\_container}}
+\index{richardson\_derivative\_container@{richardson\_derivative\_container}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{richardson\_derivative\_container()}{richardson\_derivative\_container()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} morpheus\+::richardson\+\_\+derivative\+\_\+container (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&}]{plus\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&}]{minus\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&}]{plus\+\_\+half\+\_\+h,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&}]{minus\+\_\+half\+\_\+h,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{double}}}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Richardson extrapolation for vectors or containers. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Container} & Vector-\/like container type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em plus\+\_\+h} & f(x + h) \\
+\hline
+{\em minus\+\_\+h} & f(x -\/ h) \\
+\hline
+{\em plus\+\_\+half\+\_\+h} & f(x + h/2) \\
+\hline
+{\em minus\+\_\+half\+\_\+h} & f(x -\/ h/2) \\
+\hline
+{\em h} & Step size. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Richardson-\/extrapolated derivative. 
+\end{DoxyReturn}
+\Hypertarget{namespacemorpheus_a4b6f20a0b50871333f193d3389f78401}\label{namespacemorpheus_a4b6f20a0b50871333f193d3389f78401} 
+\index{morpheus@{morpheus}!scl\_mat@{scl\_mat}}
+\index{scl\_mat@{scl\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{scl\_mat()}{scl\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::scl\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{scalar }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a1a2e7c9b09299ca68a111830951ae130}\label{namespacemorpheus_a1a2e7c9b09299ca68a111830951ae130} 
+\index{morpheus@{morpheus}!scl\_vec@{scl\_vec}}
+\index{scl\_vec@{scl\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{scl\_vec()}{scl\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::scl\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}}]{scalar }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a9298933e8e700a86412c1b9babdf90b9}\label{namespacemorpheus_a9298933e8e700a86412c1b9babdf90b9} 
+\index{morpheus@{morpheus}!sub\_mat@{sub\_mat}}
+\index{sub\_mat@{sub\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{sub\_mat()}{sub\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::sub\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{B }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_aa4cdeeda976ba0c2d3672d7451113667}\label{namespacemorpheus_aa4cdeeda976ba0c2d3672d7451113667} 
+\index{morpheus@{morpheus}!sub\_vec@{sub\_vec}}
+\index{sub\_vec@{sub\_vec}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{sub\_vec()}{sub\_vec()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::sub\+\_\+vec (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{b }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}\label{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2} 
+\index{morpheus@{morpheus}!tensor\_to\_matrix@{tensor\_to\_matrix}}
+\index{tensor\_to\_matrix@{tensor\_to\_matrix}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{tensor\_to\_matrix()}{tensor\_to\_matrix()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::tensor\+\_\+to\+\_\+matrix (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&}]{tensor }\end{DoxyParamCaption})}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Tensor_a243335fd9e54d6a0133f2268e938dd17}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::dimensions}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}{inv\+\_\+mat\+\_\+tensor()}}.
+
+Here is the caller graph for this function\+:
+% FIG 17
+\Hypertarget{namespacemorpheus_a2759560f3161aa1d7ab494384ac6c33f}\label{namespacemorpheus_a2759560f3161aa1d7ab494384ac6c33f} 
+\index{morpheus@{morpheus}!trace\_mat@{trace\_mat}}
+\index{trace\_mat@{trace\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{trace\_mat()}{trace\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::trace\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_ae1e78fa78c3d01cf0aae1e3c347dd08a}\label{namespacemorpheus_ae1e78fa78c3d01cf0aae1e3c347dd08a} 
+\index{morpheus@{morpheus}!transpose\_mat@{transpose\_mat}}
+\index{transpose\_mat@{transpose\_mat}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{transpose\_mat()}{transpose\_mat()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ morpheus\+::transpose\+\_\+mat (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&}]{A }\end{DoxyParamCaption})}
+
+\Hypertarget{namespacemorpheus_a942435fbed57720116b51adf54c03bcd}\label{namespacemorpheus_a942435fbed57720116b51adf54c03bcd} 
+\index{morpheus@{morpheus}!transpose\_tensor@{transpose\_tensor}}
+\index{transpose\_tensor@{transpose\_tensor}!morpheus@{morpheus}}
+\doxysubsubsection{\texorpdfstring{transpose\_tensor()}{transpose\_tensor()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} , std\+::size\+\_\+t Rank$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ morpheus\+::transpose\+\_\+tensor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}, Rank $>$ \&}]{T }\end{DoxyParamCaption})}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Tensor_a8a3390d3b499e74ded35464d380bf18f}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::transpose\+\_\+simd()}}.
+
+Here is the call graph for this function\+:
+% FIG 18

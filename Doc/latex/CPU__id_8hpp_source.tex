@@ -1,0 +1,35 @@
+\doxysection{CPU\+\_\+id.\+hpp}
+\hypertarget{CPU__id_8hpp_source}{}\label{CPU__id_8hpp_source}\index{includes/Morpheus/SIMD/CPU\_id.hpp@{includes/Morpheus/SIMD/CPU\_id.hpp}}
+\mbox{\hyperlink{CPU__id_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once\ }}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cpuid.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{CPU__id_8hpp_abb1b21dba3d12fe99fa6daa898d6b43f}{get\_cpu\_brand}}()\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{char}\ brand[0x40]\ =\ \{0\};}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ regs[4]\ =\ \{0\};}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ ++i)\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \_\_cpuid(0x80000002\ +\ i,\ regs[0],\ regs[1],\ regs[2],\ regs[3]);}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ std::memcpy(brand\ +\ i\ *\ 16,\ regs,\ \textcolor{keyword}{sizeof}(regs));}
+\DoxyCodeLine{00014\ \ \ \ \ \}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string(brand);}
+\DoxyCodeLine{00016\ \}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{CPU__id_8hpp_aa4ee32a70b7b807ab5596c40e14c51eb}{detect\_optimal\_block\_size}}()\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ std::string\ brand\ =\ \mbox{\hyperlink{CPU__id_8hpp_abb1b21dba3d12fe99fa6daa898d6b43f}{get\_cpu\_brand}}();}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{if}\ (brand.find(\textcolor{stringliteral}{"{}Xeon\ Phi"{}})\ !=\ std::string::npos)\ \textcolor{keywordflow}{return}\ 256;\ \ \ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{if}\ (brand.find(\textcolor{stringliteral}{"{}Xeon"{}})\ \ \ \ \ !=\ std::string::npos)\ \textcolor{keywordflow}{return}\ 128;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{if}\ (brand.find(\textcolor{stringliteral}{"{}Ryzen"{}})\ \ \ \ !=\ std::string::npos)\ \textcolor{keywordflow}{return}\ 96;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}\ (brand.find(\textcolor{stringliteral}{"{}Apple"{}})\ \ \ \ !=\ std::string::npos)\ \textcolor{keywordflow}{return}\ 64;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (brand.find(\textcolor{stringliteral}{"{}Core(TM)"{}})\ !=\ std::string::npos)\ \textcolor{keywordflow}{return}\ 128;}
+\DoxyCodeLine{00026\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Unknown\ CPU\ brand.\ Defaulting\ to\ 64."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ 64;\ }
+\DoxyCodeLine{00028\ \}}
+\DoxyCodeLine{00029\ }
+
+\end{DoxyCode}

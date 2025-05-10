@@ -1,0 +1,135 @@
+\doxysection{Aligned\+Allocator\texorpdfstring{$<$}{<} T, Alignment \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structAlignedAllocator}{}\label{structAlignedAllocator}\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+
+
+{\ttfamily \#include $<$Allocator.\+hpp$>$}
+
+
+
+Collaboration diagram for Aligned\+Allocator\texorpdfstring{$<$}{<} T, Alignment \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structAlignedAllocator_1_1rebind}{rebind}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_a0a7efdc5df37396703b9a7008b744f59}{value\+\_\+type}} = T
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_a1a8caeceff8b7b7ecef1ef4b46cbb1d6}{pointer}} = T\texorpdfstring{$\ast$}{*}
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_af938f9442ae754b00a80f522781a5255}{const\+\_\+pointer}} = const T\texorpdfstring{$\ast$}{*}
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_a6ba4de580e6f5d7ef60f936d80b61903}{reference}} = T\&
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_ab8d9c94b5172ce945bcad198083ec3a0}{const\+\_\+reference}} = const T\&
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_a20d2a4ca3cf4b891c12b6666335c6f0d}{size\+\_\+type}} = std\+::size\+\_\+t
+\item 
+using \mbox{\hyperlink{structAlignedAllocator_a29881377dea9d1561debf60ff7904647}{difference\+\_\+type}} = std\+::ptrdiff\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structAlignedAllocator_aa9cbc3b78d9e1654659dbddc388f1ee5}{Aligned\+Allocator}} () noexcept=default
+\item 
+{\footnotesize template$<$typename U $>$ }\\\mbox{\hyperlink{structAlignedAllocator_a116c3a68cfe337874ca881908721a64f}{Aligned\+Allocator}} (const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ U, Alignment $>$ \&) noexcept
+\item 
+T \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structAlignedAllocator_a650ae014d782fb2961763d9d772fceeb}{allocate}} (std\+::size\+\_\+t n)
+\item 
+void \mbox{\hyperlink{structAlignedAllocator_a9dd7a0ee073e498b9c626a97f2a95af1}{deallocate}} (T \texorpdfstring{$\ast$}{*}p, std\+::size\+\_\+t) noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structAlignedAllocator_af938f9442ae754b00a80f522781a5255}\label{structAlignedAllocator_af938f9442ae754b00a80f522781a5255} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!const\_pointer@{const\_pointer}}
+\index{const\_pointer@{const\_pointer}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{const\_pointer}{const\_pointer}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::const\+\_\+pointer = const T\texorpdfstring{$\ast$}{*}}
+
+\Hypertarget{structAlignedAllocator_ab8d9c94b5172ce945bcad198083ec3a0}\label{structAlignedAllocator_ab8d9c94b5172ce945bcad198083ec3a0} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!const\_reference@{const\_reference}}
+\index{const\_reference@{const\_reference}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{const\_reference}{const\_reference}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::const\+\_\+reference = const T\&}
+
+\Hypertarget{structAlignedAllocator_a29881377dea9d1561debf60ff7904647}\label{structAlignedAllocator_a29881377dea9d1561debf60ff7904647} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!difference\_type@{difference\_type}}
+\index{difference\_type@{difference\_type}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{difference\_type}{difference\_type}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::difference\+\_\+type = std\+::ptrdiff\+\_\+t}
+
+\Hypertarget{structAlignedAllocator_a1a8caeceff8b7b7ecef1ef4b46cbb1d6}\label{structAlignedAllocator_a1a8caeceff8b7b7ecef1ef4b46cbb1d6} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!pointer@{pointer}}
+\index{pointer@{pointer}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{pointer}{pointer}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::pointer = T\texorpdfstring{$\ast$}{*}}
+
+\Hypertarget{structAlignedAllocator_a6ba4de580e6f5d7ef60f936d80b61903}\label{structAlignedAllocator_a6ba4de580e6f5d7ef60f936d80b61903} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!reference@{reference}}
+\index{reference@{reference}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{reference}{reference}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::reference = T\&}
+
+\Hypertarget{structAlignedAllocator_a20d2a4ca3cf4b891c12b6666335c6f0d}\label{structAlignedAllocator_a20d2a4ca3cf4b891c12b6666335c6f0d} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!size\_type@{size\_type}}
+\index{size\_type@{size\_type}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{size\_type}{size\_type}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::size\+\_\+type = std\+::size\+\_\+t}
+
+\Hypertarget{structAlignedAllocator_a0a7efdc5df37396703b9a7008b744f59}\label{structAlignedAllocator_a0a7efdc5df37396703b9a7008b744f59} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!value\_type@{value\_type}}
+\index{value\_type@{value\_type}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{value\_type}{value\_type}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+using \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::value\+\_\+type = T}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structAlignedAllocator_aa9cbc3b78d9e1654659dbddc388f1ee5}\label{structAlignedAllocator_aa9cbc3b78d9e1654659dbddc388f1ee5} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!AlignedAllocator@{AlignedAllocator}}
+\index{AlignedAllocator@{AlignedAllocator}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{AlignedAllocator()}{AlignedAllocator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+\mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\mbox{\hyperlink{structAlignedAllocator}{\+::\+Aligned\+Allocator}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{structAlignedAllocator_a116c3a68cfe337874ca881908721a64f}\label{structAlignedAllocator_a116c3a68cfe337874ca881908721a64f} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!AlignedAllocator@{AlignedAllocator}}
+\index{AlignedAllocator@{AlignedAllocator}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{AlignedAllocator()}{AlignedAllocator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+template$<$typename U $>$ \\
+\mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\mbox{\hyperlink{structAlignedAllocator}{\+::\+Aligned\+Allocator}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ U, Alignment $>$ \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structAlignedAllocator_a650ae014d782fb2961763d9d772fceeb}\label{structAlignedAllocator_a650ae014d782fb2961763d9d772fceeb} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!allocate@{allocate}}
+\index{allocate@{allocate}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{allocate()}{allocate()}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+T \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::allocate (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structAlignedAllocator_a9dd7a0ee073e498b9c626a97f2a95af1}\label{structAlignedAllocator_a9dd7a0ee073e498b9c626a97f2a95af1} 
+\index{AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}!deallocate@{deallocate}}
+\index{deallocate@{deallocate}!AlignedAllocator$<$ T, Alignment $>$@{AlignedAllocator$<$ T, Alignment $>$}}
+\doxysubsubsection{\texorpdfstring{deallocate()}{deallocate()}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+void \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$\+::deallocate (\begin{DoxyParamCaption}\item[{T \texorpdfstring{$\ast$}{*}}]{p,  }\item[{std\+::size\+\_\+t}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+SIMD/\mbox{\hyperlink{Allocator_8hpp}{Allocator.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,217 @@
+\doxysection{simd\+::Simd\+Traits\texorpdfstring{$<$}{<} size\+\_\+t, avx2\+\_\+t \texorpdfstring{$>$}{>} Struct Reference}
+\hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4}{}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4}\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+
+
+{\ttfamily \#include $<$SIMD.\+hpp$>$}
+
+
+
+Collaboration diagram for simd\+::Simd\+Traits\texorpdfstring{$<$}{<} size\+\_\+t, avx2\+\_\+t \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} = \+\_\+\+\_\+m256i
+\item 
+using \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2b2f6a136923afb74c5334eceb700aae}{reg\+\_\+aligned}} = \mbox{\hyperlink{structaligned__reg}{aligned\+\_\+reg}}$<$\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a4b3c270a26efa37030db11d44946f95b}{alignment}}$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aa92c3c43d0fffd833ceeb433a15e70e2}{set1}} (uint64\+\_\+t x)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a9075b8012df82716ae796c93f46efbd6}{set}} (uint64\+\_\+t a, uint64\+\_\+t b, uint64\+\_\+t c, uint64\+\_\+t d)
+\item 
+static uint64\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aab87832c51b05f0d0e59c785cde3b838}{extract}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} x, size\+\_\+t index)
+\item 
+static void \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a1d80be39b9afe4f2b43327456bd286d2}{stream}} (uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} x)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8be216fb1ebec21bdba333933ed41f70}{setzero}} ()
+\item 
+static float \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aade5ed316626f0c28d88352c5b8fe9dd}{horizontal\+\_\+add}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} v)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abf7af9aacbbe24226bc635187d2a1f55}{load}} (const uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aaae2334deba130564cad76bc33a1a266}{loadu}} (const uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr)
+\item 
+static void \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2dfa2d009e28481222e17db061a8c098}{store}} (uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} x)
+\item 
+static void \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a14e4f23818b689832e511ab9aa25a77c}{storeu}} (uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} x)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a95bb092415445edfbb5738531962dc18}{mul}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a498d43b11cb3b6a042529df2193ca120}{zero}} ()
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abec476e48a4e053c1129b045171469e2}{fmadd}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} c)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a74db6714e3500e2593fea603b922a8b0}{add}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ae2fdaa09c75750891e315a333501c540}{sub}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ad4f8ef6cd3758ff51c74798086c1c469}{andnot}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b)
+\item 
+static void \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8bcf83ae2bdb8f6672c6e64f2b2f45b5}{store\+\_\+stream}} (uint64\+\_\+t \texorpdfstring{$\ast$}{*}ptr, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} x)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a453233107ff292173b91e3898debd3e8}{set\+\_\+epi64}} (int64\+\_\+t a, int64\+\_\+t b, int64\+\_\+t c, int64\+\_\+t d)
+\item 
+static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a6f452a5a75d3d47fc61ad03863cba404}{max}} (\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} a, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} b)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a759704bc3eeeb76aaaf8666705280b64}{width}} = 4
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a4b3c270a26efa37030db11d44946f95b}{alignment}} = 32
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!reg@{reg}}
+\index{reg@{reg}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{reg}{reg}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::reg = \+\_\+\+\_\+m256i}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2b2f6a136923afb74c5334eceb700aae}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2b2f6a136923afb74c5334eceb700aae} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!reg\_aligned@{reg\_aligned}}
+\index{reg\_aligned@{reg\_aligned}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{reg\_aligned}{reg\_aligned}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::reg\+\_\+aligned = \mbox{\hyperlink{structaligned__reg}{aligned\+\_\+reg}}$<$\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}, \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a4b3c270a26efa37030db11d44946f95b}{alignment}}$>$}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a74db6714e3500e2593fea603b922a8b0}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a74db6714e3500e2593fea603b922a8b0} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!add@{add}}
+\index{add@{add}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ad4f8ef6cd3758ff51c74798086c1c469}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ad4f8ef6cd3758ff51c74798086c1c469} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!andnot@{andnot}}
+\index{andnot@{andnot}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{andnot()}{andnot()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::andnot (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aab87832c51b05f0d0e59c785cde3b838}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aab87832c51b05f0d0e59c785cde3b838} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!extract@{extract}}
+\index{extract@{extract}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{extract()}{extract()}}
+{\footnotesize\ttfamily static uint64\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::extract (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{x,  }\item[{size\+\_\+t}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abec476e48a4e053c1129b045171469e2}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abec476e48a4e053c1129b045171469e2} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!fmadd@{fmadd}}
+\index{fmadd@{fmadd}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{fmadd()}{fmadd()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::fmadd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aade5ed316626f0c28d88352c5b8fe9dd}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aade5ed316626f0c28d88352c5b8fe9dd} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!horizontal\_add@{horizontal\_add}}
+\index{horizontal\_add@{horizontal\_add}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{horizontal\_add()}{horizontal\_add()}}
+{\footnotesize\ttfamily static float \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::horizontal\+\_\+add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abf7af9aacbbe24226bc635187d2a1f55}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_abf7af9aacbbe24226bc635187d2a1f55} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!load@{load}}
+\index{load@{load}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::load (\begin{DoxyParamCaption}\item[{const uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aaae2334deba130564cad76bc33a1a266}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aaae2334deba130564cad76bc33a1a266} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!loadu@{loadu}}
+\index{loadu@{loadu}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{loadu()}{loadu()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::loadu (\begin{DoxyParamCaption}\item[{const uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a6f452a5a75d3d47fc61ad03863cba404}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a6f452a5a75d3d47fc61ad03863cba404} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!max@{max}}
+\index{max@{max}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{max()}{max()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::max (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a95bb092415445edfbb5738531962dc18}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a95bb092415445edfbb5738531962dc18} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!mul@{mul}}
+\index{mul@{mul}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{mul()}{mul()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::mul (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a9075b8012df82716ae796c93f46efbd6}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a9075b8012df82716ae796c93f46efbd6} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!set@{set}}
+\index{set@{set}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::set (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{a,  }\item[{uint64\+\_\+t}]{b,  }\item[{uint64\+\_\+t}]{c,  }\item[{uint64\+\_\+t}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aa92c3c43d0fffd833ceeb433a15e70e2}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_aa92c3c43d0fffd833ceeb433a15e70e2} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!set1@{set1}}
+\index{set1@{set1}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{set1()}{set1()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::set1 (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a453233107ff292173b91e3898debd3e8}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a453233107ff292173b91e3898debd3e8} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!set\_epi64@{set\_epi64}}
+\index{set\_epi64@{set\_epi64}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{set\_epi64()}{set\_epi64()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::set\+\_\+epi64 (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{a,  }\item[{int64\+\_\+t}]{b,  }\item[{int64\+\_\+t}]{c,  }\item[{int64\+\_\+t}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8be216fb1ebec21bdba333933ed41f70}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8be216fb1ebec21bdba333933ed41f70} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!setzero@{setzero}}
+\index{setzero@{setzero}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{setzero()}{setzero()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::setzero (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2dfa2d009e28481222e17db061a8c098}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a2dfa2d009e28481222e17db061a8c098} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!store@{store}}
+\index{store@{store}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{store()}{store()}}
+{\footnotesize\ttfamily static void \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::store (\begin{DoxyParamCaption}\item[{uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8bcf83ae2bdb8f6672c6e64f2b2f45b5}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a8bcf83ae2bdb8f6672c6e64f2b2f45b5} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!store\_stream@{store\_stream}}
+\index{store\_stream@{store\_stream}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{store\_stream()}{store\_stream()}}
+{\footnotesize\ttfamily static void \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::store\+\_\+stream (\begin{DoxyParamCaption}\item[{uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a14e4f23818b689832e511ab9aa25a77c}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a14e4f23818b689832e511ab9aa25a77c} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!storeu@{storeu}}
+\index{storeu@{storeu}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{storeu()}{storeu()}}
+{\footnotesize\ttfamily static void \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::storeu (\begin{DoxyParamCaption}\item[{uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a1d80be39b9afe4f2b43327456bd286d2}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a1d80be39b9afe4f2b43327456bd286d2} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!stream@{stream}}
+\index{stream@{stream}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{stream()}{stream()}}
+{\footnotesize\ttfamily static void \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::stream (\begin{DoxyParamCaption}\item[{uint64\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ae2fdaa09c75750891e315a333501c540}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_ae2fdaa09c75750891e315a333501c540} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!sub@{sub}}
+\index{sub@{sub}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{sub()}{sub()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::sub (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{a,  }\item[{\mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a498d43b11cb3b6a042529df2193ca120}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a498d43b11cb3b6a042529df2193ca120} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!zero@{zero}}
+\index{zero@{zero}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{zero()}{zero()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a47b0b4eb973010ffa62c24d5908cf59a}{reg}} \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::zero (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a4b3c270a26efa37030db11d44946f95b}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a4b3c270a26efa37030db11d44946f95b} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!alignment@{alignment}}
+\index{alignment@{alignment}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{alignment}{alignment}}
+{\footnotesize\ttfamily constexpr size\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::alignment = 32\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a759704bc3eeeb76aaaf8666705280b64}\label{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4_a759704bc3eeeb76aaaf8666705280b64} 
+\index{simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}!width@{width}}
+\index{width@{width}!simd::SimdTraits$<$ size\_t, avx2\_t $>$@{simd::SimdTraits$<$ size\_t, avx2\_t $>$}}
+\doxysubsubsection{\texorpdfstring{width}{width}}
+{\footnotesize\ttfamily constexpr size\+\_\+t \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd\+::\+Simd\+Traits}}$<$ size\+\_\+t, \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}} $>$\+::width = 4\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+SIMD/\mbox{\hyperlink{SIMD_8hpp}{SIMD.\+hpp}}\end{DoxyCompactItemize}

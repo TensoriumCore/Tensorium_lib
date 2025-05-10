@@ -1,0 +1,205 @@
+\doxysection{includes/\+Morpheus/\+SIMD/\+SIMD.hpp File Reference}
+\hypertarget{SIMD_8hpp}{}\label{SIMD_8hpp}\index{includes/Morpheus/SIMD/SIMD.hpp@{includes/Morpheus/SIMD/SIMD.hpp}}
+{\ttfamily \#include $<$immintrin.\+h$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$cpuid.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$complex$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+Include dependency graph for SIMD.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsse__t}{sse\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structavx2__t}{avx2\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structavx512__t}{avx512\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structaligned__reg}{aligned\+\_\+reg$<$ T, Align $>$}}
+\item 
+struct \mbox{\hyperlink{structmorpheus_1_1avx2__t}{morpheus\+::avx2\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4}{simd\+::\+Simd\+Traits$<$ float, sse\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4}{simd\+::\+Simd\+Traits$<$ double, sse\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4}{simd\+::\+Simd\+Traits$<$ size\+\_\+t, sse\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4}{simd\+::\+Simd\+Traits$<$ float, avx2\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4}{simd\+::\+Simd\+Traits$<$ double, avx2\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4}{simd\+::\+Simd\+Traits$<$ size\+\_\+t, avx2\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4}{simd\+::\+Simd\+Traits$<$ float, avx512\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01double_00_01avx512__t_01_4}{simd\+::\+Simd\+Traits$<$ double, avx512\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01size__t_00_01avx512__t_01_4}{simd\+::\+Simd\+Traits$<$ size\+\_\+t, avx512\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ float $>$, sse\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ double $>$, sse\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ float $>$, avx2\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ double $>$, avx2\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx512__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ float $>$, avx512\+\_\+t $>$}}
+\item 
+struct \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx512__t_01_4}{simd\+::\+Simd\+Traits$<$ std\+::complex$<$ double $>$, avx512\+\_\+t $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus}{morpheus}}
+\item 
+namespace \mbox{\hyperlink{namespacedetail}{detail}}
+\item 
+namespace \mbox{\hyperlink{namespacesimd}{simd}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}{ALIGN}}~16
+\item 
+\#define \mbox{\hyperlink{SIMD_8hpp_a8d91ae35b0fa8c31a91dbbf75b3e2c06}{SIMD\+\_\+\+WIDTH}}~4
+\item 
+\#define \mbox{\hyperlink{SIMD_8hpp_a870020ccb79b9bf241010e975e029bde}{UNROLL}}~64
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{SIMD_8hpp_a8a534226fec29f00e030927b1a04d6eb}{Default\+ISA}} = \mbox{\hyperlink{structsse__t}{sse\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{SIMD_8hpp_a0d7027bd3325bb6b2c6531c34204c680}{supports\+\_\+avx512}} ()
+\item 
+bool \mbox{\hyperlink{SIMD_8hpp_a7cfb5313add62503dc675b4dc9a736eb}{supports\+\_\+avx2}} ()
+\item 
+bool \mbox{\hyperlink{SIMD_8hpp_a9e0088453ab18e6864831f0741d0fd3a}{supports\+\_\+sse}} ()
+\item 
+{\footnotesize template$<$typename F $>$ }\\void \mbox{\hyperlink{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e}{dispatch\+\_\+simd}} (F \&\&f)
+\item 
+\+\_\+\+\_\+m256 \mbox{\hyperlink{SIMD_8hpp_a699b46778461fb82d356d175496c29fb}{extractf32x8\+\_\+ps\+\_\+fallback}} (\+\_\+\+\_\+m512 v, int imm8)
+\item 
+\mbox{\hyperlink{namespacedetail_a785fed9c3987c3aa6934c739091a7981}{detail\+::\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((always\+\_\+inline, hot, flatten)) inline float reduce\+\_\+sum(\+\_\+\+\_\+m256 acc)
+\item 
+static \+\_\+\+\_\+m512 \mbox{\hyperlink{SIMD_8hpp_ac0fed462766738394c49deba3c54cdea}{andnot\+\_\+fallback}} (\+\_\+\+\_\+m512 a, \+\_\+\+\_\+m512 b)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}\label{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2} 
+\index{SIMD.hpp@{SIMD.hpp}!ALIGN@{ALIGN}}
+\index{ALIGN@{ALIGN}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{ALIGN}{ALIGN}}
+{\footnotesize\ttfamily \#define ALIGN~16}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Matrix_af65ec12455850c160e0ac8095964c97a}{morpheus\+::\+Matrix$<$ K $>$\+::\+\_\+\+\_\+attribute\+\_\+\+\_\+()}}.
+
+\Hypertarget{SIMD_8hpp_a8d91ae35b0fa8c31a91dbbf75b3e2c06}\label{SIMD_8hpp_a8d91ae35b0fa8c31a91dbbf75b3e2c06} 
+\index{SIMD.hpp@{SIMD.hpp}!SIMD\_WIDTH@{SIMD\_WIDTH}}
+\index{SIMD\_WIDTH@{SIMD\_WIDTH}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{SIMD\_WIDTH}{SIMD\_WIDTH}}
+{\footnotesize\ttfamily \#define SIMD\+\_\+\+WIDTH~4}
+
+\Hypertarget{SIMD_8hpp_a870020ccb79b9bf241010e975e029bde}\label{SIMD_8hpp_a870020ccb79b9bf241010e975e029bde} 
+\index{SIMD.hpp@{SIMD.hpp}!UNROLL@{UNROLL}}
+\index{UNROLL@{UNROLL}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{UNROLL}{UNROLL}}
+{\footnotesize\ttfamily \#define UNROLL~64}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Matrix_a5031915886165d57cc3cf1c0067a093a}{morpheus\+::\+Matrix$<$ K $>$\+::\+\_\+\+\_\+attribute\+\_\+\+\_\+()}}, and \mbox{\hyperlink{classmorpheus_1_1solver_1_1Gauss_a8edc8990071ec9a2ce375d2b987f9ace}{morpheus\+::solver\+::\+Gauss$<$ K $>$\+::for()}}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{SIMD_8hpp_a8a534226fec29f00e030927b1a04d6eb}\label{SIMD_8hpp_a8a534226fec29f00e030927b1a04d6eb} 
+\index{SIMD.hpp@{SIMD.hpp}!DefaultISA@{DefaultISA}}
+\index{DefaultISA@{DefaultISA}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{DefaultISA}{DefaultISA}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{SIMD_8hpp_a8a534226fec29f00e030927b1a04d6eb}{Default\+ISA}} = \mbox{\hyperlink{structsse__t}{sse\+\_\+t}}}
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{SIMD_8hpp_ac0fed462766738394c49deba3c54cdea}\label{SIMD_8hpp_ac0fed462766738394c49deba3c54cdea} 
+\index{SIMD.hpp@{SIMD.hpp}!andnot\_fallback@{andnot\_fallback}}
+\index{andnot\_fallback@{andnot\_fallback}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{andnot\_fallback()}{andnot\_fallback()}}
+{\footnotesize\ttfamily static \+\_\+\+\_\+m512 andnot\+\_\+fallback (\begin{DoxyParamCaption}\item[{\+\_\+\+\_\+m512}]{a,  }\item[{\+\_\+\+\_\+m512}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Referenced by \mbox{\hyperlink{structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4_a4ff4a698869f75717ffe61a16ff30a94}{simd\+::\+Simd\+Traits$<$ float, avx512\+\_\+t $>$\+::andnot()}}.
+
+Here is the caller graph for this function\+:
+% FIG 2
+\Hypertarget{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e}\label{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e} 
+\index{SIMD.hpp@{SIMD.hpp}!dispatch\_simd@{dispatch\_simd}}
+\index{dispatch\_simd@{dispatch\_simd}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{dispatch\_simd()}{dispatch\_simd()}}
+{\footnotesize\ttfamily template$<$typename F $>$ \\
+void dispatch\+\_\+simd (\begin{DoxyParamCaption}\item[{F \&\&}]{f }\end{DoxyParamCaption})}
+
+
+
+References \mbox{\hyperlink{SIMD_8hpp_a7cfb5313add62503dc675b4dc9a736eb}{supports\+\_\+avx2()}}, \mbox{\hyperlink{SIMD_8hpp_a0d7027bd3325bb6b2c6531c34204c680}{supports\+\_\+avx512()}}, and \mbox{\hyperlink{SIMD_8hpp_a9e0088453ab18e6864831f0741d0fd3a}{supports\+\_\+sse()}}.
+
+Here is the call graph for this function\+:
+% FIG 3
+\Hypertarget{SIMD_8hpp_a699b46778461fb82d356d175496c29fb}\label{SIMD_8hpp_a699b46778461fb82d356d175496c29fb} 
+\index{SIMD.hpp@{SIMD.hpp}!extractf32x8\_ps\_fallback@{extractf32x8\_ps\_fallback}}
+\index{extractf32x8\_ps\_fallback@{extractf32x8\_ps\_fallback}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{extractf32x8\_ps\_fallback()}{extractf32x8\_ps\_fallback()}}
+{\footnotesize\ttfamily \+\_\+\+\_\+m256 extractf32x8\+\_\+ps\+\_\+fallback (\begin{DoxyParamCaption}\item[{\+\_\+\+\_\+m512}]{v,  }\item[{int}]{imm8 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{SIMD_8hpp_a7cfb5313add62503dc675b4dc9a736eb}\label{SIMD_8hpp_a7cfb5313add62503dc675b4dc9a736eb} 
+\index{SIMD.hpp@{SIMD.hpp}!supports\_avx2@{supports\_avx2}}
+\index{supports\_avx2@{supports\_avx2}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{supports\_avx2()}{supports\_avx2()}}
+{\footnotesize\ttfamily bool supports\+\_\+avx2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Referenced by \mbox{\hyperlink{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e}{dispatch\+\_\+simd()}}.
+
+Here is the caller graph for this function\+:
+% FIG 4
+\Hypertarget{SIMD_8hpp_a0d7027bd3325bb6b2c6531c34204c680}\label{SIMD_8hpp_a0d7027bd3325bb6b2c6531c34204c680} 
+\index{SIMD.hpp@{SIMD.hpp}!supports\_avx512@{supports\_avx512}}
+\index{supports\_avx512@{supports\_avx512}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{supports\_avx512()}{supports\_avx512()}}
+{\footnotesize\ttfamily bool supports\+\_\+avx512 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Referenced by \mbox{\hyperlink{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e}{dispatch\+\_\+simd()}}.
+
+Here is the caller graph for this function\+:
+% FIG 5
+\Hypertarget{SIMD_8hpp_a9e0088453ab18e6864831f0741d0fd3a}\label{SIMD_8hpp_a9e0088453ab18e6864831f0741d0fd3a} 
+\index{SIMD.hpp@{SIMD.hpp}!supports\_sse@{supports\_sse}}
+\index{supports\_sse@{supports\_sse}!SIMD.hpp@{SIMD.hpp}}
+\doxysubsubsection{\texorpdfstring{supports\_sse()}{supports\_sse()}}
+{\footnotesize\ttfamily bool supports\+\_\+sse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Referenced by \mbox{\hyperlink{SIMD_8hpp_a5a11f4c449fd438d9917485f0b29b57e}{dispatch\+\_\+simd()}}.
+
+Here is the caller graph for this function\+:
+% FIG 6

@@ -1,0 +1,13 @@
+digraph "morpheus::solver::Gauss::M"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="morpheus::solver::Gauss::M",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="morpheus::solver::Gauss::for",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1solver_1_1Gauss.html#a8edc8990071ec9a2ce375d2b987f9ace",tooltip=" "];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="morpheus::solver::Gauss::for",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1solver_1_1Gauss.html#ac527890b2bf0c86701ea24e033f7527f",tooltip=" "];
+}

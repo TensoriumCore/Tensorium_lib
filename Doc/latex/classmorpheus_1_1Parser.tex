@@ -1,0 +1,163 @@
+\doxysection{morpheus\+::Parser Class Reference}
+\hypertarget{classmorpheus_1_1Parser}{}\label{classmorpheus_1_1Parser}\index{morpheus::Parser@{morpheus::Parser}}
+
+
+{\ttfamily \#include $<$AST.\+hpp$>$}
+
+
+
+Collaboration diagram for morpheus\+::Parser\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Parser_aa95ea4565d5ec68b051543e7a18493cc}{Parser}} (const std\+::vector$<$ \mbox{\hyperlink{structToken}{Token}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}})
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \mbox{\hyperlink{classmorpheus_1_1Parser_aae47f6da0a0bfb6caf988f644f72f38e}{parse\+\_\+expression}} ()
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \mbox{\hyperlink{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}{parse\+\_\+expression}} (\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{precedence}}=0)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \mbox{\hyperlink{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\+\_\+primary}} ()
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \mbox{\hyperlink{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\+\_\+binary\+\_\+rhs}} (\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{prec}}, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{lhs}})
+\item 
+\mbox{\hyperlink{structToken}{Token}} \mbox{\hyperlink{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc}{peek}} () const
+\item 
+\mbox{\hyperlink{structToken}{Token}} \mbox{\hyperlink{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772}{get}} ()
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{bool}} \mbox{\hyperlink{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}{eof}} () const
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Parser_a6046a427916981626c23efbcab4f266d}{get\+\_\+precedence}} (\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}} t) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structToken}{Token}} $>$ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classmorpheus_1_1Parser_aa95ea4565d5ec68b051543e7a18493cc}\label{classmorpheus_1_1Parser_aa95ea4565d5ec68b051543e7a18493cc} 
+\index{morpheus::Parser@{morpheus::Parser}!Parser@{Parser}}
+\index{Parser@{Parser}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{Parser()}{Parser()}}
+{\footnotesize\ttfamily morpheus\+::\+Parser\+::\+Parser (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{structToken}{Token}} $>$ \&}]{tokens }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}\label{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5} 
+\index{morpheus::Parser@{morpheus::Parser}!eof@{eof}}
+\index{eof@{eof}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{eof()}{eof()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{bool}} morpheus\+::\+Parser\+::eof (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}.
+
+\Hypertarget{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772}\label{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772} 
+\index{morpheus::Parser@{morpheus::Parser}!get@{get}}
+\index{get@{get}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structToken}{Token}} morpheus\+::\+Parser\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}.
+
+\Hypertarget{classmorpheus_1_1Parser_a6046a427916981626c23efbcab4f266d}\label{classmorpheus_1_1Parser_a6046a427916981626c23efbcab4f266d} 
+\index{morpheus::Parser@{morpheus::Parser}!get\_precedence@{get\_precedence}}
+\index{get\_precedence@{get\_precedence}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{get\_precedence()}{get\_precedence()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} morpheus\+::\+Parser\+::get\+\_\+precedence (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}}}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a38696558dc98494c08d951c052900a2a}{div}}, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adabe6e597b70e5760826aea1dcc564f7}{minus}}, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0f9f2d92c2583ef952556e1f382d0974}{mult}}, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2}{plus}}, and \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a30d7e0494351def45591fccb21d3510b}{pow}}.
+
+\Hypertarget{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}\label{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b} 
+\index{morpheus::Parser@{morpheus::Parser}!parse\_binary\_rhs@{parse\_binary\_rhs}}
+\index{parse\_binary\_rhs@{parse\_binary\_rhs}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{parse\_binary\_rhs()}{parse\_binary\_rhs()}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ morpheus\+::\+Parser\+::parse\+\_\+binary\+\_\+rhs (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}}}]{prec,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$}]{lhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}{parse\+\_\+expression()}}.
+
+Here is the caller graph for this function\+:
+% FIG 1
+\Hypertarget{classmorpheus_1_1Parser_aae47f6da0a0bfb6caf988f644f72f38e}\label{classmorpheus_1_1Parser_aae47f6da0a0bfb6caf988f644f72f38e} 
+\index{morpheus::Parser@{morpheus::Parser}!parse\_expression@{parse\_expression}}
+\index{parse\_expression@{parse\_expression}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{parse\_expression()}{parse\_expression()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ morpheus\+::\+Parser\+::parse\+\_\+expression (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}\label{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965} 
+\index{morpheus::Parser@{morpheus::Parser}!parse\_expression@{parse\_expression}}
+\index{parse\_expression@{parse\_expression}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{parse\_expression()}{parse\_expression()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ morpheus\+::\+Parser\+::parse\+\_\+expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}}}]{precedence = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\+\_\+binary\+\_\+rhs()}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\+\_\+primary()}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+\Hypertarget{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}\label{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5} 
+\index{morpheus::Parser@{morpheus::Parser}!parse\_primary@{parse\_primary}}
+\index{parse\_primary@{parse\_primary}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{parse\_primary()}{parse\_primary()}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}} $>$ morpheus\+::\+Parser\+::parse\+\_\+primary (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}{parse\+\_\+expression()}}.
+
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc}\label{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc} 
+\index{morpheus::Parser@{morpheus::Parser}!peek@{peek}}
+\index{peek@{peek}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{peek()}{peek()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structToken}{Token}} morpheus\+::\+Parser\+::peek (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}\label{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493} 
+\index{morpheus::Parser@{morpheus::Parser}!pos@{pos}}
+\index{pos@{pos}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{pos}{pos}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{size\+\_\+t}} morpheus\+::\+Parser\+::pos\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}{eof()}}, \mbox{\hyperlink{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772}{get()}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc}{peek()}}.
+
+\Hypertarget{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}\label{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b} 
+\index{morpheus::Parser@{morpheus::Parser}!tokens@{tokens}}
+\index{tokens@{tokens}!morpheus::Parser@{morpheus::Parser}}
+\doxysubsubsection{\texorpdfstring{tokens}{tokens}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{structToken}{Token}}$>$ morpheus\+::\+Parser\+::tokens\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}{eof()}}, \mbox{\hyperlink{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772}{get()}}, and \mbox{\hyperlink{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc}{peek()}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+Symbolics/\mbox{\hyperlink{AST_8hpp}{AST.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,69 @@
+\doxysection{Allocator.\+hpp}
+\hypertarget{Allocator_8hpp_source}{}\label{Allocator_8hpp_source}\index{includes/Morpheus/SIMD/Allocator.hpp@{includes/Morpheus/SIMD/Allocator.hpp}}
+\mbox{\hyperlink{Allocator_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{SIMD_8hpp}{SIMD.hpp}}"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#if\ defined(USE\_KNL)}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <hbwmalloc.h>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ std::\textcolor{keywordtype}{size\_t}\ Alignment>}
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator}}\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_a0a7efdc5df37396703b9a7008b744f59}{value\_type}}\ =\ T;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_a1a8caeceff8b7b7ecef1ef4b46cbb1d6}{pointer}}\ =\ T*;}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_af938f9442ae754b00a80f522781a5255}{const\_pointer}}\ =\ \textcolor{keyword}{const}\ T*;}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_a6ba4de580e6f5d7ef60f936d80b61903}{reference}}\ =\ T\&;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_ab8d9c94b5172ce945bcad198083ec3a0}{const\_reference}}\ =\ \textcolor{keyword}{const}\ T\&;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_a20d2a4ca3cf4b891c12b6666335c6f0d}{size\_type}}\ =\ std::size\_t;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator_a29881377dea9d1561debf60ff7904647}{difference\_type}}\ =\ std::ptrdiff\_t;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAlignedAllocator_1_1rebind}{rebind}}\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structAlignedAllocator}{other}}\ =\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator<U,\ Alignment>}};}
+\DoxyCodeLine{00024\ \ \ \ \ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{structAlignedAllocator_aa9cbc3b78d9e1654659dbddc388f1ee5}{AlignedAllocator}}()\ noexcept\ =\ default;}
+\DoxyCodeLine{00027\ \ \ \ \ template\ <typename\ U>}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator}}(const\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator}}<U,\ Alignment>\&)\ noexcept\ \{\}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ [[nodiscard]]\ T*\ \mbox{\hyperlink{structAlignedAllocator_a650ae014d782fb2961763d9d772fceeb}{allocate}}(std::size\_t\ n)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ ptr\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#if\ defined(USE\_KNL)}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hbw\_posix\_memalign(\&ptr,\ Alignment,\ n\ *\ \textcolor{keyword}{sizeof}(T))\ !=\ 0)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::bad\_alloc();}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (posix\_memalign(\&ptr,\ Alignment,\ n\ *\ \textcolor{keyword}{sizeof}(T))\ !=\ 0)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::bad\_alloc();}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(ptr);}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structAlignedAllocator_a9dd7a0ee073e498b9c626a97f2a95af1}{deallocate}}(T*\ p,\ std::size\_t)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#if\ defined(USE\_KNL)}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ hbw\_free(p);}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ free(p);}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{using\ }\mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\_vector}}\ =\ std::vector<K,\ AlignedAllocator<K,\ ALIGN>>;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ std::\textcolor{keywordtype}{size\_t}\ Alignment>}
+\DoxyCodeLine{00055\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{Allocator_8hpp_ace395aad5a8656fbf988f8315039c92c}{operator==}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator<T,\ Alignment>}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator<T,\ Alignment>}}\&)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ std::\textcolor{keywordtype}{size\_t}\ Alignment>}
+\DoxyCodeLine{00060\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{Allocator_8hpp_a5550f3bddd398c5423d432894fa2966d}{operator!=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator<T,\ Alignment>}}\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structAlignedAllocator}{AlignedAllocator<T,\ Alignment>}}\&)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+
+\end{DoxyCode}

@@ -1,0 +1,543 @@
+\doxysection{Matrix.\+hpp}
+\hypertarget{Matrix_8hpp_source}{}\label{Matrix_8hpp_source}\index{includes/Morpheus/Core/Matrix.hpp@{includes/Morpheus/Core/Matrix.hpp}}
+\mbox{\hyperlink{Matrix_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <immintrin.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{SIMD_8hpp}{../SIMD/SIMD.hpp}}"{}}\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{CPU__id_8hpp}{../SIMD/CPU\_id.hpp}}"{}}\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Allocator_8hpp}{../SIMD/Allocator.hpp}}"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Vector_8hpp}{Vector.hpp}}"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MathsUtils_8hpp}{../MathUtils/MathsUtils.hpp}}"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}},\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\_vector<K>}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}};}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}};}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4032d676dae5e988b1d902a5ed9a9bf2}{Matrix}}(\textcolor{keywordtype}{size\_t}\ r,\ \textcolor{keywordtype}{size\_t}\ c)\ }
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}(r),\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}(c),\ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}(r\ *\ c,\ K()),\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}}(\mbox{\hyperlink{CPU__id_8hpp_aa4ee32a70b7b807ab5596c40e14c51eb}{detect\_optimal\_block\_size}}())\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267}{size}}()\textcolor{keyword}{\ const\ }\{\ }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\&\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a}{operator()}}(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ +\ j];\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K\&\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a2d30f7f5c803bed845d03715394ec155}{operator()}}(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ +\ j];\ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_aa76f0994668c3ce44f2dd37b0c4c90b3}{print}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}[\ "{}};}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++j)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{keyword}{operator}()(i,\ j)\ <<\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}]\(\backslash\)n"{}};}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a8b2dfeb08ff63446f08da77d15daa345}{swap\_rows}}(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ \&\&\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}});}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::swap((*\textcolor{keyword}{this})(i,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}),\ (*\textcolor{keyword}{this})(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}));}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_acf93279975ac54ea5c709f9cea644ae7}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ v.\mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}()\ \&\&\ \textcolor{stringliteral}{"{}Matrix-\/Vector\ size\ mismatch"{}});}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\ result(\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}});}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ x\ :\ result)\ x\ =\ T(0);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++j)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result[i]\ +=\ (*this)(i,\ j)\ *\ v[j];}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_acf09c23b90a388956443fd0f996cb394}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}\ \&m)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ !=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ ||\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ !=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}})}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ sizes\ do\ not\ match"{}});}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267}{size}}();}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_prefetch((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[0],\ \_MM\_HINT\_T0);}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ +\ 2\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ -\/\ 1\ <\ n;\ i\ +=\ 2\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}})\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ a0\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ b0\ =\ Simd::load(\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a0\ =\ Simd::add(a0,\ b0);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i],\ a0);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ a1\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}]);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ b1\ =\ Simd::load(\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}]);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a1\ =\ Simd::add(a1,\ b1);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}],\ a1);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]\ +=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i];}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a3788c2fb5036c1aa259bb03e72cf032e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ sub(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}\ \&m)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ !=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ ||\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ !=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}})\ }
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ sizes\ do\ not\ match"{}});}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267}{size}}();}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_prefetch((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[0],\ \_MM\_HINT\_T0);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ +\ 15\ <\ n;\ i\ +=\ 16)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ a0\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ b0\ =\ Simd::load(\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a0\ =\ Simd::sub(a0,\ b0);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i],\ a0);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ a1\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}]);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ b1\ =\ Simd::load(\&m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}]);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a1\ =\ Simd::sub(a1,\ b1);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}],\ a1);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267}{size}}();\ ++i)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]\ -\/=\ m.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i];}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a32bde5ef7918d3ff94087ecf82c29322}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ scl(K\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}})\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9360ad4d79bc09c54f63aa81060bf267}{size}}();}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_prefetch((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[0],\ \_MM\_HINT\_T0);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ scalar\ =\ Simd::set1(\mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}});}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ +\ 15\ <\ n;\ i\ +=\ 16)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ v0\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v0\ =\ Simd::mul(v0,\ scalar);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i],\ v0);}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ v1\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}]);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v1\ =\ Simd::mul(v1,\ scalar);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}],\ v1);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i]\ *=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}};}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ UN>}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ac87fbfe87a74e2e22841c3244e8fe359}{\_\_attribute\_\_}}((always\_inline))}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ microkernel4(\textcolor{keywordtype}{size\_t}\ nCols,\ \ \ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \_\_restrict\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}},}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \textcolor{keyword}{const}\ \_\_restrict*\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab599bf915a1647c7fcaab769f87d0e75}{b}},}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}*\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}})}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ W\ =\ Simd::width;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +\ W\ <=\ nCols;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +=\ W)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ av\ =\ Simd::load(\mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}}\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#pragma\ unroll(UN)}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ \mbox{\hyperlink{Matrix_8hpp_ac207b6eba0ba8876d0c7e1c65028cc3b}{UN}};\ ++x)}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[x]\ =\ Simd::fmadd(av,\ Simd::set1(\mbox{\hyperlink{classmorpheus_1_1Matrix_ab599bf915a1647c7fcaab769f87d0e75}{b}}[x][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}]),\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[x]);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ nCols;\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ a\_val\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}}[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#pragma\ unroll(UN)}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ \mbox{\hyperlink{Matrix_8hpp_ac207b6eba0ba8876d0c7e1c65028cc3b}{UN}};\ ++x)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[x]\ =\ Simd::add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[x],\ Simd::set1(a\_val\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab599bf915a1647c7fcaab769f87d0e75}{b}}[x][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}]));}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a5031915886165d57cc3cf1c0067a093a}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}\ \mbox{\hyperlink{namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec}{mul\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\&\ mat)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ !=\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}})}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ dimensions\ do\ not\ match\ for\ multiplication"{}});}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 4\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ ==\ 4\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 4)}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mul\_mat\_NxN<4>(mat);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 8\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ ==\ 8\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 8)}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mul\_mat\_NxN<8>(mat);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 16\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ ==\ 16\ \&\&\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ 16)}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mul\_mat\_NxN<16>(mat);}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ unroll\ \ \ \ \ =\ \mbox{\hyperlink{SIMD_8hpp_a870020ccb79b9bf241010e975e029bde}{UNROLL}};\ \ \ }
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ result(\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}},\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}});}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ mat\_transposed(mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}},\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}});}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#pragma\ omp\ parallel\ for\ schedule(static)}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++j)}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mat\_transposed(j,\ i)\ =\ mat(i,\ j);}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#pragma\ omp\ parallel\ for\ collapse(2)\ schedule(dynamic)}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ ii\ =\ 0;\ ii\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ii\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}})\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ jj\ =\ 0;\ jj\ <\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ jj\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}})\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\_end\ =\ \mbox{\hyperlink{classMathsUtils_a4ad47f80d02a8c6c6eddd7b5737f34e8}{MathsUtils::\_min}}(ii\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}},\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}});}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ j\_end\ =\ \mbox{\hyperlink{classMathsUtils_a4ad47f80d02a8c6c6eddd7b5737f34e8}{MathsUtils::\_min}}(jj\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4bf8d6f6ff2a6499fd3e81153705687f}{block\_size}},\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}});}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ ii;\ i\ <\ i\_end;\ ++i)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ jj;\ j\ +\ unroll\ -\/\ 1\ <\ j\_end;\ j\ +=\ unroll)\ \{}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \_\_restrict\_\_\ a\_ptr\ \ =\ \&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}];}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#define\ UN\ 4}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[\mbox{\hyperlink{Matrix_8hpp_ac207b6eba0ba8876d0c7e1c65028cc3b}{UN}}]\ =\ \{\ Simd::zero(),\ Simd::zero(),\ Simd::zero(),\ Simd::zero()\ \};}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \_\_restrict\_\_\ b\_ptr[\mbox{\hyperlink{Matrix_8hpp_ac207b6eba0ba8876d0c7e1c65028cc3b}{UN}}]\ =\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&mat\_transposed.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[(j\ +\ 0)\ *\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}],}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&mat\_transposed.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[(j\ +\ 1)\ *\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}],}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&mat\_transposed.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[(j\ +\ 2)\ *\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}],}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&mat\_transposed.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[(j\ +\ 3)\ *\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}]}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ microkernel4<UN>(\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}},\ a\_ptr,\ b\_ptr,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}});}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ total0\ =\ Simd::horizontal\_add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[0]);}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ total1\ =\ Simd::horizontal\_add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[1]);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ total2\ =\ Simd::horizontal\_add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[2]);}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ total3\ =\ Simd::horizontal\_add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}[3]);}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ \&\ \string~(\mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}-\/1));\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ a\_val\ =\ a\_ptr[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ total0\ +=\ a\_val\ *\ b\_ptr[0][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ total1\ +=\ a\_val\ *\ b\_ptr[1][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ total2\ +=\ a\_val\ *\ b\_ptr[2][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ total3\ +=\ a\_val\ *\ b\_ptr[3][\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ res\_vec\ =\ Simd::set(total3,\ total2,\ total1,\ total0);}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (((uintptr\_t)\&result.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i*\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}+j]\ \&\ 31)\ ==\ 0)}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::stream(\&result.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ result.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ +\ j],\ res\_vec);}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(\&result.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ result.\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ +\ j],\ res\_vec);}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ j\_end\ -\/\ (j\_end\ -\/\ jj)\ \%\ unroll;\ j\ <\ j\_end;\ ++j)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}\ =\ Simd::zero();}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \_\_restrict\_\_\ a\_ptr\ =\ \&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[i\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}];}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ K*\ \_\_restrict\_\_\ b\_ptr\ =\ \&mat\_transposed.\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[j\ *\ mat.\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}];}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ -\/\ 1\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}})\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}}\ =\ Simd::load(a\_ptr\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab599bf915a1647c7fcaab769f87d0e75}{b}}\ =\ Simd::load(b\_ptr\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}\ \ \ =\ Simd::fmadd(\mbox{\hyperlink{classmorpheus_1_1Matrix_a4eb5aa5a4041b53c9ba8140759ebdbc5}{a}},\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab599bf915a1647c7fcaab769f87d0e75}{b}},\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}});}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ total\ =\ Simd::horizontal\_add(\mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}});}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ total\ +=\ a\_ptr[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}]\ *\ b\_ptr[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}];}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(i,\ j)\ =\ total;}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{size\_t}\ N>}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a87c7b186c84ed6974abeaa890b1ce50b}{\_\_attribute\_\_}}((always\_inline,\ flatten,\ hot))}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ mul\_mat\_NxN(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\&\ mat)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(N\ ==\ 4\ ||\ N\ ==\ 8\ ||\ N\ ==\ 16,\ \textcolor{stringliteral}{"{}Only\ 4,\ 8,\ 16\ supported\ for\ fast\ path"{}});}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ \ \ \ \ \ \ \ \ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }reg\_aligned\ =\ \textcolor{keyword}{typename}\ Simd::reg\_aligned;}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ result(N,\ N);}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg\_aligned\ A\_rows[N];}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg\_aligned\ B\_cols[N];}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ N;\ ++i)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A\_rows[i].value\ =\ Simd::loadu(\&this-\/>data[i\ *\ N]);}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ N;\ ++j)\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignas}(64)\ K\ col\_data[N];}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ N;\ ++i)}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ col\_data[i]\ =\ mat(i,\ j);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\_cols[j].value\ =\ Simd::loadu(col\_data);}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ N;\ ++i)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ N;\ ++j)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ prod\ =\ Simd::mul(A\_rows[i].value,\ B\_cols[j].value);}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(i,\ j)\ =\ Simd::horizontal\_add(prod);}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ace27c82ae0ab741ef54500e157aab2ef}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a4429f93147f7895d9f5782820c56cbf8}{mul\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\&\ x)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<T,\ DefaultISA>}};}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ =\ \textcolor{keyword}{typename}\ Simd::reg;}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ Simd::width;}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ assert(\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ ==\ x.\mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}());}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>}}\ result(\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}},\ T(0));}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ acc\ =\ Simd::zero();}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ 0;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ -\/\ 1\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ j\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}})\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ A\_vec\ =\ Simd::load(\&(*\textcolor{keyword}{this})(i,\ j));}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ae2988ddeb86caffd0b11be5a42214132}{reg}}\ x\_vec\ =\ Simd::load(\&x[j]);}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ acc\ =\ Simd::fmadd(A\_vec,\ x\_vec,\ acc);}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}\ =\ Simd::horizontal\_add(acc);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++j)\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}}\ +=\ (*this)(i,\ j)\ *\ x[j];}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result[i]\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a7e9273947220a73fc85b85889e6c504b}{sum}};}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_af65ec12455850c160e0ac8095964c97a}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a382eb179a7d78f25d89c085988b37e95}{transpose}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ result(\mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}},\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}});\ }
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<K,\ float>\ ||\ std::is\_same\_v<K,\ double>)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }ISA\ =\ \mbox{\hyperlink{SIMD_8hpp_a8a534226fec29f00e030927b1a04d6eb}{DefaultISA}};}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structsimd_1_1SimdTraits}{Simd}}\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ ISA>}};}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ W\ =\ Simd::width;}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ \%\ W\ ==\ 0\ \&\&\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ \%\ W\ ==\ 0)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ i\ +=\ W)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ j\ +=\ W)\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Simd::reg\ block[W];}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ W;\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ block[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}]\ =\ Simd::load(\&\mbox{\hyperlink{classmorpheus_1_1Matrix_aac0d6405443f08f72d5d26a948c89629}{data}}[(i\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ *\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}}\ +\ j]);}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{alignas}(\mbox{\hyperlink{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}{ALIGN}})\ K\ tmp[W][W];}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ W;\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Simd::store(tmp[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}],\ block[\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}]);}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ ++x)}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ W;\ ++y)}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(j\ +\ x,\ i\ +\ y)\ =\ tmp[y][x];}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};\ ++j)}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(j,\ i)\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a}{operator()}}(i,\ j);}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ac2acf63723e93e19649a45eca5f80b6d}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ trace()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ !=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}})\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ is\ not\ square"{}});}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ result(1,\ 1);}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(0,\ 0)\ =\ K(0);}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};\ ++i)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(0,\ 0)\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a}{operator()}}(i,\ i);}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad910b920efe34fa53ab0d133f093b407}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ inverse()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ !=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}})}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ must\ be\ square"{}});}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ M(n,\ n);}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ Inv(n,\ n);}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ i\ =\ \textcolor{keyword}{decltype}(n)(0);\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ \textcolor{keyword}{decltype}(n)(0);\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(i,\ j)\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a}{operator()}}(i,\ j);}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Inv(i,\ j)\ =\ (i\ ==\ j)\ ?\ K(1)\ :\ K(0);}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }SimdT\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ i\ =\ \textcolor{keyword}{decltype}(n)(0);\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ piv\ =\ i;}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ maxv\ =\ \mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(i,\ i));}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ r\ =\ i\ +\ 1;\ r\ <\ n;\ ++r)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ v\ =\ \mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(r,\ i));}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ maxv)\ \{\ maxv\ =\ v;\ piv\ =\ r;\ \}}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (maxv\ <\ \textcolor{keyword}{static\_cast<}K\textcolor{keyword}{>}(1e-\/6))}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Matrix\ is\ singular\ or\ nearly\ singular."{}});}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piv\ !=\ i)\ \{}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M.\mbox{\hyperlink{classmorpheus_1_1Matrix_a8b2dfeb08ff63446f08da77d15daa345}{swap\_rows}}(i,\ piv);}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Inv.\mbox{\hyperlink{classmorpheus_1_1Matrix_a8b2dfeb08ff63446f08da77d15daa345}{swap\_rows}}(i,\ piv);}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ diag\ =\ M(i,\ i);}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ diag\_inv\ =\ K(1)\ /\ diag;}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ 0u;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(i,\ j)\ *=\ diag\_inv;}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Inv(i,\ j)\ *=\ diag\_inv;}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \textcolor{preprocessor}{\#pragma\ omp\ parallel\ for\ schedule(dynamic,\ UNROLL)}}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ 0u;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (j\ !=\ i)\ \{}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ f\ =\ M(j,\ i);}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ 0u;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ n;\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ -\/=\ f\ *\ M(i,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Inv(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ -\/=\ f\ *\ Inv(i,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Inv;}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_a43c84857b2f6a6591229b93f1168b596}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ K\ det()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}}\ !=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}})}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Matrix\ must\ be\ square"{}});}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ M(n,\ n);}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }SimdT\ =\ \mbox{\hyperlink{structsimd_1_1SimdTraits}{simd::SimdTraits<K,\ DefaultISA>}};}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ =\ SimdT::width;}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ n;\ ++j)}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(i,\ j)\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ad522ddc1c4cd3037496211d01275168a}{operator()}}(i,\ j);}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ det\_sign\ =\ K(1);\ \ }
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ piv\ =\ i;}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ maxv\ =\ \mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(i,\ i));}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ r\ =\ i\ +\ 1;\ r\ <\ n;\ ++r)\ \{}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ v\ =\ \mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(r,\ i));}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ maxv)\ \{\ maxv\ =\ v;\ piv\ =\ r;\ \}}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (maxv\ <\ \textcolor{keyword}{static\_cast<}K\textcolor{keyword}{>}(1e-\/12))}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ K(0);\ }
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piv\ !=\ i)\ \{}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M.\mbox{\hyperlink{classmorpheus_1_1Matrix_a8b2dfeb08ff63446f08da77d15daa345}{swap\_rows}}(i,\ piv);}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ det\_sign\ =\ -\/det\_sign;}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ f\ =\ M(j,\ i)\ /\ M(i,\ i);}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(j,\ i)\ =\ K(0);}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ f\_vec\ =\ SimdT::set1(-\/f);}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ =\ i\ +\ 1;}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}}\ -\/\ 1\ <\ n;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ +=\ \mbox{\hyperlink{classmorpheus_1_1Matrix_ab0a973c8fb0a04f94388f4fedade7b71}{simd\_width}})\ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ mjk\ =\ SimdT::load(\&M(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}));}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ mik\ =\ SimdT::load(\&M(i,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}));}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mjk\ =\ SimdT::fmadd(f\_vec,\ mik,\ mjk);\ \ }
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SimdT::store(\&M(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}),\ mjk);}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}}\ <\ n;\ ++\mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ \{}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(j,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}})\ -\/=\ f\ *\ M(i,\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a05b5a3268b957c1a2a954112997445e3}{k}});}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00494\ }
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ K\ det\ =\ det\_sign;}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ det\ *=\ M(i,\ i);}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ det;}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix_acf09c23b90a388956443fd0f996cb394}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ rank(K\ eps\ =\ K(1e-\/6))\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix<K>}}\ M(*\textcolor{keyword}{this});\ }
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ m\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{rows}};}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{cols}};}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ r\ =\ 0;}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ col\ =\ 0;\ col\ <\ n;\ ++col)\ \{}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pivot\_row\ =\ r;}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ r;\ i\ <\ m;\ ++i)\ \{}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(i,\ col))\ >\ std::abs(M(pivot\_row,\ col)))}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pivot\_row\ =\ i;}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classMathsUtils_aef7c171225ec5072076aa1bc0182cc02}{MathsUtils::\_abs}}(M(pivot\_row,\ col))\ <=\ eps)}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00518\ }
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_row\ !=\ r)}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M.swap\_rows(pivot\_row,\ r);}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ r\ +\ 1;\ i\ <\ m;\ ++i)\ \{}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ f\ =\ M(i,\ col)\ /\ M(r,\ col);}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(i,\ col)\ =\ 0;}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\ +\ 1;\ j\ <\ n;\ ++j)}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ M(i,\ j)\ -\/=\ f\ *\ M(r,\ j);}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++r;}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00534\ }
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00536\ \}}
+\DoxyCodeLine{00537\ }
+
+\end{DoxyCode}

@@ -1,0 +1,23 @@
+var structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4 =
+[
+    [ "reg", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ac26ef9b70e307971db56790fc61f7dff", null ],
+    [ "reg_aligned", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a3489c0fc664ca960fe630d38c582ac34", null ],
+    [ "add", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a7d836c913e608af8e1645dbc8f09f56b", null ],
+    [ "andnot", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#aeab30efc2786b09adb5bd5dd24cda126", null ],
+    [ "fma", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#aa0c8f85f15672d06a12e57edd68c1212", null ],
+    [ "fmadd", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#aed92b35ddf159d415b6d67a7baa53007", null ],
+    [ "horizontal_add", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ace6ec797043eb3df5e15bd026b6591be", null ],
+    [ "load", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a546589672651e7106fd87edf7602d26e", null ],
+    [ "loadu", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#adc5939d13aa3630b67890749f874d26b", null ],
+    [ "max", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a30741febb7d78e202e5aee65abfc87ed", null ],
+    [ "min", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ae6dc675c020ca6061fe9e6709d219bd2", null ],
+    [ "mul", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ab6f492030f3c866e9294a88189ca5e01", null ],
+    [ "set", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a2cf1cfd203719e30736d404ef1c490f6", null ],
+    [ "set1", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a46ba6d592ecd6c874a6b4517f2bf9b5d", null ],
+    [ "setzero", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#aa46a08f11793e33de68ec901ef26b19c", null ],
+    [ "store", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ad384e6c923b90ccace6a179da9c3b5eb", null ],
+    [ "storeu", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#acdfc066e5f3955fed7dc9b435db67c65", null ],
+    [ "sub", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a1be4cd6f6f804cffdd2caf60fb98e961", null ],
+    [ "alignment", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a9f809863cfe35ba7d829a4b544a9184c", null ],
+    [ "width", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a184d01cd36b242b7ce35d7fce6430069", null ]
+];

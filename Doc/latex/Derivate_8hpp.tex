@@ -1,0 +1,50 @@
+\doxysection{includes/\+Morpheus/\+Core/\+Derivate.hpp File Reference}
+\hypertarget{Derivate_8hpp}{}\label{Derivate_8hpp}\index{includes/Morpheus/Core/Derivate.hpp@{includes/Morpheus/Core/Derivate.hpp}}
+
+
+Numerical differentiation operators using SIMD.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$immintrin.\+h$>$}\newline
+{\ttfamily \#include "{}Matrix.\+hpp"{}}\newline
+{\ttfamily \#include "{}Tensor.\+hpp"{}}\newline
+{\ttfamily \#include "{}Vector.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+SIMD/\+SIMD.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+SIMD/\+CPU\+\_\+id.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+SIMD/\+Allocator.\+hpp"{}}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+Include dependency graph for Derivate.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classmorpheus_1_1Derivate}{morpheus\+::\+Derivate$<$ K $>$}}
+\begin{DoxyCompactList}\small\item\em A 2D aligned matrix for numerical derivatives. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classmorpheus_1_1DerivateND}{morpheus\+::\+Derivate\+ND$<$ K, Rank $>$}}
+\begin{DoxyCompactList}\small\item\em A multi-\/dimensional aligned tensor for numerical derivatives. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus}{morpheus}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \mbox{\hyperlink{namespacemorpheus_a47cf67841ca834dde92b69e9a7078fa9}{morpheus\+::richardson\+\_\+derivative\+\_\+container}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+\begin{DoxyCompactList}\small\item\em Richardson extrapolation for vectors or containers. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{morpheus\+::richardson\+\_\+derivative}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+\begin{DoxyCompactList}\small\item\em Richardson extrapolation for scalar values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Numerical differentiation operators using SIMD. 
+
+\begin{DoxyAuthor}{Author}
+Louis Touzalin 
+\end{DoxyAuthor}

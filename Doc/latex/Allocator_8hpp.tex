@@ -1,0 +1,56 @@
+\doxysection{includes/\+Morpheus/\+SIMD/\+Allocator.hpp File Reference}
+\hypertarget{Allocator_8hpp}{}\label{Allocator_8hpp}\index{includes/Morpheus/SIMD/Allocator.hpp@{includes/Morpheus/SIMD/Allocator.hpp}}
+{\ttfamily \#include "{}SIMD.\+hpp"{}}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for Allocator.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator$<$ T, Alignment $>$}}
+\item 
+struct \mbox{\hyperlink{structAlignedAllocator_1_1rebind}{Aligned\+Allocator$<$ T, Alignment $>$\+::rebind$<$ U $>$}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename K $>$ }\\using \mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}} = std\+::vector$<$K, \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$K, \mbox{\hyperlink{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}{ALIGN}}$>$$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T , std\+::size\+\_\+t Alignment$>$ }\\bool \mbox{\hyperlink{Allocator_8hpp_ace395aad5a8656fbf988f8315039c92c}{operator==}} (const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&, const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&) noexcept
+\item 
+{\footnotesize template$<$typename T , std\+::size\+\_\+t Alignment$>$ }\\bool \mbox{\hyperlink{Allocator_8hpp_a5550f3bddd398c5423d432894fa2966d}{operator!=}} (const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&, const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&) noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}\label{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5} 
+\index{Allocator.hpp@{Allocator.hpp}!aligned\_vector@{aligned\_vector}}
+\index{aligned\_vector@{aligned\_vector}!Allocator.hpp@{Allocator.hpp}}
+\doxysubsubsection{\texorpdfstring{aligned\_vector}{aligned\_vector}}
+{\footnotesize\ttfamily template$<$typename K $>$ \\
+using \mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}} = std\+::vector$<$K, \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$K, \mbox{\hyperlink{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}{ALIGN}}$>$$>$}
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{Allocator_8hpp_a5550f3bddd398c5423d432894fa2966d}\label{Allocator_8hpp_a5550f3bddd398c5423d432894fa2966d} 
+\index{Allocator.hpp@{Allocator.hpp}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Allocator.hpp@{Allocator.hpp}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+bool operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&}]{,  }\item[{const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+\Hypertarget{Allocator_8hpp_ace395aad5a8656fbf988f8315039c92c}\label{Allocator_8hpp_ace395aad5a8656fbf988f8315039c92c} 
+\index{Allocator.hpp@{Allocator.hpp}!operator==@{operator==}}
+\index{operator==@{operator==}!Allocator.hpp@{Allocator.hpp}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T , std\+::size\+\_\+t Alignment$>$ \\
+bool operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&}]{,  }\item[{const \mbox{\hyperlink{structAlignedAllocator}{Aligned\+Allocator}}$<$ T, Alignment $>$ \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+

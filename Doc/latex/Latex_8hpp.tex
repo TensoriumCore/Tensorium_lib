@@ -1,0 +1,421 @@
+\doxysection{includes/\+Morpheus/\+Symbolics/\+Latex.hpp File Reference}
+\hypertarget{Latex_8hpp}{}\label{Latex_8hpp}\index{includes/Morpheus/Symbolics/Latex.hpp@{includes/Morpheus/Symbolics/Latex.hpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$cctype$>$}\newline
+Include dependency graph for Latex.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structToken}{Token}}
+\item 
+class \mbox{\hyperlink{classLexer}{Lexer}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}} \{ \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2}{plus}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adabe6e597b70e5760826aea1dcc564f7}{minus}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0f9f2d92c2583ef952556e1f382d0974}{mult}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a38696558dc98494c08d951c052900a2a}{div}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a30d7e0494351def45591fccb21d3510b}{pow}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921accf7d67d401a9c82da15b48131f9fd7e}{lpar}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a58d98d3bd9af081b6ee7da6e0b430068}{rpar}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ab352cf02a7c4178140fb2e341e09be69}{lbrace}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a6ef4ec7ac8cd2f2a0d843da498f78bfd}{rbrace}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a97bff26855a8bfa63e05d5477e794b24}{symbol}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a157db7df530023575515d366c9b672e8}{integer}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a4bca24304861acde5770fdbe3cc2503b}{real}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a98081e91c3bdc7c16c0f26719caf3abe}{derivative}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0e87c1212a698494dcdb198af3e0eb2f}{partial}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a25aa2761448ea05599418ee93dd1d5c5}{integral}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7b6178e380cd863e8da707b98be1fae0}{covariant}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adc199f1a010400d74610bab8af77f814}{contravariant}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a382eb179a7d78f25d89c085988b37e95}{transpose}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aea97586b4aa0c141e4456912f3325f7f}{inner}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7cfcbd1c1575dd7eae454f18b9267188}{outer}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7f021a1415b86f2d013b2618fb31ae53}{end}}
+, \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aad921d60486366258809553a3db49a4a}{unknown}}
+ \}
+\item 
+enum class \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15e}{Greek\+Symbolminus}} \{ \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9}{alpha}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92}{beta}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea}{gamma}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea63bcabf86a9a991864777c631c5b7617}{delta}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea3cd38ab30e1e7002d239dd1a75a6dfa8}{epsilon}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae26026b73cdc3b59012c318ba26b5518}{zeta}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eaeba021d91b44a97dec2588bbea58a447}{eta}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea57e5fba4ce5b4cb9ffd595beb63e7389}{iota}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eafe1480ff8b6ed22e7723cda0145ef23d}{kappa}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c}{lambda}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ead88468fb83a6d5675fcd2bdcb8fa57bf}{xi}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea9ebb8b7cc2672e7f024df4ec210ed432}{omicron}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a}{pi}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea4580c2740ab6d9222ef06d7c6865583e}{tau}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea36ea51c3032c76487abc87f239bffead}{upsilon}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eacb7a24bb7528f934b841b34c3a73e0c7}{phi}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c}{chi}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26}{psi}}
+, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eac6d6bd7ebf806f43c76acc3681703b81}{omega}}
+ \}
+\item 
+enum class \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fe}{Greek\+Symbolplus}} \{ \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea6132295fcf5570fb8b0a944ef322a598}{Alpha}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea0b87d66b88c72957dfea8c9605016442}{Beta}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5}{Gamma}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397}{Delta}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea99f2b3f30bec5a8826333eaec7ce7044}{Epsilon}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea91526dc4ef03879503e3995808a9d524}{Zeta}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac2fcfb0e7c1b7ddfc902567e482a0f1a}{Eta}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead21c855a168b8f09d1ebb1bc596be927}{Theta}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac24bea07e833e38db13c26e70a10d2e4}{Iota}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadfb67ab9ae22ae3b0c9ca316c0cd4096}{Kappa}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea04a7da3c5b04cad85da1eebb92315b8b}{Lambda}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea893b7719713faaa97b1caa5603313723}{Mu}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9b7d9073e68e39cc86b834810845d62}{Nu}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5c24affd3aba4a2851c3b1bf42b9d3fd}{Xi}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feae94a5a5ca0ede9379094f714402f09e9}{Omicron}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea127125672f1e85d1e676d4394d24e066}{Pi}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea7216bcf464203aec4864fbeea158a0db}{Rho}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66}{Sigma}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf3f155d55288e275dbad53d835b03757}{Tau}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaefbc93c5b70630ff04c9b7ef15cfdc02}{Upsilon}}
+, \newline
+\mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5a82bece4586ad7cb17ba739a2db7f67}{Phi}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf77c43987f28d7a7b66b77c7f0184b03}{Chi}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c}{Psi}}
+, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea39e25ac3d737c46452305eefe324372c}{Omega}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15e}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15e} 
+\index{Latex.hpp@{Latex.hpp}!GreekSymbolminus@{GreekSymbolminus}}
+\index{GreekSymbolminus@{GreekSymbolminus}!Latex.hpp@{Latex.hpp}}
+\doxysubsubsection{\texorpdfstring{GreekSymbolminus}{GreekSymbolminus}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15e}{Greek\+Symbolminus}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{alpha@{alpha}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!alpha@{alpha}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9} 
+alpha&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{beta@{beta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!beta@{beta}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92} 
+beta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{gamma@{gamma}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!gamma@{gamma}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea} 
+gamma&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{delta@{delta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!delta@{delta}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea63bcabf86a9a991864777c631c5b7617}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea63bcabf86a9a991864777c631c5b7617} 
+delta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{epsilon@{epsilon}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!epsilon@{epsilon}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea3cd38ab30e1e7002d239dd1a75a6dfa8}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea3cd38ab30e1e7002d239dd1a75a6dfa8} 
+epsilon&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{zeta@{zeta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!zeta@{zeta}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae26026b73cdc3b59012c318ba26b5518}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae26026b73cdc3b59012c318ba26b5518} 
+zeta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{eta@{eta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!eta@{eta}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eaeba021d91b44a97dec2588bbea58a447}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eaeba021d91b44a97dec2588bbea58a447} 
+eta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{theta@{theta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!theta@{theta}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91} 
+theta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{iota@{iota}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!iota@{iota}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea57e5fba4ce5b4cb9ffd595beb63e7389}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea57e5fba4ce5b4cb9ffd595beb63e7389} 
+iota&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kappa@{kappa}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!kappa@{kappa}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eafe1480ff8b6ed22e7723cda0145ef23d}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eafe1480ff8b6ed22e7723cda0145ef23d} 
+kappa&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lambda@{lambda}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!lambda@{lambda}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c} 
+lambda&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{mu@{mu}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!mu@{mu}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80} 
+mu&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{nu@{nu}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!nu@{nu}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650} 
+nu&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{xi@{xi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!xi@{xi}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ead88468fb83a6d5675fcd2bdcb8fa57bf}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ead88468fb83a6d5675fcd2bdcb8fa57bf} 
+xi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{omicron@{omicron}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!omicron@{omicron}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea9ebb8b7cc2672e7f024df4ec210ed432}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea9ebb8b7cc2672e7f024df4ec210ed432} 
+omicron&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{pi@{pi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!pi@{pi}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a} 
+pi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rho@{rho}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!rho@{rho}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c} 
+rho&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{sigma@{sigma}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!sigma@{sigma}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30} 
+sigma&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{tau@{tau}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!tau@{tau}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea4580c2740ab6d9222ef06d7c6865583e}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea4580c2740ab6d9222ef06d7c6865583e} 
+tau&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{upsilon@{upsilon}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!upsilon@{upsilon}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea36ea51c3032c76487abc87f239bffead}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea36ea51c3032c76487abc87f239bffead} 
+upsilon&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{phi@{phi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!phi@{phi}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eacb7a24bb7528f934b841b34c3a73e0c7}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eacb7a24bb7528f934b841b34c3a73e0c7} 
+phi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{chi@{chi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!chi@{chi}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c} 
+chi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{psi@{psi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!psi@{psi}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26} 
+psi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{omega@{omega}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!omega@{omega}}}\Hypertarget{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eac6d6bd7ebf806f43c76acc3681703b81}\label{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eac6d6bd7ebf806f43c76acc3681703b81} 
+omega&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fe}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fe} 
+\index{Latex.hpp@{Latex.hpp}!GreekSymbolplus@{GreekSymbolplus}}
+\index{GreekSymbolplus@{GreekSymbolplus}!Latex.hpp@{Latex.hpp}}
+\doxysubsubsection{\texorpdfstring{GreekSymbolplus}{GreekSymbolplus}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fe}{Greek\+Symbolplus}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Alpha@{Alpha}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Alpha@{Alpha}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea6132295fcf5570fb8b0a944ef322a598}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea6132295fcf5570fb8b0a944ef322a598} 
+Alpha&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Beta@{Beta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Beta@{Beta}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea0b87d66b88c72957dfea8c9605016442}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea0b87d66b88c72957dfea8c9605016442} 
+Beta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Gamma@{Gamma}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Gamma@{Gamma}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5} 
+Gamma&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Delta@{Delta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Delta@{Delta}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397} 
+Delta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Epsilon@{Epsilon}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Epsilon@{Epsilon}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea99f2b3f30bec5a8826333eaec7ce7044}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea99f2b3f30bec5a8826333eaec7ce7044} 
+Epsilon&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Zeta@{Zeta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Zeta@{Zeta}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea91526dc4ef03879503e3995808a9d524}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea91526dc4ef03879503e3995808a9d524} 
+Zeta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Eta@{Eta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Eta@{Eta}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac2fcfb0e7c1b7ddfc902567e482a0f1a}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac2fcfb0e7c1b7ddfc902567e482a0f1a} 
+Eta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Theta@{Theta}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Theta@{Theta}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead21c855a168b8f09d1ebb1bc596be927}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead21c855a168b8f09d1ebb1bc596be927} 
+Theta&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Iota@{Iota}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Iota@{Iota}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac24bea07e833e38db13c26e70a10d2e4}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feac24bea07e833e38db13c26e70a10d2e4} 
+Iota&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Kappa@{Kappa}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Kappa@{Kappa}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadfb67ab9ae22ae3b0c9ca316c0cd4096}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadfb67ab9ae22ae3b0c9ca316c0cd4096} 
+Kappa&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Lambda@{Lambda}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Lambda@{Lambda}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea04a7da3c5b04cad85da1eebb92315b8b}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea04a7da3c5b04cad85da1eebb92315b8b} 
+Lambda&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Mu@{Mu}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Mu@{Mu}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea893b7719713faaa97b1caa5603313723}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea893b7719713faaa97b1caa5603313723} 
+Mu&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Nu@{Nu}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Nu@{Nu}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9b7d9073e68e39cc86b834810845d62}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fead9b7d9073e68e39cc86b834810845d62} 
+Nu&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Xi@{Xi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Xi@{Xi}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5c24affd3aba4a2851c3b1bf42b9d3fd}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5c24affd3aba4a2851c3b1bf42b9d3fd} 
+Xi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Omicron@{Omicron}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Omicron@{Omicron}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feae94a5a5ca0ede9379094f714402f09e9}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feae94a5a5ca0ede9379094f714402f09e9} 
+Omicron&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Pi@{Pi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Pi@{Pi}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea127125672f1e85d1e676d4394d24e066}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea127125672f1e85d1e676d4394d24e066} 
+Pi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Rho@{Rho}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Rho@{Rho}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea7216bcf464203aec4864fbeea158a0db}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea7216bcf464203aec4864fbeea158a0db} 
+Rho&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Sigma@{Sigma}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Sigma@{Sigma}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66} 
+Sigma&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Tau@{Tau}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Tau@{Tau}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf3f155d55288e275dbad53d835b03757}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf3f155d55288e275dbad53d835b03757} 
+Tau&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Upsilon@{Upsilon}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Upsilon@{Upsilon}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaefbc93c5b70630ff04c9b7ef15cfdc02}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaefbc93c5b70630ff04c9b7ef15cfdc02} 
+Upsilon&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Phi@{Phi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Phi@{Phi}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5a82bece4586ad7cb17ba739a2db7f67}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea5a82bece4586ad7cb17ba739a2db7f67} 
+Phi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Chi@{Chi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Chi@{Chi}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf77c43987f28d7a7b66b77c7f0184b03}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feaf77c43987f28d7a7b66b77c7f0184b03} 
+Chi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Psi@{Psi}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Psi@{Psi}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c} 
+Psi&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Omega@{Omega}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!Omega@{Omega}}}\Hypertarget{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea39e25ac3d737c46452305eefe324372c}\label{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea39e25ac3d737c46452305eefe324372c} 
+Omega&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921} 
+\index{Latex.hpp@{Latex.hpp}!TokenType@{TokenType}}
+\index{TokenType@{TokenType}!Latex.hpp@{Latex.hpp}}
+\doxysubsubsection{\texorpdfstring{TokenType}{TokenType}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{Token\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{plus@{plus}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!plus@{plus}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2} 
+plus&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{minus@{minus}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!minus@{minus}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adabe6e597b70e5760826aea1dcc564f7}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adabe6e597b70e5760826aea1dcc564f7} 
+minus&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{mult@{mult}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!mult@{mult}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0f9f2d92c2583ef952556e1f382d0974}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0f9f2d92c2583ef952556e1f382d0974} 
+mult&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{div@{div}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!div@{div}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a38696558dc98494c08d951c052900a2a}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a38696558dc98494c08d951c052900a2a} 
+div&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{pow@{pow}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!pow@{pow}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a30d7e0494351def45591fccb21d3510b}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a30d7e0494351def45591fccb21d3510b} 
+pow&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lpar@{lpar}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!lpar@{lpar}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921accf7d67d401a9c82da15b48131f9fd7e}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921accf7d67d401a9c82da15b48131f9fd7e} 
+lpar&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rpar@{rpar}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!rpar@{rpar}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a58d98d3bd9af081b6ee7da6e0b430068}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a58d98d3bd9af081b6ee7da6e0b430068} 
+rpar&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lbrace@{lbrace}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!lbrace@{lbrace}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ab352cf02a7c4178140fb2e341e09be69}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ab352cf02a7c4178140fb2e341e09be69} 
+lbrace&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rbrace@{rbrace}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!rbrace@{rbrace}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a6ef4ec7ac8cd2f2a0d843da498f78bfd}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a6ef4ec7ac8cd2f2a0d843da498f78bfd} 
+rbrace&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{symbol@{symbol}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!symbol@{symbol}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a97bff26855a8bfa63e05d5477e794b24}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a97bff26855a8bfa63e05d5477e794b24} 
+symbol&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{integer@{integer}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!integer@{integer}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a157db7df530023575515d366c9b672e8}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a157db7df530023575515d366c9b672e8} 
+integer&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{real@{real}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!real@{real}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a4bca24304861acde5770fdbe3cc2503b}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a4bca24304861acde5770fdbe3cc2503b} 
+real&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{derivative@{derivative}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!derivative@{derivative}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a98081e91c3bdc7c16c0f26719caf3abe}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a98081e91c3bdc7c16c0f26719caf3abe} 
+derivative&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{partial@{partial}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!partial@{partial}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0e87c1212a698494dcdb198af3e0eb2f}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a0e87c1212a698494dcdb198af3e0eb2f} 
+partial&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{integral@{integral}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!integral@{integral}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a25aa2761448ea05599418ee93dd1d5c5}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a25aa2761448ea05599418ee93dd1d5c5} 
+integral&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{covariant@{covariant}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!covariant@{covariant}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7b6178e380cd863e8da707b98be1fae0}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7b6178e380cd863e8da707b98be1fae0} 
+covariant&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{contravariant@{contravariant}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!contravariant@{contravariant}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adc199f1a010400d74610bab8af77f814}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adc199f1a010400d74610bab8af77f814} 
+contravariant&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{transpose@{transpose}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!transpose@{transpose}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a382eb179a7d78f25d89c085988b37e95}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a382eb179a7d78f25d89c085988b37e95} 
+transpose&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{inner@{inner}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!inner@{inner}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aea97586b4aa0c141e4456912f3325f7f}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aea97586b4aa0c141e4456912f3325f7f} 
+inner&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{outer@{outer}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!outer@{outer}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7cfcbd1c1575dd7eae454f18b9267188}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7cfcbd1c1575dd7eae454f18b9267188} 
+outer&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{end@{end}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!end@{end}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7f021a1415b86f2d013b2618fb31ae53}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921a7f021a1415b86f2d013b2618fb31ae53} 
+end&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{unknown@{unknown}!Latex.hpp@{Latex.hpp}}\index{Latex.hpp@{Latex.hpp}!unknown@{unknown}}}\Hypertarget{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aad921d60486366258809553a3db49a4a}\label{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921aad921d60486366258809553a3db49a4a} 
+unknown&\\
+\hline
+
+\end{DoxyEnumFields}
