@@ -36,6 +36,26 @@ namespace morpheus_RG {
 					}
 				}
 
+				inline void BSSN(const morpheus::Vector<T>& X,
+						T& alpha,
+						morpheus::Vector<T>& beta,
+						morpheus::Tensor<T, 2>& gamma) const
+				{
+					assert(X.size() == 4);
+					morpheus::Tensor<T, 2> g({4, 4});
+					(*this)(X, g);
+
+					alpha = std::sqrt(-g({0, 0}));
+
+					beta.resize(3);
+					for (size_t i = 0; i < 3; ++i)
+						beta(i) = g(0, i + 1); 
+
+					gamma.resize(3, 3);
+					for (size_t i = 0; i < 3; ++i)
+						for (size_t j = 0; j < 3; ++j)
+							gamma(i, j) = g(i + 1, j + 1);
+				}
 			private:
 				std::function<void(const morpheus::Vector<T>&, morpheus::Tensor<T, 2>&)> custom_metric_fn = nullptr;
 
