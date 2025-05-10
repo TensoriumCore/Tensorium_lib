@@ -1,0 +1,9 @@
+<map id="morpheus::SpectalChebyshev::compute" name="morpheus::SpectalChebyshev::compute">
+<area shape="rect" id="Node000001" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="5,24,220,68"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="279,5,440,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,32,263,27,264,32,221,37"/>
+<area shape="rect" id="Node000003" href="$classmorpheus_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="268,57,451,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,54,253,58,252,63,220,60"/>
+<area shape="rect" id="Node000004" href="$classmorpheus_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d" title=" " alt="" coords="499,49,688,94"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="452,69,484,69,484,74,452,74"/>
+</map>

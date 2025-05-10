@@ -1,0 +1,15 @@
+<map id="morpheus::det_mat" name="morpheus::det_mat">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,120,154,148"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#a9fd335c18a780c70385e9ae1fece079f" title="Compute the determinant using Gaussian elimination." alt="" coords="202,120,367,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,131,186,131,186,137,154,137"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="249,121,243,111,248,101,262,95,284,93,309,96,322,102,319,107,307,101,284,99,263,101,252,105,249,111,254,118"/>
+<area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="459,5,588,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="300,117,349,80,414,42,442,32,444,37,416,47,352,84,304,122"/>
+<area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="439,81,608,126"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="367,121,423,113,424,119,368,126"/>
+<area shape="rect" id="Node000005" href="$classmorpheus_1_1Matrix.html#ad522ddc1c4cd3037496211d01275168a" title="Element access (mutable)" alt="" coords="419,149,628,177"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="368,141,403,146,403,151,367,147"/>
+<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="415,201,631,229"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="317,146,416,186,443,194,442,199,414,191,315,151"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="478,81,476,71,484,62,500,56,523,54,549,57,564,63,562,68,548,62,523,59,501,61,487,66,481,72,483,80"/>
+</map>

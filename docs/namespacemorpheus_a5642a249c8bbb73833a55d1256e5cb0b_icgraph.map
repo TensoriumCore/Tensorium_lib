@@ -1,0 +1,7 @@
+<map id="morpheus::richardson_derivative" name="morpheus::richardson_derivative">
+<area shape="rect" id="Node000001" title="Richardson extrapolation for scalar values." alt="" coords="534,5,696,50"/>
+<area shape="rect" id="Node000002" href="$classmorpheus__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3" title="Computes the 4D Riemann curvature tensor ." alt="" coords="266,5,486,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="519,30,487,30,487,25,519,25"/>
+<area shape="rect" id="Node000003" href="$namespacemorpheus.html#a550ee0012bfeef9ef3b717c066a1f9dd" title=" " alt="" coords="5,5,218,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="250,30,218,30,218,25,250,25"/>
+</map>

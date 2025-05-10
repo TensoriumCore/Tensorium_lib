@@ -1,0 +1,7 @@
+<map id="MathsUtils::_min" name="MathsUtils::_min">
+<area shape="rect" id="Node000001" title=" " alt="" coords="456,5,587,33"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#ad6748cf61df0d4183bb0ee458b11044b" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="206,5,408,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="441,22,409,22,409,17,441,17"/>
+<area shape="rect" id="Node000003" href="$namespacemorpheus.html#a0944f0078af11522c2abb8f488fdb8ec" title=" " alt="" coords="5,5,158,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,22,158,22,158,17,190,17"/>
+</map>
