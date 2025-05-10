@@ -34,6 +34,7 @@ namespace morpheus {
 					return data[i];
 				}
 
+				void resize(size_t n) { data.resize(n); }
 				const K& operator()(size_t i) const {
 					return data[i];
 				}

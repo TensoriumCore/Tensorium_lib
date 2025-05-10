@@ -56,14 +56,23 @@ namespace morpheus {
 					return data[i * dimensions[1] + j];
 				}
 
+				void update_strides() {
+					strides[Rank - 1] = 1;
+					for (int64_t i = Rank - 2; i >= 0; --i)
+						strides[i] = strides[i + 1] * dimensions[i + 1];
+				}
+
 				void resize(const std::array<size_t, 2>& dims) {
 					dimensions = dims;
-					data.resize(dims[0] * dims[1]);
+					update_strides();
+					total_size = dims[0] * dims[1];
+					data.resize(total_size);
 				}
 
 				void resize(size_t d0, size_t d1) {
 					resize(std::array<size_t, 2>{d0, d1});
 				}
+
 
 				K& operator()(const std::array<size_t, Rank>& indices) {
 					size_t index = flatten_index(indices);

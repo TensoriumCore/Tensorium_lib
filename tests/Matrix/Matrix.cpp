@@ -235,8 +235,23 @@ int matrix_tests() {
 	R.print_shape();
 	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
 	R.print();
+	
+	double alpha;
+	morpheus::Vector<double> beta(3);
+	morpheus::Tensor<double, 2> gammaj;
+	metric.BSSN(X, alpha, beta, gammaj);
 
-     constexpr std::size_t N = 1024;
+	std::cout << "\n--- BSSN 3+1 Decomposition ---\n";
+	std::cout << "Lapse α = " << alpha << "\n";
+	std::cout << "Shift vector β^i = [";
+	for (size_t i = 0; i < beta.size(); ++i)
+		std::cout << beta(i) << (i + 1 < beta.size() ? ", " : "");
+	std::cout << "]\n";
+	std::cout << "Spatial metric γ_{ij}:\n";
+	gammaj.print_shape();
+	gammaj.print();
+
+	constexpr std::size_t N = 1024;
     constexpr double L = 1.0; 
     constexpr double dx = L / N;
     constexpr double two_pi = 2.0 * M_PI;
