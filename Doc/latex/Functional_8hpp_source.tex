@@ -1,0 +1,332 @@
+\doxysection{Functional.\+hpp}
+\hypertarget{Functional_8hpp_source}{}\label{Functional_8hpp_source}\index{includes/Morpheus/Functionnal/Functional.hpp@{includes/Morpheus/Functionnal/Functional.hpp}}
+\mbox{\hyperlink{Functional_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Vector_8hpp}{../Core/Vector.hpp}}"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Matrix_8hpp}{../Core/Matrix.hpp}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Core_2Tensor_8hpp}{../Core/Tensor.hpp}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{LinearSolver_8hpp}{../Core/LinearSolver.hpp}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Derivate_8hpp}{../Core/Derivate.hpp}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Spectral_8hpp}{../Core/Spectral.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{comment}{//\ ===\ VECTOR\ OPS\ ===}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ @brief\ Add\ two\ vectors}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ @return\ Resulting\ vector}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_af9926f14a7ebe29eb59247e85ca9d966}{add\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ result\ =\ a;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ result.add(b);}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ *\ @brief\ Subtract\ two\ vectors}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ @return\ Resulting\ vector}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_aa4cdeeda976ba0c2d3672d7451113667}{sub\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ result\ =\ a;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ result.sub(b);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ @brief\ Scale\ a\ vector\ by\ a\ scalar}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *\ @param\ a\ Vector\ to\ scale}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ @param\ scalar\ Scalar\ value}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ @return\ Resulting\ vector}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a1a2e7c9b09299ca68a111830951ae130}{scl\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}})\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ result\ =\ a;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ result.scl(\mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}});}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *\ @brief\ Normalize\ a\ vector}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *\ @param\ a\ Vector\ to\ normalize}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ @return\ Normalized\ vector}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_ac602e395cc3c3114f5fea2836dc0aa90}{norm1\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a)\ \ \ \{\ \textcolor{keywordflow}{return}\ a.norm\_1();\ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *\ @brief\ Normalize\ 2\ a\ vector}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ *\ @param\ a\ Vector\ to\ normalize}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *\ @return\ Normalized\ vector}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_a6575e74e4f04f1d923a2b7caee2d1b1e}{norm2\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a)\ \ \ \{\ \textcolor{keywordflow}{return}\ a.norm\_2();\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ @brief\ Normalize\ inf\ a\ vector}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *\ @param\ a\ Vector\ to\ normalize}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ *\ @return\ Normalized\ vector}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_a9b66a4923bf8f9855d86269d632a1ce7}{normInf\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a)\ \{\ \textcolor{keywordflow}{return}\ a.norm\_inf();\ \}}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00078\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ @brief\ Dot\ product\ of\ two\ vectors}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ @return\ Dot\ product\ result}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_a7f25c4d1440b2d589c64b9156f48824f}{dot\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{\ \textcolor{keywordflow}{return}\ a.dot(b);\ \}}
+\DoxyCodeLine{00086\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ *\ Cosine\ of\ the\ angle\ between\ two\ vectors}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ *\ @return\ Cosine\ of\ the\ angle}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_a4c3e05e39a897a421cbb3085c558b934}{cosine\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>::angle\_cos}}(a,\ b);\ \}}
+\DoxyCodeLine{00094\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ *\ Lerp\ between\ two\ vectors}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ *\ @param\ t\ Interpolation\ factor}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ *\ @return\ Interpolated\ vector}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00103\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a3e63a52c9cc63b03ef1109bbac541953}{lerp\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ t)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>::lerp}}(a,\ b,\ t);}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ *\ Linear\ combination\ of\ multiple\ vectors}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ *\ @param\ u\ Vector\ of\ vectors}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ *\ @param\ coef\ Coefficients\ for\ the\ linear\ combination}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ *\ @return\ Resulting\ vector}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00115\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a08de3e53d9f237bcf3b66675c97c2a1d}{linear\_combination\_vec}}(\textcolor{keyword}{const}\ std::vector<\mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}>\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{u}},\ \textcolor{keyword}{const}\ std::vector<T>\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{coef}})\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>::linear\_combination}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{u}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{coef}});}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ *\ Cross\ product\ of\ two\ vectors}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ *\ @param\ a\ First\ vector}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ *\ @param\ b\ Second\ vector}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ *\ @return\ Cross\ product\ result}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00127\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_ae8fdbc8b1b3dd97d57e2fe0da57cd439}{cross\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector<T>::cross\_product}}(a,\ b);}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ ===\ MATRIX\ OPS\ ===}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ *\ @brief\ Add\ two\ matrices}}
+\DoxyCodeLine{00135\ \textcolor{comment}{\ *\ @param\ A\ First\ matrix}}
+\DoxyCodeLine{00136\ \textcolor{comment}{\ *\ @param\ B\ Second\ matrix}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ *\ @return\ Resulting\ matrix}}
+\DoxyCodeLine{00138\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00141\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a7f5b701665e512ce59bb2c1e8fca44e1}{add\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ B)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ result\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ result.add(B);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ *\ @brief\ Subtract\ two\ matrices}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ *\ @param\ A\ First\ matrix}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ *\ @param\ B\ Second\ matrix}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ *\ @return\ Resulting\ matrix}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00155\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a9298933e8e700a86412c1b9babdf90b9}{sub\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ B)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ result\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}};}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ result.sub(B);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ *\ @brief\ Scale\ a\ matrix\ by\ a\ scalar}}
+\DoxyCodeLine{00163\ \textcolor{comment}{\ *\ @param\ A\ Matrix\ to\ scale}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ *\ @param\ scalar\ Scalar\ value}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ *\ @return\ Resulting\ matrix}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00169\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a4b6f20a0b50871333f193d3389f78401}{scl\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}})\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ result\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}};}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ result.scl(\mbox{\hyperlink{classmorpheus_1_1Tensor}{scalar}});}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ *\ @brief\ Matrix\ multiplication}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ *\ @param\ A\ First\ matrix}}
+\DoxyCodeLine{00178\ \textcolor{comment}{\ *\ @param\ B\ Second\ matrix}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ *\ @return\ Resulting\ matrix}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ *\ @note\ Assumes\ A.cols()\ ==\ B.rows()}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ *\ @note\ Uses\ SIMD\ for\ optimization}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ *\ @note\ OpenMP\ parallelization\ for\ large\ matrices,\ for\ small\ matrices,\ it\ is\ not\ worth\ the\ overhead}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ *\ @note\ (For\ matrix\ 4x4,\ 8x8\ and\ 16x16,\ there's\ a\ SIMD\ fallback\ to\ ensure\ L1\ and\ L2\ cache\ storage)}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00187\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec}{mul\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ B)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.mul\_mat(B);\ }
+\DoxyCodeLine{00189\ \ \ \ \ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ *\ @brief\ Matrix\ transpose\ }}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ *\ @param\ A\ Matrix\ to\ transpose}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_ae1e78fa78c3d01cf0aae1e3c347dd08a}{transpose\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.transpose();}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ *\ @brief\ Trace\ of\ a\ matrix}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ *\ @param\ A\ Matrix\ to\ trace}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a2759560f3161aa1d7ab494384ac6c33f}{trace\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.trace();}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ *\ @brief\ Multiply\ a\ matrix\ by\ a\ vector}}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ *\ @param\ A\ Matrix}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ *\ @param\ x\ Vector}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ *\ @return\ Resulting\ vector}}
+\DoxyCodeLine{00216\ \textcolor{comment}{\ *\ @note\ Assumes\ A.cols()\ ==\ x.size()}}
+\DoxyCodeLine{00217\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a4429f93147f7895d9f5782820c56cbf8}{mul\_vec}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ x)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.mul\_vec(x);}
+\DoxyCodeLine{00222\ \ \ \ \ \}}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00225\ \textcolor{comment}{\ *\ @brief\ Inverse\ of\ a\ matrix}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ *\ @param\ A\ Matrix\ to\ invert}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ *\ @return\ Inverted\ matrix}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ *\ @note\ Assumes\ A\ is\ square}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ *\ @note\ Uses\ LU\ decomposition\ for\ inversion}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00233\ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a2ba0e55adbcd8c127cc3ee7240530cd3}{inverse\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.inverse();}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_a80a98e1ae84fa1ec96d29486c2f83acc}{det\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.det();}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{namespacemorpheus_a52edd23638a57f727b66ff6a7388058f}{rank\_mat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}})\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}.rank();}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ ===\ TENSOR\ OPS\ ===}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K,\ std::\textcolor{keywordtype}{size\_t}\ Rank>}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ I,\ \textcolor{keywordtype}{size\_t}\ J>}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ Tensor<K,\ Rank\ -\/\ 2>\ Tensor<K,\ Rank>::contract\_tensor()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{I}}\ <\ Rank\ \&\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{J}}\ <\ Rank\ \&\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{I}}\ !=\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{J}},\ \textcolor{stringliteral}{"{}Invalid\ contraction\ indices"{}});}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{contract\_simd}}(*\textcolor{keyword}{this},\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{I}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor_add63eead7e596a891d704488cc73a7d0}{J}});}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ K,\ std::\textcolor{keywordtype}{size\_t}\ Rank>}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ Rank>}}\ \mbox{\hyperlink{namespacemorpheus_a942435fbed57720116b51adf54c03bcd}{transpose\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ Rank>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}})\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}.\mbox{\hyperlink{classmorpheus_1_1Tensor_a8a3390d3b499e74ded35464d380bf18f}{transpose\_simd}}();}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K,\ \textcolor{keywordtype}{size\_t}\ R1,\ \textcolor{keywordtype}{size\_t}\ R2>}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ R1\ +\ R2>}}\ \mbox{\hyperlink{namespacemorpheus_a95d1671f12bab84d3df9b978680af800}{mul\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ R1>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ R2>}}\&\ B)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ R1>::template}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor\_product<R1,\ R2>}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ B);}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{size\_t}\ I,\ \textcolor{keywordtype}{size\_t}\ J,\ \textcolor{keyword}{typename}\ K,\ std::\textcolor{keywordtype}{size\_t}\ Rank>}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}<\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}},\ Rank\ -\/\ 2>\ \mbox{\hyperlink{namespacemorpheus_a553a15a4ad1c795c18ce3ed04dfaf840}{contract\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<K,\ Rank>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}})\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{I}}\ <\ Rank\ \&\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{J}}\ <\ Rank\ \&\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{I}}\ !=\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{J}},\ \textcolor{stringliteral}{"{}Invalid\ contraction\ indices"{}});}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}.template\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{contract\_tensor<I,\ J>}}();}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{comment}{//\ ===\ LINEAR\ SOLVERS\ ===}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a695ad97fedbe4dfae664ab86846df19e}{gauss\_solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Gauss}{solver::Gauss<T>::solve}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ b);}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\ \mbox{\hyperlink{namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c}{jacobi\_solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ b,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tol}}\ =\ 1\mbox{\hyperlink{classmorpheus_1_1Tensor}{e}}-\/6,\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{max\_iter}}\ =\ 1000)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}{solver::Jacobi<T>::solve}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}},\ b,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tol}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{max\_iter}});}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{//\ ===\ DERIVATIVES\ ===}}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_a3e21ebc6020ca61352246c36630ad02d}{centered\_derivative}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Derivate<K>}}\&\ input,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Derivate<K>}}\&\ output,\ \textcolor{keywordtype}{size\_t}\ axis,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}\ dx)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ input.centered\_derivative(input,\ output,\ axis,\ dx);}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K>}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\_derivative\_order4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Derivate<K>}}\&\ input,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Derivate<K>}}\&\ output,\ \textcolor{keywordtype}{size\_t}\ axis,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}\ dx)\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\_derivative\_order4}}(input,\ output,\ axis,\ dx);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K,\ \textcolor{keywordtype}{size\_t}\ Rank>}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_a3e21ebc6020ca61352246c36630ad02d}{centered\_derivative}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{DerivateND<K,\ Rank>}}\&\ input,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{DerivateND<K,\ Rank>}}\&\ output,\ \textcolor{keywordtype}{size\_t}\ axis,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}\ dx)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ input.centered\_derivative(input,\ output,\ axis,\ dx);}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ K,\ \textcolor{keywordtype}{size\_t}\ Rank>}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_aee47a33addf8f5b32455587352cb450a}{centered\_derivative\_order4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{DerivateND<K,\ Rank>}}\&\ input,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{DerivateND<K,\ Rank>}}\&\ output,\ \textcolor{keywordtype}{size\_t}\ axis,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}\ dx)\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ input.centered\_derivative\_order4\_rank(input,\ output,\ axis,\ dx);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ }
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{//===\ SPECTRAL\ METHODS\ ===}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_ae221eff9667ffd1424b306662e20b1d3}{forwardFFT}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector}}<std::complex<T>>\&\ data)}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{SpectralFFT<T>::forward}}(data);}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_ad5478f49e42b2f281d15e67587dfd92d}{backwardFFT}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector}}<std::complex<T>>\&\ data)}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{SpectralFFT<T>::backward}}(data);}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_ab0d022c164f50fe46524e1af50e826d7}{backwardFFP}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector}}<std::complex<T>>\&\ data)}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{SpectralFFT<T>::backward}}(data);}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \}}
+
+\end{DoxyCode}

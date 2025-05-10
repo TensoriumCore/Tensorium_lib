@@ -1,0 +1,42 @@
+\doxysection{includes/\+Morpheus/\+Functionnal/\+Functionnal\+RG.hpp File Reference}
+\hypertarget{FunctionnalRG_8hpp}{}\label{FunctionnalRG_8hpp}\index{includes/Morpheus/Functionnal/FunctionnalRG.hpp@{includes/Morpheus/Functionnal/FunctionnalRG.hpp}}
+{\ttfamily \#include "{}../\+Core/\+Vector.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+Core/\+Tensor.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+Diff\+Geometry/\+Christoffel\+Symbol.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+Diff\+Geometry/\+Metric.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+Diff\+Geometry/\+Riemann\+Tensor.\+hpp"{}}\newline
+{\ttfamily \#include "{}../\+Diff\+Geometry/\+Ricci\+Tensor.\+hpp"{}}\newline
+Include dependency graph for Functionnal\+RG.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemorpheus}{morpheus}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}{morpheus\+::inv\+\_\+mat\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}{morpheus\+::tensor\+\_\+to\+\_\+matrix}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}{morpheus\+::matrix\+\_\+to\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} , \mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} $>$ }\\\mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{morpheus\+\_\+\+RG\+::\+Christoffel\+Sym}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \mbox{\hyperlink{namespacemorpheus_a16c823b33c29fcc4b19533a7ef41822e}{morpheus\+::compute\+\_\+christoffel}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g\+\_\+inv}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{Metric\+Func}} \&\&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric\+\_\+generator}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ad37fcae31cc6fcfb74ef0726257004d2}{morpheus\+::generate\+\_\+metric}} (const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \mbox{\hyperlink{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd}{morpheus\+::compute\+\_\+riemann\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}}, const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7}{morpheus\+::print\+\_\+riemann\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \mbox{\hyperlink{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7}{morpheus\+::contract\+\_\+riemann\+\_\+to\+\_\+ricci}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 4 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e}{morpheus\+::compute\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb}{morpheus\+::print\+\_\+ricci\+\_\+tensor}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})
+\item 
+{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c}{morpheus\+::print\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2 $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{g\+\_\+inv}})
+\end{DoxyCompactItemize}

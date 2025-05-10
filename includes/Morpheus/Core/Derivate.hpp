@@ -14,24 +14,50 @@
 #include <numeric>
 
 
+/* ************************************************************************** */
+/** @file Derivate.hpp
+ *  @brief Numerical differentiation operators using SIMD.
+ *  @author Louis Touzalin
+ *  @ingroup Derivation
+ */
+/* ************************************************************************** */
+
 namespace morpheus {
+	/**
+	 * @brief A 2D aligned matrix for numerical derivatives.
+	 * 
+	 * @tparam K Scalar type (e.g., float, double).
+	 */
 	template<typename K>
 		class Derivate {
 			public:
 				size_t rows, cols;
 				aligned_vector<K> data;
 				size_t block_size;
-
+				/**
+				 * @brief Constructor with explicit dimensions.
+				 * 
+				 * @param r Number of rows.
+				 * @param c Number of columns.
+				 */
 				Derivate(size_t r, size_t c)
 					: rows(r), cols(c), data(r * c, K()), block_size(detect_optimal_block_size()) {
 						std::cout << "Auto-selected BLOCK_SIZE = " << block_size << std::endl;
 					}
-
+				/**
+				 * @brief Construct from an existing matrix.
+				 * 
+				 * @param m Input matrix.
+				 */
 				Derivate(const Matrix<K>& m)
 					: rows(m.rows), cols(m.cols), data(m.data), block_size(detect_optimal_block_size()) {}
-
-
-
+				/**
+				 * @brief Mutable access to an element.
+				 * 
+				 * @param i Row index.
+				 * @param j Column index.
+				 * @return Reference to element (i,j).
+				 */
 				K& operator()(size_t i, size_t j) {
 					if (i >= rows || j >= cols) {
 						std::cerr 
@@ -43,19 +69,33 @@ namespace morpheus {
 					assert(i < rows && j < cols);
 					return data[i * cols + j];
 				}
-
-
+				/**
+				 * @brief Const access to an element.
+				 * 
+				 * @param i Row index.
+				 * @param j Column index.
+				 * @return Const reference to element (i,j).
+				 */
 				const K& operator()(size_t i, size_t j) const {
 					assert(i < rows && j < cols && "Derivate::operator() const: indice hors bornes");
 					return data[i * cols + j];
 				}
-
-
+				/**
+				 * @brief Total number of elements in the matrix.
+				 * 
+				 * @return Total size.
+				 */
 				size_t size() const {
 					return rows * cols;
 				}
-
-
+				/**
+				 * @brief Compute second-order centered derivative.
+				 * 
+				 * @param input Input matrix.
+				 * @param output Output matrix.
+				 * @param axis Differentiation axis (0 = rows, 1 = cols).
+				 * @param dx Grid spacing.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -109,8 +149,14 @@ namespace morpheus {
 							std::cerr << "[centered_derivative] Invalid axis: must be 0 or 1\n";
 						}
 					}
-
-
+				/**
+				 * @brief Compute fourth-order centered derivative.
+				 * 
+				 * @param input Input matrix.
+				 * @param output Output matrix.
+				 * @param axis Differentiation axis.
+				 * @param dx Grid spacing.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void centered_derivative_order4(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -205,21 +251,28 @@ namespace morpheus {
 		};
 
 
-
+	/**
+	 * @brief A multi-dimensional aligned tensor for numerical derivatives.
+	 * 
+	 * @tparam K Scalar type.
+	 * @tparam Rank Tensor rank (dimensionality).
+	 */
 	template<typename K, size_t Rank>
 		class DerivateND {
 			public:
 				std::array<size_t, Rank> shape;
 				aligned_vector<K> data;
 				size_t block_size;
-
+				/**
+				 * @brief Construct a tensor with a given shape.
+				 * 
+				 * @param dims Tensor dimensions.
+				 */
 				DerivateND(const std::array<size_t, Rank>& dims) 
 					: shape(dims),
 					data(std::accumulate(dims.begin(), dims.end(), size_t(1), std::multiplies<size_t>()), K()),
 					block_size(detect_optimal_block_size()) 
-			{
-				std::cout << "Auto-selected BLOCK_SIZE = " << block_size << std::endl;
-			}
+				{std::cout << "Auto-selected BLOCK_SIZE = " << block_size << std::endl;}
 
 				inline size_t flatten_index(const std::array<size_t, Rank>& indices) const {
 					size_t index = 0, stride = 1;
@@ -229,22 +282,43 @@ namespace morpheus {
 					}
 					return index;
 				}
-
+				/**
+				 * @brief Mutable access to a tensor element.
+				 * 
+				 * @param indices Multi-index.
+				 * @return Reference to the element.
+				 */
 				inline K& operator()(const std::array<size_t, Rank>& indices) {
 					return data[flatten_index(indices)];
 				}
-
+				/**
+				 * @brief Const access to a tensor element.
+				 * 
+				 * @param indices Multi-index.
+				 * @return Const reference to the element.
+				 */
 				inline const K& operator()(const std::array<size_t, Rank>& indices) const {
 					return data[flatten_index(indices)];
 				}
-
+				/**
+				 * @brief Total number of elements in the tensor.
+				 * 
+				 * @return Total size.
+				 */
 				inline size_t size() const {
 					return data.size();
 				}
-
+				/**
+				 * @brief Compute second-order centered derivative along an axis.
+				 * 
+				 * @param input Input tensor.
+				 * @param output Output tensor.
+				 * @param axis Axis to differentiate.
+				 * @param dx Grid spacing.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void centered_derivative(const DerivateND<K, Rank>& input, DerivateND<K,\
-													Rank>& output, size_t axis, K dx) const {
+							Rank>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
 						const size_t simd_width = Simd::width;
@@ -301,11 +375,17 @@ namespace morpheus {
 							Simd::storeu(out_ptr, result);
 						}
 					}
-
-
+				/**
+				 * @brief Compute fourth-order centered derivative along an axis.
+				 * 
+				 * @param input Input tensor.
+				 * @param output Output tensor.
+				 * @param axis Axis to differentiate.
+				 * @param dx Grid spacing.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void centered_derivative_order4_rank(const DerivateND<K, Rank>& input,\
-																DerivateND<K, Rank>& output, size_t axis, K dx) const {
+							DerivateND<K, Rank>& output, size_t axis, K dx) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
 						using reg  = typename Simd::reg;
 						constexpr size_t W = Simd::width;
@@ -379,11 +459,17 @@ namespace morpheus {
 					}
 
 		};
-
-
-
-
-
+	/**
+	 * @brief Richardson extrapolation for vectors or containers.
+	 * 
+	 * @tparam Container Vector-like container type.
+	 * @param plus_h f(x + h)
+	 * @param minus_h f(x - h)
+	 * @param plus_half_h f(x + h/2)
+	 * @param minus_half_h f(x - h/2)
+	 * @param h Step size.
+	 * @return Richardson-extrapolated derivative.
+	 */
 	template <typename Container>
 		inline Container richardson_derivative_container(
 				const Container& plus_h,
@@ -405,6 +491,17 @@ namespace morpheus {
 			}
 			return out;
 		}
+	/**
+	 * @brief Richardson extrapolation for scalar values.
+	 * 
+	 * @tparam T Scalar type.
+	 * @param plus_h f(x + h)
+	 * @param minus_h f(x - h)
+	 * @param plus_half_h f(x + h/2)
+	 * @param minus_half_h f(x - h/2)
+	 * @param h Step size.
+	 * @return Richardson-extrapolated scalar derivative.
+	 */
 	template <typename T>
 		inline T richardson_derivative(
 				const T& plus_h,

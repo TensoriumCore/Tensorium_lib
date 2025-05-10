@@ -1,0 +1,111 @@
+\doxysection{morpheus\+::mpi Namespace Reference}
+\hypertarget{namespacemorpheus_1_1mpi}{}\label{namespacemorpheus_1_1mpi}\index{morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a267c2781229ef5c07074eebbdb593e3b}{init}} (\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \texorpdfstring{$\ast$}{*}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{char}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_ac90db0a5895e5f0e8dccf5b2dea43405}{finalize}} ()
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a5e00da417debea6e3a433a19eb1ad806}{rank}} ()
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_ab883518438824321f8bde0d015618df5}{size}} ()
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a74a8b1eed13f8cb37f20f9581448ea40}{barrier}} ()
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a454685038596a78bbfa361c584742423}{send}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a1756988a048c464dd6ccc9b73585a8ac}{recv}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a38cc08d5e6c8388281a402d2dab00c69}{bcast}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a669bf2e5847d73a6c68828739445f30b}{allreduce}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a1766be64ad0fd3c863f907ddb9c20ed2}{reduce}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_a028fbed716196bcaa74959e2cd2c2c26}{gather}} (Args...)
+\item 
+{\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{namespacemorpheus_1_1mpi_ad778fa214f6195dda8ec45fbbfa23e7b}{scatter}} (Args...)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacemorpheus_1_1mpi_a669bf2e5847d73a6c68828739445f30b}\label{namespacemorpheus_1_1mpi_a669bf2e5847d73a6c68828739445f30b} 
+\index{morpheus::mpi@{morpheus::mpi}!allreduce@{allreduce}}
+\index{allreduce@{allreduce}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{allreduce()}{allreduce()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::allreduce (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a74a8b1eed13f8cb37f20f9581448ea40}\label{namespacemorpheus_1_1mpi_a74a8b1eed13f8cb37f20f9581448ea40} 
+\index{morpheus::mpi@{morpheus::mpi}!barrier@{barrier}}
+\index{barrier@{barrier}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{barrier()}{barrier()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::barrier (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a38cc08d5e6c8388281a402d2dab00c69}\label{namespacemorpheus_1_1mpi_a38cc08d5e6c8388281a402d2dab00c69} 
+\index{morpheus::mpi@{morpheus::mpi}!bcast@{bcast}}
+\index{bcast@{bcast}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{bcast()}{bcast()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::bcast (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_ac90db0a5895e5f0e8dccf5b2dea43405}\label{namespacemorpheus_1_1mpi_ac90db0a5895e5f0e8dccf5b2dea43405} 
+\index{morpheus::mpi@{morpheus::mpi}!finalize@{finalize}}
+\index{finalize@{finalize}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{finalize()}{finalize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::finalize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a028fbed716196bcaa74959e2cd2c2c26}\label{namespacemorpheus_1_1mpi_a028fbed716196bcaa74959e2cd2c2c26} 
+\index{morpheus::mpi@{morpheus::mpi}!gather@{gather}}
+\index{gather@{gather}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{gather()}{gather()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::gather (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a267c2781229ef5c07074eebbdb593e3b}\label{namespacemorpheus_1_1mpi_a267c2781229ef5c07074eebbdb593e3b} 
+\index{morpheus::mpi@{morpheus::mpi}!init@{init}}
+\index{init@{init}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \texorpdfstring{$\ast$}{*}}]{,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{char}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a5e00da417debea6e3a433a19eb1ad806}\label{namespacemorpheus_1_1mpi_a5e00da417debea6e3a433a19eb1ad806} 
+\index{morpheus::mpi@{morpheus::mpi}!rank@{rank}}
+\index{rank@{rank}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{rank()}{rank()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} morpheus\+::mpi\+::rank (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a1756988a048c464dd6ccc9b73585a8ac}\label{namespacemorpheus_1_1mpi_a1756988a048c464dd6ccc9b73585a8ac} 
+\index{morpheus::mpi@{morpheus::mpi}!recv@{recv}}
+\index{recv@{recv}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{recv()}{recv()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::recv (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a1766be64ad0fd3c863f907ddb9c20ed2}\label{namespacemorpheus_1_1mpi_a1766be64ad0fd3c863f907ddb9c20ed2} 
+\index{morpheus::mpi@{morpheus::mpi}!reduce@{reduce}}
+\index{reduce@{reduce}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{reduce()}{reduce()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::reduce (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_ad778fa214f6195dda8ec45fbbfa23e7b}\label{namespacemorpheus_1_1mpi_ad778fa214f6195dda8ec45fbbfa23e7b} 
+\index{morpheus::mpi@{morpheus::mpi}!scatter@{scatter}}
+\index{scatter@{scatter}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{scatter()}{scatter()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::scatter (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_a454685038596a78bbfa361c584742423}\label{namespacemorpheus_1_1mpi_a454685038596a78bbfa361c584742423} 
+\index{morpheus::mpi@{morpheus::mpi}!send@{send}}
+\index{send@{send}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily template$<$typename... Args$>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} morpheus\+::mpi\+::send (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespacemorpheus_1_1mpi_ab883518438824321f8bde0d015618df5}\label{namespacemorpheus_1_1mpi_ab883518438824321f8bde0d015618df5} 
+\index{morpheus::mpi@{morpheus::mpi}!size@{size}}
+\index{size@{size}!morpheus::mpi@{morpheus::mpi}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} morpheus\+::mpi\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+

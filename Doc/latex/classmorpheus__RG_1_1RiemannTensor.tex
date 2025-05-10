@@ -1,0 +1,107 @@
+\doxysection{morpheus\+\_\+\+RG\+::Riemann\+Tensor\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classmorpheus__RG_1_1RiemannTensor}{}\label{classmorpheus__RG_1_1RiemannTensor}\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Riemann\+Tensor.\+hpp$>$}
+
+
+
+Collaboration diagram for morpheus\+\_\+\+RG\+::Riemann\+Tensor\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 4$>$
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_acbaa8e78bc16ffe97fff78cd8453d9e2}{Tensor2D}} = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 2$>$
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_aaa987007fb978a275ed92c586c85c6da}{VectorT}} = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{print\+\_\+componentwise}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \&R, T threshold=1e-\/12)
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_af8ba4095565bfedb852d3d36fe5b1b46}{print}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \&R, const std\+::string \&name="{}Riemann"{})
+\item 
+static \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{compute}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_aaa987007fb978a275ed92c586c85c6da}{VectorT}} \&X, T h, const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{Metric}}$<$ T $>$ \&metric)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_acbaa8e78bc16ffe97fff78cd8453d9e2}\label{classmorpheus__RG_1_1RiemannTensor_acbaa8e78bc16ffe97fff78cd8453d9e2} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!Tensor2D@{Tensor2D}}
+\index{Tensor2D@{Tensor2D}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tensor2D}{Tensor2D}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::\+Tensor2D = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 2$>$}
+
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}\label{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!Tensor4D@{Tensor4D}}
+\index{Tensor4D@{Tensor4D}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tensor4D}{Tensor4D}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::\+Tensor4D = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 4$>$}
+
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_aaa987007fb978a275ed92c586c85c6da}\label{classmorpheus__RG_1_1RiemannTensor_aaa987007fb978a275ed92c586c85c6da} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!VectorT@{VectorT}}
+\index{VectorT@{VectorT}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{VectorT}{VectorT}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::\+VectorT = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$T$>$}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}\label{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!compute@{compute}}
+\index{compute@{compute}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{compute()}{compute()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::compute (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_aaa987007fb978a275ed92c586c85c6da}{VectorT}} \&}]{X,  }\item[{T}]{h,  }\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{Metric}}$<$ T $>$ \&}]{metric }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c}{lambda}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}, \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{morpheus\+::richardson\+\_\+derivative()}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd}{morpheus\+::compute\+\_\+riemann\+\_\+tensor()}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+Here is the caller graph for this function\+:
+% FIG 2
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_af8ba4095565bfedb852d3d36fe5b1b46}\label{classmorpheus__RG_1_1RiemannTensor_af8ba4095565bfedb852d3d36fe5b1b46} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!print@{print}}
+\index{print@{print}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::print (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \&}]{R,  }\item[{const std\+::string \&}]{name = {\ttfamily "{}Riemann"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}.
+
+\Hypertarget{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}\label{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd} 
+\index{morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}!print\_componentwise@{print\_componentwise}}
+\index{print\_componentwise@{print\_componentwise}!morpheus\_RG::RiemannTensor$<$ T $>$@{morpheus\_RG::RiemannTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print\_componentwise()}{print\_componentwise()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{morpheus\+\_\+\+RG\+::\+Riemann\+Tensor}}$<$ T $>$\+::print\+\_\+componentwise (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a99dd11b912c5bb7dca1bb260de7859c3}{Tensor4D}} \&}]{R,  }\item[{T}]{threshold = {\ttfamily 1e-\/12} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c}{lambda}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7}{morpheus\+::print\+\_\+riemann\+\_\+tensor()}}.
+
+Here is the caller graph for this function\+:
+% FIG 3
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+Diff\+Geometry/\mbox{\hyperlink{RiemannTensor_8hpp}{Riemann\+Tensor.\+hpp}}\end{DoxyCompactItemize}

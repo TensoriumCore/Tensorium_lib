@@ -1,0 +1,18 @@
+digraph "morpheus::backwardFFT"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="LR";
+  Node1 [id="Node000001",label="morpheus::backwardFFT",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge6_Node000001_Node000002",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="morpheus::SpectralFFT\l::backward",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1SpectralFFT.html#a8aa6f0097f5cb99fb73c1d4de0cadd83",tooltip=" "];
+  Node2 -> Node3 [id="edge7_Node000002_Node000003",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="morpheus::SpectralFFT\l::transform_impl",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1SpectralFFT.html#af8b03cd7c754f80f2ee63179abffa406",tooltip=" "];
+  Node3 -> Node4 [id="edge8_Node000003_Node000004",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="morpheus::SpectralFFT\l::bit_reverse",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1SpectralFFT.html#a2719a910e7f474b09c04e1c8856215b8",tooltip=" "];
+  Node4 -> Node5 [id="edge9_Node000004_Node000005",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="morpheus::Vector::size",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc",tooltip=" "];
+  Node3 -> Node5 [id="edge10_Node000003_Node000005",color="steelblue1",style="solid",tooltip=" "];
+}

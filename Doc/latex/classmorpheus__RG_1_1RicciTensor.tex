@@ -1,0 +1,160 @@
+\doxysection{morpheus\+\_\+\+RG\+::Ricci\+Tensor\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classmorpheus__RG_1_1RicciTensor}{}\label{classmorpheus__RG_1_1RicciTensor}\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Ricci\+Tensor.\+hpp$>$}
+
+
+
+Collaboration diagram for morpheus\+\_\+\+RG\+::Ricci\+Tensor\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a87772970532e7d00af6bf09aa16935f9}{Tensor4D}} = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 4$>$
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 2$>$
+\item 
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_af2e4a39800f473c60139ad6216dcbb7d}{VectorT}} = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{contract\+\_\+to\+\_\+ricci}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a87772970532e7d00af6bf09aa16935f9}{Tensor4D}} \&Riemann, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g\+\_\+inv)
+\item 
+static double \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{compute\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&Ricci, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g\+\_\+inv)
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{print\+\_\+componentwise}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&R, T threshold=1e-\/12)
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4b4f761a29547941fba9dcd92f1915e2}{print}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&R, const std\+::string \&name="{}Ricci"{})
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a1cbadf0e68bbb59b4a59540194f16a5b}{print}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&R, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g\+\_\+inv, const std\+::string \&name="{}Ricci"{})
+\item 
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{print\+\_\+ricci\+\_\+scalar}} (const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&Ricci, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g\+\_\+inv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}\label{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!Tensor2D@{Tensor2D}}
+\index{Tensor2D@{Tensor2D}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tensor2D}{Tensor2D}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::\+Tensor2D = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 2$>$}
+
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_a87772970532e7d00af6bf09aa16935f9}\label{classmorpheus__RG_1_1RicciTensor_a87772970532e7d00af6bf09aa16935f9} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!Tensor4D@{Tensor4D}}
+\index{Tensor4D@{Tensor4D}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tensor4D}{Tensor4D}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::\+Tensor4D = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 4$>$}
+
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_af2e4a39800f473c60139ad6216dcbb7d}\label{classmorpheus__RG_1_1RicciTensor_af2e4a39800f473c60139ad6216dcbb7d} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!VectorT@{VectorT}}
+\index{VectorT@{VectorT}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{VectorT}{VectorT}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::\+VectorT = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$T$>$}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}\label{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!compute\_ricci\_scalar@{compute\_ricci\_scalar}}
+\index{compute\_ricci\_scalar@{compute\_ricci\_scalar}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{compute\_ricci\_scalar()}{compute\_ricci\_scalar()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static double \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::compute\+\_\+ricci\+\_\+scalar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&}]{Ricci,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g\+\_\+inv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e}{morpheus\+::compute\+\_\+ricci\+\_\+scalar()}}, and \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::print\+\_\+ricci\+\_\+scalar()}}.
+
+Here is the caller graph for this function\+:
+% FIG 1
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}\label{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!contract\_to\_ricci@{contract\_to\_ricci}}
+\index{contract\_to\_ricci@{contract\_to\_ricci}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{contract\_to\_ricci()}{contract\_to\_ricci()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::contract\+\_\+to\+\_\+ricci (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a87772970532e7d00af6bf09aa16935f9}{Tensor4D}} \&}]{Riemann,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g\+\_\+inv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7}{morpheus\+::contract\+\_\+riemann\+\_\+to\+\_\+ricci()}}.
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_a1cbadf0e68bbb59b4a59540194f16a5b}\label{classmorpheus__RG_1_1RicciTensor_a1cbadf0e68bbb59b4a59540194f16a5b} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!print@{print}}
+\index{print@{print}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::print (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&}]{R,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g\+\_\+inv,  }\item[{const std\+::string \&}]{name = {\ttfamily "{}Ricci"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}.
+
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_a4b4f761a29547941fba9dcd92f1915e2}\label{classmorpheus__RG_1_1RicciTensor_a4b4f761a29547941fba9dcd92f1915e2} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!print@{print}}
+\index{print@{print}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::print (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&}]{R,  }\item[{const std\+::string \&}]{name = {\ttfamily "{}Ricci"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}.
+
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}\label{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!print\_componentwise@{print\_componentwise}}
+\index{print\_componentwise@{print\_componentwise}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print\_componentwise()}{print\_componentwise()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::print\+\_\+componentwise (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&}]{R,  }\item[{T}]{threshold = {\ttfamily 1e-\/12} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb}{morpheus\+::print\+\_\+ricci\+\_\+tensor()}}.
+
+Here is the caller graph for this function\+:
+% FIG 4
+\Hypertarget{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}\label{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206} 
+\index{morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}!print\_ricci\_scalar@{print\_ricci\_scalar}}
+\index{print\_ricci\_scalar@{print\_ricci\_scalar}!morpheus\_RG::RicciTensor$<$ T $>$@{morpheus\_RG::RicciTensor$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{print\_ricci\_scalar()}{print\_ricci\_scalar()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static void \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor}}$<$ T $>$\+::print\+\_\+ricci\+\_\+scalar (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ac7fd80ea9f200fc44a941bf6090b822f}{Tensor2D}} \&}]{Ricci,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g\+\_\+inv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{morpheus\+\_\+\+RG\+::\+Ricci\+Tensor$<$ T $>$\+::compute\+\_\+ricci\+\_\+scalar()}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c}{morpheus\+::print\+\_\+ricci\+\_\+scalar()}}.
+
+Here is the call graph for this function\+:
+% FIG 5
+Here is the caller graph for this function\+:
+% FIG 6
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+Diff\+Geometry/\mbox{\hyperlink{RicciTensor_8hpp}{Ricci\+Tensor.\+hpp}}\end{DoxyCompactItemize}

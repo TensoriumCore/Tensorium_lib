@@ -1,0 +1,36 @@
+# === Projet Morpheus : Doxyfile pour génération de graphes d’architecture ===
+
+PROJECT_NAME           = "Morpheus"
+OUTPUT_DIRECTORY       = Doc
+INPUT                  = includes
+FILE_PATTERNS          = *.hpp 
+RECURSIVE              = YES
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+OPTIMIZE_OUTPUT_FOR_CXX = YES
+EXTENSION_MAPPING      = h=Cpp
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = YES
+GENERATE_TREEVIEW      = YES
+
+HAVE_DOT               = YES
+CLASS_DIAGRAMS         = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+DOT_IMAGE_FORMAT       = svg
+DOT_MULTI_TARGETS      = YES
+DOT_CLEANUP            = YES
+UML_LOOK               = YES
+
+# Optionnels mais utiles
+SHOW_INCLUDE_FILES     = YES
+
+INLINE_SOURCES         = NO
+SOURCE_BROWSER         = NO
+
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES

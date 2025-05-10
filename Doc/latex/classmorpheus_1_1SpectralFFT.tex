@@ -1,0 +1,150 @@
+\doxysection{morpheus\+::Spectral\+FFT\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classmorpheus_1_1SpectralFFT}{}\label{classmorpheus_1_1SpectralFFT}\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Spectral.\+hpp$>$}
+
+
+
+Collaboration diagram for morpheus\+::Spectral\+FFT\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+% FIG 0
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a0615497b3a62612c59b3045996ea6c73}{Tensor2D}} = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2$>$
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_ac4479b13e5395dbbb47f8425a763553c}{VectorT}} = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}$>$
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}} = std\+::complex$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}$>$
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{forward}} (\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&a)
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{backward}} (\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&a)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\+\_\+impl}} (\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&a, \mbox{\hyperlink{classmorpheus_1_1Tensor}{bool}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{inverse}})
+\item 
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{bit\+\_\+reverse}} (\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&a)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}\label{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!C@{C}}
+\index{C@{C}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::C = std\+::complex$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}$>$}
+
+\Hypertarget{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}\label{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!CVectorT@{CVectorT}}
+\index{CVectorT@{CVectorT}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CVectorT}{CVectorT}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::\+CVectorT = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}$>$}
+
+\Hypertarget{classmorpheus_1_1SpectralFFT_a0615497b3a62612c59b3045996ea6c73}\label{classmorpheus_1_1SpectralFFT_a0615497b3a62612c59b3045996ea6c73} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!Tensor2D@{Tensor2D}}
+\index{Tensor2D@{Tensor2D}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Tensor2D}{Tensor2D}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::\+Tensor2D = \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}, 2$>$}
+
+\Hypertarget{classmorpheus_1_1SpectralFFT_ac4479b13e5395dbbb47f8425a763553c}\label{classmorpheus_1_1SpectralFFT_ac4479b13e5395dbbb47f8425a763553c} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!VectorT@{VectorT}}
+\index{VectorT@{VectorT}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{VectorT}{VectorT}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{using}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::\+VectorT = \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}$>$}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}\label{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!backward@{backward}}
+\index{backward@{backward}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{backward()}{backward()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::backward (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::transform\+\_\+impl()}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_ab0d022c164f50fe46524e1af50e826d7}{morpheus\+::backward\+FFP()}}, and \mbox{\hyperlink{namespacemorpheus_ad5478f49e42b2f281d15e67587dfd92d}{morpheus\+::backward\+FFT()}}.
+
+Here is the call graph for this function\+:
+% FIG 1
+Here is the caller graph for this function\+:
+% FIG 2
+\Hypertarget{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}\label{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!bit\_reverse@{bit\_reverse}}
+\index{bit\_reverse@{bit\_reverse}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{bit\_reverse()}{bit\_reverse()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::bit\+\_\+reverse (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{morpheus\+::\+Vector$<$ K $>$\+::size()}}.
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::transform\+\_\+impl()}}.
+
+Here is the call graph for this function\+:
+% FIG 3
+Here is the caller graph for this function\+:
+% FIG 4
+\Hypertarget{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}\label{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!forward@{forward}}
+\index{forward@{forward}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::forward (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::transform\+\_\+impl()}}.
+
+
+
+Referenced by \mbox{\hyperlink{namespacemorpheus_ae221eff9667ffd1424b306662e20b1d3}{morpheus\+::forward\+FFT()}}.
+
+Here is the call graph for this function\+:
+% FIG 5
+Here is the caller graph for this function\+:
+% FIG 6
+\Hypertarget{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}\label{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406} 
+\index{morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}!transform\_impl@{transform\_impl}}
+\index{transform\_impl@{transform\_impl}!morpheus::SpectralFFT$<$ T $>$@{morpheus::SpectralFFT$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{transform\_impl()}{transform\_impl()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ \\
+\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{void}} \mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{morpheus\+::\+Spectral\+FFT}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$\+::transform\+\_\+impl (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a54092db5ed1fa12a6e2fb4bce68d3f5d}{CVectorT}} \&}]{a,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{bool}}}]{inverse }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+References \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::bit\+\_\+reverse()}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a}{pi}}, and \mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{morpheus\+::\+Vector$<$ K $>$\+::size()}}.
+
+
+
+Referenced by \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::backward()}}, and \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{morpheus\+::\+Spectral\+FFT$<$ T $>$\+::forward()}}.
+
+Here is the call graph for this function\+:
+% FIG 7
+Here is the caller graph for this function\+:
+% FIG 8
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/\+Morpheus/\+Core/\mbox{\hyperlink{Spectral_8hpp}{Spectral.\+hpp}}\end{DoxyCompactItemize}
