@@ -125,23 +125,28 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAlignedAllocator.html">AlignedAllocator&lt; T, Alignment &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aligned memory allocator for high-performance computing.  <a href="structAlignedAllocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAlignedAllocator_1_1rebind.html">AlignedAllocator&lt; T, Alignment &gt;::rebind&lt; U &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebinding structure for allocator traits.  <a href="structAlignedAllocator_1_1rebind.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a23515413ed4c20c0fd3d25ae1976f3c5" id="r_a23515413ed4c20c0fd3d25ae1976f3c5"><td class="memTemplParams" colspan="2">template&lt;typename K &gt; </td></tr>
 <tr class="memitem:a23515413ed4c20c0fd3d25ae1976f3c5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a> = std::vector&lt;K, <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt;K, <a class="el" href="SIMD_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a>&gt;&gt;</td></tr>
+<tr class="memdesc:a23515413ed4c20c0fd3d25ae1976f3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type alias for a std::vector with aligned memory allocation.  <br /></td></tr>
 <tr class="separator:a23515413ed4c20c0fd3d25ae1976f3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ace395aad5a8656fbf988f8315039c92c" id="r_ace395aad5a8656fbf988f8315039c92c"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t Alignment&gt; </td></tr>
 <tr class="memitem:ace395aad5a8656fbf988f8315039c92c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ace395aad5a8656fbf988f8315039c92c">operator==</a> (const <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt; T, Alignment &gt; &amp;, const <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt; T, Alignment &gt; &amp;) noexcept</td></tr>
+<tr class="memdesc:ace395aad5a8656fbf988f8315039c92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for <a class="el" href="structAlignedAllocator.html" title="Aligned memory allocator for high-performance computing.">AlignedAllocator</a>.  <br /></td></tr>
 <tr class="separator:ace395aad5a8656fbf988f8315039c92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5550f3bddd398c5423d432894fa2966d" id="r_a5550f3bddd398c5423d432894fa2966d"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t Alignment&gt; </td></tr>
 <tr class="memitem:a5550f3bddd398c5423d432894fa2966d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5550f3bddd398c5423d432894fa2966d">operator!=</a> (const <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt; T, Alignment &gt; &amp;, const <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt; T, Alignment &gt; &amp;) noexcept</td></tr>
+<tr class="memdesc:a5550f3bddd398c5423d432894fa2966d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for <a class="el" href="structAlignedAllocator.html" title="Aligned memory allocator for high-performance computing.">AlignedAllocator</a>.  <br /></td></tr>
 <tr class="separator:a5550f3bddd398c5423d432894fa2966d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -158,6 +163,15 @@ template&lt;typename K &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Type alias for a std::vector with aligned memory allocation. </p>
+<p>This provides an aligned vector container compatible with SIMD usage. The alignment used is determined by the macro <code>ALIGN</code>, typically set based on the SIMD instruction set width (e.g., 16 for SSE, 32 for AVX, 64 for AVX-512).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Type of the elements. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -191,6 +205,17 @@ template&lt;typename T , std::size_t Alignment&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Inequality operator for <a class="el" href="structAlignedAllocator.html" title="Aligned memory allocator for high-performance computing.">AlignedAllocator</a>. </p>
+<p>Always returns false, as there are no distinguishing stateful properties.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Type of allocated elements. </td></tr>
+    <tr><td class="paramname">Alignment</td><td>Alignment in bytes.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false </dd></dl>
+
 </div>
 </div>
 <a id="ace395aad5a8656fbf988f8315039c92c" name="ace395aad5a8656fbf988f8315039c92c"></a>
@@ -221,6 +246,17 @@ template&lt;typename T , std::size_t Alignment&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Equality operator for <a class="el" href="structAlignedAllocator.html" title="Aligned memory allocator for high-performance computing.">AlignedAllocator</a>. </p>
+<p>Always returns true as the allocator is stateless and does not manage any per-instance resources.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Type of allocated elements. </td></tr>
+    <tr><td class="paramname">Alignment</td><td>Alignment in bytes.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd></dl>
 
 </div>
 </div>

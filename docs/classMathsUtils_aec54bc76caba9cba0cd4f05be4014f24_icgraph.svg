@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" target="_top" xlink:title="Compute the 1&#45;norm (sum of absolute values).">
 <polygon fill="white" stroke="#666666" points="107.5,-85.5 0,-85.5 0,-52 107.5,-52 107.5,-85.5"/>
 <text text-anchor="start" x="8" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="53.75" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" target="_top" xlink:title="Compute the infinity norm (maximum absolute value).">
 <polygon fill="white" stroke="#666666" points="107.5,-33.5 0,-33.5 0,0 107.5,0 107.5,-33.5"/>
 <text text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="53.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>

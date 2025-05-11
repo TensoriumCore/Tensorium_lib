@@ -101,7 +101,6 @@ $(function(){initNavTree('classmorpheus_1_1Tensor.html',''); initResizable(); })
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classmorpheus_1_1Tensor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">morpheus::Tensor&lt; K, Rank &gt; Class Template Reference</div></div>
@@ -115,15 +114,13 @@ $(function(){initNavTree('classmorpheus_1_1Tensor.html',''); initResizable(); })
 <div class="dynheader">
 Collaboration diagram for morpheus::Tensor&lt; K, Rank &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor__coll__graph.svg" width="167" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1Tensor__coll__graph.svg" width="167" height="951"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ae35d4256f80886c4037f0b47b4e86733" id="r_ae35d4256f80886c4037f0b47b4e86733"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae35d4256f80886c4037f0b47b4e86733">value_type</a> = K</td></tr>
 <tr class="separator:ae35d4256f80886c4037f0b47b4e86733"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dde5a3888acb177e67fecef069e167d" id="r_a1dde5a3888acb177e67fecef069e167d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dde5a3888acb177e67fecef069e167d">reg</a> = typename Simd::reg</td></tr>
-<tr class="separator:a1dde5a3888acb177e67fecef069e167d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -135,54 +132,38 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaa09fea5e7f36cfd81ccb7523305ff5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7875e0a5dd7b3d9c46752dd5adb31917" id="r_a7875e0a5dd7b3d9c46752dd5adb31917"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a7875e0a5dd7b3d9c46752dd5adb31917"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0a90192eb31c6d8222c59d5e7fa52b" id="r_a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j)</td></tr>
-<tr class="separator:a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73a3454d73e66b458535433ce85130f3" id="r_a73a3454d73e66b458535433ce85130f3"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73a3454d73e66b458535433ce85130f3">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l)</td></tr>
-<tr class="separator:a73a3454d73e66b458535433ce85130f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acecceb84060aa29f6dddc330af1f045e" id="r_acecceb84060aa29f6dddc330af1f045e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acecceb84060aa29f6dddc330af1f045e">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
-<tr class="separator:acecceb84060aa29f6dddc330af1f045e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b785a936eaefd337d5d368a3e35d52d" id="r_a9b785a936eaefd337d5d368a3e35d52d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b785a936eaefd337d5d368a3e35d52d">update_strides</a> ()</td></tr>
 <tr class="separator:a9b785a936eaefd337d5d368a3e35d52d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fb35ac409a7f95a4efe437d33cf576" id="r_a70fb35ac409a7f95a4efe437d33cf576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">fill</a> (K value)</td></tr>
+<tr class="memdesc:a70fb35ac409a7f95a4efe437d33cf576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill tensor with a constant value.  <br /></td></tr>
+<tr class="separator:a70fb35ac409a7f95a4efe437d33cf576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ac20bcc7a4afe8b076aad9e31a34d6f3c" id="r_ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac20bcc7a4afe8b076aad9e31a34d6f3c">resize</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, 2 &gt; &amp;dims)</td></tr>
 <tr class="memdesc:ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize 2D tensor.  <br /></td></tr>
 <tr class="separator:ac20bcc7a4afe8b076aad9e31a34d6f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ffe3f07841a50baecaf29e6ecf939ab" id="r_a7ffe3f07841a50baecaf29e6ecf939ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ffe3f07841a50baecaf29e6ecf939ab">resize</a> (size_t d0, size_t d1)</td></tr>
 <tr class="memdesc:a7ffe3f07841a50baecaf29e6ecf939ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize 2D tensor.  <br /></td></tr>
 <tr class="separator:a7ffe3f07841a50baecaf29e6ecf939ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Element Access</div></td></tr>
 <tr class="memitem:a3f6c0907d9cf52d3f69729d2cece6c13" id="r_a3f6c0907d9cf52d3f69729d2cece6c13"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f6c0907d9cf52d3f69729d2cece6c13">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;indices)</td></tr>
 <tr class="separator:a3f6c0907d9cf52d3f69729d2cece6c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65ace646e6f565d314a39f4b1411e9ef" id="r_a65ace646e6f565d314a39f4b1411e9ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65ace646e6f565d314a39f4b1411e9ef">operator()</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std::array&lt; size_t, Rank &gt; &amp;indices) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a65ace646e6f565d314a39f4b1411e9ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5a7467653da30fea0b4ac8c27ebe706" id="r_ac5a7467653da30fea0b4ac8c27ebe706"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5a7467653da30fea0b4ac8c27ebe706">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:ac5a7467653da30fea0b4ac8c27ebe706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70fb35ac409a7f95a4efe437d33cf576" id="r_a70fb35ac409a7f95a4efe437d33cf576"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70fb35ac409a7f95a4efe437d33cf576">fill</a> (K value)</td></tr>
-<tr class="memdesc:a70fb35ac409a7f95a4efe437d33cf576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill tensor with a constant value.  <br /></td></tr>
-<tr class="separator:a70fb35ac409a7f95a4efe437d33cf576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a0a90192eb31c6d8222c59d5e7fa52b" id="r_a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0a90192eb31c6d8222c59d5e7fa52b">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j)</td></tr>
+<tr class="separator:a5a0a90192eb31c6d8222c59d5e7fa52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a3454d73e66b458535433ce85130f3" id="r_a73a3454d73e66b458535433ce85130f3"><td class="memItemLeft" align="right" valign="top">K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73a3454d73e66b458535433ce85130f3">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j, size_t k, size_t l)</td></tr>
+<tr class="separator:a73a3454d73e66b458535433ce85130f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecceb84060aa29f6dddc330af1f045e" id="r_acecceb84060aa29f6dddc330af1f045e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acecceb84060aa29f6dddc330af1f045e">operator()</a> (size_t <a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>, size_t j) <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="separator:acecceb84060aa29f6dddc330af1f045e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Debug and Utilities</div></td></tr>
 <tr class="memitem:a996144e67afc3b3aba2b05d0aecae51a" id="r_a996144e67afc3b3aba2b05d0aecae51a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a996144e67afc3b3aba2b05d0aecae51a">print_shape</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="memdesc:a996144e67afc3b3aba2b05d0aecae51a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the shape (dimensions) of the tensor.  <br /></td></tr>
 <tr class="separator:a996144e67afc3b3aba2b05d0aecae51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7f1ee59eea4024f6fa67dc1a3b26cc9" id="r_ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac7f1ee59eea4024f6fa67dc1a3b26cc9">print</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="memdesc:ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a 2D tensor (Rank == 2)  <br /></td></tr>
 <tr class="separator:ac7f1ee59eea4024f6fa67dc1a3b26cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff9a2f02efd8c58c0a3e7509b3f89739" id="r_aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a> ((always_inline, hot, flatten)) inline size_t flatten_index_simd(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> size_t *indices</td></tr>
-<tr class="memdesc:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a multi-index into a flattened linear index using SIMD.  <br /></td></tr>
-<tr class="separator:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a675364efae080330621757d3d82ad6c4" id="r_a675364efae080330621757d3d82ad6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675364efae080330621757d3d82ad6c4">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> - 1&lt; Rank;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+=<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a>)</td></tr>
-<tr class="separator:a675364efae080330621757d3d82ad6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ce1898d424f7be8f008af6d0055db1" id="r_a67ce1898d424f7be8f008af6d0055db1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67ce1898d424f7be8f008af6d0055db1">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>&lt; Rank;++<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>) <a class="el" href="#a87528ee2093e17e62f713c329a5ec117">acc</a>+</td></tr>
-<tr class="separator:a67ce1898d424f7be8f008af6d0055db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e267aa0d410f44719ef0eb8fb5e5169" id="r_a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memItemLeft" align="right" valign="top">__attribute__((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e267aa0d410f44719ef0eb8fb5e5169">__attribute__</a> ((always_inline, hot, flatten)) <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K</td></tr>
-<tr class="memdesc:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert multi-index to flat index.  <br /></td></tr>
-<tr class="separator:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a3390d3b499e74ded35464d380bf18f" id="r_a8a3390d3b499e74ded35464d380bf18f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">transpose_simd</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
-<tr class="separator:a8a3390d3b499e74ded35464d380bf18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a" id="r_a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplParams" colspan="2">template&lt;size_t R1, size_t R2&gt; </td></tr>
-<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">tensor_product</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;A, <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;B)</td></tr>
-<tr class="memdesc:a9e2fc9372addcf2c1c385fca7108136a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the tensor (outer) product of two tensors.  <br /></td></tr>
-<tr class="separator:a9e2fc9372addcf2c1c385fca7108136a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -197,6 +178,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3b56fad12e7755519da5c0198407d4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acda835d088e6ada63992e1b9a63f6d58" id="r_acda835d088e6ada63992e1b9a63f6d58"><td class="memItemLeft" align="right" valign="top">std::array&lt; size_t, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a></td></tr>
 <tr class="separator:acda835d088e6ada63992e1b9a63f6d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dde5a3888acb177e67fecef069e167d" id="r_a1dde5a3888acb177e67fecef069e167d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dde5a3888acb177e67fecef069e167d">reg</a> = typename Simd::reg</td></tr>
+<tr class="separator:a1dde5a3888acb177e67fecef069e167d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf7e0d92f3c82f66151fb25f78528b0" id="r_a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memItemLeft" align="right" valign="top">const size_t *<a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
 <tr class="separator:a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99ab9aa1650580da46ca3e1a21590cfe" id="r_a99ab9aa1650580da46ca3e1a21590cfe"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> = Simd::width / sizeof(size_t)</td></tr>
@@ -207,6 +190,22 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a004a4099b2874acd9f719d47109367f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a812cb252c931f4e3da2d63b4b339639f" id="r_a812cb252c931f4e3da2d63b4b339639f"><td class="memItemLeft" align="right" valign="top">return&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a812cb252c931f4e3da2d63b4b339639f">acc</a></td></tr>
 <tr class="separator:a812cb252c931f4e3da2d63b4b339639f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff9a2f02efd8c58c0a3e7509b3f89739" id="r_aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a> ((always_inline, hot, flatten)) inline size_t flatten_index_simd(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> size_t *indices</td></tr>
+<tr class="memdesc:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="mdescLeft">&#160;</td><td class="mdescRight">basic tensor operations (Rank == 2)  <br /></td></tr>
+<tr class="separator:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675364efae080330621757d3d82ad6c4" id="r_a675364efae080330621757d3d82ad6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675364efae080330621757d3d82ad6c4">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> - 1&lt; Rank;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+=<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a>)</td></tr>
+<tr class="separator:a675364efae080330621757d3d82ad6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ce1898d424f7be8f008af6d0055db1" id="r_a67ce1898d424f7be8f008af6d0055db1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67ce1898d424f7be8f008af6d0055db1">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>&lt; Rank;++<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>) <a class="el" href="#a87528ee2093e17e62f713c329a5ec117">acc</a>+</td></tr>
+<tr class="separator:a67ce1898d424f7be8f008af6d0055db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e267aa0d410f44719ef0eb8fb5e5169" id="r_a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memItemLeft" align="right" valign="top">__attribute__((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e267aa0d410f44719ef0eb8fb5e5169">__attribute__</a> ((always_inline, hot, flatten)) <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K</td></tr>
+<tr class="memdesc:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert multi-index to flat index.  <br /></td></tr>
+<tr class="separator:a8e267aa0d410f44719ef0eb8fb5e5169"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3390d3b499e74ded35464d380bf18f" id="r_a8a3390d3b499e74ded35464d380bf18f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a>((always_inline, hot, flatten)) inline size_t <a class="el" href="#a7875e0a5dd7b3d9c46752dd5adb31917">flatten_index</a>(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> std&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a3390d3b499e74ded35464d380bf18f">transpose_simd</a> () <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
+<tr class="separator:a8a3390d3b499e74ded35464d380bf18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a" id="r_a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplParams" colspan="2">template&lt;size_t R1, size_t R2&gt; </td></tr>
+<tr class="memitem:a9e2fc9372addcf2c1c385fca7108136a"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e2fc9372addcf2c1c385fca7108136a">tensor_product</a> (<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;A, <a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> <a class="el" href="classmorpheus_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;B)</td></tr>
+<tr class="memdesc:a9e2fc9372addcf2c1c385fca7108136a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the tensor (outer) product of two tensors.  <br /></td></tr>
+<tr class="separator:a9e2fc9372addcf2c1c385fca7108136a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename K, std::size_t Rank&gt;<br />
@@ -337,7 +336,8 @@ template&lt;typename K , std::size_t Rank&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Convert a multi-index into a flattened linear index using SIMD. </p>
+<p>basic tensor operations (Rank == 2) </p>
+<p>Convert a multi-index into a flattened linear index using SIMD</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">indices</td><td>Array of indices </td></tr>

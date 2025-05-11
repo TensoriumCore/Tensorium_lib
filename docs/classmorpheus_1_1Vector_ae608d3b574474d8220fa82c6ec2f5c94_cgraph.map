@@ -1,5 +1,5 @@
 <map id="morpheus::Vector::__attribute__" name="morpheus::Vector::__attribute__">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,149,124"/>
+<area shape="rect" id="Node000001" title="Compute the infinity norm (maximum absolute value)." alt="" coords="5,80,149,124"/>
 <area shape="rect" id="Node000002" href="$classMathsUtils.html#aec54bc76caba9cba0cd4f05be4014f24" title=" " alt="" coords="214,5,349,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,76,196,43,216,36,218,41,198,48,124,81"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#a0e789dbc1b696c969d4480b21af134c6" title=" " alt="" coords="214,57,349,85"/>

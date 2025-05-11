@@ -107,6 +107,9 @@ $(function(){initNavTree('structAlignedAllocator.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
+<p>Aligned memory allocator for high-performance computing.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="Allocator_8hpp_source.html">Allocator.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for AlignedAllocator&lt; T, Alignment &gt;:</div>
@@ -117,6 +120,7 @@ Collaboration diagram for AlignedAllocator&lt; T, Alignment &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAlignedAllocator_1_1rebind.html">rebind</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebinding structure for allocator traits.  <a href="structAlignedAllocator_1_1rebind.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -139,16 +143,32 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9cbc3b78d9e1654659dbddc388f1ee5" id="r_aa9cbc3b78d9e1654659dbddc388f1ee5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9cbc3b78d9e1654659dbddc388f1ee5">AlignedAllocator</a> () noexcept=default</td></tr>
+<tr class="memdesc:aa9cbc3b78d9e1654659dbddc388f1ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion constructor from another allocator of different type.  <br /></td></tr>
 <tr class="separator:aa9cbc3b78d9e1654659dbddc388f1ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a116c3a68cfe337874ca881908721a64f" id="r_a116c3a68cfe337874ca881908721a64f"><td class="memTemplParams" colspan="2">template&lt;typename U &gt; </td></tr>
 <tr class="memitem:a116c3a68cfe337874ca881908721a64f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a116c3a68cfe337874ca881908721a64f">AlignedAllocator</a> (const <a class="el" href="structAlignedAllocator.html">AlignedAllocator</a>&lt; U, Alignment &gt; &amp;) noexcept</td></tr>
+<tr class="memdesc:a116c3a68cfe337874ca881908721a64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a116c3a68cfe337874ca881908721a64f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a650ae014d782fb2961763d9d772fceeb" id="r_a650ae014d782fb2961763d9d772fceeb"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a650ae014d782fb2961763d9d772fceeb">allocate</a> (std::size_t n)</td></tr>
+<tr class="memdesc:a650ae014d782fb2961763d9d772fceeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates aligned memory for n elements of type T.  <br /></td></tr>
 <tr class="separator:a650ae014d782fb2961763d9d772fceeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dd7a0ee073e498b9c626a97f2a95af1" id="r_a9dd7a0ee073e498b9c626a97f2a95af1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dd7a0ee073e498b9c626a97f2a95af1">deallocate</a> (T *p, std::size_t) noexcept</td></tr>
+<tr class="memdesc:a9dd7a0ee073e498b9c626a97f2a95af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocates memory previously allocated with <a class="el" href="#a650ae014d782fb2961763d9d772fceeb" title="Allocates aligned memory for n elements of type T.">allocate()</a>.  <br /></td></tr>
 <tr class="separator:a9dd7a0ee073e498b9c626a97f2a95af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, std::size_t Alignment&gt;<br />
+struct AlignedAllocator&lt; T, Alignment &gt;</div><p>Aligned memory allocator for high-performance computing. </p>
+<p>This allocator provides memory aligned to a specified boundary, ensuring compatibility with SIMD instructions and optimal cache usage. On Intel KNL (Knights Landing) architectures, this allocator automatically uses the high-bandwidth MCDRAM via <code>hbw_posix_memalign</code> if the macro <code>USE_KNL</code> is defined. Otherwise, standard <code>posix_memalign</code> is used.</p>
+<p>This is particularly useful for vectorized numerical libraries, where memory alignment is essential for instruction-level parallelism (e.g., AVX, SSE, AVX-512).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Type of the objects being allocated. </td></tr>
+    <tr><td class="paramname">Alignment</td><td>Memory alignment in bytes. Must be a power of two and compatible with the ISA in use (e.g., 32 for AVX256). </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="af938f9442ae754b00a80f522781a5255" name="af938f9442ae754b00a80f522781a5255"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af938f9442ae754b00a80f522781a5255">&#9670;&#160;</a></span>const_pointer</h2>
 
@@ -287,6 +307,21 @@ template&lt;typename T , std::size_t Alignment&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Conversion constructor from another allocator of different type. </p>
+<p>Required by the STL allocator model. Does nothing as this allocator is stateless.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>Other type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other allocator. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a116c3a68cfe337874ca881908721a64f" name="a116c3a68cfe337874ca881908721a64f"></a>
@@ -316,6 +351,9 @@ template&lt;typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Default constructor. </p>
+<p>Stateless and noexcept. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -343,6 +381,22 @@ template&lt;typename T , std::size_t Alignment&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Allocates aligned memory for n elements of type T. </p>
+<p>The alignment is guaranteed to be at least <code>Alignment</code> bytes. On KNL platforms, high-bandwidth memory (HBM) will be used via libhbw.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Number of elements to allocate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>T* Pointer to aligned memory block.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>If memory allocation fails. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -374,6 +428,16 @@ template&lt;typename T , std::size_t Alignment&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Deallocates memory previously allocated with <a class="el" href="#a650ae014d782fb2961763d9d772fceeb" title="Allocates aligned memory for n elements of type T.">allocate()</a>. </p>
+<p>On KNL platforms, this calls <code>hbw_free</code>. Otherwise, standard <code>free</code> is used.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>Pointer to memory to deallocate. </td></tr>
+    <tr><td class="paramname">size</td><td>Number of elements (not used). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

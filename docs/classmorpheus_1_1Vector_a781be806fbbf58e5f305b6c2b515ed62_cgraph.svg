@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Compute the 1&#45;norm (sum of absolute values).">
 <polygon fill="#999999" stroke="#666666" points="107.5,-72.12 0,-72.12 0,-38.62 107.5,-38.62 107.5,-72.12"/>
 <text text-anchor="start" x="8" y="-58.62" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="53.75" y="-45.88" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>

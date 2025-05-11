@@ -1,17 +1,17 @@
 <map id="morpheus::Vector::_mm_prefetch" name="morpheus::Vector::_mm_prefetch">
 <area shape="rect" id="Node000001" title=" " alt="" coords="197,213,340,258"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#a58b417136d0748ae33aec91dea780f74" title=" " alt="" coords="5,5,149,50"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#a58b417136d0748ae33aec91dea780f74" title="Compute the dot product with another vector." alt="" coords="5,5,149,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,201,206,133,179,97,147,64,131,53,134,48,150,60,183,93,211,130,252,198"/>
-<area shape="rect" id="Node000003" href="$classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" title=" " alt="" coords="5,75,149,119"/>
+<area shape="rect" id="Node000003" href="$classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" title="Compute the 1&#45;norm (sum of absolute values)." alt="" coords="5,75,149,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,205,193,169,147,134,127,122,130,118,150,129,196,165,236,201"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Vector.html#aa6eb8bdd7514dd4ba5cb42d25970122b" title=" " alt="" coords="5,144,149,189"/>
+<area shape="rect" id="Node000004" href="$classmorpheus_1_1Vector.html#aa6eb8bdd7514dd4ba5cb42d25970122b" title="Compute the 2&#45;norm (Euclidean norm)." alt="" coords="5,144,149,189"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="189,210,140,192,141,187,191,205"/>
-<area shape="rect" id="Node000005" href="$classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" title=" " alt="" coords="5,213,149,258"/>
+<area shape="rect" id="Node000005" href="$classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" title="Compute the infinity norm (maximum absolute value)." alt="" coords="5,213,149,258"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="181,238,149,238,149,233,181,233"/>
-<area shape="rect" id="Node000006" href="$classmorpheus_1_1Vector.html#a4a68658d2190eb9640b2c8967cea1052" title=" " alt="" coords="5,283,149,327"/>
+<area shape="rect" id="Node000006" href="$classmorpheus_1_1Vector.html#a4a68658d2190eb9640b2c8967cea1052" title="Add another vector to this one (in&#45;place)." alt="" coords="5,283,149,327"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="191,266,141,285,140,280,189,261"/>
-<area shape="rect" id="Node000007" href="$classmorpheus_1_1Vector.html#a7b65fdfdb1152a99f1a6ae32d261c676" title=" " alt="" coords="5,352,149,397"/>
+<area shape="rect" id="Node000007" href="$classmorpheus_1_1Vector.html#a7b65fdfdb1152a99f1a6ae32d261c676" title="Scale this vector by a scalar (in&#45;place)." alt="" coords="5,352,149,397"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="236,270,196,306,150,342,130,354,127,349,147,337,193,302,233,266"/>
-<area shape="rect" id="Node000008" href="$classmorpheus_1_1Vector.html#a1a3dad17bf44bdd7a7042e90310bad0d" title=" " alt="" coords="5,421,149,466"/>
+<area shape="rect" id="Node000008" href="$classmorpheus_1_1Vector.html#a1a3dad17bf44bdd7a7042e90310bad0d" title="Subtract another vector from this one (in&#45;place)." alt="" coords="5,421,149,466"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="252,274,211,342,183,378,150,411,134,423,131,419,147,407,179,375,206,339,247,271"/>
 </map>

@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmorpheus_1_1Vector.html#a58b417136d0748ae33aec91dea780f74" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classmorpheus_1_1Vector.html#a58b417136d0748ae33aec91dea780f74" target="_top" xlink:title="Compute the dot product with another vector.">
 <polygon fill="white" stroke="#666666" points="634.38,-967.5 526.88,-967.5 526.88,-934 634.38,-934 634.38,-967.5"/>
 <text text-anchor="start" x="534.88" y="-954" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-941.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classmorpheus_1_1Vector.html#a781be806fbbf58e5f305b6c2b515ed62" target="_top" xlink:title="Compute the 1&#45;norm (sum of absolute values).">
 <polygon fill="white" stroke="#666666" points="634.38,-915.5 526.88,-915.5 526.88,-882 634.38,-882 634.38,-915.5"/>
 <text text-anchor="start" x="534.88" y="-902" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-889.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -58,7 +58,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classmorpheus_1_1Vector.html#aa6eb8bdd7514dd4ba5cb42d25970122b" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="classmorpheus_1_1Vector.html#aa6eb8bdd7514dd4ba5cb42d25970122b" target="_top" xlink:title="Compute the 2&#45;norm (Euclidean norm).">
 <polygon fill="white" stroke="#666666" points="634.38,-863.5 526.88,-863.5 526.88,-830 634.38,-830 634.38,-863.5"/>
 <text text-anchor="start" x="534.88" y="-850" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-837.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -77,7 +77,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" target="_top" xlink:title="Compute the infinity norm (maximum absolute value).">
 <polygon fill="white" stroke="#666666" points="634.38,-811.5 526.88,-811.5 526.88,-778 634.38,-778 634.38,-811.5"/>
 <text text-anchor="start" x="534.88" y="-798" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-785.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -96,7 +96,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classmorpheus_1_1Vector.html#a4a68658d2190eb9640b2c8967cea1052" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="classmorpheus_1_1Vector.html#a4a68658d2190eb9640b2c8967cea1052" target="_top" xlink:title="Add another vector to this one (in&#45;place).">
 <polygon fill="white" stroke="#666666" points="634.38,-759.5 526.88,-759.5 526.88,-726 634.38,-726 634.38,-759.5"/>
 <text text-anchor="start" x="534.88" y="-746" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-733.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -115,7 +115,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="classmorpheus_1_1Vector.html#a7b65fdfdb1152a99f1a6ae32d261c676" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="classmorpheus_1_1Vector.html#a7b65fdfdb1152a99f1a6ae32d261c676" target="_top" xlink:title="Scale this vector by a scalar (in&#45;place).">
 <polygon fill="white" stroke="#666666" points="634.38,-707.5 526.88,-707.5 526.88,-674 634.38,-674 634.38,-707.5"/>
 <text text-anchor="start" x="534.88" y="-694" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-681.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -134,7 +134,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classmorpheus_1_1Vector.html#a1a3dad17bf44bdd7a7042e90310bad0d" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="classmorpheus_1_1Vector.html#a1a3dad17bf44bdd7a7042e90310bad0d" target="_top" xlink:title="Subtract another vector from this one (in&#45;place).">
 <polygon fill="white" stroke="#666666" points="634.38,-655.5 526.88,-655.5 526.88,-622 634.38,-622 634.38,-655.5"/>
 <text text-anchor="start" x="534.88" y="-642" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-629.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -172,7 +172,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classmorpheus_1_1Vector.html#a20031878b14217eaaa5d864caf31964f" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="classmorpheus_1_1Vector.html#a20031878b14217eaaa5d864caf31964f" target="_top" xlink:title="Compute the cross product between two 3D vectors.">
 <polygon fill="white" stroke="#666666" points="634.38,-551.5 526.88,-551.5 526.88,-518 634.38,-518 634.38,-551.5"/>
 <text text-anchor="start" x="534.88" y="-538" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="580.62" y="-525.25" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>
@@ -360,7 +360,7 @@
 <!-- Node27 -->
 <g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_Node000027"><a xlink:href="classmorpheus_1_1Vector.html#af955666eed1764018d675bf81e03f1a3" target="_top" xlink:title=" ">
+<g id="a_Node000027"><a xlink:href="classmorpheus_1_1Vector.html#af955666eed1764018d675bf81e03f1a3" target="_top" xlink:title="Print the vector to stdout.">
 <polygon fill="white" stroke="#666666" points="645.62,-72.12 515.62,-72.12 515.62,-51.38 645.62,-51.38 645.62,-72.12"/>
 <text text-anchor="middle" x="580.62" y="-58.62" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::print</text>
 </a>
