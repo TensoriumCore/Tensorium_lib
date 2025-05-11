@@ -240,6 +240,7 @@ int matrix_tests() {
 	morpheus::Vector<double> beta(3);
 	morpheus::Tensor<double, 2> gammaj;
 	metric.BSSN(X, alpha, beta, gammaj);
+	morpheus::Tensor<double, 2> gammaj_inv;
 
 	std::cout << "\n--- BSSN 3+1 Decomposition ---\n";
 	std::cout << "Lapse α = " << alpha << "\n";
@@ -250,7 +251,13 @@ int matrix_tests() {
 	std::cout << "Spatial metric γ_{ij}:\n";
 	gammaj.print_shape();
 	gammaj.print();
-
+	std::cout <<  "Spatial metric γ^{ij}:\n";
+	gammaj_inv = morpheus::inv_mat_tensor(gammaj);
+	gammaj_inv.print();
+	auto gamma2 = morpheus::compute_christoffel(X, 1e-5, gammaj, gammaj_inv, metric);
+	gamma2.print();
+	auto R_BSSN = morpheus::compute_riemann_tensor(X, 1e-5, metric);
+	morpheus::print_riemann_tensor(R_BSSN);
 	constexpr std::size_t N = 1024;
     constexpr double L = 1.0; 
     constexpr double dx = L / N;
