@@ -1,5 +1,5 @@
 <map id="MathsUtils::_max" name="MathsUtils::_max">
 <area shape="rect" id="Node000001" title=" " alt="" coords="197,14,332,42"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" title=" " alt="" coords="5,5,149,50"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#ae608d3b574474d8220fa82c6ec2f5c94" title="Compute the infinity norm (maximum absolute value)." alt="" coords="5,5,149,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,30,149,30,149,25,181,25"/>
 </map>

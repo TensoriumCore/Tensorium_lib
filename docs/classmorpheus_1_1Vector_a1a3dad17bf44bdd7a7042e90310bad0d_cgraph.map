@@ -1,5 +1,5 @@
 <map id="morpheus::Vector::__attribute__" name="morpheus::Vector::__attribute__">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,36,149,81"/>
+<area shape="rect" id="Node000001" title="Subtract another vector from this one (in&#45;place)." alt="" coords="5,36,149,81"/>
 <area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#a24c9b876eb20bdddaa899f82a5987fc0" title=" " alt="" coords="210,5,353,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,45,194,38,195,43,149,50"/>
 <area shape="rect" id="Node000003" href="$classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="197,74,366,102"/>

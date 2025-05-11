@@ -58,25 +58,15 @@ namespace morpheus {
 					std::array<size_t, 4> idx = {i, j, k, l};
 					return flatten_index(idx);
 				}
-				K& operator()(size_t i, size_t j) {
-					return data[i * dimensions[1] + j];
-				}
 
-				K& operator()(size_t i, size_t j, size_t k, size_t l) {
-					std::array<size_t, 4> idx = {i, j, k, l};
-					return data[flatten_index(idx)];
-				}
-
-				const K& operator()(size_t i, size_t j) const {
-					return data[i * dimensions[1] + j];
-				}
-
+				
 				void update_strides() {
 					strides[Rank - 1] = 1;
 					for (int64_t i = Rank - 2; i >= 0; --i)
 						strides[i] = strides[i + 1] * dimensions[i + 1];
 				}
 				/** @brief Resize 2D tensor */
+				///@{
 				void resize(const std::array<size_t, 2>& dims) {
 					dimensions = dims;
 					update_strides();
@@ -87,30 +77,41 @@ namespace morpheus {
 				void resize(size_t d0, size_t d1) {
 					resize(std::array<size_t, 2>{d0, d1});
 				}
-
-
+				///@}
+				/** @name Element Access */
+				
+				///@{		
 				K& operator()(const std::array<size_t, Rank>& indices) {
 					size_t index = flatten_index(indices);
 					assert(index < total_size);
 					return data[index];
 				}
-
 				const K& operator()(const std::array<size_t, Rank>& indices) const {
 					size_t index = flatten_index(indices);
 					assert(index < total_size);
 					return data[index];
 				}
-
 				const K& operator()(size_t i, size_t j, size_t k, size_t l) const {
 					std::array<size_t, 4> idx = {i, j, k, l};
 					return data[flatten_index(idx)];
 				}
-
+								K& operator()(size_t i, size_t j) {
+					return data[i * dimensions[1] + j];
+				}
+				K& operator()(size_t i, size_t j, size_t k, size_t l) {
+					std::array<size_t, 4> idx = {i, j, k, l};
+					return data[flatten_index(idx)];
+				}
+				const K& operator()(size_t i, size_t j) const {
+					return data[i * dimensions[1] + j];
+				}
+				///@}
 				/** @brief Fill tensor with a constant value */
 				void fill(K value) {
 					std::fill(data.begin(), data.end(), value);
 				}
-
+				/** @name Debug and Utilities */
+				///@{
 				/** @brief Print the shape (dimensions) of the tensor */
 				void print_shape() const {
 					std::cout << "Tensor shape: (";
@@ -130,7 +131,9 @@ namespace morpheus {
 						std::cout << "\n";
 					}
 				}
-
+				///@}
+				/** @name basic tensor operations (Rank == 2) */
+				///@{
 				__attribute__((always_inline, hot, flatten))
 					/**
 					 * @brief Convert a multi-index into a flattened linear index using SIMD
@@ -398,5 +401,6 @@ namespace morpheus {
 
 						return result;
 					}
+				///@}
 		};
 }

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Compute the infinity norm (maximum absolute value).">
 <polygon fill="#999999" stroke="#666666" points="107.5,-94.12 0,-94.12 0,-60.62 107.5,-60.62 107.5,-94.12"/>
 <text text-anchor="start" x="8" y="-80.62" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::</text>
 <text text-anchor="middle" x="53.75" y="-67.88" font-family="Helvetica,sans-Serif" font-size="10.00">__attribute__</text>

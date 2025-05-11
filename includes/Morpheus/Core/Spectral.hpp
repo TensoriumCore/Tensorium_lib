@@ -15,11 +15,7 @@
 #include "Matrix.hpp"
 #include "../MathUtils/MathsUtils.hpp"
 #include <numbers>
-/**
- * @brief Namespace for spectral methods (FFT and Chebyshev)
- *
- * This module provides fast spectral transforms such as FFT and placeholder Chebyshev methods.
- */
+
 namespace morpheus {
 	/**
 	 * @brief Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm

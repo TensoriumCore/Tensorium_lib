@@ -10,34 +10,101 @@
 #include "../MathUtils/MathsUtils.hpp"
 
 namespace morpheus {
+	/**
+	 * @brief Aligned, SIMD-optimized mathematical vector class for scientific computing.
+	 * 
+	 * This class implements a 1D container with SIMD-accelerated arithmetic operations 
+	 * including addition, subtraction, scalar multiplication, dot product, and various norms.
+	 * It uses an aligned memory allocator and supports fused-multiply-add instructions
+	 * via the architecture-dependent `SimdTraits` specialization.
+	 * 
+	 * This class is intended to be used in high-performance numerical computing,
+	 * physics simulations, and linear algebra backends.
+	 * 
+	 * @tparam K Scalar type (typically float or double).
+	 */
 	template<typename K>
 		class Vector {
 			public:
+				/// Underlying aligned data storage (SIMD-friendly).
 				aligned_vector<K> data;
+				/** @name Constructors */
+				///@{
 
+				/**
+				 * @brief Construct from a standard vector.
+				 * @param vec The std::vector used to initialize the data.
+				 */
 				Vector(const std::vector<K>& vec) : data(vec.begin(), vec.end()) {}
+				///@}
+
+				/** @name Element Access */
+				///@{
+
 				K& operator[](size_t i) { return data[i]; }
 				const K& operator[](size_t i) const { return data[i]; }
+				const K& operator()(size_t i) const {
+					return data[i];
+				}
+				K& operator()(size_t i) {
+					return data[i];
+				}
+				/**
+				 * @brief Construct an empty vector of size `n`.
+				 * @param n Number of elements.
+				 */
 				Vector(size_t n) : data(n, K()) {}
+				/**
+				 * @brief Construct from an initializer list.
+				 * @param init Initializer list.
+				 */
 				Vector(std::initializer_list<K> init) : data(init) {}
-
+				/**
+				 * @brief Construct a constant vector.
+				 * @param n Number of elements.
+				 * @param value Constant value to fill.
+				 */
 				Vector(size_t n, K value) : data(n, value) {}
+				///@}
+
+				/** @name Iterators */
+				///@{
 				auto begin() { return data.begin(); }
 				auto end()   { return data.end(); }
 				auto begin() const { return data.begin(); }
 				auto end()   const { return data.end(); }
+				///@}
+
+				/** @name Size and Resizing */
+				///@{
+
 				size_t size() const {
 					return data.size();
 				}
-				
-				K& operator()(size_t i) {
-					return data[i];
-				}
-
 				void resize(size_t n) { data.resize(n); }
-				const K& operator()(size_t i) const {
-					return data[i];
+				///@}
+
+			
+				/** @name Debug and Utilities */
+				///@{
+
+				/**
+				 * @brief Print the vector to stdout.
+				 */
+
+				void print() const {
+					std::cout << "Vector size: " << size() << "\n";
+					for (float f : data)
+						std::cout << "[" << f << "]\n";
 				}
+				/** @name Basic Operations */
+				///@{
+
+				/**
+				 * @brief Subtract two vectors.
+				 * @param other The vector to subtract.
+				 * @return A new Vector containing the difference.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					Vector<K> operator-(const Vector<K>& other) const {
 						assert(data.size() == other.data.size());
@@ -47,13 +114,10 @@ namespace morpheus {
 						return result;
 					}
 
-
-				void print() const {
-					std::cout << "Vector size: " << size() << "\n";
-					for (float f : data)
-						std::cout << "[" << f << "]\n";
-				}
-
+				/**
+				 * @brief Add another vector to this one (in-place).
+				 * @param v The vector to add.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void add(const Vector &v) {
 						if (v.size() != size())
@@ -81,7 +145,10 @@ namespace morpheus {
 						for (; i < n; ++i)
 							data[i] += v.data[i];
 					}
-
+				/**
+				 * @brief Subtract another vector from this one (in-place).
+				 * @param v The vector to subtract.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void sub(const Vector &v) {
 						if (v.size() != size()) 
@@ -108,7 +175,10 @@ namespace morpheus {
 						for (; i < n; ++i)
 							data[i] -= v.data[i];
 					}
-
+				/**
+				 * @brief Scale this vector by a scalar (in-place).
+				 * @param a The scalar value.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline void scl(float a) {
 						size_t n = size();
@@ -134,6 +204,13 @@ namespace morpheus {
 							out[i] *= a;
 					}
 
+				/**
+				 * @brief Compute the linear combination of vectors with coefficients.
+				 * 
+				 * @param u List of vectors.
+				 * @param coefs List of coefficients.
+				 * @return A vector representing the linear combination: sum(c_i * u_i).
+				 */
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<float> linear_combination(const std::vector<Vector<float>> &u, 
 							const std::vector<float> &coefs) {
@@ -174,7 +251,14 @@ namespace morpheus {
 
 						return result;
 					}
-
+				/**
+				 * @brief Linearly interpolate between two vectors.
+				 * 
+				 * @param a First vector.
+				 * @param b Second vector.
+				 * @param t Interpolation factor (0 = a, 1 = b).
+				 * @return Interpolated vector.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<float> lerp(const Vector<float>& a, const Vector<float>& b, float t) {
 						if (a.size() != b.size())
@@ -205,7 +289,16 @@ namespace morpheus {
 
 						return result;
 					}
+				///@}
 
+				/** @name Advanced Operations */
+				///@{
+
+				/**
+				 * @brief Compute the dot product with another vector.
+				 * @param v The other vector.
+				 * @return The scalar dot product.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline float dot(const Vector<float>& v) const {
 						using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -234,6 +327,10 @@ namespace morpheus {
 						return result;
 					}
 
+				/**
+				 * @brief Compute the 1-norm (sum of absolute values).
+				 * @return The L1 norm.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_1() const {
 						size_t n = size();
@@ -258,7 +355,10 @@ namespace morpheus {
 
 						return result;
 					}
-
+				/**
+				 * @brief Compute the 2-norm (Euclidean norm).
+				 * @return The L2 norm.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_2() const {
 						size_t n = size();
@@ -281,7 +381,10 @@ namespace morpheus {
 
 						return std::sqrt(result);
 					}
-
+				/**
+				 * @brief Compute the infinity norm (maximum absolute value).
+				 * @return The L∞ norm.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					inline float norm_inf() const {
 						size_t n = size();
@@ -306,7 +409,12 @@ namespace morpheus {
 
 						return result;
 					}
-
+				/**
+				 * @brief Compute the cosine of the angle between two vectors.
+				 * @param u First vector.
+				 * @param v Second vector.
+				 * @return Cosine of the angle between u and v.
+				 */
 
 				__attribute__((always_inline, hot, flatten))
 					static inline float angle_cos(const Vector<float>& u, const Vector<float>& v) {
@@ -320,6 +428,12 @@ namespace morpheus {
 						return dot / (norm_u * norm_v);
 					}
 
+				/**
+				 * @brief Compute the cross product between two 3D vectors.
+				 * @param u First 3D vector.
+				 * @param v Second 3D vector.
+				 * @return Resulting 3D vector.
+				 */
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<float> cross_product(const Vector<float>& u, const Vector<float>& v) {
 						if (u.size() != 3 || v.size() != 3)
@@ -337,4 +451,4 @@ namespace morpheus {
 						return r;
 					}
 		};
-}
+	}
