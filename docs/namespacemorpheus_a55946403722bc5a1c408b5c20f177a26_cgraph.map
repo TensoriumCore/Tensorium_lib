@@ -1,18 +1,20 @@
 <map id="morpheus::inv_mat_tensor" name="morpheus::inv_mat_tensor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,180,201,208"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#a0e8b3e449cd734fb5be50f1b5b69c04e" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="249,120,441,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,177,271,149,272,155,162,182"/>
-<area shape="rect" id="Node000007" href="$namespacemorpheus.html#ac82b827e57d25a1f8ae82779b1d14136" title=" " alt="" coords="266,172,424,216"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="201,191,250,191,250,197,201,197"/>
-<area shape="rect" id="Node000008" href="$namespacemorpheus.html#a15b00fa3ba8c6814edc03f1cf58badd2" title=" " alt="" coords="267,241,423,286"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="155,206,253,234,251,239,153,211"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,201,201,229"/>
+<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#a0e8b3e449cd734fb5be50f1b5b69c04e" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="249,141,441,169"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,198,271,171,272,176,162,203"/>
+<area shape="rect" id="Node000008" href="$namespacemorpheus.html#ac82b827e57d25a1f8ae82779b1d14136" title=" " alt="" coords="266,193,424,238"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="201,213,250,213,250,218,201,218"/>
+<area shape="rect" id="Node000009" href="$namespacemorpheus.html#a15b00fa3ba8c6814edc03f1cf58badd2" title=" " alt="" coords="267,262,423,307"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="155,227,253,255,251,261,153,232"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="533,5,662,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,117,417,80,488,42,516,32,518,37,490,47,420,84,366,122"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="513,81,682,126"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="441,119,496,113,497,118,442,125"/>
-<area shape="rect" id="Node000005" href="$classmorpheus_1_1Matrix.html#ad522ddc1c4cd3037496211d01275168a" title="Element access (mutable)" alt="" coords="493,149,702,177"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="442,142,477,147,477,152,441,148"/>
-<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="489,201,705,229"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="411,146,442,157,466,172,490,186,512,194,510,199,488,191,464,176,440,162,409,151"/>
-<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="549,81,548,71,556,62,572,56,597,54,624,57,641,63,639,68,623,62,597,59,574,61,559,66,553,72,554,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="359,139,413,92,449,66,488,43,517,32,519,37,490,48,452,70,416,96,362,143"/>
+<area shape="rect" id="Node000004" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="578,57,616,85"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="376,138,428,116,488,94,562,75,563,80,490,99,430,121,378,143"/>
+<area shape="rect" id="Node000005" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="513,133,682,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="442,153,497,153,497,158,442,158"/>
+<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#ad522ddc1c4cd3037496211d01275168a" title="Element access (mutable)" alt="" coords="493,201,702,229"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="406,167,490,187,521,195,520,200,488,192,405,172"/>
+<area shape="rect" id="Node000007" href="$classmorpheus_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="489,253,705,281"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="420,167,443,178,459,194,467,209,475,224,491,238,502,245,499,249,487,243,471,228,463,212,454,197,439,183,418,172"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="549,133,548,123,556,114,572,108,597,106,624,109,641,115,639,120,623,114,597,111,574,113,559,118,553,124,554,132"/>
 </map>

@@ -6,16 +6,28 @@
 #include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 #include "clang/Tooling/Tooling.h"
-
+/**
+ * @file MorpheusPlugin.cpp
+ * @brief Clang plugin for detecting alignment issues and handling custom Morpheus pragmas.
+ */
 using namespace clang;
 using namespace clang::ast_matchers;
 using namespace clang::tooling;
 
-
+/**
+ * @brief AST consumer that matches specific patterns in the AST related to Morpheus usage.
+ */
 class MorpheusASTConsumer : public ASTConsumer {
 public:
+	/**
+     * @brief Constructor
+     * @param CI The Clang compiler instance
+     */
     explicit MorpheusASTConsumer(CompilerInstance &CI) : CI(CI) {}
-
+    /**
+     * @brief Called once AST is fully parsed; sets up matchers
+     * @param Context ASTContext of the parsed translation unit
+     */
     void HandleTranslationUnit(ASTContext &Context) override {
         MatchFinder *Finder = new MatchFinder();
         auto *Checker = new AlignedChecker(CI);
@@ -59,10 +71,20 @@ public:
 private:
     CompilerInstance &CI;
 
+    /**
+     * @brief Callback for handling matches from the AST.
+     */
     class AlignedChecker : public MatchFinder::MatchCallback {
     public:
+	     /**
+         * @brief Constructor
+         * @param CI The Clang compiler instance
+         */
         explicit AlignedChecker(CompilerInstance &CI) : CI(CI) {}
-
+        /**
+         * @brief Called for each AST match
+         * @param Result Match result
+         */
 		void run(const MatchFinder::MatchResult &Result) override {
 			const SourceManager &SM = *Result.SourceManager;
 
@@ -132,10 +154,18 @@ private:
 
 namespace {
 
+/**
+ * @brief Handles `#pragma morpheus ...` pragmas for code injection.
+ */
 class MorpheusPragmaHandler : public PragmaHandler {
 public:
     MorpheusPragmaHandler() : PragmaHandler("morpheus") {}
-
+    /**
+     * @brief Handles a custom `#pragma morpheus` directive.
+     * @param PP Preprocessor instance
+     * @param Introducer Pragma introducer
+     * @param Tok Token after 'morpheus'
+     */
     void HandlePragma(Preprocessor &PP, PragmaIntroducer, Token &Tok) override {
         PP.Lex(Tok);
         if (Tok.isNot(tok::identifier)) return;
@@ -146,12 +176,21 @@ public:
     }
 
 private:
+	 /**
+     * @brief Push a string as a virtual buffer for the preprocessor to consume.
+     * @param PP Preprocessor
+     * @param Code C++ code to inject
+     * @param Name Virtual file name
+     */
     static void pushBuffer(Preprocessor &PP, llvm::StringRef Code, llvm::StringRef Name) {
         auto Buf = llvm::MemoryBuffer::getMemBufferCopy(Code, Name);
         FileID F = PP.getSourceManager().createFileID(std::move(Buf));
         PP.EnterSourceFile(F, nullptr, SourceLocation());
     }
-
+    /**
+     * @brief Injects SIMD dispatch code.
+     * @param PP Preprocessor
+     */
     static void injectDispatch(Preprocessor &PP) {
         Token T;
         do { PP.Lex(T); } while (T.isNot(tok::eod));
@@ -167,7 +206,9 @@ dispatch_simd([](auto simd){
 )cpp",
                    "morph_dispatch");
     }
-
+/**
+ * @brief Main plugin action class for Morpheus plugin.
+ */
     static void injectRestrict(Preprocessor &PP) {
         Token T;
         PP.Lex(T);                     // '('
@@ -186,18 +227,31 @@ dispatch_simd([](auto simd){
         if (!code.empty()) pushBuffer(PP, code, "morph_restrict");
     }
 };
-
+/**
+ * @brief Main plugin action class for Morpheus plugin.
+ */
 class MorpheusPluginAction : public PluginASTAction {
 protected:
+	/**
+     * @brief Parse plugin arguments (none used here).
+     */
     bool ParseArgs(const CompilerInstance&, const std::vector<std::string>&) override { return true; }
+	/**
+     * @brief Create the AST consumer.
+     */
     std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) override {
         CI.getPreprocessor().AddPragmaHandler(new MorpheusPragmaHandler);
 		return std::make_unique<MorpheusASTConsumer>(CI);
     }
+
+    /**
+     * @brief Main plugin execution (unused here).
+     */
     void ExecuteAction() override {}
 };
 
 }
 
+/// @brief Register the plugin under the name "morpheus-dispatch"
 static FrontendPluginRegistry::Add<MorpheusPluginAction>
 X("morpheus-dispatch", "Handle #pragma morpheus directives");
