@@ -3,8 +3,132 @@
 #include "clang/Lex/Preprocessor.h"
 #include "clang/Basic/TokenKinds.h"
 #include "llvm/Support/MemoryBuffer.h"
+#include "clang/ASTMatchers/ASTMatchers.h"
+#include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/Tooling/Tooling.h"
 
 using namespace clang;
+using namespace clang::ast_matchers;
+using namespace clang::tooling;
+
+
+class MorpheusASTConsumer : public ASTConsumer {
+public:
+    explicit MorpheusASTConsumer(CompilerInstance &CI) : CI(CI) {}
+
+    void HandleTranslationUnit(ASTContext &Context) override {
+        MatchFinder *Finder = new MatchFinder();
+        auto *Checker = new AlignedChecker(CI);
+
+        Finder->addMatcher(
+            varDecl(
+                hasType(recordDecl(hasName("::std::vector"))),
+                unless(hasType(TypeMatcher(hasDescendant(recordDecl(hasName("aligned_vector"))))))
+            ).bind("unaligned_vector"),
+            Checker
+        );
+
+        Finder->addMatcher(
+            varDecl(
+                hasType(pointerType(pointee(builtinType())))
+            ).bind("raw_pointer"),
+            Checker
+        );
+
+        Finder->addMatcher(
+            varDecl(
+                hasType(qualType(hasDeclaration(classTemplateSpecializationDecl(
+                    matchesName("::morpheus::(Vector|Matrix|Tensor)")
+                ))))
+            ).bind("morpheus_type"),
+            Checker
+        );
+
+        Finder->addMatcher(
+            varDecl(
+                unless(hasType(qualType(hasDeclaration(classTemplateSpecializationDecl(
+                    matchesName("::morpheus::(Vector|Matrix|Tensor)")
+                )))))
+            ).bind("non_morpheus"),
+            Checker
+        );
+
+        Finder->matchAST(Context);
+    }
+
+private:
+    CompilerInstance &CI;
+
+    class AlignedChecker : public MatchFinder::MatchCallback {
+    public:
+        explicit AlignedChecker(CompilerInstance &CI) : CI(CI) {}
+
+		void run(const MatchFinder::MatchResult &Result) override {
+			const SourceManager &SM = *Result.SourceManager;
+
+			if (const auto *VD = Result.Nodes.getNodeAs<VarDecl>("unaligned_vector")) {
+				if (!SM.isWrittenInMainFile(VD->getLocation())) return;
+				DiagnosticsEngine &DE = CI.getDiagnostics();
+				unsigned ID = DE.getCustomDiagID(
+						DiagnosticsEngine::Warning,
+						"Unaligned std::vector detected; consider morpheus::aligned_vector instead"
+						);
+				DE.Report(VD->getLocation(), ID);
+			}
+
+			else if (const auto *VD = Result.Nodes.getNodeAs<VarDecl>("raw_pointer")) {
+				if (!SM.isWrittenInMainFile(VD->getLocation())) return;
+				QualType QT = VD->getType();
+				if (QT->isPointerType()) {
+					Qualifiers Qs = QT.getQualifiers();
+					if (!Qs.hasRestrict()) {
+						DiagnosticsEngine &DE = CI.getDiagnostics();
+						unsigned ID = DE.getCustomDiagID(
+								DiagnosticsEngine::Warning,
+								"Raw pointer without __restrict qualifier or alignment"
+								);
+						DE.Report(VD->getLocation(), ID);
+					}
+				}
+			}
+
+
+		
+			else if (const auto *VD = Result.Nodes.getNodeAs<VarDecl>("non_morpheus")) {
+				const SourceManager &SM = *Result.SourceManager;
+				if (!SM.isWrittenInMainFile(VD->getLocation()))
+					return;
+
+				QualType CanonQT = VD->getType().getCanonicalType();
+				const CXXRecordDecl *RD = CanonQT->getAsCXXRecordDecl();
+
+				if (!RD) return;
+
+				std::string canonicalName = RD->getQualifiedNameAsString();
+
+				if (canonicalName.find("morpheus::Vector") == 0 ||
+						canonicalName.find("morpheus::Matrix") == 0 ||
+						canonicalName.find("morpheus::Tensor") == 0 ||
+						canonicalName.find("morpheus::Derivate") == 0)
+					return;
+
+				if (canonicalName.find("std::") == 0) return;
+
+				DiagnosticsEngine &DE = CI.getDiagnostics();
+				unsigned ID = DE.getCustomDiagID(
+						DiagnosticsEngine::Remark,
+						"Variable not using Morpheus aligned types (Vector/Matrix/Tensor)"
+						);
+				DE.Report(VD->getLocation(), ID);
+			}
+
+		}
+
+
+	private:
+		CompilerInstance &CI;
+	};
+};
 
 namespace {
 
@@ -68,7 +192,7 @@ protected:
     bool ParseArgs(const CompilerInstance&, const std::vector<std::string>&) override { return true; }
     std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) override {
         CI.getPreprocessor().AddPragmaHandler(new MorpheusPragmaHandler);
-        return std::make_unique<ASTConsumer>();
+		return std::make_unique<MorpheusASTConsumer>(CI);
     }
     void ExecuteAction() override {}
 };

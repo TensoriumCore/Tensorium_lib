@@ -12,7 +12,7 @@
 <area shape="poly" id="edge19_Node000001_Node000010" title=" " alt="" coords="1170,53,1222,71,1272,96,1305,117,1336,142,1386,188,1382,192,1333,146,1302,122,1269,100,1220,76,1168,58"/>
 <area shape="rect" id="Node000011" href="$Spectral_8hpp.html" title=" " alt="" coords="1569,283,1746,328"/>
 <area shape="poly" id="edge30_Node000001_Node000011" title=" " alt="" coords="1174,42,1263,62,1364,91,1467,133,1517,159,1563,189,1589,210,1612,235,1646,281,1642,285,1608,239,1585,214,1560,193,1514,163,1465,138,1362,96,1262,67,1173,47"/>
-<area shape="rect" id="Node000012" href="$Core_2Tensor_8hpp.html" title=" " alt="" coords="505,191,682,235"/>
+<area shape="rect" id="Node000012" href="$Tensor_8hpp.html" title=" " alt="" coords="505,191,682,235"/>
 <area shape="poly" id="edge31_Node000001_Node000012" title=" " alt="" coords="963,49,872,70,780,100,735,122,693,146,623,192,620,188,690,141,733,117,778,96,871,64,961,43"/>
 <area shape="rect" id="Node000014" href="$Vector_8hpp.html" title=" " alt="" coords="790,98,967,143"/>
 <area shape="poly" id="edge45_Node000001_Node000014" title=" " alt="" coords="1010,59,925,100,923,95,1008,55"/>

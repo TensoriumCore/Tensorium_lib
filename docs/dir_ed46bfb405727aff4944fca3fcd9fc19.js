@@ -4,6 +4,5 @@ var dir_ed46bfb405727aff4944fca3fcd9fc19 =
     [ "ChristoffelSymbol.hpp", "ChristoffelSymbol_8hpp.html", "ChristoffelSymbol_8hpp" ],
     [ "Metric.hpp", "Metric_8hpp.html", "Metric_8hpp" ],
     [ "RicciTensor.hpp", "RicciTensor_8hpp.html", "RicciTensor_8hpp" ],
-    [ "RiemannTensor.hpp", "RiemannTensor_8hpp.html", "RiemannTensor_8hpp" ],
-    [ "Tensor.hpp", "DiffGeometry_2Tensor_8hpp.html", null ]
+    [ "RiemannTensor.hpp", "RiemannTensor_8hpp.html", "RiemannTensor_8hpp" ]
 ];

@@ -111,7 +111,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="Core_2Tensor_8hpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="Tensor_8hpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="647.1,-191 544.85,-191 544.85,-170.25 647.1,-170.25 647.1,-191"/>
 <text text-anchor="middle" x="595.98" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">../Core/Tensor.hpp</text>
 </a>
