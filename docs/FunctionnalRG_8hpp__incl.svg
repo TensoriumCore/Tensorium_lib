@@ -39,7 +39,7 @@
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="Core_2Tensor_8hpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000019"><a xlink:href="Tensor_8hpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="706.12,-247.75 603.88,-247.75 603.88,-227 706.12,-227 706.12,-247.75"/>
 <text text-anchor="middle" x="655" y="-234.25" font-family="Helvetica,sans-Serif" font-size="10.00">../Core/Tensor.hpp</text>
 </a>

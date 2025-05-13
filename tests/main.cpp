@@ -15,6 +15,8 @@ void test_lexer(const std::string& input) {
 
 int main() {
 #pragma morpheus dispatch
+	float __attribute__((aligned(8))) low_align[32];
+
 	deriv_test();	
 	linear_solver_test();
 	matrix_tests();

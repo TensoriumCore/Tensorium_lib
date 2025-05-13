@@ -109,7 +109,7 @@ $(function(){initNavTree('RiemannTensor_8hpp_source.html',''); initResizable(); 
 <a href="RiemannTensor_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="Vector_8hpp.html">../Core/Vector.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="Core_2Tensor_8hpp.html">../Core/Tensor.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="Tensor_8hpp.html">../Core/Tensor.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="Matrix_8hpp.html">../Core/Matrix.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="FunctionnalRG_8hpp.html">../Functionnal/FunctionnalRG.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="ChristoffelSymbol_8hpp.html">../DiffGeometry/ChristoffelSymbol.hpp</a>&quot;</span></div>
@@ -245,7 +245,6 @@ $(function(){initNavTree('RiemannTensor_8hpp_source.html',''); initResizable(); 
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
 <div class="ttc" id="aChristoffelSymbol_8hpp_html"><div class="ttname"><a href="ChristoffelSymbol_8hpp.html">ChristoffelSymbol.hpp</a></div></div>
-<div class="ttc" id="aCore_2Tensor_8hpp_html"><div class="ttname"><a href="Core_2Tensor_8hpp.html">Tensor.hpp</a></div></div>
 <div class="ttc" id="aDerivate_8hpp_html"><div class="ttname"><a href="Derivate_8hpp.html">Derivate.hpp</a></div><div class="ttdoc">Numerical differentiation operators using SIMD.</div></div>
 <div class="ttc" id="aFunctionnalRG_8hpp_html"><div class="ttname"><a href="FunctionnalRG_8hpp.html">FunctionnalRG.hpp</a></div></div>
 <div class="ttc" id="aLatex_8hpp_html_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650"><div class="ttname"><a href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650">GreekSymbolminus::nu</a></div><div class="ttdeci">@ nu</div></div>
@@ -255,9 +254,10 @@ $(function(){initNavTree('RiemannTensor_8hpp_source.html',''); initResizable(); 
 <div class="ttc" id="aLatex_8hpp_html_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30"><div class="ttname"><a href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30">GreekSymbolminus::sigma</a></div><div class="ttdeci">@ sigma</div></div>
 <div class="ttc" id="aMatrix_8hpp_html"><div class="ttname"><a href="Matrix_8hpp.html">Matrix.hpp</a></div></div>
 <div class="ttc" id="aMetric_8hpp_html"><div class="ttname"><a href="Metric_8hpp.html">Metric.hpp</a></div></div>
+<div class="ttc" id="aTensor_8hpp_html"><div class="ttname"><a href="Tensor_8hpp.html">Tensor.hpp</a></div></div>
 <div class="ttc" id="aVector_8hpp_html"><div class="ttname"><a href="Vector_8hpp.html">Vector.hpp</a></div></div>
 <div class="ttc" id="aclassmorpheus_1_1Tensor_html"><div class="ttname"><a href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a></div><div class="ttdoc">Multi-dimensional tensor class with fixed rank and SIMD support.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:27</div></div>
-<div class="ttc" id="aclassmorpheus_1_1Tensor_html_a70fb35ac409a7f95a4efe437d33cf576"><div class="ttname"><a href="classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576">morpheus::Tensor::fill</a></div><div class="ttdeci">void fill(K value)</div><div class="ttdoc">Fill tensor with a constant value.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:114</div></div>
+<div class="ttc" id="aclassmorpheus_1_1Tensor_html_a70fb35ac409a7f95a4efe437d33cf576"><div class="ttname"><a href="classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576">morpheus::Tensor::fill</a></div><div class="ttdeci">void fill(K value)</div><div class="ttdoc">Fill tensor with a constant value.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:110</div></div>
 <div class="ttc" id="aclassmorpheus_1_1Vector_html"><div class="ttname"><a href="classmorpheus_1_1Vector.html">morpheus::Vector</a></div><div class="ttdoc">Aligned, SIMD-optimized mathematical vector class for scientific computing.</div><div class="ttdef"><b>Definition</b> Vector.hpp:27</div></div>
 <div class="ttc" id="aclassmorpheus__RG_1_1ChristoffelSym_html"><div class="ttname"><a href="classmorpheus__RG_1_1ChristoffelSym.html">morpheus_RG::ChristoffelSym</a></div><div class="ttdoc">Stores and computes Christoffel symbols .</div><div class="ttdef"><b>Definition</b> ChristoffelSymbol.hpp:41</div></div>
 <div class="ttc" id="aclassmorpheus__RG_1_1Metric_html"><div class="ttname"><a href="classmorpheus__RG_1_1Metric.html">morpheus_RG::Metric</a></div><div class="ttdoc">A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr,...</div><div class="ttdef"><b>Definition</b> Metric.hpp:27</div></div>

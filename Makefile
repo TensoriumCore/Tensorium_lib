@@ -11,12 +11,16 @@ OBJ_DIR      = build
 
 PLUGIN_SRC   = $(PLGIN_DIR)/MorpheusDispatchPlugin.cpp
 PLUGIN_OUT   = $(PLGIN_DIR)/MorpheusDispatchPlugin.so
+LLVM_IR_PLUGIN_SRC  = $(PLGIN_DIR)/MorpheusLLVM_IRCheck.cpp
+LLVM_IR_PLUGIN_OUT  = $(PLGIN_DIR)/MorpheusLLVM_IRCheck.so
+LLVM_IR_LIBS        := $(shell llvm-config --ldflags --system-libs --libs core passes)
+
 LLVM_CXXFLAGS:= $(shell llvm-config --cxxflags)
 LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
 CLANG_LIBS   := -lclangFrontend -lclangTooling -lclangBasic -lclangLex
 
 CXX_STD      = -std=c++17
-BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR)
+BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR) -Rpass-analysis=morpheus-align
 
 AVX2_FLAGS   = -mfma -mavx2
 AVX512_FLAGS = -mfma -mavx512f
@@ -43,6 +47,10 @@ endif
 PLUGIN_FLAGS = -Xclang -load -Xclang $(PLUGIN_OUT) \
                -Xclang -add-plugin -Xclang morpheus-dispatch
 
+LLVM_IR_PLUGIN_FLAGS = -fpass-plugin=$(LLVM_IR_PLUGIN_OUT) \
+
+
+
 SRC  := $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(BENCH_DIR)/*")
 OBJ  := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
@@ -54,16 +62,17 @@ BENCH_OBJ = $(OBJ_DIR)/bench.o
 
 BLAS_FLAGS = -lblas -lm -lopenblas
 
-.PHONY: all clean fclean re benchmark lib help plugin plugin-test
+.PHONY: all clean fclean re benchmark lib help plugin plugin-test llvm-ir-plugin
 
 all: plugin $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR) plugin
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR) plugin llvm-ir-plugin
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(PLUGIN_FLAGS) -fPIC -c $< -o $@
+	$(CC) $(CFLAGS) $(PLUGIN_FLAGS) $(LLVM_IR_PLUGIN_FLAGS) -fPIC -c $< -o $@
+
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
@@ -79,6 +88,11 @@ lib: $(LIB_NAME)
 
 $(LIB_NAME): $(LIB_OBJ)
 	$(CC) $(CFLAGS) -shared -o $@ $^ $(LDFLAGS)
+
+llvm-ir-plugin: $(LLVM_IR_PLUGIN_OUT)
+
+$(LLVM_IR_PLUGIN_OUT): $(LLVM_IR_PLUGIN_SRC)
+	$(CC) -fPIC -shared -o $@ $< $(LLVM_IR_FLAGS) $(LLVM_IR_LIBS) -std=c++17
 
 plugin: $(PLUGIN_OUT)
 

@@ -10,7 +10,7 @@
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="587,53,521,74,453,100,385,134,328,168,325,163,383,129,451,96,519,69,585,48"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="1237,325,1323,353"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="784,28,869,35,967,47,1068,66,1166,95,1237,121,1263,140,1286,172,1298,208,1301,245,1298,281,1291,311,1286,309,1292,280,1296,245,1293,209,1282,175,1259,144,1234,126,1164,101,1067,71,966,52,869,40,783,34"/>
-<area shape="rect" id="Node000007" href="$Core_2Tensor_8hpp.html" title=" " alt="" coords="732,98,868,126"/>
+<area shape="rect" id="Node000007" href="$Tensor_8hpp.html" title=" " alt="" coords="732,98,868,126"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="702,48,767,87,764,92,700,53"/>
 <area shape="rect" id="Node000021" href="$Vector_8hpp.html" title=" " alt="" coords="464,98,600,126"/>
 <area shape="poly" id="edge33_Node000001_Node000021" title=" " alt="" coords="631,53,567,92,565,87,629,48"/>

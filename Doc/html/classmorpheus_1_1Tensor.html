@@ -110,7 +110,7 @@ $(function(){initNavTree('classmorpheus_1_1Tensor.html',''); initResizable(); })
 <p>Multi-dimensional tensor class with fixed rank and SIMD support.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="Core_2Tensor_8hpp_source.html">Tensor.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Tensor_8hpp_source.html">Tensor.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for morpheus::Tensor&lt; K, Rank &gt;:</div>
 <div class="dyncontent">
@@ -178,6 +178,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3b56fad12e7755519da5c0198407d4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acda835d088e6ada63992e1b9a63f6d58" id="r_acda835d088e6ada63992e1b9a63f6d58"><td class="memItemLeft" align="right" valign="top">std::array&lt; size_t, Rank &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a></td></tr>
 <tr class="separator:acda835d088e6ada63992e1b9a63f6d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">basic tensor operations (Rank == 2)</h2></td></tr>
 <tr class="memitem:a1dde5a3888acb177e67fecef069e167d" id="r_a1dde5a3888acb177e67fecef069e167d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dde5a3888acb177e67fecef069e167d">reg</a> = typename Simd::reg</td></tr>
 <tr class="separator:a1dde5a3888acb177e67fecef069e167d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf7e0d92f3c82f66151fb25f78528b0" id="r_a4bf7e0d92f3c82f66151fb25f78528b0"><td class="memItemLeft" align="right" valign="top">const size_t *<a class="el" href="#acda835d088e6ada63992e1b9a63f6d58">strides</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a></td></tr>
@@ -191,7 +193,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a812cb252c931f4e3da2d63b4b339639f" id="r_a812cb252c931f4e3da2d63b4b339639f"><td class="memItemLeft" align="right" valign="top">return&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a812cb252c931f4e3da2d63b4b339639f">acc</a></td></tr>
 <tr class="separator:a812cb252c931f4e3da2d63b4b339639f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff9a2f02efd8c58c0a3e7509b3f89739" id="r_aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff9a2f02efd8c58c0a3e7509b3f89739">__attribute__</a> ((always_inline, hot, flatten)) inline size_t flatten_index_simd(<a class="el" href="#a4bf7e0d92f3c82f66151fb25f78528b0">const</a> size_t *indices</td></tr>
-<tr class="memdesc:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="mdescLeft">&#160;</td><td class="mdescRight">basic tensor operations (Rank == 2)  <br /></td></tr>
+<tr class="memdesc:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a multi-index into a flattened linear index using SIMD.  <br /></td></tr>
 <tr class="separator:aff9a2f02efd8c58c0a3e7509b3f89739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a675364efae080330621757d3d82ad6c4" id="r_a675364efae080330621757d3d82ad6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a675364efae080330621757d3d82ad6c4">for</a> (;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a> - 1&lt; Rank;<a class="el" href="#a004a4099b2874acd9f719d47109367f1">i</a>+=<a class="el" href="#a99ab9aa1650580da46ca3e1a21590cfe">W</a>)</td></tr>
 <tr class="separator:a675364efae080330621757d3d82ad6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,8 +338,7 @@ template&lt;typename K , std::size_t Rank&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>basic tensor operations (Rank == 2) </p>
-<p>Convert a multi-index into a flattened linear index using SIMD</p>
+<p>Convert a multi-index into a flattened linear index using SIMD. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">indices</td><td>Array of indices </td></tr>
@@ -1225,7 +1226,7 @@ template&lt;typename K , std::size_t Rank&gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>includes/Morpheus/Core/<a class="el" href="Core_2Tensor_8hpp_source.html">Tensor.hpp</a></li>
+<li>includes/Morpheus/Core/<a class="el" href="Tensor_8hpp_source.html">Tensor.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

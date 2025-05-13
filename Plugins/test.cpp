@@ -1,12 +1,17 @@
-#include "../includes/Morpheus/Morpheus.hpp"
-#include <iostream>
+// #include "../includes/Morpheus/Morpheus.hpp"
+// #include <iostream>
 
-void saxpy(int n, float *A, float *B, float k)
-{
-    #pragma morpheus restrict(A,B)  
-    for (int i = 0; i < n; ++i)
-        B_re[i] += k * A_re[i];  
+float* f() {
+    float *a = new float[8]; // force une allocation
+    a[0] = 1.0f;
+    return a;
 }
+// void saxpy(int n, float *A, float *B, float k)
+// {
+//     #pragma morpheus restrict(A,B)  
+//     for (int i = 0; i < n; ++i)
+//         B_re[i] += k * A_re[i];  
+// }
 
 int main()
 {
@@ -19,10 +24,10 @@ int main()
     }
 
     float k = 12.0f;
-    saxpy(n, A, B, k);
-
-    for (float v : B) std::cout << v << ' ';
-    std::cout << '\n';
+    // saxpy(n, A, B, k);
+	f();
+    // for (float v : B) std::cout << v << ' ';
+    // std::cout << '\n';
     return 0;
 }
 
