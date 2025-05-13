@@ -1,7 +1,9 @@
 <map id="morpheus_RG::RiemannTensor::compute" name="morpheus_RG::RiemannTensor::compute">
-<area shape="rect" id="Node000001" title="Computes the 4D Riemann curvature tensor ." alt="" coords="5,28,226,72"/>
+<area shape="rect" id="Node000001" title="Computes the 4D Riemann curvature tensor ." alt="" coords="5,57,226,102"/>
 <area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="275,5,435,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="226,33,259,29,260,34,227,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,54,281,35,283,40,208,59"/>
 <area shape="rect" id="Node000003" href="$namespacemorpheus.html#a5642a249c8bbb73833a55d1256e5cb0b" title="Richardson extrapolation for scalar values." alt="" coords="274,57,436,102"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="226,61,258,65,258,70,226,66"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="226,77,258,77,258,82,226,82"/>
+<area shape="rect" id="Node000004" href="$MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;." alt="" coords="336,125,374,153"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="208,100,321,128,320,133,207,105"/>
 </map>

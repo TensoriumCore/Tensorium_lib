@@ -40,9 +40,9 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="310.25,-20.75 183.25,-20.75 183.25,0 310.25,0 310.25,-20.75"/>
-<text text-anchor="middle" x="246.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::Vector::size</text>
+<g id="a_Node000003"><a xlink:href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" target="_top" xlink:title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;.">
+<polygon fill="white" stroke="#666666" points="261.15,-20.75 232.35,-20.75 232.35,0 261.15,0 261.15,-20.75"/>
+<text text-anchor="middle" x="246.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">X</text>
 </a>
 </g>
 </g>
@@ -50,8 +50,8 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M140.97,-23.59C151.04,-22.32 161.43,-21.01 171.59,-19.72"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="171.93,-23.21 181.42,-18.49 171.06,-16.26 171.93,-23.21"/>
+<path fill="none" stroke="#63b8ff" d="M140.97,-23.59C169.09,-20.04 199.74,-16.18 220.59,-13.55"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="220.92,-17.03 230.41,-12.31 220.05,-10.09 220.92,-17.03"/>
 </a>
 </g>
 </g>

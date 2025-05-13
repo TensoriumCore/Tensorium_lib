@@ -990,6 +990,7 @@ INPUT_FILE_ENCODING    =
 # *.f18, *.f, *.for, *.vhd, *.vhdl, *.ucf, *.qsf and *.ice.
 
 FILE_PATTERNS          = *.hpp \
+						 *.cpp \
                          *.md
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should

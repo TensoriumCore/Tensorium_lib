@@ -48,6 +48,7 @@ var annotated_dup =
     [ "avx512_t", "structavx512__t.html", "structavx512__t" ],
     [ "Lexer", "classLexer.html", "classLexer" ],
     [ "MathsUtils", "classMathsUtils.html", "classMathsUtils" ],
+    [ "MorpheusASTConsumer", "classMorpheusASTConsumer.html", "classMorpheusASTConsumer" ],
     [ "sse_t", "structsse__t.html", "structsse__t" ],
     [ "Token", "structToken.html", "structToken" ]
 ];

@@ -84,6 +84,7 @@ var NAVTREE =
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
@@ -107,12 +108,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AST_8hpp.html",
-"classmorpheus_1_1Derivate.html#a310696cb2a405e97191895df2528f12d",
-"classmorpheus_1_1Tensor.html#a65ace646e6f565d314a39f4b1411e9ef",
-"classmorpheus__RG_1_1Metric.html#a6e547241ae31d603ec50f203434684ed",
-"structToken.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a",
-"structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4.html#a5eeb71644718ebcfe0a28140989b15be",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#ac26ef9b70e307971db56790fc61f7dff"
+"classmorpheus_1_1CacheInfo.html#aa2551823a9c760c63ad69f75ca7a58ad",
+"classmorpheus_1_1Tensor.html#a243335fd9e54d6a0133f2268e938dd17",
+"classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51",
+"structAlignedAllocator.html#a116c3a68cfe337874ca881908721a64f",
+"structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4.html#a243737ecfefb3da57c5d0df8f9c24f26",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a46ba6d592ecd6c874a6b4517f2bf9b5d",
+"test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
