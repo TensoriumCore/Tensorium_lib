@@ -173,6 +173,7 @@ public:
 
         if (kind == "dispatch") injectDispatch(PP);
         else if (kind == "restrict") injectRestrict(PP);
+		else if (kind == "target") parseTarget(PP);
     }
 
 private:
@@ -195,7 +196,7 @@ private:
         Token T;
         do { PP.Lex(T); } while (T.isNot(tok::eod));
         pushBuffer(PP,
-R"cpp(
+				R"cpp(
 dispatch_simd([](auto simd){
     using T = decltype(simd);
     constexpr size_t W = T::width;
@@ -204,50 +205,82 @@ dispatch_simd([](auto simd){
               << ", alignment=" << A << "\n";
 });
 )cpp",
-                   "morph_dispatch");
-    }
+				"morph_dispatch");
+}
 /**
  * @brief Main plugin action class for Morpheus plugin.
  */
-    static void injectRestrict(Preprocessor &PP) {
-        Token T;
-        PP.Lex(T);                     // '('
-        std::string code;
-        while (true) {
-            PP.Lex(T);
-            if (T.is(tok::identifier)) {
-                llvm::StringRef v = T.getIdentifierInfo()->getName();
-                code += "auto * __restrict " + v.str() + "_re = " + v.str() + ";\n";
-            }
-            PP.Lex(T);
-            if (T.is(tok::r_paren)) break;
-            if (T.isNot(tok::comma)) return;
-        }
-        do { PP.Lex(T); } while (T.isNot(tok::eod));
-        if (!code.empty()) pushBuffer(PP, code, "morph_restrict");
-    }
+static void injectRestrict(Preprocessor &PP) {
+	Token T;
+	PP.Lex(T);                     // '('
+	std::string code;
+	while (true) {
+		PP.Lex(T);
+		if (T.is(tok::identifier)) {
+			llvm::StringRef v = T.getIdentifierInfo()->getName();
+			code += "auto * __restrict " + v.str() + "_re = " + v.str() + ";\n";
+		}
+		PP.Lex(T);
+		if (T.is(tok::r_paren)) break;
+		if (T.isNot(tok::comma)) return;
+	}
+	do { PP.Lex(T); } while (T.isNot(tok::eod));
+	if (!code.empty()) pushBuffer(PP, code, "morph_restrict");
+}
+
+
+static void parseTarget(Preprocessor &PP) {
+	Token Tok;
+	PP.Lex(Tok); // '('
+	if (Tok.isNot(tok::l_paren)) return;
+
+	PP.Lex(Tok);
+	if (Tok.isNot(tok::identifier)) return;
+
+	std::string platform = PP.getSpelling(Tok);
+	std::string isa;
+
+	PP.Lex(Tok);
+	if (Tok.is(tok::comma)) {
+		PP.Lex(Tok);
+		if (Tok.isNot(tok::identifier)) return;
+		isa = PP.getSpelling(Tok);
+		PP.Lex(Tok); // ')'
+	}
+
+	if (Tok.isNot(tok::r_paren)) return;
+
+	// On va juste imprimer pour l’instant (à terme stocker dans une table)
+	llvm::errs() << "[morpheus] target detected: " << platform;
+	if (!isa.empty()) llvm::errs() << " with ISA " << isa;
+	llvm::errs() << "\n";
+
+	// Tu pourrais ensuite stocker cette info ici
+	// e.g. MorpheusTargetTable.push_back({platform, isa, location})
+}
+
 };
 /**
  * @brief Main plugin action class for Morpheus plugin.
  */
 class MorpheusPluginAction : public PluginASTAction {
-protected:
-	/**
-     * @brief Parse plugin arguments (none used here).
-     */
-    bool ParseArgs(const CompilerInstance&, const std::vector<std::string>&) override { return true; }
-	/**
-     * @brief Create the AST consumer.
-     */
-    std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) override {
-        CI.getPreprocessor().AddPragmaHandler(new MorpheusPragmaHandler);
-		return std::make_unique<MorpheusASTConsumer>(CI);
-    }
+	protected:
+		/**
+		 * @brief Parse plugin arguments (none used here).
+		 */
+		bool ParseArgs(const CompilerInstance&, const std::vector<std::string>&) override { return true; }
+		/**
+		 * @brief Create the AST consumer.
+		 */
+		std::unique_ptr<ASTConsumer> CreateASTConsumer(CompilerInstance &CI, llvm::StringRef) override {
+			CI.getPreprocessor().AddPragmaHandler(new MorpheusPragmaHandler);
+			return std::make_unique<MorpheusASTConsumer>(CI);
+		}
 
-    /**
-     * @brief Main plugin execution (unused here).
-     */
-    void ExecuteAction() override {}
+		/**
+		 * @brief Main plugin execution (unused here).
+		 */
+		void ExecuteAction() override {}
 };
 
 }
