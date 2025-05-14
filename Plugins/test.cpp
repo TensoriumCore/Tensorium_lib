@@ -1,4 +1,4 @@
-// #include "../includes/Morpheus/Morpheus.hpp"
+#include "../includes/Morpheus/Morpheus.hpp"
 // #include <iostream>
 
 float* f() {
@@ -28,6 +28,15 @@ int main()
 	f();
     // for (float v : B) std::cout << v << ' ';
     // std::cout << '\n';
+	//
+	morpheus::Matrix<float> A2(2, 2);
+	morpheus::Matrix<float> B2(2, 2);
+	A2(0, 0) = 1.0f; A2(0, 1) = 2.0f;
+	A2(1, 0) = 3.0f; A2(1, 1) = 4.0f;
+	B2(0, 0) = 5.0f; B2(0, 1) = 6.0f;
+	B2(1, 0) = 7.0f; B2(1, 1) = 8.0f;
+	auto C2 = morpheus::mul_mat(A2, B2);
+	C2.print();
     return 0;
 }
 
