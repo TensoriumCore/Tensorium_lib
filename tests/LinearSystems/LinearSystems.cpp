@@ -33,5 +33,22 @@ int linear_solver_test() {
 	std::cout << "Check Ax2 = b2:\n";
 	b2_check.print();
 
+	std::cout << "=== Row Echelon Test ===\n";
+	Matrix<float> A3(3, 3);
+	A3(0, 0) = 1.0f;  A3(0, 1) = 2.0f;  A3(0, 2) = -1.0f;
+	A3(1, 0) = 2.0f;  A3(1, 1) = 4.0f;  A3(1, 2) = -2.0f;
+	A3(2, 0) = -1.0f; A3(2, 1) = -2.0f; A3(2, 2) = 1.0f;
+
+	Vector<float> b3 = { 3.0f, 6.0f, -3.0f };
+
+	morpheus::row_echelon(A3, &b3);
+
+	std::cout << "Echelon form of A3:\n";
+	A3.print();
+
+	std::cout << "Modified b3:\n";
+
+	b3.print();
+	std::cout << "Rank = " << morpheus::rank_mat(A3) << "\n";
 	return 0;
 }

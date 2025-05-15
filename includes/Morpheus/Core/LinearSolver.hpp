@@ -4,6 +4,8 @@
 #include "../SIMD/SIMD.hpp" 
 #include "../SIMD/CPU_id.hpp" 
 #include "../SIMD/Allocator.hpp"
+#include "../MathUtils/MathsUtils.hpp"
+
 /**
  * @brief Namespace containing linear system solvers
  *
@@ -66,18 +68,20 @@ namespace morpheus::solver {
 
 						for (auto i = decltype(n)(0); i < n; ++i) {
 							auto piv  = i;
-							auto maxv = std::abs(M(i, i));
+							auto maxv =  MathsUtils::_abs(M(i, i));
 							for (auto r = i + 1; r < n; ++r) {
-								auto v = std::abs(M(r, i));
+								auto v =  MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
 							if (maxv < static_cast<K>(1e-12))
 								throw std::runtime_error("Gauss: matrix is singular or nearly singular.");
+						
 							if (piv != i) {
 								M.swap_rows(i, piv);
-								std::swap(B[i], B[piv]);
+								K tmp = B[i];
+								B[i] = B[piv];
+								B[piv] = tmp;
 							}
-
 							constexpr auto TILE = UNROLL;
 #pragma omp parallel for schedule(dynamic, TILE)
 							for (auto j = i + 1; j < n; ++j) {
@@ -100,7 +104,7 @@ namespace morpheus::solver {
 								for (; k + W <= n; k += W) {
 									auto vj = SimdT::loadu(rowj + k);
 									auto vi = SimdT::loadu(rowi + k);
-									vj        = SimdT::sub(vj, SimdT::mul(fv, vi));
+									vj      = SimdT::sub(vj, SimdT::mul(fv, vi));
 									SimdT::storeu(rowj + k, vj);
 								}
 								for (; k + 1 < n; k += 2) {
@@ -132,6 +136,75 @@ namespace morpheus::solver {
 
 						return x;
 					}
+
+					static inline void raw_row_echelon(Matrix<K>& A, Vector<K>* b = nullptr, K eps = 1e-12) {
+						const size_t n = A.rows;
+						const size_t m = A.cols;
+						assert(b == nullptr || b->size() == n);
+
+						using Simd = simd::SimdTraits<K, DefaultISA>;
+						using reg = typename Simd::reg;
+						constexpr size_t W = Simd::width;
+
+						size_t lead = 0;
+						for (size_t r = 0; r < n; ++r) {
+							if (lead >= m)
+								return;
+
+							size_t i = r;
+							while ( MathsUtils::_abs(A(i, lead)) < eps) {
+								++i;
+								if (i == n) {
+									i = r;
+									++lead;
+									if (lead == m)
+										return;
+								}
+							}
+
+							if (i != r) {
+								A.swap_rows(i, r);
+								if (b) {
+									K tmp = (*b)[i];
+									(*b)[i] = (*b)[r];
+									(*b)[r] = tmp;
+								}
+							}
+
+							auto* __restrict row_r = &A(r, 0);
+							const K pivot = row_r[lead];
+							if ( MathsUtils::_abs(pivot) < eps)
+								continue;
+
+							const K inv_pivot = K(1) / pivot;
+							for (size_t j = lead; j < m; ++j)
+								row_r[j] *= inv_pivot;
+							if (b) (*b)[r] *= inv_pivot;
+
+#pragma omp parallel for schedule(dynamic, 4)
+							for (size_t k = r + 1; k < n; ++k) {
+								auto* __restrict row_k = &A(k, 0);
+								const K f = row_k[lead];
+								row_k[lead] = K(0);
+
+								const reg fv = Simd::set1(f);
+								size_t j = lead + 1;
+								for (; j + W <= m; j += W) {
+									auto vr = Simd::loadu(row_r + j);
+									auto vk = Simd::loadu(row_k + j);
+									vk = Simd::sub(vk, Simd::mul(fv, vr));
+									Simd::storeu(row_k + j, vk);
+								}
+								for (; j < m; ++j)
+									row_k[j] -= f * row_r[j];
+
+								if (b) (*b)[k] -= f * (*b)[r];
+							}
+
+							++lead;
+						}
+					}
+
 		};
 	/**
 	 * @brief Iterative Jacobi solver with SIMD and OpenMP support
@@ -175,7 +248,7 @@ namespace morpheus::solver {
 					for (int iter = 0; iter < max_iter; ++iter) {
 #pragma omp parallel for schedule(dynamic, 4) 
 						for (size_t i = 0; i < n; ++i) {
-							if (std::abs(A(i, i)) < 1e-10)
+							if ( MathsUtils::_abs(A(i, i)) < 1e-10)
 								throw std::runtime_error("Jacobi: division by near-zero on diagonal, matrix likely not diagonally dominant.");
 
 							reg sum_vec = Simd::setzero();

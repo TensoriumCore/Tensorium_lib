@@ -159,7 +159,7 @@ namespace detail {
 		}
 }
 
-
+#ifdef __AVX512F__
 static inline __m512 andnot_fallback(__m512 a, __m512 b) {
     __m512i a_bits = _mm512_castps_si512(a);
     __m512i not_a_bits = _mm512_xor_si512(a_bits, _mm512_set1_epi32(-1)); 
@@ -167,6 +167,7 @@ static inline __m512 andnot_fallback(__m512 a, __m512 b) {
     __m512i result_bits = _mm512_and_si512(not_a_bits, b_bits);
     return _mm512_castsi512_ps(result_bits);
 }
+#endif
 
 
 namespace simd {
@@ -409,7 +410,7 @@ namespace simd {
 			}
 			static inline reg max(reg a, reg b)		{ return _mm256_max_epi64(a, b); }
 		};
-
+#ifdef __AVX512F__
 
 	template<>
 		struct SimdTraits<float, avx512_t> {
@@ -531,7 +532,7 @@ namespace simd {
 			}
 			static inline reg max(reg a, reg b)		{ return _mm512_max_epi64(a, b); }
 		};
-
+#endif
 /*
  * COMPLEX NUMBERS
  */
@@ -781,6 +782,9 @@ namespace simd {
 						);
 			}
 		};
+
+#ifdef __AVX512F__
+
 	template<>
 		struct SimdTraits<std::complex<float>, avx512_t> {
 			using reg = __m512;
@@ -957,4 +961,5 @@ namespace simd {
 						);
 			}
 		};
+#endif
 } 
