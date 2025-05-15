@@ -77,6 +77,7 @@ var namespacemorpheus =
     [ "rank_mat", "namespacemorpheus.html#a52edd23638a57f727b66ff6a7388058f", null ],
     [ "richardson_derivative", "namespacemorpheus.html#a5642a249c8bbb73833a55d1256e5cb0b", null ],
     [ "richardson_derivative_container", "namespacemorpheus.html#a47cf67841ca834dde92b69e9a7078fa9", null ],
+    [ "row_echelon", "namespacemorpheus.html#a9a35e07c442f4a216c75b5c4c2167c00", null ],
     [ "scl_mat", "namespacemorpheus.html#a4b6f20a0b50871333f193d3389f78401", null ],
     [ "scl_vec", "namespacemorpheus.html#a1a2e7c9b09299ca68a111830951ae130", null ],
     [ "sub_mat", "namespacemorpheus.html#a9298933e8e700a86412c1b9babdf90b9", null ],

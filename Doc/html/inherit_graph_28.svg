@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structsimd_1_1SimdTraits_3_01double_00_01avx512__t_01_4.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="144.25,-33.5 0,-33.5 0,0 144.25,0 144.25,-33.5"/>
 <text text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">simd::SimdTraits&lt; double,</text>
-<text text-anchor="middle" x="72.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00"> avx512_t &gt;</text>
+<text text-anchor="middle" x="72.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00"> avx2_t &gt;</text>
 </a>
 </g>
 </g>

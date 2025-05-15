@@ -26,6 +26,7 @@ var Functional_8hpp =
     [ "norm2_vec", "Functional_8hpp.html#a6575e74e4f04f1d923a2b7caee2d1b1e", null ],
     [ "normInf_vec", "Functional_8hpp.html#a9b66a4923bf8f9855d86269d632a1ce7", null ],
     [ "rank_mat", "Functional_8hpp.html#a52edd23638a57f727b66ff6a7388058f", null ],
+    [ "row_echelon", "Functional_8hpp.html#a9a35e07c442f4a216c75b5c4c2167c00", null ],
     [ "scl_mat", "Functional_8hpp.html#a4b6f20a0b50871333f193d3389f78401", null ],
     [ "scl_vec", "Functional_8hpp.html#a1a2e7c9b09299ca68a111830951ae130", null ],
     [ "sub_mat", "Functional_8hpp.html#a9298933e8e700a86412c1b9babdf90b9", null ],

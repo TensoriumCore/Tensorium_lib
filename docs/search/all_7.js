@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gamma_0',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
-  ['gamma_1',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
+  ['gamma_0',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
+  ['gamma_1',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
   ['gather_2',['gather',['../namespacemorpheus_1_1mpi.html#a028fbed716196bcaa74959e2cd2c2c26',1,'morpheus::mpi']]],
   ['gauss_3',['Gauss',['../classmorpheus_1_1solver_1_1Gauss.html',1,'morpheus::solver']]],
   ['gauss_5fsolve_4',['gauss_solve',['../namespacemorpheus.html#a695ad97fedbe4dfae664ab86846df19e',1,'morpheus']]],

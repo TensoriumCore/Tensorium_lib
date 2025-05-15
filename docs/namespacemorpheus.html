@@ -254,6 +254,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a09c5cb9e88d703b1a5570ae3a3f2781c" id="r_a09c5cb9e88d703b1a5570ae3a3f2781c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a09c5cb9e88d703b1a5570ae3a3f2781c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a09c5cb9e88d703b1a5570ae3a3f2781c">jacobi_solve</a> (const <a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b, T tol=1e-6, int max_iter=1000)</td></tr>
 <tr class="separator:a09c5cb9e88d703b1a5570ae3a3f2781c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a35e07c442f4a216c75b5c4c2167c00" id="r_a9a35e07c442f4a216c75b5c4c2167c00"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9a35e07c442f4a216c75b5c4c2167c00"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9a35e07c442f4a216c75b5c4c2167c00">row_echelon</a> (<a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, <a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; T &gt; *b=nullptr, T eps=T(1e-12))</td></tr>
+<tr class="separator:a9a35e07c442f4a216c75b5c4c2167c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e21ebc6020ca61352246c36630ad02d" id="r_a3e21ebc6020ca61352246c36630ad02d"><td class="memTemplParams" colspan="2">template&lt;typename K &gt; </td></tr>
 <tr class="memitem:a3e21ebc6020ca61352246c36630ad02d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3e21ebc6020ca61352246c36630ad02d">centered_derivative</a> (const <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;input, <a class="el" href="classmorpheus_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;output, size_t axis, K dx)</td></tr>
 <tr class="separator:a3e21ebc6020ca61352246c36630ad02d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1105,7 +1108,7 @@ template&lt;typename T &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c_cgraph.svg" width="634" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c_cgraph.svg" width="634" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1211,10 +1214,17 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="classmorpheus_1_1Matrix.html#ad6748cf61df0d4183bb0ee458b11044b">morpheus::Matrix&lt; K &gt;::mul_mat()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec_cgraph.svg" width="631" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacemorpheus_a0944f0078af11522c2abb8f488fdb8ec_icgraph.svg" width="266" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1646,6 +1656,49 @@ template&lt;typename Container &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Richardson-extrapolated derivative. </dd></dl>
+
+</div>
+</div>
+<a id="a9a35e07c442f4a216c75b5c4c2167c00" name="a9a35e07c442f4a216c75b5c4c2167c00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a35e07c442f4a216c75b5c4c2167c00">&#9670;&#160;</a></span>row_echelon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void morpheus::row_echelon </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmorpheus_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmorpheus_1_1Vector.html">Vector</a>&lt; T &gt; *</td>          <td class="paramname"><span class="paramname"><em>b</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>eps</em><span class="paramdefsep"> = </span><span class="paramdefval">T(1e-12)</span></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="classmorpheus_1_1solver_1_1Gauss.html#ab1d29507e4133d7db6defb9580646536">morpheus::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacemorpheus_a9a35e07c442f4a216c75b5c4c2167c00_cgraph.svg" width="682" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

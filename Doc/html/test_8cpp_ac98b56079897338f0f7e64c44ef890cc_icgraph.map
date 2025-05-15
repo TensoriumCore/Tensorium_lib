@@ -1,35 +1,27 @@
 <map id="f" name="f">
-<area shape="rect" id="Node000001" title=" " alt="" coords="514,410,552,438"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="514,306,552,334"/>
 <area shape="rect" id="Node000002" href="$classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" title="Schwarzschild metric in spherical coordinates." alt="" coords="270,5,454,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="528,395,522,317,510,219,491,125,479,89,464,64,451,52,454,48,468,61,483,87,496,124,515,218,527,317,533,394"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="530,290,528,241,519,181,499,119,484,90,464,64,450,52,453,48,468,60,488,87,504,117,524,180,534,241,536,290"/>
 <area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#a9fd335c18a780c70385e9ae1fece079f" title="Compute the determinant using Gaussian elimination." alt="" coords="279,98,445,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="526,395,518,332,506,256,487,185,476,158,464,140,443,126,446,121,468,136,481,156,492,184,511,255,524,332,532,394"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="527,291,521,256,510,215,492,175,464,140,444,127,447,123,468,136,496,172,515,213,526,255,532,290"/>
 <area shape="rect" id="Node000006" href="$SIMD_8hpp.html#a5a11f4c449fd438d9917485f0b29b57e" title=" " alt="" coords="304,150,420,178"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="530,394,527,349,517,295,498,240,483,214,464,192,443,178,419,170,421,165,446,173,468,188,487,211,502,237,523,294,532,349,535,394"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="522,292,502,240,485,214,464,192,443,180,419,172,421,167,445,175,468,188,490,211,506,238,527,290"/>
 <area shape="rect" id="Node000007" href="$classmorpheus_1_1solver_1_1Gauss.html#a8edc8990071ec9a2ce375d2b987f9ace" title=" " alt="" coords="258,202,466,230"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="527,395,521,360,510,319,492,279,464,244,446,232,449,228,468,240,496,276,515,317,526,359,532,394"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="513,295,492,268,465,245,439,232,441,228,467,240,496,264,517,291"/>
 <area shape="rect" id="Node000008" href="$classmorpheus_1_1DerivateND.html#a021ea525a650efd607ad891d829ed0bb" title=" " alt="" coords="264,254,460,282"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="522,396,502,344,485,318,464,296,444,284,447,280,468,292,490,315,506,342,527,394"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="499,309,465,297,423,285,424,279,467,292,501,304"/>
 <area shape="rect" id="Node000009" href="$classmorpheus_1_1DerivateND.html#a19c6a635cb0da1bd1e40e7346ff9b2f4" title=" " alt="" coords="264,306,460,334"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="513,399,492,372,465,349,439,336,441,332,467,344,496,368,517,395"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="499,322,460,322,460,317,499,317"/>
 <area shape="rect" id="Node000010" href="$classmorpheus_1_1Matrix.html#a0e8b3e449cd734fb5be50f1b5b69c04e" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="266,358,458,386"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="499,413,465,401,423,389,424,383,467,396,501,408"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="501,335,467,348,424,360,423,355,465,342,499,330"/>
 <area shape="rect" id="Node000014" href="$test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="335,410,389,438"/>
-<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="499,426,389,426,389,421,499,421"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="517,348,496,375,467,399,428,416,390,424,389,419,426,411,465,395,492,371,513,345"/>
 <area shape="rect" id="Node000015" href="$classmorpheus_1_1Vector.html#af955666eed1764018d675bf81e03f1a3" title="Print the vector to stdout." alt="" coords="275,462,449,490"/>
-<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="501,439,467,452,424,464,423,459,465,446,499,434"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="527,349,506,401,490,428,468,451,447,464,444,459,464,447,485,425,502,399,522,347"/>
 <area shape="rect" id="Node000016" href="$classmorpheus_1_1Matrix.html#ab082485d429f54230fbe26a8f4f73b4c" title="Compute the numerical rank of the matrix." alt="" coords="275,514,449,542"/>
-<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="517,452,496,479,467,503,441,516,439,511,465,499,492,475,513,449"/>
-<area shape="rect" id="Node000018" href="$structsimd_1_1SimdTraits_3_01double_00_01avx512__t_01_4.html#a0b689e9c1a4cf50ef501168bd87706b7" title=" " alt="" coords="266,565,458,610"/>
-<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="527,453,506,505,489,532,468,555,451,567,448,562,464,551,485,529,501,502,522,451"/>
-<area shape="rect" id="Node000019" href="$structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4.html#af97011952bf8a0ef49361152bd521d02" title=" " alt="" coords="273,635,451,679"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="533,453,528,491,516,537,497,584,468,624,452,636,449,632,464,620,493,581,511,535,522,490,528,452"/>
-<area shape="rect" id="Node000020" href="$structsimd_1_1SimdTraits_3_01size__t_00_01avx512__t_01_4.html#a1a0730278a44c7938e0cb704c4bbcbe9" title=" " alt="" coords="277,704,447,749"/>
-<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="531,453,509,583,491,649,480,675,468,693,449,708,446,704,464,690,475,673,486,647,503,582,526,453"/>
-<area shape="rect" id="Node000021" href="$structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx512__t_01_4.html#aef302ee0f6b3387ed337159707db4413" title=" " alt="" coords="262,773,462,835"/>
-<area shape="poly" id="edge21_Node000001_Node000021" title=" " alt="" coords="532,454,525,526,513,617,494,704,482,738,468,763,456,774,453,770,464,759,477,736,489,703,507,616,520,525,527,453"/>
-<area shape="rect" id="Node000022" href="$structsimd_1_1SimdTraits_3_01size__t_00_01avx512__t_01_4.html#ad197cca14e0b87ed7a4b301391c1d7a9" title=" " alt="" coords="268,859,456,903"/>
-<area shape="poly" id="edge22_Node000001_Node000022" title=" " alt="" coords="534,453,530,542,519,660,500,772,486,817,468,848,455,860,451,856,464,845,481,815,495,771,514,659,524,542,528,453"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="532,349,526,385,515,426,496,467,468,503,449,516,446,511,464,499,492,465,510,424,521,384,527,349"/>
+<area shape="rect" id="Node000018" href="$classmorpheus_1_1solver_1_1Gauss.html#ab1d29507e4133d7db6defb9580646536" title=" " alt="" coords="271,565,453,610"/>
+<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="535,349,531,394,521,449,501,505,487,531,468,555,453,567,450,563,464,551,482,528,497,503,516,447,526,393,529,349"/>
 <area shape="rect" id="Node000003" href="$classmorpheus__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="27,5,188,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="254,30,189,30,189,25,254,25"/>
 <area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="391,85,381,79,362,76,344,78,335,83,332,89,337,96,332,99,327,89,331,79,343,73,362,71,382,74,393,80"/>
@@ -43,4 +35,6 @@
 <area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="276,392,180,412,178,407,275,387"/>
 <area shape="rect" id="Node000017" href="$namespacemorpheus.html#a52edd23638a57f727b66ff6a7388058f" title=" " alt="" coords="29,514,186,542"/>
 <area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="259,530,186,530,186,525,259,525"/>
+<area shape="rect" id="Node000019" href="$namespacemorpheus.html#a9a35e07c442f4a216c75b5c4c2167c00" title=" " alt="" coords="19,574,196,602"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="255,590,196,590,196,585,255,585"/>
 </map>
