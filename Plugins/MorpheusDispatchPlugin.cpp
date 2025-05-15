@@ -6,6 +6,7 @@
 #include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
 #include "clang/Tooling/Tooling.h"
+// #include "LLVM_Handler.hpp"
 /**
  * @file MorpheusPlugin.cpp
  * @brief Clang plugin for detecting alignment issues and handling custom Morpheus pragmas.
@@ -65,11 +66,29 @@ public:
             Checker
         );
 
-        Finder->matchAST(Context);
-    }
+		Finder->matchAST(Context);
+		// for (auto *D : Context.getTranslationUnitDecl()->decls()) {
+		// 	if (auto *FD = llvm::dyn_cast<FunctionDecl>(D)) {
+		// 		SourceLocation loc = FD->getBeginLoc();
+		// 		for (const auto &entry : MorpheusTargetTable) {
+		// 			if (Context.getSourceManager().isBeforeInTranslationUnit(entry.loc, loc)) {
+		// 				std::string fname = FD->getNameAsString();
+		// 				llvm::errs() << "[morpheus] Target(" << entry.platform << ", " << entry.isa
+		// 					<< ") applies to function " << fname << "\n";
+		//
+		// 				// exécution ciblée :
+		// 				if (entry.platform == "GPU") {
+		// 					extractFunctionToMLIR(FD, Context);
+		// 				}
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// }
+	}
 
 private:
-    CompilerInstance &CI;
+	CompilerInstance &CI;
 
     /**
      * @brief Callback for handling matches from the AST.
@@ -196,7 +215,7 @@ private:
         Token T;
         do { PP.Lex(T); } while (T.isNot(tok::eod));
         pushBuffer(PP,
-				R"cpp(
+R"cpp(
 dispatch_simd([](auto simd){
     using T = decltype(simd);
     constexpr size_t W = T::width;
@@ -205,33 +224,33 @@ dispatch_simd([](auto simd){
               << ", alignment=" << A << "\n";
 });
 )cpp",
-				"morph_dispatch");
-}
+                   "morph_dispatch");
+    }
 /**
  * @brief Main plugin action class for Morpheus plugin.
  */
-static void injectRestrict(Preprocessor &PP) {
-	Token T;
-	PP.Lex(T);                     // '('
-	std::string code;
-	while (true) {
-		PP.Lex(T);
-		if (T.is(tok::identifier)) {
-			llvm::StringRef v = T.getIdentifierInfo()->getName();
-			code += "auto * __restrict " + v.str() + "_re = " + v.str() + ";\n";
-		}
-		PP.Lex(T);
-		if (T.is(tok::r_paren)) break;
-		if (T.isNot(tok::comma)) return;
-	}
-	do { PP.Lex(T); } while (T.isNot(tok::eod));
-	if (!code.empty()) pushBuffer(PP, code, "morph_restrict");
-}
+    static void injectRestrict(Preprocessor &PP) {
+        Token T;
+        PP.Lex(T); 
+        std::string code;
+        while (true) {
+            PP.Lex(T);
+            if (T.is(tok::identifier)) {
+                llvm::StringRef v = T.getIdentifierInfo()->getName();
+                code += "auto * __restrict " + v.str() + "_re = " + v.str() + ";\n";
+            }
+            PP.Lex(T);
+            if (T.is(tok::r_paren)) break;
+            if (T.isNot(tok::comma)) return;
+        }
+        do { PP.Lex(T); } while (T.isNot(tok::eod));
+        if (!code.empty()) pushBuffer(PP, code, "morph_restrict");
+    }
 
 
-static void parseTarget(Preprocessor &PP) {
+	static void parseTarget(Preprocessor &PP) {
 	Token Tok;
-	PP.Lex(Tok); // '('
+	PP.Lex(Tok); 
 	if (Tok.isNot(tok::l_paren)) return;
 
 	PP.Lex(Tok);
@@ -245,18 +264,17 @@ static void parseTarget(Preprocessor &PP) {
 		PP.Lex(Tok);
 		if (Tok.isNot(tok::identifier)) return;
 		isa = PP.getSpelling(Tok);
-		PP.Lex(Tok); // ')'
+		PP.Lex(Tok); 
 	}
 
 	if (Tok.isNot(tok::r_paren)) return;
 
-	// On va juste imprimer pour l’instant (à terme stocker dans une table)
 	llvm::errs() << "[morpheus] target detected: " << platform;
 	if (!isa.empty()) llvm::errs() << " with ISA " << isa;
 	llvm::errs() << "\n";
 
-	// Tu pourrais ensuite stocker cette info ici
-	// e.g. MorpheusTargetTable.push_back({platform, isa, location})
+	// MorpheusTargetTable.push_back({platform, isa, PP.getLastTokenLocation()});
+
 }
 
 };

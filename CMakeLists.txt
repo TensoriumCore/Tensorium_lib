@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_compile_options(-O3 -march=native -mavx2 -mfma)
-
+add_compile_options(-O3 -march=native -mavx2 -mfma -Wignored-attributes)
+add_compile_options(-Wno-ignored-attributes)
 find_package(pybind11 REQUIRED)
 
 find_package(OpenMP REQUIRED)

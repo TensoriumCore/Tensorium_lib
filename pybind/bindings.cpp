@@ -224,4 +224,8 @@ PYBIND11_MODULE(morpheus, m) {
 
     morph.def("gauss_solve", &gauss_solve<float>, "Solve linear system with Gauss elimination");
     morph.def("jacobi_solve", &jacobi_solve<float>, py::arg("A"), py::arg("b"), py::arg("tol") = 1e-6f, py::arg("max_iter") = 1000, "Jacobi iterative method");
+	morph.def("row_echelon", &morpheus::row_echelon<float>,
+          py::arg("A"), py::arg("b") = nullptr, py::arg("eps") = 1e-12f,
+          "Convert matrix A (and optionally b) to row echelon form");
+
 }

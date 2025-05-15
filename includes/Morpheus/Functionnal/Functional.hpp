@@ -279,6 +279,11 @@ namespace morpheus {
 			return solver::Jacobi<T>::solve(A, b, tol, max_iter);
 		}
 
+	template <typename T>
+		inline void row_echelon(Matrix<T>& A, Vector<T>* b = nullptr, T eps = T(1e-12)) {
+			solver::Gauss<T>::raw_row_echelon(A, b, eps);
+		}
+
 	// === DERIVATIVES ===
 	template<typename K>
 		inline void centered_derivative(const Derivate<K>& input, Derivate<K>& output, size_t axis, K dx) {

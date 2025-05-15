@@ -20,7 +20,7 @@ LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
 CLANG_LIBS   := -lclangFrontend -lclangTooling -lclangBasic -lclangLex
 
 CXX_STD      = -std=c++17
-BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR) -Rpass-analysis=morpheus-align
+BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR) -Wno-ignored-attributes -Wignored-attributes -Rpass-analysis=morpheus-align
 
 AVX2_FLAGS   = -mfma -mavx2
 AVX512_FLAGS = -mfma -mavx512f
