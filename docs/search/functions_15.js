@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vector_0',['Vector',['../classmorpheus_1_1Vector.html#a9973c59b06338da7f731d6cc470168e5',1,'morpheus::Vector::Vector(const std::vector&lt; K &gt; &amp;vec)'],['../classmorpheus_1_1Vector.html#abdd892a9af89539335a4caefb5d7565d',1,'morpheus::Vector::Vector(size_t n)'],['../classmorpheus_1_1Vector.html#a83c63b33aa6a6dbdcb86726b1e904d28',1,'morpheus::Vector::Vector(std::initializer_list&lt; K &gt; init)'],['../classmorpheus_1_1Vector.html#a7b9e69a51ba2a60f14d8eff40b465263',1,'morpheus::Vector::Vector(size_t n, K value)']]]
+  ['vector_0',['Vector',['../classtensorium_1_1Vector.html#a75717cdda9abba028ee84beb59900e0a',1,'tensorium::Vector::Vector(const std::vector&lt; K &gt; &amp;vec)'],['../classtensorium_1_1Vector.html#a83b597a2807c003bd83fc7829149b28d',1,'tensorium::Vector::Vector(size_t n)'],['../classtensorium_1_1Vector.html#a40be320874b00ba3bcc60b5b2ccafab9',1,'tensorium::Vector::Vector(std::initializer_list&lt; K &gt; init)'],['../classtensorium_1_1Vector.html#a09728538007a32bf8160717486924f17',1,'tensorium::Vector::Vector(size_t n, K value)']]]
 ];

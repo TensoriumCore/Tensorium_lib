@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value_5ftype_0',['value_type',['../classmorpheus_1_1Tensor.html#ae35d4256f80886c4037f0b47b4e86733',1,'morpheus::Tensor::value_type'],['../structAlignedAllocator.html#a0a7efdc5df37396703b9a7008b744f59',1,'AlignedAllocator::value_type']]],
-  ['vectort_1',['VectorT',['../classmorpheus_1_1SpectralFFT.html#ac4479b13e5395dbbb47f8425a763553c',1,'morpheus::SpectralFFT::VectorT'],['../classmorpheus_1_1SpectalChebyshev.html#a323d7372583c9aa9dd31e7b456a2e75c',1,'morpheus::SpectalChebyshev::VectorT'],['../classmorpheus__RG_1_1RicciTensor.html#af2e4a39800f473c60139ad6216dcbb7d',1,'morpheus_RG::RicciTensor::VectorT'],['../classmorpheus__RG_1_1RiemannTensor.html#aaa987007fb978a275ed92c586c85c6da',1,'morpheus_RG::RiemannTensor::VectorT']]]
+  ['value_5ftype_0',['value_type',['../classtensorium_1_1Tensor.html#a275da807c8c6fb128944185fb51afb10',1,'tensorium::Tensor::value_type'],['../structAlignedAllocator.html#a0a7efdc5df37396703b9a7008b744f59',1,'AlignedAllocator::value_type']]],
+  ['vectort_1',['VectorT',['../classtensorium_1_1SpectralFFT.html#abac336fb18ee3eb6d32f0c86426c1cde',1,'tensorium::SpectralFFT::VectorT'],['../classtensorium_1_1SpectalChebyshev.html#af42cb097c8f09d537cde1d3e813d2770',1,'tensorium::SpectalChebyshev::VectorT'],['../classtensorium__RG_1_1RicciTensor.html#aabb1649c33975002001225e7b5511ce2',1,'tensorium_RG::RicciTensor::VectorT'],['../classtensorium__RG_1_1RiemannTensor.html#acb60f9fccbe3e893569cfc89229ad4c8',1,'tensorium_RG::RiemannTensor::VectorT']]]
 ];

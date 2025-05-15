@@ -1,40 +1,40 @@
-\doxysection{morpheus\+::solver\+::Jacobi\texorpdfstring{$<$}{<} K \texorpdfstring{$>$}{>} Class Template Reference}
-\hypertarget{classmorpheus_1_1solver_1_1Jacobi}{}\label{classmorpheus_1_1solver_1_1Jacobi}\index{morpheus::solver::Jacobi$<$ K $>$@{morpheus::solver::Jacobi$<$ K $>$}}
+\doxysection{tensorium\+::solver\+::Jacobi\texorpdfstring{$<$}{<} K \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classtensorium_1_1solver_1_1Jacobi}{}\label{classtensorium_1_1solver_1_1Jacobi}\index{tensorium::solver::Jacobi$<$ K $>$@{tensorium::solver::Jacobi$<$ K $>$}}
 
 
 {\ttfamily \#include $<$Linear\+Solver.\+hpp$>$}
 
 
 
-Collaboration diagram for morpheus\+::solver\+::Jacobi\texorpdfstring{$<$}{<} K \texorpdfstring{$>$}{>}\+:
+Collaboration diagram for tensorium\+::solver\+::Jacobi\texorpdfstring{$<$}{<} K \texorpdfstring{$>$}{>}\+:
 % FIG 0
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}{solve}} (const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{A}}, const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&b, \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{tol}}=1\mbox{\hyperlink{classmorpheus_1_1Tensor}{e}}-\/10, \mbox{\hyperlink{classmorpheus_1_1Tensor}{int}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{max\+\_\+iter}}=2000)
+\mbox{\hyperlink{classtensorium_1_1Tensor}{static}} \mbox{\hyperlink{classtensorium_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classtensorium_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}{solve}} (const \mbox{\hyperlink{classtensorium_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \&\mbox{\hyperlink{classtensorium_1_1Tensor}{A}}, const \mbox{\hyperlink{classtensorium_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \&b, \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} \mbox{\hyperlink{classtensorium_1_1Tensor}{tol}}=1\mbox{\hyperlink{classtensorium_1_1Tensor}{e}}-\/10, \mbox{\hyperlink{classtensorium_1_1Tensor}{int}} \mbox{\hyperlink{classtensorium_1_1Tensor}{max\+\_\+iter}}=2000)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e}{data}}
+\mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classtensorium_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e}{data}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}\label{classmorpheus_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89} 
-\index{morpheus::solver::Jacobi$<$ K $>$@{morpheus::solver::Jacobi$<$ K $>$}!solve@{solve}}
-\index{solve@{solve}!morpheus::solver::Jacobi$<$ K $>$@{morpheus::solver::Jacobi$<$ K $>$}}
+\Hypertarget{classtensorium_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89}\label{classtensorium_1_1solver_1_1Jacobi_aeb84725a1f6ecaaf09984a77569eab89} 
+\index{tensorium::solver::Jacobi$<$ K $>$@{tensorium::solver::Jacobi$<$ K $>$}!solve@{solve}}
+\index{solve@{solve}!tensorium::solver::Jacobi$<$ K $>$@{tensorium::solver::Jacobi$<$ K $>$}}
 \doxysubsubsection{\texorpdfstring{solve()}{solve()}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \\
-\mbox{\hyperlink{classmorpheus_1_1Tensor}{static}} \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi}{morpheus\+::solver\+::\+Jacobi}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$\+::solve (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \&}]{b,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}}]{tol = {\ttfamily 1\mbox{\hyperlink{classmorpheus_1_1Tensor}{e}}-\/10},  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{int}}}]{max\+\_\+iter = {\ttfamily 2000} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classtensorium_1_1Tensor}{typename}} \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \\
+\mbox{\hyperlink{classtensorium_1_1Tensor}{static}} \mbox{\hyperlink{classtensorium_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \mbox{\hyperlink{classtensorium_1_1solver_1_1Jacobi}{tensorium\+::solver\+::\+Jacobi}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$\+::solve (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Matrix}{Matrix}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \&}]{A,  }\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{Vector}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \&}]{b,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{K}}}]{tol = {\ttfamily 1\mbox{\hyperlink{classtensorium_1_1Tensor}{e}}-\/10},  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{int}}}]{max\+\_\+iter = {\ttfamily 2000} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{morpheus\+::\+Matrix$<$ K $>$\+::cols}}, \mbox{\hyperlink{classmorpheus_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{morpheus\+::\+Matrix$<$ K $>$\+::rows}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}, and \mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{morpheus\+::\+Vector$<$ K $>$\+::size()}}.
+References \mbox{\hyperlink{classtensorium_1_1Matrix_a789e39e1d3d649399997e715c6a83b4e}{tensorium\+::\+Matrix$<$ K $>$\+::cols}}, \mbox{\hyperlink{classtensorium_1_1Matrix_a9ed974722f5cca80e54ac0a5b8e6d4d1}{tensorium\+::\+Matrix$<$ K $>$\+::rows}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}, and \mbox{\hyperlink{classtensorium_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{tensorium\+::\+Vector$<$ K $>$\+::size()}}.
 
 
 
-Referenced by \mbox{\hyperlink{namespacemorpheus_a09c5cb9e88d703b1a5570ae3a3f2781c}{morpheus\+::jacobi\+\_\+solve()}}.
+Referenced by \mbox{\hyperlink{namespacetensorium_a09c5cb9e88d703b1a5570ae3a3f2781c}{tensorium\+::jacobi\+\_\+solve()}}.
 
 Here is the call graph for this function\+:
 % FIG 1
@@ -43,15 +43,15 @@ Here is the caller graph for this function\+:
 
 
 \doxysubsection{Member Data Documentation}
-\Hypertarget{classmorpheus_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e}\label{classmorpheus_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e} 
-\index{morpheus::solver::Jacobi$<$ K $>$@{morpheus::solver::Jacobi$<$ K $>$}!data@{data}}
-\index{data@{data}!morpheus::solver::Jacobi$<$ K $>$@{morpheus::solver::Jacobi$<$ K $>$}}
+\Hypertarget{classtensorium_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e}\label{classtensorium_1_1solver_1_1Jacobi_a78f7f0cbcce337f6f75eecb26720c24e} 
+\index{tensorium::solver::Jacobi$<$ K $>$@{tensorium::solver::Jacobi$<$ K $>$}!data@{data}}
+\index{data@{data}!tensorium::solver::Jacobi$<$ K $>$@{tensorium::solver::Jacobi$<$ K $>$}}
 \doxysubsubsection{\texorpdfstring{data}{data}}
-{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$ \\
-\mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}}$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{K}}$>$ \mbox{\hyperlink{classmorpheus_1_1solver_1_1Jacobi}{morpheus\+::solver\+::\+Jacobi}}$<$ \mbox{\hyperlink{classmorpheus_1_1Tensor}{K}} $>$\+::data}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{classtensorium_1_1Tensor}{typename}} \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$ \\
+\mbox{\hyperlink{Allocator_8hpp_a23515413ed4c20c0fd3d25ae1976f3c5}{aligned\+\_\+vector}}$<$\mbox{\hyperlink{classtensorium_1_1Tensor}{K}}$>$ \mbox{\hyperlink{classtensorium_1_1solver_1_1Jacobi}{tensorium\+::solver\+::\+Jacobi}}$<$ \mbox{\hyperlink{classtensorium_1_1Tensor}{K}} $>$\+::data}
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-includes/\+Morpheus/\+Core/\mbox{\hyperlink{LinearSolver_8hpp}{Linear\+Solver.\+hpp}}\end{DoxyCompactItemize}
+includes/\+Tensorium/\+Core/\mbox{\hyperlink{LinearSolver_8hpp}{Linear\+Solver.\+hpp}}\end{DoxyCompactItemize}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_0',['x',['../classmorpheus_1_1solver_1_1Gauss.html#ac5a8c8a38eb282421bf43ff6c5d3f178',1,'morpheus::solver::Gauss']]]
+  ['x_0',['x',['../classtensorium_1_1solver_1_1Gauss.html#aba0a246d4cd9e16d403ff21dae437c10',1,'tensorium::solver::Gauss']]]
 ];

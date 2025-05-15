@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Morpheus: morpheus::SpectralFFT&lt; T &gt; Class Template Reference</title>
+<title>Tensorium: tensorium::SpectralFFT&lt; T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -34,7 +34,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Morpheus
+   <div id="projectname">Tensorium
    </div>
   </td>
  </tr>
@@ -72,7 +72,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('classmorpheus_1_1SpectralFFT.html',''); initResizable(); });
+$(function(){initNavTree('classtensorium_1_1SpectralFFT.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -102,8 +102,8 @@ $(function(){initNavTree('classmorpheus_1_1SpectralFFT.html',''); initResizable(
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="classmorpheus_1_1SpectralFFT-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">morpheus::SpectralFFT&lt; T &gt; Class Template Reference</div></div>
+<a href="classtensorium_1_1SpectralFFT-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">tensorium::SpectralFFT&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -112,20 +112,20 @@ $(function(){initNavTree('classmorpheus_1_1SpectralFFT.html',''); initResizable(
 
 <p><code>#include &lt;<a class="el" href="Spectral_8hpp_source.html">Spectral.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for morpheus::SpectralFFT&lt; T &gt;:</div>
+Collaboration diagram for tensorium::SpectralFFT&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT__coll__graph.svg" width="211" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT__coll__graph.svg" width="211" height="144"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a0615497b3a62612c59b3045996ea6c73" id="r_a0615497b3a62612c59b3045996ea6c73"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0615497b3a62612c59b3045996ea6c73">Tensor2D</a> = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;T, 2&gt;</td></tr>
+<tr class="memitem:a0615497b3a62612c59b3045996ea6c73" id="r_a0615497b3a62612c59b3045996ea6c73"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0615497b3a62612c59b3045996ea6c73">Tensor2D</a> = <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;T, 2&gt;</td></tr>
 <tr class="separator:a0615497b3a62612c59b3045996ea6c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4479b13e5395dbbb47f8425a763553c" id="r_ac4479b13e5395dbbb47f8425a763553c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4479b13e5395dbbb47f8425a763553c">VectorT</a> = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;T&gt;</td></tr>
+<tr class="memitem:ac4479b13e5395dbbb47f8425a763553c" id="r_ac4479b13e5395dbbb47f8425a763553c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4479b13e5395dbbb47f8425a763553c">VectorT</a> = <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;T&gt;</td></tr>
 <tr class="separator:ac4479b13e5395dbbb47f8425a763553c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7514518e1bed725a83dcaa1201e7826a" id="r_a7514518e1bed725a83dcaa1201e7826a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7514518e1bed725a83dcaa1201e7826a">C</a> = std::complex&lt;T&gt;</td></tr>
 <tr class="separator:a7514518e1bed725a83dcaa1201e7826a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54092db5ed1fa12a6e2fb4bce68d3f5d" id="r_a54092db5ed1fa12a6e2fb4bce68d3f5d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;<a class="el" href="#a7514518e1bed725a83dcaa1201e7826a">C</a>&gt;</td></tr>
+<tr class="memitem:a54092db5ed1fa12a6e2fb4bce68d3f5d" id="r_a54092db5ed1fa12a6e2fb4bce68d3f5d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> = <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;<a class="el" href="#a7514518e1bed725a83dcaa1201e7826a">C</a>&gt;</td></tr>
 <tr class="separator:a54092db5ed1fa12a6e2fb4bce68d3f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -148,7 +148,7 @@ Static Private Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
-class morpheus::SpectralFFT&lt; T &gt;</div><p>Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm. </p>
+class tensorium::SpectralFFT&lt; T &gt;</div><p>Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm. </p>
 <p>Performs in-place FFT or inverse FFT on complex-valued vectors whose size is a power of 2.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -166,7 +166,7 @@ class morpheus::SpectralFFT&lt; T &gt;</div><p>Fast Fourier Transform (FFT) impl
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::C = std::complex&lt;T&gt;</td>
+          <td class="memname">using <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::C = std::complex&lt;T&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -182,7 +182,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::CVectorT = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;<a class="el" href="#a7514518e1bed725a83dcaa1201e7826a">C</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::CVectorT = <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;<a class="el" href="#a7514518e1bed725a83dcaa1201e7826a">C</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -198,7 +198,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::Tensor2D = <a class="el" href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a>&lt;T, 2&gt;</td>
+          <td class="memname">using <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::Tensor2D = <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;T, 2&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -214,7 +214,7 @@ template&lt;typename T &gt; </div>
 template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::VectorT = <a class="el" href="classmorpheus_1_1Vector.html">morpheus::Vector</a>&lt;T&gt;</td>
+          <td class="memname">using <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::VectorT = <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;T&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -234,7 +234,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::backward </td>
+          <td class="memname">static void <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::backward </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
@@ -255,18 +255,18 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">morpheus::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
+<p class="reference">References <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">tensorium::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#ab0d022c164f50fe46524e1af50e826d7">morpheus::backwardFFP()</a>, and <a class="el" href="namespacemorpheus.html#ad5478f49e42b2f281d15e67587dfd92d">morpheus::backwardFFT()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#ab0d022c164f50fe46524e1af50e826d7">tensorium::backwardFFP()</a>, and <a class="el" href="namespacetensorium.html#ad5478f49e42b2f281d15e67587dfd92d">tensorium::backwardFFT()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83_cgraph.svg" width="835" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83_cgraph.svg" width="835" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83_icgraph.svg" width="411" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83_icgraph.svg" width="411" height="91"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -283,7 +283,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::bit_reverse </td>
+          <td class="memname">static void <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::bit_reverse </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
@@ -299,23 +299,23 @@ template&lt;typename T &gt; </div>
 <p>Bit-reversal permutation step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a</td><td><a class="el" href="classmorpheus_1_1Vector.html" title="Aligned, SIMD-optimized mathematical vector class for scientific computing.">Vector</a> to reorder </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="classtensorium_1_1Vector.html" title="Aligned, SIMD-optimized mathematical vector class for scientific computing.">Vector</a> to reorder </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">tensorium::Vector&lt; K &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">morpheus::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">tensorium::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8_cgraph.svg" width="399" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8_cgraph.svg" width="399" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8_icgraph.svg" width="847" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8_icgraph.svg" width="847" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -332,7 +332,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::forward </td>
+          <td class="memname">static void <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::forward </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
@@ -353,18 +353,18 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">morpheus::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
+<p class="reference">References <a class="el" href="#af8b03cd7c754f80f2ee63179abffa406">tensorium::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacemorpheus.html#ae221eff9667ffd1424b306662e20b1d3">morpheus::forwardFFT()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#ae221eff9667ffd1424b306662e20b1d3">tensorium::forwardFFT()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e_cgraph.svg" width="835" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e_cgraph.svg" width="835" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e_icgraph.svg" width="396" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e_icgraph.svg" width="396" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -381,7 +381,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void <a class="el" href="classmorpheus_1_1SpectralFFT.html">morpheus::SpectralFFT</a>&lt; T &gt;::transform_impl </td>
+          <td class="memname">static void <a class="el" href="classtensorium_1_1SpectralFFT.html">tensorium::SpectralFFT</a>&lt; T &gt;::transform_impl </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#a54092db5ed1fa12a6e2fb4bce68d3f5d">CVectorT</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
@@ -401,37 +401,37 @@ template&lt;typename T &gt; </div>
 <p>Internal FFT implementation (shared by forward/backward) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a</td><td><a class="el" href="classmorpheus_1_1Vector.html" title="Aligned, SIMD-optimized mathematical vector class for scientific computing.">Vector</a> to transform </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="classtensorium_1_1Vector.html" title="Aligned, SIMD-optimized mathematical vector class for scientific computing.">Vector</a> to transform </td></tr>
     <tr><td class="paramname">inverse</td><td>Whether to perform inverse FFT </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="#a2719a910e7f474b09c04e1c8856215b8">morpheus::SpectralFFT&lt; T &gt;::bit_reverse()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a">pi</a>, and <a class="el" href="classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">morpheus::Vector&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#a2719a910e7f474b09c04e1c8856215b8">tensorium::SpectralFFT&lt; T &gt;::bit_reverse()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a">pi</a>, and <a class="el" href="classtensorium_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc">tensorium::Vector&lt; K &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#a8aa6f0097f5cb99fb73c1d4de0cadd83">morpheus::SpectralFFT&lt; T &gt;::backward()</a>, and <a class="el" href="#a769b6e994adc86078d33ff38b7f1587e">morpheus::SpectralFFT&lt; T &gt;::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a8aa6f0097f5cb99fb73c1d4de0cadd83">tensorium::SpectralFFT&lt; T &gt;::backward()</a>, and <a class="el" href="#a769b6e994adc86078d33ff38b7f1587e">tensorium::SpectralFFT&lt; T &gt;::forward()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406_cgraph.svg" width="618" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406_cgraph.svg" width="618" height="87"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406_icgraph.svg" width="630" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406_icgraph.svg" width="630" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>includes/Morpheus/Core/<a class="el" href="Spectral_8hpp_source.html">Spectral.hpp</a></li>
+<li>includes/Tensorium/Core/<a class="el" href="Spectral_8hpp_source.html">Spectral.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacemorpheus.html">morpheus</a></li><li class="navelem"><a class="el" href="classmorpheus_1_1SpectralFFT.html">SpectralFFT</a></li>
+    <li class="navelem"><a class="el" href="namespacetensorium.html">tensorium</a></li><li class="navelem"><a class="el" href="classtensorium_1_1SpectralFFT.html">SpectralFFT</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

@@ -1,5 +1,5 @@
-<map id="morpheus::SpectralFFT::bit_reverse" name="morpheus::SpectralFFT::bit_reverse">
+<map id="tensorium::SpectralFFT::bit_reverse" name="tensorium::SpectralFFT::bit_reverse">
 <area shape="rect" id="Node000001" title="Bit&#45;reversal permutation step." alt="" coords="5,5,176,50"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="224,14,393,42"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="224,14,393,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,25,208,25,208,30,176,30"/>
 </map>

@@ -1,5 +1,5 @@
-<map id="morpheus::generate_metric" name="morpheus::generate_metric">
+<map id="tensorium::generate_metric" name="tensorium::generate_metric">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,158,50"/>
-<area shape="rect" id="Node000002" href="$MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;." alt="" coords="206,14,244,42"/>
+<area shape="rect" id="Node000002" href="$TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="206,14,244,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,25,190,25,190,30,158,30"/>
 </map>

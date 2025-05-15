@@ -1,6 +1,6 @@
-NAME         = Morpheus
+NAME         = Tensorium
 BENCH_NAME   = benchmark
-LIB_NAME     = libmorpheus.so
+LIB_NAME     = libtensorium.so
 
 CC           = clang++
 SRC_DIR      = tests
@@ -9,10 +9,10 @@ PLGIN_DIR    = Plugins
 INC_DIR      = includes
 OBJ_DIR      = build
 
-PLUGIN_SRC   = $(PLGIN_DIR)/MorpheusDispatchPlugin.cpp
-PLUGIN_OUT   = $(PLGIN_DIR)/MorpheusDispatchPlugin.so
-LLVM_IR_PLUGIN_SRC  = $(PLGIN_DIR)/MorpheusLLVM_IRCheck.cpp
-LLVM_IR_PLUGIN_OUT  = $(PLGIN_DIR)/MorpheusLLVM_IRCheck.so
+PLUGIN_SRC   = $(PLGIN_DIR)/TensoriumDispatchPlugin.cpp
+PLUGIN_OUT   = $(PLGIN_DIR)/TensoriumDispatchPlugin.so
+LLVM_IR_PLUGIN_SRC  = $(PLGIN_DIR)/TensoriumLLVM_IRCheck.cpp
+LLVM_IR_PLUGIN_OUT  = $(PLGIN_DIR)/TensoriumLLVM_IRCheck.so
 LLVM_IR_LIBS        := $(shell llvm-config --ldflags --system-libs --libs core passes)
 
 LLVM_CXXFLAGS:= $(shell llvm-config --cxxflags)
@@ -20,7 +20,7 @@ LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
 CLANG_LIBS   := -lclangFrontend -lclangTooling -lclangBasic -lclangLex
 
 CXX_STD      = -std=c++17
-BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR) -Wno-ignored-attributes -Wignored-attributes -Rpass-analysis=morpheus-align
+BASE_FLAGS   = -O3 -fopenmp -mtune=native -g -I$(INC_DIR) -Wno-ignored-attributes -Wignored-attributes -Rpass-analysis=tensorium-align
 
 AVX2_FLAGS   = -mfma -mavx2
 AVX512_FLAGS = -mfma -mavx512f
@@ -45,9 +45,9 @@ ifeq ($(USE_KNL), true)
 endif
 
 PLUGIN_FLAGS = -Xclang -load -Xclang $(PLUGIN_OUT) \
-               -Xclang -add-plugin -Xclang morpheus-dispatch
+               -Xclang -add-plugin -Xclang tensorium-dispatch -mfma
 
-LLVM_IR_PLUGIN_FLAGS = -fpass-plugin=$(LLVM_IR_PLUGIN_OUT) \
+LLVM_IR_PLUGIN_FLAGS = -fpass-plugin=$(LLVM_IR_PLUGIN_OUT) -mfma\
 
 
 

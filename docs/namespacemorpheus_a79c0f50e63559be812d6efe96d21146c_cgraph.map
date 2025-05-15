@@ -1,7 +1,7 @@
-<map id="morpheus::print_ricci_scalar" name="morpheus::print_ricci_scalar">
+<map id="tensorium::print_ricci_scalar" name="tensorium::print_ricci_scalar">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,50"/>
-<area shape="rect" id="Node000002" href="$classmorpheus__RG_1_1RicciTensor.html#ae271ed0d688dc4a0e123a7cf05710206" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="212,5,405,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciTensor.html#ae271ed0d688dc4a0e123a7cf05710206" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="212,5,405,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,25,196,25,196,30,164,30"/>
-<area shape="rect" id="Node000003" href="$classmorpheus__RG_1_1RicciTensor.html#ad8e327d29c34cd66535475015423802a" title="Computes the Ricci scalar curvature." alt="" coords="453,5,646,50"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1RicciTensor.html#ad8e327d29c34cd66535475015423802a" title="Computes the Ricci scalar curvature." alt="" coords="453,5,646,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="405,25,438,25,438,30,405,30"/>
 </map>

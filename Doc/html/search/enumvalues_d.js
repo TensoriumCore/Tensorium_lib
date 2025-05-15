@@ -7,6 +7,6 @@ var searchData=
   ['pi_4',['pi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a',1,'Latex.hpp']]],
   ['plus_5',['plus',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2',1,'Latex.hpp']]],
   ['pow_6',['pow',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921a30d7e0494351def45591fccb21d3510b',1,'Latex.hpp']]],
-  ['psi_7',['psi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26',1,'Latex.hpp']]],
-  ['psi_8',['Psi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c',1,'Latex.hpp']]]
+  ['psi_7',['Psi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feace1cb2d98c19288ad0fc47cbc07a7a6c',1,'Latex.hpp']]],
+  ['psi_8',['psi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea6115baa419ebbdc15cb267c7bec45d26',1,'Latex.hpp']]]
 ];

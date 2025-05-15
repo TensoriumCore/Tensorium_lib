@@ -1,7 +1,7 @@
 var Derivate_8hpp =
 [
-    [ "morpheus::Derivate< K >", "classmorpheus_1_1Derivate.html", "classmorpheus_1_1Derivate" ],
-    [ "morpheus::DerivateND< K, Rank >", "classmorpheus_1_1DerivateND.html", "classmorpheus_1_1DerivateND" ],
-    [ "richardson_derivative", "Derivate_8hpp.html#a5642a249c8bbb73833a55d1256e5cb0b", null ],
-    [ "richardson_derivative_container", "Derivate_8hpp.html#a47cf67841ca834dde92b69e9a7078fa9", null ]
+    [ "tensorium::Derivate< K >", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
+    [ "tensorium::DerivateND< K, Rank >", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
+    [ "richardson_derivative", "Derivate_8hpp.html#a980225dc83e1b7b63cfff3cd83459af6", null ],
+    [ "richardson_derivative_container", "Derivate_8hpp.html#a68a85888e1219924c62e3f12b569d457", null ]
 ];

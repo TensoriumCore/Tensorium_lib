@@ -1,10 +1,10 @@
-<map id="morpheus::mul_mat" name="morpheus::mul_mat">
+<map id="tensorium::mul_mat" name="tensorium::mul_mat">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,48,158,76"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#ad6748cf61df0d4183bb0ee458b11044b" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="206,48,408,76"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#ad6748cf61df0d4183bb0ee458b11044b" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="206,48,408,76"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,59,190,59,190,65,158,65"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="475,5,606,33"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="386,45,459,31,460,36,387,50"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="456,81,625,126"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="456,81,625,126"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="389,74,441,83,440,88,389,79"/>
 <area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="496,81,495,71,502,62,518,56,541,54,566,57,581,63,579,68,565,62,541,59,519,61,505,66,500,72,501,80"/>
 </map>

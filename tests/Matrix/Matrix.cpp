@@ -1,5 +1,5 @@
 #include "../test.hpp"
-using namespace morpheus;
+using namespace tensorium;
 #include <complex>
 
 #define CHECK(expr) \
@@ -13,8 +13,8 @@ using namespace morpheus;
 
 int matrix_bench() {
     constexpr std::size_t N = 8192;
-    morpheus::Matrix<double> A(N, N);
-    morpheus::Matrix<double> B(N, N);
+    tensorium::Matrix<double> A(N, N);
+    tensorium::Matrix<double> B(N, N);
 
 #pragma omp parallel
     {
@@ -33,7 +33,7 @@ int matrix_bench() {
               << "Matrix size: " << N << " x " << N << '\n';
 
     const auto t0 = std::chrono::high_resolution_clock::now();
-    auto C = morpheus::mul_mat(A, B);
+    auto C = tensorium::mul_mat(A, B);
     const auto t1 = std::chrono::high_resolution_clock::now();
 
     const double elapsed = std::chrono::duration<double>(t1 - t0).count();
@@ -56,8 +56,8 @@ int matrix_bench() {
 	A2(1, 0) = 3.0f; A2(1, 1) = 4.0f;
 	B2(0, 0) = 5.0f; B2(0, 1) = 6.0f;
 	B2(1, 0) = 7.0f; B2(1, 1) = 8.0f;
-#pragma morpheus target(CPU)
-	auto C2 = morpheus::mul_mat(A2, B2);
+#pragma tensorium target(CPU)
+	auto C2 = tensorium::mul_mat(A2, B2);
 
 	std::cout << "=== Benchmarking complete ===\n";
 	std::cout << "[✓] Benchmark test passed\n";
@@ -73,7 +73,7 @@ int matrix_bench() {
 	E(2, 0) = 9.0f; E(2, 1) = 10.0f; E(2, 2) = 11.0f; E(2, 3) = 12.0f;
 	E(3, 0) = 13.0f; E(3, 1) = 14.0f; E(3, 2) = 15.0f; E(3, 3) = 16.0f;
 	
-	auto F = morpheus::mul_mat(D, E);
+	auto F = tensorium::mul_mat(D, E);
 	std::cout << "=== Benchmarking complete ===\n";
 
     return 0;
@@ -202,46 +202,46 @@ int matrix_tests() {
 	CHECK(std::abs(Cc(1, 1).imag() - 9.0f) < 1e-4);
 	Cc.sub(Bc);
 	Cc.scl(2.0f);
-	Cc = morpheus::mul_mat(Ac, Bc);
+	Cc = tensorium::mul_mat(Ac, Bc);
 	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	constexpr size_t dim = 4;
 
-	morpheus::Vector<double> X(dim);
+	tensorium::Vector<double> X(dim);
 	X(0) = 0.0; 
 	X(1) = 10.0;
 	X(2) = M_PI / 2.0;
 	X(3) = 0.0;
 
-	morpheus::Tensor<double, 2> g({dim, dim});
-	morpheus::Tensor<double, 2> g_inv({dim, dim});
+	tensorium::Tensor<double, 2> g({dim, dim});
+	tensorium::Tensor<double, 2> g_inv({dim, dim});
 
 	std::cout << "X = " << X(0) << " " << X(1) << " " << X(2) << " " << X(3) << "\n";
 
-	morpheus_RG::Metric<double> metric("kerr_schild", 1.0, 0.0);
+	tensorium_RG::Metric<double> metric("kerr_schild", 1.0, 0.0);
 	metric(X, g);
 
 	std::cout << "Metric tensor g at X = (t=0, r=10, θ=π/2, φ=0):\n";
-	g_inv = morpheus::inv_mat_tensor(g); 
+	g_inv = tensorium::inv_mat_tensor(g); 
 	g.print_shape();
 	g.print();
 	std::cout << "Christoffel symbols Γ^λ_{μν} at X = (t=0, r=10, θ=π/2, φ=0):\n";
-	auto gamma = morpheus::compute_christoffel(X, 1e-5, g, g_inv, metric);
+	auto gamma = tensorium::compute_christoffel(X, 1e-5, g, g_inv, metric);
 	gamma.print();
-	auto R = morpheus::compute_riemann_tensor<double>(X, 1e-5, morpheus_RG::Metric<double>("kerr_schild", 1.0, 0.8));
-	morpheus::print_riemann_tensor(R);
-	morpheus::contract_tensor<0, 1>(R);
+	auto R = tensorium::compute_riemann_tensor<double>(X, 1e-5, tensorium_RG::Metric<double>("kerr_schild", 1.0, 0.8));
+	tensorium::print_riemann_tensor(R);
+	tensorium::contract_tensor<0, 1>(R);
 	std::cout << "Riemann tensor contracted:\n";
 	R.print_shape();
 	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
 	R.print();
 	
 	double alpha;
-	morpheus::Vector<double> beta(3);
-	morpheus::Tensor<double, 2> gammaj;
+	tensorium::Vector<double> beta(3);
+	tensorium::Tensor<double, 2> gammaj;
 	metric.BSSN(X, alpha, beta, gammaj);
-	morpheus::Tensor<double, 2> gammaj_inv;
+	tensorium::Tensor<double, 2> gammaj_inv;
 
 	std::cout << "\n--- BSSN 3+1 Decomposition ---\n";
 	std::cout << "Lapse α = " << alpha << "\n";
@@ -253,20 +253,20 @@ int matrix_tests() {
 	gammaj.print_shape();
 	gammaj.print();
 	std::cout <<  "Spatial metric γ^{ij}:\n";
-	gammaj_inv = morpheus::inv_mat_tensor(gammaj);
+	gammaj_inv = tensorium::inv_mat_tensor(gammaj);
 	gammaj_inv.print();
-	auto gamma2 = morpheus::compute_christoffel(X, 1e-5, gammaj, gammaj_inv, metric);
+	auto gamma2 = tensorium::compute_christoffel(X, 1e-5, gammaj, gammaj_inv, metric);
 	gamma2.print();
-	auto R_BSSN = morpheus::compute_riemann_tensor(X, 1e-5, metric);
-	morpheus::print_riemann_tensor(R_BSSN);
+	auto R_BSSN = tensorium::compute_riemann_tensor(X, 1e-5, metric);
+	tensorium::print_riemann_tensor(R_BSSN);
 	constexpr std::size_t N = 1024;
     constexpr double L = 1.0; 
     constexpr double dx = L / N;
     constexpr double two_pi = 2.0 * M_PI;
 
-    morpheus::Vector<std::complex<double>> f(N); 
-    morpheus::Vector<std::complex<double>> f_hat(N);
-    morpheus::Vector<std::complex<double>> df(N); 
+    tensorium::Vector<std::complex<double>> f(N); 
+    tensorium::Vector<std::complex<double>> f_hat(N);
+    tensorium::Vector<std::complex<double>> df(N); 
 
     for (std::size_t i = 0; i < N; ++i) {
         double x = i * dx;
@@ -274,7 +274,7 @@ int matrix_tests() {
     }
 
     f_hat = f;
-    morpheus::forwardFFT(f_hat);
+    tensorium::forwardFFT(f_hat);
 
     for (std::size_t k = 0; k < N; ++k) {
         std::ptrdiff_t k_signed = (k <= N/2) ? k : k - N; 
@@ -283,7 +283,7 @@ int matrix_tests() {
     }
 
     df = f_hat;
-    morpheus::backwardFFT(df);  
+    tensorium::backwardFFT(df);  
 
     double max_err = 0.0;
     for (std::size_t i = 0; i < N; ++i) {

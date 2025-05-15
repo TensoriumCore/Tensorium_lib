@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['eight_0',['eight',['../classmorpheus_1_1Derivate.html#a822c35e509eccaffe83820edbb6be562',1,'morpheus::Derivate']]],
-  ['else_1',['else',['../classmorpheus_1_1Derivate.html#a6b8b8ea0f0b411bb311341bae2cb0301',1,'morpheus::Derivate']]]
+  ['eight_0',['eight',['../classtensorium_1_1Derivate.html#aad6159b2d2ad345d39f5e04f47d05fdf',1,'tensorium::Derivate']]],
+  ['else_1',['else',['../classtensorium_1_1Derivate.html#a3d70f69f340d6123fd2d71fefca01406',1,'tensorium::Derivate']]]
 ];

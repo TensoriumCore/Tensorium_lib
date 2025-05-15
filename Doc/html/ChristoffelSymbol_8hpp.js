@@ -1,5 +1,5 @@
 var ChristoffelSymbol_8hpp =
 [
-    [ "morpheus_RG::ChristoffelSym< T >", "classmorpheus__RG_1_1ChristoffelSym.html", "classmorpheus__RG_1_1ChristoffelSym" ],
-    [ "__attribute__", "ChristoffelSymbol_8hpp.html#ab0ca8920bbff9c97630d0832a13a5b7e", null ]
+    [ "tensorium_RG::ChristoffelSym< T >", "classtensorium__RG_1_1ChristoffelSym.html", "classtensorium__RG_1_1ChristoffelSym" ],
+    [ "__attribute__", "ChristoffelSymbol_8hpp.html#a1c0700c897553df855b385b0a9b2eb47", null ]
 ];

@@ -1,0 +1,5 @@
+<map id="tensorium::SpectralFFT::forward" name="tensorium::SpectralFFT::forward">
+<area shape="rect" id="Node000001" title="Perform forward FFT (in&#45;place)" alt="" coords="222,5,393,50"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f" title=" " alt="" coords="5,14,174,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,30,174,30,174,25,206,25"/>
+</map>

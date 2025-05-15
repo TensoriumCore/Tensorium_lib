@@ -1,22 +1,22 @@
-<map id="morpheus::Tensor::update_strides" name="morpheus::Tensor::update_strides">
+<map id="tensorium::Tensor::update_strides" name="tensorium::Tensor::update_strides">
 <area shape="rect" id="Node000001" title=" " alt="" coords="708,213,898,258"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="477,222,660,250"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="477,222,660,250"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="693,238,661,238,661,233,693,233"/>
-<area shape="rect" id="Node000003" href="$classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="215,5,429,50"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="215,5,429,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="550,210,501,137,467,98,427,65,407,53,410,48,431,60,471,94,506,134,555,207"/>
-<area shape="rect" id="Node000004" href="$classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" title="Flat FLRW metric in comoving spherical coordinates." alt="" coords="241,75,403,119"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" title="Flat FLRW metric in comoving spherical coordinates." alt="" coords="241,75,403,119"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="539,213,489,173,428,134,402,122,404,118,430,129,492,169,542,209"/>
-<area shape="rect" id="Node000006" href="$classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="241,144,403,189"/>
+<area shape="rect" id="Node000006" href="$classtensorium__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="241,144,403,189"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="502,220,402,192,404,186,503,215"/>
-<area shape="rect" id="Node000007" href="$classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="240,213,404,258"/>
+<area shape="rect" id="Node000007" href="$classtensorium__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="240,213,404,258"/>
 <area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="461,238,404,238,404,233,461,233"/>
-<area shape="rect" id="Node000008" href="$classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51" title="Minkowski metric in Cartesian coordinates." alt="" coords="240,283,404,327"/>
+<area shape="rect" id="Node000008" href="$classtensorium__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51" title="Minkowski metric in Cartesian coordinates." alt="" coords="240,283,404,327"/>
 <area shape="poly" id="edge9_Node000002_Node000008" title=" " alt="" coords="503,257,405,285,403,279,501,252"/>
-<area shape="rect" id="Node000009" href="$classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" title="Schwarzschild metric in spherical coordinates." alt="" coords="230,352,414,397"/>
+<area shape="rect" id="Node000009" href="$classtensorium__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" title="Schwarzschild metric in spherical coordinates." alt="" coords="230,352,414,397"/>
 <area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="542,262,492,303,430,342,404,354,402,349,428,337,489,298,539,258"/>
-<area shape="rect" id="Node000010" href="$classmorpheus_1_1Tensor.html#a7ffe3f07841a50baecaf29e6ecf939ab" title="Resize 2D tensor." alt="" coords="230,421,414,448"/>
+<area shape="rect" id="Node000010" href="$classtensorium_1_1Tensor.html#a7ffe3f07841a50baecaf29e6ecf939ab" title="Resize 2D tensor." alt="" coords="230,421,414,448"/>
 <area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="555,265,535,299,507,338,472,378,430,411,408,422,406,418,428,407,468,374,503,335,531,296,551,262"/>
-<area shape="rect" id="Node000005" href="$classmorpheus__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="5,213,167,258"/>
+<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="5,213,167,258"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="228,128,216,134,158,174,112,215,108,211,154,170,213,129,225,123"/>
 <area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="230,196,165,215,164,210,228,191"/>
 <area shape="poly" id="edge8_Node000007_Node000005" title=" " alt="" coords="225,238,167,238,167,233,225,233"/>

@@ -7,5 +7,5 @@ var dir_71b62786698bbc304968573b10151663 =
     [ "MathUtils", "dir_facbad0c8c3fb8dcb9746534b0d7108a.html", "dir_facbad0c8c3fb8dcb9746534b0d7108a" ],
     [ "SIMD", "dir_4db6ade012234c64bce4ea590db4ba7c.html", "dir_4db6ade012234c64bce4ea590db4ba7c" ],
     [ "Symbolics", "dir_03f3a84f18ee24e88f1b7c029e7150f8.html", "dir_03f3a84f18ee24e88f1b7c029e7150f8" ],
-    [ "Morpheus.hpp", "Morpheus_8hpp.html", null ]
+    [ "Tensorium.hpp", "Tensorium_8hpp.html", null ]
 ];

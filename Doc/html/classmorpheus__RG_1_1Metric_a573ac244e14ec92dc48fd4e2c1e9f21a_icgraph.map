@@ -1,5 +1,5 @@
-<map id="morpheus_RG::Metric::compute_kerr_schild" name="morpheus_RG::Metric::compute_kerr_schild">
+<map id="tensorium_RG::Metric::compute_kerr_schild" name="tensorium_RG::Metric::compute_kerr_schild">
 <area shape="rect" id="Node000001" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="215,5,378,50"/>
-<area shape="rect" id="Node000002" href="$classmorpheus__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="5,5,167,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="5,5,167,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,30,167,30,167,25,199,25"/>
 </map>

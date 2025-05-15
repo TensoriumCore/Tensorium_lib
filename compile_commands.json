@@ -13,12 +13,12 @@
       "-D__STDC_FORMAT_MACROS",
       "-D__STDC_LIMIT_MACROS",
       "-o",
-      "Plugins/MorpheusDispatchPlugin.so",
-      "Plugins/MorpheusDispatchPlugin.cpp"
+      "Plugins/TensoriumDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/Plugins/MorpheusDispatchPlugin.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/Plugins/MorpheusDispatchPlugin.so"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.so"
   },
   {
     "arguments": [
@@ -28,7 +28,7 @@
       "x86_64-unknown-linux-gnu",
       "-emit-obj",
       "-dumpdir",
-      "Plugins/MorpheusDispatchPlugin.so-",
+      "Plugins/TensoriumDispatchPlugin.so-",
       "-disable-free",
       "-clear-ast-before-backend",
       "-disable-llvm-verifier",
@@ -50,7 +50,7 @@
       "-tune-cpu",
       "generic",
       "-debugger-tuning=gdb",
-      "-fcoverage-compilation-dir=/home/ltouzali/Desktop/Morpheus_lib",
+      "-fcoverage-compilation-dir=/home/ltouzali/Desktop/Tensorium_lib",
       "-nostdsysteminc",
       "-resource-dir",
       "/nix/store/svf4zn4qg9lsxfn4znyxk7nl80hlmgpm-clang-wrapper-17.0.6/resource-root",
@@ -164,7 +164,7 @@
       "-Werror=format-security",
       "-std=c++17",
       "-fdeprecated-macro",
-      "-fdebug-compilation-dir=/home/ltouzali/Desktop/Morpheus_lib",
+      "-fdebug-compilation-dir=/home/ltouzali/Desktop/Tensorium_lib",
       "-ferror-limit",
       "19",
       "-fwrapv",
@@ -181,12 +181,12 @@
       "-x",
       "c++",
       "-o",
-      "/tmp/MorpheusDispatchPlugin-ad4238.o",
-      "Plugins/MorpheusDispatchPlugin.cpp"
+      "/tmp/TensoriumDispatchPlugin-ad4238.o",
+      "Plugins/TensoriumDispatchPlugin.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/Plugins/MorpheusDispatchPlugin.cpp",
-    "output": "/tmp/MorpheusDispatchPlugin-ad4238.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.cpp",
+    "output": "/tmp/TensoriumDispatchPlugin-ad4238.o"
   },
   {
     "arguments": [
@@ -202,20 +202,20 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/Matrix/Matrix.o",
       "tests/Matrix/Matrix.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/Matrix/Matrix.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/Matrix/Matrix.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/Matrix/Matrix.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/Matrix/Matrix.o"
   },
   {
     "arguments": [
@@ -231,20 +231,20 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/Vector/Vector.o",
       "tests/Vector/Vector.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/Vector/Vector.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/Vector/Vector.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/Vector/Vector.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/Vector/Vector.o"
   },
   {
     "arguments": [
@@ -260,20 +260,20 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/Tensor/Tensor.o",
       "tests/Tensor/Tensor.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/Tensor/Tensor.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/Tensor/Tensor.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/Tensor/Tensor.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/Tensor/Tensor.o"
   },
   {
     "arguments": [
@@ -289,20 +289,20 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/Derivatives/Derivatives.o",
       "tests/Derivatives/Derivatives.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/Derivatives/Derivatives.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/Derivatives/Derivatives.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/Derivatives/Derivatives.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/Derivatives/Derivatives.o"
   },
   {
     "arguments": [
@@ -318,20 +318,20 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/LinearSystems/LinearSystems.o",
       "tests/LinearSystems/LinearSystems.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/LinearSystems/LinearSystems.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/LinearSystems/LinearSystems.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/LinearSystems/LinearSystems.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/LinearSystems/LinearSystems.o"
   },
   {
     "arguments": [
@@ -347,19 +347,19 @@
       "-Xclang",
       "-load",
       "-Xclang",
-      "Plugins/MorpheusDispatchPlugin.so",
+      "Plugins/TensoriumDispatchPlugin.so",
       "-Xclang",
       "-add-plugin",
       "-Xclang",
-      "morpheus-dispatch",
+      "tensorium-dispatch",
       "-fPIC",
       "-c",
       "-o",
       "build/main.o",
       "tests/main.cpp"
     ],
-    "directory": "/home/ltouzali/Desktop/Morpheus_lib",
-    "file": "/home/ltouzali/Desktop/Morpheus_lib/tests/main.cpp",
-    "output": "/home/ltouzali/Desktop/Morpheus_lib/build/main.o"
+    "directory": "/home/ltouzali/Desktop/Tensorium_lib",
+    "file": "/home/ltouzali/Desktop/Tensorium_lib/tests/main.cpp",
+    "output": "/home/ltouzali/Desktop/Tensorium_lib/build/main.o"
   }
 ]

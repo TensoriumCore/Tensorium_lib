@@ -1,9 +1,9 @@
-<map id="morpheus_RG::Metric::compute_minkowski" name="morpheus_RG::Metric::compute_minkowski">
+<map id="tensorium_RG::Metric::compute_minkowski" name="tensorium_RG::Metric::compute_minkowski">
 <area shape="rect" id="Node000001" title="Minkowski metric in Cartesian coordinates." alt="" coords="5,24,169,68"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="228,5,389,33"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="228,5,389,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,33,212,28,213,33,169,39"/>
-<area shape="rect" id="Node000003" href="$classmorpheus_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="217,57,400,85"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="217,57,400,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,53,201,56,201,62,169,58"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d" title=" " alt="" coords="448,49,637,94"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d" title=" " alt="" coords="448,49,637,94"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="401,69,433,69,433,74,401,74"/>
 </map>

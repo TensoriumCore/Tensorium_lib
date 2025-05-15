@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Morpheus: Morpheus — DiffGeometry Module</title>
+<title>Tensorium: Tensorium — DiffGeometry Module</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -34,7 +34,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Morpheus
+   <div id="projectname">Tensorium
    </div>
   </td>
  </tr>
@@ -72,7 +72,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_includes_2Morpheus_2DiffGeometry_2README.html',''); initResizable(); });
+$(function(){initNavTree('md_includes_2Tensorium_2DiffGeometry_2README.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -98,7 +98,7 @@ $(function(){initNavTree('md_includes_2Morpheus_2DiffGeometry_2README.html','');
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Morpheus — DiffGeometry Module</div></div>
+  <div class="headertitle"><div class="title">Tensorium — DiffGeometry Module</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> This directory provides the core components for differential geometry computations in general relativity. It supports both symbolic 4D analytical calculations and the foundations for ADM/BSSN-based 3+1 numerical simulations.</p>
@@ -146,30 +146,30 @@ Current Supported Metrics</h1>
 Example: Compute Riemann and Ricci Tensors from Kerr Metric</h1>
 <div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> dim = 4;</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classmorpheus_1_1Vector.html">morpheus::Vector&lt;double&gt;</a> <a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(dim);</div>
-<div class="line"><a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(0) = 0.0;</div>
-<div class="line"><a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(1) = 10.0;</div>
-<div class="line"><a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(2) = M_PI / 2.0;</div>
-<div class="line"><a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(3) = 0.0;</div>
+<div class="line"><a class="code hl_class" href="classtensorium_1_1Vector.html">tensorium::Vector&lt;double&gt;</a> <a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(dim);</div>
+<div class="line"><a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(0) = 0.0;</div>
+<div class="line"><a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(1) = 10.0;</div>
+<div class="line"><a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(2) = M_PI / 2.0;</div>
+<div class="line"><a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>(3) = 0.0;</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classmorpheus_1_1Tensor.html">morpheus::Tensor&lt;double, 2&gt;</a> g({dim, dim});</div>
-<div class="line"><a class="code hl_class" href="classmorpheus_1_1Tensor.html">morpheus::Tensor&lt;double, 2&gt;</a> g_inv({dim, dim});</div>
+<div class="line"><a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;double, 2&gt;</a> g({dim, dim});</div>
+<div class="line"><a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;double, 2&gt;</a> g_inv({dim, dim});</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classmorpheus__RG_1_1Metric.html">morpheus_RG::Metric&lt;double&gt;</a> metric(<span class="stringliteral">&quot;kerr&quot;</span>, 1.0, 0.8);</div>
-<div class="line">metric(<a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, g);</div>
+<div class="line"><a class="code hl_class" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric&lt;double&gt;</a> metric(<span class="stringliteral">&quot;kerr&quot;</span>, 1.0, 0.8);</div>
+<div class="line">metric(<a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, g);</div>
 <div class="line"> </div>
-<div class="line">g_inv = <a class="code hl_function" href="namespacemorpheus.html#a55946403722bc5a1c408b5c20f177a26">morpheus::inv_mat_tensor</a>(g);</div>
+<div class="line">g_inv = <a class="code hl_function" href="namespacetensorium.html#a55946403722bc5a1c408b5c20f177a26">tensorium::inv_mat_tensor</a>(g);</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a> = <a class="code hl_function" href="namespacemorpheus.html#a16c823b33c29fcc4b19533a7ef41822e">morpheus::compute_christoffel</a>(<a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, 1e-5, g, g_inv, metric);</div>
-<div class="line"><span class="keyword">auto</span> Riemann = morpheus::compute_riemann_tensor&lt;double&gt;(<a class="code hl_function" href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, 1e-5, metric);</div>
-<div class="line"><span class="keyword">auto</span> Ricci = morpheus::contract_tensor&lt;0, 2&gt;(Riemann); <span class="comment">// Ricci^μ_μ = R_{ρσ}</span></div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a> = <a class="code hl_function" href="namespacetensorium.html#a16c823b33c29fcc4b19533a7ef41822e">tensorium::compute_christoffel</a>(<a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, 1e-5, g, g_inv, metric);</div>
+<div class="line"><span class="keyword">auto</span> Riemann = tensorium::compute_riemann_tensor&lt;double&gt;(<a class="code hl_function" href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a>, 1e-5, metric);</div>
+<div class="line"><span class="keyword">auto</span> Ricci = tensorium::contract_tensor&lt;0, 2&gt;(Riemann); <span class="comment">// Ricci^μ_μ = R_{ρσ}</span></div>
 <div class="ttc" id="aLatex_8hpp_html_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea"><div class="ttname"><a href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">GreekSymbolminus::gamma</a></div><div class="ttdeci">@ gamma</div></div>
-<div class="ttc" id="aMorpheusDispatchPlugin_8cpp_html_ae7a4f049afe21929e85eab6e461de56e"><div class="ttname"><a href="MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a></div><div class="ttdeci">static FrontendPluginRegistry::Add&lt; MorpheusPluginAction &gt; X(&quot;morpheus-dispatch&quot;, &quot;Handle #pragma morpheus directives&quot;)</div><div class="ttdoc">Register the plugin under the name &quot;morpheus-dispatch&quot;.</div></div>
-<div class="ttc" id="aclassmorpheus_1_1Tensor_html"><div class="ttname"><a href="classmorpheus_1_1Tensor.html">morpheus::Tensor</a></div><div class="ttdoc">Multi-dimensional tensor class with fixed rank and SIMD support.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:27</div></div>
-<div class="ttc" id="aclassmorpheus_1_1Vector_html"><div class="ttname"><a href="classmorpheus_1_1Vector.html">morpheus::Vector</a></div><div class="ttdoc">Aligned, SIMD-optimized mathematical vector class for scientific computing.</div><div class="ttdef"><b>Definition</b> Vector.hpp:27</div></div>
-<div class="ttc" id="aclassmorpheus__RG_1_1Metric_html"><div class="ttname"><a href="classmorpheus__RG_1_1Metric.html">morpheus_RG::Metric</a></div><div class="ttdoc">A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr,...</div><div class="ttdef"><b>Definition</b> Metric.hpp:27</div></div>
-<div class="ttc" id="anamespacemorpheus_html_a16c823b33c29fcc4b19533a7ef41822e"><div class="ttname"><a href="namespacemorpheus.html#a16c823b33c29fcc4b19533a7ef41822e">morpheus::compute_christoffel</a></div><div class="ttdeci">morpheus_RG::ChristoffelSym&lt; T &gt; compute_christoffel(const morpheus::Vector&lt; T &gt; &amp;X, T h, const morpheus::Tensor&lt; T, 2 &gt; &amp;g, const morpheus::Tensor&lt; T, 2 &gt; &amp;g_inv, MetricFunc &amp;&amp;metric_generator)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:54</div></div>
-<div class="ttc" id="anamespacemorpheus_html_a55946403722bc5a1c408b5c20f177a26"><div class="ttname"><a href="namespacemorpheus.html#a55946403722bc5a1c408b5c20f177a26">morpheus::inv_mat_tensor</a></div><div class="ttdeci">morpheus::Tensor&lt; T, 2 &gt; inv_mat_tensor(const morpheus::Tensor&lt; T, 2 &gt; &amp;g)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:14</div></div>
+<div class="ttc" id="aTensoriumDispatchPlugin_8cpp_html_ae7a4f049afe21929e85eab6e461de56e"><div class="ttname"><a href="TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e">X</a></div><div class="ttdeci">static FrontendPluginRegistry::Add&lt; TensoriumPluginAction &gt; X(&quot;tensorium-dispatch&quot;, &quot;Handle #pragma tensorium directives&quot;)</div><div class="ttdoc">Register the plugin under the name &quot;tensorium-dispatch&quot;.</div></div>
+<div class="ttc" id="aclasstensorium_1_1Tensor_html"><div class="ttname"><a href="classtensorium_1_1Tensor.html">tensorium::Tensor</a></div><div class="ttdoc">Multi-dimensional tensor class with fixed rank and SIMD support.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:27</div></div>
+<div class="ttc" id="aclasstensorium_1_1Vector_html"><div class="ttname"><a href="classtensorium_1_1Vector.html">tensorium::Vector</a></div><div class="ttdoc">Aligned, SIMD-optimized mathematical vector class for scientific computing.</div><div class="ttdef"><b>Definition</b> Vector.hpp:27</div></div>
+<div class="ttc" id="aclasstensorium__RG_1_1Metric_html"><div class="ttname"><a href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a></div><div class="ttdoc">A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr,...</div><div class="ttdef"><b>Definition</b> Metric.hpp:27</div></div>
+<div class="ttc" id="anamespacetensorium_html_a16c823b33c29fcc4b19533a7ef41822e"><div class="ttname"><a href="namespacetensorium.html#a16c823b33c29fcc4b19533a7ef41822e">tensorium::compute_christoffel</a></div><div class="ttdeci">tensorium_RG::ChristoffelSym&lt; T &gt; compute_christoffel(const tensorium::Vector&lt; T &gt; &amp;X, T h, const tensorium::Tensor&lt; T, 2 &gt; &amp;g, const tensorium::Tensor&lt; T, 2 &gt; &amp;g_inv, MetricFunc &amp;&amp;metric_generator)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:54</div></div>
+<div class="ttc" id="anamespacetensorium_html_a55946403722bc5a1c408b5c20f177a26"><div class="ttname"><a href="namespacetensorium.html#a55946403722bc5a1c408b5c20f177a26">tensorium::inv_mat_tensor</a></div><div class="ttdeci">tensorium::Tensor&lt; T, 2 &gt; inv_mat_tensor(const tensorium::Tensor&lt; T, 2 &gt; &amp;g)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:14</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
 Status</h1>
 <p>The module is stable for 4D analytical computations. Symbolic initializations and automation through the <code>Symbolics/</code> and BSSN modules are under active development.</p>

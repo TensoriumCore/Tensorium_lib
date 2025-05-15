@@ -1,5 +1,5 @@
 \doxysection{AST.\+hpp}
-\hypertarget{AST_8hpp_source}{}\label{AST_8hpp_source}\index{includes/Morpheus/Symbolics/AST.hpp@{includes/Morpheus/Symbolics/AST.hpp}}
+\hypertarget{AST_8hpp_source}{}\label{AST_8hpp_source}\index{includes/Tensorium/Symbolics/AST.hpp@{includes/Tensorium/Symbolics/AST.hpp}}
 \mbox{\hyperlink{AST_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once\ }}
@@ -11,56 +11,56 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <memory>}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Latex_8hpp}{Latex.hpp}}"{}}}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium}{tensorium}}\ \{}
 \DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \{}
-\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f}{Number}},}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793}{Symbol}},}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39}{BinaryOp}},}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8}{UnaryOp}},}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca}{FunctionCall}},}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200}{Subscript}},}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7}{Superscript}},}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd}{Derivative}},}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e}{Integral}},}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae}{TensorSymbol}}\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caab2ee912b91d69b435159c7c3f6df7f5f}{Number}},}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa02c86eb2792f3262c21d030a87e19793}{Symbol}},}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa72146646648d0b47b0dac2e2af592d39}{BinaryOp}},}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa40a92e96cc89b8dd3cf793d4c2a3b6e8}{UnaryOp}},}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caaffb017548928ab2305e7c55cb67c04ca}{FunctionCall}},}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa928558e2f9712e38d447d674f2672200}{Subscript}},}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa6316f99acec341fbdd5cc006dc5a7ba7}{Superscript}},}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa70ae6e285cc14c8486e3cf5bec39d1fd}{Derivative}},}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caa4ea94552a2bec56a29592359a1b6069e}{Integral}},}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6caad8d55c1280e4f9210b66da7f24db18ae}{TensorSymbol}}\ }
 \DoxyCodeLine{00023\ \ \ \ \ \};}
 \DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmorpheus_1_1ASTNode}{ASTNode}}\ \{}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}};}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}};}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ std::vector<std::shared\_ptr<ASTNode>>\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a53cfd7b3fdf49c592ccf8cb310edfaaa}{children}};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtensorium_1_1ASTNode}{ASTNode}}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}};}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}};}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ std::vector<std::shared\_ptr<ASTNode>>\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a53cfd7b3fdf49c592ccf8cb310edfaaa}{children}};}
 \DoxyCodeLine{00029\ }
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a902c030f6630335dbde1127312476062}{ASTNode}}(\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}},\ \textcolor{keyword}{const}\ std::string\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{val}}\ =\ \textcolor{stringliteral}{"{}"{}})}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}(\mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}),\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{val}})\ \{\}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structtensorium_1_1ASTNode_a902c030f6630335dbde1127312476062}{ASTNode}}(\mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}},\ \textcolor{keyword}{const}\ std::string\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{val}}\ =\ \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}(\mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}),\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{val}})\ \{\}}
 \DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a91acc402ef60e4e67fa0cd63dcc2d11b}{ASTNode}}(\mbox{\hyperlink{namespacemorpheus_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}},\ \textcolor{keyword}{const}\ std::string\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{val}},\ \textcolor{keyword}{const}\ std::vector<std::shared\_ptr<ASTNode>>\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{childs}})}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}(\mbox{\hyperlink{structmorpheus_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}),\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{val}}),\ \mbox{\hyperlink{structmorpheus_1_1ASTNode_a53cfd7b3fdf49c592ccf8cb310edfaaa}{children}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{childs}})\ \{\}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structtensorium_1_1ASTNode_a91acc402ef60e4e67fa0cd63dcc2d11b}{ASTNode}}(\mbox{\hyperlink{namespacetensorium_afdb5652a67573f4748b3f9fb2b66e6ca}{ASTNodeType}}\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}},\ \textcolor{keyword}{const}\ std::string\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{val}},\ \textcolor{keyword}{const}\ std::vector<std::shared\_ptr<ASTNode>>\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{childs}})}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}(\mbox{\hyperlink{structtensorium_1_1ASTNode_a5d72a506eef615b0d4f4196359b85023}{type}}),\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a50936a54c07493f5ee314964e55d7b8c}{value}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{val}}),\ \mbox{\hyperlink{structtensorium_1_1ASTNode_a53cfd7b3fdf49c592ccf8cb310edfaaa}{children}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{childs}})\ \{\}}
 \DoxyCodeLine{00035\ \ \ \ \ \};}
 \DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus_1_1Parser}{Parser}}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtensorium_1_1Parser}{Parser}}\ \{}
 \DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classmorpheus_1_1Parser_aa95ea4565d5ec68b051543e7a18493cc}{Parser}}(\textcolor{keyword}{const}\ std::vector<Token>\&\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}})\ :\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}(\mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}),\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}(0)\ \{\}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classtensorium_1_1Parser_aa95ea4565d5ec68b051543e7a18493cc}{Parser}}(\textcolor{keyword}{const}\ std::vector<Token>\&\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}})\ :\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}(\mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}),\ \mbox{\hyperlink{classtensorium_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}(0)\ \{\}}
 \DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classmorpheus_1_1Parser_aae47f6da0a0bfb6caf988f644f72f38e}{parse\_expression}}();}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classmorpheus_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}{parse\_expression}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{precedence}}\ =\ 0)\ \{}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{lhs}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\_primary}}();}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classmorpheus_1_1Tensor}{lhs}})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\_binary\_rhs}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{precedence}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{lhs}});}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classtensorium_1_1Parser_aae47f6da0a0bfb6caf988f644f72f38e}{parse\_expression}}();}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classtensorium_1_1Parser_a0ef7e4ccd93bbd6f93091ece73f9c965}{parse\_expression}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{precedence}}\ =\ 0)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{lhs}}\ =\ \mbox{\hyperlink{classtensorium_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\_primary}}();}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classtensorium_1_1Tensor}{lhs}})\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\_binary\_rhs}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{precedence}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{lhs}});}
 \DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00047\ }
 \DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Token>\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}};}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Token>\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}};}
 \DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classmorpheus_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\_primary}}();}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classmorpheus_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\_binary\_rhs}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{prec}},\ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{lhs}});}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classtensorium_1_1Parser_adba410f009f61f36bd5cdc4c3b70e2d5}{parse\_primary}}();}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classtensorium_1_1Parser_a233a83f6f353c41a04ad7515ba48b86b}{parse\_binary\_rhs}}(\textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{prec}},\ std::shared\_ptr<ASTNode>\ \mbox{\hyperlink{classtensorium_1_1Tensor}{lhs}});}
 \DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structToken}{Token}}\ \mbox{\hyperlink{classmorpheus_1_1Parser_a591251408fefa9f4404903824d3a36dc}{peek}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}[\mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}];\ \}}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structToken}{Token}}\ \mbox{\hyperlink{classmorpheus_1_1Parser_acff9882d0079f9dec81d1168314b3772}{get}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}[\mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}++];\ \}}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classmorpheus_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}{eof}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}\ >=\ \mbox{\hyperlink{classmorpheus_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}.size();\ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structToken}{Token}}\ \mbox{\hyperlink{classtensorium_1_1Parser_a591251408fefa9f4404903824d3a36dc}{peek}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}[\mbox{\hyperlink{classtensorium_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}];\ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structToken}{Token}}\ \mbox{\hyperlink{classtensorium_1_1Parser_acff9882d0079f9dec81d1168314b3772}{get}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}[\mbox{\hyperlink{classtensorium_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}++];\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classtensorium_1_1Parser_a8f6eb70158e02db5f21dfa7e58d377e5}{eof}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Parser_ad34a3db9a02a09daf2b88eb0f52ae493}{pos}}\ >=\ \mbox{\hyperlink{classtensorium_1_1Parser_ad506b33eb1def3fbbc7745e2c68a672b}{tokens}}.size();\ \}}
 \DoxyCodeLine{00058\ }
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classmorpheus_1_1Parser_a6046a427916981626c23efbcab4f266d}{get\_precedence}}(\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{TokenType}}\ t)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtensorium_1_1Parser_a6046a427916981626c23efbcab4f266d}{get\_precedence}}(\mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921}{TokenType}}\ t)\textcolor{keyword}{\ const\ }\{}
 \DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (t)\ \{}
 \DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2}{TokenType::plus}}:}
 \DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{Latex_8hpp_aa520fbf142ba1e7e659590c07da31921adabe6e597b70e5760826aea1dcc564f7}{TokenType::minus}}:}
@@ -76,12 +76,12 @@
 \DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00073\ \ \ \ \ \};}
 \DoxyCodeLine{00074\ }
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\_ast}}(\textcolor{keyword}{const}\ std::shared\_ptr<ASTNode>\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{node}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{indent}}\ =\ 0)\ \{}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classmorpheus_1_1Tensor}{node}})\ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{pad}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{indent}},\ \textcolor{charliteral}{'\ '});}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ std::cout\ <<\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{pad}}\ <<\ \textcolor{stringliteral}{"{}Node:\ "{}}\ <<\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{node}}-\/>value\ <<\ \textcolor{stringliteral}{"{}\ [Type="{}}\ <<\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{node}}-\/>type)\ <<\ \textcolor{stringliteral}{"{}]\(\backslash\)n"{}};}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{child}}\ :\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{node}}-\/>children)}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemorpheus_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\_ast}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{child}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{indent}}\ +\ 2);}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacetensorium_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\_ast}}(\textcolor{keyword}{const}\ std::shared\_ptr<ASTNode>\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{node}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{indent}}\ =\ 0)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classtensorium_1_1Tensor}{node}})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classtensorium_1_1Tensor}{pad}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{indent}},\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ std::cout\ <<\ \mbox{\hyperlink{classtensorium_1_1Tensor}{pad}}\ <<\ \textcolor{stringliteral}{"{}Node:\ "{}}\ <<\ \mbox{\hyperlink{classtensorium_1_1Tensor}{node}}-\/>value\ <<\ \textcolor{stringliteral}{"{}\ [Type="{}}\ <<\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(\mbox{\hyperlink{classtensorium_1_1Tensor}{node}}-\/>type)\ <<\ \textcolor{stringliteral}{"{}]\(\backslash\)n"{}};}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{child}}\ :\ \mbox{\hyperlink{classtensorium_1_1Tensor}{node}}-\/>children)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacetensorium_aba1bbc47e3f0d2bc85badb5cd3cb3d6e}{print\_ast}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{child}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{indent}}\ +\ 2);}
 \DoxyCodeLine{00081\ \ \ \ \ \}}
 \DoxyCodeLine{00082\ }
 \DoxyCodeLine{00083\ \}\ }

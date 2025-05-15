@@ -1,6 +1,6 @@
-#include "../../includes/Morpheus/Morpheus.hpp"
+#include "../../includes/Tensorium/Tensorium.hpp"
 
-using namespace morpheus;
+using namespace tensorium;
 
 #define CHECK(expr) \
 	do { \

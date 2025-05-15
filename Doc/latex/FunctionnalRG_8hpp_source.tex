@@ -1,5 +1,5 @@
 \doxysection{Functionnal\+RG.\+hpp}
-\hypertarget{FunctionnalRG_8hpp_source}{}\label{FunctionnalRG_8hpp_source}\index{includes/Morpheus/Functionnal/FunctionnalRG.hpp@{includes/Morpheus/Functionnal/FunctionnalRG.hpp}}
+\hypertarget{FunctionnalRG_8hpp_source}{}\label{FunctionnalRG_8hpp_source}\index{includes/Tensorium/Functionnal/FunctionnalRG.hpp@{includes/Tensorium/Functionnal/FunctionnalRG.hpp}}
 \mbox{\hyperlink{FunctionnalRG_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
@@ -11,37 +11,37 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{RiemannTensor_8hpp}{../DiffGeometry/RiemannTensor.hpp}}"{}}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{RicciTensor_8hpp}{../DiffGeometry/RicciTensor.hpp}}"{}}}
 \DoxyCodeLine{00009\ }
-\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium}{tensorium}}\ \{}
 \DoxyCodeLine{00011\ }
 \DoxyCodeLine{00012\ }
 \DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacemorpheus_a55946403722bc5a1c408b5c20f177a26}{inv\_mat\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})\ \{}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}\ =\ \mbox{\hyperlink{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\_to\_matrix}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{g}});}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ inv\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}.inverse();}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}{matrix\_to\_tensor}}(inv);}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacetensorium_a55946403722bc5a1c408b5c20f177a26}{inv\_mat\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g}})\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}\ =\ \mbox{\hyperlink{namespacetensorium_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\_to\_matrix}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{g}});}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Matrix<T>}}\ inv\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}.inverse();}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespacetensorium_ac82b827e57d25a1f8ae82779b1d14136}{matrix\_to\_tensor}}(inv);}
 \DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00019\ }
 \DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacemorpheus_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\_to\_matrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}})\ \{}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}}.\mbox{\hyperlink{classmorpheus_1_1Tensor_a243335fd9e54d6a0133f2268e938dd17}{dimensions}}[0];}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}}.\mbox{\hyperlink{classmorpheus_1_1Tensor_a243335fd9e54d6a0133f2268e938dd17}{dimensions}}[1];}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}(\{\mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}}\});}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}};\ ++i)}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}}\ =\ 0;\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}}\ <\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}};\ ++\mbox{\hyperlink{classmorpheus_1_1Tensor}{j}})}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}(i,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}})\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}}(i,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}});}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}};}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{namespacetensorium_a15b00fa3ba8c6814edc03f1cf58badd2}{tensor\_to\_matrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}})\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d0}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}}.\mbox{\hyperlink{classtensorium_1_1Tensor_a243335fd9e54d6a0133f2268e938dd17}{dimensions}}[0];}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}}.\mbox{\hyperlink{classtensorium_1_1Tensor_a243335fd9e54d6a0133f2268e938dd17}{dimensions}}[1];}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Matrix<T>}}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}(\{\mbox{\hyperlink{classtensorium_1_1Tensor}{d0}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}}\});}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d0}};\ ++i)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}}\ =\ 0;\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}}\ <\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}};\ ++\mbox{\hyperlink{classtensorium_1_1Tensor}{j}})}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}(i,\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}})\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}}(i,\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}});}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}};}
 \DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00030\ }
 \DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacemorpheus_ac82b827e57d25a1f8ae82779b1d14136}{matrix\_to\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}})\ \{}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}.rows;}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}.cols;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacetensorium_ac82b827e57d25a1f8ae82779b1d14136}{matrix\_to\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Matrix<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}})\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d0}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}.rows;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}.cols;}
 \DoxyCodeLine{00035\ }
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}}(\{\mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}}\});}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d0}};\ ++i)}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}}\ =\ 0;\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}}\ <\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{d1}};\ ++\mbox{\hyperlink{classmorpheus_1_1Tensor}{j}})}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}}(i,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}})\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{mat}}(i,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{j}});}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{tensor}};}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}}(\{\mbox{\hyperlink{classtensorium_1_1Tensor}{d0}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}}\});}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d0}};\ ++i)}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}}\ =\ 0;\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}}\ <\ \mbox{\hyperlink{classtensorium_1_1Tensor}{d1}};\ ++\mbox{\hyperlink{classtensorium_1_1Tensor}{j}})}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}}(i,\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}})\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{mat}}(i,\ \mbox{\hyperlink{classtensorium_1_1Tensor}{j}});}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensor}};}
 \DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00042\ }
 \DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
@@ -55,13 +55,13 @@
 \DoxyCodeLine{00051\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
 \DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ }
 \DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ MetricFunc>}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{morpheus\_RG::ChristoffelSym<T>}}\ \mbox{\hyperlink{namespacemorpheus_a16c823b33c29fcc4b19533a7ef41822e}{compute\_christoffel}}(}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Vector<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}},}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g}},}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g\_inv}},}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{MetricFunc}}\&\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric\_generator}})}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{tensorium\_RG::ChristoffelSym<T>}}\ \mbox{\hyperlink{namespacetensorium_a16c823b33c29fcc4b19533a7ef41822e}{compute\_christoffel}}(}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Vector<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{X}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{T}}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{h}},}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g}},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g\_inv}},}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{MetricFunc}}\&\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric\_generator}})}
 \DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{morpheus\_RG::ChristoffelSym<T>::compute\_christoffel}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g\_inv}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric\_generator}});}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{tensorium\_RG::ChristoffelSym<T>::compute\_christoffel}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{X}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{h}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g\_inv}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric\_generator}});}
 \DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00062\ }
 \DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
@@ -71,46 +71,46 @@
 \DoxyCodeLine{00067\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @param\ g\ Output\ tensor\ g\_\{μν\}}}
 \DoxyCodeLine{00068\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
 \DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_ad37fcae31cc6fcfb74ef0726257004d2}{generate\_metric}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\_RG::Metric<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}},}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Vector<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g}})\ \{}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g}});}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacetensorium_ad37fcae31cc6fcfb74ef0726257004d2}{generate\_metric}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\_RG::Metric<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric}},}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Vector<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{X}},}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g}})\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{X}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g}});}
 \DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00075\ }
 \DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 4>}}\ \mbox{\hyperlink{namespacemorpheus_a550ee0012bfeef9ef3b717c066a1f9dd}{compute\_riemann\_tensor}}(}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Vector<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}},}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\_RG::Metric<T>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}})}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 4>}}\ \mbox{\hyperlink{namespacetensorium_a550ee0012bfeef9ef3b717c066a1f9dd}{compute\_riemann\_tensor}}(}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Vector<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{X}},}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{T}}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{h}},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\_RG::Metric<T>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric}})}
 \DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{morpheus\_RG::RiemannTensor<T>::compute}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{X}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{metric}});}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{tensorium\_RG::RiemannTensor<T>::compute}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{X}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{h}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{metric}});}
 \DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00084\ }
 \DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_a5e92798d2d5c69660f09b3962c6d74a7}{print\_riemann\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 4>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacetensorium_a5e92798d2d5c69660f09b3962c6d74a7}{print\_riemann\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 4>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{R}})}
 \DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{morpheus\_RG::RiemannTensor<T>::print\_componentwise}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}});}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{tensorium\_RG::RiemannTensor<T>::print\_componentwise}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{R}});}
 \DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00090\ }
 \DoxyCodeLine{00091\ }
 \DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacemorpheus_a12d01ce67c3b6f0ad2aec5efceabe7d7}{contract\_riemann\_to\_ricci}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 4>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{R}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})\ \{}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{morpheus\_RG::RicciTensor<T>::contract\_to\_ricci}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}});}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\ \mbox{\hyperlink{namespacetensorium_a12d01ce67c3b6f0ad2aec5efceabe7d7}{contract\_riemann\_to\_ricci}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 4>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{R}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{ginv}})\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{tensorium\_RG::RicciTensor<T>::contract\_to\_ricci}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{R}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{ginv}});}
 \DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ }
 \DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacemorpheus_acd25c732eaaec38938b3d6a667edd27e}{compute\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}})\ \{}
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{morpheus\_RG::RicciTensor<T>::compute\_ricci\_scalar}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{ginv}});}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{T}}\ \mbox{\hyperlink{namespacetensorium_acd25c732eaaec38938b3d6a667edd27e}{compute\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Ricci}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{ginv}})\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{tensorium\_RG::RicciTensor<T>::compute\_ricci\_scalar}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{Ricci}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{ginv}});}
 \DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00101\ }
 \DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_ae6f44ca1677af42863255fc42b582ceb}{print\_ricci\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{R}})\ \{}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{morpheus\_RG::RicciTensor<T>::print\_componentwise}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{R}});}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacetensorium_ae6f44ca1677af42863255fc42b582ceb}{print\_ricci\_tensor}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{R}})\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{tensorium\_RG::RicciTensor<T>::print\_componentwise}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{R}});}
 \DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00106\ }
 \DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacemorpheus_a79c0f50e63559be812d6efe96d21146c}{print\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g\_inv}})\ \{}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{morpheus\_RG::RicciTensor<T>::print\_ricci\_scalar}}(\mbox{\hyperlink{classmorpheus_1_1Tensor}{Ricci}},\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{g\_inv}});}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacetensorium_a79c0f50e63559be812d6efe96d21146c}{print\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Ricci}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor<T,\ 2>}}\&\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g\_inv}})\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{tensorium\_RG::RicciTensor<T>::print\_ricci\_scalar}}(\mbox{\hyperlink{classtensorium_1_1Tensor}{Ricci}},\ \mbox{\hyperlink{classtensorium_1_1Tensor}{g\_inv}});}
 \DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00111\ }
 \DoxyCodeLine{00112\ \}}

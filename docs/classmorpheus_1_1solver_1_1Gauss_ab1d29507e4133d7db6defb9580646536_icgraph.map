@@ -1,5 +1,5 @@
-<map id="morpheus::solver::Gauss::raw_row_echelon" name="morpheus::solver::Gauss::raw_row_echelon">
+<map id="tensorium::solver::Gauss::raw_row_echelon" name="tensorium::solver::Gauss::raw_row_echelon">
 <area shape="rect" id="Node000001" title=" " alt="" coords="230,5,412,50"/>
-<area shape="rect" id="Node000002" href="$namespacemorpheus.html#a9a35e07c442f4a216c75b5c4c2167c00" title=" " alt="" coords="5,14,182,42"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a9a35e07c442f4a216c75b5c4c2167c00" title=" " alt="" coords="5,14,182,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="214,30,182,30,182,25,214,25"/>
 </map>

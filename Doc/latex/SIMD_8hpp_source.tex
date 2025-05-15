@@ -1,5 +1,5 @@
 \doxysection{SIMD.\+hpp}
-\hypertarget{SIMD_8hpp_source}{}\label{SIMD_8hpp_source}\index{includes/Morpheus/SIMD/SIMD.hpp@{includes/Morpheus/SIMD/SIMD.hpp}}
+\hypertarget{SIMD_8hpp_source}{}\label{SIMD_8hpp_source}\index{includes/Tensorium/SIMD/SIMD.hpp@{includes/Tensorium/SIMD/SIMD.hpp}}
 \mbox{\hyperlink{SIMD_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
@@ -37,13 +37,13 @@
 \DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }alignas(Align)\ \mbox{\hyperlink{structaligned__reg}{aligned\_reg}}\ \{}
 \DoxyCodeLine{00034\ \ \ \ \ T\ \mbox{\hyperlink{structaligned__reg_ac2f06be4ed5c38ff6e671e287639d4b1}{value}};}
 \DoxyCodeLine{00035\ \};}
-\DoxyCodeLine{00036\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00036\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium}{tensorium}}\ \{}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmorpheus_1_1avx2__t}{avx2\_t}}\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtensorium_1_1avx2__t}{avx2\_t}}\ \{}
 \DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ width\ =\ \mbox{\hyperlink{SIMD_8hpp_a8d91ae35b0fa8c31a91dbbf75b3e2c06}{SIMD\_WIDTH}};}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{reg}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{\_\_m256}};}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{reg}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{\_\_m256}};}
 \DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ alignment\ =\ \mbox{\hyperlink{SIMD_8hpp_ae4ff5a07c6ff43ed11a3887ef7d524f2}{ALIGN}};}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{reg\_aligned}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{aligned\_reg<reg,\ alignment>}};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{reg\_aligned}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{aligned\_reg<reg,\ alignment>}};}
 \DoxyCodeLine{00043\ \ \ \ \ \};}
 \DoxyCodeLine{00044\ }
 \DoxyCodeLine{00045\ \}}
@@ -121,7 +121,7 @@
 \DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_store\_pd(r,\ sum);}
 \DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r[0]\ +\ r[1];}
 \DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00120\ \ \ \ \ \mbox{\hyperlink{namespacemorpheus__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00120\ \ \ \ \ \mbox{\hyperlink{namespacetensorium__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
 \DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ uint64\_t\ reduce\_sum(\_\_m256i\ acc)\ \{}
 \DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m128i\ low\ \ =\ \_mm256\_castsi256\_si128(acc);}
 \DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m128i\ high\ =\ \_mm256\_extractf128\_si256(acc,\ 1);}
@@ -130,7 +130,7 @@
 \DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_store\_si128(\textcolor{keyword}{reinterpret\_cast<}\_\_m128i*\textcolor{keyword}{>}(r),\ sum);}
 \DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r[0]\ +\ r[1];}
 \DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00129\ \ \ \ \ \mbox{\hyperlink{namespacemorpheus__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00129\ \ \ \ \ \mbox{\hyperlink{namespacetensorium__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
 \DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ reduce\_sum(\_\_m512\ acc)\ \{}
 \DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m256\ low\ \ =\ \_mm512\_castps512\_ps256(acc);}
 \DoxyCodeLine{00132\ \textcolor{preprocessor}{\#if\ defined(\_\_AVX512DQ\_\_)}}
@@ -141,21 +141,21 @@
 \DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m256\ sum\ =\ \_mm256\_add\_ps(low,\ high);}
 \DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reduce\_sum(sum);}
 \DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{namespacemorpheus__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{namespacetensorium__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
 \DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ reduce\_sum(\_\_m512d\ acc)\ \{}
 \DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m256d\ low\ \ =\ \_mm512\_castpd512\_pd256(acc);}
 \DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m256d\ high\ =\ \_mm512\_extractf64x4\_pd(acc,\ 1);}
 \DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m256d\ sum\ =\ \_mm256\_add\_pd(low,\ high);}
 \DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reduce\_sum(sum);}
 \DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00147\ \ \ \ \ \mbox{\hyperlink{namespacemorpheus__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00147\ \ \ \ \ \mbox{\hyperlink{namespacetensorium__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
 \DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{inline}\ uint64\_t\ reduce\_sum(\_\_m512i\ acc)\ \{}
 \DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \_\_m256i\ low\ \ =\ \_mm512\_castsi512\_si256(acc);}
 \DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \_\_m256i\ high\ =\ \_mm512\_extracti64x4\_epi64(acc,\ 1);\ \ }
 \DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \_\_m256i\ sum\ =\ \_mm256\_add\_epi64(low,\ high);}
 \DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reduce\_sum(sum);\ \ }
 \DoxyCodeLine{00153\ \ \ \ \ \}}
-\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{namespacemorpheus__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
+\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{namespacetensorium__RG_ab0ca8920bbff9c97630d0832a13a5b7e}{\_\_attribute\_\_}}((always\_inline,\ hot,\ flatten))}
 \DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ reduce\_sum(\_\_m128\ acc)\ \{}
 \DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \_\_m128\ sum\ =\ \_mm\_hadd\_ps(acc,\ acc);}
 \DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ sum\ =\ \_mm\_hadd\_ps(sum,\ sum);}

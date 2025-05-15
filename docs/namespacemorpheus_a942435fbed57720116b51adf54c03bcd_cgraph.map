@@ -1,5 +1,5 @@
-<map id="morpheus::transpose_tensor" name="morpheus::transpose_tensor">
+<map id="tensorium::transpose_tensor" name="tensorium::transpose_tensor">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,50"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a8a3390d3b499e74ded35464d380bf18f" title=" " alt="" coords="212,14,459,42"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a8a3390d3b499e74ded35464d380bf18f" title=" " alt="" coords="212,14,459,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,25,196,25,196,30,164,30"/>
 </map>

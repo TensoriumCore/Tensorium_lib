@@ -1,5 +1,5 @@
 var LLVM__Handler_8hpp =
 [
-    [ "MorpheusTarget", "structMorpheusTarget.html", "structMorpheusTarget" ],
-    [ "MorpheusTargetTable", "LLVM__Handler_8hpp.html#adbada49afa870400a3c6f8e2d6de6e7b", null ]
+    [ "TensoriumTarget", "structTensoriumTarget.html", "structTensoriumTarget" ],
+    [ "TensoriumTargetTable", "LLVM__Handler_8hpp.html#ac071696ddd3d4bb5f6b3dbaee9427e3d", null ]
 ];

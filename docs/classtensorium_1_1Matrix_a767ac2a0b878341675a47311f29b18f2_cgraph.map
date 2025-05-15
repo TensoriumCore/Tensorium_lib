@@ -1,0 +1,8 @@
+<map id="tensorium::Matrix::mul_mat" name="tensorium::Matrix::mul_mat">
+<area shape="rect" id="Node000001" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="5,40,151,84"/>
+<area shape="rect" id="Node000002" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="206,5,337,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,43,190,34,191,39,151,48"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="199,81,344,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,75,184,82,183,87,150,80"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="234,81,233,71,239,62,252,56,271,54,292,57,305,63,302,68,290,62,271,59,253,61,243,66,238,72,239,80"/>
+</map>

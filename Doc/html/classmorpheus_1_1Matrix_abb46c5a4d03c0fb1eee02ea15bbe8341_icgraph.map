@@ -1,5 +1,5 @@
-<map id="morpheus::Matrix::trace" name="morpheus::Matrix::trace">
+<map id="tensorium::Matrix::trace" name="tensorium::Matrix::trace">
 <area shape="rect" id="Node000001" title="Returns the trace of a square matrix as a 1×1 matrix." alt="" coords="214,5,391,33"/>
-<area shape="rect" id="Node000002" href="$namespacemorpheus.html#a2759560f3161aa1d7ab494384ac6c33f" title=" " alt="" coords="5,5,166,33"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a2759560f3161aa1d7ab494384ac6c33f" title=" " alt="" coords="5,5,166,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,22,166,22,166,17,198,17"/>
 </map>

@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['b_0',['B',['../classmorpheus_1_1solver_1_1Gauss.html#a6236ff3a26c1334d0dfdb8262d0e636f',1,'morpheus::solver::Gauss']]],
-  ['backward_1',['backward',['../classmorpheus_1_1SpectralFFT.html#a8aa6f0097f5cb99fb73c1d4de0cadd83',1,'morpheus::SpectralFFT']]],
-  ['backwardffp_2',['backwardFFP',['../namespacemorpheus.html#ab0d022c164f50fe46524e1af50e826d7',1,'morpheus']]],
-  ['backwardfft_3',['backwardFFT',['../namespacemorpheus.html#ad5478f49e42b2f281d15e67587dfd92d',1,'morpheus']]],
-  ['barrier_4',['barrier',['../namespacemorpheus_1_1mpi.html#a74a8b1eed13f8cb37f20f9581448ea40',1,'morpheus::mpi']]],
-  ['bcast_5',['bcast',['../namespacemorpheus_1_1mpi.html#a38cc08d5e6c8388281a402d2dab00c69',1,'morpheus::mpi']]],
-  ['begin_6',['begin',['../classmorpheus_1_1Vector.html#a5d1c330a4b423ef1eaa0624c56e3a8ab',1,'morpheus::Vector::begin()'],['../classmorpheus_1_1Vector.html#a6b956ad25a43d8e5b89641ad9d50a82c',1,'morpheus::Vector::begin() const']]],
-  ['bit_5freverse_7',['bit_reverse',['../classmorpheus_1_1SpectralFFT.html#a2719a910e7f474b09c04e1c8856215b8',1,'morpheus::SpectralFFT']]],
-  ['bssn_8',['BSSN',['../classmorpheus__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de',1,'morpheus_RG::Metric']]]
+  ['b_0',['B',['../classtensorium_1_1solver_1_1Gauss.html#ae6dac0a892bb8872b72c7bc04ba762c3',1,'tensorium::solver::Gauss']]],
+  ['backward_1',['backward',['../classtensorium_1_1SpectralFFT.html#ac615fe5b4689900c9e54f6662372597a',1,'tensorium::SpectralFFT']]],
+  ['backwardffp_2',['backwardFFP',['../namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d',1,'tensorium']]],
+  ['backwardfft_3',['backwardFFT',['../namespacetensorium.html#aa8825c6215293801fce0857a1423cd32',1,'tensorium']]],
+  ['barrier_4',['barrier',['../namespacetensorium_1_1mpi.html#aeff11bc9ad9d8e87791babb1bf14b1ca',1,'tensorium::mpi']]],
+  ['bcast_5',['bcast',['../namespacetensorium_1_1mpi.html#a97c2be1d5792e01dcea98a97661cd926',1,'tensorium::mpi']]],
+  ['begin_6',['begin',['../classtensorium_1_1Vector.html#ac8331e8aceb41dc759d3be9ef144e0ef',1,'tensorium::Vector::begin()'],['../classtensorium_1_1Vector.html#a8ab480dccc4f36f74c8b21c636edda42',1,'tensorium::Vector::begin() const']]],
+  ['bit_5freverse_7',['bit_reverse',['../classtensorium_1_1SpectralFFT.html#acf37df5e87c3a03c72fef953d1fdf4ca',1,'tensorium::SpectralFFT']]],
+  ['bssn_8',['BSSN',['../classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04',1,'tensorium_RG::Metric']]]
 ];

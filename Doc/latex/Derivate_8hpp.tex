@@ -1,5 +1,5 @@
-\doxysection{includes/\+Morpheus/\+Core/\+Derivate.hpp File Reference}
-\hypertarget{Derivate_8hpp}{}\label{Derivate_8hpp}\index{includes/Morpheus/Core/Derivate.hpp@{includes/Morpheus/Core/Derivate.hpp}}
+\doxysection{includes/\+Tensorium/\+Core/\+Derivate.hpp File Reference}
+\hypertarget{Derivate_8hpp}{}\label{Derivate_8hpp}\index{includes/Tensorium/Core/Derivate.hpp@{includes/Tensorium/Core/Derivate.hpp}}
 
 
 Numerical differentiation operators using SIMD.  
@@ -24,21 +24,21 @@ This graph shows which files directly or indirectly include this file\+:
 \doxysubsubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \mbox{\hyperlink{classmorpheus_1_1Derivate}{morpheus\+::\+Derivate$<$ K $>$}}
+class \mbox{\hyperlink{classtensorium_1_1Derivate}{tensorium\+::\+Derivate$<$ K $>$}}
 \begin{DoxyCompactList}\small\item\em A 2D aligned matrix for numerical derivatives. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classmorpheus_1_1DerivateND}{morpheus\+::\+Derivate\+ND$<$ K, Rank $>$}}
+class \mbox{\hyperlink{classtensorium_1_1DerivateND}{tensorium\+::\+Derivate\+ND$<$ K, Rank $>$}}
 \begin{DoxyCompactList}\small\item\em A multi-\/dimensional aligned tensor for numerical derivatives. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
-namespace \mbox{\hyperlink{namespacemorpheus}{morpheus}}
+namespace \mbox{\hyperlink{namespacetensorium}{tensorium}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \mbox{\hyperlink{namespacemorpheus_a47cf67841ca834dde92b69e9a7078fa9}{morpheus\+::richardson\+\_\+derivative\+\_\+container}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{Container}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+{\footnotesize template$<$\mbox{\hyperlink{classtensorium_1_1Tensor}{typename}} \mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} $>$ }\\\mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} \mbox{\hyperlink{namespacetensorium_a47cf67841ca834dde92b69e9a7078fa9}{tensorium\+::richardson\+\_\+derivative\+\_\+container}} (const \mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{Container}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classtensorium_1_1Tensor}{double}} \mbox{\hyperlink{classtensorium_1_1Tensor}{h}})
 \begin{DoxyCompactList}\small\item\em Richardson extrapolation for vectors or containers. \end{DoxyCompactList}\item 
-{\footnotesize template$<$\mbox{\hyperlink{classmorpheus_1_1Tensor}{typename}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{morpheus\+::richardson\+\_\+derivative}} (const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classmorpheus_1_1Tensor}{T}} \&\mbox{\hyperlink{classmorpheus_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{double}} \mbox{\hyperlink{classmorpheus_1_1Tensor}{h}})
+{\footnotesize template$<$\mbox{\hyperlink{classtensorium_1_1Tensor}{typename}} \mbox{\hyperlink{classtensorium_1_1Tensor}{T}} $>$ }\\\mbox{\hyperlink{classtensorium_1_1Tensor}{T}} \mbox{\hyperlink{namespacetensorium_a5642a249c8bbb73833a55d1256e5cb0b}{tensorium\+::richardson\+\_\+derivative}} (const \mbox{\hyperlink{classtensorium_1_1Tensor}{T}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{plus\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{T}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{minus\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{T}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{plus\+\_\+half\+\_\+h}}, const \mbox{\hyperlink{classtensorium_1_1Tensor}{T}} \&\mbox{\hyperlink{classtensorium_1_1Tensor}{minus\+\_\+half\+\_\+h}}, \mbox{\hyperlink{classtensorium_1_1Tensor}{double}} \mbox{\hyperlink{classtensorium_1_1Tensor}{h}})
 \begin{DoxyCompactList}\small\item\em Richardson extrapolation for scalar values. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 

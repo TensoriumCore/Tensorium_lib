@@ -1,7 +1,7 @@
-<map id="includes/Morpheus/IO/MPI_init.hpp" name="includes/Morpheus/IO/MPI_init.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="44,5,206,50"/>
-<area shape="rect" id="Node000002" href="$Morpheus_8hpp.html" title=" " alt="" coords="5,98,245,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,66,128,97,122,97,122,66"/>
-<area shape="rect" id="Node000003" href="$test_8cpp.html" title=" " alt="" coords="63,174,187,201"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,141,128,173,122,173,122,141"/>
+<map id="includes/Tensorium/IO/MPI_init.hpp" name="includes/Tensorium/IO/MPI_init.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,152,50"/>
+<area shape="rect" id="Node000002" href="$Tensorium_8hpp.html" title=" " alt="" coords="5,98,152,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,66,81,98,76,98,76,66"/>
+<area shape="rect" id="Node000003" href="$test_8cpp.html" title=" " alt="" coords="16,191,141,218"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,158,81,190,76,190,76,158"/>
 </map>

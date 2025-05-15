@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;.">
+<g id="a_Node000001"><a xlink:title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;.">
 <polygon fill="#999999" stroke="#666666" points="427.55,-295.12 398.75,-295.12 398.75,-274.38 427.55,-274.38 427.55,-295.12"/>
 <text text-anchor="middle" x="413.15" y="-281.62" font-family="Helvetica,sans-Serif" font-size="10.00">X</text>
 </a>
@@ -20,9 +20,9 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmorpheus__RG_1_1ChristoffelSym.html#a7292368d5181833466179ecacd02b8ac" target="_top" xlink:title="Compute Christoffel symbols numerically from a metric.">
+<g id="a_Node000002"><a xlink:href="classtensorium__RG_1_1ChristoffelSym.html#a7292368d5181833466179ecacd02b8ac" target="_top" xlink:title="Compute Christoffel symbols numerically from a metric.">
 <polygon fill="white" stroke="#666666" points="349.25,-563.5 208.75,-563.5 208.75,-530 349.25,-530 349.25,-563.5"/>
-<text text-anchor="start" x="216.75" y="-550" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Christoffel</text>
+<text text-anchor="start" x="216.75" y="-550" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Christoffel</text>
 <text text-anchor="middle" x="279" y="-537.25" font-family="Helvetica,sans-Serif" font-size="10.00">Sym::__attribute__</text>
 </a>
 </g>
@@ -39,9 +39,9 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmorpheus__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de" target="_top" xlink:title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)">
+<g id="a_Node000003"><a xlink:href="classtensorium__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de" target="_top" xlink:title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)">
 <polygon fill="white" stroke="#666666" points="339.5,-511.5 218.5,-511.5 218.5,-478 339.5,-478 339.5,-511.5"/>
-<text text-anchor="start" x="226.5" y="-498" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="226.5" y="-498" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="279" y="-485.25" font-family="Helvetica,sans-Serif" font-size="10.00">::BSSN</text>
 </a>
 </g>
@@ -58,9 +58,9 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classmorpheus__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3" target="_top" xlink:title="Computes the 4D Riemann curvature tensor .">
+<g id="a_Node000004"><a xlink:href="classtensorium__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3" target="_top" xlink:title="Computes the 4D Riemann curvature tensor .">
 <polygon fill="white" stroke="#666666" points="361.62,-459.5 196.38,-459.5 196.38,-426 361.62,-426 361.62,-459.5"/>
-<text text-anchor="start" x="204.38" y="-446" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::RiemannTensor</text>
+<text text-anchor="start" x="204.38" y="-446" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::RiemannTensor</text>
 <text text-anchor="middle" x="279" y="-433.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute</text>
 </a>
 </g>
@@ -77,9 +77,9 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespacemorpheus.html#a550ee0012bfeef9ef3b717c066a1f9dd" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="namespacetensorium.html#a550ee0012bfeef9ef3b717c066a1f9dd" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="159.25,-436.5 0,-436.5 0,-403 159.25,-403 159.25,-436.5"/>
-<text text-anchor="start" x="8" y="-423" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::compute_riemann</text>
+<text text-anchor="start" x="8" y="-423" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::compute_riemann</text>
 <text text-anchor="middle" x="79.62" y="-410.25" font-family="Helvetica,sans-Serif" font-size="10.00">_tensor</text>
 </a>
 </g>
@@ -96,9 +96,9 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" target="_top" xlink:title="Dummy computation using Chebyshev&#45;like cosine weights.">
+<g id="a_Node000006"><a xlink:href="classtensorium_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" target="_top" xlink:title="Dummy computation using Chebyshev&#45;like cosine weights.">
 <polygon fill="white" stroke="#666666" points="359.38,-369.5 198.62,-369.5 198.62,-336 359.38,-336 359.38,-369.5"/>
-<text text-anchor="start" x="206.62" y="-356" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::SpectalChebyshev</text>
+<text text-anchor="start" x="206.62" y="-356" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectalChebyshev</text>
 <text text-anchor="middle" x="279" y="-343.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute</text>
 </a>
 </g>
@@ -115,9 +115,9 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="namespacemorpheus.html#a16c823b33c29fcc4b19533a7ef41822e" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="namespacetensorium.html#a16c823b33c29fcc4b19533a7ef41822e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="362.75,-318.12 195.25,-318.12 195.25,-297.38 362.75,-297.38 362.75,-318.12"/>
-<text text-anchor="middle" x="279" y="-304.62" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::compute_christoffel</text>
+<text text-anchor="middle" x="279" y="-304.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::compute_christoffel</text>
 </a>
 </g>
 </g>
@@ -133,9 +133,9 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" target="_top" xlink:title="Flat FLRW metric in comoving spherical coordinates.">
+<g id="a_Node000008"><a xlink:href="classtensorium__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" target="_top" xlink:title="Flat FLRW metric in comoving spherical coordinates.">
 <polygon fill="white" stroke="#666666" points="339.5,-279.5 218.5,-279.5 218.5,-246 339.5,-246 339.5,-279.5"/>
-<text text-anchor="start" x="226.5" y="-266" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="226.5" y="-266" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="279" y="-253.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute_flrw</text>
 </a>
 </g>
@@ -152,9 +152,9 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classmorpheus__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" target="_top" xlink:title="Evaluate the metric tensor .">
+<g id="a_Node000009"><a xlink:href="classtensorium__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" target="_top" xlink:title="Evaluate the metric tensor .">
 <polygon fill="white" stroke="#666666" points="140.12,-189.5 19.12,-189.5 19.12,-156 140.12,-156 140.12,-189.5"/>
-<text text-anchor="start" x="27.12" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="27.12" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="79.62" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">::operator()</text>
 </a>
 </g>
@@ -171,9 +171,9 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" target="_top" xlink:title="Kerr metric in Boyer–Lindquist coordinates.">
+<g id="a_Node000010"><a xlink:href="classtensorium__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" target="_top" xlink:title="Kerr metric in Boyer–Lindquist coordinates.">
 <polygon fill="white" stroke="#666666" points="339.5,-189.5 218.5,-189.5 218.5,-156 339.5,-156 339.5,-189.5"/>
-<text text-anchor="start" x="226.5" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="226.5" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="279" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute_kerr</text>
 </a>
 </g>
@@ -190,9 +190,9 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" target="_top" xlink:title="Kerr–Schild metric in Cartesian coordinates.">
+<g id="a_Node000011"><a xlink:href="classtensorium__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" target="_top" xlink:title="Kerr–Schild metric in Cartesian coordinates.">
 <polygon fill="white" stroke="#666666" points="340.25,-137.5 217.75,-137.5 217.75,-104 340.25,-104 340.25,-137.5"/>
-<text text-anchor="start" x="225.75" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="225.75" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="279" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute_kerr_schild</text>
 </a>
 </g>
@@ -209,9 +209,9 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" target="_top" xlink:title="Schwarzschild metric in spherical coordinates.">
+<g id="a_Node000012"><a xlink:href="classtensorium__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" target="_top" xlink:title="Schwarzschild metric in spherical coordinates.">
 <polygon fill="white" stroke="#666666" points="348.12,-85.5 209.88,-85.5 209.88,-52 348.12,-52 348.12,-85.5"/>
-<text text-anchor="start" x="217.88" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus_RG::Metric</text>
+<text text-anchor="start" x="217.88" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::Metric</text>
 <text text-anchor="middle" x="279" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute_schwarzschild</text>
 </a>
 </g>
@@ -228,9 +228,9 @@
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="namespacemorpheus.html#ad37fcae31cc6fcfb74ef0726257004d2" target="_top" xlink:title=" ">
+<g id="a_Node000013"><a xlink:href="namespacetensorium.html#ad37fcae31cc6fcfb74ef0726257004d2" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="336.12,-33.5 221.88,-33.5 221.88,0 336.12,0 336.12,-33.5"/>
-<text text-anchor="start" x="229.88" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">morpheus::generate</text>
+<text text-anchor="start" x="229.88" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::generate</text>
 <text text-anchor="middle" x="279" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_metric</text>
 </a>
 </g>

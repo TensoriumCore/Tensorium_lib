@@ -1,4 +1,4 @@
-<map id="includes/Morpheus/Core/Tensor.hpp" name="includes/Morpheus/Core/Tensor.hpp">
+<map id="includes/Tensorium/Core/Tensor.hpp" name="includes/Tensorium/Core/Tensor.hpp">
 <area shape="rect" id="Node000001" title=" " alt="" coords="327,5,505,50"/>
 <area shape="rect" id="Node000002" href="$Derivate_8hpp.html" title="Numerical differentiation operators using SIMD." alt="" coords="541,98,718,143"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="482,54,579,95,577,100,480,59"/>
@@ -10,7 +10,7 @@
 <area shape="poly" id="edge20_Node000001_Node000005" title=" " alt="" coords="454,59,504,116,528,151,545,190,551,216,550,243,545,270,535,296,510,342,485,377,481,374,506,339,530,294,539,269,545,243,545,217,540,191,523,154,500,119,450,63"/>
 <area shape="rect" id="Node000006" href="$RiemannTensor_8hpp.html" title=" " alt="" coords="254,469,490,513"/>
 <area shape="poly" id="edge27_Node000001_Node000006" title=" " alt="" coords="312,45,196,68,147,83,114,100,87,124,70,148,61,176,59,212,59,307,63,340,77,368,97,393,123,414,153,432,186,446,255,468,253,473,184,451,151,436,120,418,93,396,72,371,58,341,53,307,53,212,56,175,65,146,83,121,110,96,145,78,195,63,311,40"/>
-<area shape="rect" id="Node000007" href="$Morpheus_8hpp.html" title=" " alt="" coords="252,561,492,589"/>
+<area shape="rect" id="Node000007" href="$Tensorium_8hpp.html" title=" " alt="" coords="252,561,492,589"/>
 <area shape="poly" id="edge30_Node000001_Node000007" title=" " alt="" coords="312,42,171,65,110,81,68,100,40,124,21,147,11,175,8,212,8,399,14,437,31,469,57,495,90,517,128,534,169,547,252,563,251,568,168,552,126,539,87,521,53,499,27,472,9,439,3,400,3,212,6,174,16,145,36,120,65,96,108,76,170,60,311,37"/>
 <area shape="rect" id="Node000008" href="$Functional_8hpp.html" title=" " alt="" coords="656,191,878,235"/>
 <area shape="poly" id="edge28_Node000001_Node000008" title=" " alt="" coords="521,38,644,60,697,76,732,96,749,118,760,143,769,190,763,191,755,144,745,120,729,100,695,81,643,65,520,43"/>

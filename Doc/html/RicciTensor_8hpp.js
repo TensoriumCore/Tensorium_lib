@@ -1,4 +1,4 @@
 var RicciTensor_8hpp =
 [
-    [ "morpheus_RG::RicciTensor< T >", "classmorpheus__RG_1_1RicciTensor.html", "classmorpheus__RG_1_1RicciTensor" ]
+    [ "tensorium_RG::RicciTensor< T >", "classtensorium__RG_1_1RicciTensor.html", "classtensorium__RG_1_1RicciTensor" ]
 ];

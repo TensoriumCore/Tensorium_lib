@@ -1,5 +1,5 @@
 \doxysection{Ricci\+Tensor.\+hpp}
-\hypertarget{RicciTensor_8hpp_source}{}\label{RicciTensor_8hpp_source}\index{includes/Morpheus/DiffGeometry/RicciTensor.hpp@{includes/Morpheus/DiffGeometry/RicciTensor.hpp}}
+\hypertarget{RicciTensor_8hpp_source}{}\label{RicciTensor_8hpp_source}\index{includes/Tensorium/DiffGeometry/RicciTensor.hpp@{includes/Tensorium/DiffGeometry/RicciTensor.hpp}}
 \mbox{\hyperlink{RicciTensor_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
@@ -11,18 +11,18 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ChristoffelSymbol_8hpp}{../DiffGeometry/ChristoffelSymbol.hpp}}"{}}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Metric_8hpp}{../DiffGeometry/Metric.hpp}}"{}}}
 \DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Derivate_8hpp}{../Core/Derivate.hpp}}"{}}}
-\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus__RG}{morpheus\_RG}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium__RG}{tensorium\_RG}}\ \{}
 \DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor}{RicciTensor}}\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtensorium__RG_1_1RicciTensor}{RicciTensor}}\ \{}
 \DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 4>}};}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}};}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{VectorT}}\ \ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Vector<T>}};}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 4>}};}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}};}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{VectorT}}\ \ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Vector<T>}};}
 \DoxyCodeLine{00017\ }
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{contract\_to\_ricci}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\&\ Riemann,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a44fc38559a9676b115447a59fd50910b}{contract\_to\_ricci}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\&\ Riemann,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
 \DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\ Ricci(\{dim,\ dim\});}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ricci.\mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\ Ricci(\{dim,\ dim\});}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ricci.\mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
 \DoxyCodeLine{00022\ }
 \DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \{}
 \DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}})\ \{}
@@ -37,7 +37,7 @@
 \DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Ricci;}
 \DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{compute\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ Ricci,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{compute\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ Ricci,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
 \DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ R\ =\ 0.0;}
 \DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \{}
@@ -48,7 +48,7 @@
 \DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ R;}
 \DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00046\ }
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{print\_componentwise}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ R,\ T\ threshold\ =\ 1e-\/12)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a4cea349ac03ddec6642cb201db950370}{print\_componentwise}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ R,\ T\ threshold\ =\ 1e-\/12)\ \{}
 \DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)nRicci\ tensor\ components:\(\backslash\)n"{}};}
 \DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \{}
@@ -63,7 +63,7 @@
 \DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ }
 \DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a4b4f761a29547941fba9dcd92f1915e2}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ R,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Ricci"{}})\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a4b4f761a29547941fba9dcd92f1915e2}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ R,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Ricci"{}})\ \{}
 \DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ name\ <<\ \textcolor{stringliteral}{"{}\ tensor\ components:\(\backslash\)n"{}};}
 \DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})}
@@ -75,7 +75,7 @@
 \DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00073\ }
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_a1cbadf0e68bbb59b4a59540194f16a5b}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ R,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ g\_inv,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Ricci"{}})\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_a1cbadf0e68bbb59b4a59540194f16a5b}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ R,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ g\_inv,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Ricci"{}})\ \{}
 \DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ name\ <<\ \textcolor{stringliteral}{"{}\ tensor\ components:\(\backslash\)n"{}};}
 \DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})}
@@ -87,9 +87,9 @@
 \DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00085\ }
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{print\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ Ricci,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_ae271ed0d688dc4a0e123a7cf05710206}{print\_ricci\_scalar}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ Ricci,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}}\&\ g\_inv)\ \{}
 \DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ R\ =\ \mbox{\hyperlink{classmorpheus__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{compute\_ricci\_scalar}}(Ricci,\ g\_inv);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ R\ =\ \mbox{\hyperlink{classtensorium__RG_1_1RicciTensor_ad8e327d29c34cd66535475015423802a}{compute\_ricci\_scalar}}(Ricci,\ g\_inv);}
 \DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Ricci\ scalar\ R\ =\ "{}}\ <<\ R\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
 \DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \};}

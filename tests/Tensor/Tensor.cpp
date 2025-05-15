@@ -9,7 +9,7 @@
 	} while (0)
 
 int test_flatten_index() {
-	using namespace morpheus;
+	using namespace tensorium;
 	std::array<size_t, 4> dims = {2, 3, 4, 5};
 	Tensor<float, 4> T4(dims);
 
@@ -36,7 +36,7 @@ int test_flatten_index() {
 }
 
 int test_tensor_mul() {
-	using namespace morpheus;
+	using namespace tensorium;
 	Tensor<float, 2> A({2, 2}), B({2, 2});
 	A({0,0}) = 1; A({0,1}) = 2; A({1,0}) = 3; A({1,1}) = 4;
 	B({0,0}) = 10; B({0,1}) = 20; B({1,0}) = 30; B({1,1}) = 40;
@@ -57,7 +57,7 @@ int test_tensor_mul() {
 }
 
 int benchmark_tensor_mul() {
-	using namespace morpheus;
+	using namespace tensorium;
 	constexpr size_t N = 128;
 	Tensor<float, 2> A({N, N}), B({N, N});
 	A.fill(1.0f); B.fill(2.0f);
@@ -81,7 +81,7 @@ int benchmark_tensor_mul() {
 }
 
 int test_contract() {
-	using namespace morpheus;
+	using namespace tensorium;
 	Tensor<float, 3> T3({2, 2, 2});
 	for (size_t i = 0; i < 2; ++i)
 		for (size_t j = 0; j < 2; ++j)
