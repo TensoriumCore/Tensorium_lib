@@ -97,6 +97,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -108,13 +109,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AST_8hpp.html",
-"classmorpheus_1_1CacheInfo.html#aa2551823a9c760c63ad69f75ca7a58ad",
-"classmorpheus_1_1Tensor.html#a243335fd9e54d6a0133f2268e938dd17",
-"classmorpheus__RG_1_1Metric.html#a34eb23a67f1a88966a3deba7b1ff7c51",
-"structAlignedAllocator.html#a116c3a68cfe337874ca881908721a64f",
-"structsimd_1_1SimdTraits_3_01float_00_01avx512__t_01_4.html#a243737ecfefb3da57c5d0df8f9c24f26",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#a46ba6d592ecd6c874a6b4517f2bf9b5d",
-"test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc"
+"classes.html",
+"classmorpheus_1_1SpectralFFT.html#af8b03cd7c754f80f2ee63179abffa406",
+"classmorpheus__RG_1_1Metric.html#a04152f001773bc681e163966105ffa15",
+"namespacemorpheus_1_1mpi.html#ab883518438824321f8bde0d015618df5",
+"structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html#ab5b0e3f565b6284d2cca454a9b734dd1",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html#a5265ea3426a550a942186c162bf5042c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

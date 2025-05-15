@@ -9,6 +9,7 @@ var classmorpheus_1_1solver_1_1Gauss =
     [ "for", "classmorpheus_1_1solver_1_1Gauss.html#a8edc8990071ec9a2ce375d2b987f9ace", null ],
     [ "for", "classmorpheus_1_1solver_1_1Gauss.html#ac527890b2bf0c86701ea24e033f7527f", null ],
     [ "M", "classmorpheus_1_1solver_1_1Gauss.html#a8d872b86ab202cffe0a38351297fc5c2", null ],
+    [ "raw_row_echelon", "classmorpheus_1_1solver_1_1Gauss.html#ab1d29507e4133d7db6defb9580646536", null ],
     [ "rows", "classmorpheus_1_1solver_1_1Gauss.html#a7644fdf3a9794dd438a74aa9dbecab40", null ],
     [ "x", "classmorpheus_1_1solver_1_1Gauss.html#a1474038ffe74862b12f0f2c351814493", null ],
     [ "b_in", "classmorpheus_1_1solver_1_1Gauss.html#ac47ea1dc258a9caf03bdf0cf9de6a1db", null ],

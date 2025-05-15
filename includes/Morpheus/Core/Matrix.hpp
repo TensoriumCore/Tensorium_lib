@@ -162,7 +162,11 @@ namespace morpheus {
 					 for (; i < n; ++i)
 						 data[i] *= a;
 				 }
-
+				
+				 /*
+				  * @brief microkernel to avoid FMA overload during the matmul operation
+				  * This function reduce the unroll size with a hot path to reduce L1 cache pollution and VECTOR/FMA units
+				  */
 				 template<int UN>
 					 static inline __attribute__((always_inline))
 					 void microkernel4(size_t nCols,   
@@ -204,19 +208,22 @@ namespace morpheus {
 					 if (cols == 16 && mat.rows == 16 && mat.cols == 16)
 						 return mul_mat_NxN<16>(mat);
 
-
+					/*
+					 * SimdTraits to auto detetch SIMD architecture options 
+					 *	Automatic fallback for AVX512, AVX2, SSE (Neon soon...)
+					 * */
 					 using Simd = simd::SimdTraits<K, DefaultISA>;
 					 using reg  = typename Simd::reg;
 					 constexpr size_t simd_width = Simd::width;
-					 constexpr size_t unroll     = UNROLL;   
+					 constexpr size_t unroll     = UNROLL;   // automaticly check at compile/runtime via CPU and caches detections
 
 					 Matrix<K> result(rows, mat.cols);
 					 Matrix<K> mat_transposed(mat.cols, mat.rows);
-
+					
 #pragma omp parallel for schedule(static)
 					 for (size_t i = 0; i < mat.rows; ++i)
 						 for (size_t j = 0; j < mat.cols; ++j)
-							 mat_transposed(j, i) = mat(i, j);
+							 mat_transposed(j, i) = mat(i, j); 
 
 #pragma omp parallel for collapse(2) schedule(dynamic)
 					 for (size_t ii = 0; ii < rows; ii += block_size) {
@@ -228,9 +235,6 @@ namespace morpheus {
 								 for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
 
 									 const K* __restrict__ a_ptr  = &data[i * cols];
-
-
-
 #define UN 4
 									 reg sum[UN] = { Simd::zero(), Simd::zero(), Simd::zero(), Simd::zero() };
 									 const K* __restrict__ b_ptr[UN] = {
@@ -256,6 +260,10 @@ namespace morpheus {
 
 
 									 reg res_vec = Simd::set(total3, total2, total1, total0);
+									 /*
+									  *	if address is unaligned it auto fallback to an unaligned store
+									  *	Then , we're using an aligned store 
+									  */
 									 if (((uintptr_t)&result.data[i*cols+j] & 31) == 0)
 										 Simd::stream(&result.data[i * result.cols + j], res_vec);
 									 else
@@ -285,6 +293,8 @@ namespace morpheus {
 				 /**
 				  * @brief Specialized fast multiplication for fixed-size square matrices
 				  * (supports N = 4, 8, 16)
+				  * this avoids overloading on small sizes where massive unrolls would 
+				  * create a bottleneck on instructions
 				  */
 				 template<size_t N>
 					 inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
@@ -409,6 +419,7 @@ namespace morpheus {
 				  * @brief Compute the inverse of the matrix using Gauss–Jordan elimination
 				  *
 				  * Throws if the matrix is singular or not square.
+				  * need to add a fallback for unsquare matrix if possible
 				  */
 				 inline Matrix<K> inverse() const {
 					 if (rows != cols)
