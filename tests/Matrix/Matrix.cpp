@@ -13,8 +13,8 @@ using namespace morpheus;
 
 int matrix_bench() {
     constexpr std::size_t N = 8192;
-    morpheus::Matrix<float> A(N, N);
-    morpheus::Matrix<float> B(N, N);
+    morpheus::Matrix<double> A(N, N);
+    morpheus::Matrix<double> B(N, N);
 
 #pragma omp parallel
     {
