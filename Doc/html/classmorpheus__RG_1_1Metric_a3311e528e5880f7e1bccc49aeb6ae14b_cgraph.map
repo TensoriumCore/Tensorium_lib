@@ -1,11 +1,11 @@
-<map id="morpheus_RG::Metric::compute_kerr" name="morpheus_RG::Metric::compute_kerr">
+<map id="tensorium_RG::Metric::compute_kerr" name="tensorium_RG::Metric::compute_kerr">
 <area shape="rect" id="Node000001" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="5,49,167,94"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="226,5,387,33"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="226,5,387,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,50,230,34,231,40,168,55"/>
-<area shape="rect" id="Node000003" href="$classmorpheus_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="215,57,398,85"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#ac20bcc7a4afe8b076aad9e31a34d6f3c" title="Resize 2D tensor." alt="" coords="215,57,398,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,69,199,69,199,74,167,74"/>
-<area shape="rect" id="Node000005" href="$MorpheusDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;." alt="" coords="287,109,326,137"/>
+<area shape="rect" id="Node000005" href="$TensoriumDispatchPlugin_8cpp.html#ae7a4f049afe21929e85eab6e461de56e" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="287,109,326,137"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="168,88,273,113,272,118,167,93"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d" title=" " alt="" coords="446,49,635,94"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a9b785a936eaefd337d5d368a3e35d52d" title=" " alt="" coords="446,49,635,94"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="399,69,431,69,431,74,399,74"/>
 </map>

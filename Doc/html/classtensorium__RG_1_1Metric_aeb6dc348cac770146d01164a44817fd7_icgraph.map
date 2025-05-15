@@ -1,0 +1,7 @@
+<map id="tensorium_RG::Metric::kerr_schild_radius" name="tensorium_RG::Metric::kerr_schild_radius">
+<area shape="rect" id="Node000001" title="Kerr–Schild radius extraction helper." alt="" coords="427,5,589,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#ac074bebde700894884a2829caa7b1c84" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="216,5,379,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="411,30,380,30,380,25,411,25"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1Metric.html#a4bd48f127fbc00ce5e692f4cb5e43d99" title="Evaluate the metric tensor ." alt="" coords="5,5,168,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="200,30,168,30,168,25,200,25"/>
+</map>

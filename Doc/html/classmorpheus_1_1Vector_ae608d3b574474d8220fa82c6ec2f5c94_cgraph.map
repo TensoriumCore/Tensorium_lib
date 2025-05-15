@@ -1,11 +1,11 @@
-<map id="morpheus::Vector::__attribute__" name="morpheus::Vector::__attribute__">
+<map id="tensorium::Vector::__attribute__" name="tensorium::Vector::__attribute__">
 <area shape="rect" id="Node000001" title="Compute the infinity norm (maximum absolute value)." alt="" coords="5,80,149,124"/>
 <area shape="rect" id="Node000002" href="$classMathsUtils.html#aec54bc76caba9cba0cd4f05be4014f24" title=" " alt="" coords="214,5,349,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,76,196,43,216,36,218,41,198,48,124,81"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#a0e789dbc1b696c969d4480b21af134c6" title=" " alt="" coords="214,57,349,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,88,198,81,199,86,149,94"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Vector.html#a24c9b876eb20bdddaa899f82a5987fc0" title=" " alt="" coords="210,109,353,154"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Vector.html#a24c9b876eb20bdddaa899f82a5987fc0" title=" " alt="" coords="210,109,353,154"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,109,195,116,194,121,148,115"/>
-<area shape="rect" id="Node000005" href="$classmorpheus_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="197,177,366,205"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="197,177,366,205"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="117,122,198,163,214,169,212,174,196,168,115,127"/>
 </map>

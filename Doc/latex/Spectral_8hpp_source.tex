@@ -1,5 +1,5 @@
 \doxysection{Spectral.\+hpp}
-\hypertarget{Spectral_8hpp_source}{}\label{Spectral_8hpp_source}\index{includes/Morpheus/Core/Spectral.hpp@{includes/Morpheus/Core/Spectral.hpp}}
+\hypertarget{Spectral_8hpp_source}{}\label{Spectral_8hpp_source}\index{includes/Tensorium/Core/Spectral.hpp@{includes/Tensorium/Core/Spectral.hpp}}
 \mbox{\hyperlink{Spectral_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
@@ -20,26 +20,26 @@
 \DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MathsUtils_8hpp}{../MathUtils/MathsUtils.hpp}}"{}}}
 \DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <numbers>}}
 \DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus}{morpheus}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium}{tensorium}}\ \{}
 \DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus_1_1SpectralFFT}{SpectralFFT}}\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtensorium_1_1SpectralFFT}{SpectralFFT}}\ \{}
 \DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ \ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}};}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Vector}{VectorT}}\ \ \ =\ \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector<T>}};}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ \ \ \ \ \ \ \ \ =\ std::complex<T>;}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Vector}{CVectorT}}\ \ =\ \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector<C>}};}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ \ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}};}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Vector}{VectorT}}\ \ \ =\ \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium::Vector<T>}};}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ \ \ \ \ \ \ \ \ =\ std::complex<T>;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Vector}{CVectorT}}\ \ =\ \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium::Vector<C>}};}
 \DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{forward}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{CVectorT}}\&\ a)\ \ \{\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(a,\ \textcolor{keyword}{false});\ \}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{backward}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{CVectorT}}\&\ a)\ \{\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(a,\ \textcolor{keyword}{true}\ );\ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a769b6e994adc86078d33ff38b7f1587e}{forward}}(\mbox{\hyperlink{classtensorium_1_1Vector}{CVectorT}}\&\ a)\ \ \{\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(a,\ \textcolor{keyword}{false});\ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a8aa6f0097f5cb99fb73c1d4de0cadd83}{backward}}(\mbox{\hyperlink{classtensorium_1_1Vector}{CVectorT}}\&\ a)\ \{\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(a,\ \textcolor{keyword}{true}\ );\ \}}
 \DoxyCodeLine{00030\ }
 \DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{CVectorT}}\&\ a,\ \textcolor{keywordtype}{bool}\ inverse)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_af8b03cd7c754f80f2ee63179abffa406}{transform\_impl}}(\mbox{\hyperlink{classtensorium_1_1Vector}{CVectorT}}\&\ a,\ \textcolor{keywordtype}{bool}\ inverse)}
 \DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ N\ =\ a.\mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ N\ =\ a.\mbox{\hyperlink{classtensorium_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}();}
 \DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (N\ <=\ 1\ ||\ (N\ \&\ (N\ -\/\ 1)))}
 \DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}SpectralFFT:\ size\ must\ be\ power\ of\ two"{}});}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{bit\_reverse}}(a);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{bit\_reverse}}(a);}
 \DoxyCodeLine{00039\ }
 \DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<C>\ twiddles(N\ /\ 2);}
 \DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ T\ sign\ =\ inverse\ ?\ T(+1)\ :\ T(-\/1);}
@@ -54,8 +54,8 @@
 \DoxyCodeLine{00050\ \textcolor{preprocessor}{\#pragma\ omp\ parallel\ for\ schedule(static)\ if(len\ >=\ 64)}}
 \DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ i\ =\ 0;\ i\ <\ N;\ i\ +=\ len)\ \{}
 \DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ j\ =\ 0;\ j\ <\ half;\ ++j)\ \{}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ t\ =\ a[i\ +\ j\ +\ half]\ *\ twiddles[j\ *\ step];}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ u\ =\ a[i\ +\ j];}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ t\ =\ a[i\ +\ j\ +\ half]\ *\ twiddles[j\ *\ step];}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a7514518e1bed725a83dcaa1201e7826a}{C}}\ u\ =\ a[i\ +\ j];}
 \DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a[i\ +\ j]\ \ \ \ \ \ \ \ =\ u\ +\ t;}
 \DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a[i\ +\ j\ +\ half]\ =\ u\ -\/\ t;}
 \DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
@@ -69,9 +69,9 @@
 \DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{bit\_reverse}}(\mbox{\hyperlink{classmorpheus_1_1Vector}{CVectorT}}\&\ a)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium_1_1SpectralFFT_a2719a910e7f474b09c04e1c8856215b8}{bit\_reverse}}(\mbox{\hyperlink{classtensorium_1_1Vector}{CVectorT}}\&\ a)}
 \DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ N\ =\ a.\mbox{\hyperlink{classmorpheus_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}();}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::size\_t\ N\ =\ a.\mbox{\hyperlink{classtensorium_1_1Vector_a723fe75fae6b15e8dc900acf5b323bbc}{size}}();}
 \DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ i\ =\ 1,\ j\ =\ 0;\ i\ <\ N;\ ++i)\ \{}
 \DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ bit\ =\ N\ >>\ 1;}
 \DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ \&\ bit;\ bit\ >>=\ 1)\ j\ \string^=\ bit;}
@@ -82,15 +82,15 @@
 \DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \};}
 \DoxyCodeLine{00079\ }
 \DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus_1_1SpectalChebyshev}{SpectalChebyshev}}\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtensorium_1_1SpectalChebyshev}{SpectalChebyshev}}\ \{}
 \DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}};}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Vector}{VectorT}}\ \ =\ \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus::Vector<T>}};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}};}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Vector}{VectorT}}\ \ =\ \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium::Vector<T>}};}
 \DoxyCodeLine{00085\ }
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus_1_1SpectalChebyshev_afcbec973098a3c87022bd8f28e144fff}{compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Vector}{VectorT}}\&\ X,\ T\ h,\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\&\ result)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium_1_1SpectalChebyshev_afcbec973098a3c87022bd8f28e144fff}{compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Vector}{VectorT}}\&\ X,\ T\ h,\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\&\ result)\ \{}
 \DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.\mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{resize}}(dim,\ dim);}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.\mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.\mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{resize}}(dim,\ dim);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.\mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
 \DoxyCodeLine{00090\ }
 \DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim;\ ++i)\ \{}
 \DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ dim;\ ++j)\ \{}

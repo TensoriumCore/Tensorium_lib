@@ -1,0 +1,16 @@
+<map id="tensorium_RG::__attribute__" name="tensorium_RG::__attribute__">
+<area shape="rect" id="Node000001" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,141,211,169"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#ab838ebba697fa1526fe64be3d532022d" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="259,133,404,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,153,243,153,243,158,211,158"/>
+<area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="460,5,589,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,130,394,87,451,44,462,37,464,42,453,48,398,91,354,134"/>
+<area shape="rect" id="Node000004" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="505,57,544,85"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="375,130,451,94,490,79,492,84,453,99,377,135"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="452,133,597,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="404,153,436,153,436,158,404,158"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a751ec04712d5ec3b2f0dbabd523bdde1" title="Element access (mutable)" alt="" coords="452,202,597,247"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="397,176,447,194,446,199,395,181"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1Matrix.html#a29cb23b241303015dc32483072623161" title="Swap two rows of the matrix." alt="" coords="452,272,597,316"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="357,176,400,216,454,257,461,262,458,266,450,261,397,220,353,180"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="487,133,486,123,493,114,505,108,525,106,545,109,558,115,555,120,544,114,525,111,507,113,496,118,491,124,493,132"/>
+</map>

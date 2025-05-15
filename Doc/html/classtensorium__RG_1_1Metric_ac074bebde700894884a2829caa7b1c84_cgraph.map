@@ -1,0 +1,13 @@
+<map id="tensorium_RG::Metric::compute_kerr_schild" name="tensorium_RG::Metric::compute_kerr_schild">
+<area shape="rect" id="Node000001" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="5,92,169,136"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="217,5,379,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,89,216,42,231,36,233,41,218,47,127,93"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1Metric.html#aeb6dc348cac770146d01164a44817fd7" title="Kerr–Schild radius extraction helper." alt="" coords="217,57,379,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,98,201,92,202,98,169,103"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="225,126,371,171"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,125,210,131,209,137,168,130"/>
+<area shape="rect" id="Node000006" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="279,195,317,222"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="127,134,218,181,265,197,263,202,216,186,125,139"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="427,126,572,171"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="371,146,411,146,411,151,371,151"/>
+</map>

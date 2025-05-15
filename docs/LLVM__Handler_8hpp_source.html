@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Morpheus: Plugins/LLVM_Handler.hpp Source File</title>
+<title>Tensorium: Plugins/LLVM_Handler.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -34,7 +34,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Morpheus
+   <div id="projectname">Tensorium
    </div>
   </td>
  </tr>
@@ -129,20 +129,20 @@ $(function(){initNavTree('LLVM__Handler_8hpp_source.html',''); initResizable(); 
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="structMorpheusTarget.html">   23</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structMorpheusTarget.html">MorpheusTarget</a> {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structMorpheusTarget.html#a970dfe292ec58f2be957903496eb9b68">   24</a></span>    std::string <a class="code hl_variable" href="structMorpheusTarget.html#a970dfe292ec58f2be957903496eb9b68">platform</a>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structMorpheusTarget.html#a39c8f52445d275a1ce928268e9c56bd5">   25</a></span>    std::string <a class="code hl_variable" href="structMorpheusTarget.html#a39c8f52445d275a1ce928268e9c56bd5">isa</a>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structMorpheusTarget.html#abf33bb7f5a2c4e8724af3bb95e0b5a98">   26</a></span>    clang::SourceLocation <a class="code hl_variable" href="structMorpheusTarget.html#abf33bb7f5a2c4e8724af3bb95e0b5a98">loc</a>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="structTensoriumTarget.html">   23</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structTensoriumTarget.html">TensoriumTarget</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structTensoriumTarget.html#a530ac3ed59a387a2b5240f420b350160">   24</a></span>    std::string <a class="code hl_variable" href="structTensoriumTarget.html#a530ac3ed59a387a2b5240f420b350160">platform</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structTensoriumTarget.html#a0500e3b9bce138130119736d449d0945">   25</a></span>    std::string <a class="code hl_variable" href="structTensoriumTarget.html#a0500e3b9bce138130119736d449d0945">isa</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structTensoriumTarget.html#ab275d76424d0b83530cab9e9c902fb73">   26</a></span>    clang::SourceLocation <a class="code hl_variable" href="structTensoriumTarget.html#ab275d76424d0b83530cab9e9c902fb73">loc</a>;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>};</div>
 </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="LLVM__Handler_8hpp.html#adbada49afa870400a3c6f8e2d6de6e7b">   29</a></span><span class="keyword">static</span> std::vector&lt;MorpheusTarget&gt; <a class="code hl_variable" href="LLVM__Handler_8hpp.html#adbada49afa870400a3c6f8e2d6de6e7b">MorpheusTargetTable</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="LLVM__Handler_8hpp.html#ac071696ddd3d4bb5f6b3dbaee9427e3d">   29</a></span><span class="keyword">static</span> std::vector&lt;TensoriumTarget&gt; <a class="code hl_variable" href="LLVM__Handler_8hpp.html#ac071696ddd3d4bb5f6b3dbaee9427e3d">TensoriumTargetTable</a>;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="ttc" id="aLLVM__Handler_8hpp_html_adbada49afa870400a3c6f8e2d6de6e7b"><div class="ttname"><a href="LLVM__Handler_8hpp.html#adbada49afa870400a3c6f8e2d6de6e7b">MorpheusTargetTable</a></div><div class="ttdeci">static std::vector&lt; MorpheusTarget &gt; MorpheusTargetTable</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:29</div></div>
-<div class="ttc" id="astructMorpheusTarget_html"><div class="ttname"><a href="structMorpheusTarget.html">MorpheusTarget</a></div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:23</div></div>
-<div class="ttc" id="astructMorpheusTarget_html_a39c8f52445d275a1ce928268e9c56bd5"><div class="ttname"><a href="structMorpheusTarget.html#a39c8f52445d275a1ce928268e9c56bd5">MorpheusTarget::isa</a></div><div class="ttdeci">std::string isa</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:25</div></div>
-<div class="ttc" id="astructMorpheusTarget_html_a970dfe292ec58f2be957903496eb9b68"><div class="ttname"><a href="structMorpheusTarget.html#a970dfe292ec58f2be957903496eb9b68">MorpheusTarget::platform</a></div><div class="ttdeci">std::string platform</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:24</div></div>
-<div class="ttc" id="astructMorpheusTarget_html_abf33bb7f5a2c4e8724af3bb95e0b5a98"><div class="ttname"><a href="structMorpheusTarget.html#abf33bb7f5a2c4e8724af3bb95e0b5a98">MorpheusTarget::loc</a></div><div class="ttdeci">clang::SourceLocation loc</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:26</div></div>
+<div class="ttc" id="aLLVM__Handler_8hpp_html_ac071696ddd3d4bb5f6b3dbaee9427e3d"><div class="ttname"><a href="LLVM__Handler_8hpp.html#ac071696ddd3d4bb5f6b3dbaee9427e3d">TensoriumTargetTable</a></div><div class="ttdeci">static std::vector&lt; TensoriumTarget &gt; TensoriumTargetTable</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:29</div></div>
+<div class="ttc" id="astructTensoriumTarget_html"><div class="ttname"><a href="structTensoriumTarget.html">TensoriumTarget</a></div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:23</div></div>
+<div class="ttc" id="astructTensoriumTarget_html_a0500e3b9bce138130119736d449d0945"><div class="ttname"><a href="structTensoriumTarget.html#a0500e3b9bce138130119736d449d0945">TensoriumTarget::isa</a></div><div class="ttdeci">std::string isa</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:25</div></div>
+<div class="ttc" id="astructTensoriumTarget_html_a530ac3ed59a387a2b5240f420b350160"><div class="ttname"><a href="structTensoriumTarget.html#a530ac3ed59a387a2b5240f420b350160">TensoriumTarget::platform</a></div><div class="ttdeci">std::string platform</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:24</div></div>
+<div class="ttc" id="astructTensoriumTarget_html_ab275d76424d0b83530cab9e9c902fb73"><div class="ttname"><a href="structTensoriumTarget.html#ab275d76424d0b83530cab9e9c902fb73">TensoriumTarget::loc</a></div><div class="ttdeci">clang::SourceLocation loc</div><div class="ttdef"><b>Definition</b> LLVM_Handler.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

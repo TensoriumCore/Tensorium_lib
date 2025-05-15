@@ -1,0 +1,9 @@
+<map id="tensorium::Vector::__attribute__" name="tensorium::Vector::__attribute__">
+<area shape="rect" id="Node000001" title="Compute the 1&#45;norm (sum of absolute values)." alt="" coords="5,57,150,102"/>
+<area shape="rect" id="Node000002" href="$classMathsUtils.html#aec54bc76caba9cba0cd4f05be4014f24" title=" " alt="" coords="216,5,350,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,55,218,35,219,40,151,61"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Vector.html#a3e6722df6cfc05923ad328fdb71cc926" title=" " alt="" coords="211,57,355,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,77,195,77,195,82,150,82"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="198,125,368,153"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="151,98,219,118,218,123,150,103"/>
+</map>

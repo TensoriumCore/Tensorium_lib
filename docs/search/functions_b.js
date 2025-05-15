@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kerr_5fschild_5fradius_0',['kerr_schild_radius',['../classmorpheus__RG_1_1Metric.html#a01edb6c0f716616d251943b604658d0d',1,'morpheus_RG::Metric']]]
+  ['kerr_5fschild_5fradius_0',['kerr_schild_radius',['../classtensorium__RG_1_1Metric.html#aeb6dc348cac770146d01164a44817fd7',1,'tensorium_RG::Metric']]]
 ];

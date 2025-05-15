@@ -1,4 +1,4 @@
-digraph "includes/Morpheus"
+digraph "includes/Tensorium"
 {
  // LATEX_PDF_SIZE
   bgcolor="transparent";
@@ -9,7 +9,7 @@ digraph "includes/Morpheus"
     graph [ bgcolor="#edf0f7", pencolor="grey25", label="includes", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_09e761304027c904456130627fd4dcf5.html",tooltip=""]
   subgraph clusterdir_71b62786698bbc304968573b10151663 {
     graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_71b62786698bbc304968573b10151663.html",tooltip=""]
-    dir_71b62786698bbc304968573b10151663 [shape=plaintext, label="Morpheus"];
+    dir_71b62786698bbc304968573b10151663 [shape=plaintext, label="Tensorium"];
   dir_83f003a6df763d29bd0d9a8cf6eaf000 [label="Core", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_83f003a6df763d29bd0d9a8cf6eaf000.html",tooltip=""];
   dir_ed46bfb405727aff4944fca3fcd9fc19 [label="DiffGeometry", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_ed46bfb405727aff4944fca3fcd9fc19.html",tooltip=""];
   dir_b04206203efd53ddc898379361fedb5d [label="Functionnal", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_b04206203efd53ddc898379361fedb5d.html",tooltip=""];

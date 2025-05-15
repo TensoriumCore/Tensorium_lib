@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['cacheinfo_0',['CacheInfo',['../classmorpheus_1_1CacheInfo.html',1,'morpheus']]],
-  ['christoffelsym_1',['ChristoffelSym',['../classmorpheus__RG_1_1ChristoffelSym.html',1,'morpheus_RG']]]
+  ['cacheinfo_0',['CacheInfo',['../classtensorium_1_1CacheInfo.html',1,'tensorium']]],
+  ['christoffelsym_1',['ChristoffelSym',['../classtensorium__RG_1_1ChristoffelSym.html',1,'tensorium_RG']]]
 ];

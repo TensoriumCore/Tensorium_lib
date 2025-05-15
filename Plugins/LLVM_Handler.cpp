@@ -20,7 +20,7 @@ void extractFunctionToMLIR(clang::FunctionDecl *FD, clang::ASTContext &Context) 
 		return;
 	}
 
-	auto newMod = std::make_unique<llvm::Module>("morpheus_gpu_kernel", llvmCtx);
+	auto newMod = std::make_unique<llvm::Module>("tensorium_gpu_kernel", llvmCtx);
 	llvm::ValueToValueMapTy VMap;
 	auto *clonedFunc = llvm::CloneFunction(func, VMap);
 	newMod->getFunctionList().push_back(clonedFunc);

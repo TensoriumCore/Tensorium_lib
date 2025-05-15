@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['simd_20module_0',['Morpheus — SIMD Module',['../md_includes_2Morpheus_2SIMD_2README.html',1,'']]]
+  ['simd_20module_0',['Tensorium — SIMD Module',['../md_includes_2Tensorium_2SIMD_2README.html',1,'']]]
 ];

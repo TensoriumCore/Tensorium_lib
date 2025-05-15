@@ -1,9 +1,9 @@
-<map id="morpheus::Matrix::inverse" name="morpheus::Matrix::inverse">
+<map id="tensorium::Matrix::inverse" name="tensorium::Matrix::inverse">
 <area shape="rect" id="Node000001" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="258,57,450,85"/>
-<area shape="rect" id="Node000002" href="$namespacemorpheus__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,5,210,33"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#ab0ca8920bbff9c97630d0832a13a5b7e" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,5,210,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,56,176,36,177,31,270,51"/>
-<area shape="rect" id="Node000003" href="$namespacemorpheus.html#a55946403722bc5a1c408b5c20f177a26" title=" " alt="" coords="10,57,205,85"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#a55946403722bc5a1c408b5c20f177a26" title=" " alt="" coords="10,57,205,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,74,206,74,206,69,242,69"/>
-<area shape="rect" id="Node000004" href="$namespacemorpheus.html#a2ba0e55adbcd8c127cc3ee7240530cd3" title=" " alt="" coords="20,109,195,137"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#a2ba0e55adbcd8c127cc3ee7240530cd3" title=" " alt="" coords="20,109,195,137"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="270,91,177,111,176,106,269,86"/>
 </map>

@@ -1,6 +1,6 @@
 #include "test.hpp"
 
-using namespace morpheus;
+using namespace tensorium;
 
 void test_lexer(const std::string& input) {
 	Lexer lexer(input);
@@ -14,7 +14,7 @@ void test_lexer(const std::string& input) {
 }
 
 int main() {
-#pragma morpheus dispatch
+#pragma tensorium dispatch
 	float __attribute__((aligned(8))) low_align[32];
 
 	deriv_test();	

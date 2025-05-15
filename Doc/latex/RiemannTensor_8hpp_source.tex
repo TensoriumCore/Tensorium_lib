@@ -1,5 +1,5 @@
 \doxysection{Riemann\+Tensor.\+hpp}
-\hypertarget{RiemannTensor_8hpp_source}{}\label{RiemannTensor_8hpp_source}\index{includes/Morpheus/DiffGeometry/RiemannTensor.hpp@{includes/Morpheus/DiffGeometry/RiemannTensor.hpp}}
+\hypertarget{RiemannTensor_8hpp_source}{}\label{RiemannTensor_8hpp_source}\index{includes/Tensorium/DiffGeometry/RiemannTensor.hpp@{includes/Tensorium/DiffGeometry/RiemannTensor.hpp}}
 \mbox{\hyperlink{RiemannTensor_8hpp}{Go to the documentation of this file.}}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
@@ -11,16 +11,16 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ChristoffelSymbol_8hpp}{../DiffGeometry/ChristoffelSymbol.hpp}}"{}}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Metric_8hpp}{../DiffGeometry/Metric.hpp}}"{}}}
 \DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Derivate_8hpp}{../Core/Derivate.hpp}}"{}}}
-\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemorpheus__RG}{morpheus\_RG}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacetensorium__RG}{tensorium\_RG}}\ \{}
 \DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor}{RiemannTensor}}\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor}{RiemannTensor}}\ \{}
 \DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 4>}};}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Tensor<T,\ 2>}};}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmorpheus_1_1Tensor}{VectorT}}\ \ =\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus::Vector<T>}};}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 4>}};}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Tensor<T,\ 2>}};}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classtensorium_1_1Tensor}{VectorT}}\ \ =\ \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium::Vector<T>}};}
 \DoxyCodeLine{00017\ }
 \DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{print\_componentwise}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\&\ R,\ T\ threshold\ =\ 1e-\/12)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor_a5197c9a0f547f8ad23fb61f8fbe31cfd}{print\_componentwise}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\&\ R,\ T\ threshold\ =\ 1e-\/12)\ \{}
 \DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)nRiemann\ tensor\ components\ (sliced\ by\ upper\ index\ λ):\(\backslash\)n"{}};}
 \DoxyCodeLine{00022\ }
@@ -42,7 +42,7 @@
 \DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00040\ }
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_af8ba4095565bfedb852d3d36fe5b1b46}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\&\ R,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Riemann"{}})\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor_af8ba4095565bfedb852d3d36fe5b1b46}{print}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\&\ R,\ \textcolor{keyword}{const}\ std::string\&\ name\ =\ \textcolor{stringliteral}{"{}Riemann"{}})\ \{}
 \DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
 \DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ name\ <<\ \textcolor{stringliteral}{"{}\ tensor\ components:\(\backslash\)n"{}};}
 \DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}})}
@@ -57,37 +57,37 @@
 \DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00055\ }
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\ \mbox{\hyperlink{classmorpheus__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus_1_1Tensor}{VectorT}}\&\ X,\ T\ h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{Metric<T>}}\&\ metric)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\ \mbox{\hyperlink{classtensorium__RG_1_1RiemannTensor_a8e7e4f37a70832ceb0174542b14afcc3}{compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium_1_1Tensor}{VectorT}}\&\ X,\ T\ h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtensorium__RG_1_1Metric}{Metric<T>}}\&\ metric)\ \{}
 \DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ dim\ =\ 4;}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ g(\{dim,\ dim\});}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ g(\{dim,\ dim\});}
 \DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ metric(X,\ g);}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ g\_inv\ =\ morpheus\_RG::inv\_mat\_tensor\_local(g);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ g\_inv\ =\ tensorium\_RG::inv\_mat\_tensor\_local(g);}
 \DoxyCodeLine{00061\ }
 \DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::array<ChristoffelSym<T>,\ 4>\ gamma\_ph\ \{}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),\ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),\ \mbox{\hyperlink{classmorpheus__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h)}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),\ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h),\ \mbox{\hyperlink{classtensorium__RG_1_1ChristoffelSym}{ChristoffelSym<T>}}(h)}
 \DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
 \DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::array<ChristoffelSym<T>,\ 4>\ gamma\_mh\ =\ gamma\_ph;}
 \DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::array<ChristoffelSym<T>,\ 4>\ gamma\_ph2\ =\ gamma\_ph;}
 \DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::array<ChristoffelSym<T>,\ 4>\ gamma\_mh2\ =\ gamma\_ph;}
 \DoxyCodeLine{00069\ }
 \DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \{}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{VectorT}}\ Xh\ =\ X,\ Xl\ =\ X,\ Xh2\ =\ X,\ Xl2\ =\ X;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{VectorT}}\ Xh\ =\ X,\ Xl\ =\ X,\ Xh2\ =\ X,\ Xl2\ =\ X;}
 \DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Xh(\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \ +=\ h;}
 \DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Xl(\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ \ -\/=\ h;}
 \DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Xh2(\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ +=\ h\ *\ 0.5;}
 \DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Xl2(\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})\ -\/=\ h\ *\ 0.5;}
 \DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ gh(\{dim,\ dim\}),\ gl(\{dim,\ dim\});}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor2D}}\ gh2(\{dim,\ dim\}),\ gl2(\{dim,\ dim\});}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ gh(\{dim,\ dim\}),\ gl(\{dim,\ dim\});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor2D}}\ gh2(\{dim,\ dim\}),\ gl2(\{dim,\ dim\});}
 \DoxyCodeLine{00079\ }
 \DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ metric(Xh,\ gh);\ \ \ \ \ metric(Xl,\ gl);}
 \DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ metric(Xh2,\ gh2);\ \ \ metric(Xl2,\ gl2);}
 \DoxyCodeLine{00082\ }
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gh\ \ =\ morpheus\_RG::inv\_mat\_tensor\_local(gh);}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gl\ \ =\ morpheus\_RG::inv\_mat\_tensor\_local(gl);}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gh2\ =\ morpheus\_RG::inv\_mat\_tensor\_local(gh2);}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gl2\ =\ morpheus\_RG::inv\_mat\_tensor\_local(gl2);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gh\ \ =\ tensorium\_RG::inv\_mat\_tensor\_local(gh);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gl\ \ =\ tensorium\_RG::inv\_mat\_tensor\_local(gl);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gh2\ =\ tensorium\_RG::inv\_mat\_tensor\_local(gh2);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ inv\_gl2\ =\ tensorium\_RG::inv\_mat\_tensor\_local(gl2);}
 \DoxyCodeLine{00087\ }
 \DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_ph[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}]\ \ =\ compute\_christoffel(Xh,\ \ h,\ gh,\ \ inv\_gh,\ \ metric);}
 \DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_mh[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}]\ \ =\ compute\_christoffel(Xl,\ \ h,\ gl,\ \ inv\_gl,\ \ metric);}
@@ -95,21 +95,21 @@
 \DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_mh2[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}]\ =\ compute\_christoffel(Xl2,\ h,\ gl2,\ inv\_gl2,\ metric);}
 \DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{00093\ }
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classmorpheus_1_1Tensor}{Tensor4D}}\ R(\{dim,\ dim,\ dim,\ dim\});}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R.\mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtensorium_1_1Tensor}{Tensor4D}}\ R(\{dim,\ dim,\ dim,\ dim\});}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R.\mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{fill}}(T(0));}
 \DoxyCodeLine{00096\ }
 \DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}})}
 \DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}})}
 \DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}})}
 \DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}\ =\ 0;\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}\ <\ dim;\ ++\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}})\ \{}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ dGamma\_mu\ =\ \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{morpheus::richardson\_derivative}}(}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ dGamma\_mu\ =\ \mbox{\hyperlink{namespacetensorium_a5642a249c8bbb73833a55d1256e5cb0b}{tensorium::richardson\_derivative}}(}
 \DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_ph[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_mh[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_ph2[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_mh2[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ h);}
 \DoxyCodeLine{00107\ }
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ dGamma\_nu\ =\ \mbox{\hyperlink{namespacemorpheus_a5642a249c8bbb73833a55d1256e5cb0b}{morpheus::richardson\_derivative}}(}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T\ dGamma\_nu\ =\ \mbox{\hyperlink{namespacetensorium_a5642a249c8bbb73833a55d1256e5cb0b}{tensorium::richardson\_derivative}}(}
 \DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_ph[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_mh[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}
 \DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gamma\_ph2[\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}](\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea843a28dfdc5b2d5463ba2a7b83fdec7c}{rho}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}},\ \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15eae773536932c61c7ee11944cefde49e30}{sigma}},\ 0),}

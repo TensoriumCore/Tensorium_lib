@@ -1,0 +1,14 @@
+<map id="tensorium::rank_mat" name="tensorium::rank_mat">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,100,163,128"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a6aa64cb114cee18687263df50e358583" title="Compute the numerical rank of the matrix." alt="" coords="211,100,385,128"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,111,195,111,195,117,163,117"/>
+<area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="441,5,570,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="324,97,432,43,448,37,450,42,434,48,327,102"/>
+<area shape="rect" id="Node000004" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="486,57,525,85"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="368,97,471,75,472,81,369,102"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="433,133,578,178"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="371,126,418,135,417,140,370,131"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a29cb23b241303015dc32483072623161" title="Swap two rows of the matrix." alt="" coords="433,202,578,247"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="325,126,434,187,444,192,441,197,432,192,322,131"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="466,133,464,123,471,114,485,108,506,106,528,109,542,115,539,120,527,114,506,111,486,113,474,118,470,124,471,132"/>
+</map>

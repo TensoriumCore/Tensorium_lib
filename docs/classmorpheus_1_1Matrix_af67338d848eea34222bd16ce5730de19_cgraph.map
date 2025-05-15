@@ -1,5 +1,5 @@
-<map id="morpheus::Matrix::add" name="morpheus::Matrix::add">
+<map id="tensorium::Matrix::add" name="tensorium::Matrix::add">
 <area shape="rect" id="Node000001" title="In&#45;place matrix addition: this += m." alt="" coords="5,5,174,33"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#a9360ad4d79bc09c54f63aa81060bf267" title="Return the total number of elements." alt="" coords="222,5,392,33"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a9360ad4d79bc09c54f63aa81060bf267" title="Return the total number of elements." alt="" coords="222,5,392,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,17,206,17,206,22,174,22"/>
 </map>

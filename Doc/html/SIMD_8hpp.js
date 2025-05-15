@@ -4,7 +4,7 @@ var SIMD_8hpp =
     [ "avx2_t", "structavx2__t.html", "structavx2__t" ],
     [ "avx512_t", "structavx512__t.html", "structavx512__t" ],
     [ "aligned_reg< T, Align >", "structaligned__reg.html", "structaligned__reg" ],
-    [ "morpheus::avx2_t", "structmorpheus_1_1avx2__t.html", "structmorpheus_1_1avx2__t" ],
+    [ "tensorium::avx2_t", "structtensorium_1_1avx2__t.html", "structtensorium_1_1avx2__t" ],
     [ "simd::SimdTraits< float, sse_t >", "structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html", "structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4" ],
     [ "simd::SimdTraits< double, sse_t >", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4" ],
     [ "simd::SimdTraits< size_t, sse_t >", "structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html", "structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4" ],

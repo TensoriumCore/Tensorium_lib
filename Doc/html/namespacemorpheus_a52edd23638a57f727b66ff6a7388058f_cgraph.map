@@ -1,14 +1,14 @@
-<map id="morpheus::rank_mat" name="morpheus::rank_mat">
+<map id="tensorium::rank_mat" name="tensorium::rank_mat">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,100,162,128"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Matrix.html#ab082485d429f54230fbe26a8f4f73b4c" title="Compute the numerical rank of the matrix." alt="" coords="210,100,383,128"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#ab082485d429f54230fbe26a8f4f73b4c" title="Compute the numerical rank of the matrix." alt="" coords="210,100,383,128"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,111,194,111,194,117,162,117"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="475,5,604,33"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="320,97,370,70,430,43,458,34,460,39,432,48,372,75,323,102"/>
 <area shape="rect" id="Node000004" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="520,57,558,85"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="379,97,504,74,505,80,379,102"/>
-<area shape="rect" id="Node000005" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="455,133,624,178"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="455,133,624,178"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="382,126,439,136,438,141,381,131"/>
-<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="431,201,647,229"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a8b2dfeb08ff63446f08da77d15daa345" title="Swap two rows of the matrix." alt="" coords="431,201,647,229"/>
 <area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="320,126,370,157,432,187,451,194,449,199,430,192,367,161,317,130"/>
 <area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="493,133,492,123,499,114,515,108,539,106,565,109,581,115,579,120,564,114,539,111,516,113,502,118,497,124,498,132"/>
 </map>

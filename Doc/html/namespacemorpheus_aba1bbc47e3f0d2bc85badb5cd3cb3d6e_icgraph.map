@@ -1,4 +1,4 @@
-<map id="morpheus::print_ast" name="morpheus::print_ast">
+<map id="tensorium::print_ast" name="tensorium::print_ast">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,29,157,57"/>
 <area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="106,16,97,10,81,8,66,10,57,14,55,20,59,28,54,30,50,20,53,11,64,5,81,3,99,5,109,11"/>
 </map>

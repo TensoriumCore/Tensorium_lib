@@ -2,44 +2,44 @@
 
 int deriv_test() {
 	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202x) ===\n";
-	morpheus::Derivate<float> f2d(4, 4);
-	morpheus::Derivate<float> dfdx2d(4, 4);
+	tensorium::Derivate<float> f2d(4, 4);
+	tensorium::Derivate<float> dfdx2d(4, 4);
 
 	for (size_t i = 0; i < 4; ++i)
 		for (size_t j = 0; j < 4; ++j)
 			f2d(i, j) = static_cast<float>(i * 10 + j);
 
-	morpheus::centered_derivative(f2d, dfdx2d, 0, 1.0f);
+	tensorium::centered_derivative(f2d, dfdx2d, 0, 1.0f);
 
 	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202y) ===\n";
-	morpheus::Derivate<float> f2d_y(4, 4);
-	morpheus::Derivate<float> dfdx2d_y(4, 4);
+	tensorium::Derivate<float> f2d_y(4, 4);
+	tensorium::Derivate<float> dfdx2d_y(4, 4);
 	for (size_t i = 0; i < 4; ++i)
 		for (size_t j = 0; j < 4; ++j)
 			f2d_y(i, j) = static_cast<float>(i * 10 + j);
-	morpheus::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
+	tensorium::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
 
 
 	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202x) ===\n";
 	std::array<size_t, 3> dims = {4, 4, 4};
-	morpheus::DerivateND<float, 3> fnd_x(dims), dfdxnd(dims);
+	tensorium::DerivateND<float, 3> fnd_x(dims), dfdxnd(dims);
 	for (size_t i = 0; i < 4; ++i)
 		for (size_t j = 0; j < 4; ++j)
 			for (size_t k = 0; k < 4; ++k)
 				fnd_x({i, j, k}) = float(i + j + k);
-	morpheus::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
+	tensorium::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
 
 
 	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202z) ===\n";
-	morpheus::DerivateND<float, 3> fnd(dims), dfdznd(dims);
+	tensorium::DerivateND<float, 3> fnd(dims), dfdznd(dims);
 	for (size_t i = 0; i < 4; ++i)
 		for (size_t j = 0; j < 4; ++j)
 			for (size_t k = 0; k < 4; ++k)
 				fnd({i, j, k}) = float(i + j + k);
-	morpheus::centered_derivative(fnd, dfdznd, 2, 1.0f);
+	tensorium::centered_derivative(fnd, dfdznd, 2, 1.0f);
 
 
-	morpheus::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
+	tensorium::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
 	std::cout << "\u2202f/\u2202z (ordre 4) slice at k=2:\n";
 
 
@@ -47,7 +47,7 @@ int deriv_test() {
 	const float dx = 0.01f;
 	const float pi = 3.14159265358979323846f;
 
-	morpheus::Derivate<float> f(N, 1), df_order2(N, 1), df_order4(N, 1), df_exact(N, 1);
+	tensorium::Derivate<float> f(N, 1), df_order2(N, 1), df_order4(N, 1), df_exact(N, 1);
 	for (size_t i = 0; i < N; ++i) {
 		float x = i * dx;
 		f(i, 0) = std::sin(x) + 0.1f * std::sin(10*x);

@@ -1,0 +1,32 @@
+<map id="X" name="X">
+<area shape="rect" id="Node000001" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="485,377,523,404"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1ChristoffelSym.html#a14399a17e57c1d9139c70dca1cbb0226" title="Compute Christoffel symbols numerically from a metric." alt="" coords="232,5,421,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="498,361,491,290,479,202,460,118,448,86,435,64,419,51,423,47,439,61,453,84,465,117,484,201,497,290,503,361"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="245,75,408,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="501,361,500,312,491,251,471,188,455,159,435,134,406,114,409,110,439,130,460,156,476,186,496,250,505,312,507,361"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1RiemannTensor.html#a1a93f22c9a3e9110a36038de38281101" title="Computes the 4D Riemann curvature tensor ." alt="" coords="216,144,437,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="497,361,491,327,480,286,461,245,435,210,410,191,413,187,439,206,466,243,485,284,496,325,502,360"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium.html#a3fe69169243dcb89188d497bfbafde7e" title=" " alt="" coords="10,175,163,219"/>
+<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="495,362,475,306,458,277,435,254,416,243,388,234,317,219,237,209,163,203,163,198,238,204,318,214,390,229,418,238,439,250,463,274,480,303,500,360"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1SpectalChebyshev.html#a69f6b92fe3d90d46412ef196a9a7f3aa" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="219,264,434,309"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="482,366,461,343,436,323,413,312,416,307,438,319,464,339,486,362"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium.html#a7c9c0e180ff6fb68bcb41be3fc69d9ff" title=" " alt="" coords="250,333,403,378"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="469,386,403,373,404,368,470,381"/>
+<area shape="rect" id="Node000008" href="$classtensorium__RG_1_1Metric.html#a0d3824582bfdacc8e8225057e0d7fa17" title="Flat FLRW metric in comoving spherical coordinates." alt="" coords="245,403,408,447"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="471,399,409,412,407,406,470,394"/>
+<area shape="rect" id="Node000009" href="$classtensorium__RG_1_1Metric.html#a4bd48f127fbc00ce5e692f4cb5e43d99" title="Evaluate the metric tensor ." alt="" coords="5,523,168,567"/>
+<area shape="poly" id="edge17_Node000001_Node000009" title=" " alt="" coords="486,418,465,442,438,462,380,488,331,497,280,502,216,513,169,525,168,520,215,508,279,496,330,492,378,483,436,457,461,438,482,415"/>
+<area shape="rect" id="Node000010" href="$classtensorium__RG_1_1Metric.html#aeb4ea8eec03bcb0e101dbb05646821a8" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="245,523,408,567"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="495,420,473,464,458,486,439,506,409,524,406,520,435,502,454,483,469,461,490,418"/>
+<area shape="rect" id="Node000011" href="$classtensorium__RG_1_1Metric.html#ac074bebde700894884a2829caa7b1c84" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="245,592,408,637"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="503,420,498,456,486,500,467,543,439,582,410,601,407,596,435,578,463,541,481,498,492,455,498,419"/>
+<area shape="rect" id="Node000012" href="$classtensorium__RG_1_1Metric.html#a03dd227862693af5d4d4514e50462d92" title="Schwarzschild metric in spherical coordinates." alt="" coords="234,661,419,706"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="507,420,505,469,496,531,476,594,460,624,439,651,420,665,417,661,435,647,455,621,471,592,491,529,500,468,501,419"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium.html#a12ea02010726156136abcb3aff6205e8" title=" " alt="" coords="250,731,403,775"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="503,420,497,491,484,580,465,664,453,697,439,720,423,734,405,743,402,738,420,729,435,717,448,695,460,662,479,579,491,490,498,420"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="201,185,164,190,163,185,200,180"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="245,456,217,469,167,496,122,524,120,520,164,492,214,464,243,451"/>
+<area shape="poly" id="edge10_Node000010_Node000009" title=" " alt="" coords="229,548,168,548,168,542,229,542"/>
+<area shape="poly" id="edge12_Node000011_Node000009" title=" " alt="" coords="232,590,166,571,167,565,233,585"/>
+<area shape="poly" id="edge15_Node000012_Node000009" title=" " alt="" coords="226,657,214,651,155,611,109,570,112,566,158,607,217,647,229,652"/>
+</map>

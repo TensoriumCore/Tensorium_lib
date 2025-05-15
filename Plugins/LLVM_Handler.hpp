@@ -20,11 +20,11 @@
 #include "mlir/Dialect/NVVM/IR/NVVMDialect.h"
 #include <string>
 
-struct MorpheusTarget {
+struct TensoriumTarget {
 	std::string platform;
 	std::string isa;
 	clang::SourceLocation loc;
 };
 
-static std::vector<MorpheusTarget> MorpheusTargetTable;
+static std::vector<TensoriumTarget> TensoriumTargetTable;
 

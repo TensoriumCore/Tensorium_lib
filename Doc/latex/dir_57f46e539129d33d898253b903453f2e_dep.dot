@@ -1,4 +1,4 @@
-digraph "includes/Morpheus/DiffGeometry/BSSN"
+digraph "includes/Tensorium/DiffGeometry/BSSN"
 {
  // LATEX_PDF_SIZE
   bgcolor="transparent";

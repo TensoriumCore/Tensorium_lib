@@ -1,5 +1,5 @@
-<map id="morpheus::Matrix::transpose" name="morpheus::Matrix::transpose">
+<map id="tensorium::Matrix::transpose" name="tensorium::Matrix::transpose">
 <area shape="rect" id="Node000001" title="Returns the transpose &#160;of the matrix." alt="" coords="245,5,453,33"/>
-<area shape="rect" id="Node000002" href="$namespacemorpheus.html#ae1e78fa78c3d01cf0aae1e3c347dd08a" title=" " alt="" coords="5,5,197,33"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#ae1e78fa78c3d01cf0aae1e3c347dd08a" title=" " alt="" coords="5,5,197,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,22,197,22,197,17,229,17"/>
 </map>

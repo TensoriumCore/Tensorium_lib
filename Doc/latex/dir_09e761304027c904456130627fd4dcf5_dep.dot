@@ -8,6 +8,6 @@ digraph "includes"
   subgraph clusterdir_09e761304027c904456130627fd4dcf5 {
     graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_09e761304027c904456130627fd4dcf5.html",tooltip=""]
     dir_09e761304027c904456130627fd4dcf5 [shape=plaintext, label="includes"];
-  dir_71b62786698bbc304968573b10151663 [label="Morpheus", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_71b62786698bbc304968573b10151663.html",tooltip=""];
+  dir_71b62786698bbc304968573b10151663 [label="Tensorium", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_71b62786698bbc304968573b10151663.html",tooltip=""];
   }
 }

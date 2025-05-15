@@ -1,262 +1,262 @@
-\doxysection{morpheus\+\_\+\+RG\+::Metric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
-\hypertarget{classmorpheus__RG_1_1Metric}{}\label{classmorpheus__RG_1_1Metric}\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\doxysection{tensorium\+\_\+\+RG\+::Metric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classtensorium__RG_1_1Metric}{}\label{classtensorium__RG_1_1Metric}\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 
 
 {\ttfamily \#include $<$Metric.\+hpp$>$}
 
 
 
-Collaboration diagram for morpheus\+\_\+\+RG\+::Metric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+Collaboration diagram for tensorium\+\_\+\+RG\+::Metric\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
 % FIG 0
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classmorpheus__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72}{Metric}} (const std\+::string \&metric\+\_\+type="{}minkowski"{}, T mass=T(1.\+0), T spin=T(0.\+0))
+\mbox{\hyperlink{classtensorium__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72}{Metric}} (const std\+::string \&metric\+\_\+type="{}minkowski"{}, T mass=T(1.\+0), T spin=T(0.\+0))
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{operator()}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{operator()}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de}{BSSN}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, T \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9}{alpha}}, \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92}{beta}}, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea}{gamma}}) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de}{BSSN}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, T \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9}{alpha}}, \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92}{beta}}, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&\mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea}{gamma}}) const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::string \mbox{\hyperlink{classmorpheus__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{type}}
+std\+::string \mbox{\hyperlink{classtensorium__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{type}}
 \item 
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{M}} = T(1.\+0)
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{M}} = T(1.\+0)
 \item 
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{a}} = T(0.\+935)
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{a}} = T(0.\+935)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{set\+\_\+custom}} (std\+::function$<$ void(const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&)$>$ fn)
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{set\+\_\+custom}} (std\+::function$<$ void(const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&)$>$ fn)
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}{compute\+\_\+minkowski}} (\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}{compute\+\_\+minkowski}} (\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{compute\+\_\+schwarzschild}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{compute\+\_\+schwarzschild}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{compute\+\_\+kerr}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{compute\+\_\+kerr}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}{compute\+\_\+flrw}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}{compute\+\_\+flrw}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \item 
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{kerr\+\_\+schild\+\_\+radius}} (T x, T y, T z) const
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{kerr\+\_\+schild\+\_\+radius}} (T x, T y, T z) const
 \item 
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{compute\+\_\+kerr\+\_\+schild}} (const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{compute\+\_\+kerr\+\_\+schild}} (const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&X, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&g) const
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\+::function$<$ void(const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&) \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{custom\+\_\+metric\+\_\+fn}} ) = nullptr
+std\+::function$<$ void(const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&) \mbox{\hyperlink{classtensorium__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{custom\+\_\+metric\+\_\+fn}} ) = nullptr
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classmorpheus__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72}\label{classmorpheus__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!Metric@{Metric}}
-\index{Metric@{Metric}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72}\label{classtensorium__RG_1_1Metric_a53493cb1a1b19d9f0c5ea7911ada0f72} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!Metric@{Metric}}
+\index{Metric@{Metric}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{Metric()}{Metric()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-\mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::\+Metric (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{metric\+\_\+type = {\ttfamily "{}minkowski"{}},  }\item[{T}]{mass = {\ttfamily T(1.0)},  }\item[{T}]{spin = {\ttfamily T(0.0)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::\+Metric (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{metric\+\_\+type = {\ttfamily "{}minkowski"{}},  }\item[{T}]{mass = {\ttfamily T(1.0)},  }\item[{T}]{spin = {\ttfamily T(0.0)} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classmorpheus__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de}\label{classmorpheus__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!BSSN@{BSSN}}
-\index{BSSN@{BSSN}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de}\label{classtensorium__RG_1_1Metric_a4c6dafbb3770a8f5d141b90b1660e9de} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!BSSN@{BSSN}}
+\index{BSSN@{BSSN}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{BSSN()}{BSSN()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::\+BSSN (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{T \&}]{alpha,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{beta,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{gamma }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::\+BSSN (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{T \&}]{alpha,  }\item[{\mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{beta,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{gamma }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 References \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9}{alpha}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92}{beta}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea}{gamma}}.
 
-\Hypertarget{classmorpheus__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}\label{classmorpheus__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!compute\_flrw@{compute\_flrw}}
-\index{compute\_flrw@{compute\_flrw}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}\label{classtensorium__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!compute\_flrw@{compute\_flrw}}
+\index{compute\_flrw@{compute\_flrw}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_flrw()}{compute\_flrw()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+flrw (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+flrw (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
+References \mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
 
 Here is the call graph for this function\+:
 % FIG 1
 Here is the caller graph for this function\+:
 % FIG 2
-\Hypertarget{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}\label{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!compute\_kerr@{compute\_kerr}}
-\index{compute\_kerr@{compute\_kerr}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}\label{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!compute\_kerr@{compute\_kerr}}
+\index{compute\_kerr@{compute\_kerr}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_kerr()}{compute\_kerr()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+kerr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+kerr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397}{Delta}}, \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66}{Sigma}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
+References \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397}{Delta}}, \mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, \mbox{\hyperlink{Latex_8hpp_ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66}{Sigma}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
 
 Here is the call graph for this function\+:
 % FIG 3
 Here is the caller graph for this function\+:
 % FIG 4
-\Hypertarget{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}\label{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!compute\_kerr\_schild@{compute\_kerr\_schild}}
-\index{compute\_kerr\_schild@{compute\_kerr\_schild}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}\label{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!compute\_kerr\_schild@{compute\_kerr\_schild}}
+\index{compute\_kerr\_schild@{compute\_kerr\_schild}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_kerr\_schild()}{compute\_kerr\_schild()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}, \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, and \mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::resize()}}.
+References \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}, \mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80}{mu}}, \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650}{nu}}, and \mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::resize()}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
 
 Here is the call graph for this function\+:
 % FIG 5
 Here is the caller graph for this function\+:
 % FIG 6
-\Hypertarget{classmorpheus__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}\label{classmorpheus__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!compute\_minkowski@{compute\_minkowski}}
-\index{compute\_minkowski@{compute\_minkowski}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}\label{classtensorium__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!compute\_minkowski@{compute\_minkowski}}
+\index{compute\_minkowski@{compute\_minkowski}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_minkowski()}{compute\_minkowski()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+minkowski (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+minkowski (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, and \mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::resize()}}.
+References \mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, and \mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::resize()}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
 
 Here is the call graph for this function\+:
 % FIG 7
 Here is the caller graph for this function\+:
 % FIG 8
-\Hypertarget{classmorpheus__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}\label{classmorpheus__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!compute\_schwarzschild@{compute\_schwarzschild}}
-\index{compute\_schwarzschild@{compute\_schwarzschild}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}\label{classtensorium__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!compute\_schwarzschild@{compute\_schwarzschild}}
+\index{compute\_schwarzschild@{compute\_schwarzschild}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{compute\_schwarzschild()}{compute\_schwarzschild()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+schwarzschild (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::compute\+\_\+schwarzschild (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{classmorpheus_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{morpheus\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
+References \mbox{\hyperlink{classtensorium_1_1Tensor_a70fb35ac409a7f95a4efe437d33cf576}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::fill()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::M}}, \mbox{\hyperlink{classtensorium_1_1Tensor_ac20bcc7a4afe8b076aad9e31a34d6f3c}{tensorium\+::\+Tensor$<$ K, Rank $>$\+::resize()}}, and \mbox{\hyperlink{Latex_8hpp_ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91}{theta}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}.
 
 Here is the call graph for this function\+:
 % FIG 9
 Here is the caller graph for this function\+:
 % FIG 10
-\Hypertarget{classmorpheus__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}\label{classmorpheus__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!kerr\_schild\_radius@{kerr\_schild\_radius}}
-\index{kerr\_schild\_radius@{kerr\_schild\_radius}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}\label{classtensorium__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!kerr\_schild\_radius@{kerr\_schild\_radius}}
+\index{kerr\_schild\_radius@{kerr\_schild\_radius}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{kerr\_schild\_radius()}{kerr\_schild\_radius()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius (\begin{DoxyParamCaption}\item[{T}]{x,  }\item[{T}]{y,  }\item[{T}]{z }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius (\begin{DoxyParamCaption}\item[{T}]{x,  }\item[{T}]{y,  }\item[{T}]{z }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}.
+References \mbox{\hyperlink{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::a}}.
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}.
 
 Here is the caller graph for this function\+:
 % FIG 11
-\Hypertarget{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}\label{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!operator()@{operator()}}
-\index{operator()@{operator()}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}\label{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&}]{X,  }\item[{\mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&}]{g }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+flrw()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+minkowski()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+schwarzschild()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::custom\+\_\+metric\+\_\+fn}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::type}}.
+References \mbox{\hyperlink{classtensorium__RG_1_1Metric_a1a4e71c40a9693264a15bd4f70a79f1d}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+flrw()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a34eb23a67f1a88966a3deba7b1ff7c51}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+minkowski()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+schwarzschild()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::custom\+\_\+metric\+\_\+fn}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::type}}.
 
 Here is the call graph for this function\+:
 % FIG 12
-\Hypertarget{classmorpheus__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}\label{classmorpheus__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!set\_custom@{set\_custom}}
-\index{set\_custom@{set\_custom}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}\label{classtensorium__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!set\_custom@{set\_custom}}
+\index{set\_custom@{set\_custom}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{set\_custom()}{set\_custom()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-void \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::set\+\_\+custom (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$ T, 2 $>$ \&)$>$}]{fn }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+void \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::set\+\_\+custom (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$ T $>$ \&, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$ T, 2 $>$ \&)$>$}]{fn }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
 
 
-References \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::custom\+\_\+metric\+\_\+fn}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::type}}.
+References \mbox{\hyperlink{classtensorium__RG_1_1Metric_a04152f001773bc681e163966105ffa15}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::custom\+\_\+metric\+\_\+fn}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::type}}.
 
 
 
 \doxysubsection{Member Data Documentation}
-\Hypertarget{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}\label{classmorpheus__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!a@{a}}
-\index{a@{a}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2}\label{classtensorium__RG_1_1Metric_a6a1b6fbe755f94b5b4bca5add911d2f2} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!a@{a}}
+\index{a@{a}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{a}{a}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::a = T(0.\+935)}
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::a = T(0.\+935)}
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_a01edb6c0f716616d251943b604658d0d}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::kerr\+\_\+schild\+\_\+radius()}}.
 
-\Hypertarget{classmorpheus__RG_1_1Metric_a04152f001773bc681e163966105ffa15}\label{classmorpheus__RG_1_1Metric_a04152f001773bc681e163966105ffa15} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!custom\_metric\_fn@{custom\_metric\_fn}}
-\index{custom\_metric\_fn@{custom\_metric\_fn}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a04152f001773bc681e163966105ffa15}\label{classtensorium__RG_1_1Metric_a04152f001773bc681e163966105ffa15} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!custom\_metric\_fn@{custom\_metric\_fn}}
+\index{custom\_metric\_fn@{custom\_metric\_fn}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{custom\_metric\_fn}{custom\_metric\_fn}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::function$<$void(const \mbox{\hyperlink{classmorpheus_1_1Vector}{morpheus\+::\+Vector}}$<$T$>$\&, \mbox{\hyperlink{classmorpheus_1_1Tensor}{morpheus\+::\+Tensor}}$<$T, 2$>$\&) \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::custom\+\_\+metric\+\_\+fn)  = nullptr\hspace{0.3cm}{\ttfamily [private]}}
+std\+::function$<$void(const \mbox{\hyperlink{classtensorium_1_1Vector}{tensorium\+::\+Vector}}$<$T$>$\&, \mbox{\hyperlink{classtensorium_1_1Tensor}{tensorium\+::\+Tensor}}$<$T, 2$>$\&) \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::custom\+\_\+metric\+\_\+fn)  = nullptr\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::set\+\_\+custom()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::set\+\_\+custom()}}.
 
-\Hypertarget{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}\label{classmorpheus__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!M@{M}}
-\index{M@{M}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed}\label{classtensorium__RG_1_1Metric_a6e547241ae31d603ec50f203434684ed} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!M@{M}}
+\index{M@{M}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{M}{M}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-T \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::M = T(1.\+0)}
+T \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::M = T(1.\+0)}
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+schwarzschild()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a3311e528e5880f7e1bccc49aeb6ae14b}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr()}}, \mbox{\hyperlink{classtensorium__RG_1_1Metric_a573ac244e14ec92dc48fd4e2c1e9f21a}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+kerr\+\_\+schild()}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_a31921e68c065373b605e8ae24ad982da}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::compute\+\_\+schwarzschild()}}.
 
-\Hypertarget{classmorpheus__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}\label{classmorpheus__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1} 
-\index{morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}!type@{type}}
-\index{type@{type}!morpheus\_RG::Metric$<$ T $>$@{morpheus\_RG::Metric$<$ T $>$}}
+\Hypertarget{classtensorium__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1}\label{classtensorium__RG_1_1Metric_ad37f2071ef784eae7aa11848da5fabe1} 
+\index{tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}!type@{type}}
+\index{type@{type}!tensorium\_RG::Metric$<$ T $>$@{tensorium\_RG::Metric$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{type}{type}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
-std\+::string \mbox{\hyperlink{classmorpheus__RG_1_1Metric}{morpheus\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::type}
+std\+::string \mbox{\hyperlink{classtensorium__RG_1_1Metric}{tensorium\+\_\+\+RG\+::\+Metric}}$<$ T $>$\+::type}
 
 
 
-Referenced by \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}, and \mbox{\hyperlink{classmorpheus__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{morpheus\+\_\+\+RG\+::\+Metric$<$ T $>$\+::set\+\_\+custom()}}.
+Referenced by \mbox{\hyperlink{classtensorium__RG_1_1Metric_a55fce40cf8009cd283ab6651a96cb456}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::operator()()}}, and \mbox{\hyperlink{classtensorium__RG_1_1Metric_a0786caa1875c436da3cf503ca1ab96fe}{tensorium\+\_\+\+RG\+::\+Metric$<$ T $>$\+::set\+\_\+custom()}}.
 
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-includes/\+Morpheus/\+Diff\+Geometry/\mbox{\hyperlink{Metric_8hpp}{Metric.\+hpp}}\end{DoxyCompactItemize}
+includes/\+Tensorium/\+Diff\+Geometry/\mbox{\hyperlink{Metric_8hpp}{Metric.\+hpp}}\end{DoxyCompactItemize}

@@ -1,28 +1,28 @@
 <map id="X" name="X">
-<area shape="rect" id="Node000001" title="Register the plugin under the name &quot;morpheus&#45;dispatch&quot;." alt="" coords="537,363,575,391"/>
-<area shape="rect" id="Node000002" href="$classmorpheus__RG_1_1ChristoffelSym.html#a7292368d5181833466179ecacd02b8ac" title="Compute Christoffel symbols numerically from a metric." alt="" coords="284,5,471,50"/>
+<area shape="rect" id="Node000001" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="537,363,575,391"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1ChristoffelSym.html#a7292368d5181833466179ecacd02b8ac" title="Compute Christoffel symbols numerically from a metric." alt="" coords="284,5,471,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="550,348,543,280,530,195,512,116,500,85,487,64,470,50,473,46,491,61,505,83,517,114,535,194,548,279,555,347"/>
-<area shape="rect" id="Node000003" href="$classmorpheus__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="297,75,458,119"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1Metric.html#a4c6dafbb3770a8f5d141b90b1660e9de" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="297,75,458,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="553,348,550,301,541,244,521,185,506,158,487,134,457,114,460,109,491,130,511,155,526,182,546,242,556,300,558,347"/>
-<area shape="rect" id="Node000004" href="$classmorpheus__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3" title="Computes the 4D Riemann curvature tensor ." alt="" coords="267,144,488,189"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1RiemannTensor.html#a8e7e4f37a70832ceb0174542b14afcc3" title="Computes the 4D Riemann curvature tensor ." alt="" coords="267,144,488,189"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="548,348,541,316,530,279,512,242,487,210,462,191,465,187,491,206,516,239,535,277,547,315,553,347"/>
-<area shape="rect" id="Node000005" href="$namespacemorpheus.html#a550ee0012bfeef9ef3b717c066a1f9dd" title=" " alt="" coords="5,175,218,219"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium.html#a550ee0012bfeef9ef3b717c066a1f9dd" title=" " alt="" coords="5,175,218,219"/>
 <area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="545,349,525,299,509,274,487,254,468,244,442,235,373,220,295,211,218,204,218,199,295,205,374,215,443,229,470,239,491,250,513,271,530,296,550,347"/>
-<area shape="rect" id="Node000006" href="$classmorpheus_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="270,264,485,309"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1SpectalChebyshev.html#afcbec973098a3c87022bd8f28e144fff" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="270,264,485,309"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="529,354,488,323,463,312,465,307,490,319,532,350"/>
-<area shape="rect" id="Node000007" href="$namespacemorpheus.html#a16c823b33c29fcc4b19533a7ef41822e" title=" " alt="" coords="266,333,489,360"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium.html#a16c823b33c29fcc4b19533a7ef41822e" title=" " alt="" coords="266,333,489,360"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="521,374,461,363,462,358,522,369"/>
-<area shape="rect" id="Node000008" href="$classmorpheus__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" title="Flat FLRW metric in comoving spherical coordinates." alt="" coords="297,384,458,429"/>
+<area shape="rect" id="Node000008" href="$classtensorium__RG_1_1Metric.html#a1a4e71c40a9693264a15bd4f70a79f1d" title="Flat FLRW metric in comoving spherical coordinates." alt="" coords="297,384,458,429"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="522,385,459,396,458,390,521,380"/>
-<area shape="rect" id="Node000009" href="$classmorpheus__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="31,504,192,549"/>
+<area shape="rect" id="Node000009" href="$classtensorium__RG_1_1Metric.html#a55fce40cf8009cd283ab6651a96cb456" title="Evaluate the metric tensor ." alt="" coords="31,504,192,549"/>
 <area shape="poly" id="edge17_Node000001_Node000009" title=" " alt="" coords="537,404,516,425,490,443,193,511,192,506,488,439,512,421,533,401"/>
-<area shape="rect" id="Node000010" href="$classmorpheus__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="297,504,458,549"/>
+<area shape="rect" id="Node000010" href="$classtensorium__RG_1_1Metric.html#a3311e528e5880f7e1bccc49aeb6ae14b" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="297,504,458,549"/>
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="546,406,524,448,509,469,491,487,460,506,457,502,487,483,505,465,520,445,542,404"/>
-<area shape="rect" id="Node000011" href="$classmorpheus__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="296,573,459,618"/>
+<area shape="rect" id="Node000011" href="$classtensorium__RG_1_1Metric.html#a573ac244e14ec92dc48fd4e2c1e9f21a" title="Kerr–Schild metric in Cartesian coordinates." alt="" coords="296,573,459,618"/>
 <area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="555,407,549,442,538,484,519,526,491,563,461,582,458,578,487,559,514,524,533,482,544,441,550,406"/>
-<area shape="rect" id="Node000012" href="$classmorpheus__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" title="Schwarzschild metric in spherical coordinates." alt="" coords="285,643,470,687"/>
+<area shape="rect" id="Node000012" href="$classtensorium__RG_1_1Metric.html#a31921e68c065373b605e8ae24ad982da" title="Schwarzschild metric in spherical coordinates." alt="" coords="285,643,470,687"/>
 <area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="559,406,556,455,547,515,527,577,511,606,491,632,472,647,468,643,487,628,507,603,522,575,542,514,551,454,553,406"/>
-<area shape="rect" id="Node000013" href="$namespacemorpheus.html#ad37fcae31cc6fcfb74ef0726257004d2" title=" " alt="" coords="301,712,454,757"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium.html#ad37fcae31cc6fcfb74ef0726257004d2" title=" " alt="" coords="301,712,454,757"/>
 <area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="555,407,548,477,536,564,517,646,505,679,491,701,474,715,455,725,453,720,471,711,487,698,500,676,512,645,531,563,543,476,550,406"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,183,218,187,218,182,251,178"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="298,437,267,450,155,506,153,501,265,445,296,432"/>

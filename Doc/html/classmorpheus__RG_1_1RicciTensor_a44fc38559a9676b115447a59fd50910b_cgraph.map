@@ -1,5 +1,5 @@
-<map id="morpheus_RG::RicciTensor::contract_to_ricci" name="morpheus_RG::RicciTensor::contract_to_ricci">
+<map id="tensorium_RG::RicciTensor::contract_to_ricci" name="tensorium_RG::RicciTensor::contract_to_ricci">
 <area shape="rect" id="Node000001" title="Contracts a 4D Riemann tensor into the 2D Ricci tensor." alt="" coords="5,5,199,50"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="247,14,407,42"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a70fb35ac409a7f95a4efe437d33cf576" title="Fill tensor with a constant value." alt="" coords="247,14,407,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,25,231,25,231,30,199,30"/>
 </map>

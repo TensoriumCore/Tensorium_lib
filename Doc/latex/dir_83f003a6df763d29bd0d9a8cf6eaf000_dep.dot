@@ -1,4 +1,4 @@
-digraph "includes/Morpheus/Core"
+digraph "includes/Tensorium/Core"
 {
  // LATEX_PDF_SIZE
   bgcolor="transparent";
@@ -6,7 +6,7 @@ digraph "includes/Morpheus/Core"
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   compound=true
   subgraph clusterdir_71b62786698bbc304968573b10151663 {
-    graph [ bgcolor="#edf0f7", pencolor="grey50", label="Morpheus", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_71b62786698bbc304968573b10151663.html",tooltip=""]
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="Tensorium", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_71b62786698bbc304968573b10151663.html",tooltip=""]
   dir_4db6ade012234c64bce4ea590db4ba7c [label="SIMD", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_4db6ade012234c64bce4ea590db4ba7c.html",tooltip=""];
   dir_facbad0c8c3fb8dcb9746534b0d7108a [label="MathUtils", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_facbad0c8c3fb8dcb9746534b0d7108a.html",tooltip=""];
   dir_83f003a6df763d29bd0d9a8cf6eaf000 [label="Core", fillcolor="#edf0f7", color="grey25", style="filled,bold", URL="dir_83f003a6df763d29bd0d9a8cf6eaf000.html",tooltip=""];

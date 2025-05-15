@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Morpheus: Morpheus — SIMD Module</title>
+<title>Tensorium: Tensorium — SIMD Module</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -34,7 +34,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Morpheus
+   <div id="projectname">Tensorium
    </div>
   </td>
  </tr>
@@ -72,7 +72,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md_includes_2Morpheus_2SIMD_2README.html',''); initResizable(); });
+$(function(){initNavTree('md_includes_2Tensorium_2SIMD_2README.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -98,10 +98,10 @@ $(function(){initNavTree('md_includes_2Morpheus_2SIMD_2README.html',''); initRes
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Morpheus — SIMD Module</div></div>
+  <div class="headertitle"><div class="title">Tensorium — SIMD Module</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md32"></a> This directory contains the low-level SIMD backend used throughout Morpheus to accelerate vector, matrix, and tensor operations. It provides abstraction layers over AVX, AVX2, AVX512, and SSE instruction sets, with automatic runtime detection and alignment-aware memory allocation. Writing separate code for each ISA is unnecessary — all operations are unified through <code>SimdTraits</code> with graceful fallback to the best supported instruction set.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md32"></a> This directory contains the low-level SIMD backend used throughout Tensorium to accelerate vector, matrix, and tensor operations. It provides abstraction layers over AVX, AVX2, AVX512, and SSE instruction sets, with automatic runtime detection and alignment-aware memory allocation. Writing separate code for each ISA is unnecessary — all operations are unified through <code>SimdTraits</code> with graceful fallback to the best supported instruction set.</p>
 <h1><a class="anchor" id="autotoc_md33"></a>
 Purpose</h1>
 <p>The module enables:</p><ul>
@@ -155,7 +155,7 @@ CacheInfo.hpp</h2>
 </ul>
 <h1><a class="anchor" id="autotoc_md40"></a>
 Example Usage</h1>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span>morpheus::simd;</div>
+<div class="fragment"><div class="line"><span class="keyword">using namespace </span>tensorium::simd;</div>
 <div class="line"><span class="keyword">using </span>T    = float;</div>
 <div class="line"><span class="keyword">using </span>Simd = SimdTraits&lt;T, DefaultISA&gt;;</div>
 <div class="line"><span class="keyword">using </span>reg  = <span class="keyword">typename</span> Simd::reg;</div>
@@ -175,7 +175,7 @@ Example Usage</h1>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;result[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span> &lt;&lt; result[i] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md41"></a>
 Status</h1>
-<p>Fully functional and integrated into all math kernels of Morpheus, including <code>Vector</code>, <code>Matrix</code>, <code>Tensor</code>, and numerical methods. Portability fallback to SSE is provided for older CPUs. AVX512 path is fully optimized.</p>
+<p>Fully functional and integrated into all math kernels of Tensorium, including <code>Vector</code>, <code>Matrix</code>, <code>Tensor</code>, and numerical methods. Portability fallback to SSE is provided for older CPUs. AVX512 path is fully optimized.</p>
 <h1><a class="anchor" id="autotoc_md42"></a>
 Supported Architectures</h1>
 <ul>

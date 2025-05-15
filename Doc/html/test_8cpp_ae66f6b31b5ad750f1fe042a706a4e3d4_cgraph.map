@@ -1,14 +1,14 @@
 <map id="main" name="main">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,32,60,60"/>
-<area shape="rect" id="Node000002" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="165,5,203,33"/>
+<area shape="rect" id="Node000002" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="165,5,204,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,39,149,23,150,28,61,44"/>
-<area shape="rect" id="Node000003" href="$namespacemorpheus.html#a0944f0078af11522c2abb8f488fdb8ec" title=" " alt="" coords="108,57,260,85"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#ab317cc43203309cc34bf719934edbc7e" title=" " alt="" coords="108,57,261,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,48,93,53,92,58,60,53"/>
-<area shape="rect" id="Node000004" href="$classmorpheus_1_1Matrix.html#ad6748cf61df0d4183bb0ee458b11044b" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="308,57,510,85"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="261,69,292,69,292,74,261,74"/>
-<area shape="rect" id="Node000005" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="577,15,709,42"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="488,54,562,41,563,46,489,59"/>
-<area shape="rect" id="Node000006" href="$classmorpheus_1_1Matrix.html#ac23f5528f6fa1f5501c67e785d4cdf6d" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="558,90,728,135"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="492,83,543,92,542,97,491,88"/>
-<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="598,90,597,80,605,71,620,65,643,64,668,66,683,73,681,77,667,71,643,69,621,71,608,75,602,82,604,89"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="309,49,454,94"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="261,69,294,69,294,74,261,74"/>
+<area shape="rect" id="Node000005" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="509,15,641,42"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,53,494,44,495,49,455,58"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="502,90,648,135"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="455,84,488,91,486,96,454,89"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="538,90,537,80,543,71,556,66,575,64,596,66,608,72,606,77,594,71,575,69,557,71,546,75,542,81,543,89"/>
 </map>

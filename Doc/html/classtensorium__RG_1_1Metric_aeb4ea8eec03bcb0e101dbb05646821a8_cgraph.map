@@ -1,0 +1,11 @@
+<map id="tensorium_RG::Metric::compute_kerr" name="tensorium_RG::Metric::compute_kerr">
+<area shape="rect" id="Node000001" title="Kerr metric in Boyer–Lindquist coordinates." alt="" coords="5,57,168,102"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="216,5,377,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,54,230,35,232,40,167,59"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="224,57,369,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,77,208,77,208,82,168,82"/>
+<area shape="rect" id="Node000005" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="277,125,316,153"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="167,99,263,127,261,132,166,105"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="425,57,570,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="369,77,410,77,410,82,369,82"/>
+</map>

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['children_0',['children',['../structmorpheus_1_1ASTNode.html#a53cfd7b3fdf49c592ccf8cb310edfaaa',1,'morpheus::ASTNode']]],
-  ['ci_1',['CI',['../classMorpheusASTConsumer.html#a0111515eaea73d82c2fe552462ecb129',1,'MorpheusASTConsumer::CI'],['../classMorpheusASTConsumer_1_1AlignedChecker.html#a72c45d7c59092458ae5b875a788bc1f8',1,'MorpheusASTConsumer::AlignedChecker::CI']]],
-  ['cols_2',['cols',['../classmorpheus_1_1Derivate.html#a58b0d2c81c82052655a7b466b730ad2f',1,'morpheus::Derivate::cols'],['../classmorpheus_1_1Matrix.html#a789e39e1d3d649399997e715c6a83b4e',1,'morpheus::Matrix::cols']]],
-  ['const_3',['const',['../classmorpheus_1_1Derivate.html#a865b1cbc9808e74305fa9300bbaa1552',1,'morpheus::Derivate::const'],['../classmorpheus_1_1DerivateND.html#aaf631bb00ac519cee3165cfeec93cfd9',1,'morpheus::DerivateND::const'],['../classmorpheus_1_1Tensor.html#a4bf7e0d92f3c82f66151fb25f78528b0',1,'morpheus::Tensor::const']]],
-  ['custom_5fmetric_5ffn_4',['custom_metric_fn',['../classmorpheus__RG_1_1Metric.html#a04152f001773bc681e163966105ffa15',1,'morpheus_RG::Metric']]]
+  ['children_0',['children',['../structtensorium_1_1ASTNode.html#a7ead70bcbffc080794028e4414e64089',1,'tensorium::ASTNode']]],
+  ['ci_1',['CI',['../classTensoriumASTConsumer.html#a92f4aaf155a2ab9df680bfd318ba4acb',1,'TensoriumASTConsumer::CI'],['../classTensoriumASTConsumer_1_1AlignedChecker.html#a02756a430bb75168314059523432428d',1,'TensoriumASTConsumer::AlignedChecker::CI']]],
+  ['cols_2',['cols',['../classtensorium_1_1Derivate.html#a7f194c8a1aee9e386b3982882b446fe4',1,'tensorium::Derivate::cols'],['../classtensorium_1_1Matrix.html#a09eb7af109a929f09fb13998dc4ff22a',1,'tensorium::Matrix::cols']]],
+  ['const_3',['const',['../classtensorium_1_1Derivate.html#a7ac57c495c6969d34ee1f9aef51399a3',1,'tensorium::Derivate::const'],['../classtensorium_1_1DerivateND.html#ad90a2bec6d1aec9dbb783cb3f2791539',1,'tensorium::DerivateND::const'],['../classtensorium_1_1Tensor.html#ab5180406e370e79b34bd543a0c0755af',1,'tensorium::Tensor::const']]],
+  ['custom_5fmetric_5ffn_4',['custom_metric_fn',['../classtensorium__RG_1_1Metric.html#a35cbbc9b59b273eeeeaf478383ebb489',1,'tensorium_RG::Metric']]]
 ];

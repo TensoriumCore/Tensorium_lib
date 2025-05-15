@@ -1,7 +1,7 @@
-<map id="morpheus::Parser::parse_expression" name="morpheus::Parser::parse_expression">
+<map id="tensorium::Parser::parse_expression" name="tensorium::Parser::parse_expression">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,40,184,85"/>
-<area shape="rect" id="Node000002" href="$classmorpheus_1_1Parser.html#a233a83f6f353c41a04ad7515ba48b86b" title=" " alt="" coords="232,5,410,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Parser.html#a233a83f6f353c41a04ad7515ba48b86b" title=" " alt="" coords="232,5,410,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,46,216,41,216,46,185,51"/>
-<area shape="rect" id="Node000003" href="$classmorpheus_1_1Parser.html#adba410f009f61f36bd5cdc4c3b70e2d5" title=" " alt="" coords="232,75,410,119"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Parser.html#adba410f009f61f36bd5cdc4c3b70e2d5" title=" " alt="" coords="232,75,410,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,73,216,78,216,84,184,79"/>
 </map>

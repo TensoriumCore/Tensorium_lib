@@ -1,29 +1,5 @@
 var annotated_dup =
 [
-    [ "morpheus", "namespacemorpheus.html", [
-      [ "solver", "namespacemorpheus_1_1solver.html", [
-        [ "Gauss", "classmorpheus_1_1solver_1_1Gauss.html", "classmorpheus_1_1solver_1_1Gauss" ],
-        [ "GaussSeidel", "classmorpheus_1_1solver_1_1GaussSeidel.html", "classmorpheus_1_1solver_1_1GaussSeidel" ],
-        [ "Jacobi", "classmorpheus_1_1solver_1_1Jacobi.html", "classmorpheus_1_1solver_1_1Jacobi" ]
-      ] ],
-      [ "ASTNode", "structmorpheus_1_1ASTNode.html", "structmorpheus_1_1ASTNode" ],
-      [ "avx2_t", "structmorpheus_1_1avx2__t.html", "structmorpheus_1_1avx2__t" ],
-      [ "CacheInfo", "classmorpheus_1_1CacheInfo.html", "classmorpheus_1_1CacheInfo" ],
-      [ "Derivate", "classmorpheus_1_1Derivate.html", "classmorpheus_1_1Derivate" ],
-      [ "DerivateND", "classmorpheus_1_1DerivateND.html", "classmorpheus_1_1DerivateND" ],
-      [ "Matrix", "classmorpheus_1_1Matrix.html", "classmorpheus_1_1Matrix" ],
-      [ "Parser", "classmorpheus_1_1Parser.html", "classmorpheus_1_1Parser" ],
-      [ "SpectalChebyshev", "classmorpheus_1_1SpectalChebyshev.html", "classmorpheus_1_1SpectalChebyshev" ],
-      [ "SpectralFFT", "classmorpheus_1_1SpectralFFT.html", "classmorpheus_1_1SpectralFFT" ],
-      [ "Tensor", "classmorpheus_1_1Tensor.html", "classmorpheus_1_1Tensor" ],
-      [ "Vector", "classmorpheus_1_1Vector.html", "classmorpheus_1_1Vector" ]
-    ] ],
-    [ "morpheus_RG", "namespacemorpheus__RG.html", [
-      [ "ChristoffelSym", "classmorpheus__RG_1_1ChristoffelSym.html", "classmorpheus__RG_1_1ChristoffelSym" ],
-      [ "Metric", "classmorpheus__RG_1_1Metric.html", "classmorpheus__RG_1_1Metric" ],
-      [ "RicciTensor", "classmorpheus__RG_1_1RicciTensor.html", "classmorpheus__RG_1_1RicciTensor" ],
-      [ "RiemannTensor", "classmorpheus__RG_1_1RiemannTensor.html", "classmorpheus__RG_1_1RiemannTensor" ]
-    ] ],
     [ "simd", "namespacesimd.html", [
       [ "SimdTraits", "structsimd_1_1SimdTraits.html", null ],
       [ "SimdTraits< double, avx2_t >", "structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html", "structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4" ],
@@ -37,14 +13,38 @@ var annotated_dup =
       [ "SimdTraits< std::complex< float >, avx2_t >", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4.html", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4" ],
       [ "SimdTraits< std::complex< float >, sse_t >", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4" ]
     ] ],
+    [ "tensorium", "namespacetensorium.html", [
+      [ "solver", "namespacetensorium_1_1solver.html", [
+        [ "Gauss", "classtensorium_1_1solver_1_1Gauss.html", "classtensorium_1_1solver_1_1Gauss" ],
+        [ "GaussSeidel", "classtensorium_1_1solver_1_1GaussSeidel.html", "classtensorium_1_1solver_1_1GaussSeidel" ],
+        [ "Jacobi", "classtensorium_1_1solver_1_1Jacobi.html", "classtensorium_1_1solver_1_1Jacobi" ]
+      ] ],
+      [ "ASTNode", "structtensorium_1_1ASTNode.html", "structtensorium_1_1ASTNode" ],
+      [ "avx2_t", "structtensorium_1_1avx2__t.html", "structtensorium_1_1avx2__t" ],
+      [ "CacheInfo", "classtensorium_1_1CacheInfo.html", "classtensorium_1_1CacheInfo" ],
+      [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
+      [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
+      [ "Matrix", "classtensorium_1_1Matrix.html", "classtensorium_1_1Matrix" ],
+      [ "Parser", "classtensorium_1_1Parser.html", "classtensorium_1_1Parser" ],
+      [ "SpectalChebyshev", "classtensorium_1_1SpectalChebyshev.html", "classtensorium_1_1SpectalChebyshev" ],
+      [ "SpectralFFT", "classtensorium_1_1SpectralFFT.html", "classtensorium_1_1SpectralFFT" ],
+      [ "Tensor", "classtensorium_1_1Tensor.html", "classtensorium_1_1Tensor" ],
+      [ "Vector", "classtensorium_1_1Vector.html", "classtensorium_1_1Vector" ]
+    ] ],
+    [ "tensorium_RG", "namespacetensorium__RG.html", [
+      [ "ChristoffelSym", "classtensorium__RG_1_1ChristoffelSym.html", "classtensorium__RG_1_1ChristoffelSym" ],
+      [ "Metric", "classtensorium__RG_1_1Metric.html", "classtensorium__RG_1_1Metric" ],
+      [ "RicciTensor", "classtensorium__RG_1_1RicciTensor.html", "classtensorium__RG_1_1RicciTensor" ],
+      [ "RiemannTensor", "classtensorium__RG_1_1RiemannTensor.html", "classtensorium__RG_1_1RiemannTensor" ]
+    ] ],
     [ "aligned_reg", "structaligned__reg.html", "structaligned__reg" ],
     [ "AlignedAllocator", "structAlignedAllocator.html", "structAlignedAllocator" ],
     [ "avx2_t", "structavx2__t.html", "structavx2__t" ],
     [ "avx512_t", "structavx512__t.html", "structavx512__t" ],
     [ "Lexer", "classLexer.html", "classLexer" ],
     [ "MathsUtils", "classMathsUtils.html", "classMathsUtils" ],
-    [ "MorpheusASTConsumer", "classMorpheusASTConsumer.html", "classMorpheusASTConsumer" ],
-    [ "MorpheusTarget", "structMorpheusTarget.html", "structMorpheusTarget" ],
     [ "sse_t", "structsse__t.html", "structsse__t" ],
+    [ "TensoriumASTConsumer", "classTensoriumASTConsumer.html", "classTensoriumASTConsumer" ],
+    [ "TensoriumTarget", "structTensoriumTarget.html", "structTensoriumTarget" ],
     [ "Token", "structToken.html", "structToken" ]
 ];

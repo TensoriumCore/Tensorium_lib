@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loc_0',['loc',['../structMorpheusTarget.html#abf33bb7f5a2c4e8724af3bb95e0b5a98',1,'MorpheusTarget']]]
+  ['loc_0',['loc',['../structTensoriumTarget.html#ab275d76424d0b83530cab9e9c902fb73',1,'TensoriumTarget']]]
 ];

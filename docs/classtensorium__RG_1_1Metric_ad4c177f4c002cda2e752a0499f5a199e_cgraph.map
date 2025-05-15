@@ -1,0 +1,9 @@
+<map id="tensorium_RG::Metric::compute_minkowski" name="tensorium_RG::Metric::compute_minkowski">
+<area shape="rect" id="Node000001" title="Minkowski metric in Cartesian coordinates." alt="" coords="5,28,169,72"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="217,5,378,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,35,201,31,201,36,170,41"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="225,57,370,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,59,210,64,209,70,169,64"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="426,57,571,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="370,77,411,77,411,82,370,82"/>
+</map>

@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Morpheus", "index.html", [
+  [ "Tensorium", "index.html", [
     [ "Highlights", "index.html#autotoc_md2", null ],
     [ "TODO", "index.html#autotoc_md3", null ],
     [ "Build Instructions", "index.html#autotoc_md4", [
@@ -35,43 +35,43 @@ var NAVTREE =
       [ "Exemple using in C++", "index.html#autotoc_md8", null ],
       [ "Example using in Python", "index.html#autotoc_md9", null ]
     ] ],
-    [ "Morpheus — Core Module", "md_includes_2Morpheus_2Core_2README.html", [
-      [ "Purpose", "md_includes_2Morpheus_2Core_2README.html#autotoc_md11", null ],
-      [ "Structure", "md_includes_2Morpheus_2Core_2README.html#autotoc_md12", null ],
-      [ "Features", "md_includes_2Morpheus_2Core_2README.html#autotoc_md13", [
-        [ "Vector", "md_includes_2Morpheus_2Core_2README.html#autotoc_md14", null ],
-        [ "Matrix", "md_includes_2Morpheus_2Core_2README.html#autotoc_md15", null ],
-        [ "Tensor", "md_includes_2Morpheus_2Core_2README.html#autotoc_md16", null ],
-        [ "Derivative", "md_includes_2Morpheus_2Core_2README.html#autotoc_md17", null ],
-        [ "Linear Solvers", "md_includes_2Morpheus_2Core_2README.html#autotoc_md18", null ]
+    [ "Tensorium — Core Module", "md_includes_2Tensorium_2Core_2README.html", [
+      [ "Purpose", "md_includes_2Tensorium_2Core_2README.html#autotoc_md11", null ],
+      [ "Structure", "md_includes_2Tensorium_2Core_2README.html#autotoc_md12", null ],
+      [ "Features", "md_includes_2Tensorium_2Core_2README.html#autotoc_md13", [
+        [ "Vector", "md_includes_2Tensorium_2Core_2README.html#autotoc_md14", null ],
+        [ "Matrix", "md_includes_2Tensorium_2Core_2README.html#autotoc_md15", null ],
+        [ "Tensor", "md_includes_2Tensorium_2Core_2README.html#autotoc_md16", null ],
+        [ "Derivative", "md_includes_2Tensorium_2Core_2README.html#autotoc_md17", null ],
+        [ "Linear Solvers", "md_includes_2Tensorium_2Core_2README.html#autotoc_md18", null ]
       ] ],
-      [ "Internal Dependencies", "md_includes_2Morpheus_2Core_2README.html#autotoc_md19", null ],
-      [ "Example Usage", "md_includes_2Morpheus_2Core_2README.html#autotoc_md20", null ],
-      [ "Status", "md_includes_2Morpheus_2Core_2README.html#autotoc_md21", null ],
-      [ "Notes", "md_includes_2Morpheus_2Core_2README.html#autotoc_md22", null ]
+      [ "Internal Dependencies", "md_includes_2Tensorium_2Core_2README.html#autotoc_md19", null ],
+      [ "Example Usage", "md_includes_2Tensorium_2Core_2README.html#autotoc_md20", null ],
+      [ "Status", "md_includes_2Tensorium_2Core_2README.html#autotoc_md21", null ],
+      [ "Notes", "md_includes_2Tensorium_2Core_2README.html#autotoc_md22", null ]
     ] ],
-    [ "Morpheus — DiffGeometry Module", "md_includes_2Morpheus_2DiffGeometry_2README.html", [
-      [ "Purpose", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md24", null ],
-      [ "Structure", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md25", null ],
-      [ "Features", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md26", null ],
-      [ "Internal Dependencies", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md27", null ],
-      [ "Current Supported Metrics", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md28", null ],
-      [ "Example: Compute Riemann and Ricci Tensors from Kerr Metric", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md29", null ],
-      [ "Status", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md30", null ],
-      [ "References", "md_includes_2Morpheus_2DiffGeometry_2README.html#autotoc_md31", null ]
+    [ "Tensorium — DiffGeometry Module", "md_includes_2Tensorium_2DiffGeometry_2README.html", [
+      [ "Purpose", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md24", null ],
+      [ "Structure", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md25", null ],
+      [ "Features", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md26", null ],
+      [ "Internal Dependencies", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md27", null ],
+      [ "Current Supported Metrics", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md28", null ],
+      [ "Example: Compute Riemann and Ricci Tensors from Kerr Metric", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29", null ],
+      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md30", null ],
+      [ "References", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md31", null ]
     ] ],
-    [ "Morpheus — SIMD Module", "md_includes_2Morpheus_2SIMD_2README.html", [
-      [ "Purpose", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md33", null ],
-      [ "Structure", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md34", null ],
-      [ "Features", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md35", [
-        [ "SIMD.hpp", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md36", null ],
-        [ "Allocator.hpp", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md37", null ],
-        [ "CPU_id.hpp", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md38", null ],
-        [ "CacheInfo.hpp", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md39", null ]
+    [ "Tensorium — SIMD Module", "md_includes_2Tensorium_2SIMD_2README.html", [
+      [ "Purpose", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md33", null ],
+      [ "Structure", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md34", null ],
+      [ "Features", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md35", [
+        [ "SIMD.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md36", null ],
+        [ "Allocator.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md37", null ],
+        [ "CPU_id.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md38", null ],
+        [ "CacheInfo.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md39", null ]
       ] ],
-      [ "Example Usage", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md40", null ],
-      [ "Status", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md41", null ],
-      [ "Supported Architectures", "md_includes_2Morpheus_2SIMD_2README.html#autotoc_md42", null ]
+      [ "Example Usage", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md40", null ],
+      [ "Status", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md41", null ],
+      [ "Supported Architectures", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md42", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -110,11 +110,11 @@ var NAVTREEINDEX =
 [
 "AST_8hpp.html",
 "classes.html",
-"classmorpheus_1_1SpectralFFT.html#af8b03cd7c754f80f2ee63179abffa406",
-"classmorpheus__RG_1_1Metric.html#a04152f001773bc681e163966105ffa15",
-"namespacemorpheus_1_1mpi.html#ab883518438824321f8bde0d015618df5",
-"structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html#ab5b0e3f565b6284d2cca454a9b734dd1",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html#a5265ea3426a550a942186c162bf5042c"
+"classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2",
+"classtensorium__RG_1_1Metric.html#a088bb0e1c78e4411b0f13f08aa0169b5",
+"namespacetensorium_1_1mpi.html#a97c2be1d5792e01dcea98a97661cd926",
+"structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a2b2f6a136923afb74c5334eceb700aae",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html#ac75ce5445bf2d5b9da4fb234a3296076"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
