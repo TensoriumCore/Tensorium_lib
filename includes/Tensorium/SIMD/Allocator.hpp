@@ -71,11 +71,13 @@ struct AlignedAllocator {
 	 */
 	[[nodiscard]] T* allocate(std::size_t n) {
 		void* ptr = nullptr;
+		const std::size_t alloc_size = n * sizeof(T) + Alignment;
+
 #if defined(USE_KNL)
-		if (hbw_posix_memalign(&ptr, Alignment, n * sizeof(T)) != 0)
+		if (hbw_posix_memalign(&ptr, alignment, alloc_size) != 0)
 			throw std::bad_alloc();
 #else
-		if (posix_memalign(&ptr, Alignment, n * sizeof(T)) != 0)
+		if (posix_memalign(&ptr, Alignment, alloc_size) != 0)
 			throw std::bad_alloc();
 #endif
 		return reinterpret_cast<T*>(ptr);

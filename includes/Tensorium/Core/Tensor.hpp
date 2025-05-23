@@ -326,6 +326,7 @@ namespace tensorium {
 						Tensor<K, R> result(shape);
 
 						const size_t max_b_safe = B.data.size() - (W - 1);
+						std::fill(result.data.begin(), result.data.end(), K(0));
 #pragma omp parallel for collapse(2)
 						for (size_t a_outer = 0; a_outer < A.total_size; a_outer += L3_BLOCK) {
 							for (size_t b_outer = 0; b_outer < B.total_size; b_outer += L3_BLOCK) {
