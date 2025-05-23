@@ -59,6 +59,11 @@ This library is built with the goal of empowering projects that require both spe
 - `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
 - OpenBLAS (optional, for benchmarking with BLAS)
 
+## Nix shell command for LLVM plugin dependencies
+
+```bash
+nix-shell -p numactl zlib udev openmpi clang llvmPackages.openmp tree openblas  python312Packages.pybind11 llvmPackages_17.clang llvmPackages_17.llvm llvmPackages_17.libclang cloc doxygen graphviz bear llvmPackages_17.mlir
+```
 
 ### Build C++ Library and Python Module
 
