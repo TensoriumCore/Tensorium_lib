@@ -387,7 +387,12 @@ namespace simd {
 			static inline void stream(uint64_t* ptr, reg x) { _mm256_stream_si256(reinterpret_cast<__m256i*>(ptr), x); }
 			static inline reg setzero()					{ return _mm256_setzero_si256(); }
 			static inline float horizontal_add(reg v)	{ return detail::reduce_sum(v); }
-			static inline reg load(const uint64_t* ptr)	{ return _mm256_load_si256(reinterpret_cast<const __m256i*>(ptr)); }
+			static inline reg load(const size_t* ptr)
+			{
+				static_assert(sizeof(size_t) == sizeof(uint64_t),
+						"SIMD::load(size_t*) requires 64-bit size_t");
+				return _mm256_load_si256(reinterpret_cast<const __m256i*>(ptr));
+			}
 			static inline reg loadu(const uint64_t* ptr) { return _mm256_loadu_si256(reinterpret_cast<const __m256i*>(ptr)); }
 			static inline void store(uint64_t* ptr, reg x) { _mm256_store_si256(reinterpret_cast<__m256i*>(ptr), x); }
 			static inline void storeu(uint64_t* ptr, reg x) { _mm256_storeu_si256(reinterpret_cast<__m256i*>(ptr), x); }

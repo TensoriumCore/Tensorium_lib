@@ -171,7 +171,7 @@ namespace tensorium {
 					 static inline __attribute__((always_inline))
 					 void microkernel4(size_t nCols,   
 							 const K* __restrict a,
-							 const K* const __restrict* b,
+							 const K* const* b,
 							 reg* sum)
 					 {
 						 constexpr size_t W = Simd::width;
@@ -236,8 +236,11 @@ namespace tensorium {
 
 									 const K* __restrict__ a_ptr  = &data[i * cols];
 #define UN 4
-									 reg sum[UN] = { Simd::zero(), Simd::zero(), Simd::zero(), Simd::zero() };
-									 const K* __restrict__ b_ptr[UN] = {
+									 reg sum[UN];
+									 for (size_t u = 0; u < UN; ++u)
+										 sum[u] = Simd::zero();
+
+									 const K* const b_ptr[UN] = {             
 										 &mat_transposed.data[(j + 0) * mat.rows],
 										 &mat_transposed.data[(j + 1) * mat.rows],
 										 &mat_transposed.data[(j + 2) * mat.rows],

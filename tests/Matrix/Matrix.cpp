@@ -12,7 +12,7 @@ using namespace tensorium;
 
 
 int matrix_bench() {
-    constexpr std::size_t N = 8192;
+    constexpr std::size_t N = 512;
     tensorium::Matrix<double> A(N, N);
     tensorium::Matrix<double> B(N, N);
 
