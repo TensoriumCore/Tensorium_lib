@@ -50,7 +50,7 @@ namespace {
 				return PreservedAnalyses::none();
 			}
 	};
-} // namespace
+} 
 
 
 extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo llvmGetPassPluginInfo() {
