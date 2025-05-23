@@ -64,6 +64,10 @@ This library is built with the goal of empowering projects that require both spe
 ```bash
 nix-shell -p numactl zlib udev openmpi clang llvmPackages.openmp tree openblas  python312Packages.pybind11 llvmPackages_17.clang llvmPackages_17.llvm llvmPackages_17.libclang cloc doxygen graphviz bear llvmPackages_17.mlir
 ```
+if you are on Macos :
+```bash
+nix --extra-experimental-features 'nix-command flakes' develop
+```
 
 ### Build C++ Library and Python Module
 
