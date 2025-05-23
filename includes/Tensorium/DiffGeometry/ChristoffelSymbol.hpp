@@ -47,12 +47,13 @@ namespace tensorium_RG {
 				 * @brief Construct a Christoffel symbol tensor
 				 * @param dim Dimensionality of the space
 				 */
-				ChristoffelSym(size_t dim) : dim(dim), data(dim * dim * dim * dim) {}
+				ChristoffelSym(size_t dim) : dim(dim), data(dim * dim * dim * dim, T(0)) {}
 
 				/**
 				 * @brief Mutable access to component \f$ \Gamma^\lambda_{\mu\nu} \f$
 				 */
 				T& operator()(size_t i, size_t j, size_t k, size_t l) {
+					assert(i < dim && j < dim && k < dim && l < dim);
 					return data[i * dim * dim * dim + j * dim * dim + k * dim + l];
 				}
 
@@ -73,8 +74,10 @@ namespace tensorium_RG {
 				/**
 				 * @brief Print all non-zero Christoffel components to stdout
 				 */
+
 				void print() const {
 					for (size_t l = 0; l < dim; ++l) {
+						if (l != 0) continue; 
 						std::cout << "Γ^" << l << "_{μν} :\n";
 						for (size_t i = 0; i < dim; ++i) {
 							for (size_t j = 0; j < dim; ++j) {
@@ -85,7 +88,6 @@ namespace tensorium_RG {
 						std::cout << "\n";
 					}
 				}
-
 				/**
 				 * @brief Compute Christoffel symbols numerically from a metric
 				 *
