@@ -88,6 +88,7 @@ public:
 	}
 
 private:
+
 	CompilerInstance &CI;
 
     /**
@@ -132,9 +133,6 @@ private:
 					}
 				}
 			}
-
-
-		
 			else if (const auto *VD = Result.Nodes.getNodeAs<VarDecl>("non_tensorium")) {
 				const SourceManager &SM = *Result.SourceManager;
 				if (!SM.isWrittenInMainFile(VD->getLocation()))
