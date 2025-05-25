@@ -201,8 +201,6 @@ namespace tensorium {
 				 inline Matrix mul_mat(const Matrix<K>& mat) const {
 					 if (cols != mat.rows)
 						 throw std::invalid_argument("Matrix dimensions do not match for multiplication");
-					 if (cols == 4 && mat.rows == 4 && mat.cols == 4)
-						 return mul_mat_NxN<4>(mat);
 					 if (cols == 8 && mat.rows == 8 && mat.cols == 8)
 						 return mul_mat_NxN<8>(mat);
 					 if (cols == 16 && mat.rows == 16 && mat.cols == 16)
