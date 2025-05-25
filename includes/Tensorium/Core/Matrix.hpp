@@ -10,6 +10,7 @@
 #include "../SIMD/Allocator.hpp"
 #include "Vector.hpp"
 #include "../MathUtils/MathsUtils.hpp"
+#include "GemmKernel.hpp"
 
 namespace tensorium {
 	/**
@@ -202,85 +203,66 @@ namespace tensorium {
 					 if (cols != mat.rows)
 						 throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 
-					/*
-					 * SimdTraits to auto detetch SIMD architecture options 
-					 *	Automatic fallback for AVX512, AVX2, SSE (Neon soon...)
-					 * */
-					 using Simd = simd::SimdTraits<K, DefaultISA>;
-					 using reg  = typename Simd::reg;
-					 constexpr size_t simd_width = Simd::width;
-					 constexpr size_t unroll     = UNROLL;  
+					 using Kernel = tensorium::GemmKernel<K>;
+					 constexpr int MC = Kernel::BlockRows;
+					 constexpr int NC = Kernel::BlockCols;
+					 constexpr int KC = Kernel::BlockDepth;
+					 constexpr int MR = Kernel::TileRows;
+					 constexpr int NR = Kernel::TileCols;
 
 					 Matrix<K> result(rows, mat.cols);
-					 Matrix<K> mat_transposed(mat.cols, mat.rows);
-					
-#pragma omp parallel for schedule(static)
-					 for (size_t i = 0; i < mat.rows; ++i)
-						 for (size_t j = 0; j < mat.cols; ++j)
-							 mat_transposed(j, i) = mat(i, j); 
 
-#pragma omp parallel for collapse(2) schedule(dynamic)
-					 for (size_t ii = 0; ii < rows; ii += block_size) {
-						 for (size_t jj = 0; jj < mat.cols; jj += block_size) {
-							 const size_t i_end = MathsUtils::_min(ii + block_size, rows);
-							 const size_t j_end = MathsUtils::_min(jj + block_size, mat.cols);
+					 // Buffer local si tu ne veux pas utiliser ceux de GemmKernel
+					 alignas(64) K blockA_packed[MC * KC] = {};
+					 alignas(64) K blockB_packed[NC * KC] = {};
 
-							 for (size_t i = ii; i < i_end; ++i) {
-								 for (size_t j = jj; j + unroll - 1 < j_end; j += unroll) {
+					 for (int j = 0; j < mat.cols; j += NC) {
+						 int nc = MathsUtils::_min(NC, mat.cols - j);
+						 int kc = MathsUtils::_min(KC, cols);
 
-									 const K* __restrict__ a_ptr  = &data[i * cols];
-#define UN 4
-									 reg sum[UN];
-									 for (size_t u = 0; u < UN; ++u)
-										 sum[u] = Simd::zero();
+						 Kernel::packBlockB(&mat(j, 0), blockB_packed, nc, kc, mat.cols);
 
-									 const K* const b_ptr[UN] = {             
-										 &mat_transposed.data[(j + 0) * mat.rows],
-										 &mat_transposed.data[(j + 1) * mat.rows],
-										 &mat_transposed.data[(j + 2) * mat.rows],
-										 &mat_transposed.data[(j + 3) * mat.rows]
-									 };
-									 microkernel4<UN>(cols, a_ptr, b_ptr, sum);
-									 K total0 = Simd::horizontal_add(sum[0]);
-									 K total1 = Simd::horizontal_add(sum[1]);
-									 K total2 = Simd::horizontal_add(sum[2]);
-									 K total3 = Simd::horizontal_add(sum[3]);
+						 for (int i = 0; i < rows; i += MC) {
+							 int mc = MathsUtils::_min(MC, rows - i);
+							 Kernel::packBlockA(&(*this)(i, 0), blockA_packed, mc, kc, cols);
 
+#pragma omp parallel for collapse(2)
+							 for (int jr = 0; jr < nc; jr += NR) {
+								 for (int ir = 0; ir < mc; ir += MR) {
+									 int nr = MathsUtils::_min(NR, nc - jr);
+									 int mr = MathsUtils::_min(MR, mc - ir);
 
-									 for (size_t k = (cols & ~(simd_width-1)); k < cols; ++k) {
-										 K a_val = a_ptr[k];
-										 total0 += a_val * b_ptr[0][k];
-										 total1 += a_val * b_ptr[1][k];
-										 total2 += a_val * b_ptr[2][k];
-										 total3 += a_val * b_ptr[3][k];
-									 }
-
-
-									 reg res_vec = Simd::set(total3, total2, total1, total0);
-									 /*
-									  *	if address is unaligned it auto fallback to an unaligned store
-									  *	Then , we're using an aligned store 
-									  */
-									 if (((uintptr_t)&result.data[i*cols+j] & 31) == 0)
-										 Simd::stream(&result.data[i * result.cols + j], res_vec);
-									 else
-										 Simd::store(&result.data[i * result.cols + j], res_vec);
+									 Kernel::kernel_16x6_zero_init_accum(
+											 &blockA_packed[ir * kc],
+											 &blockB_packed[jr * kc],
+											 &result(j + jr, i + ir),
+											 mr, nr, kc, result.cols
+											 );
 								 }
+							 }
+						 }
 
-								 for (size_t j = j_end - (j_end - jj) % unroll; j < j_end; ++j) {
-									 reg sum = Simd::zero();
-									 const K* __restrict__ a_ptr = &data[i * cols];
-									 const K* __restrict__ b_ptr = &mat_transposed.data[j * mat.rows];
+						 for (int p = kc; p < cols; p += KC) {
+							 int pkc = MathsUtils::_min(KC, cols - p);
+							 Kernel::packBlockB(&mat(j, p), blockB_packed, nc, pkc, mat.cols);
 
-									 size_t k = 0;
-									 for (; k + simd_width - 1 < cols; k += simd_width) {
-										 reg a = Simd::load(a_ptr + k);
-										 reg b = Simd::load(b_ptr + k);
-										 sum   = Simd::fmadd(a, b, sum);
+							 for (int i = 0; i < rows; i += MC) {
+								 int mc = MathsUtils::_min(MC, rows - i);
+								 Kernel::packBlockA(&(*this)(i, p), blockA_packed, mc, pkc, cols);
+
+#pragma omp parallel for collapse(2)
+								 for (int jr = 0; jr < nc; jr += NR) {
+									 for (int ir = 0; ir < mc; ir += MR) {
+										 int nr = MathsUtils::_min(NR, nc - jr);
+										 int mr = MathsUtils::_min(MR, mc - ir);
+
+										 Kernel::kernel_16x6_load_accum(
+												 &blockA_packed[ir * pkc],
+												 &blockB_packed[jr * pkc],
+												 &result(j + jr, i + ir),
+												 mr, nr, pkc, result.cols
+												 );
 									 }
-									 K total = Simd::horizontal_add(sum);
-									 for (; k < cols; ++k) total += a_ptr[k] * b_ptr[k];
-									 result(i, j) = total;
 								 }
 							 }
 						 }
