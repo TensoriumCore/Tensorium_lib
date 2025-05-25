@@ -1,10 +1,16 @@
 <map id="tensorium::mul_mat" name="tensorium::mul_mat">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,48,159,76"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="207,40,352,84"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,59,191,59,191,65,159,65"/>
-<area shape="rect" id="Node000003" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="407,5,538,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,43,392,34,393,39,353,48"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="400,81,545,126"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="353,75,385,82,384,87,352,80"/>
-<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="435,81,434,71,441,62,453,56,473,54,493,57,506,63,503,68,492,62,473,59,455,61,444,66,439,72,441,80"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,83,159,111"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="223,5,369,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,80,210,53,211,58,128,85"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1MatrixKernel.html#a521ceea8e982a3e179b6e42ac26e860a" title=" " alt="" coords="207,75,385,119"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="159,94,191,94,191,100,159,100"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1MatrixKernel.html#a393fb342aa333070b1ea2aa8dff6733a" title=" " alt="" coords="207,144,385,189"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="128,109,211,136,210,141,126,114"/>
+<area shape="rect" id="Node000003" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="440,7,571,35"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="369,23,424,21,425,26,369,28"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="433,83,578,127"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="360,48,430,74,428,79,358,53"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="465,82,464,73,471,64,485,58,506,56,529,59,542,65,540,70,527,64,506,61,486,63,474,68,469,74,471,82"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="386,98,417,99,417,104,386,103"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="374,141,417,128,419,133,375,146"/>
 </map>

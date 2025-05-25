@@ -4,6 +4,7 @@ var structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4
     [ "reg_aligned", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#a582588b0fc4b43d3696daab5a958348d", null ],
     [ "add", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#aedebb105ba77d91380e017e8c8ec8a88", null ],
     [ "andnot", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#a6485310beb8806f326f007cda4ac1d08", null ],
+    [ "extract", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#a48553353e70acc91353d8df0bab83510", null ],
     [ "fmadd", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#a1876cd33b91dbefd8c2c631759f9a2dc", null ],
     [ "load", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#a5fda09c8a180c04029bed4000e03a13e", null ],
     [ "loadu", "structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#aff952af018a7e711e2a740a012069ac7", null ],

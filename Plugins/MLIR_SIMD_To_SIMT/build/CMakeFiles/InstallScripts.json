@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/ltouzali/Desktop/Morpheus_lib/Plugins/MLIR_SIMD_To_SIMT/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -109,12 +109,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AST_8hpp.html",
-"classes.html",
-"classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2",
-"classtensorium__RG_1_1Metric.html#a088bb0e1c78e4411b0f13f08aa0169b5",
-"namespacetensorium_1_1mpi.html#a97c2be1d5792e01dcea98a97661cd926",
-"structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a2b2f6a136923afb74c5334eceb700aae",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html#ac75ce5445bf2d5b9da4fb234a3296076"
+"classLexer.html#a3add295fdc3cbd0e0e44d6a0f9c08ab0",
+"classtensorium_1_1Parser.html#a739e0565e789a2468032ef13934e4411",
+"classtensorium_1_1solver_1_1Gauss.html#af78bfbce88c608009f31b5073677d6f2",
+"namespacetensorium.html#a854dc844b1e819f6a5ab9369dbe76e96",
+"structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html#a2c736744f43c301f1dc88bb1e7995ed3",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4.html#a7b16c530322e90fcfa559c3138667f2c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

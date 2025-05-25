@@ -1,6 +1,6 @@
 var searchData=
 [
   ['zero_0',['zero',['../structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html#a65cb959dfbc9c352f110af7d3252bd8b',1,'simd::SimdTraits&lt; float, sse_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#a591ae0ec62d56ea952c251b7af7497a3',1,'simd::SimdTraits&lt; double, sse_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a11401d77ac67a31ad130b2e6c91a5f81',1,'simd::SimdTraits&lt; size_t, sse_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#a47584f6942446fdcc30a0ced2722af46',1,'simd::SimdTraits&lt; float, avx2_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#a7fc9cd6aadf0392b253726f9b9ab39cb',1,'simd::SimdTraits&lt; double, avx2_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a498d43b11cb3b6a042529df2193ca120',1,'simd::SimdTraits&lt; size_t, avx2_t &gt;::zero()'],['../structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4.html#a6266156b1fc57531ad51a0347b032b21',1,'simd::SimdTraits&lt; std::complex&lt; float &gt;, avx2_t &gt;::zero()']]],
-  ['zeta_1',['zeta',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eae26026b73cdc3b59012c318ba26b5518',1,'Latex.hpp']]],
-  ['zeta_2',['Zeta',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea91526dc4ef03879503e3995808a9d524',1,'Latex.hpp']]]
+  ['zeta_1',['Zeta',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea91526dc4ef03879503e3995808a9d524',1,'Latex.hpp']]],
+  ['zeta_2',['zeta',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eae26026b73cdc3b59012c318ba26b5518',1,'Latex.hpp']]]
 ];

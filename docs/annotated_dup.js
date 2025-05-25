@@ -25,6 +25,7 @@ var annotated_dup =
       [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
       [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
       [ "Matrix", "classtensorium_1_1Matrix.html", "classtensorium_1_1Matrix" ],
+      [ "MatrixKernel", "classtensorium_1_1MatrixKernel.html", "classtensorium_1_1MatrixKernel" ],
       [ "Parser", "classtensorium_1_1Parser.html", "classtensorium_1_1Parser" ],
       [ "SpectalChebyshev", "classtensorium_1_1SpectalChebyshev.html", "classtensorium_1_1SpectalChebyshev" ],
       [ "SpectralFFT", "classtensorium_1_1SpectralFFT.html", "classtensorium_1_1SpectralFFT" ],

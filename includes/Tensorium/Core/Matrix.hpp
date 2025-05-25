@@ -215,7 +215,7 @@ namespace tensorium {
 					 using Simd = simd::SimdTraits<K, DefaultISA>;
 					 using reg  = typename Simd::reg;
 					 constexpr size_t simd_width = Simd::width;
-					 constexpr size_t unroll     = UNROLL;   // automaticly check at compile/runtime via CPU and caches detections
+					 constexpr size_t unroll     = UNROLL;  
 
 					 Matrix<K> result(rows, mat.cols);
 					 Matrix<K> mat_transposed(mat.cols, mat.rows);
@@ -299,6 +299,41 @@ namespace tensorium {
 				  * this avoids overloading on small sizes where massive unrolls would 
 				  * create a bottleneck on instructions
 				  */
+				 //
+				 // inline Matrix<K> mul_mat3x3(const Matrix<K>& mat) const {
+				 // 					 using Simd = simd::SimdTraits<K, DefaultISA>;
+				 // 					 using reg  = typename Simd::reg;
+				 //
+				 // 					 Matrix<K> result(3, 3);
+				 // 					 reg row0 = Simd::loadu(&data[0]);
+				 // 					 reg row1 = Simd::loadu(&data[3]);
+				 // 					 reg row2 = Simd::loadu(&data[6]);
+				 //
+				 // 					 for (int i = 0; i < 3; ++i) {
+				 // 						 reg row = (i==0 ? row0 : (i==1 ? row1 : row2));
+				 //
+				 // 						 K x = data[i * 3 + 0];
+				 // 						 K y = data[i * 3 + 1];
+				 // 						 K z = data[i * 3 + 2];
+				 //
+				 // 						 reg sx = Simd::set1(x);
+				 // 						 reg sy = Simd::set1(y);
+				 // 						 reg sz = Simd::set1(z);
+				 //
+				 // 						 reg c0 = Simd::loadu(&mat.data[0]);
+				 // 						 reg c1 = Simd::loadu(&mat.data[3]);
+				 // 						 reg c2 = Simd::loadu(&mat.data[6]);
+				 //
+				 // 						 reg acc = Simd::mul(sx, c0);
+				 // 						 acc = Simd::fmadd(sy, c1, acc);
+				 // 						 acc = Simd::fmadd(sz, c2, acc);
+				 //
+				 // 						 Simd::storeu(&result.data[i*3], acc);
+				 // 					 }
+				 //
+				 // 					 return result;
+				 // }
+
 				 template<size_t N>
 					 inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
 						 static_assert(N == 4 || N == 8 || N == 16, "Only 4, 8, 16 supported for fast path");
@@ -368,6 +403,7 @@ namespace tensorium {
 
 						 return result;
 					 }
+
 				 /** @brief Returns the transpose \f$ A^T \f$ of the matrix */
 				 inline Matrix<K> transpose() const {
 					 Matrix<K> result(cols, rows); 

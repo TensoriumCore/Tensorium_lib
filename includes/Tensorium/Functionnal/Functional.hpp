@@ -5,6 +5,7 @@
 #include "../Core/LinearSolver.hpp"
 #include "../Core/Derivate.hpp"
 #include "../Core/Spectral.hpp"
+#include "../Core/MatrixKernel.hpp"
 
 namespace tensorium {
 	// === VECTOR OPS ===
@@ -185,6 +186,14 @@ namespace tensorium {
 
 	template <typename T>
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
+		if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
+			const MatrixKernel<T> kernelA(A);
+			return kernelA.mul_mat3x3(B);
+		}
+		if (A.rows == 4 && A.cols == 4 && B.rows == 4 && B.cols == 4) {
+			const MatrixKernel<T> kernelA(A);
+			return kernelA.mul_mat4x4(B);
+		}
 		return A.mul_mat(B); 
 	}
 

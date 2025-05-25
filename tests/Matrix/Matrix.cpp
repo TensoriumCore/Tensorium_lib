@@ -205,6 +205,29 @@ int matrix_tests() {
 	Cc = tensorium::mul_mat(Ac, Bc);
 	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
+
+	Mat A3(3, 3);
+	A3(0, 0) = 1; A3(0, 1) = 2; A3(0, 2) = 3;
+	A3(1, 0) = 4; A3(1, 1) = 5; A3(1, 2) = 6;
+	A3(2, 0) = 7; A3(2, 1) = 8; A3(2, 2) = 9;
+
+	Mat B3(3, 3);
+	B3(0, 0) = 9; B3(0, 1) = 8; B3(0, 2) = 7;
+	B3(1, 0) = 6; B3(1, 1) = 5; B3(1, 2) = 4;
+	B3(2, 0) = 3; B3(2, 1) = 2; B3(2, 2) = 1;
+
+	Mat R3 = A3.mul_mat(B3);
+
+	CHECK(std::abs(R3(0, 0) - (1*9 + 2*6 + 3*3)) < 1e-4f);
+	CHECK(std::abs(R3(0, 1) - (1*8 + 2*5 + 3*2)) < 1e-4f);
+	CHECK(std::abs(R3(0, 2) - (1*7 + 2*4 + 3*1)) < 1e-4f);
+	CHECK(std::abs(R3(1, 0) - (4*9 + 5*6 + 6*3)) < 1e-4f);
+	CHECK(std::abs(R3(2, 2) - (7*7 + 8*4 + 9*1)) < 1e-4f);
+
+	std::cout << "✅ 3x3 matrix multiplication passed.\n";
+
+
+
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	constexpr size_t dim = 4;
 

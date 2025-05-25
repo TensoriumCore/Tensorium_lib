@@ -1,14 +1,20 @@
 <map id="main" name="main">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,32,60,60"/>
-<area shape="rect" id="Node000002" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="165,5,204,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,39,149,23,150,28,61,44"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#ab317cc43203309cc34bf719934edbc7e" title=" " alt="" coords="108,57,261,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,48,93,53,92,58,60,53"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="309,49,454,94"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="261,69,294,69,294,74,261,74"/>
-<area shape="rect" id="Node000005" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="509,15,641,42"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,53,494,44,495,49,455,58"/>
-<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="502,90,648,135"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="455,84,488,91,486,96,454,89"/>
-<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="538,90,537,80,543,71,556,66,575,64,596,66,608,72,606,77,594,71,575,69,557,71,546,75,542,81,543,89"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,58,60,86"/>
+<area shape="rect" id="Node000002" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="165,31,204,59"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,64,149,48,150,54,61,70"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#ab317cc43203309cc34bf719934edbc7e" title=" " alt="" coords="108,83,261,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,74,93,79,92,84,60,79"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="326,5,471,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="229,80,312,53,314,58,230,85"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1MatrixKernel.html#a521ceea8e982a3e179b6e42ac26e860a" title=" " alt="" coords="309,75,487,119"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="261,94,293,94,293,100,261,100"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1MatrixKernel.html#a393fb342aa333070b1ea2aa8dff6733a" title=" " alt="" coords="309,144,487,189"/>
+<area shape="poly" id="edge9_Node000003_Node000008" title=" " alt="" coords="230,109,314,136,312,141,229,114"/>
+<area shape="rect" id="Node000005" href="$classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8" title=" " alt="" coords="542,7,674,35"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="471,23,527,21,527,26,471,28"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="535,83,681,127"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="462,48,532,74,530,79,460,53"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="568,82,566,73,573,64,587,58,608,56,631,59,644,65,642,70,629,64,608,61,589,63,577,68,572,74,573,82"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="488,98,520,99,520,104,488,103"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="476,141,520,128,521,133,477,146"/>
 </map>
