@@ -123,7 +123,7 @@ int matrix_tests() {
 	Mat tr = A.trace();
 	CHECK(std::abs(tr(0, 0) - (A(0, 0) + A(1, 1))) < 1e-4);
 
-	Mat M = A.mul_mat(B);
+	Mat M = tensorium::mul_mat(A, B);
 	CHECK(std::abs(M(0, 0) - (1*5 + 2*7)) < 1e-4);
 	CHECK(std::abs(M(1, 1) - (3*6 + 4*8)) < 1e-4);
 	std::cout << "Inverse test\n";
@@ -140,7 +140,7 @@ int matrix_tests() {
 	CHECK(std::abs(A_inv(1, 0) * A(0, 0) + A_inv(1, 1) * A(1, 0)) < 1e-3f);
 
 
-    Mat Id = A.mul_mat(A_inv);
+    Mat Id = tensorium::mul_mat(A, A_inv);
     CHECK(std::abs(Id(0, 0) - 1.0f) < 1e-3f);
     CHECK(std::abs(Id(1, 1) - 1.0f) < 1e-3f);
     CHECK(std::abs(Id(0, 1)) < 1e-3f);
@@ -214,7 +214,7 @@ int matrix_tests() {
 	B2(0, 0) = 5; B2(0, 1) = 6;
 	B2(1, 0) = 7; B2(1, 1) = 8;
 
-	Mat R2 = A2.mul_mat(B2);
+	Mat R2 = tensorium::mul_mat(A2, B2);
 
 	CHECK(std::abs(R2(0, 0) - (1*5 + 2*7)) < 1e-4f);
 	CHECK(std::abs(R2(0, 1) - (1*6 + 2*8)) < 1e-4f);
@@ -232,7 +232,7 @@ int matrix_tests() {
 	B3(1, 0) = 6; B3(1, 1) = 5; B3(1, 2) = 4;
 	B3(2, 0) = 3; B3(2, 1) = 2; B3(2, 2) = 1;
 
-	Mat R3 = A3.mul_mat(B3);
+	Mat R3 = tensorium::mul_mat(A3, B3);
 
 	CHECK(std::abs(R3(0, 0) - (1*9 + 2*6 + 3*3)) < 1e-4f);
 	CHECK(std::abs(R3(0, 1) - (1*8 + 2*5 + 3*2)) < 1e-4f);
@@ -249,7 +249,7 @@ int matrix_tests() {
 			B4(i, j) = 16 - (i * 4 + j);
 		}
 	
-	Mat R4 = A4.mul_mat(B4);
+	Mat R4 = tensorium::mul_mat(A4, B4);
 	R4.print();
 	CHECK(std::abs(R4(0, 0) - (1*16 + 2*12 + 3*8 + 4*4)) < 1e-4f);
 	CHECK(std::abs(R4(3, 3) - (13*13 + 14*9 + 15*5 + 16*1)) < 1e-4f);
@@ -265,7 +265,7 @@ int matrix_tests() {
 			B8(i, j) = static_cast<float>((i + j) % 8 + 1);
 		}
 
-	Mat R8 = A8.mul_mat(B8);
+	Mat R8 = tensorium::mul_mat(A8, B8);
 	R8.print();
 	float expected = 0.0f;
 	for (int k = 0; k < 8; ++k)
@@ -280,7 +280,7 @@ int matrix_tests() {
 		for (int j = 0; j < 16; ++j)
 			A16(i, j) = i + j, B16(i, j) = 16 - i + j;
 
-	Mat R16 = A16.mul_mat(B16);
+	Mat R16 = tensorium::mul_mat(A16, B16);
 	CHECK(std::abs(R16(0, 0) - 680.0f) < 1e-3f);
 	std::cout << "✅ 16x16 matrix multiplication passed.\n";
 
