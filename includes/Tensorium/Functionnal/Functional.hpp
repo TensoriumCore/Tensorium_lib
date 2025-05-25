@@ -207,7 +207,7 @@ namespace tensorium {
 			return kernelA.mul_mat16x16(B);
 		}
 
-		return A.mul_mat(B); 
+		return A._mul_mat(B); 
 	}
 
 /*

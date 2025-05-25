@@ -198,7 +198,7 @@ namespace tensorium {
 				  * 
 				  * Uses blocking and micro-kernels to avoid cache bottleneck with FMA/AVX units repartition. Fast-paths exist for 4×4, 8×8, and 16×16.
 				  */
-				 inline Matrix mul_mat(const Matrix<K>& mat) const {
+				 inline Matrix _mul_mat(const Matrix<K>& mat) const {
 					 if (cols != mat.rows)
 						 throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 
