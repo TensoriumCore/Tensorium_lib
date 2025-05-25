@@ -7,7 +7,7 @@ var structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4 =
     [ "extract", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#aab87832c51b05f0d0e59c785cde3b838", null ],
     [ "fmadd", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#abec476e48a4e053c1129b045171469e2", null ],
     [ "horizontal_add", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#aade5ed316626f0c28d88352c5b8fe9dd", null ],
-    [ "load", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#abf7af9aacbbe24226bc635187d2a1f55", null ],
+    [ "load", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#aa7aa6927a48af62b005fc89487f1e474", null ],
     [ "loadu", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#aaae2334deba130564cad76bc33a1a266", null ],
     [ "max", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a6f452a5a75d3d47fc61ad03863cba404", null ],
     [ "mul", "structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a95bb092415445edfbb5738531962dc18", null ],

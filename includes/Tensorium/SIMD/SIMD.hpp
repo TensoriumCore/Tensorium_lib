@@ -185,6 +185,10 @@ namespace simd {
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm_set_ps(a, b, c, d);
 			}
+			template<int i0, int i1, int i2, int i3>
+				static inline reg permute(reg x) {
+					return _mm_permute_ps(x, _MM_SHUFFLE(i3, i2, i1, i0));
+				}
 			static inline reg set4(
 					float a0, float a1, float a2, float a3
 					) {
@@ -306,6 +310,11 @@ namespace simd {
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm256_set_ps(a, b, c, d, a, b, c, d);
 			}
+			template<int i0, int i1, int i2, int i3>
+				static inline reg permute(reg x) {
+					constexpr int imm = _MM_SHUFFLE(i3, i2, i1, i0);
+					return _mm256_permute_ps(x, imm);
+				}
 			static inline reg set8(
 					float a0, float a1, float a2, float a3,
 					float a4, float a5, float a6, float a7
@@ -557,6 +566,11 @@ namespace simd {
 			static inline reg load(const std::complex<float>* ptr) {
 				return _mm_loadu_ps(reinterpret_cast<const float*>(ptr));
 			}
+			static inline std::complex<float> extract(reg x, size_t index) {
+				alignas(16) float values[4];
+				_mm_storeu_ps(values, x);
+				return std::complex<float>(values[2 * index], values[2 * index + 1]);
+			}
 			static inline reg loadu(const std::complex<float>* ptr) {
 				return _mm_loadu_ps(reinterpret_cast<const float*>(ptr));
 			}
@@ -615,6 +629,11 @@ namespace simd {
 			static inline reg loadu(const std::complex<double>* ptr) {
 				return _mm_loadu_pd(reinterpret_cast<const double*>(ptr));
 			}
+			static inline std::complex<double> extract(reg x, size_t /*index*/ = 0) {
+				alignas(16) double values[2];
+				_mm_storeu_pd(values, x);
+				return std::complex<double>(values[0], values[1]);
+			}
 			static inline void store(std::complex<double>* ptr, reg x) {
 				_mm_storeu_pd(reinterpret_cast<double*>(ptr), x);
 			}
@@ -668,6 +687,11 @@ namespace simd {
 			}
 			static inline reg loadu(const std::complex<float>* ptr) {
 				return _mm256_loadu_ps(reinterpret_cast<const float*>(ptr));
+			}
+			static inline std::complex<float> extract(reg x, size_t index) {
+				alignas(32) float values[8];
+				_mm256_storeu_ps(values, x);
+				return std::complex<float>(values[2 * index], values[2 * index + 1]);
 			}
 			static inline void store(std::complex<float>* ptr, reg x) {
 				_mm256_store_ps(reinterpret_cast<float*>(ptr), x);

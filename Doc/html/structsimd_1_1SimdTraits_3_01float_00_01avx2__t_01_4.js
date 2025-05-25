@@ -13,6 +13,7 @@ var structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4 =
     [ "max", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#afc0b143fb090cecd0d96cde5d9b4c91e", null ],
     [ "min", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#af0dff18d26eb11df5d4997dcf97c76db", null ],
     [ "mul", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#aac2c4c7620a34043abd85b722da77b89", null ],
+    [ "permute", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#a33cd71a12cc62f6ba069b45c4b61ff4e", null ],
     [ "set", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#a20f0e3ee90d001910439346bece45712", null ],
     [ "set1", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#afed05d4c9e17979794ce5cadc66f7bc5", null ],
     [ "set8", "structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#af56986274bc2d7596a9e1977c16e229a", null ],

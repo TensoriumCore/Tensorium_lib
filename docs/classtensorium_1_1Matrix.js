@@ -24,12 +24,12 @@ var classtensorium_1_1Matrix =
     [ "trace", "classtensorium_1_1Matrix.html#a647156d276ab6b8cc06e10ae6e479857", null ],
     [ "transpose", "classtensorium_1_1Matrix.html#af090bc9aae9d7f0a177dbcc33dd6139e", null ],
     [ "a", "classtensorium_1_1Matrix.html#af0af50687266e7f41eedb91b38b98c7c", null ],
-    [ "b", "classtensorium_1_1Matrix.html#abbc7f98ebd555ee66cebc6b2b316a19f", null ],
+    [ "b", "classtensorium_1_1Matrix.html#a19bb9b7b690aefbf7df4a8bf68849619", null ],
     [ "block_size", "classtensorium_1_1Matrix.html#a891603f6205a38a565b4635b93d03e47", null ],
     [ "cols", "classtensorium_1_1Matrix.html#a09eb7af109a929f09fb13998dc4ff22a", null ],
     [ "data", "classtensorium_1_1Matrix.html#aab383228e730a151ffdf5053f4643326", null ],
     [ "k", "classtensorium_1_1Matrix.html#a0c571360e73e8ab6ebadc683e6c93c6d", null ],
     [ "rows", "classtensorium_1_1Matrix.html#aea37bb7fb2eabd97a3dff71fa59d4da6", null ],
     [ "simd_width", "classtensorium_1_1Matrix.html#a12eb1e2a47caeaa838603b4a5643a2fd", null ],
-    [ "sum", "classtensorium_1_1Matrix.html#a935bb7ea82ca1fcc5c5218edcab0392b", null ]
+    [ "sum", "classtensorium_1_1Matrix.html#a121c51692f427a4ca74f766d46073568", null ]
 ];
