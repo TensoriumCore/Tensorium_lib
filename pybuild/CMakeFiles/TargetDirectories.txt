@@ -1,0 +1,3 @@
+/Users/at0m741/Desktop/Tensorium_lib/pybuild/CMakeFiles/tensorium.dir
+/Users/at0m741/Desktop/Tensorium_lib/pybuild/CMakeFiles/edit_cache.dir
+/Users/at0m741/Desktop/Tensorium_lib/pybuild/CMakeFiles/rebuild_cache.dir
