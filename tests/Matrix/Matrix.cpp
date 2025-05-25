@@ -206,6 +206,22 @@ int matrix_tests() {
 	std::cout << "✅ add_mat on complex<float> passed.\n";
 	matrix_bench();
 
+	Mat A2(2, 2);
+	A2(0, 0) = 1; A2(0, 1) = 2;
+	A2(1, 0) = 3; A2(1, 1) = 4;
+
+	Mat B2(2, 2);
+	B2(0, 0) = 5; B2(0, 1) = 6;
+	B2(1, 0) = 7; B2(1, 1) = 8;
+
+	Mat R2 = A2.mul_mat(B2);
+
+	CHECK(std::abs(R2(0, 0) - (1*5 + 2*7)) < 1e-4f);
+	CHECK(std::abs(R2(0, 1) - (1*6 + 2*8)) < 1e-4f);
+	CHECK(std::abs(R2(1, 0) - (3*5 + 4*7)) < 1e-4f);
+	CHECK(std::abs(R2(1, 1) - (3*6 + 4*8)) < 1e-4f);
+
+	std::cout << "✅ 2x2 matrix multiplication passed.\n";
 	Mat A3(3, 3);
 	A3(0, 0) = 1; A3(0, 1) = 2; A3(0, 2) = 3;
 	A3(1, 0) = 4; A3(1, 1) = 5; A3(1, 2) = 6;
@@ -225,8 +241,48 @@ int matrix_tests() {
 	CHECK(std::abs(R3(2, 2) - (7*7 + 8*4 + 9*1)) < 1e-4f);
 
 	std::cout << "✅ 3x3 matrix multiplication passed.\n";
+	Mat A4(4, 4);
+	Mat B4(4, 4);
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j) {
+			A4(i, j) = i * 4 + j + 1;
+			B4(i, j) = 16 - (i * 4 + j);
+		}
+	
+	Mat R4 = A4.mul_mat(B4);
+	R4.print();
+	CHECK(std::abs(R4(0, 0) - (1*16 + 2*12 + 3*8 + 4*4)) < 1e-4f);
+	CHECK(std::abs(R4(3, 3) - (13*13 + 14*9 + 15*5 + 16*1)) < 1e-4f);
+
+	std::cout << "✅ 4x4 matrix multiplication passed.\n";
 
 
+	Mat A8(8, 8);
+	Mat B8(8, 8);
+	for (int i = 0; i < 8; ++i)
+		for (int j = 0; j < 8; ++j) {
+			A8(i, j) = static_cast<float>(i * 8 + j + 1);
+			B8(i, j) = static_cast<float>((i + j) % 8 + 1);
+		}
+
+	Mat R8 = A8.mul_mat(B8);
+	R8.print();
+	float expected = 0.0f;
+	for (int k = 0; k < 8; ++k)
+		expected += A8(0, k) * B8(k, 0);
+
+	CHECK(std::abs(R8(0, 0) - expected) < 1e-4f);
+	std::cout << "✅ 8x8 matrix multiplication passed.\n";
+
+
+	Mat A16(16, 16), B16(16, 16);
+	for (int i = 0; i < 16; ++i)
+		for (int j = 0; j < 16; ++j)
+			A16(i, j) = i + j, B16(i, j) = 16 - i + j;
+
+	Mat R16 = A16.mul_mat(B16);
+	CHECK(std::abs(R16(0, 0) - 680.0f) < 1e-3f);
+	std::cout << "✅ 16x16 matrix multiplication passed.\n";
 
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	constexpr size_t dim = 4;

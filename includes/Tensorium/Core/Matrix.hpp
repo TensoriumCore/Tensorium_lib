@@ -201,10 +201,6 @@ namespace tensorium {
 				 inline Matrix mul_mat(const Matrix<K>& mat) const {
 					 if (cols != mat.rows)
 						 throw std::invalid_argument("Matrix dimensions do not match for multiplication");
-					 if (cols == 8 && mat.rows == 8 && mat.cols == 8)
-						 return mul_mat_NxN<8>(mat);
-					 if (cols == 16 && mat.rows == 16 && mat.cols == 16)
-						 return mul_mat_NxN<16>(mat);
 
 					/*
 					 * SimdTraits to auto detetch SIMD architecture options 
@@ -291,80 +287,7 @@ namespace tensorium {
 					 }
 					 return result;
 				 }
-				 /**
-				  * @brief Specialized fast multiplication for fixed-size square matrices
-				  * (supports N = 4, 8, 16)
-				  * this avoids overloading on small sizes where massive unrolls would 
-				  * create a bottleneck on instructions
-				  */
-				 //
-				 // inline Matrix<K> mul_mat3x3(const Matrix<K>& mat) const {
-				 // 					 using Simd = simd::SimdTraits<K, DefaultISA>;
-				 // 					 using reg  = typename Simd::reg;
-				 //
-				 // 					 Matrix<K> result(3, 3);
-				 // 					 reg row0 = Simd::loadu(&data[0]);
-				 // 					 reg row1 = Simd::loadu(&data[3]);
-				 // 					 reg row2 = Simd::loadu(&data[6]);
-				 //
-				 // 					 for (int i = 0; i < 3; ++i) {
-				 // 						 reg row = (i==0 ? row0 : (i==1 ? row1 : row2));
-				 //
-				 // 						 K x = data[i * 3 + 0];
-				 // 						 K y = data[i * 3 + 1];
-				 // 						 K z = data[i * 3 + 2];
-				 //
-				 // 						 reg sx = Simd::set1(x);
-				 // 						 reg sy = Simd::set1(y);
-				 // 						 reg sz = Simd::set1(z);
-				 //
-				 // 						 reg c0 = Simd::loadu(&mat.data[0]);
-				 // 						 reg c1 = Simd::loadu(&mat.data[3]);
-				 // 						 reg c2 = Simd::loadu(&mat.data[6]);
-				 //
-				 // 						 reg acc = Simd::mul(sx, c0);
-				 // 						 acc = Simd::fmadd(sy, c1, acc);
-				 // 						 acc = Simd::fmadd(sz, c2, acc);
-				 //
-				 // 						 Simd::storeu(&result.data[i*3], acc);
-				 // 					 }
-				 //
-				 // 					 return result;
-				 // }
 
-				 template<size_t N>
-					 inline Matrix<K> mul_mat_NxN(const Matrix<K>& mat) const {
-						 static_assert(N == 4 || N == 8 || N == 16, "Only 4, 8, 16 supported for fast path");
-
-						 using Simd        = simd::SimdTraits<K, DefaultISA>;
-						 using reg         = typename Simd::reg;
-						 using reg_aligned = typename Simd::reg_aligned;
-
-						 Matrix<K> result(N, N);
-
-						 reg_aligned A_rows[N];
-						 reg_aligned B_cols[N];
-
-						 for (size_t i = 0; i < N; ++i) {
-							 A_rows[i].value = Simd::loadu(&this->data[i * N]);
-						 }
-
-						 for (size_t j = 0; j < N; ++j) {
-							 alignas(64) K col_data[N];
-							 for (size_t i = 0; i < N; ++i)
-								 col_data[i] = mat(i, j);
-							 B_cols[j].value = Simd::loadu(col_data);
-						 }
-
-						 for (size_t i = 0; i < N; ++i) {
-							 for (size_t j = 0; j < N; ++j) {
-								 reg prod = Simd::mul(A_rows[i].value, B_cols[j].value);
-								 result(i, j) = Simd::horizontal_add(prod);
-							 }
-						 }
-
-						 return result;
-					 }
 				 /**
 				  * @brief Multiply matrix by a vector using SIMD
 				  *
