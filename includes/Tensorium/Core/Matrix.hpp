@@ -45,9 +45,15 @@ namespace tensorium {
 					 return rows * cols; 
 				 }
 				 /** @brief Element access (mutable) */
-				 K& operator()(size_t i, size_t j) { return data[i * cols + j]; }
-				 /** @brief Element access (const) */
-				 const K& operator()(size_t i, size_t j) const { return data[i * cols + j]; }
+
+				 K& operator()(size_t i, size_t j) {
+					 return data[j * rows + i];
+				 }
+
+				 const K& operator()(size_t i, size_t j) const {
+					 return data[j * rows + i];
+				 }
+
 				 /** @brief Print the matrix to stdout */
 				 void print() const {
 					 for (size_t i = 0; i < rows; ++i) {
@@ -175,28 +181,22 @@ namespace tensorium {
 
 					 Matrix<K> result(rows, mat.cols);
 
-					 const K* A = data.data();
-					 K* C = result.data.data();
-
-					 std::vector<K> B_colmaj(mat.rows * mat.cols);
-					 for (size_t j = 0; j < mat.cols; ++j)
-						 for (size_t i = 0; i < mat.rows; ++i)
-							 B_colmaj[j * mat.rows + i] = mat.data[i * mat.cols + j];
+					 const K* A = data.data();               // Already column-major (this)
+					 const K* B = mat.data.data();           // Already column-major (rhs)
+					 K* C       = result.data.data();        // Output (also column-major)
 
 					 tensorium::GemmKernel<K> kernel;
 					 kernel.matmul(
+							 const_cast<K*>(B),
 							 const_cast<K*>(A),
-							 B_colmaj.data(),
 							 C,
-							 static_cast<int>(rows), 
-							 static_cast<int>(mat.cols),
-							 static_cast<int>(cols) 
+							 static_cast<int>(rows),             // M
+							 static_cast<int>(mat.cols),         // N
+							 static_cast<int>(cols)              // K
 							 );
 
 					 return result;
 				 }
-
-
 				 /**
 				  * @brief Multiply matrix by a vector using SIMD
 				  *
@@ -205,67 +205,46 @@ namespace tensorium {
 				 template<typename T>
 					 inline Vector<T> mul_vec(const Vector<T>& x) const {
 						 using Simd = simd::SimdTraits<T, DefaultISA>;
-						 using reg = typename Simd::reg;
-						 const size_t simd_width = Simd::width;
+						 using reg  = typename Simd::reg;
+						 constexpr size_t W = Simd::width;
 
 						 assert(cols == x.size());
 
 						 Vector<T> result(rows, T(0));
 
+						 alignas(64) T buffer[W];
+
 						 for (size_t i = 0; i < rows; ++i) {
 							 reg acc = Simd::zero();
-
 							 size_t j = 0;
-							 for (; j + simd_width - 1 < cols; j += simd_width) {
-								 reg A_vec = Simd::load(&(*this)(i, j));
+
+							 for (; j + W <= cols; j += W) {
+								 for (size_t w = 0; w < W; ++w)
+									 buffer[w] = (*this)(i, j + w);  
+
+								 reg A_vec = Simd::load(buffer);
 								 reg x_vec = Simd::load(&x[j]);
 								 acc = Simd::fmadd(A_vec, x_vec, acc);
 							 }
 
 							 T sum = Simd::horizontal_add(acc);
 
-							 for (; j < cols; ++j) {
-									 sum += (*this)(i, j) * x[j];
-								 }
+							 for (; j < cols; ++j)
+								 sum += (*this)(i, j) * x[j];
 
-								 result[i] = sum;
-							 }
-
-							 return result;
+							 result[i] = sum;
 						 }
 
-					 /** @brief Returns the transpose \f$ A^T \f$ of the matrix */
-					 inline Matrix<K> transpose() const {
-						 Matrix<K> result(cols, rows); 
-						 if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
-							 using ISA = DefaultISA;
-							 using Simd = simd::SimdTraits<K, ISA>;
-
-							 const size_t W = Simd::width;
-
-							 if (rows % W == 0 && cols % W == 0) {
-								 for (size_t i = 0; i < rows; i += W) {
-									 for (size_t j = 0; j < cols; j += W) {
-										 typename Simd::reg block[W];
-									 for (size_t k = 0; k < W; ++k)
-										 block[k] = Simd::load(&data[(i + k) * cols + j]);
-
-									 alignas(ALIGN) K tmp[W][W];
-									 for (size_t k = 0; k < W; ++k)
-										 Simd::store(tmp[k], block[k]);
-
-									 for (size_t x = 0; x < W; ++x)
-										 for (size_t y = 0; y < W; ++y)
-											 result(j + x, i + y) = tmp[y][x];
-								 }
-							 }
-							 return result;
-						 }
+						 return result;
 					 }
+
+				 /** @brief Returns the transpose \f$ A^T \f$ of the matrix (column-major layout) */
+				 inline Matrix<K> transpose() const {
+					 Matrix<K> result(cols, rows); // Transpose => rows <-> cols
 
 					 for (size_t i = 0; i < rows; ++i)
 						 for (size_t j = 0; j < cols; ++j)
-							 result(j, i) = operator()(i, j);
+							 result(j, i) = (*this)(i, j);  // swap indices !
 
 					 return result;
 				 }
