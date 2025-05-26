@@ -11,6 +11,7 @@ DEBUG   ?= false   # true → keep symbols (-g)
 USE_MPI ?= false   # true → link MPI
 USE_KNL ?= false   # true → tune for Intel KNL (+memkind)
 
+
 # ─────────────────────────────── Path settings ───────────────────────────────
 NAME        := Tensorium                 # main executable
 LIB_NAME    := libtensorium.so           # shared library

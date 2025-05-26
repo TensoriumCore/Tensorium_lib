@@ -164,36 +164,6 @@ namespace tensorium {
 						 data[i] *= a;
 				 }
 				
-				 /*
-				  * @brief microkernel to avoid FMA overload during the matmul operation
-				  * This function reduce the unroll size with a hot path to reduce L1 cache pollution and VECTOR/FMA units
-				  */
-				 template<int UN>
-					 static inline __attribute__((always_inline))
-					 void microkernel4(size_t nCols,   
-							 const K* __restrict a,
-							 const K* const* b,
-							 reg* sum)
-					 {
-						 constexpr size_t W = Simd::width;
-						 size_t k = 0;
-
-						 for (; k + W <= nCols; k += W) {
-							 reg av = Simd::load(a + k);
-#pragma unroll(UN)
-							 for (int x = 0; x < UN; ++x)
-								 sum[x] = Simd::fmadd(av, Simd::set1(b[x][k]), sum[x]);
-						 }
-
-						 for (; k < nCols; ++k) {
-							 K a_val = a[k];
-#pragma unroll(UN)
-							 for (int x = 0; x < UN; ++x) {
-								 sum[x] = Simd::add(sum[x], Simd::set1(a_val * b[x][k]));
-							 }
-						 }
-					 }
-
 				 /**
 				  * @brief Multiply matrix by another matrix using optimized SIMD path
 				  * 
@@ -203,72 +173,29 @@ namespace tensorium {
 					 if (cols != mat.rows)
 						 throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 
-					 using Kernel = tensorium::GemmKernel<K>;
-					 constexpr int MC = Kernel::BlockRows;
-					 constexpr int NC = Kernel::BlockCols;
-					 constexpr int KC = Kernel::BlockDepth;
-					 constexpr int MR = Kernel::TileRows;
-					 constexpr int NR = Kernel::TileCols;
-
 					 Matrix<K> result(rows, mat.cols);
 
-					 // Buffer local si tu ne veux pas utiliser ceux de GemmKernel
-					 alignas(64) K blockA_packed[MC * KC] = {};
-					 alignas(64) K blockB_packed[NC * KC] = {};
+					 const K* A = data.data();
+					 K* C = result.data.data();
 
-					 for (int j = 0; j < mat.cols; j += NC) {
-						 int nc = MathsUtils::_min(NC, mat.cols - j);
-						 int kc = MathsUtils::_min(KC, cols);
+					 std::vector<K> B_colmaj(mat.rows * mat.cols);
+					 for (size_t j = 0; j < mat.cols; ++j)
+						 for (size_t i = 0; i < mat.rows; ++i)
+							 B_colmaj[j * mat.rows + i] = mat.data[i * mat.cols + j];
 
-						 Kernel::packBlockB(&mat(j, 0), blockB_packed, nc, kc, mat.cols);
+					 tensorium::GemmKernel<K> kernel;
+					 kernel.matmul_parallel(
+							 const_cast<K*>(A),
+							 B_colmaj.data(),
+							 C,
+							 static_cast<int>(rows), 
+							 static_cast<int>(mat.cols),
+							 static_cast<int>(cols) 
+							 );
 
-						 for (int i = 0; i < rows; i += MC) {
-							 int mc = MathsUtils::_min(MC, rows - i);
-							 Kernel::packBlockA(&(*this)(i, 0), blockA_packed, mc, kc, cols);
-
-#pragma omp parallel for collapse(2)
-							 for (int jr = 0; jr < nc; jr += NR) {
-								 for (int ir = 0; ir < mc; ir += MR) {
-									 int nr = MathsUtils::_min(NR, nc - jr);
-									 int mr = MathsUtils::_min(MR, mc - ir);
-
-									 Kernel::kernel_16x6_zero_init_accum(
-											 &blockA_packed[ir * kc],
-											 &blockB_packed[jr * kc],
-											 &result(j + jr, i + ir),
-											 mr, nr, kc, result.cols
-											 );
-								 }
-							 }
-						 }
-
-						 for (int p = kc; p < cols; p += KC) {
-							 int pkc = MathsUtils::_min(KC, cols - p);
-							 Kernel::packBlockB(&mat(j, p), blockB_packed, nc, pkc, mat.cols);
-
-							 for (int i = 0; i < rows; i += MC) {
-								 int mc = MathsUtils::_min(MC, rows - i);
-								 Kernel::packBlockA(&(*this)(i, p), blockA_packed, mc, pkc, cols);
-
-#pragma omp parallel for collapse(2)
-								 for (int jr = 0; jr < nc; jr += NR) {
-									 for (int ir = 0; ir < mc; ir += MR) {
-										 int nr = MathsUtils::_min(NR, nc - jr);
-										 int mr = MathsUtils::_min(MR, mc - ir);
-
-										 Kernel::kernel_16x6_load_accum(
-												 &blockA_packed[ir * pkc],
-												 &blockB_packed[jr * pkc],
-												 &result(j + jr, i + ir),
-												 mr, nr, pkc, result.cols
-												 );
-									 }
-								 }
-							 }
-						 }
-					 }
 					 return result;
 				 }
+
 
 				 /**
 				  * @brief Multiply matrix by a vector using SIMD
@@ -298,28 +225,28 @@ namespace tensorium {
 							 T sum = Simd::horizontal_add(acc);
 
 							 for (; j < cols; ++j) {
-								 sum += (*this)(i, j) * x[j];
+									 sum += (*this)(i, j) * x[j];
+								 }
+
+								 result[i] = sum;
 							 }
 
-							 result[i] = sum;
+							 return result;
 						 }
 
-						 return result;
-					 }
+					 /** @brief Returns the transpose \f$ A^T \f$ of the matrix */
+					 inline Matrix<K> transpose() const {
+						 Matrix<K> result(cols, rows); 
+						 if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
+							 using ISA = DefaultISA;
+							 using Simd = simd::SimdTraits<K, ISA>;
 
-				 /** @brief Returns the transpose \f$ A^T \f$ of the matrix */
-				 inline Matrix<K> transpose() const {
-					 Matrix<K> result(cols, rows); 
-					 if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
-						 using ISA = DefaultISA;
-						 using Simd = simd::SimdTraits<K, ISA>;
+							 const size_t W = Simd::width;
 
-						 const size_t W = Simd::width;
-
-						 if (rows % W == 0 && cols % W == 0) {
-							 for (size_t i = 0; i < rows; i += W) {
-								 for (size_t j = 0; j < cols; j += W) {
-									 typename Simd::reg block[W];
+							 if (rows % W == 0 && cols % W == 0) {
+								 for (size_t i = 0; i < rows; i += W) {
+									 for (size_t j = 0; j < cols; j += W) {
+										 typename Simd::reg block[W];
 									 for (size_t k = 0; k < W; ++k)
 										 block[k] = Simd::load(&data[(i + k) * cols + j]);
 
