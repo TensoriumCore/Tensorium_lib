@@ -26,8 +26,8 @@ namespace tensorium {
 			__attribute__((aligned(64))) = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 				0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
 
-		inline void fma_loop_00(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_00(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* a0_packFloat8,
@@ -48,8 +48,8 @@ namespace tensorium {
 			}
 		}
 
-		inline void fma_loop_01(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_01(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -76,8 +76,8 @@ namespace tensorium {
 			}
 		}
 
-		inline void fma_loop_02(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_02(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -110,8 +110,8 @@ namespace tensorium {
 			}
 		}
 
-		inline void fma_loop_03(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_03(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -150,8 +150,8 @@ namespace tensorium {
 			}
 		}
 
-		inline void fma_loop_04(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_04(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -196,8 +196,8 @@ namespace tensorium {
 			}
 		}
 
-		inline void fma_loop_05(float* blockA_packed,
-				float* blockB_packed,
+		inline void fma_loop_05(T* blockA_packed,
+				T* blockB_packed,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -253,7 +253,7 @@ namespace tensorium {
 			*packed_mask_1 = _mm256_cvtepi8_epi32(_mm_loadu_si64(&mask[16 - mr + 8]));
 		}
 
-		inline void maskload_accum_00(float* C,
+		inline void maskload_accum_00(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				__m256i packed_mask_0,
@@ -263,7 +263,7 @@ namespace tensorium {
 			*C_accum_01 = Simd::maskload(&C[8], packed_mask_1);
 		}
 
-		inline void maskload_accum_01(float* C,
+		inline void maskload_accum_01(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -277,7 +277,7 @@ namespace tensorium {
 			*C_accum_11 = Simd::maskload(&C[M + 8], packed_mask_1);
 		}
 
-		inline void maskload_accum_02(float* C,
+		inline void maskload_accum_02(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -295,7 +295,7 @@ namespace tensorium {
 			*C_accum_21 = Simd::maskload(&C[2 * M + 8], packed_mask_1);
 		}
 
-		inline void maskload_accum_03(float* C,
+		inline void maskload_accum_03(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -317,7 +317,7 @@ namespace tensorium {
 			*C_accum_31 = Simd::maskload(&C[3 * M + 8], packed_mask_1);
 		}
 
-		inline void maskload_accum_04(float* C,
+		inline void maskload_accum_04(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -343,7 +343,7 @@ namespace tensorium {
 			*C_accum_41 = Simd::maskload(&C[4 * M + 8], packed_mask_1);
 		}
 
-		inline void maskload_accum_05(float* C,
+		inline void maskload_accum_05(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -373,12 +373,12 @@ namespace tensorium {
 			*C_accum_51 = Simd::maskload(&C[5 * M + 8], packed_mask_1);
 		}
 
-		inline void load_accum_00(float* C, reg* C_accum_00, reg* C_accum_01, int M) {
+		inline void load_accum_00(T* C, reg* C_accum_00, reg* C_accum_01, int M) {
 			*C_accum_00 = Simd::loadu(C);
 			*C_accum_01 = Simd::loadu(&C[8]);
 		}
 
-		inline void load_accum_01(float* C,
+		inline void load_accum_01(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -390,7 +390,7 @@ namespace tensorium {
 			*C_accum_11 = Simd::loadu(&C[M + 8]);
 		}
 
-		inline void load_accum_02(float* C,
+		inline void load_accum_02(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -406,7 +406,7 @@ namespace tensorium {
 			*C_accum_21 = Simd::loadu(&C[2 * M + 8]);
 		}
 
-		inline void load_accum_03(float* C,
+		inline void load_accum_03(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -426,7 +426,7 @@ namespace tensorium {
 			*C_accum_31 = Simd::loadu(&C[3 * M + 8]);
 		}
 
-		inline void load_accum_04(float* C,
+		inline void load_accum_04(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -450,7 +450,7 @@ namespace tensorium {
 			*C_accum_41 = Simd::loadu(&C[4 * M + 8]);
 		}
 
-		inline void load_accum_05(float* C,
+		inline void load_accum_05(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -478,60 +478,40 @@ namespace tensorium {
 			*C_accum_51 = Simd::loadu(&C[5 * M + 8]);
 		}
 
-		inline void store_accum_00(float* C, reg* C_accum_00, reg* C_accum_01, int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
+		inline void store_accum_00(T* C, reg* C_accum_00, reg* C_accum_01, int M) {
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
 		}
 
-		inline void store_accum_01(float* C,
+		inline void store_accum_01(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
 				reg* C_accum_11,
 				int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
-			_mm256_storeu_ps(&C[M], *C_accum_10);
-			_mm256_storeu_ps(&C[M + 8], *C_accum_11);
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
+			Simd::storeu(&C[M], *C_accum_10);
+			Simd::storeu(&C[M + 8], *C_accum_11);
 		}
 
-		inline void store_accum_02(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				reg* C_accum_10,
-				reg* C_accum_11,
-				reg* C_accum_20,
-				reg* C_accum_21,
-				int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
-			_mm256_storeu_ps(&C[M], *C_accum_10);
-			_mm256_storeu_ps(&C[M + 8], *C_accum_11);
-			_mm256_storeu_ps(&C[2 * M], *C_accum_20);
-			_mm256_storeu_ps(&C[2 * M + 8], *C_accum_21);
-		}
-
-		inline void store_accum_03(float* C,
+		inline void store_accum_02(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
 				reg* C_accum_11,
 				reg* C_accum_20,
 				reg* C_accum_21,
-				reg* C_accum_30,
-				reg* C_accum_31,
 				int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
-			_mm256_storeu_ps(&C[M], *C_accum_10);
-			_mm256_storeu_ps(&C[M + 8], *C_accum_11);
-			_mm256_storeu_ps(&C[2 * M], *C_accum_20);
-			_mm256_storeu_ps(&C[2 * M + 8], *C_accum_21);
-			_mm256_storeu_ps(&C[3 * M], *C_accum_30);
-			_mm256_storeu_ps(&C[3 * M + 8], *C_accum_31);
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
+			Simd::storeu(&C[M], *C_accum_10);
+			Simd::storeu(&C[M + 8], *C_accum_11);
+			Simd::storeu(&C[2 * M], *C_accum_20);
+			Simd::storeu(&C[2 * M + 8], *C_accum_21);
 		}
 
-		inline void store_accum_04(float* C,
+		inline void store_accum_03(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -540,22 +520,18 @@ namespace tensorium {
 				reg* C_accum_21,
 				reg* C_accum_30,
 				reg* C_accum_31,
-				reg* C_accum_40,
-				reg* C_accum_41,
 				int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
-			_mm256_storeu_ps(&C[M], *C_accum_10);
-			_mm256_storeu_ps(&C[M + 8], *C_accum_11);
-			_mm256_storeu_ps(&C[2 * M], *C_accum_20);
-			_mm256_storeu_ps(&C[2 * M + 8], *C_accum_21);
-			_mm256_storeu_ps(&C[3 * M], *C_accum_30);
-			_mm256_storeu_ps(&C[3 * M + 8], *C_accum_31);
-			_mm256_storeu_ps(&C[4 * M], *C_accum_40);
-			_mm256_storeu_ps(&C[4 * M + 8], *C_accum_41);
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
+			Simd::storeu(&C[M], *C_accum_10);
+			Simd::storeu(&C[M + 8], *C_accum_11);
+			Simd::storeu(&C[2 * M], *C_accum_20);
+			Simd::storeu(&C[2 * M + 8], *C_accum_21);
+			Simd::storeu(&C[3 * M], *C_accum_30);
+			Simd::storeu(&C[3 * M + 8], *C_accum_31);
 		}
 
-		inline void store_accum_05(float* C,
+		inline void store_accum_04(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -566,114 +542,20 @@ namespace tensorium {
 				reg* C_accum_31,
 				reg* C_accum_40,
 				reg* C_accum_41,
-				reg* C_accum_50,
-				reg* C_accum_51,
 				int M) {
-			_mm256_storeu_ps(C, *C_accum_00);
-			_mm256_storeu_ps(&C[8], *C_accum_01);
-			_mm256_storeu_ps(&C[M], *C_accum_10);
-			_mm256_storeu_ps(&C[M + 8], *C_accum_11);
-			_mm256_storeu_ps(&C[2 * M], *C_accum_20);
-			_mm256_storeu_ps(&C[2 * M + 8], *C_accum_21);
-			_mm256_storeu_ps(&C[3 * M], *C_accum_30);
-			_mm256_storeu_ps(&C[3 * M + 8], *C_accum_31);
-			_mm256_storeu_ps(&C[4 * M], *C_accum_40);
-			_mm256_storeu_ps(&C[4 * M + 8], *C_accum_41);
-			_mm256_storeu_ps(&C[5 * M], *C_accum_50);
-			_mm256_storeu_ps(&C[5 * M + 8], *C_accum_51);
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
+			Simd::storeu(&C[M], *C_accum_10);
+			Simd::storeu(&C[M + 8], *C_accum_11);
+			Simd::storeu(&C[2 * M], *C_accum_20);
+			Simd::storeu(&C[2 * M + 8], *C_accum_21);
+			Simd::storeu(&C[3 * M], *C_accum_30);
+			Simd::storeu(&C[3 * M + 8], *C_accum_31);
+			Simd::storeu(&C[4 * M], *C_accum_40);
+			Simd::storeu(&C[4 * M + 8], *C_accum_41);
 		}
 
-		inline void maskstore_accum_00(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				__m256i packed_mask_0,
-				__m256i packed_mask_1,
-				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-		}
-
-		inline void maskstore_accum_01(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				reg* C_accum_10,
-				reg* C_accum_11,
-				__m256i packed_mask_0,
-				__m256i packed_mask_1,
-				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-			_mm256_maskstore_ps(&C[M], packed_mask_0, *C_accum_10);
-			_mm256_maskstore_ps(&C[M + 8], packed_mask_1, *C_accum_11);
-		}
-
-		inline void maskstore_accum_02(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				reg* C_accum_10,
-				reg* C_accum_11,
-				reg* C_accum_20,
-				reg* C_accum_21,
-				__m256i packed_mask_0,
-				__m256i packed_mask_1,
-				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-			_mm256_maskstore_ps(&C[M], packed_mask_0, *C_accum_10);
-			_mm256_maskstore_ps(&C[M + 8], packed_mask_1, *C_accum_11);
-			_mm256_maskstore_ps(&C[2 * M], packed_mask_0, *C_accum_20);
-			_mm256_maskstore_ps(&C[2 * M + 8], packed_mask_1, *C_accum_21);
-		}
-
-		inline void maskstore_accum_03(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				reg* C_accum_10,
-				reg* C_accum_11,
-				reg* C_accum_20,
-				reg* C_accum_21,
-				reg* C_accum_30,
-				reg* C_accum_31,
-				__m256i packed_mask_0,
-				__m256i packed_mask_1,
-				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-			_mm256_maskstore_ps(&C[M], packed_mask_0, *C_accum_10);
-			_mm256_maskstore_ps(&C[M + 8], packed_mask_1, *C_accum_11);
-			_mm256_maskstore_ps(&C[2 * M], packed_mask_0, *C_accum_20);
-			_mm256_maskstore_ps(&C[2 * M + 8], packed_mask_1, *C_accum_21);
-			_mm256_maskstore_ps(&C[3 * M], packed_mask_0, *C_accum_30);
-			_mm256_maskstore_ps(&C[3 * M + 8], packed_mask_1, *C_accum_31);
-		}
-
-		inline void maskstore_accum_04(float* C,
-				reg* C_accum_00,
-				reg* C_accum_01,
-				reg* C_accum_10,
-				reg* C_accum_11,
-				reg* C_accum_20,
-				reg* C_accum_21,
-				reg* C_accum_30,
-				reg* C_accum_31,
-				reg* C_accum_40,
-				reg* C_accum_41,
-				__m256i packed_mask_0,
-				__m256i packed_mask_1,
-				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-			_mm256_maskstore_ps(&C[M], packed_mask_0, *C_accum_10);
-			_mm256_maskstore_ps(&C[M + 8], packed_mask_1, *C_accum_11);
-			_mm256_maskstore_ps(&C[2 * M], packed_mask_0, *C_accum_20);
-			_mm256_maskstore_ps(&C[2 * M + 8], packed_mask_1, *C_accum_21);
-			_mm256_maskstore_ps(&C[3 * M], packed_mask_0, *C_accum_30);
-			_mm256_maskstore_ps(&C[3 * M + 8], packed_mask_1, *C_accum_31);
-			_mm256_maskstore_ps(&C[4 * M], packed_mask_0, *C_accum_40);
-			_mm256_maskstore_ps(&C[4 * M + 8], packed_mask_1, *C_accum_41);
-		}
-
-		inline void maskstore_accum_05(float* C,
+		inline void store_accum_05(T* C,
 				reg* C_accum_00,
 				reg* C_accum_01,
 				reg* C_accum_10,
@@ -686,26 +568,144 @@ namespace tensorium {
 				reg* C_accum_41,
 				reg* C_accum_50,
 				reg* C_accum_51,
+				int M) {
+			Simd::storeu(C, *C_accum_00);
+			Simd::storeu(&C[8], *C_accum_01);
+			Simd::storeu(&C[M], *C_accum_10);
+			Simd::storeu(&C[M + 8], *C_accum_11);
+			Simd::storeu(&C[2 * M], *C_accum_20);
+			Simd::storeu(&C[2 * M + 8], *C_accum_21);
+			Simd::storeu(&C[3 * M], *C_accum_30);
+			Simd::storeu(&C[3 * M + 8], *C_accum_31);
+			Simd::storeu(&C[4 * M], *C_accum_40);
+			Simd::storeu(&C[4 * M + 8], *C_accum_41);
+			Simd::storeu(&C[5 * M], *C_accum_50);
+			Simd::storeu(&C[5 * M + 8], *C_accum_51);
+		}
+
+		inline void maskstore_accum_00(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
 				__m256i packed_mask_0,
 				__m256i packed_mask_1,
 				int M) {
-			_mm256_maskstore_ps(C, packed_mask_0, *C_accum_00);
-			_mm256_maskstore_ps(&C[8], packed_mask_1, *C_accum_01);
-			_mm256_maskstore_ps(&C[M], packed_mask_0, *C_accum_10);
-			_mm256_maskstore_ps(&C[M + 8], packed_mask_1, *C_accum_11);
-			_mm256_maskstore_ps(&C[2 * M], packed_mask_0, *C_accum_20);
-			_mm256_maskstore_ps(&C[2 * M + 8], packed_mask_1, *C_accum_21);
-			_mm256_maskstore_ps(&C[3 * M], packed_mask_0, *C_accum_30);
-			_mm256_maskstore_ps(&C[3 * M + 8], packed_mask_1, *C_accum_31);
-			_mm256_maskstore_ps(&C[4 * M], packed_mask_0, *C_accum_40);
-			_mm256_maskstore_ps(&C[4 * M + 8], packed_mask_1, *C_accum_41);
-			_mm256_maskstore_ps(&C[5 * M], packed_mask_0, *C_accum_50);
-			_mm256_maskstore_ps(&C[5 * M + 8], packed_mask_1, *C_accum_51);
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
 		}
 
-		void kernel_16x6_load_accum(float* blockA_packed,
-				float* blockB_packed,
-				float* C,
+		inline void maskstore_accum_01(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
+				reg* C_accum_10,
+				reg* C_accum_11,
+				__m256i packed_mask_0,
+				__m256i packed_mask_1,
+				int M) {
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
+			Simd::maskstore(&C[M], packed_mask_0, *C_accum_10);
+			Simd::maskstore(&C[M + 8], packed_mask_1, *C_accum_11);
+		}
+
+		inline void maskstore_accum_02(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
+				reg* C_accum_10,
+				reg* C_accum_11,
+				reg* C_accum_20,
+				reg* C_accum_21,
+				__m256i packed_mask_0,
+				__m256i packed_mask_1,
+				int M) {
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
+			Simd::maskstore(&C[M], packed_mask_0, *C_accum_10);
+			Simd::maskstore(&C[M + 8], packed_mask_1, *C_accum_11);
+			Simd::maskstore(&C[2 * M], packed_mask_0, *C_accum_20);
+			Simd::maskstore(&C[2 * M + 8], packed_mask_1, *C_accum_21);
+		}
+
+		inline void maskstore_accum_03(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
+				reg* C_accum_10,
+				reg* C_accum_11,
+				reg* C_accum_20,
+				reg* C_accum_21,
+				reg* C_accum_30,
+				reg* C_accum_31,
+				__m256i packed_mask_0,
+				__m256i packed_mask_1,
+				int M) {
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
+			Simd::maskstore(&C[M], packed_mask_0, *C_accum_10);
+			Simd::maskstore(&C[M + 8], packed_mask_1, *C_accum_11);
+			Simd::maskstore(&C[2 * M], packed_mask_0, *C_accum_20);
+			Simd::maskstore(&C[2 * M + 8], packed_mask_1, *C_accum_21);
+			Simd::maskstore(&C[3 * M], packed_mask_0, *C_accum_30);
+			Simd::maskstore(&C[3 * M + 8], packed_mask_1, *C_accum_31);
+		}
+
+		inline void maskstore_accum_04(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
+				reg* C_accum_10,
+				reg* C_accum_11,
+				reg* C_accum_20,
+				reg* C_accum_21,
+				reg* C_accum_30,
+				reg* C_accum_31,
+				reg* C_accum_40,
+				reg* C_accum_41,
+				__m256i packed_mask_0,
+				__m256i packed_mask_1,
+				int M) {
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
+			Simd::maskstore(&C[M], packed_mask_0, *C_accum_10);
+			Simd::maskstore(&C[M + 8], packed_mask_1, *C_accum_11);
+			Simd::maskstore(&C[2 * M], packed_mask_0, *C_accum_20);
+			Simd::maskstore(&C[2 * M + 8], packed_mask_1, *C_accum_21);
+			Simd::maskstore(&C[3 * M], packed_mask_0, *C_accum_30);
+			Simd::maskstore(&C[3 * M + 8], packed_mask_1, *C_accum_31);
+			Simd::maskstore(&C[4 * M], packed_mask_0, *C_accum_40);
+			Simd::maskstore(&C[4 * M + 8], packed_mask_1, *C_accum_41);
+		}
+
+		inline void maskstore_accum_05(T* C,
+				reg* C_accum_00,
+				reg* C_accum_01,
+				reg* C_accum_10,
+				reg* C_accum_11,
+				reg* C_accum_20,
+				reg* C_accum_21,
+				reg* C_accum_30,
+				reg* C_accum_31,
+				reg* C_accum_40,
+				reg* C_accum_41,
+				reg* C_accum_50,
+				reg* C_accum_51,
+				__m256i packed_mask_0,
+				__m256i packed_mask_1,
+				int M) {
+			Simd::maskstore(C, packed_mask_0, *C_accum_00);
+			Simd::maskstore(&C[8], packed_mask_1, *C_accum_01);
+			Simd::maskstore(&C[M], packed_mask_0, *C_accum_10);
+			Simd::maskstore(&C[M + 8], packed_mask_1, *C_accum_11);
+			Simd::maskstore(&C[2 * M], packed_mask_0, *C_accum_20);
+			Simd::maskstore(&C[2 * M + 8], packed_mask_1, *C_accum_21);
+			Simd::maskstore(&C[3 * M], packed_mask_0, *C_accum_30);
+			Simd::maskstore(&C[3 * M + 8], packed_mask_1, *C_accum_31);
+			Simd::maskstore(&C[4 * M], packed_mask_0, *C_accum_40);
+			Simd::maskstore(&C[4 * M + 8], packed_mask_1, *C_accum_41);
+			Simd::maskstore(&C[5 * M], packed_mask_0, *C_accum_50);
+			Simd::maskstore(&C[5 * M + 8], packed_mask_1, *C_accum_51);
+		}
+
+		void kernel_16x6_load_accum(T* blockA_packed,
+				T* blockB_packed,
+				T* C,
 				int mr,
 				int nr,
 				int kc,
@@ -1134,9 +1134,9 @@ namespace tensorium {
 			}
 		}
 
-		void kernel_16x6_zero_init_accum(float* blockA_packed,
-				float* blockB_packed,
-				float* C,
+		void kernel_16x6_zero_init_accum(T* blockA_packed,
+				T* blockB_packed,
+				T* C,
 				int mr,
 				int nr,
 				int kc,
@@ -1476,10 +1476,10 @@ namespace tensorium {
 #define PRAGMA_OMP_PARALLEL_FOR _Pragma("omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)")
 
 
-		static float blockA_packed[MC * KC] __attribute__((aligned(64)));
-		static float blockB_packed[NC * KC] __attribute__((aligned(64)));
+		static T blockA_packed[MC * KC] __attribute__((aligned(64)));
+		static T blockB_packed[NC * KC] __attribute__((aligned(64)));
 
-		void pack_panelB(float* B, float* blockB_packed, int nr, int kc, int K) {
+		void pack_panelB(T* B, T* blockB_packed, int nr, int kc, int K) {
 			for (int p = 0; p < kc; p++) {
 				for (int j = 0; j < nr; j++) {
 					*blockB_packed++ = B[j * K + p];
@@ -1490,7 +1490,7 @@ namespace tensorium {
 			}
 		}
 
-		void pack_blockB(float* B, float* blockB_packed, int nc, int kc, int K) {
+		void pack_blockB(T* B, T* blockB_packed, int nc, int kc, int K) {
 			PRAGMA_OMP_PARALLEL_FOR
 				for (int j = 0; j < nc; j += 6) {
 					int nr = std::min(6, nc - j);
@@ -1498,7 +1498,7 @@ namespace tensorium {
 				}
 		}
 
-		void pack_panelA(float* A, float* blockA_packed, int mr, int kc, int M) {
+		void pack_panelA(T* A, T* blockA_packed, int mr, int kc, int M) {
 			for (int p = 0; p < kc; p++) {
 				for (int i = 0; i < mr; i++) {
 					*blockA_packed++ = A[p * M + i];
@@ -1509,7 +1509,7 @@ namespace tensorium {
 			}
 		}
 
-		void pack_blockA(float* A, float* blockA_packed, int mc, int kc, int M) {
+		void pack_blockA(T* A, T* blockA_packed, int mc, int kc, int M) {
 			PRAGMA_OMP_PARALLEL_FOR
 				for (int i = 0; i < mc; i += 16) {
 					int mr = std::min(16, mc - i);
@@ -1517,7 +1517,7 @@ namespace tensorium {
 				}
 		}
 
-		void matmul(float* A, float* B, float* C, int M, int N, int K) {
+		void matmul(T* A, T* B, T* C, int M, int N, int K) {
 
 			// The function computes C[M x N] = A[M x K] @ B[K x N]
 			// All operands are stored in column-major format, with lda=M, ldb=K, ldc=M
@@ -1574,9 +1574,9 @@ namespace tensorium {
   //
   namespace tensorium {
     template<typename T>
-    float GemmKernel<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
+    T GemmKernel<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
 
     template<typename T>
-    float GemmKernel<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
+    T GemmKernel<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
 }
 

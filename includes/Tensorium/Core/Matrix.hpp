@@ -184,7 +184,7 @@ namespace tensorium {
 							 B_colmaj[j * mat.rows + i] = mat.data[i * mat.cols + j];
 
 					 tensorium::GemmKernel<K> kernel;
-					 kernel.matmul_parallel(
+					 kernel.matmul(
 							 const_cast<K*>(A),
 							 B_colmaj.data(),
 							 C,
