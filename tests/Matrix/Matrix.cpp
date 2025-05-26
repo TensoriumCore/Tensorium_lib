@@ -11,72 +11,76 @@ using namespace tensorium;
 	} while (0)
 
 
-int matrix_bench() {
-    constexpr std::size_t N = 512;
-    tensorium::Matrix<double> A(N, N);
-    tensorium::Matrix<double> B(N, N);
+template<typename K>
+tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K>& A, const tensorium::Matrix<K>& B) {
+    if (A.cols != B.rows)
+        throw std::invalid_argument("Matrix dimensions do not match for reference multiplication.");
 
-#pragma omp parallel
-    {
-        std::mt19937 rng(42 + omp_get_thread_num());
-        std::uniform_real_distribution<float> dist(0.f, 1.f);
+    tensorium::Matrix<K> C(A.rows, B.cols);
 
-#pragma omp for schedule(static)
-        for (std::size_t i = 0; i < N; ++i)
-            for (std::size_t j = 0; j < N; ++j) {
-                A(i, j) = dist(rng);
-                B(i, j) = dist(rng);
+    for (size_t i = 0; i < A.rows; ++i) {
+        for (size_t j = 0; j < B.cols; ++j) {
+            K sum = K(0);
+            for (size_t k = 0; k < A.cols; ++k) {
+                sum += A(i, k) * B(k, j);
             }
+            C(i, j) = sum;
+        }
     }
+    return C;
+}
+int matrix_bench() {
+    using namespace tensorium;
+    std::vector<std::size_t> sizes = {16, 32, 48, 64, 96, 128};
 
-    std::cout << "\n=== Benchmarking ===\n"
-              << "Matrix size: " << N << " x " << N << '\n';
+    for (std::size_t N : sizes) {
+        Matrix<double> A(N, N);
+        Matrix<double> B(N, N);
 
-    const auto t0 = std::chrono::high_resolution_clock::now();
-    auto C = tensorium::mul_mat(A, B);
-    const auto t1 = std::chrono::high_resolution_clock::now();
+        #pragma omp parallel
+        {
+            std::mt19937 rng(42 + omp_get_thread_num());
+            std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    const double elapsed = std::chrono::duration<double>(t1 - t0).count();
-	std::cout << std::fixed << std::setprecision(3);
-    const long double flops = 2.0L * N * N * N;    
-    const double gflops = static_cast<double>(flops / 1.0e9L) / elapsed;
+            #pragma omp for schedule(static)
+            for (std::size_t i = 0; i < N; ++i)
+                for (std::size_t j = 0; j < N; ++j) {
+                    A(i, j) = dist(rng);
+                    B(i, j) = dist(rng);
+                }
+        }
 
-    std::cout << "Time      : " << elapsed << "  s\n";
-    std::cout << "GFLOP/s   : " << gflops  << '\n';
-    std::cout << "Sample C(0,0): " << C(0, 0) << '\n';
-	
+        std::cout << "\n=== Benchmarking N = " << N << " ===\n";
 
-	std::cout << "[✓] Benchmark test passed\n";
-	std::cout << "=== Benchmarking complete ===\n";
+        const auto t0 = std::chrono::high_resolution_clock::now();
+        auto C = mul_mat(A, B);
+        const auto t1 = std::chrono::high_resolution_clock::now();
+        double elapsed = std::chrono::duration<double>(t1 - t0).count();
 
-	std::cout << "\n === test on a little matrix ===\n";
-	Matrix<float> A2(2, 2);
-	Matrix<float> B2(2, 2);
-	A2(0, 0) = 1.0f; A2(0, 1) = 2.0f;
-	A2(1, 0) = 3.0f; A2(1, 1) = 4.0f;
-	B2(0, 0) = 5.0f; B2(0, 1) = 6.0f;
-	B2(1, 0) = 7.0f; B2(1, 1) = 8.0f;
-#pragma tensorium target(CPU)
-	auto C2 = tensorium::mul_mat(A2, B2);
+        const long double flops = 2.0L * N * N * N;
+        const double gflops = static_cast<double>(flops / 1e9L) / elapsed;
 
-	std::cout << "=== Benchmarking complete ===\n";
-	std::cout << "[✓] Benchmark test passed\n";
-	
-	Matrix<float> D(4, 4);
-	D(0, 0) = 1.0f; D(0, 1) = 2.0f; D(0, 2) = 3.0f; D(0, 3) = 4.0f;
-	D(1, 0) = 5.0f; D(1, 1) = 6.0f; D(1, 2) = 7.0f; D(1, 3) = 8.0f;
-	D(2, 0) = 9.0f; D(2, 1) = 10.0f; D(2, 2) = 11.0f; D(2, 3) = 12.0f;
-	D(3, 0) = 13.0f; D(3, 1) = 14.0f; D(3, 2) = 15.0f; D(3, 3) = 16.0f;
-	Matrix<float> E(4, 4);
-	E(0, 0) = 1.0f; E(0, 1) = 2.0f; E(0, 2) = 3.0f; E(0, 3) = 4.0f;
-	E(1, 0) = 5.0f; E(1, 1) = 6.0f; E(1, 2) = 7.0f; E(1, 3) = 8.0f;
-	E(2, 0) = 9.0f; E(2, 1) = 10.0f; E(2, 2) = 11.0f; E(2, 3) = 12.0f;
-	E(3, 0) = 13.0f; E(3, 1) = 14.0f; E(3, 2) = 15.0f; E(3, 3) = 16.0f;
-	
-	auto F = tensorium::mul_mat(D, E);
-	std::cout << "=== Benchmarking complete ===\n";
+        std::cout << std::fixed << std::setprecision(3);
+        std::cout << "Time      : " << elapsed << "  s\n";
+        std::cout << "GFLOP/s   : " << gflops  << '\n';
+        std::cout << "Sample C(0,0): " << C(0, 0) << '\n';
 
-    return 0;
+        auto C_ref = mul_mat_reference(A, B);
+        double max_diff = 0.0;
+
+        for (std::size_t i = 0; i < N * N; ++i)
+            max_diff = std::max(max_diff, std::abs(C.data[i] - C_ref.data[i]));
+
+		std::cout << "Max diff  : " << max_diff << '\n';
+		if (max_diff < 1e-6)
+			std::cout << "[✓] Test passed\n";
+		else 
+			std::cout << "[✗] Test failed\n";
+
+		std::cout << "==============================\n";
+	}
+
+	return 0;
 }
 
 int matrix_tests() {

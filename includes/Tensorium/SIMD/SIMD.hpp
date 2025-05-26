@@ -194,6 +194,16 @@ namespace simd {
 					) {
 				return _mm_set_ps(a3, a2, a1, a0);
 			}
+			static inline void maskstore(float* ptr, reg mask, reg value) {
+				alignas(16) float tmp[4];
+				_mm_store_ps(tmp, value);
+				alignas(16) int m[4];
+				_mm_store_si128(reinterpret_cast<__m128i*>(m), mask);
+				for (int i = 0; i < 4; ++i)
+					if (m[i])
+						ptr[i] = tmp[i];
+			}
+
 			static inline float extract(reg x, size_t index) {
 				alignas(16) float values[4];
 				_mm_storeu_ps(values, x);
@@ -221,7 +231,7 @@ namespace simd {
 			static inline reg max(reg a, reg b)			 { return _mm_max_ps(a, b); }
 			static inline reg min(reg a, reg b)			 { return _mm_min_ps(a, b); }
 		};
-	
+
 	template<>
 		struct SimdTraits<double, sse_t> {
 			using reg = __m128d;
@@ -242,6 +252,16 @@ namespace simd {
 				_mm_store_pd(values, v);
 				return values[0] + values[1];
 			}
+			static inline void maskstore(double* ptr, __m128i mask, __m128d value) {
+				alignas(16) double tmp[2];
+				_mm_store_pd(tmp, value);
+				alignas(16) int m[2];
+				_mm_store_si128(reinterpret_cast<__m128i*>(m), mask);
+				for (int i = 0; i < 2; ++i)
+					if (m[i])
+						ptr[i] = tmp[i];
+			}
+
 			static inline reg load(const double* ptr)		{ return _mm_load_pd(ptr); }
 			static inline reg loadu(const double* ptr)		{ return _mm_loadu_pd(ptr); }
 			static inline void store(double* ptr, reg x)	{ _mm_store_pd(ptr, x); }
@@ -310,6 +330,9 @@ namespace simd {
 			static inline reg set(float a, float b, float c, float d) {
 				return _mm256_set_ps(a, b, c, d, a, b, c, d);
 			}
+			static inline void maskstore(float* ptr, __m256i mask, __m256 value) {
+				_mm256_maskstore_ps(ptr, mask, value);
+			}
 			template<int i0, int i1, int i2, int i3>
 				static inline reg permute(reg x) {
 					constexpr int imm = _MM_SHUFFLE(i3, i2, i1, i0);
@@ -325,6 +348,12 @@ namespace simd {
 				alignas(32) float values[8];
 				_mm256_storeu_ps(values, x);
 				return values[index];
+			}
+			static inline reg maskload(const float* ptr, __m256i m) {
+				return _mm256_maskload_ps(ptr, m);
+			}
+			static inline reg broadcast(const float* ptr) {
+			    return _mm256_broadcast_ss(ptr);
 			}
 			static inline void stream(float* ptr, reg x)	{ _mm256_stream_ps(ptr, x); }
 			static inline reg setzero()						{ return _mm256_setzero_ps(); }
@@ -360,6 +389,15 @@ namespace simd {
 				alignas(32) double values[4];
 				_mm256_storeu_pd(values, x);
 				return values[index];
+			}
+			static inline void maskstore(double* ptr, __m256i mask, __m256d value) {
+				_mm256_maskstore_pd(ptr, mask, value);
+			}
+			static inline reg maskload(const double* ptr, __m256i m) {
+				return _mm256_maskload_pd(ptr, m);
+			}
+			static inline reg broadcast(const double* ptr) {
+			    return _mm256_broadcast_sd(ptr);
 			}
 			static inline void stream(double* ptr, reg x) { _mm256_stream_pd(ptr, x); }
 			static inline reg setzero()					{ return _mm256_setzero_pd(); }
@@ -693,6 +731,12 @@ namespace simd {
 				_mm256_storeu_ps(values, x);
 				return std::complex<float>(values[2 * index], values[2 * index + 1]);
 			}
+			static inline reg broadcast(const std::complex<float>* ptr) {
+				float re = ptr->real();
+				float im = ptr->imag();
+				return _mm256_set_ps(im, re, im, re, im, re, im, re);
+			}
+
 			static inline void store(std::complex<float>* ptr, reg x) {
 				_mm256_store_ps(reinterpret_cast<float*>(ptr), x);
 			}
@@ -736,6 +780,12 @@ namespace simd {
 						values[1] + values[3] + values[5] + values[7]
 						);
 			}
+			static inline reg maskload(const std::complex<float>* ptr, __m256i mask) {
+				return _mm256_maskload_ps(reinterpret_cast<const float*>(ptr), mask);
+			}
+			static inline void maskstore(std::complex<float>* ptr, __m256i mask, reg v) {
+				_mm256_maskstore_ps(reinterpret_cast<float*>(ptr), mask, v);
+			}
 		};
 
 	template<>
@@ -764,6 +814,11 @@ namespace simd {
 			}
 			static inline void storeu(std::complex<double>* ptr, reg x) {
 				_mm256_storeu_pd(reinterpret_cast<double*>(ptr), x);
+			}
+			static inline reg broadcast(const std::complex<double>* ptr) {
+				double re = ptr->real();
+				double im = ptr->imag();
+				return _mm256_set_pd(im, re, im, re);
 			}
 			static inline reg add(reg a, reg b)		{ return _mm256_add_pd(a, b); }
 			static inline reg sub(reg a, reg b)		{ return _mm256_sub_pd(a, b); }
@@ -809,6 +864,12 @@ namespace simd {
 						values[0] + values[2],
 						values[1] + values[3]
 						);
+			}
+			static inline reg maskload(const std::complex<double>* ptr, __m256i mask) {
+				return _mm256_maskload_pd(reinterpret_cast<const double*>(ptr), mask);
+			}
+			static inline void maskstore(std::complex<double>* ptr, __m256i mask, reg v) {
+				_mm256_maskstore_pd(reinterpret_cast<double*>(ptr), mask, v);
 			}
 		};
 
