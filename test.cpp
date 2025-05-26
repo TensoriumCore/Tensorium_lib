@@ -96,6 +96,36 @@ void verify_results(float* C_ref, float* C_opt, int M, int N) {
 }
 
 int main() {
+	    // === TEST DE COHÉRENCE MATHEMATIQUE ===
+    {
+        cout << "\n[TEST] Vérification mathématique simple A × B = C\n";
+
+        float A_test[4] = {1, 3, 2, 4}; // column-major: A = [ [1,2], [3,4] ]
+        float B_test[4] = {5, 7, 6, 8}; // column-major: B = [ [5,6], [7,8] ]
+        float C_ref[4]  = {0, 0, 0, 0};
+        float C_opt[4]  = {0, 0, 0, 0};
+
+        gemm_ref(A_test, B_test, C_ref, 2, 2, 2);
+
+        GemmKernel<float> kernel;
+        kernel.matmul(A_test, B_test, C_opt, 2, 2, 2);
+
+        cout << "Résultat attendu (C_ref): [19 43 22 50] column-major" << endl;
+        cout << "Résultat obtenu (C_opt): ";
+        for (int i = 0; i < 4; ++i) cout << C_opt[i] << " ";
+        cout << endl;
+
+        bool ok = true;
+        for (int i = 0; i < 4; ++i)
+            if (std::abs(C_opt[i] - C_ref[i]) > 1e-3)
+                ok = false;
+
+        if (ok)
+            cout << "✅ Matrice correcte : résultat conforme\n";
+        else
+            cout << "❌ Erreur dans la multiplication simple\n";
+    }
+
     const int M = 168;
     const int N = 168;
     const int K = 168;
