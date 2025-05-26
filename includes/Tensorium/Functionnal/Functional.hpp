@@ -186,26 +186,26 @@ namespace tensorium {
 
 	template <typename T>
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
-		if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat2x2(B);
-		}
-		if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat3x3(B);
-		}
-		if (A.rows == 4 && A.cols == 4 && B.rows == 4 && B.cols == 4) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat4x4(B);
-		}
-		if (A.rows == 8 && A.cols == 8 && B.rows == 8 && B.cols == 8) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat8x8(B);
-		}
-		if (A.rows == 16 && A.cols == 16 && B.rows == 16 && B.cols == 16) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat16x16(B);
-		}
+		// if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
+		// 	const MatrixKernel<T> kernelA(A);
+		// 	return kernelA.mul_mat2x2(B);
+		// }
+		// if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
+		// 	const MatrixKernel<T> kernelA(A);
+		// 	return kernelA.mul_mat3x3(B);
+		// }
+		// if (A.rows == 4 && A.cols == 4 && B.rows == 4 && B.cols == 4) {
+		// 	const MatrixKernel<T> kernelA(A);
+		// 	return kernelA.mul_mat4x4(B);
+		// }
+		// if (A.rows == 8 && A.cols == 8 && B.rows == 8 && B.cols == 8) {
+		// 	const MatrixKernel<T> kernelA(A);
+		// 	return kernelA.mul_mat8x8(B);
+		// }
+		// if (A.rows == 16 && A.cols == 16 && B.rows == 16 && B.cols == 16) {
+		// 	const MatrixKernel<T> kernelA(A);
+		// 	return kernelA.mul_mat16x16(B);
+		// }
 
 		return A._mul_mat(B); 
 	}

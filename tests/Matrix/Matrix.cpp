@@ -128,6 +128,7 @@ int matrix_tests() {
 	CHECK(std::abs(tr(0, 0) - (A(0, 0) + A(1, 1))) < 1e-4);
 
 	Mat M = tensorium::mul_mat(A, B);
+	M.print();
 	CHECK(std::abs(M(0, 0) - (1*5 + 2*7)) < 1e-4);
 	CHECK(std::abs(M(1, 1) - (3*6 + 4*8)) < 1e-4);
 	std::cout << "Inverse test\n";

@@ -1518,50 +1518,49 @@ namespace tensorium {
 		}
 
 		void matmul(T* A, T* B, T* C, int M, int N, int K) {
-
-			// The function computes C[M x N] = A[M x K] @ B[K x N]
-			// All operands are stored in column-major format, with lda=M, ldb=K, ldc=M
-
 			for (int j = 0; j < N; j += NC) {
 				int nc = std::min(NC, N - j);
 				int kc = std::min(KC, K);
+
 				pack_blockB(&B[j * K], blockB_packed, nc, kc, K);
+
 				for (int i = 0; i < M; i += MC) {
 					int mc = std::min(MC, M - i);
+
 					pack_blockA(&A[i], blockA_packed, mc, kc, M);
+
 					PRAGMA_OMP_PARALLEL_FOR
 						for (int jr = 0; jr < nc; jr += 6) {
 							int nr = std::min(6, nc - jr);
 							for (int ir = 0; ir < mc; ir += 16) {
 								int mr = std::min(16, mc - ir);
-								kernel_16x6_zero_init_accum(&blockA_packed[ir * kc],
+								kernel_16x6_zero_init_accum(
+										&blockA_packed[ir * kc],
 										&blockB_packed[jr * kc],
 										&C[(j + jr) * M + (i + ir)],
-										mr,
-										nr,
-										kc,
-										M);
+										mr, nr, kc, M);
 							}
 						}
 				}
 				for (int p = kc; p < K; p += KC) {
-					int kc = std::min(KC, K - p);
-					pack_blockB(&B[j * K + p], blockB_packed, nc, kc, K);
+					int cur_kc = std::min(KC, K - p);
+					pack_blockB(&B[j * K + p], blockB_packed, nc, cur_kc, K);
+
 					for (int i = 0; i < M; i += MC) {
 						int mc = std::min(MC, M - i);
-						pack_blockA(&A[p * M + i], blockA_packed, mc, kc, M);
+
+						pack_blockA(&A[i + p * M], blockA_packed, mc, cur_kc, M);
+
 						PRAGMA_OMP_PARALLEL_FOR
 							for (int jr = 0; jr < nc; jr += 6) {
 								int nr = std::min(6, nc - jr);
 								for (int ir = 0; ir < mc; ir += 16) {
 									int mr = std::min(16, mc - ir);
-									kernel_16x6_load_accum(&blockA_packed[ir * kc],
-											&blockB_packed[jr * kc],
+									kernel_16x6_load_accum(
+											&blockA_packed[ir * cur_kc],
+											&blockB_packed[jr * cur_kc],
 											&C[(j + jr) * M + (i + ir)],
-											mr,
-											nr,
-											kc,
-											M);
+											mr, nr, cur_kc, M);
 								}
 							}
 					}
@@ -1572,11 +1571,11 @@ namespace tensorium {
 } // namespace tensorium
   //
   //
-  namespace tensorium {
-    template<typename T>
-    T GemmKernel<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
+namespace tensorium {
+	template<typename T>
+		T GemmKernel<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
 
-    template<typename T>
-    T GemmKernel<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
+	template<typename T>
+		T GemmKernel<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
 }
 
