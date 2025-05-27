@@ -1,0 +1,12 @@
+# Python artifacts
+*.egg-info/
+build/
+dist/
+__pycache__/
+
+# CMake / ninja / cmake-build
+pybuild/
+build/
+
+# macOS
+*.DS_Store

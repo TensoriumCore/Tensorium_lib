@@ -47,87 +47,87 @@ namespace tensorium::solver {
 				__attribute__((always_inline, hot, flatten))
 					static inline Vector<K> solve(const Matrix<K>& A_in, const Vector<K>& b_in) {
 						static_assert(std::is_floating_point<K>::value, "");
-						const auto n = A_in.rows;
+						const size_t n = A_in.rows;
 
 						assert(n == A_in.cols && n == b_in.size());
-						if (A_in.rows >= 1024 || A_in.cols >= 1024)
+						if (n >= 1024)
 							return Jacobi<K>::solve(A_in, b_in);
 
-						Matrix<K> M(n, n);
-						Vector<K> B(n);
-						for (auto i = decltype(n)(0); i < n; ++i) {
-							B[i] = b_in[i];
-							for (auto j = decltype(n)(0); j < n; ++j)
-								M(i, j) = A_in(i, j);
-						}
-
+						Matrix<K> M = A_in;
+						Vector<K> B = b_in;
 						Vector<K> x(n);
+
 						using SimdT = simd::SimdTraits<K, DefaultISA>;
 						using regT  = typename SimdT::reg;
-						const auto W = SimdT::width;
+						const size_t W = SimdT::width;
 
-						for (auto i = decltype(n)(0); i < n; ++i) {
-							auto piv  = i;
-							auto maxv =  MathsUtils::_abs(M(i, i));
-							for (auto r = i + 1; r < n; ++r) {
-								auto v =  MathsUtils::_abs(M(r, i));
+						aligned_vector<K> rowi(n), rowj(n);
+
+						for (size_t i = 0; i < n; ++i) {
+							size_t piv = i;
+							K maxv = MathsUtils::_abs(M(i, i));
+							for (size_t r = i + 1; r < n; ++r) {
+								K v = MathsUtils::_abs(M(r, i));
 								if (v > maxv) { maxv = v; piv = r; }
 							}
 							if (maxv < static_cast<K>(1e-12))
 								throw std::runtime_error("Gauss: matrix is singular or nearly singular.");
-						
+
 							if (piv != i) {
 								M.swap_rows(i, piv);
-								K tmp = B[i];
-								B[i] = B[piv];
-								B[piv] = tmp;
+								std::swap(B[i], B[piv]);
 							}
+
 							constexpr auto TILE = UNROLL;
 #pragma omp parallel for schedule(dynamic, TILE)
-							for (auto j = i + 1; j < n; ++j) {
-								auto* __restrict rowj = &M(j, 0);
-								auto* __restrict rowi = &M(i, 0);
-								auto f                = rowj[i] / rowi[i];
-								rowj[i]               = K(0);
+							for (size_t j = i + 1; j < n; ++j) {
+								for (size_t k = 0; k < n; ++k) {
+									rowj[k] = M(j, k);
+									rowi[k] = M(i, k);
+								}
 
-								const auto fv = SimdT::set1(f);
-								auto k        = i + 1;
+								K f = rowj[i] / rowi[i];
+								rowj[i] = K(0);
+								regT fv = SimdT::set1(f);
+
+								size_t k = i + 1;
 								for (; k + 4 * W <= n; k += 4 * W) {
 									for (int t = 0; t < 4; ++t) {
-										auto off = k + t * W;
-										auto vj  = SimdT::loadu(rowj + off);
-										auto vi  = SimdT::loadu(rowi + off);
-										vj        = SimdT::sub(vj, SimdT::mul(fv, vi));
-										SimdT::storeu(rowj + off, vj);
+										size_t off = k + t * W;
+										regT vj = SimdT::loadu(&rowj[off]);
+										regT vi = SimdT::loadu(&rowi[off]);
+										vj = SimdT::sub(vj, SimdT::mul(fv, vi));
+										SimdT::storeu(&rowj[off], vj);
 									}
 								}
 								for (; k + W <= n; k += W) {
-									auto vj = SimdT::loadu(rowj + k);
-									auto vi = SimdT::loadu(rowi + k);
-									vj      = SimdT::sub(vj, SimdT::mul(fv, vi));
-									SimdT::storeu(rowj + k, vj);
+									regT vj = SimdT::loadu(&rowj[k]);
+									regT vi = SimdT::loadu(&rowi[k]);
+									vj = SimdT::sub(vj, SimdT::mul(fv, vi));
+									SimdT::storeu(&rowj[k], vj);
 								}
-								for (; k + 1 < n; k += 2) {
-									rowj[k]     -= f * rowi[k];
-									rowj[k + 1] -= f * rowi[k + 1];
-								}
-								if (k < n)
+								for (; k < n; ++k)
 									rowj[k] -= f * rowi[k];
+
+								for (size_t k = 0; k < n; ++k)
+									M(j, k) = rowj[k];
 
 								B[j] -= f * B[i];
 							}
 						}
 
-						for (auto ii = n; ii-- > 0;) {
-							auto* __restrict rowi = &M(ii, 0);
-							auto acc              = SimdT::setzero();
-							auto j                = ii + 1;
+						for (size_t ii = n; ii-- > 0;) {
+							for (size_t k = 0; k < n; ++k)
+								rowi[k] = M(ii, k);
+
+							regT acc = SimdT::setzero();
+							size_t j = ii + 1;
 							for (; j + W <= n; j += W) {
-								auto u  = SimdT::loadu(rowi + j);
-								auto xv = SimdT::loadu(&x[j]);
-								acc     = SimdT::fmadd(u, xv, acc);
+								regT u = SimdT::loadu(&rowi[j]);
+								regT xv = SimdT::loadu(&x[j]);
+								acc = SimdT::fmadd(u, xv, acc);
 							}
-							auto sum = SimdT::horizontal_add(acc);
+							K sum = SimdT::horizontal_add(acc);
 							for (; j < n; ++j)
 								sum += rowi[j] * x[j];
 
@@ -137,27 +137,27 @@ namespace tensorium::solver {
 						return x;
 					}
 
-					static inline void raw_row_echelon(Matrix<K>& A, Vector<K>* b = nullptr, K eps = 1e-12) {
-						const size_t n = A.rows;
-						const size_t m = A.cols;
-						assert(b == nullptr || b->size() == n);
+				static inline void raw_row_echelon(Matrix<K>& A, Vector<K>* b = nullptr, K eps = 1e-12) {
+					const size_t n = A.rows;
+					const size_t m = A.cols;
+					assert(b == nullptr || b->size() == n);
 
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						constexpr size_t W = Simd::width;
+					using Simd = simd::SimdTraits<K, DefaultISA>;
+					using reg = typename Simd::reg;
+					constexpr size_t W = Simd::width;
 
-						size_t lead = 0;
-						for (size_t r = 0; r < n; ++r) {
-							if (lead >= m)
-								return;
+					size_t lead = 0;
+					for (size_t r = 0; r < n; ++r) {
+						if (lead >= m)
+							return;
 
-							size_t i = r;
-							while ( MathsUtils::_abs(A(i, lead)) < eps) {
-								++i;
-								if (i == n) {
-									i = r;
-									++lead;
-									if (lead == m)
+						size_t i = r;
+						while ( MathsUtils::_abs(A(i, lead)) < eps) {
+							++i;
+							if (i == n) {
+								i = r;
+								++lead;
+								if (lead == m)
 										return;
 								}
 							}

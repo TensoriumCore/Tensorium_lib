@@ -34,37 +34,62 @@ PYBIND11_MODULE(tensorium, m) {
 
     py::module_ tns = m.def_submodule("tns", "High-performance math operations");
 
+	
+    // --- REGISTER 4D TENSOR -------------------------------------------------
+    py::class_<tensorium::Tensor<double, 4>>(tns, "Tensor4d")
+        // constructeur par défaut + copy ctor sont implicites, tu n’en as pas besoin explicitement
+        .def("print", &tensorium::Tensor<double, 4>::print)
+        .def("__getitem__", [](const tensorium::Tensor<double, 4>& T,
+                            std::tuple<size_t,size_t,size_t,size_t> idx) {
+            return T(std::get<0>(idx),
+                    std::get<1>(idx),
+                    std::get<2>(idx),
+                    std::get<3>(idx));
+        })
+        .def("__setitem__", [](tensorium::Tensor<double, 4>& T,
+                            std::tuple<size_t,size_t,size_t,size_t> idx,
+                            double v) {
+            T(std::get<0>(idx),
+            std::get<1>(idx),
+            std::get<2>(idx),
+            std::get<3>(idx)) = v;
+        });
+
+
 	py::class_<tensorium::Tensor<double, 2>>(tns, "Tensor2d")
 		.def("print", &tensorium::Tensor<double, 2>::print)
 		.def("contract", [](const tensorium::Tensor<double, 2>& T, size_t i, size_t j) {
-			if (i >= 2 || j >= 2 || i == j)
+				if (i >= 2 || j >= 2 || i == j)
 				throw std::invalid_argument("Invalid contraction indices");
-				return contract_tensor<0,1>(T); // Remplace 0,1 par i,j si tu fais un dispatch dynamique
-			}, py::arg("i"), py::arg("j"), "Contract tensor along axes (i, j)");
+				return contract_tensor<0,1>(T); // Fixme: static only
+				}, py::arg("i"), py::arg("j"), "Contract tensor along axes (i, j)")
 
-    py::class_<tensorium::Tensor<double, 3>>(tns, "Tensor3d")
-        .def("print", &tensorium::Tensor<double, 3>::print);
+        .def("get", [](const tensorium::Tensor<double, 2>& T, size_t i, size_t j) {
+                return T(i, j);
+                }, py::arg("i"), py::arg("j"), "Get tensor component T(i, j)")
+        .def("__call__", [](const tensorium::Tensor<double, 2>& T, size_t i, size_t j) {
+                return T(i, j);
+                }, py::arg("i"), py::arg("j"), "Call syntax T(i,j)")
 
-    py::class_<tensorium::Tensor<double, 4>>(tns, "Tensor4d")
-        .def("print", &tensorium::Tensor<double, 4>::print)
-        .def("__getitem__", [](const tensorium::Tensor<double, 4>& T, std::tuple<size_t, size_t, size_t, size_t> idx) {
-            return T(std::get<0>(idx), std::get<1>(idx), std::get<2>(idx), std::get<3>(idx));
-        })
-        .def("__setitem__", [](tensorium::Tensor<double, 4>& T, std::tuple<size_t, size_t, size_t, size_t> idx, double val) {
-            T(std::get<0>(idx), std::get<1>(idx), std::get<2>(idx), std::get<3>(idx)) = val;
-        });
 
-    py::class_<tensorium_RG::RiemannTensor<double>>(tns, "Riemann")
-        .def_static("print_componentwise", &tensorium_RG::RiemannTensor<double>::print_componentwise,
-                    py::arg("R"), py::arg("threshold") = 1e-12,
-                    "Print Riemann tensor components with optional threshold");
+        .def("__getitem__", [](const tensorium::Tensor<double, 2>& T, std::pair<size_t, size_t> idx) {
+                return T(idx.first, idx.second);
+			})
 
-    py::class_<tensorium_RG::ChristoffelSym<double>>(tns, "Christoffel")
-        .def("print", &tensorium_RG::ChristoffelSym<double>::print);
+	.def("__setitem__", [](tensorium::Tensor<double, 2>& T, std::pair<size_t, size_t> idx, double val) {
+			T(idx.first, idx.second) = val;
+			});
+	py::class_<tensorium_RG::RiemannTensor<double>>(tns, "Riemann")
+		.def_static("print_componentwise", &tensorium_RG::RiemannTensor<double>::print_componentwise,
+				py::arg("R"), py::arg("threshold") = 1e-12,
+				"Print Riemann tensor components with optional threshold");
 
-    py::class_<tensorium_RG::Metric<double>>(tns, "Metric")
-        .def(py::init<const std::string&, double, double>())
-        .def("__call__", [](tensorium_RG::Metric<double>& metric, const Vector<double>& X) {
+	py::class_<tensorium_RG::ChristoffelSym<double>>(tns, "Christoffel")
+		.def("print", &tensorium_RG::ChristoffelSym<double>::print);
+
+	py::class_<tensorium_RG::Metric<double>>(tns, "Metric")
+		.def(py::init<const std::string&, double, double>())
+		.def("__call__", [](tensorium_RG::Metric<double>& metric, const Vector<double>& X) {
             tensorium::Tensor<double, 2> g({4, 4});
             metric(X, g);
             return g;
