@@ -7,6 +7,14 @@ __pycache__/
 # CMake / ninja / cmake-build
 pybuild/
 build/
+compile_commands.json
+*.o
+
+# python
+.venv/
 
 # macOS
 *.DS_Store
+
+# clangd
+.cache/
