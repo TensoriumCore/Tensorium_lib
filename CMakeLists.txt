@@ -17,7 +17,7 @@ include_directories(${CMAKE_SOURCE_DIR}/includes)
 pybind11_add_module(tensorium ./pybind/bindings.cpp)
 
 target_link_libraries(tensorium PRIVATE OpenMP::OpenMP_CXX)
-install(TARGETS tensorium
-        LIBRARY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+# install(TARGETS tensorium
+#         LIBRARY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 
