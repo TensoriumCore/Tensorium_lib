@@ -187,8 +187,8 @@ namespace tensorium {
 
 					 tensorium::GemmKernel<K> kernel;
 					 kernel.matmul(
-							 const_cast<K*>(B),
 							 const_cast<K*>(A),
+							 const_cast<K*>(B),
 							 C,
 							 static_cast<int>(rows),             // M
 							 static_cast<int>(mat.cols),         // N
@@ -244,7 +244,7 @@ namespace tensorium {
 
 					 for (size_t i = 0; i < rows; ++i)
 						 for (size_t j = 0; j < cols; ++j)
-							 result(j, i) = (*this)(i, j);  // swap indices !
+							 result(i, j) = (*this)(j, i);  // swap indices !
 
 					 return result;
 				 }
