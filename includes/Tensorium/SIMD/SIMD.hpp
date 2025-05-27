@@ -198,7 +198,7 @@ namespace simd {
 				alignas(16) float tmp[4];
 				_mm_store_ps(tmp, value);
 				alignas(16) int m[4];
-				_mm_store_si128(reinterpret_cast<__m128i*>(m), mask);
+				_mm_store_si128(reinterpret_cast<__m128i*>(m), _mm_castps_si128(mask));
 				for (int i = 0; i < 4; ++i)
 					if (m[i])
 						ptr[i] = tmp[i];

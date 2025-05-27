@@ -6,6 +6,11 @@
 #include <cstring>
 #include <immintrin.h>
 
+/*
+ * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block sizes 
+ *
+ */
+
 namespace tensorium {
 	template<typename T>
 		class GemmKernel {
@@ -269,7 +274,7 @@ namespace tensorium {
 #else
 #error "AVX2 or AVX-512 required"
 #endif
-}
+				}
 
 
 				inline void maskload_accum_00(T* C,
