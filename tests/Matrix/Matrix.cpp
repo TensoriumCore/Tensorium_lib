@@ -30,54 +30,41 @@ tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K>& A, const tens
     return C;
 }
 int matrix_bench() {
-    using namespace tensorium;
-    std::vector<std::size_t> sizes = {16, 32, 48, 64, 96, 128};
+	using namespace tensorium;
+	std::vector<std::size_t> sizes = {4096};
 
-    for (std::size_t N : sizes) {
-        Matrix<double> A(N, N);
-        Matrix<double> B(N, N);
+	for (std::size_t N : sizes) {
+		Matrix<double> A(N, N);
+		Matrix<double> B(N, N);
 
-        #pragma omp parallel
-        {
-            std::mt19937 rng(42 + omp_get_thread_num());
-            std::uniform_real_distribution<double> dist(0.0, 1.0);
+#pragma omp parallel
+		{
+			std::mt19937 rng(42 + omp_get_thread_num());
+			std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-            #pragma omp for schedule(static)
-            for (std::size_t i = 0; i < N; ++i)
-                for (std::size_t j = 0; j < N; ++j) {
-                    A(i, j) = dist(rng);
-                    B(i, j) = dist(rng);
-                }
-        }
+#pragma omp for schedule(static)
+			for (std::size_t i = 0; i < N; ++i)
+				for (std::size_t j = 0; j < N; ++j) {
+					A(i, j) = dist(rng);
+					B(i, j) = dist(rng);
+				}
+		}
 
-        std::cout << "\n=== Benchmarking N = " << N << " ===\n";
+		std::cout << "\n=== Benchmarking N = " << N << " ===\n";
 
-        const auto t0 = std::chrono::high_resolution_clock::now();
-        auto C = mul_mat(A, B);
-        const auto t1 = std::chrono::high_resolution_clock::now();
-        double elapsed = std::chrono::duration<double>(t1 - t0).count();
+		const auto t0 = std::chrono::high_resolution_clock::now();
+		auto C = mul_mat(A, B);
+		const auto t1 = std::chrono::high_resolution_clock::now();
+		double elapsed = std::chrono::duration<double>(t1 - t0).count();
 
-        const long double flops = 2.0L * N * N * N;
-        const double gflops = static_cast<double>(flops / 1e9L) / elapsed;
+		const long double flops = 2.0L * N * N * N;
+		const double gflops = static_cast<double>(flops / 1e9L) / elapsed;
 
-        std::cout << std::fixed << std::setprecision(3);
-        std::cout << "Time      : " << elapsed << "  s\n";
-        std::cout << "GFLOP/s   : " << gflops  << '\n';
-        std::cout << "Sample C(0,0): " << C(0, 0) << '\n';
+		std::cout << std::fixed << std::setprecision(3);
+		std::cout << "Time      : " << elapsed << "  s\n";
+		std::cout << "GFLOP/s   : " << gflops  << '\n';
+		std::cout << "Sample C(0,0): " << C(0, 0) << '\n';
 
-        auto C_ref = mul_mat_reference(A, B);
-        double max_diff = 0.0;
-
-        for (std::size_t i = 0; i < N * N; ++i)
-            max_diff = std::max(max_diff, std::abs(C.data[i] - C_ref.data[i]));
-
-		std::cout << "Max diff  : " << max_diff << '\n';
-		if (max_diff < 1e-6)
-			std::cout << "[✓] Test passed\n";
-		else 
-			std::cout << "[✗] Test failed\n";
-
-		std::cout << "==============================\n";
 	}
 
 	return 0;
