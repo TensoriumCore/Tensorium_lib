@@ -59,24 +59,16 @@ This library is built with the goal of empowering projects that require both spe
 - `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
 - OpenBLAS (optional, for benchmarking with BLAS)
 
-## Nix shell command for LLVM plugin dependencies
+## Build over Nix for pythton binding
 
 ```bash
-nix-shell -p numactl zlib udev openmpi clang llvmPackages.openmp tree openblas  python312Packages.pybind11 llvmPackages_17.clang llvmPackages_17.llvm llvmPackages_17.libclang cloc doxygen graphviz bear llvmPackages_17.mlir
+./build_linux.sh && pip install --user -e .
 ```
 if you are on Macos :
 ```bash
-nix --extra-experimental-features 'nix-command flakes' develop
+nix --extra-experimental-features 'nix-command flakes' develop && ./build_macos && pip install --user -e .
 ```
 
-### Build C++ Library and Python Module
-
-```bash
-mkdir pybuild
-cd pybuild
-cmake ..
-make -j4
-```
 Then you can use it as the .ipynb show
 
 ### Build C++ only for special targets and options
@@ -97,6 +89,9 @@ The Python module will be created as a .so file in the pybuild/ directory.
 #include "Tensorium.hpp"
 
 int main() {
+
+	#pragma tensorium dispatch
+
 	Vector<float> v1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 	Vector<float> v2 = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
