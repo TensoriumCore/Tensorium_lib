@@ -352,7 +352,7 @@ namespace tensorium {
 											K a_scalar = A(idx_A);
 											reg a_vec = Simd::set1(a_scalar);
 
-											if (b_inner < max_b_safe){
+											if (b_inner < max_b_safe && W != 0){
 												for (size_t b_flat = b_inner; b_flat + W <= b_end; b_flat += W) {
 													reg b_vec = Simd::loadu(&B.data[b_flat]);
 													reg c_vec = Simd::mul(a_vec, b_vec);
@@ -376,23 +376,23 @@ namespace tensorium {
 														result(idx_C) = Simd::extract(c_vec, w);
 													}
 												}
-											}
+											} else {
+												for (size_t b_flat = b_inner; b_flat < b_end; ++b_flat) {
+													std::array<size_t, R2> idx_B;
+													std::array<size_t, R> idx_C;
 
-											for (size_t b_flat = b_inner + ((b_end - b_inner) / W) * W; b_flat < b_end; ++b_flat){
-												std::array<size_t, R2> idx_B;
-												std::array<size_t, R> idx_C;
+													size_t tmpb = b_flat;
+													for (ssize_t i = R2 - 1; i >= 0; --i) {
+														idx_B[i] = tmpb % B.dimensions[i];
+														tmpb /= B.dimensions[i];
+													}
+													for (size_t i = 0; i < R1; ++i)
+														idx_C[i] = idx_A[i];
+													for (size_t i = 0; i < R2; ++i)
+														idx_C[R1 + i] = idx_B[i];
 
-												size_t tmpb = b_flat;
-												for (ssize_t i = R2 - 1; i >= 0; --i) {
-													idx_B[i] = tmpb % B.dimensions[i];
-													tmpb /= B.dimensions[i];
+													result(idx_C) = a_scalar * B(idx_B);
 												}
-												for (size_t i = 0; i < R1; ++i) 
-													idx_C[i] = idx_A[i];
-												for (size_t i = 0; i < R2; ++i) 
-													idx_C[R1 + i] = idx_B[i];
-
-												result(idx_C) = a_scalar * B(idx_B);
 											}
 										}
 									}

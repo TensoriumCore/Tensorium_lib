@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "Matrix.hpp"
+#include "../Matrix.hpp"
 
 namespace tensorium { 
 	template <typename K>
