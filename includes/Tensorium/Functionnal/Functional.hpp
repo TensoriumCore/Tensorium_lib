@@ -5,7 +5,7 @@
 #include "../Core/LinearSolver.hpp"
 #include "../Core/Derivate.hpp"
 #include "../Core/Spectral.hpp"
-#include "../Core/MatrixKernel.hpp"
+#include "../Core/MatrixKernels/MatrixKernel.hpp"
 
 namespace tensorium {
 	// === VECTOR OPS ===

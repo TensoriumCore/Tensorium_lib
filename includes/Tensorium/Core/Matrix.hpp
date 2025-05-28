@@ -240,14 +240,15 @@ namespace tensorium {
 
 				 /** @brief Returns the transpose \f$ A^T \f$ of the matrix (column-major layout) */
 				 inline Matrix<K> transpose() const {
-					 Matrix<K> result(cols, rows); // Transpose => rows <-> cols
+					 Matrix<K> result(cols, rows); 
 
 					 for (size_t i = 0; i < rows; ++i)
 						 for (size_t j = 0; j < cols; ++j)
-							 result(i, j) = (*this)(j, i);  // swap indices !
+							 result(j, i) = (*this)(i, j);
 
 					 return result;
 				 }
+
 				 /** @brief Returns the trace of a square matrix as a 1×1 matrix */
 				 inline Matrix<K> trace() const {
 					 if (rows != cols) {
