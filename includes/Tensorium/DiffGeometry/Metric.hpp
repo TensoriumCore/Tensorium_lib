@@ -98,6 +98,21 @@ namespace tensorium_RG {
 						for (size_t j = 0; j < 3; ++j)
 							gamma(i, j) = g(i + 1, j + 1);
 				}
+
+				T compute_conformal_factor(const tensorium::Tensor<T, 2>& gamma) const {
+					assert(gamma.dimensions[0] == 3 && gamma.dimensions[1] == 3);
+					T det = gamma(0,0)*(gamma(1,1)*gamma(2,2)-gamma(1,2)*gamma(2,1))
+						- gamma(0,1)*(gamma(1,0)*gamma(2,2)-gamma(1,2)*gamma(2,0))
+						+ gamma(0,2)*(gamma(1,0)*gamma(2,1)-gamma(1,1)*gamma(2,0));
+					return std::pow(det, -1.0 / 3.0);
+				}
+
+				void compute_conformal_metric(const tensorium::Tensor<T, 2>& gamma, T chi, tensorium::Tensor<T, 2>& gamma_tilde) const {
+					gamma_tilde.resize(3, 3);
+					for (size_t i = 0; i < 3; ++i)
+						for (size_t j = 0; j < 3; ++j)
+							gamma_tilde(i, j) = chi * gamma(i, j);
+				}
 			private:
 				/**
 				 * @brief Optional user-defined metric function (must accept X and fill g)

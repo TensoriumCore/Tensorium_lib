@@ -379,7 +379,7 @@ namespace tensorium {
 						for (; i < n; ++i)
 							result += v_ptr[i] * v_ptr[i];
 
-						return std::sqrt(result);
+						return std::pow(result, 0.5f);
 					}
 				/**
 				 * @brief Compute the infinity norm (maximum absolute value).

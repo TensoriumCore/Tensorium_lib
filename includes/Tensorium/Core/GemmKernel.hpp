@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <immintrin.h>
-
+#include "../MathUtils/MathsUtils.hpp"
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block sizes 
  *
@@ -1496,7 +1496,7 @@ namespace tensorium {
 #ifndef OMP_SCHEDULE
 #define OMP_SCHEDULE auto
 #endif
-
+#define _min(x, y) ((x) < (y) ? (x) : (y))
 #define PRAGMA_OMP_PARALLEL_FOR _Pragma("omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)")
 
 
@@ -1517,7 +1517,7 @@ namespace tensorium {
 				void pack_blockB(T* B, T* blockB_packed, int nc, int kc, int K) {
 #pragma omp for schedule(dynamic)
 					for (int j = 0; j < nc; j += 6) {
-						int nr = std::min(6, nc - j);
+						int nr = _min(6, nc - j);
 						pack_panelB(&B[j * K], &blockB_packed[j * kc], nr, kc, K);
 					}
 				}
@@ -1536,28 +1536,28 @@ namespace tensorium {
 				void pack_blockA(T* A, T* blockA_packed, int mc, int kc, int M) {
 					PRAGMA_OMP_PARALLEL_FOR
 						for (int i = 0; i < mc; i += 16) {
-							int mr = std::min(16, mc - i);
+							int mr = _min(16, mc - i);
 							pack_panelA(&A[i], &blockA_packed[i * kc], mr, kc, M);
 						}
 				}
 
 				void matmul(T* A, T* B, T* C, int M, int N, int K) {
 					for (int j = 0; j < N; j += NC) {
-						int nc = std::min(NC, N - j);
-						int kc = std::min(KC, K);
+						int nc = _min(NC, N - j);
+						int kc = _min(KC, K);
 
 						pack_blockB(&B[j * K], blockB_packed, nc, kc, K);
 
 						for (int i = 0; i < M; i += MC) {
-							int mc = std::min(MC, M - i);
+							int mc = _min(MC, M - i);
 
 							pack_blockA(&A[i], blockA_packed, mc, kc, M);
 
 							PRAGMA_OMP_PARALLEL_FOR
 								for (int jr = 0; jr < nc; jr += 6) {
-									int nr = std::min(6, nc - jr);
+									int nr = _min(6, nc - jr);
 									for (int ir = 0; ir < mc; ir += 16) {
-										int mr = std::min(16, mc - ir);
+										int mr = _min(16, mc - ir);
 										kernel_16x6_zero_init_accum(
 												&blockA_packed[ir * kc],
 												&blockB_packed[jr * kc],
@@ -1567,19 +1567,19 @@ namespace tensorium {
 								}
 						}
 						for (int p = kc; p < K; p += KC) {
-							int cur_kc = std::min(KC, K - p);
+							int cur_kc = _min(KC, K - p);
 							pack_blockB(&B[j * K + p], blockB_packed, nc, cur_kc, K);
 
 							for (int i = 0; i < M; i += MC) {
-								int mc = std::min(MC, M - i);
+								int mc = _min(MC, M - i);
 
 								pack_blockA(&A[i + p * M], blockA_packed, mc, cur_kc, M);
 
 								PRAGMA_OMP_PARALLEL_FOR
 									for (int jr = 0; jr < nc; jr += 6) {
-										int nr = std::min(6, nc - jr);
+										int nr = _min(6, nc - jr);
 										for (int ir = 0; ir < mc; ir += 16) {
-											int mr = std::min(16, mc - ir);
+											int mr = _min(16, mc - ir);
 											kernel_16x6_load_accum(
 													&blockA_packed[ir * cur_kc],
 													&blockB_packed[jr * cur_kc],

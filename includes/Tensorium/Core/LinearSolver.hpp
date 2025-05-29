@@ -75,7 +75,7 @@ namespace tensorium::solver {
 
 							if (piv != i) {
 								M.swap_rows(i, piv);
-								std::swap(B[i], B[piv]);
+								MathsUtils::_swap(B[i], B[piv]);
 							}
 
 							constexpr auto TILE = UNROLL;
@@ -137,74 +137,45 @@ namespace tensorium::solver {
 						return x;
 					}
 
+				
 				static inline void raw_row_echelon(Matrix<K>& A, Vector<K>* b = nullptr, K eps = 1e-12) {
 					const size_t n = A.rows;
 					const size_t m = A.cols;
-					assert(b == nullptr || b->size() == n);
-
-					using Simd = simd::SimdTraits<K, DefaultISA>;
-					using reg = typename Simd::reg;
-					constexpr size_t W = Simd::width;
+					assert(!b || b->size() == n);
 
 					size_t lead = 0;
 					for (size_t r = 0; r < n; ++r) {
-						if (lead >= m)
-							return;
+						if (lead >= m) break;
 
 						size_t i = r;
-						while ( MathsUtils::_abs(A(i, lead)) < eps) {
-							++i;
-							if (i == n) {
-								i = r;
-								++lead;
-								if (lead == m)
-										return;
-								}
-							}
-
-							if (i != r) {
-								A.swap_rows(i, r);
-								if (b) {
-									K tmp = (*b)[i];
-									(*b)[i] = (*b)[r];
-									(*b)[r] = tmp;
-								}
-							}
-
-							auto* __restrict row_r = &A(r, 0);
-							const K pivot = row_r[lead];
-							if ( MathsUtils::_abs(pivot) < eps)
-								continue;
-
-							const K inv_pivot = K(1) / pivot;
-							for (size_t j = lead; j < m; ++j)
-								row_r[j] *= inv_pivot;
-							if (b) (*b)[r] *= inv_pivot;
-
-#pragma omp parallel for schedule(dynamic, 4)
-							for (size_t k = r + 1; k < n; ++k) {
-								auto* __restrict row_k = &A(k, 0);
-								const K f = row_k[lead];
-								row_k[lead] = K(0);
-
-								const reg fv = Simd::set1(f);
-								size_t j = lead + 1;
-								for (; j + W <= m; j += W) {
-									auto vr = Simd::loadu(row_r + j);
-									auto vk = Simd::loadu(row_k + j);
-									vk = Simd::sub(vk, Simd::mul(fv, vr));
-									Simd::storeu(row_k + j, vk);
-								}
-								for (; j < m; ++j)
-									row_k[j] -= f * row_r[j];
-
-								if (b) (*b)[k] -= f * (*b)[r];
-							}
-
+						while (i < n && MathsUtils::_abs(A(i, lead)) < eps) ++i;
+						if (i == n) {
 							++lead;
+							--r;
+							continue;
 						}
-					}
 
+						if (i != r) {
+							A.swap_rows(i, r);
+							if (b) MathsUtils::_swap((*b)[i], (*b)[r]);
+						}
+
+						K pivot = A(r, lead);
+						for (size_t j = 0; j < m; ++j)
+							A(r, j) /= pivot;
+						if (b) (*b)[r] /= pivot;
+
+						for (size_t k = 0; k < n; ++k) {
+							if (k == r) continue;
+							K f = A(k, lead);
+							for (size_t j = 0; j < m; ++j)
+								A(k, j) -= f * A(r, j);
+							if (b) (*b)[k] -= f * (*b)[r];
+						}
+
+						++lead;
+					}
+				}
 		};
 	/**
 	 * @brief Iterative Jacobi solver with SIMD and OpenMP support

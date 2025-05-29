@@ -67,7 +67,7 @@ namespace tensorium {
 				 void swap_rows(size_t i, size_t j) {
 					 assert(i < rows && j < rows);
 					 for (size_t k = 0; k < cols; ++k) {
-						 std::swap((*this)(i, k), (*this)(j, k));
+						 MathsUtils::_swap((*this)(i, k), (*this)(j, k));
 					 }
 				 }
 				 /**
@@ -170,6 +170,37 @@ namespace tensorium {
 						 data[i] *= a;
 				 }
 				
+				 /** @brief Linearly interpolate between two matrices: this = (1 - α) * A + α * B */
+				 inline void lerp(const Matrix<K>& A, const Matrix<K>& B, K alpha) {
+					 if (A.rows != B.rows || A.cols != B.cols || rows != A.rows || cols != A.cols)
+						 throw std::invalid_argument("Matrix size mismatch for lerp");
+
+					 using Simd = simd::SimdTraits<K, DefaultISA>;
+					 using reg = typename Simd::reg;
+					 const size_t simd_width = Simd::width;
+
+					 size_t n = size();
+					 size_t i = 0;
+
+					 reg alpha_vec = Simd::set1(alpha);
+					 reg one_minus_alpha_vec = Simd::set1(K(1) - alpha);
+
+					 for (; i + 2 * simd_width - 1 < n; i += 2 * simd_width) {
+						 reg a0 = Simd::load(&A.data[i]);
+						 reg b0 = Simd::load(&B.data[i]);
+						 reg r0 = Simd::fmadd(one_minus_alpha_vec, a0, Simd::mul(alpha_vec, b0));
+						 Simd::store(&data[i], r0);
+
+						 reg a1 = Simd::load(&A.data[i + simd_width]);
+						 reg b1 = Simd::load(&B.data[i + simd_width]);
+						 reg r1 = Simd::fmadd(one_minus_alpha_vec, a1, Simd::mul(alpha_vec, b1));
+						 Simd::store(&data[i + simd_width], r1);
+					 }
+
+					 for (; i < n; ++i) {
+						 data[i] = (K(1) - alpha) * A.data[i] + alpha * B.data[i];
+					 }
+				 }
 				 /**
 				  * @brief Multiply matrix by another matrix using optimized SIMD path
 				  * 
@@ -398,7 +429,7 @@ namespace tensorium {
 					 for (size_t col = 0; col < n; ++col) {
 						 size_t pivot_row = r;
 						 for (size_t i = r; i < m; ++i) {
-							 if (MathsUtils::_abs(M(i, col)) > std::abs(M(pivot_row, col)))
+							 if (MathsUtils::_abs(M(i, col)) > MathsUtils::_abs(M(pivot_row, col)))
 								 pivot_row = i;
 						 }
 

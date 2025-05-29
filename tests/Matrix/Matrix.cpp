@@ -281,7 +281,7 @@ int matrix_tests() {
 
 	tensorium::Vector<double> X(dim);
 	X(0) = 0.0; 
-	X(1) = 10.0;
+	X(1) = 200.0;
 	X(2) = M_PI / 2.0;
 	X(3) = 0.0;
 
@@ -326,6 +326,14 @@ int matrix_tests() {
 	std::cout <<  "Spatial metric γ^{ij}:\n";
 	gammaj_inv = tensorium::inv_mat_tensor(gammaj);
 	gammaj_inv.print();
+
+	double chi = tensorium::compute_conformal_factor(metric, gammaj);
+	tensorium::Tensor<double, 2> gamma_tilde = tensorium::compute_conformal_metric(metric, gammaj, chi);
+	std::cout << "\n--- Conformal Decomposition ---\n";
+	std::cout << "Conformal factor χ = " << chi << "\n";
+	std::cout << "Conformal metric γ̃_{ij} = χ · γ_{ij}:\n";
+	gamma_tilde.print_shape();
+	gamma_tilde.print();
 	auto gamma2 = tensorium::compute_christoffel(X, 1e-5, gammaj, gammaj_inv, metric);
 	gamma2.print();
 	auto R_BSSN = tensorium::compute_riemann_tensor(X, 1e-5, metric);
