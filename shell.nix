@@ -1,47 +1,46 @@
 { pkgs ? import <nixpkgs> {
-    config = { 
-      allowUnfree = true; 
-    }; 
-  } 
+    config = {
+      allowUnfree = true;
+    };
+  }
 }:
 
 pkgs.mkShell {
-packages = with pkgs; [
-  vscode
-  python312Full
-  gcc
-  clang
-  openblas
-  openmpi
-  valgrind
-  cloc
-  tree
-] ++ (with python312Packages; [
-  pip
-  virtualenv
-  ipykernel
-  notebook
-  jupyter-client
-  pyzmq
-  pybind11
-  ipykernel
+  buildInputs = with pkgs; [
 
-]) ++ (with llvmPackages_18; [
-  mlir
-  clang
-  llvm
-  libclang
-  
-  openmp
-]);
+    vscode
+    gcc
+    openblas
+    openmpi
+    valgrind
+    cloc
+    tree
 
-  # only for nanobind 
+    python312Full
+    (python312.withPackages (ps: with ps; [
+      pip
+      virtualenv
+      ipykernel
+      notebook
+      jupyter-client
+      pyzmq
+      pybind11
+    ]))
+
+  ] ++ (with llvmPackages_18; [
+    mlir
+    clang
+    llvm
+    libclang
+    openmp
+  ]);
+
   shellHook = ''
     if [ ! -d .venv ]; then
       echo "[+] Creating .venv..."
       python3 -m venv .venv
       source .venv/bin/activate
-      pip install nanobind 
+      pip install nanobind
     else
       source .venv/bin/activate
     fi

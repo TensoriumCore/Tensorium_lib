@@ -22,6 +22,13 @@ class MathsUtils {
 			return (a > b) ? a : b;
 		}
 
+		template<typename T>
+			static inline void _swap(T& a, T& b) {
+				T tmp = a;
+				a = b;
+				b = tmp;
+			}
+
 		static inline double _abs(double a) {
 			return (a < 0) ? -a : a;
 		}

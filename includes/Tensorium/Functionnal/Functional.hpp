@@ -173,6 +173,14 @@ namespace tensorium {
 		return result;
 	}
 
+	template <typename T>
+		Matrix<T> lerp_mat(const Matrix<T>& A, const Matrix<T>& B, T t) {
+			Matrix<T> result(A.rows, A.cols);
+			result.lerp(A, B, t); 
+			return result;
+		}
+
+
 /*
  * @brief Matrix multiplication
  * @param A First matrix
@@ -183,7 +191,7 @@ namespace tensorium {
  * @note OpenMP parallelization for large matrices, for small matrices, it is not worth the overhead
  * @note (For matrix 4x4, 8x8 and 16x16, there's a SIMD fallback to ensure L1 and L2 cache storage)
  */
-
+	
 	template <typename T>
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
 		// if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {

@@ -108,5 +108,18 @@ namespace tensorium {
 			inline void print_ricci_scalar(const Tensor<T, 2>& Ricci, const Tensor<T, 2>& g_inv) {
 				tensorium_RG::RicciTensor<T>::print_ricci_scalar(Ricci, g_inv);
 			}
+		template<typename T>
+			inline T compute_conformal_factor(const tensorium_RG::Metric<T>& metric,
+					const Tensor<T, 2>& gamma) {
+				return metric.compute_conformal_factor(gamma);
+			}
 
+		template<typename T>
+			inline Tensor<T, 2> compute_conformal_metric(const tensorium_RG::Metric<T>& metric,
+					const Tensor<T, 2>& gamma,
+					T chi) {
+				Tensor<T, 2> gamma_tilde({3, 3});
+				metric.compute_conformal_metric(gamma, chi, gamma_tilde);
+				return gamma_tilde;
+			}
 }

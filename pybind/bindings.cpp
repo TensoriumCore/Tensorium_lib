@@ -239,6 +239,7 @@ PYBIND11_MODULE(tensorium, m) {
 	tns.def("add_mat", &add_mat<float>, "Add two matrices");
     tns.def("sub_mat", &sub_mat<float>, "Subtract two matrices");
     tns.def("scl_mat", &scl_mat<float>, "Scale matrix by scalar");
+	tns.def("lerp_mat", &lerp_mat<float>, "Linear interpolation between two matrices");
     tns.def("mul", &mul_mat<float>, "Multiply two matrices");
     tns.def("transpose_mat", &transpose_mat<float>, "Transpose a matrix");
     tns.def("trace_mat", &trace_mat<float>, "Trace of a matrix");
