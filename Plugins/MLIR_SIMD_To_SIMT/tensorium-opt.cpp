@@ -2,7 +2,7 @@
 #include "mlir/InitAllDialects.h"
 #include "mlir/InitAllPasses.h"
 #include "mlir/Pass/PassManager.h"
-#include "mlir/Tools/Plugins/PassPlugin.h"          // Pour EmptyPipelineOptions
+#include "mlir/Tools/Plugins/PassPlugin.h"  
 #include "mlir/Support/FileUtilities.h"
 #include "mlir/Tools/mlir-opt/MlirOptMain.h"
 
@@ -25,8 +25,8 @@ struct ConvertMemRefToLLVMPass
     populateFinalizeMemRefToLLVMConversionPatterns(converter, patterns);
 
     ConversionTarget target(ctx);
-    target.addLegalDialect("llvm");                  // dialecte LLVM
-    target.addIllegalDialect<memref::MemRefDialect>(); // dialecte MemRef
+    target.addLegalDialect("llvm");
+    target.addIllegalDialect<memref::MemRefDialect>();
 
     if (failed(applyPartialConversion(getOperation(), target,
                                       std::move(patterns))))
@@ -35,8 +35,6 @@ struct ConvertMemRefToLLVMPass
 };
 } // namespace
 
-// --- Enregistrement du pipeline CLI ----------------------
-// On utilise EmptyPipelineOptions et une lambda à 1 paramètre.
 static PassPipelineRegistration<EmptyPipelineOptions> pipeline(
     "convert-memref-to-llvm",
     "Convert MemRef dialect to LLVM dialect",
