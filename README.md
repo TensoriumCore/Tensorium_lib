@@ -39,12 +39,15 @@ This library is built with the goal of empowering projects that require both spe
 ## TODO
 - Symbolic LaTeX parser
 - Tensor operators
-- General relativity / differential geometry classes dans methods
-- Full MPI support 
-- SSE fallback (curently working on)
+- Multiple kernels for Tensors/Matrix (optimized for severql sizes)
+- LLVM passe to check user code and analyse LLVM_IR to improve performance
+- (!!! NOT AT THE MOMENT) MLIR dialect to auto-translate CPU code to a GPU friendly kernel
+- General relativity / differential geometry classes dans methods (BSSN)
+- CUDA runtime kernels for critical kernels and operators
+- Full MPI support (maybe Intel-TBB routines
 - Spectral Methdods (Chebychev/Fourrier)
 - Backward FDM
-- Some optimizations
+- Some (severak) optimizations
 
 ## Build Instructions
 
