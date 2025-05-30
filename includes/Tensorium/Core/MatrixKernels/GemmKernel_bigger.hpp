@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Matrix.hpp"
+#include "../Matrix.hpp"
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <immintrin.h>
-#include "../MathUtils/MathsUtils.hpp"
+#include "../../MathUtils/MathsUtils.hpp"
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block sizes 
  *
@@ -13,7 +13,7 @@
 
 namespace tensorium {
 	template<typename T>
-		class GemmKernel {
+		class GemmKernelBigger {
 			public:
 				using Simd = simd::SimdTraits<T, DefaultISA>;
 				using reg = typename Simd::reg;
@@ -1597,9 +1597,9 @@ namespace tensorium {
 
 namespace tensorium {
 	template<typename T>
-		T GemmKernel<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
+		T GemmKernelBigger<T>::blockA_packed[MC * KC] __attribute__((aligned(64)));
 
 	template<typename T>
-		T GemmKernel<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
+		T GemmKernelBigger<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
 }
 

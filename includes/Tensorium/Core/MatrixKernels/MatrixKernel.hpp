@@ -17,32 +17,29 @@ namespace tensorium {
 				MatrixKernel(size_t r, size_t c) : Matrix<K>(r, c) {}
 				MatrixKernel(const Matrix<K>& m) : Matrix<K>(m) {}
 				
-				inline Matrix<K> mul_mat2x2(const Matrix<K>& mat) const {
+
+				inline Matrix<K> mul_mat2x2(const Matrix<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg = typename Simd::reg;
 
-					Matrix<K> result(2, 2);
+					Matrix<K> C(2, 2);
 
-					reg a_row0 = Simd::loadu(&data[0]);
-					reg a_row1 = Simd::loadu(&data[2]); 
+					reg b_col0 = Simd::loadu(&B.data[0]); 
+					reg b_col1 = Simd::loadu(&B.data[2]);
 
-					reg b_row0 = Simd::loadu(&mat.data[0]);
-					reg b_row1 = Simd::loadu(&mat.data[2]);
+					K b00 = Simd::extract(b_col0, 0);
+					K b10 = Simd::extract(b_col0, 1);
+					K b01 = Simd::extract(b_col1, 0);
+					K b11 = Simd::extract(b_col1, 1);
 
-					reg a00 = Simd::set1(data[0]); 
-					reg a01 = Simd::set1(data[1]); 
-					reg acc0 = Simd::mul(a00, b_row0); 
-					acc0 = Simd::fmadd(a01, b_row1, acc0); 
-					Simd::storeu(&result.data[0], acc0);
+					C(0,0) = (*this)(0,0)*b00 + (*this)(0,1)*b10;
+					C(1,0) = (*this)(1,0)*b00 + (*this)(1,1)*b10;
+					C(0,1) = (*this)(0,0)*b01 + (*this)(0,1)*b11;
+					C(1,1) = (*this)(1,0)*b01 + (*this)(1,1)*b11;
 
-					reg a10 = Simd::set1(data[2]); 
-					reg a11 = Simd::set1(data[3]);
-					reg acc1 = Simd::mul(a10, b_row0);
-					acc1 = Simd::fmadd(a11, b_row1, acc1);
-					Simd::storeu(&result.data[2], acc1);
-
-					return result;
+					return C;
 				}
+
 
 				inline Matrix<K> mul_mat3x3(const Matrix<K>& mat) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -50,55 +47,33 @@ namespace tensorium {
 
 					Matrix<K> result(3, 3);
 
-					reg row0 = Simd::loadu(&data[0]);
-					reg row1 = Simd::loadu(&data[3]);
-					reg row2 = Simd::loadu(&data[6]);
+					reg c0 = Simd::loadu(&mat.data[0]); 
+					reg c1 = Simd::loadu(&mat.data[3]); 
+					reg c2 = Simd::loadu(&mat.data[6]); 
 
-					reg c0 = Simd::loadu(&mat.data[0]);
-					reg c1 = Simd::loadu(&mat.data[3]);
-					reg c2 = Simd::loadu(&mat.data[6]);
+					K a00 = (*this)(0,0), a01 = (*this)(0,1), a02 = (*this)(0,2);
 
-					K x0 = data[0];
-					K y0 = data[1];
-					K z0 = data[2];
+					reg r0 = Simd::mul(Simd::set1(a00), c0);
+					r0 = Simd::fmadd(Simd::set1(a01), c1, r0);
+					r0 = Simd::fmadd(Simd::set1(a02), c2, r0);
 
-					reg sx0 = Simd::set1(x0);
-					reg sy0 = Simd::set1(y0);
-					reg sz0 = Simd::set1(z0);
+					Simd::storeu(&result.data[0], r0); 
 
-					reg acc0 = Simd::mul(sx0, c0);
-					acc0 = Simd::fmadd(sy0, c1, acc0);
-					acc0 = Simd::fmadd(sz0, c2, acc0);
+					K a10 = (*this)(1,0), a11 = (*this)(1,1), a12 = (*this)(1,2);
 
-					Simd::storeu(&result.data[0], acc0);
+					reg r1 = Simd::mul(Simd::set1(a10), c0);
+					r1 = Simd::fmadd(Simd::set1(a11), c1, r1);
+					r1 = Simd::fmadd(Simd::set1(a12), c2, r1);
 
-					K x1 = data[3];
-					K y1 = data[4];
-					K z1 = data[5];
+					Simd::storeu(&result.data[3], r1); 
 
-					reg sx1 = Simd::set1(x1);
-					reg sy1 = Simd::set1(y1);
-					reg sz1 = Simd::set1(z1);
+					K a20 = (*this)(2,0), a21 = (*this)(2,1), a22 = (*this)(2,2);
 
-					reg acc1 = Simd::mul(sx1, c0);
-					acc1 = Simd::fmadd(sy1, c1, acc1);
-					acc1 = Simd::fmadd(sz1, c2, acc1);
+					reg r2 = Simd::mul(Simd::set1(a20), c0);
+					r2 = Simd::fmadd(Simd::set1(a21), c1, r2);
+					r2 = Simd::fmadd(Simd::set1(a22), c2, r2);
 
-					Simd::storeu(&result.data[3], acc1);
-
-					K x2 = data[6];
-					K y2 = data[7];
-					K z2 = data[8];
-
-					reg sx2 = Simd::set1(x2);
-					reg sy2 = Simd::set1(y2);
-					reg sz2 = Simd::set1(z2);
-
-					reg acc2 = Simd::mul(sx2, c0);
-					acc2 = Simd::fmadd(sy2, c1, acc2);
-					acc2 = Simd::fmadd(sz2, c2, acc2);
-
-					Simd::storeu(&result.data[6], acc2);
+					Simd::storeu(&result.data[6], r2); 
 
 					return result;
 				}
