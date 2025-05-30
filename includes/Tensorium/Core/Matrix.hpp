@@ -10,7 +10,7 @@
 #include "../SIMD/Allocator.hpp"
 #include "Vector.hpp"
 #include "../MathUtils/MathsUtils.hpp"
-#include "GemmKernel.hpp"
+#include "MatrixKernels/GemmKernel_bigger.hpp"
 
 namespace tensorium {
 	/**
@@ -216,7 +216,7 @@ namespace tensorium {
 					 const K* B = mat.data.data();           // Already column-major (rhs)
 					 K* C       = result.data.data();        // Output (also column-major)
 
-					 tensorium::GemmKernel<K> kernel;
+					 tensorium::GemmKernelBigger<K> kernel;
 					 kernel.matmul(
 							 const_cast<K*>(A),
 							 const_cast<K*>(B),

@@ -194,10 +194,10 @@ namespace tensorium {
 	
 	template <typename T>
 	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
-		// if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
-		// 	const MatrixKernel<T> kernelA(A);
-		// 	return kernelA.mul_mat2x2(B);
-		// }
+		if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
+			const MatrixKernel<T> kernelA(A);
+			return kernelA.mul_mat2x2(B);
+		}
 		// if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
 		// 	const MatrixKernel<T> kernelA(A);
 		// 	return kernelA.mul_mat3x3(B);
