@@ -1,7 +1,7 @@
 var searchData=
 [
   ['r_0',['r',['../classtensorium_1_1Vector.html#a10a0006757965a12ff20965259c15573',1,'tensorium::Vector']]],
-  ['rank_1',['rank',['../classtensorium_1_1Matrix.html#a6aa64cb114cee18687263df50e358583',1,'tensorium::Matrix::rank()'],['../namespacetensorium_1_1mpi.html#a5c0d2f1c3044adf469bf54680c598ad7',1,'tensorium::mpi::rank()']]],
+  ['rank_1',['rank',['../classtensorium_1_1Matrix.html#a2c198fa52eb64227c31e3f65c05c428e',1,'tensorium::Matrix::rank()'],['../namespacetensorium_1_1mpi.html#a5c0d2f1c3044adf469bf54680c598ad7',1,'tensorium::mpi::rank()']]],
   ['rank_5fmat_2',['rank_mat',['../namespacetensorium.html#ac04325fd65473407802866aac00a514a',1,'tensorium']]],
   ['raw_5frow_5fechelon_3',['raw_row_echelon',['../classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1',1,'tensorium::solver::Gauss']]],
   ['recv_4',['recv',['../namespacetensorium_1_1mpi.html#abdabfd213eefffbce9ee4ee56bd792ea',1,'tensorium::mpi']]],

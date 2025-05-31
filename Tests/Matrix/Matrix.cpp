@@ -211,9 +211,13 @@ int matrix_tests() {
 	Mat B2(2, 2);
 	B2(0, 0) = 5; B2(0, 1) = 6;
 	B2(1, 0) = 7; B2(1, 1) = 8;
-
+	printf("A2 =\n");
+	A2.print();
+	printf("B2 =\n");
+	B2.print();
 	Mat R2 = tensorium::mul_mat(A2, B2);
-
+	printf("A2 . B2\n");
+	R2.print();
 	CHECK(std::abs(R2(0, 0) - (1*5 + 2*7)) < 1e-4f);
 	CHECK(std::abs(R2(0, 1) - (1*6 + 2*8)) < 1e-4f);
 	CHECK(std::abs(R2(1, 0) - (3*5 + 4*7)) < 1e-4f);
@@ -221,6 +225,7 @@ int matrix_tests() {
 
 	std::cout << "✅ 2x2 matrix multiplication passed.\n";
 	Mat A3(3, 3);
+
 	A3(0, 0) = 1; A3(0, 1) = 2; A3(0, 2) = 3;
 	A3(1, 0) = 4; A3(1, 1) = 5; A3(1, 2) = 6;
 	A3(2, 0) = 7; A3(2, 1) = 8; A3(2, 2) = 9;
@@ -229,9 +234,13 @@ int matrix_tests() {
 	B3(0, 0) = 9; B3(0, 1) = 8; B3(0, 2) = 7;
 	B3(1, 0) = 6; B3(1, 1) = 5; B3(1, 2) = 4;
 	B3(2, 0) = 3; B3(2, 1) = 2; B3(2, 2) = 1;
-
+	printf("A3 =\n");
+	A3.print();
+	printf("B3 =\n");
+	B3.print();
 	Mat R3 = tensorium::mul_mat(A3, B3);
-
+	printf("A3 . B3\n");
+	R3.print();
 	CHECK(std::abs(R3(0, 0) - (1*9 + 2*6 + 3*3)) < 1e-4f);
 	CHECK(std::abs(R3(0, 1) - (1*8 + 2*5 + 3*2)) < 1e-4f);
 	CHECK(std::abs(R3(0, 2) - (1*7 + 2*4 + 3*1)) < 1e-4f);
@@ -281,6 +290,16 @@ int matrix_tests() {
 	Mat R16 = tensorium::mul_mat(A16, B16);
 	CHECK(std::abs(R16(0, 0) - 680.0f) < 1e-3f);
 	std::cout << "✅ 16x16 matrix multiplication passed.\n";
+
+	Mat A32(32, 32), B32(32, 32);
+	for (int i = 0; i < 32; ++i)
+		for (int j = 0; j < 32; ++j)
+			A32(i, j) = i + j, B32(i, j) = 32 - i + j;
+
+	Mat R32 = tensorium::mul_mat(A32, B32);
+	CHECK(std::abs(R32(0, 0) - 5456.0f) < 1e-3f);
+	std::cout << "✅ 32x32 matrix multiplication passed.\n";
+
 
 	std::cout << "\n✅ All Matrix tests passed.\n";
 	constexpr size_t dim = 4;

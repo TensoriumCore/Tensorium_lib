@@ -1,5 +1,15 @@
 var NAVTREEINDEX6 =
 {
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a43766f4e16d8dc1445fe66ce647fcb4c":[7,0,0,6,16],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a4cb747c546906fc14868de3db4807928":[7,0,0,6,8],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a4cb747c546906fc14868de3db4807928":[6,0,1,6,8],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a5cccbc30453bb280d878af2727df642b":[6,0,1,6,4],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a5cccbc30453bb280d878af2727df642b":[7,0,0,6,4],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a67bb6ef2ee3c06d52c79b90b896338e0":[6,0,1,6,12],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a67bb6ef2ee3c06d52c79b90b896338e0":[7,0,0,6,12],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a6be52a7cef972555ae2ac4622e6e640f":[7,0,0,6,2],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a6be52a7cef972555ae2ac4622e6e640f":[6,0,1,6,2],
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a6eaac0cb3fa59a67204c99798fedffbf":[7,0,0,6,9],
 "structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a6eaac0cb3fa59a67204c99798fedffbf":[6,0,1,6,9],
 "structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a758c46bdf4bc1f20ae5b37ea9037ce80":[6,0,1,6,7],
 "structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a758c46bdf4bc1f20ae5b37ea9037ce80":[7,0,0,6,7],
@@ -239,12 +249,5 @@ var NAVTREEINDEX6 =
 "structtensorium_1_1avx2__t.html#ac0ba4c8404e93fd8548b973cea33d9bd":[6,0,2,3,2],
 "structtensorium_1_1avx2__t.html#ae23ac01af0dc150443fbc251cbf74968":[6,0,2,3,3],
 "structtensorium_1_1avx2__t.html#ae23ac01af0dc150443fbc251cbf74968":[7,0,1,2,3],
-"tensorium-opt_8cpp.html":[8,0,1,0,1],
-"tensorium-opt_8cpp.html#a042d3140e9db663382ef88f85d6cf615":[8,0,1,0,1,1],
-"tensorium-opt_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627":[8,0,1,0,1,0],
-"testML_8cpp.html":[8,0,1,7],
-"testML_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4":[8,0,1,7,0],
-"test_8cpp.html":[8,0,1,6],
-"test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc":[8,0,1,6,0],
-"test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4":[8,0,1,6,1]
+"tensorium-opt_8cpp.html":[8,0,1,0,1]
 };

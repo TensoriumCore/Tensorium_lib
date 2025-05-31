@@ -24,7 +24,8 @@ var hierarchy =
       [ "TensoriumASTConsumer::AlignedChecker", "classTensoriumASTConsumer_1_1AlignedChecker.html", null ]
     ] ],
     [ "MathsUtils", "classMathsUtils.html", null ],
-    [ "tensorium::Matrix< K >", "classtensorium_1_1Matrix.html", [
+    [ "tensorium::Matrix< K, RowMajor >", "classtensorium_1_1Matrix.html", null ],
+    [ "tensorium::Matrix< K, true >", "classtensorium_1_1Matrix.html", [
       [ "tensorium::MatrixKernel< K >", "classtensorium_1_1MatrixKernel.html", null ]
     ] ],
     [ "tensorium_RG::Metric< T >", "classtensorium__RG_1_1Metric.html", null ],

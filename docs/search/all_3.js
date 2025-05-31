@@ -14,7 +14,7 @@ var searchData=
   ['christoffelsym_11',['ChristoffelSym',['../classtensorium__RG_1_1ChristoffelSym.html',1,'tensorium_RG::ChristoffelSym&lt; T &gt;'],['../classtensorium__RG_1_1ChristoffelSym.html#aaf728a9c2b8a12e5b2d826f13e7d8789',1,'tensorium_RG::ChristoffelSym::ChristoffelSym()']]],
   ['christoffelsymbol_2ehpp_12',['ChristoffelSymbol.hpp',['../ChristoffelSymbol_8hpp.html',1,'']]],
   ['ci_13',['CI',['../classTensoriumASTConsumer.html#a92f4aaf155a2ab9df680bfd318ba4acb',1,'TensoriumASTConsumer::CI'],['../classTensoriumASTConsumer_1_1AlignedChecker.html#a02756a430bb75168314059523432428d',1,'TensoriumASTConsumer::AlignedChecker::CI']]],
-  ['cols_14',['cols',['../classtensorium_1_1Derivate.html#a7f194c8a1aee9e386b3982882b446fe4',1,'tensorium::Derivate::cols'],['../classtensorium_1_1Matrix.html#a09eb7af109a929f09fb13998dc4ff22a',1,'tensorium::Matrix::cols']]],
+  ['cols_14',['cols',['../classtensorium_1_1Derivate.html#a7f194c8a1aee9e386b3982882b446fe4',1,'tensorium::Derivate::cols'],['../classtensorium_1_1Matrix.html#ac70be3bba8bbc25189117b7a31589e67',1,'tensorium::Matrix::cols']]],
   ['compute_15',['compute',['../classtensorium_1_1SpectalChebyshev.html#a69f6b92fe3d90d46412ef196a9a7f3aa',1,'tensorium::SpectalChebyshev::compute()'],['../classtensorium__RG_1_1RiemannTensor.html#a1a93f22c9a3e9110a36038de38281101',1,'tensorium_RG::RiemannTensor::compute()']]],
   ['compute_20riemann_20and_20ricci_20tensors_20from_20kerr_20metric_16',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29',1,'']]],
   ['compute_5fatilde_5ftensor_17',['compute_Atilde_tensor',['../classtensorium_1_1ExtrinsicCurvature.html#ac2d7a72a60e8ba8d6cfc28421c33941d',1,'tensorium::ExtrinsicCurvature']]],
