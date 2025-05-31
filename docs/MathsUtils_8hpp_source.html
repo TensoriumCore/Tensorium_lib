@@ -141,20 +141,30 @@ $(function(){initNavTree('MathsUtils_8hpp_source.html',''); initResizable(); });
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        }</div>
 </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">   25</a></span>        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">_abs</a>(<span class="keywordtype">double</span> a) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="keywordflow">return</span> (a &lt; 0) ? -a : a;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">   26</a></span>            <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">_swap</a>(T&amp; a, T&amp; b) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                T tmp = a;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                a = b;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                b = tmp;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            }</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">   32</a></span>        <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code hl_function" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">_abs</a>(<span class="keywordtype">double</span> a) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">return</span> (a &lt; 0) ? -a : a;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        }</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
 </div>
 <div class="ttc" id="aclassMathsUtils_html"><div class="ttname"><a href="classMathsUtils.html">MathsUtils</a></div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:3</div></div>
 <div class="ttc" id="aclassMathsUtils_html_a0e789dbc1b696c969d4480b21af134c6"><div class="ttname"><a href="classMathsUtils.html#a0e789dbc1b696c969d4480b21af134c6">MathsUtils::_max</a></div><div class="ttdeci">static double _max(double a, double b)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:21</div></div>
 <div class="ttc" id="aclassMathsUtils_html_a1b69405e23d26d9bd0d6576e8e990625"><div class="ttname"><a href="classMathsUtils.html#a1b69405e23d26d9bd0d6576e8e990625">MathsUtils::_fmin</a></div><div class="ttdeci">static float _fmin(float a, float b)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:5</div></div>
 <div class="ttc" id="aclassMathsUtils_html_a4ad47f80d02a8c6c6eddd7b5737f34e8"><div class="ttname"><a href="classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8">MathsUtils::_min</a></div><div class="ttdeci">static double _min(double a, double b)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:17</div></div>
+<div class="ttc" id="aclassMathsUtils_html_aa093fbcf1ecdba98b77fcf259a269d70"><div class="ttname"><a href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap</a></div><div class="ttdeci">static void _swap(T &amp;a, T &amp;b)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:26</div></div>
 <div class="ttc" id="aclassMathsUtils_html_aafde974b2eb01aedbdcd3c7695c023cc"><div class="ttname"><a href="classMathsUtils.html#aafde974b2eb01aedbdcd3c7695c023cc">MathsUtils::_fmax</a></div><div class="ttdeci">static float _fmax(float a, float b)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:9</div></div>
 <div class="ttc" id="aclassMathsUtils_html_aec54bc76caba9cba0cd4f05be4014f24"><div class="ttname"><a href="classMathsUtils.html#aec54bc76caba9cba0cd4f05be4014f24">MathsUtils::_fabs</a></div><div class="ttdeci">static float _fabs(float a)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:13</div></div>
-<div class="ttc" id="aclassMathsUtils_html_aef7c171225ec5072076aa1bc0182cc02"><div class="ttname"><a href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs</a></div><div class="ttdeci">static double _abs(double a)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:25</div></div>
+<div class="ttc" id="aclassMathsUtils_html_aef7c171225ec5072076aa1bc0182cc02"><div class="ttname"><a href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs</a></div><div class="ttdeci">static double _abs(double a)</div><div class="ttdef"><b>Definition</b> MathsUtils.hpp:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

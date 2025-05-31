@@ -1,24 +1,10 @@
 <map id="tensorium::Matrix::operator()" name="tensorium::Matrix::operator()">
-<area shape="rect" id="Node000001" title="Element access (mutable)" alt="" coords="473,150,618,195"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#ae8b88c02ca8eaaf9edcfb490eaa82644" title="Compute the determinant using Gaussian elimination." alt="" coords="259,33,425,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="493,144,365,64,367,59,496,139"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#ab838ebba697fa1526fe64be3d532022d" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="269,113,415,158"/>
-<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="458,159,415,151,416,146,459,154"/>
-<area shape="rect" id="Node000008" href="$classtensorium_1_1Matrix.html#a647156d276ab6b8cc06e10ae6e479857" title="Returns the trace of a square matrix as a 1×1 matrix." alt="" coords="269,185,415,230"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="459,190,416,197,415,192,458,185"/>
-<area shape="rect" id="Node000010" href="$classtensorium_1_1Matrix.html#af090bc9aae9d7f0a177dbcc33dd6139e" title="Returns the transpose &#160;of the matrix." alt="" coords="269,261,415,306"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="495,205,426,244,391,263,388,258,424,239,492,201"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="377,20,364,14,342,12,321,14,309,19,306,24,311,31,307,34,301,24,306,15,319,9,342,7,366,9,379,16"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#aec83b616f40dbad888e865d4ab1b95e0" title=" " alt="" coords="33,5,183,33"/>
-<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="243,38,183,31,183,25,243,33"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium__RG.html#a1c0700c897553df855b385b0a9b2eb47" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,57,211,85"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="253,111,210,99,168,88,170,83,211,94,255,106"/>
-<area shape="rect" id="Node000006" href="$namespacetensorium.html#ab41939a469fac102de3e3faee664723b" title=" " alt="" coords="34,109,182,154"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="254,136,183,135,183,130,254,131"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium.html#a854dc844b1e819f6a5ab9369dbe76e96" title=" " alt="" coords="20,177,196,205"/>
-<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="254,159,170,179,168,174,253,154"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium.html#a27fe5fa0953300b19887f5c372585fe0" title=" " alt="" coords="27,229,189,257"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="254,223,190,233,189,228,253,218"/>
-<area shape="rect" id="Node000011" href="$namespacetensorium.html#af1f6fafe050f6c8629b0fed641ae1bb6" title=" " alt="" coords="12,281,204,309"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="254,290,205,293,204,288,253,285"/>
+<area shape="rect" id="Node000001" title="Element access (mutable)" alt="" coords="220,81,365,126"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#ae8b88c02ca8eaaf9edcfb490eaa82644" title="Compute the determinant using Gaussian elimination." alt="" coords="5,29,172,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,80,138,60,139,55,206,75"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Matrix.html#ab838ebba697fa1526fe64be3d532022d" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="16,81,161,126"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="204,106,162,106,162,101,204,101"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a647156d276ab6b8cc06e10ae6e479857" title="Returns the trace of a square matrix as a 1×1 matrix." alt="" coords="16,150,161,195"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="211,133,157,152,156,147,210,128"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="123,16,111,10,88,8,67,10,56,15,53,20,58,27,53,30,48,20,52,11,66,5,89,3,113,5,126,12"/>
 </map>

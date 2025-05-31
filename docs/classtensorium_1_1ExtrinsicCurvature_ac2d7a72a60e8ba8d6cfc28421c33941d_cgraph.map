@@ -1,0 +1,14 @@
+<map id="tensorium::ExtrinsicCurvature::compute_Atilde_tensor" name="tensorium::ExtrinsicCurvature::compute_Atilde_tensor">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,60,221,105"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1ExtrinsicCurvature.html#a9ff62e57fe16c04d681b54151a3602ce" title=" " alt="" coords="269,60,484,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,80,253,80,253,85,221,85"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1ExtrinsicCurvature.html#a3e261159572bb823f3148730474751aa" title=" " alt="" coords="532,5,747,50"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="204,57,268,45,396,32,516,26,517,32,396,38,269,50,205,62"/>
+<area shape="rect" id="Node000005" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="857,74,895,102"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="201,103,269,114,352,121,437,123,602,117,743,103,841,90,842,96,744,109,602,122,437,128,352,126,268,120,200,108"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="484,57,516,51,518,56,485,63"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="484,81,841,85,841,90,484,86"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="795,14,957,42"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="748,25,780,25,780,30,748,30"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="731,48,842,77,841,82,729,53"/>
+</map>

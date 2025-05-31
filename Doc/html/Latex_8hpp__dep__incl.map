@@ -1,9 +1,0 @@
-<map id="includes/Tensorium/Symbolics/Latex.hpp" name="includes/Tensorium/Symbolics/Latex.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="85,5,245,50"/>
-<area shape="rect" id="Node000002" href="$AST_8hpp.html" title=" " alt="" coords="5,98,154,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,63,102,100,98,96,132,60"/>
-<area shape="rect" id="Node000003" href="$Tensorium_8hpp.html" title=" " alt="" coords="178,98,325,143"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,59,233,96,229,100,194,63"/>
-<area shape="rect" id="Node000004" href="$test_8cpp.html" title=" " alt="" coords="189,191,314,218"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="254,158,254,190,249,190,249,158"/>
-</map>

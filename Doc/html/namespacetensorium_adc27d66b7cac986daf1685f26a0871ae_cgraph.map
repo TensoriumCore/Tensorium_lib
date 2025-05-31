@@ -1,5 +1,0 @@
-<map id="tensorium::print_ricci_tensor" name="tensorium::print_ricci_tensor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,165,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciTensor.html#abaa0eedf4d6a068c77ac3bae517d39b9" title="Prints the Ricci tensor components with optional zero threshold." alt="" coords="213,5,407,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,25,197,25,197,30,165,30"/>
-</map>

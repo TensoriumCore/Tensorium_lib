@@ -13,7 +13,7 @@ make -j$(nproc)
 SO_FILE=$(find . -maxdepth 1 -name "*.so" | head -n 1)
 
 if [ -z "$SO_FILE" ]; then
-    echo "Erreur : aucun .so généré"
+    echo "Error : no .so generated"
     exit 1
 fi
 

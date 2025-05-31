@@ -1,9 +1,0 @@
-<map id="tensorium::jacobi_solve" name="tensorium::jacobi_solve">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,32,182,60"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9" title="Solve the system using the Jacobi method." alt="" coords="230,24,373,68"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,43,215,43,215,49,182,49"/>
-<area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="442,5,571,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="373,34,426,27,427,32,374,39"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="421,57,591,85"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="374,52,406,56,405,61,373,57"/>
-</map>

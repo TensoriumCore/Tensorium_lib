@@ -15,10 +15,10 @@ USE_KNL ?= false   # true → tune for Intel KNL (+memkind)
 # ─────────────────────────────── Path settings ───────────────────────────────
 NAME        := Tensorium                 # main executable
 LIB_NAME    := libtensorium.so           # shared library
-SRC_DIR     := tests
+SRC_DIR     := Tests
 BENCH_DIR   := $(SRC_DIR)/benchmarks
 PLUGIN_DIR  := Plugins
-INC_DIR     := includes
+INC_DIR     := Includes
 OBJ_DIR     := build
 
 # ─────────────────────────────── Source discovery ────────────────────────────

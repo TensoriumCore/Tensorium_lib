@@ -1,5 +1,0 @@
-<map id="tensorium_RG::Metric::BSSN" name="tensorium_RG::Metric::BSSN">
-<area shape="rect" id="Node000001" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="5,5,168,50"/>
-<area shape="rect" id="Node000002" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="216,14,254,42"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,25,200,25,200,30,168,30"/>
-</map>

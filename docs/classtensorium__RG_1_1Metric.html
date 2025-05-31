@@ -115,7 +115,7 @@ $(function(){initNavTree('classtensorium__RG_1_1Metric.html',''); initResizable(
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::Metric&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric__coll__graph.svg" width="203" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric__coll__graph.svg" width="226" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a941a7ffac963957af3f7b650adbd8b04" id="r_a941a7ffac963957af3f7b650adbd8b04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a941a7ffac963957af3f7b650adbd8b04">BSSN</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>) const</td></tr>
 <tr class="memdesc:a941a7ffac963957af3f7b650adbd8b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract BSSN 3+1 variables (lapse, shift, and spatial metric)  <br /></td></tr>
 <tr class="separator:a941a7ffac963957af3f7b650adbd8b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c07e5ceadb53d242687c73a039b7c48" id="r_a4c07e5ceadb53d242687c73a039b7c48"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c07e5ceadb53d242687c73a039b7c48">compute_conformal_factor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>) const</td></tr>
+<tr class="separator:a4c07e5ceadb53d242687c73a039b7c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e0baebd20831f8e546f3c7a4beaa887" id="r_a0e0baebd20831f8e546f3c7a4beaa887"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e0baebd20831f8e546f3c7a4beaa887">compute_conformal_metric</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, T <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_tilde) const</td></tr>
+<tr class="separator:a0e0baebd20831f8e546f3c7a4beaa887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -292,6 +296,78 @@ ds^2 = -\alpha^2 dt^2 + \gamma_{ij} (dx^i + \beta^i dt)(dx^j + \beta^j dt)
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a941a7ffac963957af3f7b650adbd8b04_cgraph.svg" width="260" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a4c07e5ceadb53d242687c73a039b7c48" name="a4c07e5ceadb53d242687c73a039b7c48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c07e5ceadb53d242687c73a039b7c48">&#9670;&#160;</a></span>compute_conformal_factor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt;::compute_conformal_factor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>.</p>
+
+</div>
+</div>
+<a id="a0e0baebd20831f8e546f3c7a4beaa887" name="a0e0baebd20831f8e546f3c7a4beaa887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e0baebd20831f8e546f3c7a4beaa887">&#9670;&#160;</a></span>compute_conformal_metric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt;::compute_conformal_metric </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>chi</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma_tilde</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, and <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a0e0baebd20831f8e546f3c7a4beaa887_cgraph.svg" width="606" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

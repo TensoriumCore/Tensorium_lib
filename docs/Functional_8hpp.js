@@ -17,6 +17,7 @@ var Functional_8hpp =
     [ "gauss_solve", "Functional_8hpp.html#ac40194e7c0127eabef9f65e1b9950084", null ],
     [ "inverse_mat", "Functional_8hpp.html#a854dc844b1e819f6a5ab9369dbe76e96", null ],
     [ "jacobi_solve", "Functional_8hpp.html#a961202aa0f295c710913121232c4863b", null ],
+    [ "lerp_mat", "Functional_8hpp.html#a1c044714fb59c3eb8cfd714bd25dc6f7", null ],
     [ "lerp_vec", "Functional_8hpp.html#a114772d8e80ade39d0e576643a9ccbd3", null ],
     [ "linear_combination_vec", "Functional_8hpp.html#a4ed9708decc508fd84d4c6c89288b04d", null ],
     [ "mul_mat", "Functional_8hpp.html#ab317cc43203309cc34bf719934edbc7e", null ],

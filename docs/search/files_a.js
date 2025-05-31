@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['simd_2ehpp_0',['SIMD.hpp',['../SIMD_8hpp.html',1,'']]],
-  ['spectral_2ehpp_1',['Spectral.hpp',['../Spectral_8hpp.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../Core_2README_8md.html',1,'(Global Namespace)'],['../DiffGeometry_2README_8md.html',1,'(Global Namespace)'],['../SIMD_2README_8md.html',1,'(Global Namespace)']]],
+  ['riccitensor_2ehpp_1',['RicciTensor.hpp',['../RicciTensor_8hpp.html',1,'']]],
+  ['riemanntensor_2ehpp_2',['RiemannTensor.hpp',['../RiemannTensor_8hpp.html',1,'']]]
 ];

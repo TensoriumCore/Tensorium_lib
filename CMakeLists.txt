@@ -14,7 +14,7 @@ find_package(OpenMP REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
 
-pybind11_add_module(tensorium ./pybind/bindings.cpp)
+pybind11_add_module(tensorium ./Pybind/bindings.cpp)
 
 target_link_libraries(tensorium PRIVATE OpenMP::OpenMP_CXX)
 # install(TARGETS tensorium

@@ -186,13 +186,13 @@ Exemple using in C++</h2>
 <div class="line">    Vector&lt;float&gt; v2 = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] + [v2]:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a656eb4763df62843ef4228874a12cef4">tensorium::add_vec</a>(v1, v2).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a656eb4763df62843ef4228874a12cef4">tensorium::add_vec</a>(v1, v2).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] - [v2]:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#af5eeb9b7bbe9b3ddd559961e7d566d7b">tensorium::sub_vec</a>(v1, v2).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#af5eeb9b7bbe9b3ddd559961e7d566d7b">tensorium::sub_vec</a>(v1, v2).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[v1] * 0.5:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a4447af9c4745bf0d1c966f434bd81150">tensorium::scl_vec</a>(v1, 0.5f).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a4447af9c4745bf0d1c966f434bd81150">tensorium::scl_vec</a>(v1, 0.5f).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line"> </div>
 <div class="line">    Matrix&lt;float&gt; m1(2, 8); </div>
 <div class="line">    Matrix&lt;float&gt; m2(2, 8);</div>
@@ -204,15 +204,16 @@ Exemple using in C++</h2>
 <div class="line">        }</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] + [m2]:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a9a79e5e316fefceb930f22229ba6e12b">tensorium::add_mat</a>(m1, m2).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a9a79e5e316fefceb930f22229ba6e12b">tensorium::add_mat</a>(m1, m2).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] - [m2]:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a91dac89d785ff89280a4a316e954a7a2">tensorium::sub_mat</a>(m1, m2).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a91dac89d785ff89280a4a316e954a7a2">tensorium::sub_mat</a>(m1, m2).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\n[m1] * 2.0:\n&quot;</span>;</div>
-<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a2207f906782c6a186c09559e5857fc57">tensorium::scl_mat</a>(m1, 2.0f).print();</div>
+<div class="line">    <a class="code hl_function" href="namespacetensorium.html#a2207f906782c6a186c09559e5857fc57">tensorium::scl_mat</a>(m1, 2.0f).<a class="code hl_function" href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">print</a>();</div>
 <div class="line">}</div>
 <div class="ttc" id="aTensorium_8hpp_html"><div class="ttname"><a href="Tensorium_8hpp.html">Tensorium.hpp</a></div></div>
+<div class="ttc" id="aclasstensorium_1_1Tensor_html_a31bf2dfaa92e863a3d5812a25d433b8b"><div class="ttname"><a href="classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b">tensorium::Tensor::print</a></div><div class="ttdeci">void print() const</div><div class="ttdoc">Print a 2D tensor (Rank == 2)</div><div class="ttdef"><b>Definition</b> Tensor.hpp:126</div></div>
 <div class="ttc" id="anamespacetensorium_html_a2207f906782c6a186c09559e5857fc57"><div class="ttname"><a href="namespacetensorium.html#a2207f906782c6a186c09559e5857fc57">tensorium::scl_mat</a></div><div class="ttdeci">Matrix&lt; T &gt; scl_mat(const Matrix&lt; T &gt; &amp;A, T scalar)</div><div class="ttdef"><b>Definition</b> Functional.hpp:170</div></div>
 <div class="ttc" id="anamespacetensorium_html_a4447af9c4745bf0d1c966f434bd81150"><div class="ttname"><a href="namespacetensorium.html#a4447af9c4745bf0d1c966f434bd81150">tensorium::scl_vec</a></div><div class="ttdeci">Vector&lt; T &gt; scl_vec(const Vector&lt; T &gt; &amp;a, T scalar)</div><div class="ttdef"><b>Definition</b> Functional.hpp:49</div></div>
 <div class="ttc" id="anamespacetensorium_html_a656eb4763df62843ef4228874a12cef4"><div class="ttname"><a href="namespacetensorium.html#a656eb4763df62843ef4228874a12cef4">tensorium::add_vec</a></div><div class="ttdeci">Vector&lt; T &gt; add_vec(const Vector&lt; T &gt; &amp;a, const Vector&lt; T &gt; &amp;b)</div><div class="ttdef"><b>Definition</b> Functional.hpp:21</div></div>

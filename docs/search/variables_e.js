@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['shape_0',['shape',['../classtensorium_1_1DerivateND.html#aa4cbe8a37b0699839be11acaefe08506',1,'tensorium::DerivateND::shape'],['../classtensorium_1_1DerivateND.html#a220b0687a2bb97eb1f40be859a6998f0',1,'tensorium::DerivateND::shape']]],
-  ['simd_5fwidth_1',['simd_width',['../classtensorium_1_1Derivate.html#a17c9d892dd6e273873cbb56770a3beb1',1,'tensorium::Derivate::simd_width'],['../classtensorium_1_1DerivateND.html#a618a7e8223e1db2747fe285b6ec3e895',1,'tensorium::DerivateND::simd_width'],['../classtensorium_1_1Matrix.html#a12eb1e2a47caeaa838603b4a5643a2fd',1,'tensorium::Matrix::simd_width'],['../classtensorium_1_1Vector.html#a2ce9e8bf8b223874ed8bf6dbb3b94be4',1,'tensorium::Vector::simd_width']]],
-  ['stride_5faxis_2',['stride_axis',['../classtensorium_1_1DerivateND.html#a539eba3b254919f609a4506749ef6317',1,'tensorium::DerivateND']]],
-  ['strides_3',['strides',['../classtensorium_1_1DerivateND.html#a29a576e604991dca296fd63a88128dd6',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1DerivateND.html#a106254e6b11d233bf1009da8bc2a4474',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1Tensor.html#a824056bd4f9ee568473e899766673413',1,'tensorium::Tensor::strides']]],
-  ['sum_4',['sum',['../classtensorium_1_1Matrix.html#a121c51692f427a4ca74f766d46073568',1,'tensorium::Matrix']]],
-  ['syntaxtable_5',['SyntaxTable',['../classLexer.html#a9641adf7ffe4bf8fb64a87fefcb73769',1,'Lexer']]]
+  ['t_0',['t',['../classtensorium_1_1Vector.html#ae3f9d19299a6f51d09a24fba1218512a',1,'tensorium::Vector']]],
+  ['tensoriumtargettable_1',['TensoriumTargetTable',['../LLVM__Handler_8hpp.html#ac071696ddd3d4bb5f6b3dbaee9427e3d',1,'LLVM_Handler.hpp']]],
+  ['tilecols_2',['TileCols',['../classtensorium_1_1GemmKernelBigger.html#a68dbccd249506874fd0469c175139933',1,'tensorium::GemmKernelBigger']]],
+  ['tilerows_3',['TileRows',['../classtensorium_1_1GemmKernelBigger.html#a2f2c9fa362957ab11953a06f8696e95d',1,'tensorium::GemmKernelBigger']]],
+  ['tokens_4',['tokens',['../classtensorium_1_1Parser.html#a3e41deb405fd352cbb0a42e92e506dcf',1,'tensorium::Parser']]],
+  ['total_5',['total',['../classtensorium_1_1DerivateND.html#a4d95a7fd7be0c0ee806ef307131bbd0b',1,'tensorium::DerivateND']]],
+  ['total_5fsize_6',['total_size',['../classtensorium_1_1Tensor.html#a1aa54408cbd7408aef542275dfacf2e2',1,'tensorium::Tensor']]],
+  ['type_7',['type',['../classtensorium__RG_1_1Metric.html#a7e73ebfef6a0862cccd8df4651d1e480',1,'tensorium_RG::Metric::type'],['../structtensorium_1_1ASTNode.html#ac5f7f07c130bc4a8389bd31bf434e977',1,'tensorium::ASTNode::type'],['../structToken.html#a67919af9f3a80dc0b28a0ab1e6d5bf8a',1,'Token::type']]]
 ];

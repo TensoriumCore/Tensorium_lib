@@ -1,9 +1,0 @@
-<map id="Lexer::skipWhitespace" name="Lexer::skipWhitespace">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,57,173,85"/>
-<area shape="rect" id="Node000002" href="$classLexer.html#ac6af4a796db9302364de37c0e69e8c09" title=" " alt="" coords="226,5,312,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,54,210,33,212,38,140,59"/>
-<area shape="rect" id="Node000003" href="$classLexer.html#a73efcc0ba6d498bdb8249a6f858d66ee" title=" " alt="" coords="226,57,312,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,69,211,69,211,74,173,74"/>
-<area shape="rect" id="Node000004" href="$classLexer.html#a1b82aee0650781111ad57ddca170ffb2" title=" " alt="" coords="221,109,317,137"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="140,83,206,102,205,108,139,88"/>
-</map>

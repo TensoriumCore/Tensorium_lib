@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value_5ftype_0',['value_type',['../classtensorium_1_1Tensor.html#a275da807c8c6fb128944185fb51afb10',1,'tensorium::Tensor::value_type'],['../structAlignedAllocator.html#a0a7efdc5df37396703b9a7008b744f59',1,'AlignedAllocator::value_type']]],
-  ['vectort_1',['VectorT',['../classtensorium_1_1SpectralFFT.html#abac336fb18ee3eb6d32f0c86426c1cde',1,'tensorium::SpectralFFT::VectorT'],['../classtensorium_1_1SpectalChebyshev.html#af42cb097c8f09d537cde1d3e813d2770',1,'tensorium::SpectalChebyshev::VectorT'],['../classtensorium__RG_1_1RicciTensor.html#aabb1649c33975002001225e7b5511ce2',1,'tensorium_RG::RicciTensor::VectorT'],['../classtensorium__RG_1_1RiemannTensor.html#acb60f9fccbe3e893569cfc89229ad4c8',1,'tensorium_RG::RiemannTensor::VectorT']]]
+  ['tensor2d_0',['Tensor2D',['../classtensorium_1_1SpectralFFT.html#ac7d6e4a53854598c39fcd9227fa83f73',1,'tensorium::SpectralFFT::Tensor2D'],['../classtensorium_1_1SpectalChebyshev.html#ad1f799a71b70c433ec224dc634f0aedf',1,'tensorium::SpectalChebyshev::Tensor2D'],['../classtensorium__RG_1_1RicciTensor.html#a281a38c7518ca0e76ad76b41202acce0',1,'tensorium_RG::RicciTensor::Tensor2D'],['../classtensorium__RG_1_1RiemannTensor.html#a2e49b7db101e1ebc854e6f4fcad60094',1,'tensorium_RG::RiemannTensor::Tensor2D']]],
+  ['tensor4d_1',['Tensor4D',['../classtensorium__RG_1_1RicciTensor.html#a714453dcb04ee82a511001c429743213',1,'tensorium_RG::RicciTensor::Tensor4D'],['../classtensorium__RG_1_1RiemannTensor.html#ab3e897eba7f18f4791829d2f9e7cbcd3',1,'tensorium_RG::RiemannTensor::Tensor4D']]]
 ];

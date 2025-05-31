@@ -1,6 +1,4 @@
 <map id="tensorium::Matrix::det" name="tensorium::Matrix::det">
-<area shape="rect" id="Node000001" title="Compute the determinant using Gaussian elimination." alt="" coords="203,29,369,57"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="321,16,309,10,286,8,265,10,253,15,250,20,255,27,250,30,245,20,249,11,263,5,286,3,310,5,323,12"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium.html#aec83b616f40dbad888e865d4ab1b95e0" title=" " alt="" coords="5,29,155,57"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="187,46,155,46,155,41,187,41"/>
+<area shape="rect" id="Node000001" title="Compute the determinant using Gaussian elimination." alt="" coords="5,29,172,57"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="116,16,107,10,88,8,72,10,62,15,60,20,64,28,59,30,55,20,58,11,70,5,89,3,108,5,119,12"/>
 </map>

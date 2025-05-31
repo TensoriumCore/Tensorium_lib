@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['other_0',['other',['../structAlignedAllocator_1_1rebind.html#afb6c2cf8fcca0287fc5aed297ed324d0',1,'AlignedAllocator::rebind']]]
+  ['mat_0',['Mat',['../classtensorium_1_1ExtrinsicCurvature.html#aec98234b31075a6d9e6814e18f46e1bc',1,'tensorium::ExtrinsicCurvature']]]
 ];

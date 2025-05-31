@@ -1,5 +1,0 @@
-<map id="tensorium_RG::RicciTensor::contract_to_ricci" name="tensorium_RG::RicciTensor::contract_to_ricci">
-<area shape="rect" id="Node000001" title="Contracts a 4D Riemann tensor into the 2D Ricci tensor." alt="" coords="202,5,396,50"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium.html#a7f2ff42b29e1fc37b75977f43175e8e4" title=" " alt="" coords="5,5,154,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,30,154,30,154,25,186,25"/>
-</map>

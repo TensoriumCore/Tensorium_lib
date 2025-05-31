@@ -1,0 +1,65 @@
+<map id="tensorium::GemmKernelBigger::kernel_16x6_load_accum" name="tensorium::GemmKernelBigger::kernel_16x6_load_accum">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,1045,228,1090"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1GemmKernelBigger.html#a998013867faeda80e5eaaee39ba82e92" title=" " alt="" coords="276,5,498,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,1045,123,856,132,715,146,561,166,405,193,261,209,198,228,142,250,96,274,61,276,58,280,62,278,64,254,99,233,144,215,200,198,263,171,406,151,561,137,715,128,856,121,1045"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1GemmKernelBigger.html#a8d63ffb16ab38b89b25c66aa8f7776b2" title=" " alt="" coords="276,75,498,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="116,1045,125,868,135,737,149,593,170,449,197,316,213,257,231,206,251,163,274,130,276,128,280,131,278,133,256,165,236,208,218,259,202,317,175,450,155,594,140,737,130,868,121,1045"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1GemmKernelBigger.html#a5dd51f05cda9f734a5b472cc071d837e" title=" " alt="" coords="276,144,498,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="116,1045,127,879,154,625,174,492,201,370,233,269,253,229,274,199,276,197,280,201,278,203,257,232,238,271,206,371,179,493,159,626,132,879,122,1045"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1GemmKernelBigger.html#a6e347714c3ad11974ef250a2e7191edb" title=" " alt="" coords="276,213,498,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="117,1044,129,890,158,658,179,536,205,424,236,332,254,296,274,269,276,266,280,270,278,272,259,299,241,334,210,426,184,537,163,658,135,891,122,1045"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1GemmKernelBigger.html#ae293cf7d764d647fb1f271c7fd764380" title=" " alt="" coords="276,283,498,327"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="117,1045,132,903,162,691,183,580,209,479,239,395,256,363,274,338,276,336,280,339,278,341,260,366,244,398,214,481,188,581,167,691,137,903,122,1045"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1GemmKernelBigger.html#a334759ae5556a3ec6f29f5daa4f60e6d" title=" " alt="" coords="276,352,498,397"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="118,1045,134,915,166,723,187,624,213,534,241,459,257,429,274,407,276,405,280,408,278,411,261,432,246,461,218,535,193,626,171,724,139,915,123,1045"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1GemmKernelBigger.html#a6f47321dd2ddc1a0bc729b7b92d8ea28" title=" " alt="" coords="276,421,498,466"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="118,1045,137,927,170,757,192,669,216,588,244,522,274,477,276,474,280,478,278,480,249,524,222,590,197,670,176,758,142,928,124,1045"/>
+<area shape="rect" id="Node000009" href="$classtensorium_1_1GemmKernelBigger.html#aa0239c6353b5ec797b5564d2cb28a78d" title=" " alt="" coords="276,491,498,535"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="115,1045,120,953,128,890,141,820,160,747,188,674,225,606,274,546,277,543,281,547,278,549,230,609,193,676,165,748,146,821,133,891,125,954,120,1045"/>
+<area shape="rect" id="Node000010" href="$classtensorium_1_1GemmKernelBigger.html#a91c917cb0dea492edb0c6de429cca779" title=" " alt="" coords="276,560,498,605"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="116,1044,125,964,134,909,149,849,169,786,196,724,230,666,274,615,277,612,281,616,278,619,235,669,201,727,174,788,154,850,140,910,130,965,122,1045"/>
+<area shape="rect" id="Node000011" href="$classtensorium_1_1GemmKernelBigger.html#aceb38fe95551c7483b990d6d3ffee7d0" title=" " alt="" coords="276,629,498,674"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="118,1045,130,975,157,878,178,826,204,775,235,727,274,684,278,681,281,685,278,688,240,730,208,777,183,828,162,880,136,976,123,1045"/>
+<area shape="rect" id="Node000012" href="$classtensorium_1_1GemmKernelBigger.html#ab63bf17e01b9f4e4f61b0a33b3c53753" title=" " alt="" coords="276,699,498,743"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="120,1044,137,986,166,908,187,866,212,825,240,787,274,754,279,750,282,754,277,758,244,791,216,828,192,869,171,910,142,988,125,1046"/>
+<area shape="rect" id="Node000013" href="$classtensorium_1_1GemmKernelBigger.html#a80fdfb94268461135f3bcb422cbcf4ac" title=" " alt="" coords="276,768,498,813"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="124,1044,144,998,176,938,220,876,245,848,274,823,280,818,283,823,277,827,249,852,224,880,181,941,149,1000,129,1046"/>
+<area shape="rect" id="Node000014" href="$classtensorium_1_1GemmKernelBigger.html#adeca55fdf210da585bbeb2ea319dcdfa" title=" " alt="" coords="276,837,498,882"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="130,1043,188,969,228,928,274,892,283,887,286,892,277,897,232,932,192,973,135,1047"/>
+<area shape="rect" id="Node000015" href="$classtensorium_1_1GemmKernelBigger.html#a5a919dc6a6968ada802fbf1f922a0132" title=" " alt="" coords="276,907,498,951"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="146,1043,204,1002,274,961,289,955,291,960,277,966,206,1006,149,1047"/>
+<area shape="rect" id="Node000016" href="$classtensorium_1_1GemmKernelBigger.html#a6b58878966780934f2a1d1c5ddd5352e" title=" " alt="" coords="276,976,498,1021"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="206,1042,282,1022,283,1028,207,1047"/>
+<area shape="rect" id="Node000017" href="$classtensorium_1_1GemmKernelBigger.html#aac7da84ed45560f74f772947a30c6206" title=" " alt="" coords="276,1045,498,1090"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="228,1065,260,1065,260,1070,228,1070"/>
+<area shape="rect" id="Node000018" href="$classtensorium_1_1GemmKernelBigger.html#a6d5063d118dbcb3273ab51455eeabc02" title=" " alt="" coords="276,1115,498,1159"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="207,1088,283,1108,282,1113,206,1093"/>
+<area shape="rect" id="Node000019" href="$classtensorium_1_1GemmKernelBigger.html#a4b43b770f58c72b383f01fe3dcd8c7ec" title=" " alt="" coords="276,1184,498,1229"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="149,1088,206,1129,277,1169,291,1176,289,1180,274,1174,204,1134,146,1093"/>
+<area shape="rect" id="Node000020" href="$classtensorium_1_1GemmKernelBigger.html#a707183e96a4effe3327f83364b195052" title=" " alt="" coords="276,1253,498,1298"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="135,1089,192,1162,232,1203,277,1239,286,1244,283,1248,274,1243,228,1207,188,1166,130,1092"/>
+<area shape="rect" id="Node000021" href="$classtensorium_1_1GemmKernelBigger.html#a40c0f25e886c0f6188f48dead6a7af72" title=" " alt="" coords="276,1323,498,1367"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="129,1089,149,1135,181,1194,224,1256,249,1284,277,1308,283,1313,280,1317,274,1312,245,1288,220,1259,176,1197,144,1138,124,1092"/>
+<area shape="rect" id="Node000022" href="$classtensorium_1_1GemmKernelBigger.html#aac48f7bae807370020410a02fc64c041" title=" " alt="" coords="276,1392,498,1437"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="125,1090,142,1147,171,1225,192,1267,216,1307,244,1345,277,1378,282,1381,279,1385,274,1382,240,1348,212,1310,187,1269,166,1227,137,1149,120,1091"/>
+<area shape="rect" id="Node000023" href="$classtensorium_1_1GemmKernelBigger.html#a97690760a7a1e0b9da82fd515b2e688a" title=" " alt="" coords="276,1461,498,1506"/>
+<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="123,1090,136,1159,162,1255,183,1307,208,1358,240,1405,278,1447,281,1450,278,1454,274,1451,235,1409,204,1361,178,1309,157,1257,130,1160,118,1091"/>
+<area shape="rect" id="Node000024" href="$classtensorium_1_1GemmKernelBigger.html#a9e111766c6edc14ec5bdaf205f1a7da4" title=" " alt="" coords="276,1531,498,1575"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="122,1090,130,1171,140,1225,154,1285,174,1347,201,1409,235,1466,278,1516,281,1519,277,1523,274,1520,230,1469,196,1411,169,1349,149,1287,134,1226,125,1171,116,1091"/>
+<area shape="rect" id="Node000025" href="$classtensorium_1_1GemmKernelBigger.html#aac1a512e346982d6c565ffd752c2961b" title=" " alt="" coords="276,1600,498,1645"/>
+<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="120,1090,125,1182,133,1244,146,1314,165,1387,193,1459,230,1526,278,1586,281,1589,277,1592,274,1589,225,1529,188,1461,160,1389,141,1315,128,1245,120,1182,115,1091"/>
+<area shape="rect" id="Node000026" href="$classtensorium_1_1GemmKernelBigger.html#a69b27d333c71147f29ec4c39f1a0bace" title=" " alt="" coords="276,1669,498,1714"/>
+<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="124,1090,142,1208,176,1378,197,1465,222,1545,249,1611,278,1655,280,1658,276,1661,274,1659,244,1613,216,1547,192,1467,170,1379,137,1208,118,1091"/>
+<area shape="rect" id="Node000027" href="$classtensorium_1_1GemmKernelBigger.html#ab562267cf63a749e8cf2046dbaad08e4" title=" " alt="" coords="276,1739,498,1783"/>
+<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="123,1090,139,1220,171,1411,193,1510,218,1600,246,1674,261,1703,278,1725,280,1727,276,1731,274,1728,257,1706,241,1677,213,1602,187,1511,166,1412,134,1221,118,1091"/>
+<area shape="rect" id="Node000028" href="$classtensorium_1_1GemmKernelBigger.html#aed9a9f2998fbf6c050df4cbfee394bef" title=" " alt="" coords="276,1808,498,1853"/>
+<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="122,1090,137,1232,167,1444,188,1554,214,1655,244,1738,260,1770,278,1794,280,1796,276,1800,274,1797,256,1773,239,1740,209,1656,183,1555,162,1445,132,1233,117,1091"/>
+<area shape="rect" id="Node000029" href="$classtensorium_1_1GemmKernelBigger.html#aa9374822d7dfdd9031d4a404724befab" title=" " alt="" coords="276,1877,498,1922"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="122,1090,135,1244,163,1477,184,1598,210,1709,241,1801,259,1837,278,1863,280,1865,276,1869,274,1867,254,1839,236,1803,205,1711,179,1599,158,1478,129,1245,117,1091"/>
+<area shape="rect" id="Node000030" href="$classtensorium_1_1GemmKernelBigger.html#a52a494e8027e1ec3074b429796208aa9" title=" " alt="" coords="276,1947,498,1991"/>
+<area shape="poly" id="edge29_Node000001_Node000030" title=" " alt="" coords="122,1090,132,1256,159,1509,179,1642,206,1764,238,1864,257,1903,278,1933,280,1935,276,1938,274,1936,253,1906,233,1866,201,1765,174,1643,154,1510,127,1256,116,1091"/>
+<area shape="rect" id="Node000031" href="$classtensorium_1_1GemmKernelBigger.html#a817eaa4e8d0054d8c1d356525c8eed71" title=" " alt="" coords="276,2016,498,2061"/>
+<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="121,1090,130,1267,140,1398,155,1541,175,1685,202,1818,218,1877,236,1928,256,1970,278,2002,280,2004,276,2008,274,2005,251,1973,231,1930,213,1878,197,1819,170,1686,149,1542,135,1398,125,1267,116,1090"/>
+<area shape="rect" id="Node000032" href="$classtensorium_1_1GemmKernelBigger.html#a50dee2352297783c588c83e13416a4e2" title=" " alt="" coords="276,2085,498,2130"/>
+<area shape="poly" id="edge31_Node000001_Node000032" title=" " alt="" coords="121,1090,128,1279,137,1420,151,1574,171,1729,198,1873,215,1936,233,1991,254,2037,278,2071,280,2073,276,2077,274,2075,250,2039,228,1993,209,1937,193,1874,166,1730,146,1575,132,1420,123,1279,116,1091"/>
+</map>
