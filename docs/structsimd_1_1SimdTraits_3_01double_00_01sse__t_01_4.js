@@ -9,6 +9,7 @@ var structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4 =
     [ "horizontal_add", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#aa5497962786d742109601e5b491d83fe", null ],
     [ "load", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#a108cea9b86b3bbfee82e4729241770a8", null ],
     [ "loadu", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#aac65755b1a52256fd432a6d9c9941837", null ],
+    [ "maskstore", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#a74c472a5b292c15d8a091e53db1f9990", null ],
     [ "max", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#a1856b44ccf46a0d4e951225295453d7c", null ],
     [ "min", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#a3d15a61ef0e583a927c9d55b321dd935", null ],
     [ "mul", "structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#ab57f31ae47d9798612dc99cf4204d0fc", null ],

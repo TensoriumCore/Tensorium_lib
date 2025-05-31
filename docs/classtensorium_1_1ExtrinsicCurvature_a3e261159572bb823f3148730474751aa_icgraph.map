@@ -1,0 +1,8 @@
+<map id="tensorium::ExtrinsicCurvature::compute_K_tensor" name="tensorium::ExtrinsicCurvature::compute_K_tensor">
+<area shape="rect" id="Node000001" title=" " alt="" coords="532,5,747,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1ExtrinsicCurvature.html#ac2d7a72a60e8ba8d6cfc28421c33941d" title=" " alt="" coords="5,5,221,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="517,26,484,25,269,25,221,26,221,21,269,20,484,20,517,20"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1ExtrinsicCurvature.html#a9ff62e57fe16c04d681b54151a3602ce" title=" " alt="" coords="269,35,484,79"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="517,44,485,48,484,42,516,39"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="253,46,221,42,221,37,253,41"/>
+</map>

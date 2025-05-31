@@ -5,5 +5,6 @@ var classMathsUtils =
     [ "_fmax", "classMathsUtils.html#aafde974b2eb01aedbdcd3c7695c023cc", null ],
     [ "_fmin", "classMathsUtils.html#a1b69405e23d26d9bd0d6576e8e990625", null ],
     [ "_max", "classMathsUtils.html#a0e789dbc1b696c969d4480b21af134c6", null ],
-    [ "_min", "classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8", null ]
+    [ "_min", "classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8", null ],
+    [ "_swap", "classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70", null ]
 ];

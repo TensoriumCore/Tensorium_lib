@@ -1,0 +1,12 @@
+<map id="tensorium::GemmKernelBigger::maskstore_accum_00" name="tensorium::GemmKernelBigger::maskstore_accum_00">
+<area shape="rect" id="Node000001" title=" " alt="" coords="739,40,962,85"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1GemmKernelBigger.html#abf944ec162df3b7b4c9b9e0a05a8a4c3" title=" " alt="" coords="469,5,691,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="723,49,691,45,692,39,724,43"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1GemmKernelBigger.html#a917c76dd986d3c1d1ecb867045ebeb02" title=" " alt="" coords="469,75,691,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="724,81,692,85,691,80,723,76"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1GemmKernelBigger.html#a5f8c6a2216e5e9e1649a2ff347dcdbee" title=" " alt="" coords="199,40,421,85"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="454,47,422,51,421,45,453,41"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#aefa00ef8a92bfc824fecc0c07b683bc1" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="5,40,151,85"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="183,65,151,65,151,60,183,60"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="453,83,421,79,422,74,454,78"/>
+</map>

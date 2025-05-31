@@ -15,6 +15,9 @@ pkgs.mkShell {
     valgrind
     cloc
     tree
+	doxygen 
+	graphviz 
+	bear
 
     python312Full
     (python312.withPackages (ps: with ps; [

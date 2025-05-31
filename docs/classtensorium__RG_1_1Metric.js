@@ -2,6 +2,8 @@ var classtensorium__RG_1_1Metric =
 [
     [ "Metric", "classtensorium__RG_1_1Metric.html#a9857e468363d9df1654b4ace08d962f3", null ],
     [ "BSSN", "classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04", null ],
+    [ "compute_conformal_factor", "classtensorium__RG_1_1Metric.html#a4c07e5ceadb53d242687c73a039b7c48", null ],
+    [ "compute_conformal_metric", "classtensorium__RG_1_1Metric.html#a0e0baebd20831f8e546f3c7a4beaa887", null ],
     [ "compute_flrw", "classtensorium__RG_1_1Metric.html#a0d3824582bfdacc8e8225057e0d7fa17", null ],
     [ "compute_kerr", "classtensorium__RG_1_1Metric.html#aeb4ea8eec03bcb0e101dbb05646821a8", null ],
     [ "compute_kerr_schild", "classtensorium__RG_1_1Metric.html#ac074bebde700894884a2829caa7b1c84", null ],

@@ -129,6 +129,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A multi-dimensional aligned tensor for numerical derivatives.  <a href="classtensorium_1_1DerivateND.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1ExtrinsicCurvature.html">ExtrinsicCurvature</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1GemmKernelBig.html">GemmKernelBig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1GemmKernelBigger.html">GemmKernelBigger</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-performance aligned matrix class with SIMD support.  <a href="classtensorium_1_1Matrix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,150 +176,165 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a68a85888e1219924c62e3f12b569d457" id="r_a68a85888e1219924c62e3f12b569d457"><td class="memTemplParams" colspan="2">template&lt;typename Container &gt; </td></tr>
-<tr class="memitem:a68a85888e1219924c62e3f12b569d457"><td class="memTemplItemLeft" align="right" valign="top">Container&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a68a85888e1219924c62e3f12b569d457">richardson_derivative_container</a> (const Container &amp;plus_h, const Container &amp;minus_h, const Container &amp;plus_half_h, const Container &amp;minus_half_h, double h)</td></tr>
+<tr class="memitem:a68a85888e1219924c62e3f12b569d457" id="r_a68a85888e1219924c62e3f12b569d457"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &gt; </td></tr>
+<tr class="memitem:a68a85888e1219924c62e3f12b569d457"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Container</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a68a85888e1219924c62e3f12b569d457">richardson_derivative_container</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">plus_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">minus_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">plus_half_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">minus_half_h</a>, <a class="el" href="classtensorium_1_1Tensor.html">double</a> <a class="el" href="classtensorium_1_1Tensor.html">h</a>)</td></tr>
 <tr class="memdesc:a68a85888e1219924c62e3f12b569d457"><td class="mdescLeft">&#160;</td><td class="mdescRight">Richardson extrapolation for vectors or containers.  <br /></td></tr>
 <tr class="separator:a68a85888e1219924c62e3f12b569d457"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a980225dc83e1b7b63cfff3cd83459af6" id="r_a980225dc83e1b7b63cfff3cd83459af6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a980225dc83e1b7b63cfff3cd83459af6"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a980225dc83e1b7b63cfff3cd83459af6">richardson_derivative</a> (const T &amp;plus_h, const T &amp;minus_h, const T &amp;plus_half_h, const T &amp;minus_half_h, double h)</td></tr>
+<tr class="memitem:a980225dc83e1b7b63cfff3cd83459af6" id="r_a980225dc83e1b7b63cfff3cd83459af6"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a980225dc83e1b7b63cfff3cd83459af6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a980225dc83e1b7b63cfff3cd83459af6">richardson_derivative</a> (const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">plus_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">minus_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">plus_half_h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">minus_half_h</a>, <a class="el" href="classtensorium_1_1Tensor.html">double</a> <a class="el" href="classtensorium_1_1Tensor.html">h</a>)</td></tr>
 <tr class="memdesc:a980225dc83e1b7b63cfff3cd83459af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Richardson extrapolation for scalar values.  <br /></td></tr>
 <tr class="separator:a980225dc83e1b7b63cfff3cd83459af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a656eb4763df62843ef4228874a12cef4" id="r_a656eb4763df62843ef4228874a12cef4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a656eb4763df62843ef4228874a12cef4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a656eb4763df62843ef4228874a12cef4">add_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:adbf0e82e0063377d4cf8834c58def684" id="r_adbf0e82e0063377d4cf8834c58def684"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:adbf0e82e0063377d4cf8834c58def684"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1GemmKernelBigger.html">GemmKernelBigger</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;::blockA_packed[<a class="el" href="GemmKernel__bigger_8hpp.html#a71d9e511e7e302cd831e83581219e70d">MC</a> *<a class="el" href="GemmKernel__bigger_8hpp.html#a73764abcca0b8bbf6bf355d9f1bab0b9">KC</a>]&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adbf0e82e0063377d4cf8834c58def684">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">aligned</a>(64)))</td></tr>
+<tr class="separator:adbf0e82e0063377d4cf8834c58def684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4450461f4596267c558e243b5bb9aff9" id="r_a4450461f4596267c558e243b5bb9aff9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a4450461f4596267c558e243b5bb9aff9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1GemmKernelBigger.html">GemmKernelBigger</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;::blockB_packed[<a class="el" href="GemmKernel__bigger_8hpp.html#a1fa2460e32327ade49189c95740bc1b5">NC</a> *<a class="el" href="GemmKernel__bigger_8hpp.html#a73764abcca0b8bbf6bf355d9f1bab0b9">KC</a>]&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4450461f4596267c558e243b5bb9aff9">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">aligned</a>(64)))</td></tr>
+<tr class="separator:a4450461f4596267c558e243b5bb9aff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a656eb4763df62843ef4228874a12cef4" id="r_a656eb4763df62843ef4228874a12cef4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a656eb4763df62843ef4228874a12cef4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a656eb4763df62843ef4228874a12cef4">add_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:a656eb4763df62843ef4228874a12cef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5eeb9b7bbe9b3ddd559961e7d566d7b" id="r_af5eeb9b7bbe9b3ddd559961e7d566d7b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af5eeb9b7bbe9b3ddd559961e7d566d7b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af5eeb9b7bbe9b3ddd559961e7d566d7b">sub_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:af5eeb9b7bbe9b3ddd559961e7d566d7b" id="r_af5eeb9b7bbe9b3ddd559961e7d566d7b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:af5eeb9b7bbe9b3ddd559961e7d566d7b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af5eeb9b7bbe9b3ddd559961e7d566d7b">sub_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:af5eeb9b7bbe9b3ddd559961e7d566d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4447af9c4745bf0d1c966f434bd81150" id="r_a4447af9c4745bf0d1c966f434bd81150"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4447af9c4745bf0d1c966f434bd81150"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4447af9c4745bf0d1c966f434bd81150">scl_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, T scalar)</td></tr>
+<tr class="memitem:a4447af9c4745bf0d1c966f434bd81150" id="r_a4447af9c4745bf0d1c966f434bd81150"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a4447af9c4745bf0d1c966f434bd81150"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4447af9c4745bf0d1c966f434bd81150">scl_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">scalar</a>)</td></tr>
 <tr class="separator:a4447af9c4745bf0d1c966f434bd81150"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cf7aa7b7f22ee35b6aebe14418d3550" id="r_a9cf7aa7b7f22ee35b6aebe14418d3550"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9cf7aa7b7f22ee35b6aebe14418d3550"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9cf7aa7b7f22ee35b6aebe14418d3550">norm1_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a)</td></tr>
+<tr class="memitem:a9cf7aa7b7f22ee35b6aebe14418d3550" id="r_a9cf7aa7b7f22ee35b6aebe14418d3550"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a9cf7aa7b7f22ee35b6aebe14418d3550"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9cf7aa7b7f22ee35b6aebe14418d3550">norm1_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a)</td></tr>
 <tr class="separator:a9cf7aa7b7f22ee35b6aebe14418d3550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a753cb1eae7b151852b91836f536c0790" id="r_a753cb1eae7b151852b91836f536c0790"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a753cb1eae7b151852b91836f536c0790"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a753cb1eae7b151852b91836f536c0790">norm2_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a)</td></tr>
+<tr class="memitem:a753cb1eae7b151852b91836f536c0790" id="r_a753cb1eae7b151852b91836f536c0790"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a753cb1eae7b151852b91836f536c0790"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a753cb1eae7b151852b91836f536c0790">norm2_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a)</td></tr>
 <tr class="separator:a753cb1eae7b151852b91836f536c0790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add383e7be1f7ffe468f45cc5d35ce67e" id="r_add383e7be1f7ffe468f45cc5d35ce67e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:add383e7be1f7ffe468f45cc5d35ce67e"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#add383e7be1f7ffe468f45cc5d35ce67e">normInf_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a)</td></tr>
+<tr class="memitem:add383e7be1f7ffe468f45cc5d35ce67e" id="r_add383e7be1f7ffe468f45cc5d35ce67e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:add383e7be1f7ffe468f45cc5d35ce67e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#add383e7be1f7ffe468f45cc5d35ce67e">normInf_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a)</td></tr>
 <tr class="separator:add383e7be1f7ffe468f45cc5d35ce67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f72b6870061e535b18aebdfaef56c44" id="r_a7f72b6870061e535b18aebdfaef56c44"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7f72b6870061e535b18aebdfaef56c44"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7f72b6870061e535b18aebdfaef56c44">dot_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:a7f72b6870061e535b18aebdfaef56c44" id="r_a7f72b6870061e535b18aebdfaef56c44"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a7f72b6870061e535b18aebdfaef56c44"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7f72b6870061e535b18aebdfaef56c44">dot_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:a7f72b6870061e535b18aebdfaef56c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff5ee842ff5be5874cf5faef96c540c6" id="r_aff5ee842ff5be5874cf5faef96c540c6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aff5ee842ff5be5874cf5faef96c540c6"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aff5ee842ff5be5874cf5faef96c540c6">cosine_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:aff5ee842ff5be5874cf5faef96c540c6" id="r_aff5ee842ff5be5874cf5faef96c540c6"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:aff5ee842ff5be5874cf5faef96c540c6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aff5ee842ff5be5874cf5faef96c540c6">cosine_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:aff5ee842ff5be5874cf5faef96c540c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114772d8e80ade39d0e576643a9ccbd3" id="r_a114772d8e80ade39d0e576643a9ccbd3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a114772d8e80ade39d0e576643a9ccbd3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a114772d8e80ade39d0e576643a9ccbd3">lerp_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b, T t)</td></tr>
+<tr class="memitem:a114772d8e80ade39d0e576643a9ccbd3" id="r_a114772d8e80ade39d0e576643a9ccbd3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a114772d8e80ade39d0e576643a9ccbd3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a114772d8e80ade39d0e576643a9ccbd3">lerp_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b, <a class="el" href="classtensorium_1_1Tensor.html">T</a> t)</td></tr>
 <tr class="separator:a114772d8e80ade39d0e576643a9ccbd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ed9708decc508fd84d4c6c89288b04d" id="r_a4ed9708decc508fd84d4c6c89288b04d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a4ed9708decc508fd84d4c6c89288b04d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4ed9708decc508fd84d4c6c89288b04d">linear_combination_vec</a> (const std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &gt; &amp;u, const std::vector&lt; T &gt; &amp;coef)</td></tr>
+<tr class="memitem:a4ed9708decc508fd84d4c6c89288b04d" id="r_a4ed9708decc508fd84d4c6c89288b04d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a4ed9708decc508fd84d4c6c89288b04d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4ed9708decc508fd84d4c6c89288b04d">linear_combination_vec</a> (const std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">u</a>, const std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">coef</a>)</td></tr>
 <tr class="separator:a4ed9708decc508fd84d4c6c89288b04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c3fd6050875807e6ef986fd977b97b8" id="r_a0c3fd6050875807e6ef986fd977b97b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a0c3fd6050875807e6ef986fd977b97b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0c3fd6050875807e6ef986fd977b97b8">cross_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:a0c3fd6050875807e6ef986fd977b97b8" id="r_a0c3fd6050875807e6ef986fd977b97b8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a0c3fd6050875807e6ef986fd977b97b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0c3fd6050875807e6ef986fd977b97b8">cross_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;a, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:a0c3fd6050875807e6ef986fd977b97b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a79e5e316fefceb930f22229ba6e12b" id="r_a9a79e5e316fefceb930f22229ba6e12b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9a79e5e316fefceb930f22229ba6e12b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9a79e5e316fefceb930f22229ba6e12b">add_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;B)</td></tr>
+<tr class="memitem:a9a79e5e316fefceb930f22229ba6e12b" id="r_a9a79e5e316fefceb930f22229ba6e12b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a9a79e5e316fefceb930f22229ba6e12b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9a79e5e316fefceb930f22229ba6e12b">add_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;B)</td></tr>
 <tr class="separator:a9a79e5e316fefceb930f22229ba6e12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91dac89d785ff89280a4a316e954a7a2" id="r_a91dac89d785ff89280a4a316e954a7a2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a91dac89d785ff89280a4a316e954a7a2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a91dac89d785ff89280a4a316e954a7a2">sub_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;B)</td></tr>
+<tr class="memitem:a91dac89d785ff89280a4a316e954a7a2" id="r_a91dac89d785ff89280a4a316e954a7a2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a91dac89d785ff89280a4a316e954a7a2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a91dac89d785ff89280a4a316e954a7a2">sub_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;B)</td></tr>
 <tr class="separator:a91dac89d785ff89280a4a316e954a7a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2207f906782c6a186c09559e5857fc57" id="r_a2207f906782c6a186c09559e5857fc57"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2207f906782c6a186c09559e5857fc57"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2207f906782c6a186c09559e5857fc57">scl_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, T scalar)</td></tr>
+<tr class="memitem:a2207f906782c6a186c09559e5857fc57" id="r_a2207f906782c6a186c09559e5857fc57"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a2207f906782c6a186c09559e5857fc57"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2207f906782c6a186c09559e5857fc57">scl_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">scalar</a>)</td></tr>
 <tr class="separator:a2207f906782c6a186c09559e5857fc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab317cc43203309cc34bf719934edbc7e" id="r_ab317cc43203309cc34bf719934edbc7e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab317cc43203309cc34bf719934edbc7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab317cc43203309cc34bf719934edbc7e">mul_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;B)</td></tr>
+<tr class="memitem:a1c044714fb59c3eb8cfd714bd25dc6f7" id="r_a1c044714fb59c3eb8cfd714bd25dc6f7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a1c044714fb59c3eb8cfd714bd25dc6f7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1c044714fb59c3eb8cfd714bd25dc6f7">lerp_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;B, <a class="el" href="classtensorium_1_1Tensor.html">T</a> t)</td></tr>
+<tr class="separator:a1c044714fb59c3eb8cfd714bd25dc6f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab317cc43203309cc34bf719934edbc7e" id="r_ab317cc43203309cc34bf719934edbc7e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:ab317cc43203309cc34bf719934edbc7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab317cc43203309cc34bf719934edbc7e">mul_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;B)</td></tr>
 <tr class="separator:ab317cc43203309cc34bf719934edbc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1f6fafe050f6c8629b0fed641ae1bb6" id="r_af1f6fafe050f6c8629b0fed641ae1bb6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af1f6fafe050f6c8629b0fed641ae1bb6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af1f6fafe050f6c8629b0fed641ae1bb6">transpose_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A)</td></tr>
+<tr class="memitem:af1f6fafe050f6c8629b0fed641ae1bb6" id="r_af1f6fafe050f6c8629b0fed641ae1bb6"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:af1f6fafe050f6c8629b0fed641ae1bb6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af1f6fafe050f6c8629b0fed641ae1bb6">transpose_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>)</td></tr>
 <tr class="separator:af1f6fafe050f6c8629b0fed641ae1bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27fe5fa0953300b19887f5c372585fe0" id="r_a27fe5fa0953300b19887f5c372585fe0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a27fe5fa0953300b19887f5c372585fe0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a27fe5fa0953300b19887f5c372585fe0">trace_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A)</td></tr>
+<tr class="memitem:a27fe5fa0953300b19887f5c372585fe0" id="r_a27fe5fa0953300b19887f5c372585fe0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a27fe5fa0953300b19887f5c372585fe0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a27fe5fa0953300b19887f5c372585fe0">trace_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>)</td></tr>
 <tr class="separator:a27fe5fa0953300b19887f5c372585fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b1e17cf1fd8903d8dca89dea2703af0" id="r_a1b1e17cf1fd8903d8dca89dea2703af0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1b1e17cf1fd8903d8dca89dea2703af0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1b1e17cf1fd8903d8dca89dea2703af0">mul_vec</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;x)</td></tr>
+<tr class="memitem:a1b1e17cf1fd8903d8dca89dea2703af0" id="r_a1b1e17cf1fd8903d8dca89dea2703af0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a1b1e17cf1fd8903d8dca89dea2703af0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1b1e17cf1fd8903d8dca89dea2703af0">mul_vec</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;x)</td></tr>
 <tr class="separator:a1b1e17cf1fd8903d8dca89dea2703af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a854dc844b1e819f6a5ab9369dbe76e96" id="r_a854dc844b1e819f6a5ab9369dbe76e96"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a854dc844b1e819f6a5ab9369dbe76e96"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a854dc844b1e819f6a5ab9369dbe76e96">inverse_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A)</td></tr>
+<tr class="memitem:a854dc844b1e819f6a5ab9369dbe76e96" id="r_a854dc844b1e819f6a5ab9369dbe76e96"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a854dc844b1e819f6a5ab9369dbe76e96"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a854dc844b1e819f6a5ab9369dbe76e96">inverse_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>)</td></tr>
 <tr class="separator:a854dc844b1e819f6a5ab9369dbe76e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec83b616f40dbad888e865d4ab1b95e0" id="r_aec83b616f40dbad888e865d4ab1b95e0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aec83b616f40dbad888e865d4ab1b95e0"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aec83b616f40dbad888e865d4ab1b95e0">det_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A)</td></tr>
+<tr class="memitem:aec83b616f40dbad888e865d4ab1b95e0" id="r_aec83b616f40dbad888e865d4ab1b95e0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:aec83b616f40dbad888e865d4ab1b95e0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aec83b616f40dbad888e865d4ab1b95e0">det_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>)</td></tr>
 <tr class="separator:aec83b616f40dbad888e865d4ab1b95e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac04325fd65473407802866aac00a514a" id="r_ac04325fd65473407802866aac00a514a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac04325fd65473407802866aac00a514a"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac04325fd65473407802866aac00a514a">rank_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A)</td></tr>
+<tr class="memitem:ac04325fd65473407802866aac00a514a" id="r_ac04325fd65473407802866aac00a514a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:ac04325fd65473407802866aac00a514a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac04325fd65473407802866aac00a514a">rank_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>)</td></tr>
 <tr class="separator:ac04325fd65473407802866aac00a514a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa73e8d607c233f3d53e29d5f728a2554" id="r_aa73e8d607c233f3d53e29d5f728a2554"><td class="memTemplParams" colspan="2">template&lt;typename K , std::size_t Rank&gt; </td></tr>
-<tr class="memitem:aa73e8d607c233f3d53e29d5f728a2554"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa73e8d607c233f3d53e29d5f728a2554">transpose_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt; &amp;T)</td></tr>
+<tr class="memitem:aa73e8d607c233f3d53e29d5f728a2554" id="r_aa73e8d607c233f3d53e29d5f728a2554"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , std::size_t Rank&gt; </td></tr>
+<tr class="memitem:aa73e8d607c233f3d53e29d5f728a2554"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa73e8d607c233f3d53e29d5f728a2554">transpose_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">T</a>)</td></tr>
 <tr class="separator:aa73e8d607c233f3d53e29d5f728a2554"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4cb2427dda33f89998dbf188b213b5e" id="r_ac4cb2427dda33f89998dbf188b213b5e"><td class="memTemplParams" colspan="2">template&lt;typename K , size_t R1, size_t R2&gt; </td></tr>
-<tr class="memitem:ac4cb2427dda33f89998dbf188b213b5e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac4cb2427dda33f89998dbf188b213b5e">mul_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;A, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;B)</td></tr>
+<tr class="memitem:ac4cb2427dda33f89998dbf188b213b5e" id="r_ac4cb2427dda33f89998dbf188b213b5e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> R1, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> R2&gt; </td></tr>
+<tr class="memitem:ac4cb2427dda33f89998dbf188b213b5e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R1</a>+<a class="el" href="classtensorium_1_1Tensor.html">R2</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac4cb2427dda33f89998dbf188b213b5e">mul_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R1</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R2</a> &gt; &amp;B)</td></tr>
 <tr class="separator:ac4cb2427dda33f89998dbf188b213b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29be65e6a15eda2ef90e3e82ce50a70f" id="r_a29be65e6a15eda2ef90e3e82ce50a70f"><td class="memTemplParams" colspan="2">template&lt;size_t I, size_t J, typename K , std::size_t Rank&gt; </td></tr>
-<tr class="memitem:a29be65e6a15eda2ef90e3e82ce50a70f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank - 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29be65e6a15eda2ef90e3e82ce50a70f">contract_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt; &amp;T)</td></tr>
+<tr class="memitem:a29be65e6a15eda2ef90e3e82ce50a70f" id="r_a29be65e6a15eda2ef90e3e82ce50a70f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> I, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> J, <a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , std::size_t Rank&gt; </td></tr>
+<tr class="memitem:a29be65e6a15eda2ef90e3e82ce50a70f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank - 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29be65e6a15eda2ef90e3e82ce50a70f">contract_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">T</a>)</td></tr>
 <tr class="separator:a29be65e6a15eda2ef90e3e82ce50a70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac40194e7c0127eabef9f65e1b9950084" id="r_ac40194e7c0127eabef9f65e1b9950084"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac40194e7c0127eabef9f65e1b9950084"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac40194e7c0127eabef9f65e1b9950084">gauss_solve</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b)</td></tr>
+<tr class="memitem:ac40194e7c0127eabef9f65e1b9950084" id="r_ac40194e7c0127eabef9f65e1b9950084"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:ac40194e7c0127eabef9f65e1b9950084"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac40194e7c0127eabef9f65e1b9950084">gauss_solve</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b)</td></tr>
 <tr class="separator:ac40194e7c0127eabef9f65e1b9950084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a961202aa0f295c710913121232c4863b" id="r_a961202aa0f295c710913121232c4863b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a961202aa0f295c710913121232c4863b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a961202aa0f295c710913121232c4863b">jacobi_solve</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;b, T tol=1e-6, int max_iter=1000)</td></tr>
+<tr class="memitem:a961202aa0f295c710913121232c4863b" id="r_a961202aa0f295c710913121232c4863b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a961202aa0f295c710913121232c4863b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a961202aa0f295c710913121232c4863b">jacobi_solve</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;b, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">tol</a>=1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-6, <a class="el" href="classtensorium_1_1Tensor.html">int</a> <a class="el" href="classtensorium_1_1Tensor.html">max_iter</a>=1000)</td></tr>
 <tr class="separator:a961202aa0f295c710913121232c4863b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48b8f2d501b658de2f7cef3565d1ccc8" id="r_a48b8f2d501b658de2f7cef3565d1ccc8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a48b8f2d501b658de2f7cef3565d1ccc8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a48b8f2d501b658de2f7cef3565d1ccc8">row_echelon</a> (<a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;A, <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; *b=nullptr, T eps=T(1e-12))</td></tr>
+<tr class="memitem:a48b8f2d501b658de2f7cef3565d1ccc8" id="r_a48b8f2d501b658de2f7cef3565d1ccc8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a48b8f2d501b658de2f7cef3565d1ccc8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a48b8f2d501b658de2f7cef3565d1ccc8">row_echelon</a> (<a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; *b=<a class="el" href="classtensorium_1_1Tensor.html">nullptr</a>, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">eps</a>=<a class="el" href="classtensorium_1_1Tensor.html">T</a>(1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-12))</td></tr>
 <tr class="separator:a48b8f2d501b658de2f7cef3565d1ccc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf358d99814f404993ee4fad21fa34f3" id="r_aaf358d99814f404993ee4fad21fa34f3"><td class="memTemplParams" colspan="2">template&lt;typename K &gt; </td></tr>
-<tr class="memitem:aaf358d99814f404993ee4fad21fa34f3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aaf358d99814f404993ee4fad21fa34f3">centered_derivative</a> (const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;input, <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;output, size_t axis, K dx)</td></tr>
+<tr class="memitem:aaf358d99814f404993ee4fad21fa34f3" id="r_aaf358d99814f404993ee4fad21fa34f3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </td></tr>
+<tr class="memitem:aaf358d99814f404993ee4fad21fa34f3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aaf358d99814f404993ee4fad21fa34f3">centered_derivative</a> (const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;input, <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;output, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> axis, <a class="el" href="classtensorium_1_1Tensor.html">K</a> dx)</td></tr>
 <tr class="separator:aaf358d99814f404993ee4fad21fa34f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbcc90b5d73fb04ba5f12a28dea4b437" id="r_abbcc90b5d73fb04ba5f12a28dea4b437"><td class="memTemplParams" colspan="2">template&lt;typename K &gt; </td></tr>
-<tr class="memitem:abbcc90b5d73fb04ba5f12a28dea4b437"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abbcc90b5d73fb04ba5f12a28dea4b437">centered_derivative_order4</a> (const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;input, <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;output, size_t axis, K dx)</td></tr>
+<tr class="memitem:abbcc90b5d73fb04ba5f12a28dea4b437" id="r_abbcc90b5d73fb04ba5f12a28dea4b437"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </td></tr>
+<tr class="memitem:abbcc90b5d73fb04ba5f12a28dea4b437"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abbcc90b5d73fb04ba5f12a28dea4b437">centered_derivative_order4</a> (const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;input, <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;output, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> axis, <a class="el" href="classtensorium_1_1Tensor.html">K</a> dx)</td></tr>
 <tr class="separator:abbcc90b5d73fb04ba5f12a28dea4b437"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93b5e95450d14e35533cc2f063eb746b" id="r_a93b5e95450d14e35533cc2f063eb746b"><td class="memTemplParams" colspan="2">template&lt;typename K , size_t Rank&gt; </td></tr>
-<tr class="memitem:a93b5e95450d14e35533cc2f063eb746b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a93b5e95450d14e35533cc2f063eb746b">centered_derivative</a> (const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;input, <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;output, size_t axis, K dx)</td></tr>
+<tr class="memitem:a93b5e95450d14e35533cc2f063eb746b" id="r_a93b5e95450d14e35533cc2f063eb746b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> Rank&gt; </td></tr>
+<tr class="memitem:a93b5e95450d14e35533cc2f063eb746b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a93b5e95450d14e35533cc2f063eb746b">centered_derivative</a> (const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;input, <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;output, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> axis, <a class="el" href="classtensorium_1_1Tensor.html">K</a> dx)</td></tr>
 <tr class="separator:a93b5e95450d14e35533cc2f063eb746b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f52446c6e120ef9ecc44447a3fd7c00" id="r_a1f52446c6e120ef9ecc44447a3fd7c00"><td class="memTemplParams" colspan="2">template&lt;typename K , size_t Rank&gt; </td></tr>
-<tr class="memitem:a1f52446c6e120ef9ecc44447a3fd7c00"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1f52446c6e120ef9ecc44447a3fd7c00">centered_derivative_order4</a> (const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;input, <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;output, size_t axis, K dx)</td></tr>
+<tr class="memitem:a1f52446c6e120ef9ecc44447a3fd7c00" id="r_a1f52446c6e120ef9ecc44447a3fd7c00"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> Rank&gt; </td></tr>
+<tr class="memitem:a1f52446c6e120ef9ecc44447a3fd7c00"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1f52446c6e120ef9ecc44447a3fd7c00">centered_derivative_order4</a> (const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;input, <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;output, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> axis, <a class="el" href="classtensorium_1_1Tensor.html">K</a> dx)</td></tr>
 <tr class="separator:a1f52446c6e120ef9ecc44447a3fd7c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e218e078c20c74f4049c4faac7cb8f" id="r_a25e218e078c20c74f4049c4faac7cb8f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a25e218e078c20c74f4049c4faac7cb8f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a25e218e078c20c74f4049c4faac7cb8f">forwardFFT</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;data)</td></tr>
+<tr class="memitem:a25e218e078c20c74f4049c4faac7cb8f" id="r_a25e218e078c20c74f4049c4faac7cb8f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a25e218e078c20c74f4049c4faac7cb8f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a25e218e078c20c74f4049c4faac7cb8f">forwardFFT</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;data)</td></tr>
 <tr class="separator:a25e218e078c20c74f4049c4faac7cb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8825c6215293801fce0857a1423cd32" id="r_aa8825c6215293801fce0857a1423cd32"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa8825c6215293801fce0857a1423cd32"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa8825c6215293801fce0857a1423cd32">backwardFFT</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;data)</td></tr>
+<tr class="memitem:aa8825c6215293801fce0857a1423cd32" id="r_aa8825c6215293801fce0857a1423cd32"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:aa8825c6215293801fce0857a1423cd32"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa8825c6215293801fce0857a1423cd32">backwardFFT</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;data)</td></tr>
 <tr class="separator:aa8825c6215293801fce0857a1423cd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe7813d8bcafd1acf49ff5c988f6612d" id="r_afe7813d8bcafd1acf49ff5c988f6612d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:afe7813d8bcafd1acf49ff5c988f6612d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afe7813d8bcafd1acf49ff5c988f6612d">backwardFFP</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;data)</td></tr>
+<tr class="memitem:afe7813d8bcafd1acf49ff5c988f6612d" id="r_afe7813d8bcafd1acf49ff5c988f6612d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:afe7813d8bcafd1acf49ff5c988f6612d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afe7813d8bcafd1acf49ff5c988f6612d">backwardFFP</a> (<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;data)</td></tr>
 <tr class="separator:afe7813d8bcafd1acf49ff5c988f6612d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab41939a469fac102de3e3faee664723b" id="r_ab41939a469fac102de3e3faee664723b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab41939a469fac102de3e3faee664723b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab41939a469fac102de3e3faee664723b">inv_mat_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;g)</td></tr>
+<tr class="memitem:ab41939a469fac102de3e3faee664723b" id="r_ab41939a469fac102de3e3faee664723b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:ab41939a469fac102de3e3faee664723b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab41939a469fac102de3e3faee664723b">inv_mat_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">g</a>)</td></tr>
 <tr class="separator:ab41939a469fac102de3e3faee664723b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2c6c7a4e99f02184e56ce0efff0e306" id="r_aa2c6c7a4e99f02184e56ce0efff0e306"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa2c6c7a4e99f02184e56ce0efff0e306"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa2c6c7a4e99f02184e56ce0efff0e306">tensor_to_matrix</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;tensor)</td></tr>
+<tr class="memitem:aa2c6c7a4e99f02184e56ce0efff0e306" id="r_aa2c6c7a4e99f02184e56ce0efff0e306"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:aa2c6c7a4e99f02184e56ce0efff0e306"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa2c6c7a4e99f02184e56ce0efff0e306">tensor_to_matrix</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">tensor</a>)</td></tr>
 <tr class="separator:aa2c6c7a4e99f02184e56ce0efff0e306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1737cb190528cf50cf843c324fd4d1e" id="r_ae1737cb190528cf50cf843c324fd4d1e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae1737cb190528cf50cf843c324fd4d1e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae1737cb190528cf50cf843c324fd4d1e">matrix_to_tensor</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;mat)</td></tr>
+<tr class="memitem:ae1737cb190528cf50cf843c324fd4d1e" id="r_ae1737cb190528cf50cf843c324fd4d1e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:ae1737cb190528cf50cf843c324fd4d1e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae1737cb190528cf50cf843c324fd4d1e">matrix_to_tensor</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">mat</a>)</td></tr>
 <tr class="separator:ae1737cb190528cf50cf843c324fd4d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c9c0e180ff6fb68bcb41be3fc69d9ff" id="r_a7c9c0e180ff6fb68bcb41be3fc69d9ff"><td class="memTemplParams" colspan="2">template&lt;typename T , typename MetricFunc &gt; </td></tr>
-<tr class="memitem:a7c9c0e180ff6fb68bcb41be3fc69d9ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium__RG_1_1ChristoffelSym.html">tensorium_RG::ChristoffelSym</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7c9c0e180ff6fb68bcb41be3fc69d9ff">compute_christoffel</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T h, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;g, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;g_inv, MetricFunc &amp;&amp;metric_generator)</td></tr>
+<tr class="memitem:a7c9c0e180ff6fb68bcb41be3fc69d9ff" id="r_a7c9c0e180ff6fb68bcb41be3fc69d9ff"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> , <a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">MetricFunc</a> &gt; </td></tr>
+<tr class="memitem:a7c9c0e180ff6fb68bcb41be3fc69d9ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium__RG_1_1ChristoffelSym.html">tensorium_RG::ChristoffelSym</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7c9c0e180ff6fb68bcb41be3fc69d9ff">compute_christoffel</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">h</a>, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">g</a>, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">g_inv</a>, <a class="el" href="classtensorium_1_1Tensor.html">MetricFunc</a> &amp;&amp;<a class="el" href="classtensorium_1_1Tensor.html">metric_generator</a>)</td></tr>
 <tr class="separator:a7c9c0e180ff6fb68bcb41be3fc69d9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12ea02010726156136abcb3aff6205e8" id="r_a12ea02010726156136abcb3aff6205e8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a12ea02010726156136abcb3aff6205e8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a12ea02010726156136abcb3aff6205e8">generate_metric</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;metric, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;g)</td></tr>
+<tr class="memitem:a12ea02010726156136abcb3aff6205e8" id="r_a12ea02010726156136abcb3aff6205e8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a12ea02010726156136abcb3aff6205e8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a12ea02010726156136abcb3aff6205e8">generate_metric</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">metric</a>, const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">g</a>)</td></tr>
 <tr class="separator:a12ea02010726156136abcb3aff6205e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fe69169243dcb89188d497bfbafde7e" id="r_a3fe69169243dcb89188d497bfbafde7e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a3fe69169243dcb89188d497bfbafde7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 4 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3fe69169243dcb89188d497bfbafde7e">compute_riemann_tensor</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T h, const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;metric)</td></tr>
+<tr class="memitem:a3fe69169243dcb89188d497bfbafde7e" id="r_a3fe69169243dcb89188d497bfbafde7e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a3fe69169243dcb89188d497bfbafde7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3fe69169243dcb89188d497bfbafde7e">compute_riemann_tensor</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1Tensor.html">h</a>, const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">metric</a>)</td></tr>
 <tr class="separator:a3fe69169243dcb89188d497bfbafde7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a943d5321efca5ce7011c47f206af99ed" id="r_a943d5321efca5ce7011c47f206af99ed"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a943d5321efca5ce7011c47f206af99ed"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a943d5321efca5ce7011c47f206af99ed">print_riemann_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 4 &gt; &amp;R)</td></tr>
+<tr class="memitem:a943d5321efca5ce7011c47f206af99ed" id="r_a943d5321efca5ce7011c47f206af99ed"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a943d5321efca5ce7011c47f206af99ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a943d5321efca5ce7011c47f206af99ed">print_riemann_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">R</a>)</td></tr>
 <tr class="separator:a943d5321efca5ce7011c47f206af99ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f2ff42b29e1fc37b75977f43175e8e4" id="r_a7f2ff42b29e1fc37b75977f43175e8e4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7f2ff42b29e1fc37b75977f43175e8e4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7f2ff42b29e1fc37b75977f43175e8e4">contract_riemann_to_ricci</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 4 &gt; &amp;R, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;ginv)</td></tr>
+<tr class="memitem:a7f2ff42b29e1fc37b75977f43175e8e4" id="r_a7f2ff42b29e1fc37b75977f43175e8e4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a7f2ff42b29e1fc37b75977f43175e8e4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7f2ff42b29e1fc37b75977f43175e8e4">contract_riemann_to_ricci</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">R</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">ginv</a>)</td></tr>
 <tr class="separator:a7f2ff42b29e1fc37b75977f43175e8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29a83f300e66bc89f594d8f262712eac" id="r_a29a83f300e66bc89f594d8f262712eac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a29a83f300e66bc89f594d8f262712eac"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29a83f300e66bc89f594d8f262712eac">compute_ricci_scalar</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;Ricci, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;ginv)</td></tr>
+<tr class="memitem:a29a83f300e66bc89f594d8f262712eac" id="r_a29a83f300e66bc89f594d8f262712eac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a29a83f300e66bc89f594d8f262712eac"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29a83f300e66bc89f594d8f262712eac">compute_ricci_scalar</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">Ricci</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">ginv</a>)</td></tr>
 <tr class="separator:a29a83f300e66bc89f594d8f262712eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc27d66b7cac986daf1685f26a0871ae" id="r_adc27d66b7cac986daf1685f26a0871ae"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:adc27d66b7cac986daf1685f26a0871ae"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adc27d66b7cac986daf1685f26a0871ae">print_ricci_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;R)</td></tr>
+<tr class="memitem:adc27d66b7cac986daf1685f26a0871ae" id="r_adc27d66b7cac986daf1685f26a0871ae"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:adc27d66b7cac986daf1685f26a0871ae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adc27d66b7cac986daf1685f26a0871ae">print_ricci_tensor</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">R</a>)</td></tr>
 <tr class="separator:adc27d66b7cac986daf1685f26a0871ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c1b563f2abeb6b4713764c7ac84642f" id="r_a2c1b563f2abeb6b4713764c7ac84642f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2c1b563f2abeb6b4713764c7ac84642f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2c1b563f2abeb6b4713764c7ac84642f">print_ricci_scalar</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;Ricci, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;g_inv)</td></tr>
+<tr class="memitem:a2c1b563f2abeb6b4713764c7ac84642f" id="r_a2c1b563f2abeb6b4713764c7ac84642f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a2c1b563f2abeb6b4713764c7ac84642f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2c1b563f2abeb6b4713764c7ac84642f">print_ricci_scalar</a> (const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">Ricci</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">g_inv</a>)</td></tr>
 <tr class="separator:a2c1b563f2abeb6b4713764c7ac84642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1248de4131517594cbc3d21d30e051c0" id="r_a1248de4131517594cbc3d21d30e051c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1248de4131517594cbc3d21d30e051c0">print_ast</a> (const std::shared_ptr&lt; <a class="el" href="structtensorium_1_1ASTNode.html">ASTNode</a> &gt; &amp;node, int indent=0)</td></tr>
+<tr class="memitem:a6b62911850464ab7b786a6356b41ed19" id="r_a6b62911850464ab7b786a6356b41ed19"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a6b62911850464ab7b786a6356b41ed19"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6b62911850464ab7b786a6356b41ed19">compute_conformal_factor</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">metric</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>)</td></tr>
+<tr class="separator:a6b62911850464ab7b786a6356b41ed19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e9e9350bb8b03dde2cb48231638376" id="r_a95e9e9350bb8b03dde2cb48231638376"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a95e9e9350bb8b03dde2cb48231638376"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a95e9e9350bb8b03dde2cb48231638376">compute_conformal_metric</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">metric</a>, const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, <a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>)</td></tr>
+<tr class="separator:a95e9e9350bb8b03dde2cb48231638376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1248de4131517594cbc3d21d30e051c0" id="r_a1248de4131517594cbc3d21d30e051c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1248de4131517594cbc3d21d30e051c0">print_ast</a> (const std::shared_ptr&lt; <a class="el" href="structtensorium_1_1ASTNode.html">ASTNode</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">node</a>, <a class="el" href="classtensorium_1_1Tensor.html">int</a> <a class="el" href="classtensorium_1_1Tensor.html">indent</a>=0)</td></tr>
 <tr class="separator:a1248de4131517594cbc3d21d30e051c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -327,7 +348,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#aca4359c937a7df5ea1c07312e69c18a4">tensorium::ASTNodeType</a></td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">enum</a> <a class="el" href="classtensorium_1_1Tensor.html">class</a> <a class="el" href="#aca4359c937a7df5ea1c07312e69c18a4">tensorium::ASTNodeType</a></td>
         </tr>
       </table>
   </td>
@@ -352,33 +373,64 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="adbf0e82e0063377d4cf8834c58def684" name="adbf0e82e0063377d4cf8834c58def684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbf0e82e0063377d4cf8834c58def684">&#9670;&#160;</a></span>__attribute__() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1GemmKernelBigger.html">GemmKernelBigger</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;::blockA_packed[<a class="el" href="GemmKernel__bigger_8hpp.html#a71d9e511e7e302cd831e83581219e70d">MC</a> *<a class="el" href="GemmKernel__bigger_8hpp.html#a73764abcca0b8bbf6bf355d9f1bab0b9">KC</a>] tensorium::__attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">aligned</a>(64))</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4450461f4596267c558e243b5bb9aff9" name="a4450461f4596267c558e243b5bb9aff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4450461f4596267c558e243b5bb9aff9">&#9670;&#160;</a></span>__attribute__() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> <a class="el" href="classtensorium_1_1GemmKernelBigger.html">GemmKernelBigger</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;::blockB_packed[<a class="el" href="GemmKernel__bigger_8hpp.html#a1fa2460e32327ade49189c95740bc1b5">NC</a> *<a class="el" href="GemmKernel__bigger_8hpp.html#a73764abcca0b8bbf6bf355d9f1bab0b9">KC</a>] tensorium::__attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">aligned</a>(64))</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9a79e5e316fefceb930f22229ba6e12b" name="a9a79e5e316fefceb930f22229ba6e12b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a79e5e316fefceb930f22229ba6e12b">&#9670;&#160;</a></span>add_mat()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::add_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::add_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a9a79e5e316fefceb930f22229ba6e12b_cgraph.svg" width="600" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -388,17 +440,17 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::add_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::add_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -411,15 +463,15 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::backwardFFP </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::backwardFFP </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -445,15 +497,15 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::backwardFFT </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::backwardFFT </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -479,30 +531,30 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::centered_derivative </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::centered_derivative </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -520,30 +572,30 @@ template&lt;typename K &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K , size_t Rank&gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::centered_derivative </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::centered_derivative </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -561,30 +613,30 @@ template&lt;typename K , size_t Rank&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::centered_derivative_order4 </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::centered_derivative_order4 </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; K &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Derivate.html">Derivate</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -616,30 +668,30 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K , size_t Rank&gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> Rank&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::centered_derivative_order4 </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::centered_derivative_order4 </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>output</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>axis</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">K</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -657,32 +709,32 @@ template&lt;typename K , size_t Rank&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename MetricFunc &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> , <a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">MetricFunc</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium__RG_1_1ChristoffelSym.html">tensorium_RG::ChristoffelSym</a>&lt; T &gt; tensorium::compute_christoffel </td>
+          <td class="memname"><a class="el" href="classtensorium__RG_1_1ChristoffelSym.html">tensorium_RG::ChristoffelSym</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::compute_christoffel </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g_inv</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g_inv</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">MetricFunc &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>metric_generator</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">MetricFunc</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>metric_generator</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -696,26 +748,97 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a6b62911850464ab7b786a6356b41ed19" name="a6b62911850464ab7b786a6356b41ed19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b62911850464ab7b786a6356b41ed19">&#9670;&#160;</a></span>compute_conformal_factor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::compute_conformal_factor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>.</p>
+
+</div>
+</div>
+<a id="a95e9e9350bb8b03dde2cb48231638376" name="a95e9e9350bb8b03dde2cb48231638376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95e9e9350bb8b03dde2cb48231638376">&#9670;&#160;</a></span>compute_conformal_metric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; tensorium::compute_conformal_metric </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>chi</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, and <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>.</p>
+
+</div>
+</div>
 <a id="a29a83f300e66bc89f594d8f262712eac" name="a29a83f300e66bc89f594d8f262712eac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a29a83f300e66bc89f594d8f262712eac">&#9670;&#160;</a></span>compute_ricci_scalar()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::compute_ricci_scalar </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::compute_ricci_scalar </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Ricci</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Ricci</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ginv</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ginv</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -740,25 +863,25 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 4 &gt; tensorium::compute_riemann_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt; tensorium::compute_riemann_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -783,20 +906,20 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; tensorium::contract_riemann_to_ricci </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; tensorium::contract_riemann_to_ricci </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 4 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ginv</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>ginv</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -821,12 +944,12 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;size_t I, size_t J, typename K , std::size_t Rank&gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> I, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> J, <a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank - 2 &gt; tensorium::contract_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank - 2 &gt; tensorium::contract_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -840,17 +963,17 @@ template&lt;size_t I, size_t J, typename K , std::size_t Rank&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::cosine_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::cosine_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -863,17 +986,17 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::cross_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::cross_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -886,23 +1009,16 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::det_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::det_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_aec83b616f40dbad888e865d4ab1b95e0_cgraph.svg" width="568" height="322"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -912,22 +1028,20 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::dot_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::dot_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Vector.html#a7b07d715b12708149ec45ea5a16b9641">tensorium::Vector&lt; K &gt;::dot</a>.</p>
 
 </div>
 </div>
@@ -937,15 +1051,15 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::forwardFFT </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::forwardFFT </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; T &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; std::complex&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -971,17 +1085,17 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::gauss_solve </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::gauss_solve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -994,22 +1108,22 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::generate_metric </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::generate_metric </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>metric</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1029,22 +1143,22 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; tensorium::inv_mat_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; tensorium::inv_mat_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#ae1737cb190528cf50cf843c324fd4d1e">matrix_to_tensor()</a>, and <a class="el" href="#aa2c6c7a4e99f02184e56ce0efff0e306">tensor_to_matrix()</a>.</p>
+<p class="reference">References <a class="el" href="#ae1737cb190528cf50cf843c324fd4d1e">matrix_to_tensor()</a>, and <a class="el" href="#aa2c6c7a4e99f02184e56ce0efff0e306">tensor_to_matrix()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_ab41939a469fac102de3e3faee664723b_cgraph.svg" width="559" height="322"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_ab41939a469fac102de3e3faee664723b_cgraph.svg" width="366" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1055,23 +1169,16 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::inverse_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::inverse_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a854dc844b1e819f6a5ab9369dbe76e96_cgraph.svg" width="574" height="322"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1081,27 +1188,27 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::jacobi_solve </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::jacobi_solve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1e-6</span>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>tol</em><span class="paramdefsep"> = </span><span class="paramdefval">1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-6</span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">1000</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>max_iter</em><span class="paramdefsep"> = </span><span class="paramdefval">1000</span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1115,28 +1222,56 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a1c044714fb59c3eb8cfd714bd25dc6f7" name="a1c044714fb59c3eb8cfd714bd25dc6f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c044714fb59c3eb8cfd714bd25dc6f7">&#9670;&#160;</a></span>lerp_mat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::lerp_mat </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>t</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a114772d8e80ade39d0e576643a9ccbd3" name="a114772d8e80ade39d0e576643a9ccbd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a114772d8e80ade39d0e576643a9ccbd3">&#9670;&#160;</a></span>lerp_vec()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::lerp_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::lerp_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>t</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>t</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1149,17 +1284,17 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::linear_combination_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::linear_combination_vec </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em>, </span></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>coef</em></span>&#160;)</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>coef</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1172,18 +1307,16 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; tensorium::matrix_to_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; tensorium::matrix_to_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mat</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mat</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="classtensorium_1_1Matrix.html#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#ab41939a469fac102de3e3faee664723b">inv_mat_tensor()</a>.</p>
 <div class="dynheader">
@@ -1200,29 +1333,22 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::mul_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::mul_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="classtensorium_1_1Matrix.html#a767ac2a0b878341675a47311f29b18f2">tensorium::Matrix&lt; K &gt;::mul_mat()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a521ceea8e982a3e179b6e42ac26e860a">tensorium::MatrixKernel&lt; K &gt;::mul_mat3x3()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a393fb342aa333070b1ea2aa8dff6733a">tensorium::MatrixKernel&lt; K &gt;::mul_mat4x4()</a>, and <a class="el" href="classtensorium_1_1Matrix.html#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_ab317cc43203309cc34bf719934edbc7e_cgraph.svg" width="584" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1237,20 +1363,20 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K , size_t R1, size_t R2&gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> R1, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> R2&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R1+R2 &gt; tensorium::mul_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R1</a>+<a class="el" href="classtensorium_1_1Tensor.html">R2</a> &gt; tensorium::mul_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R1 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R1</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, R2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">R2</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1268,27 +1394,20 @@ template&lt;typename K , size_t R1, size_t R2&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::mul_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::mul_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ad5cf7e88706e1b5cb65fb1ec0fcf6017">tensorium::Matrix&lt; K &gt;::mul_vec()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a1b1e17cf1fd8903d8dca89dea2703af0_cgraph.svg" width="574" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1298,12 +1417,12 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::norm1_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::norm1_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1317,12 +1436,12 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::norm2_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::norm2_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1336,12 +1455,12 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::normInf_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::normInf_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1359,14 +1478,14 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::print_ast </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::print_ast </td>
           <td>(</td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="structtensorium_1_1ASTNode.html">ASTNode</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>node</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>indent</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">int</a></td>          <td class="paramname"><span class="paramname"><em>indent</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1398,20 +1517,20 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::print_ricci_scalar </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::print_ricci_scalar </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Ricci</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Ricci</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g_inv</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>g_inv</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1436,15 +1555,15 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::print_ricci_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::print_ricci_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1470,15 +1589,15 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::print_riemann_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::print_riemann_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 4 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 4 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>R</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1504,23 +1623,16 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">size_t tensorium::rank_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> tensorium::rank_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a6aa64cb114cee18687263df50e358583">tensorium::Matrix&lt; K &gt;::rank()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_ac04325fd65473407802866aac00a514a_cgraph.svg" width="584" height="252"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1530,35 +1642,35 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T tensorium::richardson_derivative </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">T</a> tensorium::richardson_derivative </td>
           <td>(</td>
-          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_half_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_half_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_half_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">T</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_half_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">double</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1602,35 +1714,35 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Container &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Container tensorium::richardson_derivative_container </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Container</a> tensorium::richardson_derivative_container </td>
           <td>(</td>
-          <td class="paramtype">const Container &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Container &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Container &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_half_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>plus_half_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Container &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_half_h</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Container</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>minus_half_h</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">double</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1667,25 +1779,25 @@ template&lt;typename Container &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium::row_echelon </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> tensorium::row_echelon </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; *</td>          <td class="paramname"><span class="paramname"><em>b</em><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>, </span></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; *</td>          <td class="paramname"><span class="paramname"><em>b</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classtensorium_1_1Tensor.html">nullptr</a></span>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>eps</em><span class="paramdefsep"> = </span><span class="paramdefval">T(1e-12)</span></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>eps</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classtensorium_1_1Tensor.html">T</a>(1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-12)</span></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1699,7 +1811,7 @@ template&lt;typename T &gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a48b8f2d501b658de2f7cef3565d1ccc8_cgraph.svg" width="612" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a48b8f2d501b658de2f7cef3565d1ccc8_cgraph.svg" width="800" height="278"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1710,27 +1822,20 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::scl_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::scl_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>scalar</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>scalar</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a841f4fd9ec371374184466c1b810b461">tensorium::Matrix&lt; K &gt;::scl()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a2207f906782c6a186c09559e5857fc57_cgraph.svg" width="588" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1740,17 +1845,17 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::scl_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::scl_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>scalar</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">T</a></td>          <td class="paramname"><span class="paramname"><em>scalar</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1763,27 +1868,20 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::sub_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::sub_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>B</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a91dac89d785ff89280a4a316e954a7a2_cgraph.svg" width="598" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1793,17 +1891,17 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; tensorium::sub_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::sub_vec </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>a</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1816,12 +1914,12 @@ template&lt;typename T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::tensor_to_matrix </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::tensor_to_matrix </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a>, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tensor</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1844,23 +1942,16 @@ Here is the caller graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::trace_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::trace_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a647156d276ab6b8cc06e10ae6e479857">tensorium::Matrix&lt; K &gt;::trace()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_a27fe5fa0953300b19887f5c372585fe0_cgraph.svg" width="559" height="150"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1870,23 +1961,16 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; tensorium::transpose_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; tensorium::transpose_mat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#af090bc9aae9d7f0a177dbcc33dd6139e">tensorium::Matrix&lt; K &gt;::transpose()</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_af1f6fafe050f6c8629b0fed641ae1bb6_cgraph.svg" width="590" height="150"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1896,12 +1980,12 @@ Here is the call graph for this function:</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename K , std::size_t Rank&gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , std::size_t Rank&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt; tensorium::transpose_tensor </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; tensorium::transpose_tensor </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; K, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">Tensor</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1911,7 +1995,7 @@ template&lt;typename K , std::size_t Rank&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_aa73e8d607c233f3d53e29d5f728a2554_cgraph.svg" width="364" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium_aa73e8d607c233f3d53e29d5f728a2554_cgraph.svg" width="558" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

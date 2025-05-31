@@ -1,5 +1,0 @@
-<map id="tensorium::Matrix::sub" name="tensorium::Matrix::sub">
-<area shape="rect" id="Node000001" title="In&#45;place matrix subtraction: this &#45;= m." alt="" coords="5,5,173,33"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a9360ad4d79bc09c54f63aa81060bf267" title="Return the total number of elements." alt="" coords="221,5,391,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,17,205,17,205,22,173,22"/>
-</map>

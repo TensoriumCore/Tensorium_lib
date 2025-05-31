@@ -26,20 +26,20 @@
 <text text-anchor="start" x="13.38" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="35" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">extract()</text>
 <text text-anchor="start" x="13.38" y="-118.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-118.5" font-family="Helvetica,sans-Serif" font-size="10.00">stream()</text>
+<text text-anchor="start" x="35" y="-118.5" font-family="Helvetica,sans-Serif" font-size="10.00">maskstore()</text>
 <text text-anchor="start" x="13.38" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">setzero()</text>
+<text text-anchor="start" x="35" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">maskload()</text>
 <text text-anchor="start" x="13.38" y="-86.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-86.5" font-family="Helvetica,sans-Serif" font-size="10.00">horizontal_add()</text>
+<text text-anchor="start" x="35" y="-86.5" font-family="Helvetica,sans-Serif" font-size="10.00">broadcast()</text>
 <text text-anchor="start" x="13.38" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">load()</text>
+<text text-anchor="start" x="35" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">stream()</text>
 <text text-anchor="start" x="13.38" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">loadu()</text>
+<text text-anchor="start" x="35" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">setzero()</text>
 <text text-anchor="start" x="13.38" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">store()</text>
+<text text-anchor="start" x="35" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">horizontal_add()</text>
 <text text-anchor="start" x="13.38" y="-22.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="35" y="-22.5" font-family="Helvetica,sans-Serif" font-size="10.00">storeu()</text>
-<text text-anchor="start" x="35" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 8 more...</text>
+<text text-anchor="start" x="35" y="-22.5" font-family="Helvetica,sans-Serif" font-size="10.00">load()</text>
+<text text-anchor="start" x="35" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
 <polygon fill="#666666" stroke="#666666" points="0,-210 0,-210 138,-210 138,-210 0,-210"/>
 <polygon fill="#666666" stroke="#666666" points="0,-178 0,-178 33,-178 33,-178 0,-178"/>
 <polygon fill="#666666" stroke="#666666" points="33,-178 33,-178 138,-178 138,-178 33,-178"/>

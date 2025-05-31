@@ -1,9 +1,0 @@
-<map id="tensorium::Matrix::inverse" name="tensorium::Matrix::inverse">
-<area shape="rect" id="Node000001" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="259,57,404,102"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#a1c0700c897553df855b385b0a9b2eb47" title="Compute the inverse of a 2D metric tensor using local matrix inversion." alt="" coords="5,5,211,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,56,210,47,168,36,170,31,211,42,244,51"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#ab41939a469fac102de3e3faee664723b" title=" " alt="" coords="34,57,182,102"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,82,183,82,183,77,243,77"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium.html#a854dc844b1e819f6a5ab9369dbe76e96" title=" " alt="" coords="20,125,196,153"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="244,107,211,116,170,127,168,122,210,111,243,102"/>
-</map>

@@ -13,8 +13,11 @@ var hierarchy =
     [ "tensorium_RG::ChristoffelSym< T >", "classtensorium__RG_1_1ChristoffelSym.html", null ],
     [ "tensorium::Derivate< K >", "classtensorium_1_1Derivate.html", null ],
     [ "tensorium::DerivateND< K, Rank >", "classtensorium_1_1DerivateND.html", null ],
+    [ "tensorium::ExtrinsicCurvature< K >", "classtensorium_1_1ExtrinsicCurvature.html", null ],
     [ "tensorium::solver::Gauss< K >", "classtensorium_1_1solver_1_1Gauss.html", null ],
     [ "tensorium::solver::GaussSeidel< K >", "classtensorium_1_1solver_1_1GaussSeidel.html", null ],
+    [ "tensorium::GemmKernelBig< T >", "classtensorium_1_1GemmKernelBig.html", null ],
+    [ "tensorium::GemmKernelBigger< T >", "classtensorium_1_1GemmKernelBigger.html", null ],
     [ "tensorium::solver::Jacobi< K >", "classtensorium_1_1solver_1_1Jacobi.html", null ],
     [ "Lexer", "classLexer.html", null ],
     [ "MatchFinder::MatchCallback", null, [

@@ -1,7 +1,0 @@
-<map id="tensorium::Vector::print" name="tensorium::Vector::print">
-<area shape="rect" id="Node000001" title="Print the vector to stdout." alt="" coords="5,32,179,60"/>
-<area shape="rect" id="Node000002" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="292,5,331,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,33,277,21,277,26,179,38"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1Vector.html#a723fe75fae6b15e8dc900acf5b323bbc" title=" " alt="" coords="227,57,396,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="179,53,211,57,211,62,179,58"/>
-</map>

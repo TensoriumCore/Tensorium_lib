@@ -1,6 +1,8 @@
 var FunctionnalRG_8hpp =
 [
     [ "compute_christoffel", "FunctionnalRG_8hpp.html#a7c9c0e180ff6fb68bcb41be3fc69d9ff", null ],
+    [ "compute_conformal_factor", "FunctionnalRG_8hpp.html#a6b62911850464ab7b786a6356b41ed19", null ],
+    [ "compute_conformal_metric", "FunctionnalRG_8hpp.html#a95e9e9350bb8b03dde2cb48231638376", null ],
     [ "compute_ricci_scalar", "FunctionnalRG_8hpp.html#a29a83f300e66bc89f594d8f262712eac", null ],
     [ "compute_riemann_tensor", "FunctionnalRG_8hpp.html#a3fe69169243dcb89188d497bfbafde7e", null ],
     [ "contract_riemann_to_ricci", "FunctionnalRG_8hpp.html#a7f2ff42b29e1fc37b75977f43175e8e4", null ],

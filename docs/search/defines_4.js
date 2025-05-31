@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hex_0',['HEX',['../CMakeCXXCompilerId_8cpp.html#a46d5d95daa1bef867bd0179594310ed5',1,'CMakeCXXCompilerId.cpp']]]
+  ['nc_0',['NC',['../GemmKernel__bigger_8hpp.html#a1fa2460e32327ade49189c95740bc1b5',1,'GemmKernel_bigger.hpp']]]
 ];

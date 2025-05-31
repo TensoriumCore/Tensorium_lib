@@ -1,15 +1,14 @@
 <map id="tensorium::Matrix::det" name="tensorium::Matrix::det">
-<area shape="rect" id="Node000001" title="Compute the determinant using Gaussian elimination." alt="" coords="5,141,172,169"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="53,142,48,132,52,123,66,117,89,115,113,117,126,124,123,128,111,122,88,120,67,122,56,127,53,132,58,139"/>
+<area shape="rect" id="Node000001" title="Compute the determinant using Gaussian elimination." alt="" coords="5,88,172,116"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="53,89,48,79,52,69,66,63,89,61,113,64,126,70,123,75,111,69,88,67,67,69,56,73,53,79,58,86"/>
 <area shape="rect" id="Node000002" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="228,5,357,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,139,151,93,183,67,218,44,230,37,233,42,221,48,186,71,154,97,105,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,85,219,43,236,37,238,42,221,48,123,90"/>
 <area shape="rect" id="Node000003" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="273,57,312,85"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="119,138,219,94,257,80,259,85,221,99,121,143"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a951b60350fb663b642e6db0eb55df2ac" title="Specialized fast multiplication for fixed&#45;size square matrices (supports N = 4, 8,..." alt="" coords="220,133,365,178"/>
-<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="172,153,204,153,204,158,172,158"/>
-<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#a751ec04712d5ec3b2f0dbabd523bdde1" title="Element access (mutable)" alt="" coords="220,202,365,247"/>
-<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="132,167,211,194,209,199,131,172"/>
-<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a29cb23b241303015dc32483072623161" title="Swap two rows of the matrix." alt="" coords="220,272,365,316"/>
-<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="107,167,156,210,221,257,229,261,226,266,218,261,153,214,104,172"/>
-<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="253,133,252,123,259,114,272,108,292,106,314,109,327,115,325,120,313,114,292,111,273,113,262,118,257,124,258,132"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="172,87,257,74,258,79,173,92"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#a751ec04712d5ec3b2f0dbabd523bdde1" title="Element access (mutable)" alt="" coords="220,109,365,154"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="173,111,205,116,204,121,172,116"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#a29cb23b241303015dc32483072623161" title="Swap two rows of the matrix." alt="" coords="220,178,365,223"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="120,114,221,163,231,169,229,173,218,168,118,119"/>
+<area shape="rect" id="Node000006" href="$classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="413,187,553,214"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="365,198,398,198,398,203,365,203"/>
 </map>

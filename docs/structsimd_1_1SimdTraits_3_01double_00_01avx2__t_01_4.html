@@ -129,6 +129,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ac4b12b146c70c18eb58614ce6d7c036a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a958402ddb5da2198415c54b8f4c7829c" id="r_a958402ddb5da2198415c54b8f4c7829c"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a958402ddb5da2198415c54b8f4c7829c">extract</a> (<a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a> x, size_t index)</td></tr>
 <tr class="separator:a958402ddb5da2198415c54b8f4c7829c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea2c6c30a0faf1183f6038fc0129aafe" id="r_aea2c6c30a0faf1183f6038fc0129aafe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea2c6c30a0faf1183f6038fc0129aafe">maskstore</a> (double *ptr, __m256i mask, __m256d value)</td></tr>
+<tr class="separator:aea2c6c30a0faf1183f6038fc0129aafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad2aaaf4e920486559e96424f8e2d572" id="r_aad2aaaf4e920486559e96424f8e2d572"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad2aaaf4e920486559e96424f8e2d572">maskload</a> (const double *ptr, __m256i m)</td></tr>
+<tr class="separator:aad2aaaf4e920486559e96424f8e2d572"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a567c06f3b7cc1209278a88eafe1ab8c7" id="r_a567c06f3b7cc1209278a88eafe1ab8c7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a567c06f3b7cc1209278a88eafe1ab8c7">broadcast</a> (const double *ptr)</td></tr>
+<tr class="separator:a567c06f3b7cc1209278a88eafe1ab8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7de94c4c51eb9a9edd6daf260eb4f443" id="r_a7de94c4c51eb9a9edd6daf260eb4f443"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7de94c4c51eb9a9edd6daf260eb4f443">stream</a> (double *ptr, <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a> x)</td></tr>
 <tr class="separator:a7de94c4c51eb9a9edd6daf260eb4f443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e13c4225b087c35600ac593446778d0" id="r_a5e13c4225b087c35600ac593446778d0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e13c4225b087c35600ac593446778d0">setzero</a> ()</td></tr>
@@ -244,6 +250,31 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a567c06f3b7cc1209278a88eafe1ab8c7" name="a567c06f3b7cc1209278a88eafe1ab8c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a567c06f3b7cc1209278a88eafe1ab8c7">&#9670;&#160;</a></span>broadcast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a> <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt; double, <a class="el" href="structavx2__t.html">avx2_t</a> &gt;::broadcast </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>ptr</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -382,6 +413,69 @@ Static Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>ptr</em></span></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aad2aaaf4e920486559e96424f8e2d572" name="aad2aaaf4e920486559e96424f8e2d572"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2aaaf4e920486559e96424f8e2d572">&#9670;&#160;</a></span>maskload()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="#aab607592477ba3543c36bb2ae06a1235">reg</a> <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt; double, <a class="el" href="structavx2__t.html">avx2_t</a> &gt;::maskload </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>ptr</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">__m256i</td>          <td class="paramname"><span class="paramname"><em>m</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea2c6c30a0faf1183f6038fc0129aafe" name="aea2c6c30a0faf1183f6038fc0129aafe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea2c6c30a0faf1183f6038fc0129aafe">&#9670;&#160;</a></span>maskstore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt; double, <a class="el" href="structavx2__t.html">avx2_t</a> &gt;::maskstore </td>
+          <td>(</td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>ptr</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">__m256i</td>          <td class="paramname"><span class="paramname"><em>mask</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">__m256d</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
   </td>

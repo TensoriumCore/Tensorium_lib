@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['tensor2d_0',['Tensor2D',['../classtensorium_1_1SpectralFFT.html#ac7d6e4a53854598c39fcd9227fa83f73',1,'tensorium::SpectralFFT::Tensor2D'],['../classtensorium_1_1SpectalChebyshev.html#ad1f799a71b70c433ec224dc634f0aedf',1,'tensorium::SpectalChebyshev::Tensor2D'],['../classtensorium__RG_1_1RicciTensor.html#a281a38c7518ca0e76ad76b41202acce0',1,'tensorium_RG::RicciTensor::Tensor2D'],['../classtensorium__RG_1_1RiemannTensor.html#a2e49b7db101e1ebc854e6f4fcad60094',1,'tensorium_RG::RiemannTensor::Tensor2D']]],
-  ['tensor4d_1',['Tensor4D',['../classtensorium__RG_1_1RicciTensor.html#a714453dcb04ee82a511001c429743213',1,'tensorium_RG::RicciTensor::Tensor4D'],['../classtensorium__RG_1_1RiemannTensor.html#ab3e897eba7f18f4791829d2f9e7cbcd3',1,'tensorium_RG::RiemannTensor::Tensor4D']]]
+  ['simd_0',['Simd',['../classtensorium_1_1Matrix.html#a89205abf55ba806a2e31c389aba87071',1,'tensorium::Matrix::Simd'],['../classtensorium_1_1GemmKernelBig.html#abfbc44bbf00c5ad2fa0c9d974b281428',1,'tensorium::GemmKernelBig::Simd'],['../classtensorium_1_1GemmKernelBigger.html#acf18e6a3d44a03ed49c20372bb75bba5',1,'tensorium::GemmKernelBigger::Simd'],['../classtensorium_1_1MatrixKernel.html#a366f31372345a0562a41850197734e77',1,'tensorium::MatrixKernel::Simd'],['../classtensorium_1_1Vector.html#af075f9f34073c67fb764ad4436f920f1',1,'tensorium::Vector::Simd']]],
+  ['simdt_1',['SimdT',['../classtensorium_1_1solver_1_1Gauss.html#a474b0d58388a9f0cdaf9919df27f4c1d',1,'tensorium::solver::Gauss']]],
+  ['size_5ftype_2',['size_type',['../structAlignedAllocator.html#a20d2a4ca3cf4b891c12b6666335c6f0d',1,'AlignedAllocator']]]
 ];

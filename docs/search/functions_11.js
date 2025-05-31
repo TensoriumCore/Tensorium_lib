@@ -11,6 +11,8 @@ var searchData=
   ['richardson_5fderivative_8',['richardson_derivative',['../namespacetensorium.html#a980225dc83e1b7b63cfff3cd83459af6',1,'tensorium']]],
   ['richardson_5fderivative_5fcontainer_9',['richardson_derivative_container',['../namespacetensorium.html#a68a85888e1219924c62e3f12b569d457',1,'tensorium']]],
   ['row_5fechelon_10',['row_echelon',['../namespacetensorium.html#a48b8f2d501b658de2f7cef3565d1ccc8',1,'tensorium']]],
-  ['rows_11',['rows',['../classtensorium_1_1solver_1_1Gauss.html#adacf523b342a05218c6a1c6b30e3c153',1,'tensorium::solver::Gauss']]],
-  ['run_12',['run',['../classTensoriumASTConsumer_1_1AlignedChecker.html#abe6aecd7b7a5327cbd3ba52cac9df4a0',1,'TensoriumASTConsumer::AlignedChecker']]]
+  ['rowi_11',['rowi',['../classtensorium_1_1solver_1_1Gauss.html#ad36a70f809163b10ec1cd3272e870355',1,'tensorium::solver::Gauss']]],
+  ['rowj_12',['rowj',['../classtensorium_1_1solver_1_1Gauss.html#a6508dd70e46e1bf58c54de7fb3867917',1,'tensorium::solver::Gauss']]],
+  ['rows_13',['rows',['../classtensorium_1_1solver_1_1Gauss.html#adacf523b342a05218c6a1c6b30e3c153',1,'tensorium::solver::Gauss']]],
+  ['run_14',['run',['../classTensoriumASTConsumer_1_1AlignedChecker.html#abe6aecd7b7a5327cbd3ba52cac9df4a0',1,'TensoriumASTConsumer::AlignedChecker']]]
 ];

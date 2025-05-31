@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['output_0',['output',['../classtensorium_1_1Derivate.html#a6fc9678d3e4d6d7c9d6ac0acf334727b',1,'tensorium::Derivate::output'],['../classtensorium_1_1DerivateND.html#a70ac77ba822ad7f0019edc9fe8671c32',1,'tensorium::DerivateND::output']]]
+  ['platform_0',['platform',['../structTensoriumTarget.html#a530ac3ed59a387a2b5240f420b350160',1,'TensoriumTarget']]],
+  ['pos_1',['pos',['../classtensorium_1_1Parser.html#abb08abd75812ece932af633fbab85ace',1,'tensorium::Parser::pos'],['../classLexer.html#a14d0bdae654a6c8754bb4195c973bfe1',1,'Lexer::pos']]]
 ];

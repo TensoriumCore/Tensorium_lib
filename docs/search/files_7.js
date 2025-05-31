@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['mainpage_2emd_0',['mainpage.md',['../mainpage_8md.html',1,'']]],
-  ['mathsutils_2ehpp_1',['MathsUtils.hpp',['../MathsUtils_8hpp.html',1,'']]],
-  ['matrix_2ehpp_2',['Matrix.hpp',['../Matrix_8hpp.html',1,'']]],
-  ['matrixkernel_2ehpp_3',['MatrixKernel.hpp',['../MatrixKernel_8hpp.html',1,'']]],
-  ['metric_2ehpp_4',['Metric.hpp',['../Metric_8hpp.html',1,'']]],
-  ['mpi_5finit_2ehpp_5',['MPI_init.hpp',['../MPI__init_8hpp.html',1,'']]]
+  ['latex_2ehpp_0',['Latex.hpp',['../Latex_8hpp.html',1,'']]],
+  ['linearsolver_2ehpp_1',['LinearSolver.hpp',['../LinearSolver_8hpp.html',1,'']]],
+  ['llvm_5fhandler_2ecpp_2',['LLVM_Handler.cpp',['../LLVM__Handler_8cpp.html',1,'']]],
+  ['llvm_5fhandler_2ehpp_3',['LLVM_Handler.hpp',['../LLVM__Handler_8hpp.html',1,'']]]
 ];

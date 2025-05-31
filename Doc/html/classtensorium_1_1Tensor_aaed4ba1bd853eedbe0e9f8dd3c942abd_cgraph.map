@@ -1,7 +1,0 @@
-<map id="tensorium::Tensor::resize" name="tensorium::Tensor::resize">
-<area shape="rect" id="Node000001" title="Resize 2D tensor." alt="" coords="5,5,151,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="199,5,344,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,25,183,25,183,30,151,30"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="392,5,537,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="344,25,376,25,376,30,344,30"/>
-</map>
