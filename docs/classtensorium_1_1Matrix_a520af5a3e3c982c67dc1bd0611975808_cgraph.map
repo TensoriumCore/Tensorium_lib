@@ -1,0 +1,5 @@
+<map id="tensorium::Matrix::lerp" name="tensorium::Matrix::lerp">
+<area shape="rect" id="Node000001" title="Linearly interpolate between two matrices: this = (1 &#45; α) * A + α * B." alt="" coords="5,5,176,33"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#af195083127f300ae37ce064f9f2164d8" title="Return the total number of elements." alt="" coords="224,5,395,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,17,208,17,208,22,176,22"/>
+</map>

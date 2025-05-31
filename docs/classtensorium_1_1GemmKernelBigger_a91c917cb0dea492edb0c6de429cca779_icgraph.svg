@@ -59,7 +59,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtensorium_1_1Matrix.html#aefa00ef8a92bfc824fecc0c07b683bc1" target="_top" xlink:title="Multiply matrix by another matrix using optimized SIMD path.">
+<g id="a_Node000004"><a xlink:href="classtensorium_1_1Matrix.html#a156bdb5a8eae1c4e737f17cf1c0b7eea" target="_top" xlink:title="Multiply matrix by another matrix using optimized SIMD path.">
 <polygon fill="white" stroke="#666666" points="109,-33.5 0,-33.5 0,0 109,0 109,-33.5"/>
 <text text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
 <text text-anchor="middle" x="54.5" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">_mul_mat</text>

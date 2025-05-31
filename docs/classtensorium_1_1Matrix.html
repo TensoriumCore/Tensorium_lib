@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Tensorium: tensorium::Matrix&lt; K &gt; Class Template Reference</title>
+<title>Tensorium: tensorium::Matrix&lt; K, RowMajor &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,7 +103,7 @@ $(function(){initNavTree('classtensorium_1_1Matrix.html',''); initResizable(); }
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classtensorium_1_1Matrix-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">tensorium::Matrix&lt; K &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">tensorium::Matrix&lt; K, RowMajor &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -112,97 +112,96 @@ $(function(){initNavTree('classtensorium_1_1Matrix.html',''); initResizable(); }
 
 <p><code>#include &lt;<a class="el" href="Matrix_8hpp_source.html">Matrix.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for tensorium::Matrix&lt; K &gt;:</div>
+Collaboration diagram for tensorium::Matrix&lt; K, RowMajor &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix__inherit__graph.svg" width="220" height="624"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Collaboration diagram for tensorium::Matrix&lt; K &gt;:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix__coll__graph.svg" width="179" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix__coll__graph.svg" width="151" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a89205abf55ba806a2e31c389aba87071" id="r_a89205abf55ba806a2e31c389aba87071"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89205abf55ba806a2e31c389aba87071">Simd</a> = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td></tr>
-<tr class="separator:a89205abf55ba806a2e31c389aba87071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7169c2fab9c14a024612f3efb63d56a7" id="r_a7169c2fab9c14a024612f3efb63d56a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7169c2fab9c14a024612f3efb63d56a7">reg</a> = <a class="el" href="classtensorium_1_1Tensor.html">typename</a> Simd::reg</td></tr>
-<tr class="separator:a7169c2fab9c14a024612f3efb63d56a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b5f2a2fba34da83860d962f6684893d" id="r_a3b5f2a2fba34da83860d962f6684893d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b5f2a2fba34da83860d962f6684893d">Simd</a> = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td></tr>
+<tr class="separator:a3b5f2a2fba34da83860d962f6684893d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3e80cfb6ead0531ed576bd2f05b31a5" id="r_ab3e80cfb6ead0531ed576bd2f05b31a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3e80cfb6ead0531ed576bd2f05b31a5">reg</a> = <a class="el" href="classtensorium_1_1Tensor.html">typename</a> Simd::reg</td></tr>
+<tr class="separator:ab3e80cfb6ead0531ed576bd2f05b31a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af1521d2292369c64bedfd312303f044e" id="r_af1521d2292369c64bedfd312303f044e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1521d2292369c64bedfd312303f044e">Matrix</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> r, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">c</a>)</td></tr>
-<tr class="memdesc:af1521d2292369c64bedfd312303f044e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a matrix of size r × c, initialized with zeros.  <br /></td></tr>
-<tr class="separator:af1521d2292369c64bedfd312303f044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fc91136acf87c3827b462500cda853b" id="r_a9fc91136acf87c3827b462500cda853b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fc91136acf87c3827b462500cda853b">size</a> () const</td></tr>
-<tr class="memdesc:a9fc91136acf87c3827b462500cda853b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the total number of elements.  <br /></td></tr>
-<tr class="separator:a9fc91136acf87c3827b462500cda853b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a751ec04712d5ec3b2f0dbabd523bdde1" id="r_a751ec04712d5ec3b2f0dbabd523bdde1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">operator()</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>)</td></tr>
-<tr class="memdesc:a751ec04712d5ec3b2f0dbabd523bdde1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element access (mutable)  <br /></td></tr>
-<tr class="separator:a751ec04712d5ec3b2f0dbabd523bdde1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c8365dcb7af2fcdf68e2333c061389c" id="r_a6c8365dcb7af2fcdf68e2333c061389c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c8365dcb7af2fcdf68e2333c061389c">operator()</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>) const</td></tr>
-<tr class="separator:a6c8365dcb7af2fcdf68e2333c061389c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51ed70e8d688b709e731430e2289c56b" id="r_a51ed70e8d688b709e731430e2289c56b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51ed70e8d688b709e731430e2289c56b">print</a> () const</td></tr>
-<tr class="memdesc:a51ed70e8d688b709e731430e2289c56b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the matrix to stdout.  <br /></td></tr>
-<tr class="separator:a51ed70e8d688b709e731430e2289c56b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29cb23b241303015dc32483072623161" id="r_a29cb23b241303015dc32483072623161"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29cb23b241303015dc32483072623161">swap_rows</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>)</td></tr>
-<tr class="memdesc:a29cb23b241303015dc32483072623161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap two rows of the matrix.  <br /></td></tr>
-<tr class="separator:a29cb23b241303015dc32483072623161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31cb0c1471f250d64e5dc4e957639ed3" id="r_a31cb0c1471f250d64e5dc4e957639ed3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
-<tr class="memitem:a31cb0c1471f250d64e5dc4e957639ed3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a31cb0c1471f250d64e5dc4e957639ed3">operator*</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;v) const</td></tr>
-<tr class="memdesc:a31cb0c1471f250d64e5dc4e957639ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector (naïve fallback)  <br /></td></tr>
-<tr class="separator:a31cb0c1471f250d64e5dc4e957639ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada624dd42a3a0031194fb48e84166b8a" id="r_ada624dd42a3a0031194fb48e84166b8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">add</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
-<tr class="memdesc:ada624dd42a3a0031194fb48e84166b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix addition: this += m.  <br /></td></tr>
-<tr class="separator:ada624dd42a3a0031194fb48e84166b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4b1f06030c000b858095307ad1b9a64" id="r_ab4b1f06030c000b858095307ad1b9a64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">sub</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
-<tr class="memdesc:ab4b1f06030c000b858095307ad1b9a64"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix subtraction: this -= m.  <br /></td></tr>
-<tr class="separator:ab4b1f06030c000b858095307ad1b9a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a841f4fd9ec371374184466c1b810b461" id="r_a841f4fd9ec371374184466c1b810b461"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a841f4fd9ec371374184466c1b810b461">scl</a> (<a class="el" href="classtensorium_1_1Tensor.html">K</a> a)</td></tr>
-<tr class="memdesc:a841f4fd9ec371374184466c1b810b461"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place scalar multiplication: this *= a.  <br /></td></tr>
-<tr class="separator:a841f4fd9ec371374184466c1b810b461"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaffef2efd59f46134a3a21917670b990" id="r_aaffef2efd59f46134a3a21917670b990"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaffef2efd59f46134a3a21917670b990">lerp</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B, <a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>)</td></tr>
-<tr class="memdesc:aaffef2efd59f46134a3a21917670b990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate between two matrices: this = (1 - α) * A + α * B.  <br /></td></tr>
-<tr class="separator:aaffef2efd59f46134a3a21917670b990"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefa00ef8a92bfc824fecc0c07b683bc1" id="r_aefa00ef8a92bfc824fecc0c07b683bc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefa00ef8a92bfc824fecc0c07b683bc1">_mul_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">mat</a>) const</td></tr>
-<tr class="memdesc:aefa00ef8a92bfc824fecc0c07b683bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by another matrix using optimized SIMD path.  <br /></td></tr>
-<tr class="separator:aefa00ef8a92bfc824fecc0c07b683bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5cf7e88706e1b5cb65fb1ec0fcf6017" id="r_ad5cf7e88706e1b5cb65fb1ec0fcf6017"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
-<tr class="memitem:ad5cf7e88706e1b5cb65fb1ec0fcf6017"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad5cf7e88706e1b5cb65fb1ec0fcf6017">mul_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;x) const</td></tr>
-<tr class="memdesc:ad5cf7e88706e1b5cb65fb1ec0fcf6017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector using SIMD.  <br /></td></tr>
-<tr class="separator:ad5cf7e88706e1b5cb65fb1ec0fcf6017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af090bc9aae9d7f0a177dbcc33dd6139e" id="r_af090bc9aae9d7f0a177dbcc33dd6139e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af090bc9aae9d7f0a177dbcc33dd6139e">transpose</a> () const</td></tr>
-<tr class="memdesc:af090bc9aae9d7f0a177dbcc33dd6139e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transpose \( A^T \) of the matrix (column-major layout)  <br /></td></tr>
-<tr class="separator:af090bc9aae9d7f0a177dbcc33dd6139e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a647156d276ab6b8cc06e10ae6e479857" id="r_a647156d276ab6b8cc06e10ae6e479857"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a647156d276ab6b8cc06e10ae6e479857">trace</a> () const</td></tr>
-<tr class="memdesc:a647156d276ab6b8cc06e10ae6e479857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the trace of a square matrix as a 1×1 matrix.  <br /></td></tr>
-<tr class="separator:a647156d276ab6b8cc06e10ae6e479857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab838ebba697fa1526fe64be3d532022d" id="r_ab838ebba697fa1526fe64be3d532022d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab838ebba697fa1526fe64be3d532022d">inverse</a> () const</td></tr>
-<tr class="memdesc:ab838ebba697fa1526fe64be3d532022d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the matrix using Gauss–Jordan elimination.  <br /></td></tr>
-<tr class="separator:ab838ebba697fa1526fe64be3d532022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8b88c02ca8eaaf9edcfb490eaa82644" id="r_ae8b88c02ca8eaaf9edcfb490eaa82644"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">det</a> () const</td></tr>
-<tr class="memdesc:ae8b88c02ca8eaaf9edcfb490eaa82644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the determinant using Gaussian elimination.  <br /></td></tr>
-<tr class="separator:ae8b88c02ca8eaaf9edcfb490eaa82644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6aa64cb114cee18687263df50e358583" id="r_a6aa64cb114cee18687263df50e358583"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6aa64cb114cee18687263df50e358583">rank</a> (<a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="classtensorium_1_1Tensor.html">eps</a>=<a class="el" href="classtensorium_1_1Tensor.html">K</a>(1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-6)) const</td></tr>
-<tr class="memdesc:a6aa64cb114cee18687263df50e358583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the numerical rank of the matrix.  <br /></td></tr>
-<tr class="separator:a6aa64cb114cee18687263df50e358583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa9f253277970a65e7fb2e9844c277d" id="r_a0fa9f253277970a65e7fb2e9844c277d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fa9f253277970a65e7fb2e9844c277d">Matrix</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> r, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">c</a>)</td></tr>
+<tr class="memdesc:a0fa9f253277970a65e7fb2e9844c277d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a matrix of size r × c, initialized with zeros.  <br /></td></tr>
+<tr class="separator:a0fa9f253277970a65e7fb2e9844c277d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7afa564c31722e01fb9447da0da9d9" id="r_a9d7afa564c31722e01fb9447da0da9d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d7afa564c31722e01fb9447da0da9d9">index</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>) const</td></tr>
+<tr class="separator:a9d7afa564c31722e01fb9447da0da9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af195083127f300ae37ce064f9f2164d8" id="r_af195083127f300ae37ce064f9f2164d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af195083127f300ae37ce064f9f2164d8">size</a> () const</td></tr>
+<tr class="memdesc:af195083127f300ae37ce064f9f2164d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the total number of elements.  <br /></td></tr>
+<tr class="separator:af195083127f300ae37ce064f9f2164d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8575fce507038abe42bbbdb89af638d8" id="r_a8575fce507038abe42bbbdb89af638d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8575fce507038abe42bbbdb89af638d8">operator()</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memdesc:a8575fce507038abe42bbbdb89af638d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element access (mutable)  <br /></td></tr>
+<tr class="separator:a8575fce507038abe42bbbdb89af638d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a088ae24bf518c6434cd5cfc502db04a6" id="r_a088ae24bf518c6434cd5cfc502db04a6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a088ae24bf518c6434cd5cfc502db04a6">operator()</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>) const</td></tr>
+<tr class="separator:a088ae24bf518c6434cd5cfc502db04a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ed4487741f06283b940b58d787044af" id="r_a7ed4487741f06283b940b58d787044af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ed4487741f06283b940b58d787044af">print</a> () const</td></tr>
+<tr class="memdesc:a7ed4487741f06283b940b58d787044af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the matrix to stdout.  <br /></td></tr>
+<tr class="separator:a7ed4487741f06283b940b58d787044af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebfe9b597b8683e7695a8ebd6c5b1832" id="r_aebfe9b597b8683e7695a8ebd6c5b1832"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">swap_rows</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> i, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">j</a>)</td></tr>
+<tr class="memdesc:aebfe9b597b8683e7695a8ebd6c5b1832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap two rows of the matrix.  <br /></td></tr>
+<tr class="separator:aebfe9b597b8683e7695a8ebd6c5b1832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a469003c35c507e7556d9a85209d1f21a" id="r_a469003c35c507e7556d9a85209d1f21a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a469003c35c507e7556d9a85209d1f21a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a469003c35c507e7556d9a85209d1f21a">operator*</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;v) const</td></tr>
+<tr class="memdesc:a469003c35c507e7556d9a85209d1f21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector (naïve fallback)  <br /></td></tr>
+<tr class="separator:a469003c35c507e7556d9a85209d1f21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6402b6dc16695f48203d2c5fc3e755b" id="r_ac6402b6dc16695f48203d2c5fc3e755b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">add</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
+<tr class="memdesc:ac6402b6dc16695f48203d2c5fc3e755b"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix addition: this += m.  <br /></td></tr>
+<tr class="separator:ac6402b6dc16695f48203d2c5fc3e755b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ccf54e141e9901beb7cc19a10dc45eb" id="r_a3ccf54e141e9901beb7cc19a10dc45eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">sub</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
+<tr class="memdesc:a3ccf54e141e9901beb7cc19a10dc45eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place matrix subtraction: this -= m.  <br /></td></tr>
+<tr class="separator:a3ccf54e141e9901beb7cc19a10dc45eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b102c4388cbdb2f517f698b88321a82" id="r_a4b102c4388cbdb2f517f698b88321a82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b102c4388cbdb2f517f698b88321a82">scl</a> (<a class="el" href="classtensorium_1_1Tensor.html">K</a> a)</td></tr>
+<tr class="memdesc:a4b102c4388cbdb2f517f698b88321a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">In-place scalar multiplication: this *= a.  <br /></td></tr>
+<tr class="separator:a4b102c4388cbdb2f517f698b88321a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a520af5a3e3c982c67dc1bd0611975808" id="r_a520af5a3e3c982c67dc1bd0611975808"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">lerp</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A</a>, const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B, <a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>)</td></tr>
+<tr class="memdesc:a520af5a3e3c982c67dc1bd0611975808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate between two matrices: this = (1 - α) * A + α * B.  <br /></td></tr>
+<tr class="separator:a520af5a3e3c982c67dc1bd0611975808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a156bdb5a8eae1c4e737f17cf1c0b7eea" id="r_a156bdb5a8eae1c4e737f17cf1c0b7eea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a156bdb5a8eae1c4e737f17cf1c0b7eea">_mul_mat</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">mat</a>) const</td></tr>
+<tr class="memdesc:a156bdb5a8eae1c4e737f17cf1c0b7eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by another matrix using optimized SIMD path.  <br /></td></tr>
+<tr class="separator:a156bdb5a8eae1c4e737f17cf1c0b7eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1172e6298ebc08cc838ee69054ba3d" id="r_a5e1172e6298ebc08cc838ee69054ba3d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </td></tr>
+<tr class="memitem:a5e1172e6298ebc08cc838ee69054ba3d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5e1172e6298ebc08cc838ee69054ba3d">mul_vec</a> (const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;x) const</td></tr>
+<tr class="memdesc:a5e1172e6298ebc08cc838ee69054ba3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply matrix by a vector using SIMD.  <br /></td></tr>
+<tr class="separator:a5e1172e6298ebc08cc838ee69054ba3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0094ce83c95bf1c861cda44031884bb2" id="r_a0094ce83c95bf1c861cda44031884bb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0094ce83c95bf1c861cda44031884bb2">transpose</a> () const</td></tr>
+<tr class="memdesc:a0094ce83c95bf1c861cda44031884bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transpose \( A^T \) of the matrix (column-major layout)  <br /></td></tr>
+<tr class="separator:a0094ce83c95bf1c861cda44031884bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b07c9dfd4c374c840b65e082accd91d" id="r_a7b07c9dfd4c374c840b65e082accd91d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b07c9dfd4c374c840b65e082accd91d">trace</a> () const</td></tr>
+<tr class="memdesc:a7b07c9dfd4c374c840b65e082accd91d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the trace of a square matrix as a 1×1 matrix.  <br /></td></tr>
+<tr class="separator:a7b07c9dfd4c374c840b65e082accd91d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6d209506a9e826719ff66ccc0abb188" id="r_ad6d209506a9e826719ff66ccc0abb188"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6d209506a9e826719ff66ccc0abb188">inverse</a> () const</td></tr>
+<tr class="memdesc:ad6d209506a9e826719ff66ccc0abb188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the matrix using Gauss–Jordan elimination.  <br /></td></tr>
+<tr class="separator:ad6d209506a9e826719ff66ccc0abb188"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71bce3c88ca10ba95a4c1c1ef9818676" id="r_a71bce3c88ca10ba95a4c1c1ef9818676"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">K</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">det</a> () const</td></tr>
+<tr class="memdesc:a71bce3c88ca10ba95a4c1c1ef9818676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the determinant using Gaussian elimination.  <br /></td></tr>
+<tr class="separator:a71bce3c88ca10ba95a4c1c1ef9818676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c198fa52eb64227c31e3f65c05c428e" id="r_a2c198fa52eb64227c31e3f65c05c428e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c198fa52eb64227c31e3f65c05c428e">rank</a> (<a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="classtensorium_1_1Tensor.html">eps</a>=<a class="el" href="classtensorium_1_1Tensor.html">K</a>(1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-6)) const</td></tr>
+<tr class="memdesc:a2c198fa52eb64227c31e3f65c05c428e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the numerical rank of the matrix.  <br /></td></tr>
+<tr class="separator:a2c198fa52eb64227c31e3f65c05c428e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aea37bb7fb2eabd97a3dff71fa59d4da6" id="r_aea37bb7fb2eabd97a3dff71fa59d4da6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">rows</a></td></tr>
-<tr class="separator:aea37bb7fb2eabd97a3dff71fa59d4da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09eb7af109a929f09fb13998dc4ff22a" id="r_a09eb7af109a929f09fb13998dc4ff22a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">cols</a></td></tr>
-<tr class="separator:a09eb7af109a929f09fb13998dc4ff22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab383228e730a151ffdf5053f4643326" id="r_aab383228e730a151ffdf5053f4643326"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab383228e730a151ffdf5053f4643326">data</a></td></tr>
-<tr class="separator:aab383228e730a151ffdf5053f4643326"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a891603f6205a38a565b4635b93d03e47" id="r_a891603f6205a38a565b4635b93d03e47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a891603f6205a38a565b4635b93d03e47">block_size</a></td></tr>
-<tr class="separator:a891603f6205a38a565b4635b93d03e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12eb1e2a47caeaa838603b4a5643a2fd" id="r_a12eb1e2a47caeaa838603b4a5643a2fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">simd_width</a> = Simd::width</td></tr>
-<tr class="separator:a12eb1e2a47caeaa838603b4a5643a2fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a247523f65bacfbda84f956c32bc02a2f" id="r_a247523f65bacfbda84f956c32bc02a2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">rows</a></td></tr>
+<tr class="separator:a247523f65bacfbda84f956c32bc02a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac70be3bba8bbc25189117b7a31589e67" id="r_ac70be3bba8bbc25189117b7a31589e67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">cols</a></td></tr>
+<tr class="separator:ac70be3bba8bbc25189117b7a31589e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8892d0c0c6c72251409d9ee093576f91" id="r_a8892d0c0c6c72251409d9ee093576f91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">data</a></td></tr>
+<tr class="separator:a8892d0c0c6c72251409d9ee093576f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a818dd643c358002c2439aa14987c4ea4" id="r_a818dd643c358002c2439aa14987c4ea4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a818dd643c358002c2439aa14987c4ea4">block_size</a></td></tr>
+<tr class="separator:a818dd643c358002c2439aa14987c4ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ec037a55954a3cd772ca28f9b6920c" id="r_a78ec037a55954a3cd772ca28f9b6920c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78ec037a55954a3cd772ca28f9b6920c">iscolumn</a></td></tr>
+<tr class="separator:a78ec037a55954a3cd772ca28f9b6920c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d09e0e9927a369cb4d88f4ac062602d" id="r_a6d09e0e9927a369cb4d88f4ac062602d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">simd_width</a> = Simd::width</td></tr>
+<tr class="separator:a6d09e0e9927a369cb4d88f4ac062602d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a>&gt;<br />
-class tensorium::Matrix&lt; K &gt;</div><p>High-performance aligned matrix class with SIMD support. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt;<br />
+class tensorium::Matrix&lt; K, RowMajor &gt;</div><p>High-performance aligned matrix class with SIMD support. </p>
 <p>This class provides a dense matrix container with:</p><ul>
 <li>Aligned memory allocation for SIMD operations</li>
 <li>Fast matrix arithmetic (add, sub, scale)</li>
@@ -216,32 +215,32 @@ class tensorium::Matrix&lt; K &gt;</div><p>High-performance aligned matrix class
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a7169c2fab9c14a024612f3efb63d56a7" name="a7169c2fab9c14a024612f3efb63d56a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7169c2fab9c14a024612f3efb63d56a7">&#9670;&#160;</a></span>reg</h2>
+<a id="ab3e80cfb6ead0531ed576bd2f05b31a5" name="ab3e80cfb6ead0531ed576bd2f05b31a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3e80cfb6ead0531ed576bd2f05b31a5">&#9670;&#160;</a></span>reg</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">using</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::reg = <a class="el" href="classtensorium_1_1Tensor.html">typename</a> Simd::reg</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">using</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::reg = <a class="el" href="classtensorium_1_1Tensor.html">typename</a> Simd::reg</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a89205abf55ba806a2e31c389aba87071" name="a89205abf55ba806a2e31c389aba87071"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89205abf55ba806a2e31c389aba87071">&#9670;&#160;</a></span>Simd</h2>
+<a id="a3b5f2a2fba34da83860d962f6684893d" name="a3b5f2a2fba34da83860d962f6684893d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b5f2a2fba34da83860d962f6684893d">&#9670;&#160;</a></span>Simd</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">using</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::Simd = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">using</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::Simd = <a class="el" href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="SIMD_8hpp.html#a8a534226fec29f00e030927b1a04d6eb">DefaultISA</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -249,19 +248,19 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af1521d2292369c64bedfd312303f044e" name="af1521d2292369c64bedfd312303f044e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1521d2292369c64bedfd312303f044e">&#9670;&#160;</a></span>Matrix()</h2>
+<a id="a0fa9f253277970a65e7fb2e9844c277d" name="a0fa9f253277970a65e7fb2e9844c277d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa9f253277970a65e7fb2e9844c277d">&#9670;&#160;</a></span>Matrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::Matrix </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::Matrix </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>r</em>, </span></td>
         </tr>
@@ -283,19 +282,19 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aefa00ef8a92bfc824fecc0c07b683bc1" name="aefa00ef8a92bfc824fecc0c07b683bc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefa00ef8a92bfc824fecc0c07b683bc1">&#9670;&#160;</a></span>_mul_mat()</h2>
+<a id="a156bdb5a8eae1c4e737f17cf1c0b7eea" name="a156bdb5a8eae1c4e737f17cf1c0b7eea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a156bdb5a8eae1c4e737f17cf1c0b7eea">&#9670;&#160;</a></span>_mul_mat()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::_mul_mat </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::_mul_mat </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mat</em></span></td><td>)</td>
           <td> const</td>
@@ -311,30 +310,30 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 <p>Multiply matrix by another matrix using optimized SIMD path. </p>
 <p>Uses blocking and micro-kernels to avoid cache bottleneck with FMA/AVX units repartition. Fast-paths exist for 4×4, 8×8, and 16×16. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, <a class="el" href="classtensorium_1_1GemmKernelBigger.html#a5f8c6a2216e5e9e1649a2ff347dcdbee">tensorium::GemmKernelBigger&lt; T &gt;::matmul()</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, <a class="el" href="classtensorium_1_1GemmKernelBigger.html#a5f8c6a2216e5e9e1649a2ff347dcdbee">tensorium::GemmKernelBigger&lt; T &gt;::matmul()</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_aefa00ef8a92bfc824fecc0c07b683bc1_cgraph.svg" width="967" height="2275"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a156bdb5a8eae1c4e737f17cf1c0b7eea_cgraph.svg" width="967" height="2275"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ada624dd42a3a0031194fb48e84166b8a" name="ada624dd42a3a0031194fb48e84166b8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada624dd42a3a0031194fb48e84166b8a">&#9670;&#160;</a></span>add()</h2>
+<a id="ac6402b6dc16695f48203d2c5fc3e755b" name="ac6402b6dc16695f48203d2c5fc3e755b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6402b6dc16695f48203d2c5fc3e755b">&#9670;&#160;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::add </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::add </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -347,28 +346,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>In-place matrix addition: this += m. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">tensorium::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, <a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">tensorium::Matrix&lt; K, RowMajor &gt;::simd_width</a>, and <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ada624dd42a3a0031194fb48e84166b8a_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ac6402b6dc16695f48203d2c5fc3e755b_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ae8b88c02ca8eaaf9edcfb490eaa82644" name="ae8b88c02ca8eaaf9edcfb490eaa82644"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8b88c02ca8eaaf9edcfb490eaa82644">&#9670;&#160;</a></span>det()</h2>
+<a id="a71bce3c88ca10ba95a4c1c1ef9818676" name="a71bce3c88ca10ba95a4c1c1ef9818676"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71bce3c88ca10ba95a4c1c1ef9818676">&#9670;&#160;</a></span>det()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::det </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">K</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::det </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -388,35 +387,75 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 \]
 </p>
  
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">tensorium::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a29cb23b241303015dc32483072623161">tensorium::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a8575fce507038abe42bbbdb89af638d8">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, <a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">tensorium::Matrix&lt; K, RowMajor &gt;::simd_width</a>, and <a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ae8b88c02ca8eaaf9edcfb490eaa82644_cgraph.svg" width="559" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a71bce3c88ca10ba95a4c1c1ef9818676_cgraph.svg" width="564" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ae8b88c02ca8eaaf9edcfb490eaa82644_icgraph.svg" width="178" height="63"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a71bce3c88ca10ba95a4c1c1ef9818676_icgraph.svg" width="178" height="63"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ab838ebba697fa1526fe64be3d532022d" name="ab838ebba697fa1526fe64be3d532022d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab838ebba697fa1526fe64be3d532022d">&#9670;&#160;</a></span>inverse()</h2>
+<a id="a9d7afa564c31722e01fb9447da0da9d9" name="a9d7afa564c31722e01fb9447da0da9d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d7afa564c31722e01fb9447da0da9d9">&#9670;&#160;</a></span>index()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::inverse </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::index </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>j</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a8575fce507038abe42bbbdb89af638d8">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, and <a class="el" href="#a088ae24bf518c6434cd5cfc502db04a6">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a9d7afa564c31722e01fb9447da0da9d9_icgraph.svg" width="564" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad6d209506a9e826719ff66ccc0abb188" name="ad6d209506a9e826719ff66ccc0abb188"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6d209506a9e826719ff66ccc0abb188">&#9670;&#160;</a></span>inverse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::inverse </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -432,28 +471,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 <p>Compute the inverse of the matrix using Gauss–Jordan elimination. </p>
 <p>Throws if the matrix is singular or not square. need to add a fallback for unsquare matrix if possible </p>
 
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="#a29cb23b241303015dc32483072623161">tensorium::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a8575fce507038abe42bbbdb89af638d8">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ab838ebba697fa1526fe64be3d532022d_cgraph.svg" width="538" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ad6d209506a9e826719ff66ccc0abb188_cgraph.svg" width="543" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aaffef2efd59f46134a3a21917670b990" name="aaffef2efd59f46134a3a21917670b990"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaffef2efd59f46134a3a21917670b990">&#9670;&#160;</a></span>lerp()</h2>
+<a id="a520af5a3e3c982c67dc1bd0611975808" name="a520af5a3e3c982c67dc1bd0611975808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a520af5a3e3c982c67dc1bd0611975808">&#9670;&#160;</a></span>lerp()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::lerp </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::lerp </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>A</em>, </span></td>
         </tr>
@@ -477,22 +516,22 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Linearly interpolate between two matrices: this = (1 - α) * A + α * B. </p>
 
-<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">tensorium::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, <a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">tensorium::Matrix&lt; K, RowMajor &gt;::simd_width</a>, and <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_aaffef2efd59f46134a3a21917670b990_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a520af5a3e3c982c67dc1bd0611975808_cgraph.svg" width="400" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ad5cf7e88706e1b5cb65fb1ec0fcf6017" name="ad5cf7e88706e1b5cb65fb1ec0fcf6017"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5cf7e88706e1b5cb65fb1ec0fcf6017">&#9670;&#160;</a></span>mul_vec()</h2>
+<a id="a5e1172e6298ebc08cc838ee69054ba3d" name="a5e1172e6298ebc08cc838ee69054ba3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e1172e6298ebc08cc838ee69054ba3d">&#9670;&#160;</a></span>mul_vec()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <div class="memtemplate">
 template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
@@ -500,7 +539,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::mul_vec </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::mul_vec </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
           <td> const</td>
@@ -516,28 +555,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 <p>Multiply matrix by a vector using SIMD. </p>
 <p>This is a faster alternative to operator* when available. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab">tensorium::Vector&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab">tensorium::Vector&lt; K &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ad5cf7e88706e1b5cb65fb1ec0fcf6017_cgraph.svg" width="375" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a5e1172e6298ebc08cc838ee69054ba3d_cgraph.svg" width="375" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a751ec04712d5ec3b2f0dbabd523bdde1" name="a751ec04712d5ec3b2f0dbabd523bdde1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a751ec04712d5ec3b2f0dbabd523bdde1">&#9670;&#160;</a></span>operator()() <span class="overload">[1/2]</span></h2>
+<a id="a8575fce507038abe42bbbdb89af638d8" name="a8575fce507038abe42bbbdb89af638d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8575fce507038abe42bbbdb89af638d8">&#9670;&#160;</a></span>operator()() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
@@ -556,30 +595,35 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Element access (mutable) </p>
 
-<p class="reference">References <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, and <a class="el" href="#a9d7afa564c31722e01fb9447da0da9d9">tensorium::Matrix&lt; K, RowMajor &gt;::index()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>, and <a class="el" href="#a647156d276ab6b8cc06e10ae6e479857">tensorium::Matrix&lt; K &gt;::trace()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="#ad6d209506a9e826719ff66ccc0abb188">tensorium::Matrix&lt; K, RowMajor &gt;::inverse()</a>, and <a class="el" href="#a7b07c9dfd4c374c840b65e082accd91d">tensorium::Matrix&lt; K, RowMajor &gt;::trace()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a8575fce507038abe42bbbdb89af638d8_cgraph.svg" width="350" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a751ec04712d5ec3b2f0dbabd523bdde1_icgraph.svg" width="371" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a8575fce507038abe42bbbdb89af638d8_icgraph.svg" width="371" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a6c8365dcb7af2fcdf68e2333c061389c" name="a6c8365dcb7af2fcdf68e2333c061389c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c8365dcb7af2fcdf68e2333c061389c">&#9670;&#160;</a></span>operator()() <span class="overload">[2/2]</span></h2>
+<a id="a088ae24bf518c6434cd5cfc502db04a6" name="a088ae24bf518c6434cd5cfc502db04a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a088ae24bf518c6434cd5cfc502db04a6">&#9670;&#160;</a></span>operator()() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::operator() </td>
+          <td class="memname">const <a class="el" href="classtensorium_1_1Tensor.html">K</a> &amp; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
@@ -596,17 +640,22 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, and <a class="el" href="#a9d7afa564c31722e01fb9447da0da9d9">tensorium::Matrix&lt; K, RowMajor &gt;::index()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a088ae24bf518c6434cd5cfc502db04a6_cgraph.svg" width="350" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
-<a id="a31cb0c1471f250d64e5dc4e957639ed3" name="a31cb0c1471f250d64e5dc4e957639ed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31cb0c1471f250d64e5dc4e957639ed3">&#9670;&#160;</a></span>operator*()</h2>
+<a id="a469003c35c507e7556d9a85209d1f21a" name="a469003c35c507e7556d9a85209d1f21a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a469003c35c507e7556d9a85209d1f21a">&#9670;&#160;</a></span>operator*()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <div class="memtemplate">
 template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; </div>
 <table class="mlabels">
@@ -614,7 +663,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::operator* </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::operator* </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">T</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
           <td> const</td>
@@ -634,28 +683,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 \]
 </p>
  
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab">tensorium::Vector&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Vector.html#aa89231755fb9476201cc1b4167b7a3ab">tensorium::Vector&lt; K &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a31cb0c1471f250d64e5dc4e957639ed3_cgraph.svg" width="375" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a469003c35c507e7556d9a85209d1f21a_cgraph.svg" width="375" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a51ed70e8d688b709e731430e2289c56b" name="a51ed70e8d688b709e731430e2289c56b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51ed70e8d688b709e731430e2289c56b">&#9670;&#160;</a></span>print()</h2>
+<a id="a7ed4487741f06283b940b58d787044af" name="a7ed4487741f06283b940b58d787044af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ed4487741f06283b940b58d787044af">&#9670;&#160;</a></span>print()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::print </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::print </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -670,23 +719,23 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Print the matrix to stdout. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 
 </div>
 </div>
-<a id="a6aa64cb114cee18687263df50e358583" name="a6aa64cb114cee18687263df50e358583"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6aa64cb114cee18687263df50e358583">&#9670;&#160;</a></span>rank()</h2>
+<a id="a2c198fa52eb64227c31e3f65c05c428e" name="a2c198fa52eb64227c31e3f65c05c428e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c198fa52eb64227c31e3f65c05c428e">&#9670;&#160;</a></span>rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::rank </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::rank </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>eps</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classtensorium_1_1Tensor.html">K</a>(1<a class="el" href="classtensorium_1_1Tensor.html">e</a>-6)</span></span></td><td>)</td>
           <td> const</td>
@@ -702,28 +751,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 <p>Compute the numerical rank of the matrix. </p>
 <p>Performs row echelon reduction and counts non-zero pivots. </p>
 
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, and <a class="el" href="#a29cb23b241303015dc32483072623161">tensorium::Matrix&lt; K &gt;::swap_rows()</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a6aa64cb114cee18687263df50e358583_cgraph.svg" width="567" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a2c198fa52eb64227c31e3f65c05c428e_cgraph.svg" width="567" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a841f4fd9ec371374184466c1b810b461" name="a841f4fd9ec371374184466c1b810b461"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a841f4fd9ec371374184466c1b810b461">&#9670;&#160;</a></span>scl()</h2>
+<a id="a4b102c4388cbdb2f517f698b88321a82" name="a4b102c4388cbdb2f517f698b88321a82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b102c4388cbdb2f517f698b88321a82">&#9670;&#160;</a></span>scl()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::scl </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::scl </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">K</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
           <td></td>
@@ -738,28 +787,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>In-place scalar multiplication: this *= a. </p>
 
-<p class="reference">References <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, <a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">tensorium::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, <a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">tensorium::Matrix&lt; K, RowMajor &gt;::simd_width</a>, and <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a841f4fd9ec371374184466c1b810b461_cgraph.svg" width="394" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a4b102c4388cbdb2f517f698b88321a82_cgraph.svg" width="394" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a9fc91136acf87c3827b462500cda853b" name="a9fc91136acf87c3827b462500cda853b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fc91136acf87c3827b462500cda853b">&#9670;&#160;</a></span>size()</h2>
+<a id="af195083127f300ae37ce064f9f2164d8" name="af195083127f300ae37ce064f9f2164d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af195083127f300ae37ce064f9f2164d8">&#9670;&#160;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::size </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::size </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -774,32 +823,32 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Return the total number of elements. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#aaffef2efd59f46134a3a21917670b990">tensorium::Matrix&lt; K &gt;::lerp()</a>, <a class="el" href="#a841f4fd9ec371374184466c1b810b461">tensorium::Matrix&lt; K &gt;::scl()</a>, and <a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">tensorium::Matrix&lt; K, RowMajor &gt;::add()</a>, <a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">tensorium::Matrix&lt; K, RowMajor &gt;::lerp()</a>, <a class="el" href="#a4b102c4388cbdb2f517f698b88321a82">tensorium::Matrix&lt; K, RowMajor &gt;::scl()</a>, and <a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">tensorium::Matrix&lt; K, RowMajor &gt;::sub()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a9fc91136acf87c3827b462500cda853b_icgraph.svg" width="400" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_af195083127f300ae37ce064f9f2164d8_icgraph.svg" width="400" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ab4b1f06030c000b858095307ad1b9a64" name="ab4b1f06030c000b858095307ad1b9a64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4b1f06030c000b858095307ad1b9a64">&#9670;&#160;</a></span>sub()</h2>
+<a id="a3ccf54e141e9901beb7cc19a10dc45eb" name="a3ccf54e141e9901beb7cc19a10dc45eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ccf54e141e9901beb7cc19a10dc45eb">&#9670;&#160;</a></span>sub()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::sub </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::sub </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -812,28 +861,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>In-place matrix subtraction: this -= m. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#aab383228e730a151ffdf5053f4643326">tensorium::Matrix&lt; K &gt;::data</a>, <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>, <a class="el" href="#a12eb1e2a47caeaa838603b4a5643a2fd">tensorium::Matrix&lt; K &gt;::simd_width</a>, and <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>, <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, <a class="el" href="#a6d09e0e9927a369cb4d88f4ac062602d">tensorium::Matrix&lt; K, RowMajor &gt;::simd_width</a>, and <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_ab4b1f06030c000b858095307ad1b9a64_cgraph.svg" width="399" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a3ccf54e141e9901beb7cc19a10dc45eb_cgraph.svg" width="399" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a29cb23b241303015dc32483072623161" name="a29cb23b241303015dc32483072623161"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29cb23b241303015dc32483072623161">&#9670;&#160;</a></span>swap_rows()</h2>
+<a id="aebfe9b597b8683e7695a8ebd6c5b1832" name="aebfe9b597b8683e7695a8ebd6c5b1832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfe9b597b8683e7695a8ebd6c5b1832">&#9670;&#160;</a></span>swap_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::swap_rows </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::swap_rows </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a></td>          <td class="paramname"><span class="paramname"><em>i</em>, </span></td>
         </tr>
@@ -852,35 +901,35 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Swap two rows of the matrix. </p>
 
-<p class="reference">References <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#a6aa64cb114cee18687263df50e358583">tensorium::Matrix&lt; K &gt;::rank()</a>, and <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="#ad6d209506a9e826719ff66ccc0abb188">tensorium::Matrix&lt; K, RowMajor &gt;::inverse()</a>, <a class="el" href="#a2c198fa52eb64227c31e3f65c05c428e">tensorium::Matrix&lt; K, RowMajor &gt;::rank()</a>, and <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a29cb23b241303015dc32483072623161_cgraph.svg" width="344" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_aebfe9b597b8683e7695a8ebd6c5b1832_cgraph.svg" width="344" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a29cb23b241303015dc32483072623161_icgraph.svg" width="612" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_aebfe9b597b8683e7695a8ebd6c5b1832_icgraph.svg" width="612" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a647156d276ab6b8cc06e10ae6e479857" name="a647156d276ab6b8cc06e10ae6e479857"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a647156d276ab6b8cc06e10ae6e479857">&#9670;&#160;</a></span>trace()</h2>
+<a id="a7b07c9dfd4c374c840b65e082accd91d" name="a7b07c9dfd4c374c840b65e082accd91d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b07c9dfd4c374c840b65e082accd91d">&#9670;&#160;</a></span>trace()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::trace </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::trace </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -895,28 +944,28 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Returns the trace of a square matrix as a 1×1 matrix. </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, <a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">tensorium::Matrix&lt; K &gt;::operator()()</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#a8575fce507038abe42bbbdb89af638d8">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a647156d276ab6b8cc06e10ae6e479857_cgraph.svg" width="350" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1Matrix_a7b07c9dfd4c374c840b65e082accd91d_cgraph.svg" width="543" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="af090bc9aae9d7f0a177dbcc33dd6139e" name="af090bc9aae9d7f0a177dbcc33dd6139e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af090bc9aae9d7f0a177dbcc33dd6139e">&#9670;&#160;</a></span>transpose()</h2>
+<a id="a0094ce83c95bf1c861cda44031884bb2" name="a0094ce83c95bf1c861cda44031884bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0094ce83c95bf1c861cda44031884bb2">&#9670;&#160;</a></span>transpose()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::transpose </td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::transpose </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -931,96 +980,112 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 
 <p>Returns the transpose \( A^T \) of the matrix (column-major layout) </p>
 
-<p class="reference">References <a class="el" href="#a09eb7af109a929f09fb13998dc4ff22a">tensorium::Matrix&lt; K &gt;::cols</a>, and <a class="el" href="#aea37bb7fb2eabd97a3dff71fa59d4da6">tensorium::Matrix&lt; K &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a891603f6205a38a565b4635b93d03e47" name="a891603f6205a38a565b4635b93d03e47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a891603f6205a38a565b4635b93d03e47">&#9670;&#160;</a></span>block_size</h2>
+<a id="a818dd643c358002c2439aa14987c4ea4" name="a818dd643c358002c2439aa14987c4ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818dd643c358002c2439aa14987c4ea4">&#9670;&#160;</a></span>block_size</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::block_size</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::block_size</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a09eb7af109a929f09fb13998dc4ff22a" name="a09eb7af109a929f09fb13998dc4ff22a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09eb7af109a929f09fb13998dc4ff22a">&#9670;&#160;</a></span>cols</h2>
+<a id="ac70be3bba8bbc25189117b7a31589e67" name="ac70be3bba8bbc25189117b7a31589e67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac70be3bba8bbc25189117b7a31589e67">&#9670;&#160;</a></span>cols</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::cols</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::cols</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#aefa00ef8a92bfc824fecc0c07b683bc1">tensorium::Matrix&lt; K &gt;::_mul_mat()</a>, <a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#aaffef2efd59f46134a3a21917670b990">tensorium::Matrix&lt; K &gt;::lerp()</a>, <a class="el" href="#ad5cf7e88706e1b5cb65fb1ec0fcf6017">tensorium::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#a31cb0c1471f250d64e5dc4e957639ed3">tensorium::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#a51ed70e8d688b709e731430e2289c56b">tensorium::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#a6aa64cb114cee18687263df50e358583">tensorium::Matrix&lt; K &gt;::rank()</a>, <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>, <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>, <a class="el" href="#a29cb23b241303015dc32483072623161">tensorium::Matrix&lt; K &gt;::swap_rows()</a>, <a class="el" href="#a647156d276ab6b8cc06e10ae6e479857">tensorium::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#af090bc9aae9d7f0a177dbcc33dd6139e">tensorium::Matrix&lt; K &gt;::transpose()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a156bdb5a8eae1c4e737f17cf1c0b7eea">tensorium::Matrix&lt; K, RowMajor &gt;::_mul_mat()</a>, <a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">tensorium::Matrix&lt; K, RowMajor &gt;::add()</a>, <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="#a9d7afa564c31722e01fb9447da0da9d9">tensorium::Matrix&lt; K, RowMajor &gt;::index()</a>, <a class="el" href="#ad6d209506a9e826719ff66ccc0abb188">tensorium::Matrix&lt; K, RowMajor &gt;::inverse()</a>, <a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">tensorium::Matrix&lt; K, RowMajor &gt;::lerp()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a0b2b6000f20cf10bc300e585d0c4ec68">tensorium::MatrixKernel&lt; K &gt;::MatrixKernel()</a>, <a class="el" href="#a5e1172e6298ebc08cc838ee69054ba3d">tensorium::Matrix&lt; K, RowMajor &gt;::mul_vec()</a>, <a class="el" href="#a469003c35c507e7556d9a85209d1f21a">tensorium::Matrix&lt; K, RowMajor &gt;::operator*()</a>, <a class="el" href="#a7ed4487741f06283b940b58d787044af">tensorium::Matrix&lt; K, RowMajor &gt;::print()</a>, <a class="el" href="#a2c198fa52eb64227c31e3f65c05c428e">tensorium::Matrix&lt; K, RowMajor &gt;::rank()</a>, <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>, <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>, <a class="el" href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">tensorium::Matrix&lt; K, RowMajor &gt;::sub()</a>, <a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>, <a class="el" href="#a7b07c9dfd4c374c840b65e082accd91d">tensorium::Matrix&lt; K, RowMajor &gt;::trace()</a>, and <a class="el" href="#a0094ce83c95bf1c861cda44031884bb2">tensorium::Matrix&lt; K, RowMajor &gt;::transpose()</a>.</p>
 
 </div>
 </div>
-<a id="aab383228e730a151ffdf5053f4643326" name="aab383228e730a151ffdf5053f4643326"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab383228e730a151ffdf5053f4643326">&#9670;&#160;</a></span>data</h2>
+<a id="a8892d0c0c6c72251409d9ee093576f91" name="a8892d0c0c6c72251409d9ee093576f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8892d0c0c6c72251409d9ee093576f91">&#9670;&#160;</a></span>data</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>&gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::data</td>
+          <td class="memname"><a class="el" href="Allocator_8hpp.html#a23515413ed4c20c0fd3d25ae1976f3c5">aligned_vector</a>&lt;<a class="el" href="classtensorium_1_1Tensor.html">K</a>&gt; <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::data</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#aefa00ef8a92bfc824fecc0c07b683bc1">tensorium::Matrix&lt; K &gt;::_mul_mat()</a>, <a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#aaffef2efd59f46134a3a21917670b990">tensorium::Matrix&lt; K &gt;::lerp()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#ada69ece15f59f095d7df300ed95354c8">tensorium::MatrixKernel&lt; K &gt;::mul_mat16x16()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#abadf773702b4179d4a71dd39e6e9a31d">tensorium::MatrixKernel&lt; K &gt;::mul_mat2x2()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a521ceea8e982a3e179b6e42ac26e860a">tensorium::MatrixKernel&lt; K &gt;::mul_mat3x3()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a393fb342aa333070b1ea2aa8dff6733a">tensorium::MatrixKernel&lt; K &gt;::mul_mat4x4()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#ada9196f37d54880287c9abd28aa3df32">tensorium::MatrixKernel&lt; K &gt;::mul_mat8x8()</a>, <a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a6c8365dcb7af2fcdf68e2333c061389c">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a841f4fd9ec371374184466c1b810b461">tensorium::Matrix&lt; K &gt;::scl()</a>, and <a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a156bdb5a8eae1c4e737f17cf1c0b7eea">tensorium::Matrix&lt; K, RowMajor &gt;::_mul_mat()</a>, <a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">tensorium::Matrix&lt; K, RowMajor &gt;::add()</a>, <a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">tensorium::Matrix&lt; K, RowMajor &gt;::lerp()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a01941cf360a83a43d95fe2764bbe4635">tensorium::MatrixKernel&lt; K &gt;::mul_mat16x16()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a53fe24fdaba78f1a65ad304d5e55c7ba">tensorium::MatrixKernel&lt; K &gt;::mul_mat2x2()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#afa050418445d6cf833ca294627e07ec3">tensorium::MatrixKernel&lt; K &gt;::mul_mat32x32()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a2b8dbfc256fef493bc24727f032fdbee">tensorium::MatrixKernel&lt; K &gt;::mul_mat4x4()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#ac3f3626fc446be18328143e90088b5d3">tensorium::MatrixKernel&lt; K &gt;::mul_mat64x64()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a005681e34d39804bec4ef85b73ea6b52">tensorium::MatrixKernel&lt; K &gt;::mul_mat8x8()</a>, <a class="el" href="#a8575fce507038abe42bbbdb89af638d8">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, <a class="el" href="#a088ae24bf518c6434cd5cfc502db04a6">tensorium::Matrix&lt; K, RowMajor &gt;::operator()()</a>, <a class="el" href="#a4b102c4388cbdb2f517f698b88321a82">tensorium::Matrix&lt; K, RowMajor &gt;::scl()</a>, and <a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">tensorium::Matrix&lt; K, RowMajor &gt;::sub()</a>.</p>
 
 </div>
 </div>
-<a id="aea37bb7fb2eabd97a3dff71fa59d4da6" name="aea37bb7fb2eabd97a3dff71fa59d4da6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea37bb7fb2eabd97a3dff71fa59d4da6">&#9670;&#160;</a></span>rows</h2>
+<a id="a78ec037a55954a3cd772ca28f9b6920c" name="a78ec037a55954a3cd772ca28f9b6920c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78ec037a55954a3cd772ca28f9b6920c">&#9670;&#160;</a></span>iscolumn</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::rows</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">bool</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::iscolumn</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#aefa00ef8a92bfc824fecc0c07b683bc1">tensorium::Matrix&lt; K &gt;::_mul_mat()</a>, <a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#ab838ebba697fa1526fe64be3d532022d">tensorium::Matrix&lt; K &gt;::inverse()</a>, <a class="el" href="#aaffef2efd59f46134a3a21917670b990">tensorium::Matrix&lt; K &gt;::lerp()</a>, <a class="el" href="#ad5cf7e88706e1b5cb65fb1ec0fcf6017">tensorium::Matrix&lt; K &gt;::mul_vec()</a>, <a class="el" href="#a751ec04712d5ec3b2f0dbabd523bdde1">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a6c8365dcb7af2fcdf68e2333c061389c">tensorium::Matrix&lt; K &gt;::operator()()</a>, <a class="el" href="#a31cb0c1471f250d64e5dc4e957639ed3">tensorium::Matrix&lt; K &gt;::operator*()</a>, <a class="el" href="#a51ed70e8d688b709e731430e2289c56b">tensorium::Matrix&lt; K &gt;::print()</a>, <a class="el" href="#a6aa64cb114cee18687263df50e358583">tensorium::Matrix&lt; K &gt;::rank()</a>, <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>, <a class="el" href="#a9fc91136acf87c3827b462500cda853b">tensorium::Matrix&lt; K &gt;::size()</a>, <a class="el" href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>, <a class="el" href="#a29cb23b241303015dc32483072623161">tensorium::Matrix&lt; K &gt;::swap_rows()</a>, <a class="el" href="#a647156d276ab6b8cc06e10ae6e479857">tensorium::Matrix&lt; K &gt;::trace()</a>, and <a class="el" href="#af090bc9aae9d7f0a177dbcc33dd6139e">tensorium::Matrix&lt; K &gt;::transpose()</a>.</p>
-
 </div>
 </div>
-<a id="a12eb1e2a47caeaa838603b4a5643a2fd" name="a12eb1e2a47caeaa838603b4a5643a2fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12eb1e2a47caeaa838603b4a5643a2fd">&#9670;&#160;</a></span>simd_width</h2>
+<a id="a247523f65bacfbda84f956c32bc02a2f" name="a247523f65bacfbda84f956c32bc02a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a247523f65bacfbda84f956c32bc02a2f">&#9670;&#160;</a></span>rows</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; </div>
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::simd_width = Simd::width</td>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::rows</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#ada624dd42a3a0031194fb48e84166b8a">tensorium::Matrix&lt; K &gt;::add()</a>, <a class="el" href="#ae8b88c02ca8eaaf9edcfb490eaa82644">tensorium::Matrix&lt; K &gt;::det()</a>, <a class="el" href="#aaffef2efd59f46134a3a21917670b990">tensorium::Matrix&lt; K &gt;::lerp()</a>, <a class="el" href="#a841f4fd9ec371374184466c1b810b461">tensorium::Matrix&lt; K &gt;::scl()</a>, and <a class="el" href="#ab4b1f06030c000b858095307ad1b9a64">tensorium::Matrix&lt; K &gt;::sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a156bdb5a8eae1c4e737f17cf1c0b7eea">tensorium::Matrix&lt; K, RowMajor &gt;::_mul_mat()</a>, <a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">tensorium::Matrix&lt; K, RowMajor &gt;::add()</a>, <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="#a9d7afa564c31722e01fb9447da0da9d9">tensorium::Matrix&lt; K, RowMajor &gt;::index()</a>, <a class="el" href="#ad6d209506a9e826719ff66ccc0abb188">tensorium::Matrix&lt; K, RowMajor &gt;::inverse()</a>, <a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">tensorium::Matrix&lt; K, RowMajor &gt;::lerp()</a>, <a class="el" href="classtensorium_1_1MatrixKernel.html#a0b2b6000f20cf10bc300e585d0c4ec68">tensorium::MatrixKernel&lt; K &gt;::MatrixKernel()</a>, <a class="el" href="#a5e1172e6298ebc08cc838ee69054ba3d">tensorium::Matrix&lt; K, RowMajor &gt;::mul_vec()</a>, <a class="el" href="#a469003c35c507e7556d9a85209d1f21a">tensorium::Matrix&lt; K, RowMajor &gt;::operator*()</a>, <a class="el" href="#a7ed4487741f06283b940b58d787044af">tensorium::Matrix&lt; K, RowMajor &gt;::print()</a>, <a class="el" href="#a2c198fa52eb64227c31e3f65c05c428e">tensorium::Matrix&lt; K, RowMajor &gt;::rank()</a>, <a class="el" href="classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1">tensorium::solver::Gauss&lt; K &gt;::raw_row_echelon()</a>, <a class="el" href="#af195083127f300ae37ce064f9f2164d8">tensorium::Matrix&lt; K, RowMajor &gt;::size()</a>, <a class="el" href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">tensorium::Matrix&lt; K, RowMajor &gt;::sub()</a>, <a class="el" href="#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>, <a class="el" href="#a7b07c9dfd4c374c840b65e082accd91d">tensorium::Matrix&lt; K, RowMajor &gt;::trace()</a>, and <a class="el" href="#a0094ce83c95bf1c861cda44031884bb2">tensorium::Matrix&lt; K, RowMajor &gt;::transpose()</a>.</p>
+
+</div>
+</div>
+<a id="a6d09e0e9927a369cb4d88f4ac062602d" name="a6d09e0e9927a369cb4d88f4ac062602d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d09e0e9927a369cb4d88f4ac062602d">&#9670;&#160;</a></span>simd_width</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a> , <a class="el" href="classtensorium_1_1Tensor.html">bool</a> RowMajor = false&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">RowMajor</a> &gt;::simd_width = Simd::width</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="#ac6402b6dc16695f48203d2c5fc3e755b">tensorium::Matrix&lt; K, RowMajor &gt;::add()</a>, <a class="el" href="#a71bce3c88ca10ba95a4c1c1ef9818676">tensorium::Matrix&lt; K, RowMajor &gt;::det()</a>, <a class="el" href="#a520af5a3e3c982c67dc1bd0611975808">tensorium::Matrix&lt; K, RowMajor &gt;::lerp()</a>, <a class="el" href="#a4b102c4388cbdb2f517f698b88321a82">tensorium::Matrix&lt; K, RowMajor &gt;::scl()</a>, and <a class="el" href="#a3ccf54e141e9901beb7cc19a10dc45eb">tensorium::Matrix&lt; K, RowMajor &gt;::sub()</a>.</p>
 
 </div>
 </div>

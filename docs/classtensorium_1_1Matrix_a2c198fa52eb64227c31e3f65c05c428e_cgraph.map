@@ -1,0 +1,11 @@
+<map id="tensorium::Matrix::rank" name="tensorium::Matrix::rank">
+<area shape="rect" id="Node000001" title="Compute the numerical rank of the matrix." alt="" coords="5,57,180,85"/>
+<area shape="rect" id="Node000002" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="236,5,365,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,54,226,35,228,40,152,59"/>
+<area shape="rect" id="Node000003" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="281,57,320,85"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,69,266,69,266,74,180,74"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832" title="Swap two rows of the matrix." alt="" coords="228,109,373,154"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,83,213,103,212,108,142,88"/>
+<area shape="rect" id="Node000005" href="$classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="421,117,561,145"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="373,129,406,129,406,134,373,134"/>
+</map>

@@ -192,31 +192,61 @@ namespace tensorium {
  * @note (For matrix 4x4, 8x8 and 16x16, there's a SIMD fallback to ensure L1 and L2 cache storage)
  */
 	
-	template <typename T>
-	Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
-		if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
-			const MatrixKernel<T> kernelA(A);
-			return kernelA.mul_mat2x2(B);
-		}
-		// if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
-		// 	const MatrixKernel<T> kernelA(A);
-		// 	return kernelA.mul_mat3x3(B);
-		// }
-		// if (A.rows == 4 && A.cols == 4 && B.rows == 4 && B.cols == 4) {
-		// 	const MatrixKernel<T> kernelA(A);
-		// 	return kernelA.mul_mat4x4(B);
-		// }
-		// if (A.rows == 8 && A.cols == 8 && B.rows == 8 && B.cols == 8) {
-		// 	const MatrixKernel<T> kernelA(A);
-		// 	return kernelA.mul_mat8x8(B);
-		// }
-		// if (A.rows == 16 && A.cols == 16 && B.rows == 16 && B.cols == 16) {
-		// 	const MatrixKernel<T> kernelA(A);
-		// 	return kernelA.mul_mat16x16(B);
-		// }
 
-		return A._mul_mat(B); 
-	}
+
+	template <typename T>
+		Matrix<T> mul_mat(const Matrix<T>& A, const Matrix<T>& B) {
+			// if (A.rows == 2 && A.cols == 2 && B.rows == 2 && B.cols == 2) {
+			// 	const MatrixKernel<T> kernelA(A);
+			// 	const MatrixKernel<T> kernelB(B);
+			// 	return kernelA.mul_mat2x2(kernelB);
+			// }
+
+			if (A.rows == 3 && A.cols == 3 && B.rows == 3 && B.cols == 3) {
+				const MatrixKernel<T> kernelA(A);
+				const MatrixKernel<T> kernelB(B);
+				return kernelA.mul_mat3x3(kernelB);
+			}
+
+			if (A.rows == 4 && A.cols == 4 && B.rows == 4 && B.cols == 4) {
+				const MatrixKernel<T> kernelA(A);
+				const MatrixKernel<T> kernelB(B);
+				return kernelA.mul_mat4x4(kernelB);
+			}
+
+			if (A.rows == 8 && A.cols == 8 && B.rows == 8 && B.cols == 8) {
+				const MatrixKernel<T> kernelA(A);
+				const MatrixKernel<T> kernelB(B);
+				return kernelA.mul_mat8x8(kernelB);
+			}
+
+			if (A.rows == 16 && A.cols == 16 && B.rows == 16 && B.cols == 16) {
+				const MatrixKernel<T> kernelA(A);
+				const MatrixKernel<T> kernelB(B);
+				return kernelA.mul_mat16x16(kernelB);
+			}
+			
+			if (A.rows == 32 && A.cols == 32 && B.rows == 32 && B.cols == 32) {
+				const MatrixKernel<T> kernelA(A);
+				const MatrixKernel<T> kernelB(B);
+				return kernelA.mul_mat32x32(kernelB);
+			}
+			//
+			//
+			// if (A.rows == 64 && A.cols == 64 && B.rows == 64 && B.cols == 64) {
+			// 	const MatrixKernel<T> kernelA(A);
+			// 	const MatrixKernel<T> kernelB(B);
+			// 	return kernelA.mul_mat64x64(kernelB);
+			// }
+			//
+			//
+
+
+			Matrix<T> Acol = A;
+			return Acol._mul_mat(B);
+		}
+
+
 
 /*
  * @brief Matrix transpose 

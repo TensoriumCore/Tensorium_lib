@@ -1,0 +1,14 @@
+<map id="tensorium::Matrix::index" name="tensorium::Matrix::index">
+<area shape="rect" id="Node000001" title=" " alt="" coords="413,116,558,160"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html#a8575fce507038abe42bbbdb89af638d8" title="Element access (mutable)" alt="" coords="220,81,365,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="397,125,365,119,366,114,398,119"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#a088ae24bf518c6434cd5cfc502db04a6" title=" " alt="" coords="220,150,365,195"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="398,156,366,162,365,157,397,151"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Matrix.html#a71bce3c88ca10ba95a4c1c1ef9818676" title="Compute the determinant using Gaussian elimination." alt="" coords="5,29,172,57"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="205,80,138,60,139,55,206,75"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1Matrix.html#ad6d209506a9e826719ff66ccc0abb188" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="16,81,161,126"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="204,106,162,106,162,101,204,101"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Matrix.html#a7b07c9dfd4c374c840b65e082accd91d" title="Returns the trace of a square matrix as a 1×1 matrix." alt="" coords="16,150,161,195"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="211,133,157,152,156,147,210,128"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="123,16,111,10,88,8,67,10,56,15,53,20,58,27,53,30,48,20,52,11,66,5,89,3,113,5,126,12"/>
+</map>

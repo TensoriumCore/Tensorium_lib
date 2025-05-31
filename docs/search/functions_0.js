@@ -8,6 +8,6 @@ var searchData=
   ['_5fmax_5',['_max',['../classMathsUtils.html#a0e789dbc1b696c969d4480b21af134c6',1,'MathsUtils']]],
   ['_5fmin_6',['_min',['../classMathsUtils.html#a4ad47f80d02a8c6c6eddd7b5737f34e8',1,'MathsUtils']]],
   ['_5fmm_5fprefetch_7',['_mm_prefetch',['../classtensorium_1_1Vector.html#a3e6722df6cfc05923ad328fdb71cc926',1,'tensorium::Vector']]],
-  ['_5fmul_5fmat_8',['_mul_mat',['../classtensorium_1_1Matrix.html#aefa00ef8a92bfc824fecc0c07b683bc1',1,'tensorium::Matrix']]],
+  ['_5fmul_5fmat_8',['_mul_mat',['../classtensorium_1_1Matrix.html#a156bdb5a8eae1c4e737f17cf1c0b7eea',1,'tensorium::Matrix']]],
   ['_5fswap_9',['_swap',['../classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70',1,'MathsUtils']]]
 ];

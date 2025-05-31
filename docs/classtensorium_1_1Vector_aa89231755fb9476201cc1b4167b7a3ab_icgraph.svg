@@ -191,7 +191,7 @@
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classtensorium_1_1Matrix.html#ad5cf7e88706e1b5cb65fb1ec0fcf6017" target="_top" xlink:title="Multiply matrix by a vector using SIMD.">
+<g id="a_Node000016"><a xlink:href="classtensorium_1_1Matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" target="_top" xlink:title="Multiply matrix by a vector using SIMD.">
 <polygon fill="white" stroke="#666666" points="624.25,-189.5 515.25,-189.5 515.25,-156 624.25,-156 624.25,-189.5"/>
 <text text-anchor="start" x="523.25" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
 <text text-anchor="middle" x="569.75" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">mul_vec</text>
@@ -210,7 +210,7 @@
 <!-- Node17 -->
 <g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classtensorium_1_1Matrix.html#a31cb0c1471f250d64e5dc4e957639ed3" target="_top" xlink:title="Multiply matrix by a vector (naïve fallback)">
+<g id="a_Node000017"><a xlink:href="classtensorium_1_1Matrix.html#a469003c35c507e7556d9a85209d1f21a" target="_top" xlink:title="Multiply matrix by a vector (naïve fallback)">
 <polygon fill="white" stroke="#666666" points="624.25,-137.5 515.25,-137.5 515.25,-104 624.25,-104 624.25,-137.5"/>
 <text text-anchor="start" x="523.25" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
 <text text-anchor="middle" x="569.75" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">operator*</text>

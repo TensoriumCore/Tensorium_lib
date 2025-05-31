@@ -24,12 +24,13 @@ namespace tensorium {
 	 *
 	 * @tparam K Scalar type (float, double, etc.)
 	 */
-	template<typename K>
+	template<typename K, bool RowMajor = false>
 		 class Matrix {
 			 public:
 				 size_t rows, cols;
 				 aligned_vector<K> data;
 				 size_t block_size;
+				 bool iscolumn;
 				 /**
 				  * @brief Construct a matrix of size r × c, initialized with zeros
 				  */
@@ -37,6 +38,12 @@ namespace tensorium {
 					 : rows(r), cols(c), data(r * c, K()), block_size(detect_optimal_block_size()) {
 					 }
 
+				 inline size_t index(size_t i, size_t j) const {
+					 if constexpr (RowMajor)
+						 return i * cols + j;
+					 else
+						 return j * rows + i;
+				 }
 				 using Simd = simd::SimdTraits<K, DefaultISA>;
 				 using reg = typename Simd::reg;
 				 size_t simd_width = Simd::width;
@@ -47,11 +54,11 @@ namespace tensorium {
 				 /** @brief Element access (mutable) */
 
 				 K& operator()(size_t i, size_t j) {
-					 return data[j * rows + i];
+					 return data[index(i, j)];
 				 }
 
 				 const K& operator()(size_t i, size_t j) const {
-					 return data[j * rows + i];
+					 return data[index(i, j)];
 				 }
 
 				 /** @brief Print the matrix to stdout */

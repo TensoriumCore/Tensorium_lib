@@ -111,10 +111,11 @@ var NAVTREEINDEX =
 "AST_8hpp.html",
 "classMathsUtils.html",
 "classtensorium_1_1GemmKernelBigger.html#ab63bf17e01b9f4e4f61b0a33b3c53753",
-"classtensorium_1_1Vector.html#a40f78072083b341b4710740de4363e15",
-"functions_func_h.html",
-"structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#aad2aaaf4e920486559e96424f8e2d572",
-"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a6eaac0cb3fa59a67204c99798fedffbf"
+"classtensorium_1_1Vector.html#a2e7da8cbf0c7128a570f490d365b80a4",
+"functions_f.html",
+"structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html#a7fb87339ede2d843a1f0e08cf020ad37",
+"structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html#a43766f4e16d8dc1445fe66ce647fcb4c",
+"tensorium-opt_8cpp.html#a042d3140e9db663382ef88f85d6cf615"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

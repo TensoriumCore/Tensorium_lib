@@ -4,21 +4,27 @@
 
 namespace tensorium { 
 	template <typename K>
-		class MatrixKernel : public Matrix<K> {
+		class MatrixKernel : public Matrix<K, true> {
 			public :
-				using Matrix<K>::rows;
-				using Matrix<K>::cols;
-				using Matrix<K>::data;
-				using Matrix<K>::operator();
+				using Matrix<K, true>::rows;
+				using Matrix<K, true>::cols;
+				using Matrix<K, true>::data;
+				using Matrix<K, true>::operator();
 
 				using Simd = simd::SimdTraits<K, DefaultISA>;
 				using reg  = typename Simd::reg;
 
-				MatrixKernel(size_t r, size_t c) : Matrix<K>(r, c) {}
-				MatrixKernel(const Matrix<K>& m) : Matrix<K>(m) {}
-				
+				MatrixKernel(const Matrix<K, true>& m) : Matrix<K, true>(m) {}
 
-				inline Matrix<K> mul_mat2x2(const Matrix<K>& B) const {
+				MatrixKernel(const Matrix<K, false>& m) : Matrix<K, true>(m.rows, m.cols) {
+					for (size_t i = 0; i < m.rows; ++i)
+						for (size_t j = 0; j < m.cols; ++j)
+							(*this)(i, j) = m(i, j);
+				}
+
+				MatrixKernel(size_t r, size_t c) : Matrix<K, true>(r, c) {}
+
+				inline Matrix<K> mul_mat2x2(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg = typename Simd::reg;
 
@@ -41,45 +47,40 @@ namespace tensorium {
 				}
 
 
-				inline Matrix<K> mul_mat3x3(const Matrix<K>& mat) const {
+		
+				inline Matrix<K> mul_mat3x3(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
 
 					Matrix<K> result(3, 3);
 
-					reg c0 = Simd::loadu(&mat.data[0]); 
-					reg c1 = Simd::loadu(&mat.data[3]); 
-					reg c2 = Simd::loadu(&mat.data[6]); 
+					for (int i = 0; i < 3; ++i) {
+						reg ai0 = Simd::set1((*this)(i, 0));
+						reg ai1 = Simd::set1((*this)(i, 1));
+						reg ai2 = Simd::set1((*this)(i, 2));
 
-					K a00 = (*this)(0,0), a01 = (*this)(0,1), a02 = (*this)(0,2);
+						alignas(32) K brow0[4] = { B(0, 0), B(0, 1), B(0, 2), K(0) };
+						alignas(32) K brow1[4] = { B(1, 0), B(1, 1), B(1, 2), K(0) };
+						alignas(32) K brow2[4] = { B(2, 0), B(2, 1), B(2, 2), K(0) };
 
-					reg r0 = Simd::mul(Simd::set1(a00), c0);
-					r0 = Simd::fmadd(Simd::set1(a01), c1, r0);
-					r0 = Simd::fmadd(Simd::set1(a02), c2, r0);
+						reg b0 = Simd::loadu(brow0);
+						reg b1 = Simd::loadu(brow1);
+						reg b2 = Simd::loadu(brow2);
 
-					Simd::storeu(&result.data[0], r0); 
+						reg acc = Simd::mul(ai0, b0);
+						acc     = Simd::fmadd(ai1, b1, acc);
+						acc     = Simd::fmadd(ai2, b2, acc);
 
-					K a10 = (*this)(1,0), a11 = (*this)(1,1), a12 = (*this)(1,2);
-
-					reg r1 = Simd::mul(Simd::set1(a10), c0);
-					r1 = Simd::fmadd(Simd::set1(a11), c1, r1);
-					r1 = Simd::fmadd(Simd::set1(a12), c2, r1);
-
-					Simd::storeu(&result.data[3], r1); 
-
-					K a20 = (*this)(2,0), a21 = (*this)(2,1), a22 = (*this)(2,2);
-
-					reg r2 = Simd::mul(Simd::set1(a20), c0);
-					r2 = Simd::fmadd(Simd::set1(a21), c1, r2);
-					r2 = Simd::fmadd(Simd::set1(a22), c2, r2);
-
-					Simd::storeu(&result.data[6], r2); 
+						result(i, 0) = Simd::extract(acc, 0);
+						result(i, 1) = Simd::extract(acc, 1);
+						result(i, 2) = Simd::extract(acc, 2);
+					}
 
 					return result;
 				}
 
 
-				inline Matrix<K> mul_mat4x4(const Matrix<K>& B) const {
+				inline Matrix<K> mul_mat4x4(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
 
@@ -153,7 +154,7 @@ namespace tensorium {
 					return result;
 				}
 
-				inline Matrix<K> mul_mat8x8(const Matrix<K>& B) const {
+				inline Matrix<K> mul_mat8x8(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
 
@@ -189,7 +190,7 @@ namespace tensorium {
 				}
 
 
-				inline Matrix<K> mul_mat16x16(const Matrix<K>& B) const {
+				inline Matrix<K> mul_mat16x16(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
 
@@ -219,6 +220,81 @@ namespace tensorium {
 
 					return result;
 				}
+
+				inline Matrix<K> mul_mat32x32(const MatrixKernel<K>& B) const {
+					using Simd = simd::SimdTraits<K, DefaultISA>;
+					using reg  = typename Simd::reg;
+
+					Matrix<K> result(32, 32);
+
+					reg brow[32][2];
+					#pragma unroll(2)
+					for (int k = 0; k < 32; ++k) {
+						brow[k][0] = Simd::loadu(&B.data[k * 32 + 0]);
+						brow[k][1] = Simd::loadu(&B.data[k * 32 + 16]);
+					}
+					#pragma unroll(2)
+					for (int i = 0; i < 32; ++i) {
+						const K* a = &data[i * 32];
+						reg acc0 = Simd::mul(Simd::set1(a[0]), brow[0][0]);
+						reg acc1 = Simd::mul(Simd::set1(a[0]), brow[0][1]);
+
+						for (int k = 1; k < 32; ++k) {
+							reg ak = Simd::set1(a[k]);
+							acc0 = Simd::fmadd(ak, brow[k][0], acc0);
+							acc1 = Simd::fmadd(ak, brow[k][1], acc1);
+						}
+
+						Simd::storeu(&result.data[i * 32 + 0], acc0);
+						Simd::storeu(&result.data[i * 32 + 16], acc1);
+					}
+
+					return result;
+				}
+
+
+				inline Matrix<K> mul_mat64x64(const MatrixKernel<K>& B) const {
+					using Simd = simd::SimdTraits<K, DefaultISA>;
+					using reg  = typename Simd::reg;
+
+					Matrix<K> result(64, 64);
+
+					reg brow_lo[64], brow_hi[64], brow_32[64], brow_48[64];
+
+					for (int k = 0; k < 64; ++k) {
+						const K* b = &B.data[k * 64];  
+						brow_lo[k]  = Simd::loadu(b + 0);
+						brow_hi[k]  = Simd::loadu(b + 8);
+						brow_32[k]  = Simd::loadu(b + 16);
+						brow_48[k]  = Simd::loadu(b + 24);
+					}
+
+					for (int i = 0; i < 64; ++i) {
+						const K* a = &data[i * 64];
+
+						reg acc0 = Simd::mul(Simd::set1(a[0]), brow_lo[0]);
+						reg acc1 = Simd::mul(Simd::set1(a[0]), brow_hi[0]);
+						reg acc2 = Simd::mul(Simd::set1(a[0]), brow_32[0]);
+						reg acc3 = Simd::mul(Simd::set1(a[0]), brow_48[0]);
+
+						for (int k = 1; k < 64; ++k) {
+							reg ak = Simd::set1(a[k]);
+							acc0 = Simd::fmadd(ak, brow_lo[k], acc0);
+							acc1 = Simd::fmadd(ak, brow_hi[k], acc1);
+							acc2 = Simd::fmadd(ak, brow_32[k], acc2);
+							acc3 = Simd::fmadd(ak, brow_48[k], acc3);
+						}
+
+						K* r = &result.data[i * 64];
+						Simd::storeu(r + 0,  acc0);
+						Simd::storeu(r + 8,  acc1);
+						Simd::storeu(r + 16, acc2);
+						Simd::storeu(r + 24, acc3);
+					}
+
+					return result;
+				}
+
 
 		};
 }
