@@ -2,7 +2,18 @@
 
 #include "../Matrix.hpp"
 
-namespace tensorium { 
+namespace tensorium {
+
+	/**
+	 * @brief MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines 
+	 *        for statically-sized square matrices.
+	 * 
+	 * This class inherits from a column-major `Matrix<K, true>` and offers optimized
+	 * kernels for specific square sizes (2x2, 3x3, ..., 64x64), using AVX/SIMD intrinsics 
+	 * for high performance. The kernels exploit register-level blocking and FMADD chaining.
+	 * 
+	 * @tparam K Scalar type (float, double, etc.)
+	 */
 	template <typename K>
 		class MatrixKernel : public Matrix<K, true> {
 			public :
@@ -13,17 +24,30 @@ namespace tensorium {
 
 				using Simd = simd::SimdTraits<K, DefaultISA>;
 				using reg  = typename Simd::reg;
-
+				/** 
+				 * @brief Construct a MatrixKernel from a column-major matrix.
+				 * @param m Source matrix.
+				 */
 				MatrixKernel(const Matrix<K, true>& m) : Matrix<K, true>(m) {}
-
+				/** 
+				 * @brief Construct a MatrixKernel from a row-major matrix by copying elements.
+				 * @param m Source matrix.
+				 */
 				MatrixKernel(const Matrix<K, false>& m) : Matrix<K, true>(m.rows, m.cols) {
 					for (size_t i = 0; i < m.rows; ++i)
 						for (size_t j = 0; j < m.cols; ++j)
 							(*this)(i, j) = m(i, j);
 				}
 
+				/**
+				 * @brief Construct an empty column-major matrix kernel of size (r × c).
+				 */
 				MatrixKernel(size_t r, size_t c) : Matrix<K, true>(r, c) {}
-
+				/** 
+				 * @brief Multiply two 2×2 matrices using SIMD.
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat2x2(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg = typename Simd::reg;
@@ -45,9 +69,11 @@ namespace tensorium {
 
 					return C;
 				}
-
-
-		
+				/** 
+				 * @brief Multiply two 3×3 matrices using SIMD.
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat3x3(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
@@ -80,6 +106,11 @@ namespace tensorium {
 				}
 
 
+				/** 
+				 * @brief Multiply two 4×4 matrices using SIMD.
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat4x4(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
@@ -154,6 +185,11 @@ namespace tensorium {
 					return result;
 				}
 
+				/** 
+				 * @brief Multiply two 8×8 matrices using SIMD.
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat8x8(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
@@ -190,6 +226,12 @@ namespace tensorium {
 				}
 
 
+				/** 
+				 * @brief Multiply two 16×16 matrices using SIMD with FMADD accumulation.
+				 *        This function splits each row into two registers (low/high).
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat16x16(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
@@ -220,7 +262,12 @@ namespace tensorium {
 
 					return result;
 				}
-
+				/** 
+				 * @brief Multiply two 32×32 matrices using SIMD.
+				 *        Each row is split into two registers (16 elements each).
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat32x32(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;
@@ -228,12 +275,12 @@ namespace tensorium {
 					Matrix<K> result(32, 32);
 
 					reg brow[32][2];
-					#pragma unroll(2)
+#pragma unroll(2)
 					for (int k = 0; k < 32; ++k) {
 						brow[k][0] = Simd::loadu(&B.data[k * 32 + 0]);
 						brow[k][1] = Simd::loadu(&B.data[k * 32 + 16]);
 					}
-					#pragma unroll(2)
+#pragma unroll(2)
 					for (int i = 0; i < 32; ++i) {
 						const K* a = &data[i * 32];
 						reg acc0 = Simd::mul(Simd::set1(a[0]), brow[0][0]);
@@ -252,7 +299,13 @@ namespace tensorium {
 					return result;
 				}
 
-
+				/** 
+				 * @brief Multiply two 64×64 matrices using SIMD.
+				 *        Each row is split into 4 SIMD registers (4×16 elements).
+				 *        Vectorized FMADD chaining is used for performance.
+				 * @param B Right-hand matrix.
+				 * @return Result of multiplication.
+				 */
 				inline Matrix<K> mul_mat64x64(const MatrixKernel<K>& B) const {
 					using Simd = simd::SimdTraits<K, DefaultISA>;
 					using reg  = typename Simd::reg;

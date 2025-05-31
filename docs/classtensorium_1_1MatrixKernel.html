@@ -106,6 +106,9 @@ $(function(){initNavTree('classtensorium_1_1MatrixKernel.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> provides specialized SIMD-accelerated matrix multiplication routines for statically-sized square matrices.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="MatrixKernel_8hpp_source.html">MatrixKernel.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for tensorium::MatrixKernel&lt; K &gt;:</div>
@@ -133,24 +136,34 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1af71b5c4c9c3a4784710aa1fd02776" id="r_ad1af71b5c4c9c3a4784710aa1fd02776"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1af71b5c4c9c3a4784710aa1fd02776">MatrixKernel</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">true</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
+<tr class="memdesc:ad1af71b5c4c9c3a4784710aa1fd02776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> from a column-major matrix.  <br /></td></tr>
 <tr class="separator:ad1af71b5c4c9c3a4784710aa1fd02776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b2b6000f20cf10bc300e585d0c4ec68" id="r_a0b2b6000f20cf10bc300e585d0c4ec68"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b2b6000f20cf10bc300e585d0c4ec68">MatrixKernel</a> (const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, <a class="el" href="classtensorium_1_1Tensor.html">false</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">m</a>)</td></tr>
+<tr class="memdesc:a0b2b6000f20cf10bc300e585d0c4ec68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> from a row-major matrix by copying elements.  <br /></td></tr>
 <tr class="separator:a0b2b6000f20cf10bc300e585d0c4ec68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d091cf04ca3eea110fc506d0faafa48" id="r_a8d091cf04ca3eea110fc506d0faafa48"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d091cf04ca3eea110fc506d0faafa48">MatrixKernel</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> r, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">c</a>)</td></tr>
+<tr class="memdesc:a8d091cf04ca3eea110fc506d0faafa48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct an empty column-major matrix kernel of size (r × c).  <br /></td></tr>
 <tr class="separator:a8d091cf04ca3eea110fc506d0faafa48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53fe24fdaba78f1a65ad304d5e55c7ba" id="r_a53fe24fdaba78f1a65ad304d5e55c7ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53fe24fdaba78f1a65ad304d5e55c7ba">mul_mat2x2</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:a53fe24fdaba78f1a65ad304d5e55c7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 2×2 matrices using SIMD.  <br /></td></tr>
 <tr class="separator:a53fe24fdaba78f1a65ad304d5e55c7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8882c602fb9c4443413497e2bb88e8e9" id="r_a8882c602fb9c4443413497e2bb88e8e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8882c602fb9c4443413497e2bb88e8e9">mul_mat3x3</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:a8882c602fb9c4443413497e2bb88e8e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 3×3 matrices using SIMD.  <br /></td></tr>
 <tr class="separator:a8882c602fb9c4443413497e2bb88e8e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b8dbfc256fef493bc24727f032fdbee" id="r_a2b8dbfc256fef493bc24727f032fdbee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b8dbfc256fef493bc24727f032fdbee">mul_mat4x4</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:a2b8dbfc256fef493bc24727f032fdbee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 4×4 matrices using SIMD.  <br /></td></tr>
 <tr class="separator:a2b8dbfc256fef493bc24727f032fdbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a005681e34d39804bec4ef85b73ea6b52" id="r_a005681e34d39804bec4ef85b73ea6b52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a005681e34d39804bec4ef85b73ea6b52">mul_mat8x8</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:a005681e34d39804bec4ef85b73ea6b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 8×8 matrices using SIMD.  <br /></td></tr>
 <tr class="separator:a005681e34d39804bec4ef85b73ea6b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01941cf360a83a43d95fe2764bbe4635" id="r_a01941cf360a83a43d95fe2764bbe4635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01941cf360a83a43d95fe2764bbe4635">mul_mat16x16</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:a01941cf360a83a43d95fe2764bbe4635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 16×16 matrices using SIMD with FMADD accumulation. This function splits each row into two registers (low/high).  <br /></td></tr>
 <tr class="separator:a01941cf360a83a43d95fe2764bbe4635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa050418445d6cf833ca294627e07ec3" id="r_afa050418445d6cf833ca294627e07ec3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa050418445d6cf833ca294627e07ec3">mul_mat32x32</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:afa050418445d6cf833ca294627e07ec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 32×32 matrices using SIMD. Each row is split into two registers (16 elements each).  <br /></td></tr>
 <tr class="separator:afa050418445d6cf833ca294627e07ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3f3626fc446be18328143e90088b5d3" id="r_ac3f3626fc446be18328143e90088b5d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3f3626fc446be18328143e90088b5d3">mul_mat64x64</a> (const <a class="el" href="classtensorium_1_1MatrixKernel.html">MatrixKernel</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;B) const</td></tr>
+<tr class="memdesc:ac3f3626fc446be18328143e90088b5d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two 64×64 matrices using SIMD. Each row is split into 4 SIMD registers (4×16 elements). Vectorized FMADD chaining is used for performance.  <br /></td></tr>
 <tr class="separator:ac3f3626fc446be18328143e90088b5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classtensorium_1_1Matrix"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classtensorium_1_1Matrix')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtensorium_1_1Matrix.html">tensorium::Matrix&lt; K, true &gt;</a></td></tr>
 <tr class="memitem:a0fa9f253277970a65e7fb2e9844c277d inherit pub_methods_classtensorium_1_1Matrix" id="r_a0fa9f253277970a65e7fb2e9844c277d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1Matrix.html#a0fa9f253277970a65e7fb2e9844c277d">Matrix</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> r, <a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">c</a>)</td></tr>
@@ -225,7 +238,17 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a6d09e0e9927a369cb4d88f4ac062602d inherit pub_attribs_classtensorium_1_1Matrix" id="r_a6d09e0e9927a369cb4d88f4ac062602d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium_1_1Matrix.html#a6d09e0e9927a369cb4d88f4ac062602d">simd_width</a></td></tr>
 <tr class="separator:a6d09e0e9927a369cb4d88f4ac062602d inherit pub_attribs_classtensorium_1_1Matrix"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a class="el" href="classtensorium_1_1Tensor.html">K</a>&gt;<br />
+class tensorium::MatrixKernel&lt; K &gt;</div><p><a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> provides specialized SIMD-accelerated matrix multiplication routines for statically-sized square matrices. </p>
+<p>This class inherits from a column-major <code><a class="el" href="classtensorium_1_1Matrix.html" title="High-performance aligned matrix class with SIMD support.">Matrix</a>&lt;K, true&gt;</code> and offers optimized kernels for specific square sizes (2x2, 3x3, ..., 64x64), using AVX/SIMD intrinsics for high performance. The kernels exploit register-level blocking and FMADD chaining.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>Scalar type (float, double, etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad383a38c7c68ef38dbab04d0ce8c588f" name="ad383a38c7c68ef38dbab04d0ce8c588f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad383a38c7c68ef38dbab04d0ce8c588f">&#9670;&#160;</a></span>reg</h2>
 
@@ -284,6 +307,14 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
+<p>Construct a <a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> from a column-major matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Source matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a0b2b6000f20cf10bc300e585d0c4ec68" name="a0b2b6000f20cf10bc300e585d0c4ec68"></a>
@@ -310,6 +341,14 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Construct a <a class="el" href="classtensorium_1_1MatrixKernel.html" title="MatrixKernel provides specialized SIMD-accelerated matrix multiplication routines for statically-size...">MatrixKernel</a> from a row-major matrix by copying elements. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Source matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>.</p>
 
@@ -344,6 +383,8 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
+<p>Construct an empty column-major matrix kernel of size (r × c). </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -371,6 +412,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Multiply two 16×16 matrices using SIMD with FMADD accumulation. This function splits each row into two registers (low/high). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, true &gt;::data</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 
@@ -401,6 +451,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
+<p>Multiply two 2×2 matrices using SIMD. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
+
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 
 </div>
@@ -429,6 +488,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Multiply two 32×32 matrices using SIMD. Each row is split into two registers (16 elements each). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, true &gt;::data</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 
@@ -459,6 +527,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
+<p>Multiply two 3×3 matrices using SIMD. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
+
 </div>
 </div>
 <a id="a2b8dbfc256fef493bc24727f032fdbee" name="a2b8dbfc256fef493bc24727f032fdbee"></a>
@@ -485,6 +562,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Multiply two 4×4 matrices using SIMD. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, true &gt;::data</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 
@@ -515,6 +601,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
+<p>Multiply two 64×64 matrices using SIMD. Each row is split into 4 SIMD registers (4×16 elements). Vectorized FMADD chaining is used for performance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
+
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, true &gt;::data</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 
 </div>
@@ -543,6 +638,15 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Multiply two 8×8 matrices using SIMD. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">B</td><td>Right-hand matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of multiplication. </dd></dl>
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, true &gt;::data</a>, and <a class="el" href="classtensorium_1_1Matrix.html#a8892d0c0c6c72251409d9ee093576f91">tensorium::Matrix&lt; K, RowMajor &gt;::data</a>.</p>
 

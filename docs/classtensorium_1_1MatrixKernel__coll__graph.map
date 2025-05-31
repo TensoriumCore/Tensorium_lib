@@ -1,5 +1,5 @@
 <map id="tensorium::MatrixKernel&lt; K &gt;" name="tensorium::MatrixKernel&lt; K &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,460,215,721"/>
+<area shape="rect" id="Node000001" title="MatrixKernel provides specialized SIMD&#45;accelerated matrix multiplication routines for statically&#45;size..." alt="" coords="5,460,215,721"/>
 <area shape="rect" id="Node000002" href="$classtensorium_1_1Matrix.html" title=" " alt="" coords="40,5,180,412"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,427,113,460,107,460,107,427"/>
 </map>
