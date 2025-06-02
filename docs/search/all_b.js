@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['kappa_0',['Kappa',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feadfb67ab9ae22ae3b0c9ca316c0cd4096',1,'Latex.hpp']]],
-  ['kappa_1',['kappa',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eafe1480ff8b6ed22e7723cda0145ef23d',1,'Latex.hpp']]],
+  ['kappa_0',['kappa',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eafe1480ff8b6ed22e7723cda0145ef23d',1,'Latex.hpp']]],
+  ['kappa_1',['Kappa',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feadfb67ab9ae22ae3b0c9ca316c0cd4096',1,'Latex.hpp']]],
   ['kc_2',['KC',['../GemmKernel__bigger_8hpp.html#a73764abcca0b8bbf6bf355d9f1bab0b9',1,'GemmKernel_bigger.hpp']]],
   ['kernel_5f16x6_5fload_5faccum_3',['kernel_16x6_load_accum',['../classtensorium_1_1GemmKernelBigger.html#abf944ec162df3b7b4c9b9e0a05a8a4c3',1,'tensorium::GemmKernelBigger']]],
   ['kernel_5f16x6_5fzero_5finit_5faccum_4',['kernel_16x6_zero_init_accum',['../classtensorium_1_1GemmKernelBigger.html#a917c76dd986d3c1d1ecb867045ebeb02',1,'tensorium::GemmKernelBigger']]],

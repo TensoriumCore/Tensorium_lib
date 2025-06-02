@@ -22,21 +22,18 @@ namespace tensorium {
 
 			for (size_t a = 0; a < 3; ++a) {
 				for (size_t b = 0; b < 3; ++b) {
-					// d/dx
 					Tensor<T, 2> gm2 = shifted(-2*dx, 0, 0);
 					Tensor<T, 2> gm1 = shifted(-dx, 0, 0);
 					Tensor<T, 2> gp1 = shifted(dx, 0, 0);
 					Tensor<T, 2> gp2 = shifted(2*dx, 0, 0);
 					dgamma_out(0, a, b) = (-gp2(a,b) + 8*gp1(a,b) - 8*gm1(a,b) + gm2(a,b)) / (12 * dx);
 
-					// d/dy
 					gm2 = shifted(0, -2*dy, 0);
 					gm1 = shifted(0, -dy, 0);
 					gp1 = shifted(0, dy, 0);
 					gp2 = shifted(0, 2*dy, 0);
 					dgamma_out(1, a, b) = (-gp2(a,b) + 8*gp1(a,b) - 8*gm1(a,b) + gm2(a,b)) / (12 * dy);
 
-					// d/dz
 					gm2 = shifted(0, 0, -2*dz);
 					gm1 = shifted(0, 0, -dz);
 					gp1 = shifted(0, 0, dz);
