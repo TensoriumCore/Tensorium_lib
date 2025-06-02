@@ -15,7 +15,6 @@ namespace tensorium {
 
 				ExtrinsicCurvature(const Metric<K>& metric) : metric_(metric) {}
 
-
 				Mat compute_K_tensor(const Vec& X, K dx) const {
 					Mat gamma; Vec beta; K alpha;
 					metric_.BSSN(X, alpha, beta, gamma);
@@ -76,28 +75,6 @@ namespace tensorium {
 
 			private:
 				const Metric<K>& metric_;
-
-				Mat invert(const Mat& gamma) const {
-					Mat inv(3, 3);
-					const K det =
-						gamma(0, 0) * (gamma(1, 1) * gamma(2, 2) - gamma(1, 2) * gamma(2, 1)) -
-						gamma(0, 1) * (gamma(1, 0) * gamma(2, 2) - gamma(1, 2) * gamma(2, 0)) +
-						gamma(0, 2) * (gamma(1, 0) * gamma(2, 1) - gamma(1, 1) * gamma(2, 0));
-
-					inv(0, 0) = (gamma(1, 1) * gamma(2, 2) - gamma(1, 2) * gamma(2, 1)) / det;
-					inv(0, 1) = (gamma(0, 2) * gamma(2, 1) - gamma(0, 1) * gamma(2, 2)) / det;
-					inv(0, 2) = (gamma(0, 1) * gamma(1, 2) - gamma(0, 2) * gamma(1, 1)) / det;
-
-					inv(1, 0) = (gamma(1, 2) * gamma(2, 0) - gamma(1, 0) * gamma(2, 2)) / det;
-					inv(1, 1) = (gamma(0, 0) * gamma(2, 2) - gamma(0, 2) * gamma(2, 0)) / det;
-					inv(1, 2) = (gamma(0, 2) * gamma(1, 0) - gamma(0, 0) * gamma(1, 2)) / det;
-
-					inv(2, 0) = (gamma(1, 0) * gamma(2, 1) - gamma(1, 1) * gamma(2, 0)) / det;
-					inv(2, 1) = (gamma(0, 1) * gamma(2, 0) - gamma(0, 0) * gamma(2, 1)) / det;
-					inv(2, 2) = (gamma(0, 0) * gamma(1, 1) - gamma(0, 1) * gamma(1, 0)) / det;
-
-					return inv;
-				}
 		};
 
 }

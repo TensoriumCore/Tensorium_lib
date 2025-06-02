@@ -60,6 +60,7 @@ namespace tensorium {
 				}
 
 				
+				std::array<size_t, Rank> shape() const { return dimensions; }
 				void update_strides() {
 					strides[Rank - 1] = 1;
 					for (int64_t i = Rank - 2; i >= 0; --i)
@@ -80,6 +81,12 @@ namespace tensorium {
 				///@}
 				/** @name Element Access */
 				
+				void resize(size_t d0, size_t d1, size_t d2) {
+					static_assert(Rank == 3, "Rank mismatch in resize()");
+					
+					dimensions = {d0, d1, d2};
+					data.resize(d0 * d1 * d2, K(0));
+				}
 				///@{		
 				K& operator()(const std::array<size_t, Rank>& indices) {
 					size_t index = flatten_index(indices);
@@ -105,6 +112,15 @@ namespace tensorium {
 				const K& operator()(size_t i, size_t j) const {
 					return data[i * dimensions[1] + j];
 				}
+				K& operator()(size_t i, size_t j, size_t k) {
+					static_assert(Rank == 3, "Rank mismatch in operator()");
+					return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
+				}
+				const K& operator()(size_t i, size_t j, size_t k) const {
+					static_assert(Rank == 3, "Rank mismatch in operator()");
+					return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
+				}
+
 				///@}
 				/** @brief Fill tensor with a constant value */
 				void fill(K value) {

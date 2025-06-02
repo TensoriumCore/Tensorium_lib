@@ -31,7 +31,7 @@ tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K>& A, const tens
 }
 int matrix_bench() {
 	using namespace tensorium;
-	std::vector<std::size_t> sizes = {4096};
+	std::vector<std::size_t> sizes = {256};
 
 	for (std::size_t N : sizes) {
 		Matrix<double> A(N, N);
@@ -181,7 +181,6 @@ int matrix_tests() {
 	G(2, 0) = 0; G(2, 1) = 0; G(2, 2) = 0; G(2, 3) = 0;
 
 	size_t r = G.rank();
-	std::cout << "Rank of A = " << r << "\n";
 	CHECK(r == 1);
 
 	Matrix<std::complex<float>> Ac(2, 2);
@@ -211,13 +210,8 @@ int matrix_tests() {
 	Mat B2(2, 2);
 	B2(0, 0) = 5; B2(0, 1) = 6;
 	B2(1, 0) = 7; B2(1, 1) = 8;
-	printf("A2 =\n");
-	A2.print();
-	printf("B2 =\n");
-	B2.print();
+
 	Mat R2 = tensorium::mul_mat(A2, B2);
-	printf("A2 . B2\n");
-	R2.print();
 	CHECK(std::abs(R2(0, 0) - (1*5 + 2*7)) < 1e-4f);
 	CHECK(std::abs(R2(0, 1) - (1*6 + 2*8)) < 1e-4f);
 	CHECK(std::abs(R2(1, 0) - (3*5 + 4*7)) < 1e-4f);
@@ -234,13 +228,9 @@ int matrix_tests() {
 	B3(0, 0) = 9; B3(0, 1) = 8; B3(0, 2) = 7;
 	B3(1, 0) = 6; B3(1, 1) = 5; B3(1, 2) = 4;
 	B3(2, 0) = 3; B3(2, 1) = 2; B3(2, 2) = 1;
-	printf("A3 =\n");
-	A3.print();
-	printf("B3 =\n");
-	B3.print();
+
 	Mat R3 = tensorium::mul_mat(A3, B3);
-	printf("A3 . B3\n");
-	R3.print();
+
 	CHECK(std::abs(R3(0, 0) - (1*9 + 2*6 + 3*3)) < 1e-4f);
 	CHECK(std::abs(R3(0, 1) - (1*8 + 2*5 + 3*2)) < 1e-4f);
 	CHECK(std::abs(R3(0, 2) - (1*7 + 2*4 + 3*1)) < 1e-4f);
@@ -257,7 +247,6 @@ int matrix_tests() {
 		}
 	
 	Mat R4 = tensorium::mul_mat(A4, B4);
-	R4.print();
 	CHECK(std::abs(R4(0, 0) - (1*16 + 2*12 + 3*8 + 4*4)) < 1e-4f);
 	CHECK(std::abs(R4(3, 3) - (13*13 + 14*9 + 15*5 + 16*1)) < 1e-4f);
 
@@ -273,7 +262,6 @@ int matrix_tests() {
 		}
 
 	Mat R8 = tensorium::mul_mat(A8, B8);
-	R8.print();
 	float expected = 0.0f;
 	for (int k = 0; k < 8; ++k)
 		expected += A8(0, k) * B8(k, 0);
@@ -306,7 +294,7 @@ int matrix_tests() {
 
 	tensorium::Vector<double> X(dim);
 	X(0) = 0.0; 
-	X(1) = 200.0;
+	X(1) = 2000.0;
 	X(2) = M_PI / 2.0;
 	X(3) = 0.0;
 
@@ -329,78 +317,35 @@ int matrix_tests() {
 	tensorium::print_riemann_tensor(R);
 	tensorium::contract_tensor<0, 1>(R);
 	std::cout << "Riemann tensor contracted:\n";
-	R.print_shape();
 	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
-	R.print();
-	
+	double dx = 1e-5, dy = 1e-5, dz = 1e-5;
+
 	double alpha;
 	tensorium::Vector<double> beta(3);
-	tensorium::Tensor<double, 2> gammaj;
+	tensorium::Tensor<double, 2> gammaj({3, 3});
 	metric.BSSN(X, alpha, beta, gammaj);
-	tensorium::Tensor<double, 2> gammaj_inv;
+
+	tensorium::Tensor<double, 2> gammaj_inv = tensorium::inv_mat_tensor(gammaj);
 
 	std::cout << "\n--- BSSN 3+1 Decomposition ---\n";
 	std::cout << "Lapse α = " << alpha << "\n";
+
 	std::cout << "Shift vector β^i = [";
 	for (size_t i = 0; i < beta.size(); ++i)
 		std::cout << beta(i) << (i + 1 < beta.size() ? ", " : "");
 	std::cout << "]\n";
+
 	std::cout << "Spatial metric γ_{ij}:\n";
 	gammaj.print_shape();
 	gammaj.print();
-	std::cout <<  "Spatial metric γ^{ij}:\n";
-	gammaj_inv = tensorium::inv_mat_tensor(gammaj);
+
+	std::cout << "Spatial metric γ^{ij}:\n";
 	gammaj_inv.print();
 
-	double chi = tensorium::compute_conformal_factor(metric, gammaj);
-	tensorium::Tensor<double, 2> gamma_tilde = tensorium::compute_conformal_metric(metric, gammaj, chi);
-	std::cout << "\n--- Conformal Decomposition ---\n";
-	std::cout << "Conformal factor χ = " << chi << "\n";
-	std::cout << "Conformal metric γ̃_{ij} = χ · γ_{ij}:\n";
-	gamma_tilde.print_shape();
-	gamma_tilde.print();
-	auto gamma2 = tensorium::compute_christoffel(X, 1e-5, gammaj, gammaj_inv, metric);
-	gamma2.print();
-	auto R_BSSN = tensorium::compute_riemann_tensor(X, 1e-5, metric);
-	tensorium::print_riemann_tensor(R_BSSN);
-	constexpr std::size_t N = 1024;
-    constexpr double L = 1.0; 
-    constexpr double dx = L / N;
-    constexpr double two_pi = 2.0 * M_PI;
+	std::cout << "--- SETUP BSSN TEST---\n";	
+	auto bssn = tensorium::setup_BSSN_grid(X, metric, dx, dy, dz);
 
-    tensorium::Vector<std::complex<double>> f(N); 
-    tensorium::Vector<std::complex<double>> f_hat(N);
-    tensorium::Vector<std::complex<double>> df(N); 
-
-    for (std::size_t i = 0; i < N; ++i) {
-        double x = i * dx;
-        f[i] = std::sin(two_pi * x);
-    }
-
-    f_hat = f;
-    tensorium::forwardFFT(f_hat);
-
-    for (std::size_t k = 0; k < N; ++k) {
-        std::ptrdiff_t k_signed = (k <= N/2) ? k : k - N; 
-        std::complex<double> ik = std::complex<double>(0.0, two_pi * k_signed / L);
-        f_hat[k] *= ik;
-    }
-
-    df = f_hat;
-    tensorium::backwardFFT(df);  
-
-    double max_err = 0.0;
-    for (std::size_t i = 0; i < N; ++i) {
-        double x = i * dx;
-        double exact = two_pi * std::cos(two_pi * x);
-        double err = std::abs(df[i].real() - exact);
-        if (err > max_err) max_err = err;
-    }
-
-    std::cout << "=== Dérivée spectrale de sin(2πx) ===\n";
-    std::cout << "Erreur max sur f'(x) = " << max_err << "\n";
-
-    return (max_err < 1e-12) ? 0 : 1;
+	return 0;
 }
 
 

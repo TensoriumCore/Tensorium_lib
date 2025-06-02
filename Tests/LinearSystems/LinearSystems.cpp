@@ -15,8 +15,6 @@ int linear_solver_test() {
 	x.print();
 
 	Vector<float> b_check = A * x;
-	std::cout << "Check Ax = b:\n";
-	b_check.print();
 
 	std::cout << "=== Jacobi Solver Test ===\n";
 	Matrix<float> A2(3, 3);
@@ -26,8 +24,6 @@ int linear_solver_test() {
 
 	Vector<float> b2 = { 6.0f, 25.0f, -11.0f };
 	Vector<float> x2 = tensorium::jacobi_solve(A2, b2);
-	std::cout << "Solution x2:\n";
-	x2.print();
 
 	Vector<float> b2_check = tensorium::mul_vec(A2, x2);
 	std::cout << "Check Ax2 = b2:\n";
