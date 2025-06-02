@@ -12,7 +12,7 @@ PYBIND11_DIR=$($PYTHON_EXE -m pybind11 --cmakedir)
 echo "Creating build directory 'pybuild' and configuring project..."
 mkdir -p pybuild
 tcd=pybuild
-#cd "$tcd"
+cd "$tcd"
 
 echo "Using Python executable: $PYTHON_EXE"
 echo "Using pybind11 CMake dir: $PYBIND11_DIR"
@@ -22,7 +22,7 @@ cmake \
   -DPYTHON_EXECUTABLE="$PYTHON_EXE" \
   -Dpybind11_DIR="$PYBIND11_DIR" \
   -DCMAKE_BUILD_TYPE=Release \
-  .
+  ..
 
 echo "Building with make..."
 total_cores=$(nproc || echo 1)
