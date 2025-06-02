@@ -6,6 +6,9 @@
 #include "../DiffGeometry/Metric.hpp"
 #include "../DiffGeometry/RiemannTensor.hpp"
 #include "../DiffGeometry/RicciTensor.hpp"
+#include "../DiffGeometry/BSSN/BSSNChristoffel.hpp"
+#include "../DiffGeometry/BSSN/BSSNSetup.hpp"
+#include "../DiffGeometry/BSSN/BSSNMetricUtils.hpp"
 
 namespace tensorium {
 
@@ -122,4 +125,24 @@ namespace tensorium {
 				metric.compute_conformal_metric(gamma, chi, gamma_tilde);
 				return gamma_tilde;
 			}
+
+	
+		template<typename T>
+			inline void compute_christoffel_3D(const Tensor<T, 2>& gamma_tilde,
+					const Tensor<T, 3>& dgamma_tilde,
+					const Tensor<T, 2>& gamma_tilde_inv,
+					Tensor<T, 3>& Christoffel) {
+				BSSNChristoffel<T>::compute(gamma_tilde, dgamma_tilde, gamma_tilde_inv, Christoffel);
+			}
+		
+
+		template<typename T>
+			inline BSSN<T> setup_BSSN_grid(const Vector<T>& X,
+					const tensorium_RG::Metric<T>& metric,
+					T dx, T dy, T dz) {
+				BSSN<T> bssn;
+				bssn.init_BSSN(X, metric, dx, dy, dz);
+				return bssn;
+			}
+
 }
