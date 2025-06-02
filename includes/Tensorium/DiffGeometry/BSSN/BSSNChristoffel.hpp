@@ -51,8 +51,14 @@ namespace tensorium {
 				}
 		};
 
-
-		template<typename T>
+	/**
+	 * @brief Compute the metric derivatives locally 
+	 * 
+	 * @param field			   5×5 Tensor field of the metric
+	 * @param i, j, k          indexes of the local grid
+	 * @param dgamma_out       Output 3×3×3 array Y_{ij}
+	 */
+	template<typename T>
 			inline void compute_partial_derivatives_3D(
 					const Tensor<T, 5>& gamma_field,
 					size_t i, size_t j, size_t k,

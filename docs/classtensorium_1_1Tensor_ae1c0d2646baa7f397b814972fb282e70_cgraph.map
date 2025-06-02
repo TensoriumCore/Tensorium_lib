@@ -1,5 +1,7 @@
 <map id="tensorium::Tensor::tensor_product" name="tensorium::Tensor::tensor_product">
-<area shape="rect" id="Node000001" title="Compute the tensor (outer) product of two tensors." alt="" coords="5,5,151,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a5bc07bda8bddb37a554a4a1723c6fad9" title="Default constructor." alt="" coords="199,5,344,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,25,183,25,183,30,151,30"/>
+<area shape="rect" id="Node000001" title="Compute the tensor (outer) product of two tensors." alt="" coords="5,40,151,85"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="199,5,344,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,47,183,41,183,46,151,52"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#a5bc07bda8bddb37a554a4a1723c6fad9" title="Default constructor." alt="" coords="199,75,344,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,73,183,79,183,84,150,78"/>
 </map>

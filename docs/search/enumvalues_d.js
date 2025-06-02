@@ -1,8 +1,8 @@
 var searchData=
 [
   ['partial_0',['partial',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921a0e87c1212a698494dcdb198af3e0eb2f',1,'Latex.hpp']]],
-  ['phi_1',['Phi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea5a82bece4586ad7cb17ba739a2db7f67',1,'Latex.hpp']]],
-  ['phi_2',['phi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eacb7a24bb7528f934b841b34c3a73e0c7',1,'Latex.hpp']]],
+  ['phi_1',['phi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15eacb7a24bb7528f934b841b34c3a73e0c7',1,'Latex.hpp']]],
+  ['phi_2',['Phi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea5a82bece4586ad7cb17ba739a2db7f67',1,'Latex.hpp']]],
   ['pi_3',['Pi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea127125672f1e85d1e676d4394d24e066',1,'Latex.hpp']]],
   ['pi_4',['pi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea72ab8af56bddab33b269c5964b26620a',1,'Latex.hpp']]],
   ['plus_5',['plus',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921ad7d18cfb3a0d8293e2f5d94ea30e04d2',1,'Latex.hpp']]],

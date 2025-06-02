@@ -1,6 +1,7 @@
 var FunctionnalRG_8hpp =
 [
     [ "compute_christoffel", "FunctionnalRG_8hpp.html#a7c9c0e180ff6fb68bcb41be3fc69d9ff", null ],
+    [ "compute_christoffel_3D", "FunctionnalRG_8hpp.html#ac0f7060820c6fee60fb16d7cb31d1870", null ],
     [ "compute_conformal_factor", "FunctionnalRG_8hpp.html#a6b62911850464ab7b786a6356b41ed19", null ],
     [ "compute_conformal_metric", "FunctionnalRG_8hpp.html#a95e9e9350bb8b03dde2cb48231638376", null ],
     [ "compute_ricci_scalar", "FunctionnalRG_8hpp.html#a29a83f300e66bc89f594d8f262712eac", null ],
@@ -12,5 +13,6 @@ var FunctionnalRG_8hpp =
     [ "print_ricci_scalar", "FunctionnalRG_8hpp.html#a2c1b563f2abeb6b4713764c7ac84642f", null ],
     [ "print_ricci_tensor", "FunctionnalRG_8hpp.html#adc27d66b7cac986daf1685f26a0871ae", null ],
     [ "print_riemann_tensor", "FunctionnalRG_8hpp.html#a943d5321efca5ce7011c47f206af99ed", null ],
+    [ "setup_BSSN_grid", "FunctionnalRG_8hpp.html#a10b2a53ae1064165ba3ed2330ee0f067", null ],
     [ "tensor_to_matrix", "FunctionnalRG_8hpp.html#aa2c6c7a4e99f02184e56ce0efff0e306", null ]
 ];

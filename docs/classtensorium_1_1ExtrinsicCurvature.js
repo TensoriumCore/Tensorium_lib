@@ -6,6 +6,5 @@ var classtensorium_1_1ExtrinsicCurvature =
     [ "compute_Atilde_tensor", "classtensorium_1_1ExtrinsicCurvature.html#ac2d7a72a60e8ba8d6cfc28421c33941d", null ],
     [ "compute_K_scalar", "classtensorium_1_1ExtrinsicCurvature.html#a9ff62e57fe16c04d681b54151a3602ce", null ],
     [ "compute_K_tensor", "classtensorium_1_1ExtrinsicCurvature.html#a3e261159572bb823f3148730474751aa", null ],
-    [ "invert", "classtensorium_1_1ExtrinsicCurvature.html#ada5a8651a354d808cbbf8e4f2e786bbf", null ],
     [ "metric_", "classtensorium_1_1ExtrinsicCurvature.html#ae332ce18ec9a436393201918b834402d", null ]
 ];

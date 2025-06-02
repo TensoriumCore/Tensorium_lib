@@ -1,5 +1,8 @@
 var namespacetensorium =
 [
+    [ "bssn", "namespacetensorium_1_1bssn.html", [
+      [ "generate_conformal_metric_field", "namespacetensorium_1_1bssn.html#a3906e9a8fd11397aaa179e1de78a3c54", null ]
+    ] ],
     [ "mpi", "namespacetensorium_1_1mpi.html", [
       [ "allreduce", "namespacetensorium_1_1mpi.html#a3459cf4797a20672b894072ac6eac9b9", null ],
       [ "barrier", "namespacetensorium_1_1mpi.html#aeff11bc9ad9d8e87791babb1bf14b1ca", null ],
@@ -17,6 +20,9 @@ var namespacetensorium =
     [ "solver", "namespacetensorium_1_1solver.html", "namespacetensorium_1_1solver" ],
     [ "ASTNode", "structtensorium_1_1ASTNode.html", "structtensorium_1_1ASTNode" ],
     [ "avx2_t", "structtensorium_1_1avx2__t.html", "structtensorium_1_1avx2__t" ],
+    [ "BSSN", "classtensorium_1_1BSSN.html", "classtensorium_1_1BSSN" ],
+    [ "BSSNChristoffel", "classtensorium_1_1BSSNChristoffel.html", "classtensorium_1_1BSSNChristoffel" ],
+    [ "BSSNGrid", "structtensorium_1_1BSSNGrid.html", "structtensorium_1_1BSSNGrid" ],
     [ "CacheInfo", "classtensorium_1_1CacheInfo.html", "classtensorium_1_1CacheInfo" ],
     [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
     [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
@@ -53,8 +59,11 @@ var namespacetensorium =
     [ "centered_derivative_order4", "namespacetensorium.html#abbcc90b5d73fb04ba5f12a28dea4b437", null ],
     [ "centered_derivative_order4", "namespacetensorium.html#a1f52446c6e120ef9ecc44447a3fd7c00", null ],
     [ "compute_christoffel", "namespacetensorium.html#a7c9c0e180ff6fb68bcb41be3fc69d9ff", null ],
+    [ "compute_christoffel_3D", "namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870", null ],
     [ "compute_conformal_factor", "namespacetensorium.html#a6b62911850464ab7b786a6356b41ed19", null ],
     [ "compute_conformal_metric", "namespacetensorium.html#a95e9e9350bb8b03dde2cb48231638376", null ],
+    [ "compute_partial_derivatives_3D", "namespacetensorium.html#a3ffccb9411269138012e27fc06774d5c", null ],
+    [ "compute_partial_derivatives_gamma_tilde", "namespacetensorium.html#a1127254fabc2a56040f202659bf958a0", null ],
     [ "compute_ricci_scalar", "namespacetensorium.html#a29a83f300e66bc89f594d8f262712eac", null ],
     [ "compute_riemann_tensor", "namespacetensorium.html#a3fe69169243dcb89188d497bfbafde7e", null ],
     [ "contract_riemann_to_ricci", "namespacetensorium.html#a7f2ff42b29e1fc37b75977f43175e8e4", null ],
@@ -89,6 +98,7 @@ var namespacetensorium =
     [ "row_echelon", "namespacetensorium.html#a48b8f2d501b658de2f7cef3565d1ccc8", null ],
     [ "scl_mat", "namespacetensorium.html#a2207f906782c6a186c09559e5857fc57", null ],
     [ "scl_vec", "namespacetensorium.html#a4447af9c4745bf0d1c966f434bd81150", null ],
+    [ "setup_BSSN_grid", "namespacetensorium.html#a10b2a53ae1064165ba3ed2330ee0f067", null ],
     [ "sub_mat", "namespacetensorium.html#a91dac89d785ff89280a4a316e954a7a2", null ],
     [ "sub_vec", "namespacetensorium.html#af5eeb9b7bbe9b3ddd559961e7d566d7b", null ],
     [ "tensor_to_matrix", "namespacetensorium.html#aa2c6c7a4e99f02184e56ce0efff0e306", null ],
