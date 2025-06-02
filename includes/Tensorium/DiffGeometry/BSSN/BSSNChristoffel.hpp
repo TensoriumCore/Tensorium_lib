@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <stdexcept>
 
-namespace tensorium {
+namespace tensorium_RG {
 
 	template<typename T>
 		class BSSNChristoffel {
@@ -20,10 +20,10 @@ namespace tensorium {
 				 * @param Christoffel      Output 3×3×3 array Γ̃^k_{ij}
 				 */
 				static void compute(
-						const Tensor<T, 2>& gamma_tilde,
-						const Tensor<T, 3>& dgamma_tilde,
-						const Tensor<T, 2>& gamma_tilde_inv,
-						Tensor<T, 3>& Christoffel
+						const tensorium::Tensor<T, 2>& gamma_tilde,
+						const tensorium::Tensor<T, 3>& dgamma_tilde,
+						const tensorium::Tensor<T, 2>& gamma_tilde_inv,
+						tensorium::Tensor<T, 3>& Christoffel
 						) {
 
 					if (gamma_tilde.shape() != std::array<size_t,2>{3,3})
@@ -54,16 +54,16 @@ namespace tensorium {
 	/**
 	 * @brief Compute the metric derivatives locally 
 	 * 
-	 * @param field			   5×5 Tensor field of the metric
+	 * @param field			   5×5 tensorium::Tensor field of the metric
 	 * @param i, j, k          indexes of the local grid
 	 * @param dgamma_out       Output 3×3×3 array Y_{ij}
 	 */
 	template<typename T>
 			inline void compute_partial_derivatives_3D(
-					const Tensor<T, 5>& gamma_field,
+					const tensorium::Tensor<T, 5>& gamma_field,
 					size_t i, size_t j, size_t k,
 					T dx, T dy, T dz,
-					Tensor<T, 3>& dgamma_out) {
+					tensorium::Tensor<T, 3>& dgamma_out) {
 
 				dgamma_out.resize(3, 3, 3);
 

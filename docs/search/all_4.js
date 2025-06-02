@@ -15,7 +15,7 @@ var searchData=
   ['det_5fmat_12',['det_mat',['../namespacetensorium.html#aec83b616f40dbad888e865d4ab1b95e0',1,'tensorium']]],
   ['detail_13',['detail',['../namespacedetail.html',1,'']]],
   ['detect_5foptimal_5fblock_5fsize_14',['detect_optimal_block_size',['../CPU__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb',1,'CPU_id.hpp']]],
-  ['dgamma_5ftilde_15',['dgamma_tilde',['../structtensorium_1_1BSSNGrid.html#a5cd0676b1d72d16aec1608291771046a',1,'tensorium::BSSNGrid']]],
+  ['dgamma_5ftilde_15',['dgamma_tilde',['../structtensorium__RG_1_1BSSNGrid.html#a9a19de601fc00f99ff3c573e8158b70b',1,'tensorium_RG::BSSNGrid']]],
   ['difference_5ftype_16',['difference_type',['../structAlignedAllocator.html#a29881377dea9d1561debf60ff7904647',1,'AlignedAllocator']]],
   ['diffgeometry_20module_17',['Tensorium — DiffGeometry Module',['../md_includes_2Tensorium_2DiffGeometry_2README.html',1,'']]],
   ['dim_18',['dim',['../classtensorium__RG_1_1ChristoffelSym.html#a0f659895930d773defb512fd4ed133e1',1,'tensorium_RG::ChristoffelSym']]],

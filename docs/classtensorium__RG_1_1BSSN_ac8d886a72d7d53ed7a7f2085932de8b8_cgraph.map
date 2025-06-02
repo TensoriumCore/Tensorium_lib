@@ -1,0 +1,19 @@
+<map id="tensorium_RG::BSSN::init_BSSN" name="tensorium_RG::BSSN::init_BSSN">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,125,162,170"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="231,5,393,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,122,208,67,235,54,237,59,211,71,119,127"/>
+<area shape="rect" id="Node000003" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="515,74,554,102"/>
+<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="158,122,209,110,291,99,372,92,500,86,500,91,372,97,291,104,210,116,159,127"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1Metric.html#a4c07e5ceadb53d242687c73a039b7c48" title=" " alt="" coords="210,125,414,170"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="162,145,194,145,194,150,162,150"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium__RG.html#aa56c600dd06dd10c3a8b52515598cc98" title=" " alt="" coords="223,194,401,256"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="153,168,209,187,207,192,151,173"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b" title="Print a 2D tensor (Rank == 2)" alt="" coords="239,280,385,325"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="105,169,151,217,180,243,211,265,226,273,223,278,208,270,176,247,147,221,101,172"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,47,501,76,500,81,393,52"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="392,191,413,180,463,145,505,110,509,114,466,149,415,185,394,196"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="462,203,607,247"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="401,222,446,222,446,228,401,228"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="655,203,801,247"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="608,222,640,222,640,228,608,228"/>
+</map>

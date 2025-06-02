@@ -6,7 +6,7 @@ var searchData=
   ['in_20python_3',['Example using in Python',['../index.html#autotoc_md9',1,'']]],
   ['index_4',['index',['../classtensorium_1_1Matrix.html#a9d7afa564c31722e01fb9447da0da9d9',1,'tensorium::Matrix']]],
   ['init_5',['init',['../namespacetensorium_1_1mpi.html#af429bbc0918bd823c682feccbaed9978',1,'tensorium::mpi']]],
-  ['init_5fbssn_6',['init_BSSN',['../classtensorium_1_1BSSN.html#a91070f9dd9f8cd38bccbe6d8c95e9046',1,'tensorium::BSSN']]],
+  ['init_5fbssn_6',['init_BSSN',['../classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8',1,'tensorium_RG::BSSN']]],
   ['inner_7',['inner',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921aea97586b4aa0c141e4456912f3325f7f',1,'Latex.hpp']]],
   ['input_8',['input',['../classtensorium_1_1DerivateND.html#a76b807ecf17583b886412ddbcf584928',1,'tensorium::DerivateND::input'],['../classLexer.html#a3b776c2fccaa245fe385c4e398f7f7b2',1,'Lexer::input']]],
   ['instructions_9',['Build Instructions',['../index.html#autotoc_md4',1,'']]],

@@ -6,15 +6,15 @@
 #include <cassert>
 #include <cstddef>
 
-namespace tensorium::bssn {
+namespace tensorium_RG {
 
 	template<typename T>
-		Tensor<T, 5> generate_conformal_metric_field(
+		tensorium::Tensor<T, 5> generate_conformal_metric_field(
 				const tensorium_RG::Metric<T>& metric,
 				size_t Nx, size_t Ny, size_t Nz,
 				T dx, T dy, T dz
 				) {
-			Tensor<T, 5> gamma_tilde_field({Nx, Ny, Nz, 3, 3});
+			tensorium::Tensor<T, 5> gamma_tilde_field({Nx, Ny, Nz, 3, 3});
 
 			tensorium::Vector<T> X(4); // X^μ
 			X(0) = T(0); 
