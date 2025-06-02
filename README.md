@@ -46,7 +46,7 @@ This library is built with the goal of empowering projects that require both spe
 - Full MPI support (maybe Intel-TBB routines
 - Spectral Methdods (Chebychev/Fourrier)
 - Backward FDM
-- Some (severak) optimizations
+- Some (several) optimizations
 
 ## Build Instructions
 
