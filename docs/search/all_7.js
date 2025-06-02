@@ -2,10 +2,10 @@ var searchData=
 [
   ['gamma_0',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
   ['gamma_1',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
-  ['gamma_5fij_2',['gamma_ij',['../structtensorium_1_1BSSNGrid.html#ad1f8a47fbf459e74f74f327b292a513b',1,'tensorium::BSSNGrid']]],
-  ['gamma_5fij_5finv_3',['gamma_ij_inv',['../structtensorium_1_1BSSNGrid.html#a954a7e1105973f0f3084d42ac84d3ede',1,'tensorium::BSSNGrid']]],
-  ['gamma_5ftilde_4',['gamma_tilde',['../structtensorium_1_1BSSNGrid.html#a8049824af60685506b29f21929b41fb1',1,'tensorium::BSSNGrid']]],
-  ['gamma_5ftilde_5finv_5',['gamma_tilde_inv',['../structtensorium_1_1BSSNGrid.html#aa05db113e58d37f9fdbe8e29d4e81425',1,'tensorium::BSSNGrid']]],
+  ['gamma_5fij_2',['gamma_ij',['../structtensorium__RG_1_1BSSNGrid.html#a1f0fc82a7891cb34f654a92d36c61ccc',1,'tensorium_RG::BSSNGrid']]],
+  ['gamma_5fij_5finv_3',['gamma_ij_inv',['../structtensorium__RG_1_1BSSNGrid.html#a65ef23fea6c5f7ef2ce9e250a1f0d56c',1,'tensorium_RG::BSSNGrid']]],
+  ['gamma_5ftilde_4',['gamma_tilde',['../structtensorium__RG_1_1BSSNGrid.html#a7484c43c3879148067a8fda7101c3bae',1,'tensorium_RG::BSSNGrid']]],
+  ['gamma_5ftilde_5finv_5',['gamma_tilde_inv',['../structtensorium__RG_1_1BSSNGrid.html#aef97247af31e98fa17327716f3d26003',1,'tensorium_RG::BSSNGrid']]],
   ['gather_6',['gather',['../namespacetensorium_1_1mpi.html#a59e6778625f7e7722be93650b836dd23',1,'tensorium::mpi']]],
   ['gauss_7',['Gauss',['../classtensorium_1_1solver_1_1Gauss.html',1,'tensorium::solver']]],
   ['gauss_5fsolve_8',['gauss_solve',['../namespacetensorium.html#ac40194e7c0127eabef9f65e1b9950084',1,'tensorium']]],
@@ -14,7 +14,7 @@ var searchData=
   ['gemmkernel_5fbigger_2ehpp_11',['GemmKernel_bigger.hpp',['../GemmKernel__bigger_8hpp.html',1,'']]],
   ['gemmkernelbig_12',['GemmKernelBig',['../classtensorium_1_1GemmKernelBig.html',1,'tensorium']]],
   ['gemmkernelbigger_13',['GemmKernelBigger',['../classtensorium_1_1GemmKernelBigger.html',1,'tensorium']]],
-  ['generate_5fconformal_5fmetric_5ffield_14',['generate_conformal_metric_field',['../namespacetensorium_1_1bssn.html#a3906e9a8fd11397aaa179e1de78a3c54',1,'tensorium::bssn']]],
+  ['generate_5fconformal_5fmetric_5ffield_14',['generate_conformal_metric_field',['../namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7',1,'tensorium_RG']]],
   ['generate_5fmetric_15',['generate_metric',['../namespacetensorium.html#a12ea02010726156136abcb3aff6205e8',1,'tensorium']]],
   ['get_16',['get',['../classtensorium_1_1Parser.html#af3590c18d35574f3bde3780a12fc46ec',1,'tensorium::Parser::get()'],['../classLexer.html#a73efcc0ba6d498bdb8249a6f858d66ee',1,'Lexer::get()']]],
   ['get_5fcpu_5fbrand_17',['get_cpu_brand',['../CPU__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f',1,'CPU_id.hpp']]],
@@ -29,5 +29,5 @@ var searchData=
   ['greekmapupper_26',['GreekMapUpper',['../classLexer.html#a3add295fdc3cbd0e0e44d6a0f9c08ab0',1,'Lexer']]],
   ['greeksymbolminus_27',['GreekSymbolminus',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15e',1,'Latex.hpp']]],
   ['greeksymbolplus_28',['GreekSymbolplus',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fe',1,'Latex.hpp']]],
-  ['grid_29',['grid',['../classtensorium_1_1BSSN.html#a8540564e764512a7582eaf0235349abd',1,'tensorium::BSSN']]]
+  ['grid_29',['grid',['../classtensorium__RG_1_1BSSN.html#a64150bbf274a85f6bb1b229cb4577e6d',1,'tensorium_RG::BSSN']]]
 ];

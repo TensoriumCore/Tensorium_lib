@@ -3,7 +3,6 @@
 #include "../Core/Vector.hpp"
 #include "../Core/Tensor.hpp"
 #include "../Core/Matrix.hpp"
-#include "../Functionnal/FunctionnalRG.hpp"
 #include "../DiffGeometry/ChristoffelSymbol.hpp"
 #include "../DiffGeometry/Metric.hpp"
 #include "../Core/Derivate.hpp"

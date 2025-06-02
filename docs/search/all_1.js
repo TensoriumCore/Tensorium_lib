@@ -15,7 +15,7 @@ var searchData=
   ['allocator_20hpp_12',['Allocator.hpp',['../md_includes_2Tensorium_2SIMD_2README.html#autotoc_md37',1,'']]],
   ['allocator_2ehpp_13',['Allocator.hpp',['../Allocator_8hpp.html',1,'']]],
   ['allreduce_14',['allreduce',['../namespacetensorium_1_1mpi.html#a3459cf4797a20672b894072ac6eac9b9',1,'tensorium::mpi']]],
-  ['alpha_15',['alpha',['../structtensorium_1_1BSSNGrid.html#a296aeb3ca0c07fd507212e38402e8167',1,'tensorium::BSSNGrid::alpha'],['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9',1,'alpha:&#160;Latex.hpp']]],
+  ['alpha_15',['alpha',['../structtensorium__RG_1_1BSSNGrid.html#a4d8ffd13157208559d3adc490500b95d',1,'tensorium_RG::BSSNGrid::alpha'],['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9',1,'alpha:&#160;Latex.hpp']]],
   ['alpha_16',['Alpha',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea6132295fcf5570fb8b0a944ef322a598',1,'Latex.hpp']]],
   ['and_20options_17',['Build C++ only for special targets and options',['../index.html#autotoc_md7',1,'']]],
   ['and_20python_20module_18',['Build C++ Library and Python Module',['../index.html#autotoc_md6',1,'']]],

@@ -13,6 +13,6 @@ var FunctionnalRG_8hpp =
     [ "print_ricci_scalar", "FunctionnalRG_8hpp.html#a2c1b563f2abeb6b4713764c7ac84642f", null ],
     [ "print_ricci_tensor", "FunctionnalRG_8hpp.html#adc27d66b7cac986daf1685f26a0871ae", null ],
     [ "print_riemann_tensor", "FunctionnalRG_8hpp.html#a943d5321efca5ce7011c47f206af99ed", null ],
-    [ "setup_BSSN_grid", "FunctionnalRG_8hpp.html#a10b2a53ae1064165ba3ed2330ee0f067", null ],
+    [ "setup_BSSN_grid", "FunctionnalRG_8hpp.html#ab5a080e67f0b588291029935dff5d664", null ],
     [ "tensor_to_matrix", "FunctionnalRG_8hpp.html#aa2c6c7a4e99f02184e56ce0efff0e306", null ]
 ];

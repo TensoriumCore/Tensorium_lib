@@ -2,30 +2,30 @@
 
 #include "../Metric.hpp"
 
-namespace tensorium {
+namespace tensorium_RG {
 	template<typename T, typename GammaFunc>
 		inline void compute_partial_derivatives_gamma_tilde(
-				const Vector<T>& X,
+				const tensorium::Vector<T>& X,
 				T dx, T dy, T dz,
 				GammaFunc&& gamma_tilde_func,
-				Tensor<T, 3>& dgamma_out
+				tensorium::Tensor<T, 3>& dgamma_out
 				) {
 			dgamma_out.resize(3, 3, 3);
 
 			auto shifted = [&](T dx_, T dy_, T dz_) {
-				Vector<T> Xs = X;
+				tensorium::Vector<T> Xs = X;
 				Xs(0) += dx_; Xs(1) += dy_; Xs(2) += dz_;
-				Tensor<T, 2> out({3, 3});
+				tensorium::Tensor<T, 2> out({3, 3});
 				gamma_tilde_func(Xs, out);
 				return out;
 			};
 
 			for (size_t a = 0; a < 3; ++a) {
 				for (size_t b = 0; b < 3; ++b) {
-					Tensor<T, 2> gm2 = shifted(-2*dx, 0, 0);
-					Tensor<T, 2> gm1 = shifted(-dx, 0, 0);
-					Tensor<T, 2> gp1 = shifted(dx, 0, 0);
-					Tensor<T, 2> gp2 = shifted(2*dx, 0, 0);
+					tensorium::Tensor<T, 2> gm2 = shifted(-2*dx, 0, 0);
+					tensorium::Tensor<T, 2> gm1 = shifted(-dx, 0, 0);
+					tensorium::Tensor<T, 2> gp1 = shifted(dx, 0, 0);
+					tensorium::Tensor<T, 2> gp2 = shifted(2*dx, 0, 0);
 					dgamma_out(0, a, b) = (-gp2(a,b) + 8*gp1(a,b) - 8*gm1(a,b) + gm2(a,b)) / (12 * dx);
 
 					gm2 = shifted(0, -2*dy, 0);

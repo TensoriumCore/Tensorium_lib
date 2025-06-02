@@ -21,9 +21,6 @@ var annotated_dup =
       ] ],
       [ "ASTNode", "structtensorium_1_1ASTNode.html", "structtensorium_1_1ASTNode" ],
       [ "avx2_t", "structtensorium_1_1avx2__t.html", "structtensorium_1_1avx2__t" ],
-      [ "BSSN", "classtensorium_1_1BSSN.html", "classtensorium_1_1BSSN" ],
-      [ "BSSNChristoffel", "classtensorium_1_1BSSNChristoffel.html", "classtensorium_1_1BSSNChristoffel" ],
-      [ "BSSNGrid", "structtensorium_1_1BSSNGrid.html", "structtensorium_1_1BSSNGrid" ],
       [ "CacheInfo", "classtensorium_1_1CacheInfo.html", "classtensorium_1_1CacheInfo" ],
       [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
       [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
@@ -39,6 +36,9 @@ var annotated_dup =
       [ "Vector", "classtensorium_1_1Vector.html", "classtensorium_1_1Vector" ]
     ] ],
     [ "tensorium_RG", "namespacetensorium__RG.html", [
+      [ "BSSN", "classtensorium__RG_1_1BSSN.html", "classtensorium__RG_1_1BSSN" ],
+      [ "BSSNChristoffel", "classtensorium__RG_1_1BSSNChristoffel.html", "classtensorium__RG_1_1BSSNChristoffel" ],
+      [ "BSSNGrid", "structtensorium__RG_1_1BSSNGrid.html", "structtensorium__RG_1_1BSSNGrid" ],
       [ "ChristoffelSym", "classtensorium__RG_1_1ChristoffelSym.html", "classtensorium__RG_1_1ChristoffelSym" ],
       [ "Metric", "classtensorium__RG_1_1Metric.html", "classtensorium__RG_1_1Metric" ],
       [ "RicciTensor", "classtensorium__RG_1_1RicciTensor.html", "classtensorium__RG_1_1RicciTensor" ],

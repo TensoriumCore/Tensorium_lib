@@ -1,13 +1,11 @@
 <map id="tensorium::Tensor::shape" name="tensorium::Tensor::shape">
-<area shape="rect" id="Node000001" title=" " alt="" coords="700,75,846,119"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1BSSNChristoffel.html#af8b068b63a6fc8c828ae60d05e26b166" title="Compute the conformal Christoffel symbols Γ̃^k_{ij}." alt="" coords="455,5,652,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="685,72,626,53,628,48,687,67"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium.html#a3ffccb9411269138012e27fc06774d5c" title="Compute the metric derivatives locally." alt="" coords="466,75,641,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="685,100,642,100,642,94,685,94"/>
-<area shape="rect" id="Node000006" href="$classtensorium_1_1Tensor.html#ae1c0d2646baa7f397b814972fb282e70" title="Compute the tensor (outer) product of two tensors." alt="" coords="481,144,626,189"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="687,127,628,146,626,141,685,122"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="255,5,407,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="439,30,407,30,407,25,439,25"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1BSSN.html#a91070f9dd9f8cd38bccbe6d8c95e9046" title=" " alt="" coords="5,14,207,42"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="239,30,207,30,207,25,239,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="477,75,622,119"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols Γ̃^k_{ij}." alt="" coords="206,5,429,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="462,74,394,53,396,48,463,69"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the metric derivatives locally." alt="" coords="228,75,407,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="462,100,407,100,407,94,462,94"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1Tensor.html#ae1c0d2646baa7f397b814972fb282e70" title="Compute the tensor (outer) product of two tensors." alt="" coords="245,144,390,189"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="463,125,391,147,390,142,462,120"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="5,5,158,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,30,158,30,158,25,190,25"/>
 </map>
