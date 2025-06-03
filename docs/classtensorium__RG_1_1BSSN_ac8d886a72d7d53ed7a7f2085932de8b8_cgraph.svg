@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Initialize BSSN variables at a given spatial point.">
 <polygon fill="#999999" stroke="#666666" points="117.25,-116.5 0,-116.5 0,-83 117.25,-83 117.25,-116.5"/>
 <text text-anchor="start" x="8" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::BSSN</text>
 <text text-anchor="middle" x="58.62" y="-90.25" font-family="Helvetica,sans-Serif" font-size="10.00">::init_BSSN</text>
