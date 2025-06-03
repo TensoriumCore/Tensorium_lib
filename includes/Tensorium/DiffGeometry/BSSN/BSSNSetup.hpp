@@ -17,6 +17,8 @@
 #include "BSSNDerivatives.hpp"
 #include "BSSNextrinTensor.hpp"
 #include "BSSNAtildeTensor.hpp"
+#include "BSSNTildeChristoffel.hpp"
+#include "BSSNContractedChristoffel.hpp"
 
 namespace tensorium_RG {
 	/**
@@ -47,6 +49,8 @@ namespace tensorium_RG {
 		std::vector<tensorium::Tensor<double, 3>> christoffel_tilde; ///< Christoffel symbols \f$\tilde{\Gamma}^k_{ij}\f$
 		std::vector<tensorium::Tensor<double, 2>> ExtrinsicTensor;   ///< Extrinsic curvature \f$K_{ij}\f$
 		std::vector<tensorium::Tensor<double, 2>> A_tildeTensor;     ///< Trace-free extrinsic curvature \f$\tilde{A}_{ij}\f$
+		std::vector<tensorium::Vector<double>> tilde_Gamma;			 ///< Conformal contracted symbols \f$\tilde{\Gamma}^i\f$
+		std::vector<tensorium::Vector<double>> contracted_Gamma;	 ///< Contracted symbols \f$\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln \chi\f$
 	};
 	/**
 	 * @class BSSN
@@ -112,8 +116,12 @@ namespace tensorium_RG {
 							},
 							dgamma_tilde
 							);
-
+				
 					compute_christoffel_3D(gamma_tilde, dgamma_tilde, gamma_tilde_inv, christoffel);
+					auto contracted_Gamma = tensorium_RG::BSSNContractedGamma<T>::compute(X, metric, dx, dy, dz, chi);
+
+					tensorium::Vector<T> tilde_Gamma(3);
+					TildeGamma<T>::compute(gamma_tilde_inv, christoffel, tilde_Gamma);
 
 					tensorium_RG::compute_partial_derivatives_vector<T>(
 							X, dx, dy, dz,
@@ -137,7 +145,10 @@ namespace tensorium_RG {
 
 					auto Kij = extr.compute_Kij(dgt, gammaj, beta, partial_beta, christoffel, alpha);
 					auto AtildeTensor = Aij.compute_Atilde_tensor(Kij, gammaj_inv, gammaj, chi);
+					
 
+					grid.tilde_Gamma = {tilde_Gamma};
+					grid.contracted_Gamma = {contracted_Gamma};
 					grid.ExtrinsicTensor = {Kij};
 					grid.A_tildeTensor = {AtildeTensor};
 					grid.alpha = {alpha};
