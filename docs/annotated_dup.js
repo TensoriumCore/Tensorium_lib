@@ -24,7 +24,6 @@ var annotated_dup =
       [ "CacheInfo", "classtensorium_1_1CacheInfo.html", "classtensorium_1_1CacheInfo" ],
       [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
       [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
-      [ "ExtrinsicCurvature", "classtensorium_1_1ExtrinsicCurvature.html", "classtensorium_1_1ExtrinsicCurvature" ],
       [ "GemmKernelBig", "classtensorium_1_1GemmKernelBig.html", "classtensorium_1_1GemmKernelBig" ],
       [ "GemmKernelBigger", "classtensorium_1_1GemmKernelBigger.html", "classtensorium_1_1GemmKernelBigger" ],
       [ "Matrix", "classtensorium_1_1Matrix.html", "classtensorium_1_1Matrix" ],
@@ -37,12 +36,15 @@ var annotated_dup =
     ] ],
     [ "tensorium_RG", "namespacetensorium__RG.html", [
       [ "BSSN", "classtensorium__RG_1_1BSSN.html", "classtensorium__RG_1_1BSSN" ],
+      [ "BSSNAtildeTensor", "classtensorium__RG_1_1BSSNAtildeTensor.html", "classtensorium__RG_1_1BSSNAtildeTensor" ],
       [ "BSSNChristoffel", "classtensorium__RG_1_1BSSNChristoffel.html", "classtensorium__RG_1_1BSSNChristoffel" ],
       [ "BSSNGrid", "structtensorium__RG_1_1BSSNGrid.html", "structtensorium__RG_1_1BSSNGrid" ],
       [ "ChristoffelSym", "classtensorium__RG_1_1ChristoffelSym.html", "classtensorium__RG_1_1ChristoffelSym" ],
+      [ "ExtrinsicCurvature", "classtensorium__RG_1_1ExtrinsicCurvature.html", "classtensorium__RG_1_1ExtrinsicCurvature" ],
       [ "Metric", "classtensorium__RG_1_1Metric.html", "classtensorium__RG_1_1Metric" ],
       [ "RicciTensor", "classtensorium__RG_1_1RicciTensor.html", "classtensorium__RG_1_1RicciTensor" ],
-      [ "RiemannTensor", "classtensorium__RG_1_1RiemannTensor.html", "classtensorium__RG_1_1RiemannTensor" ]
+      [ "RiemannTensor", "classtensorium__RG_1_1RiemannTensor.html", "classtensorium__RG_1_1RiemannTensor" ],
+      [ "TildeGamma", "classtensorium__RG_1_1TildeGamma.html", "classtensorium__RG_1_1TildeGamma" ]
     ] ],
     [ "aligned_reg", "structaligned__reg.html", "structaligned__reg" ],
     [ "AlignedAllocator", "structAlignedAllocator.html", "structAlignedAllocator" ],

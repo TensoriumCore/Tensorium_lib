@@ -1538,7 +1538,7 @@
 <g id="Node000048" class="node">
 <title>Node48</title>
 <g id="a_Node000048"><a xlink:href="BSSNSetup_8hpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="2355.12,-412.25 2234.88,-412.25 2234.88,-378.75 2355.12,-378.75 2355.12,-412.25"/>
+<polygon fill="#fff0f0" stroke="red" points="2355.12,-412.25 2234.88,-412.25 2234.88,-378.75 2355.12,-378.75 2355.12,-412.25"/>
 <text text-anchor="start" x="2242.88" y="-398.75" font-family="Helvetica,sans-Serif" font-size="10.00">../DiffGeometry/BSSN</text>
 <text text-anchor="middle" x="2295" y="-386" font-family="Helvetica,sans-Serif" font-size="10.00">/BSSNSetup.hpp</text>
 </a>

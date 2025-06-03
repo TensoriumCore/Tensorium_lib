@@ -10,13 +10,14 @@ var hierarchy =
     [ "tensorium::avx2_t", "structtensorium_1_1avx2__t.html", null ],
     [ "avx512_t", "structavx512__t.html", null ],
     [ "tensorium_RG::BSSN< T >", "classtensorium__RG_1_1BSSN.html", null ],
+    [ "tensorium_RG::BSSNAtildeTensor< K >", "classtensorium__RG_1_1BSSNAtildeTensor.html", null ],
     [ "tensorium_RG::BSSNChristoffel< T >", "classtensorium__RG_1_1BSSNChristoffel.html", null ],
     [ "tensorium_RG::BSSNGrid", "structtensorium__RG_1_1BSSNGrid.html", null ],
     [ "tensorium::CacheInfo", "classtensorium_1_1CacheInfo.html", null ],
     [ "tensorium_RG::ChristoffelSym< T >", "classtensorium__RG_1_1ChristoffelSym.html", null ],
     [ "tensorium::Derivate< K >", "classtensorium_1_1Derivate.html", null ],
     [ "tensorium::DerivateND< K, Rank >", "classtensorium_1_1DerivateND.html", null ],
-    [ "tensorium::ExtrinsicCurvature< K >", "classtensorium_1_1ExtrinsicCurvature.html", null ],
+    [ "tensorium_RG::ExtrinsicCurvature< K >", "classtensorium__RG_1_1ExtrinsicCurvature.html", null ],
     [ "tensorium::solver::Gauss< K >", "classtensorium_1_1solver_1_1Gauss.html", null ],
     [ "tensorium::solver::GaussSeidel< K >", "classtensorium_1_1solver_1_1GaussSeidel.html", null ],
     [ "tensorium::GemmKernelBig< T >", "classtensorium_1_1GemmKernelBig.html", null ],
@@ -52,6 +53,7 @@ var hierarchy =
     [ "sse_t", "structsse__t.html", null ],
     [ "tensorium::Tensor< K, Rank >", "classtensorium_1_1Tensor.html", null ],
     [ "TensoriumTarget", "structTensoriumTarget.html", null ],
+    [ "tensorium_RG::TildeGamma< T >", "classtensorium__RG_1_1TildeGamma.html", null ],
     [ "Token", "structToken.html", null ],
     [ "tensorium::Vector< K >", "classtensorium_1_1Vector.html", null ]
 ];

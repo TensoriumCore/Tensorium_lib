@@ -109,12 +109,17 @@ $(function(){initNavTree('namespacetensorium__RG.html',''); initResizable(); });
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1BSSNAtildeTensor.html">BSSNAtildeTensor</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1BSSNChristoffel.html">BSSNChristoffel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorium__RG_1_1BSSNGrid.html">BSSNGrid</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage structure for all evolved <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables on a single grid point or patch.  <a href="structtensorium__RG_1_1BSSNGrid.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1ChristoffelSym.html">ChristoffelSym</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores and computes Christoffel symbols \( \Gamma^\lambda_{\mu\nu} \).  <a href="classtensorium__RG_1_1ChristoffelSym.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1ExtrinsicCurvature.html">ExtrinsicCurvature</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1Metric.html">Metric</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr, etc.)  <a href="classtensorium__RG_1_1Metric.html#details">More...</a><br /></td></tr>
@@ -125,6 +130,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1RiemannTensor.html">RiemannTensor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the 4D Riemann curvature tensor \( R^\rho_{\ \sigma\mu\nu} \).  <a href="classtensorium__RG_1_1RiemannTensor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1TildeGamma.html">TildeGamma</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -132,9 +139,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2910b2fca5fbc807764fd8bb8c011f8b">compute_partial_derivatives_3D</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;gamma_field, size_t i, size_t j, size_t k, T dx, T dy, T dz, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;dgamma_out)</td></tr>
 <tr class="memdesc:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the metric derivatives locally.  <br /></td></tr>
 <tr class="separator:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa56c600dd06dd10c3a8b52515598cc98" id="r_aa56c600dd06dd10c3a8b52515598cc98"><td class="memTemplParams" colspan="2">template&lt;typename T , typename GammaFunc &gt; </td></tr>
-<tr class="memitem:aa56c600dd06dd10c3a8b52515598cc98"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa56c600dd06dd10c3a8b52515598cc98">compute_partial_derivatives_gamma_tilde</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, GammaFunc &amp;&amp;gamma_tilde_func, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;dgamma_out)</td></tr>
-<tr class="separator:aa56c600dd06dd10c3a8b52515598cc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeed4f720e5567e4c715a013d7ed787e" id="r_adeed4f720e5567e4c715a013d7ed787e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TensorFunc &gt; </td></tr>
+<tr class="memitem:adeed4f720e5567e4c715a013d7ed787e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adeed4f720e5567e4c715a013d7ed787e">compute_partial_derivatives_tensor2D</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, TensorFunc &amp;&amp;func, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;out)</td></tr>
+<tr class="separator:adeed4f720e5567e4c715a013d7ed787e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e26edcecca2502f504021269c12ada" id="r_a67e26edcecca2502f504021269c12ada"><td class="memTemplParams" colspan="2">template&lt;typename T , typename VectorFunc &gt; </td></tr>
+<tr class="memitem:a67e26edcecca2502f504021269c12ada"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a67e26edcecca2502f504021269c12ada">compute_partial_derivatives_vector</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, VectorFunc &amp;&amp;func, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;out)</td></tr>
+<tr class="separator:a67e26edcecca2502f504021269c12ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa604428c09040b0465309959586f05f7" id="r_aa604428c09040b0465309959586f05f7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa604428c09040b0465309959586f05f7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa604428c09040b0465309959586f05f7">generate_conformal_metric_field</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;metric, size_t Nx, size_t Ny, size_t Nz, T dx, T dy, T dz)</td></tr>
 <tr class="separator:aa604428c09040b0465309959586f05f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,19 +290,16 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aa56c600dd06dd10c3a8b52515598cc98" name="aa56c600dd06dd10c3a8b52515598cc98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa56c600dd06dd10c3a8b52515598cc98">&#9670;&#160;</a></span>compute_partial_derivatives_gamma_tilde()</h2>
+<a id="adeed4f720e5567e4c715a013d7ed787e" name="adeed4f720e5567e4c715a013d7ed787e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeed4f720e5567e4c715a013d7ed787e">&#9670;&#160;</a></span>compute_partial_derivatives_tensor2D()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename GammaFunc &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+template&lt;typename T , typename TensorFunc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void tensorium_RG::compute_partial_derivatives_gamma_tilde </td>
+          <td class="memname">void tensorium_RG::compute_partial_derivatives_tensor2D </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
         </tr>
@@ -314,33 +321,71 @@ template&lt;typename T , typename GammaFunc &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GammaFunc &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>gamma_tilde_func</em>, </span></td>
+          <td class="paramtype">TensorFunc &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dgamma_out</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium__RG_aa56c600dd06dd10c3a8b52515598cc98_cgraph.svg" width="576" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium__RG_adeed4f720e5567e4c715a013d7ed787e_cgraph.svg" width="576" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a67e26edcecca2502f504021269c12ada" name="a67e26edcecca2502f504021269c12ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67e26edcecca2502f504021269c12ada">&#9670;&#160;</a></span>compute_partial_derivatives_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename VectorFunc &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::compute_partial_derivatives_vector </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>X</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dx</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dy</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dz</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">VectorFunc &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium__RG_aa56c600dd06dd10c3a8b52515598cc98_icgraph.svg" width="394" height="72"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacetensorium__RG_a67e26edcecca2502f504021269c12ada_cgraph.svg" width="576" height="107"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

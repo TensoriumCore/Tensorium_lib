@@ -105,35 +105,84 @@ $(function(){initNavTree('structtensorium__RG_1_1BSSNGrid.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
+<p>Storage structure for all evolved <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables on a single grid point or patch.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="BSSNSetup_8hpp_source.html">BSSNSetup.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::BSSNGrid:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtensorium__RG_1_1BSSNGrid__coll__graph.svg" width="186" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtensorium__RG_1_1BSSNGrid__coll__graph.svg" width="186" height="294"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4d8ffd13157208559d3adc490500b95d" id="r_a4d8ffd13157208559d3adc490500b95d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d8ffd13157208559d3adc490500b95d">alpha</a></td></tr>
+<tr class="memdesc:a4d8ffd13157208559d3adc490500b95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lapse function α  <br /></td></tr>
 <tr class="separator:a4d8ffd13157208559d3adc490500b95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13bd0329ff16db33e7982c4374dc3597" id="r_a13bd0329ff16db33e7982c4374dc3597"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13bd0329ff16db33e7982c4374dc3597">beta</a></td></tr>
+<tr class="memdesc:a13bd0329ff16db33e7982c4374dc3597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shift vector β^i.  <br /></td></tr>
 <tr class="separator:a13bd0329ff16db33e7982c4374dc3597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f0fc82a7891cb34f654a92d36c61ccc" id="r_a1f0fc82a7891cb34f654a92d36c61ccc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f0fc82a7891cb34f654a92d36c61ccc">gamma_ij</a></td></tr>
+<tr class="memdesc:a1f0fc82a7891cb34f654a92d36c61ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical 3-metric γ_ij.  <br /></td></tr>
 <tr class="separator:a1f0fc82a7891cb34f654a92d36c61ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65ef23fea6c5f7ef2ce9e250a1f0d56c" id="r_a65ef23fea6c5f7ef2ce9e250a1f0d56c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65ef23fea6c5f7ef2ce9e250a1f0d56c">gamma_ij_inv</a></td></tr>
+<tr class="memdesc:a65ef23fea6c5f7ef2ce9e250a1f0d56c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse γ^ij.  <br /></td></tr>
 <tr class="separator:a65ef23fea6c5f7ef2ce9e250a1f0d56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e46db9308938a33b93c2e5047db2eb0" id="r_a4e46db9308938a33b93c2e5047db2eb0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e46db9308938a33b93c2e5047db2eb0">chi</a></td></tr>
+<tr class="memdesc:a4e46db9308938a33b93c2e5047db2eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conformal factor χ  <br /></td></tr>
 <tr class="separator:a4e46db9308938a33b93c2e5047db2eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7484c43c3879148067a8fda7101c3bae" id="r_a7484c43c3879148067a8fda7101c3bae"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7484c43c3879148067a8fda7101c3bae">gamma_tilde</a></td></tr>
+<tr class="memdesc:a7484c43c3879148067a8fda7101c3bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conformal metric \tilde{γ}_ij.  <br /></td></tr>
 <tr class="separator:a7484c43c3879148067a8fda7101c3bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef97247af31e98fa17327716f3d26003" id="r_aef97247af31e98fa17327716f3d26003"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef97247af31e98fa17327716f3d26003">gamma_tilde_inv</a></td></tr>
+<tr class="memdesc:aef97247af31e98fa17327716f3d26003"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse conformal metric \tilde{γ}^ij.  <br /></td></tr>
 <tr class="separator:aef97247af31e98fa17327716f3d26003"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a19de601fc00f99ff3c573e8158b70b" id="r_a9a19de601fc00f99ff3c573e8158b70b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 3 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a19de601fc00f99ff3c573e8158b70b">dgamma_tilde</a></td></tr>
+<tr class="memdesc:a9a19de601fc00f99ff3c573e8158b70b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derivatives ∂_k \tilde{γ}_ij.  <br /></td></tr>
 <tr class="separator:a9a19de601fc00f99ff3c573e8158b70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a984da0a867c5a7cd70bae036baaec12a" id="r_a984da0a867c5a7cd70bae036baaec12a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 3 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a984da0a867c5a7cd70bae036baaec12a">christoffel_tilde</a></td></tr>
+<tr class="memdesc:a984da0a867c5a7cd70bae036baaec12a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conformal Christoffel symbols \tilde{Γ}^k_{ij}.  <br /></td></tr>
 <tr class="separator:a984da0a867c5a7cd70bae036baaec12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b83f39833ddee88b4be7cfde8571adf" id="r_a7b83f39833ddee88b4be7cfde8571adf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b83f39833ddee88b4be7cfde8571adf">ExtrinsicTensor</a></td></tr>
+<tr class="memdesc:a7b83f39833ddee88b4be7cfde8571adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extrinsic curvature K_ij.  <br /></td></tr>
+<tr class="separator:a7b83f39833ddee88b4be7cfde8571adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab788f37750d445c9b2ee3faad9fcc6ec" id="r_ab788f37750d445c9b2ee3faad9fcc6ec"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab788f37750d445c9b2ee3faad9fcc6ec">A_tildeTensor</a></td></tr>
+<tr class="memdesc:ab788f37750d445c9b2ee3faad9fcc6ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trace-free conformal extrinsic curvature \tilde{A}_{ij}.  <br /></td></tr>
+<tr class="separator:ab788f37750d445c9b2ee3faad9fcc6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Storage structure for all evolved <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables on a single grid point or patch. </p>
+<p>This struct collects the geometric and gauge variables required in the <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> formulation:</p><ul>
+<li>Lapse function \(\alpha\)</li>
+<li>Shift vector \(\beta^i\)</li>
+<li>Physical metric \(\gamma_{ij}\) and its inverse</li>
+<li>Conformal factor \(\chi\)</li>
+<li>Conformal metric \(\tilde{\gamma}_{ij}\) and its inverse</li>
+<li>Partial derivatives \(\partial_k \tilde{\gamma}_{ij}\)</li>
+<li>Conformal Christoffel symbols \(\tilde{\Gamma}^k_{ij}\)</li>
+<li>Extrinsic curvature \(K_{ij}\)</li>
+<li>Trace-free conformal extrinsic curvature \(\tilde{A}_{ij}\) </li>
+</ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab788f37750d445c9b2ee3faad9fcc6ec" name="ab788f37750d445c9b2ee3faad9fcc6ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab788f37750d445c9b2ee3faad9fcc6ec">&#9670;&#160;</a></span>A_tildeTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;double, 2&gt; &gt; tensorium_RG::BSSNGrid::A_tildeTensor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Trace-free conformal extrinsic curvature \tilde{A}_{ij}. </p>
+
+<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+
+</div>
+</div>
 <a id="a4d8ffd13157208559d3adc490500b95d" name="a4d8ffd13157208559d3adc490500b95d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d8ffd13157208559d3adc490500b95d">&#9670;&#160;</a></span>alpha</h2>
 
@@ -145,6 +194,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Lapse function α </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
@@ -162,6 +213,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Shift vector β^i. </p>
+
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
 </div>
@@ -177,6 +230,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Conformal factor χ </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
@@ -194,6 +249,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Conformal Christoffel symbols \tilde{Γ}^k_{ij}. </p>
+
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
 </div>
@@ -209,6 +266,26 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Derivatives ∂_k \tilde{γ}_ij. </p>
+
+<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+
+</div>
+</div>
+<a id="a7b83f39833ddee88b4be7cfde8571adf" name="a7b83f39833ddee88b4be7cfde8571adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b83f39833ddee88b4be7cfde8571adf">&#9670;&#160;</a></span>ExtrinsicTensor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;double, 2&gt; &gt; tensorium_RG::BSSNGrid::ExtrinsicTensor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Extrinsic curvature K_ij. </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
@@ -226,6 +303,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Physical 3-metric γ_ij. </p>
+
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
 </div>
@@ -241,6 +320,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Inverse γ^ij. </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
@@ -258,6 +339,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Conformal metric \tilde{γ}_ij. </p>
+
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
 </div>
@@ -273,6 +356,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Inverse conformal metric \tilde{γ}^ij. </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
