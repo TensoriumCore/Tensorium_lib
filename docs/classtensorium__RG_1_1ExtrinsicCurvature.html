@@ -106,6 +106,9 @@ $(function(){initNavTree('classtensorium__RG_1_1ExtrinsicCurvature.html',''); in
 </div><!--header-->
 <div class="contents">
 
+<p>Computes the extrinsic curvature tensor \( K_{ij} \) from <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="BSSNextrinTensor_8hpp_source.html">BSSNextrinTensor.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::ExtrinsicCurvature&lt; K &gt;:</div>
@@ -124,9 +127,37 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a714a321cb956a7ab430c272891ef244a" id="r_a714a321cb956a7ab430c272891ef244a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a714a321cb956a7ab430c272891ef244a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a714a321cb956a7ab430c272891ef244a">compute_Kij</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;dgt, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;partial_beta, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel, const T <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>)</td></tr>
+<tr class="memdesc:a714a321cb956a7ab430c272891ef244a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the extrinsic curvature tensor \( K_{ij} \).  <br /></td></tr>
 <tr class="separator:a714a321cb956a7ab430c272891ef244a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename K&gt;<br />
+class tensorium_RG::ExtrinsicCurvature&lt; K &gt;</div><p>Computes the extrinsic curvature tensor \( K_{ij} \) from <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables. </p>
+<p>The extrinsic curvature is computed from the Lie derivative of the metric with respect to the shift vector and the lapse function according to the <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> equation:</p>
+<p class="formulaDsp">
+\[
+K_{ij} = -\frac{1}{2\alpha} \left( \partial_t \gamma_{ij}
+- \nabla_i \beta_j - \nabla_j \beta_i \right)
+\]
+</p>
+<p>where:</p><ul>
+<li>\( \gamma_{ij} \) is the spatial metric</li>
+<li>\( \alpha \) is the lapse function</li>
+<li>\( \beta^i \) is the shift vector</li>
+<li>\( \nabla_i \beta_j = \partial_i \beta_j - \Gamma^k_{ij} \beta_k \)</li>
+</ul>
+<p>The implementation uses:</p><ul>
+<li><code>dgt</code> = \( \partial_t \gamma_{ij} \)</li>
+<li><code>partial_beta(i, j)</code> = \( \partial_i \beta_j \)</li>
+<li><code>christoffel(i, j, k)</code> = \( \Gamma^k_{ij} \)</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">K</td><td>The scalar type used (e.g., double) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a91189542ea225a892faa38c2117979ca" name="a91189542ea225a892faa38c2117979ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91189542ea225a892faa38c2117979ca">&#9670;&#160;</a></span>Mat</h2>
 
@@ -210,6 +241,29 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Computes the extrinsic curvature tensor \( K_{ij} \). </p>
+<p class="formulaDsp">
+\[
+K_{ij} = -\frac{1}{2\alpha} \left(
+\partial_t \gamma_{ij}
+- (\partial_i \beta_j + \partial_j \beta_i - 2 \Gamma^k_{ij} \beta_k)
+\right)
+\]
+</p>
+<p>The result is symmetrized to ensure \( K_{ij} = K_{ji} \).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dgt</td><td>Time derivative \( \partial_t \gamma_{ij} \) </td></tr>
+    <tr><td class="paramname">gamma</td><td>The 3×3 spatial metric \( \gamma_{ij} \) </td></tr>
+    <tr><td class="paramname">beta</td><td>The shift vector \( \beta^i \) </td></tr>
+    <tr><td class="paramname">partial_beta</td><td>The partial derivatives \( \partial_i \beta_j \) </td></tr>
+    <tr><td class="paramname">christoffel</td><td>The 3D Christoffel symbols \( \Gamma^k_{ij} \) </td></tr>
+    <tr><td class="paramname">alpha</td><td>The lapse function \( \alpha \) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The extrinsic curvature tensor \( K_{ij} \) </dd></dl>
 
 <p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, and <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>.</p>
 

@@ -40,7 +40,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" target="_top" xlink:title="Compute the vector \tilde{tensorium::Tensor::resizeamma}^i = \tilde{\gamma}^{jk} \tilde{tensorium::Tensor::resizeamma}^i_{jk}.">
+<g id="a_Node000004"><a xlink:href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" target="_top" xlink:title="Computes .">
 <polygon fill="white" stroke="#666666" points="331.25,-681.5 177.25,-681.5 177.25,-648 331.25,-648 331.25,-681.5"/>
 <text text-anchor="start" x="185.25" y="-668" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::TildeGamma</text>
 <text text-anchor="middle" x="254.25" y="-655.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute</text>

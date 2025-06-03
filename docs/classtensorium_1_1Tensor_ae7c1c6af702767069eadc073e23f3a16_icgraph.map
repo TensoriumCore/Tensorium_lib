@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Resize 2D tensor." alt="" coords="504,456,649,501"/>
 <area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols Γ̃^k_{ij}." alt="" coords="233,5,456,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="573,441,568,363,552,262,537,209,516,156,489,107,454,64,440,53,443,49,458,60,493,104,521,154,542,207,557,261,574,362,578,441"/>
-<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Compute the vector \tilde{tensorium::Tensor::resizeamma}^i = \tilde{\gamma}^{jk} \tilde{tensorium::Tensor::resizeamma}^i_{jk}." alt="" coords="242,75,447,119"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Computes ." alt="" coords="242,75,447,119"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="571,441,562,375,543,292,528,249,508,207,484,168,454,134,439,122,442,118,458,130,488,165,513,205,533,247,548,291,567,374,576,440"/>
 <area shape="rect" id="Node000005" href="$classtensorium_1_1SpectalChebyshev.html#a69f6b92fe3d90d46412ef196a9a7f3aa" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="237,144,452,189"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="567,441,554,388,533,324,500,259,479,229,454,203,438,191,441,187,458,199,483,226,505,256,538,322,560,387,572,440"/>
