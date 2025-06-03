@@ -1,5 +1,5 @@
 <map id="tensorium_RG::BSSN&lt; T &gt;" name="tensorium_RG::BSSN&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,353,191,422"/>
+<area shape="rect" id="Node000001" title="Driver class to initialize and store BSSN variables from an input spacetime metric." alt="" coords="5,353,191,422"/>
 <area shape="rect" id="Node000002" href="$structtensorium__RG_1_1BSSNGrid.html" title="Storage structure for all evolved BSSN variables on a single grid point or patch." alt="" coords="11,5,185,288"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,288,101,336,95,336,95,288"/>
 </map>

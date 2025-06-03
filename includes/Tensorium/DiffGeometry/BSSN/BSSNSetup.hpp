@@ -35,30 +35,56 @@ namespace tensorium_RG {
 	 * - Trace-free conformal extrinsic curvature \f$\tilde{A}_{ij}\f$
 	 */
 	struct BSSNGrid {
-		std::vector<double> alpha;                                   ///< Lapse function α
-		std::vector<tensorium::Vector<double>> beta;                 ///< Shift vector β^i
-		std::vector<tensorium::Tensor<double, 2>> gamma_ij;          ///< Physical 3-metric γ_ij
-		std::vector<tensorium::Tensor<double, 2>> gamma_ij_inv;      ///< Inverse γ^ij
-		std::vector<double> chi;                                     ///< Conformal factor χ
-		std::vector<tensorium::Tensor<double, 2>> gamma_tilde;       ///< Conformal metric \tilde{γ}_ij
-		std::vector<tensorium::Tensor<double, 2>> gamma_tilde_inv;   ///< Inverse conformal metric \tilde{γ}^ij
-		std::vector<tensorium::Tensor<double, 3>> dgamma_tilde;      ///< Derivatives ∂_k \tilde{γ}_ij
-		std::vector<tensorium::Tensor<double, 3>> christoffel_tilde; ///< Conformal Christoffel symbols \tilde{Γ}^k_{ij}
-		std::vector<tensorium::Tensor<double, 2>> ExtrinsicTensor;   ///< Extrinsic curvature K_ij
-		std::vector<tensorium::Tensor<double, 2>> A_tildeTensor;     ///< Trace-free conformal extrinsic curvature \tilde{A}_{ij}
-	};
 
+		std::vector<double> alpha;                                   ///< Lapse function \f$\alpha\f$
+		std::vector<tensorium::Vector<double>> beta;                 ///< Shift vector \f$\beta^i\f$
+		std::vector<tensorium::Tensor<double, 2>> gamma_ij;          ///< Physical 3-metric \f$\gamma_{ij}\f$
+		std::vector<tensorium::Tensor<double, 2>> gamma_ij_inv;      ///< Inverse \f$\gamma^{ij}\f$
+		std::vector<double> chi;                                     ///< Conformal factor \f$\chi\f$
+		std::vector<tensorium::Tensor<double, 2>> gamma_tilde;       ///< Conformal metric \f$\tilde{\gamma}_{ij}\f$
+		std::vector<tensorium::Tensor<double, 2>> gamma_tilde_inv;   ///< Inverse \f$\tilde{\gamma}^{ij}\f$
+		std::vector<tensorium::Tensor<double, 3>> dgamma_tilde;      ///< Derivatives \f$\partial_k \tilde{\gamma}_{ij}\f$
+		std::vector<tensorium::Tensor<double, 3>> christoffel_tilde; ///< Christoffel symbols \f$\tilde{\Gamma}^k_{ij}\f$
+		std::vector<tensorium::Tensor<double, 2>> ExtrinsicTensor;   ///< Extrinsic curvature \f$K_{ij}\f$
+		std::vector<tensorium::Tensor<double, 2>> A_tildeTensor;     ///< Trace-free extrinsic curvature \f$\tilde{A}_{ij}\f$
+	};
+	/**
+	 * @class BSSN
+	 * @brief Driver class to initialize and store BSSN variables from an input spacetime metric.
+	 *
+	 * This class initializes all core variables required for BSSN evolution using a given spacetime metric.
+	 * The metric must provide access to the lapse, shift, and spatial metric via `metric.BSSN(X, α, β^i, γ_ij)`.
+	 *
+	 * @tparam T Numeric type (e.g. double)
+	 */
 
 	template<typename T>
 		class BSSN {
 			public:
-				BSSNGrid grid;
-
+				BSSNGrid grid;  ///< Internal grid storing all initialized BSSN variables
+				/**
+				 * @brief Initialize BSSN variables at a given spatial point.
+				 *
+				 * Given a metric object, this method computes the lapse α, shift β^i, 3-metric γ_ij,
+				 * its inverse, the conformal factor χ, the conformal metric \tilde{γ}_ij, its inverse,
+				 * the conformal Christoffel symbols \tilde{Γ}^k_{ij}, the extrinsic curvature K_ij, and
+				 * the trace-free conformal extrinsic curvature \tilde{A}_{ij}. All variables are stored
+				 * in the internal `grid` object.
+				 *
+				 * @param X Spatial coordinates at which to evaluate the metric and derivatives.
+				 * @param metric A metric object providing `BSSN(X, α, β, γ)` and `compute_conformal_factor`.
+				 * @param dx Grid spacing in the x-direction.
+				 * @param dy Grid spacing in the y-direction.
+				 * @param dz Grid spacing in the z-direction.
+				 */
 				void init_BSSN(const tensorium::Vector<T>& X,
 						const tensorium_RG::Metric<T>& metric,
 						T dx, T dy, T dz) {
 
 					T alpha;
+
+					// Extract metric quantities
+
 					tensorium::Vector<T> beta(3);
 					tensorium::Tensor<T, 2> gammaj({3, 3});
 					metric.BSSN(X, alpha, beta, gammaj);
