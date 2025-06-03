@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Compute the vector \tilde{tensorium_RG::TildeGamma::computeamma}^i = \tilde{\gamma}^{jk} \tilde{tensorium_RG::TildeGamma::computeamma}^i_{jk}.">
+<g id="a_Node000001"><a xlink:title="Computes .">
 <polygon fill="#999999" stroke="#666666" points="154,-59.5 0,-59.5 0,-26 154,-26 154,-59.5"/>
 <text text-anchor="start" x="8" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::TildeGamma</text>
 <text text-anchor="middle" x="77" y="-33.25" font-family="Helvetica,sans-Serif" font-size="10.00">::compute</text>

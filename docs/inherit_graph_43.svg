@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classtensorium__RG_1_1ExtrinsicCurvature.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="classtensorium__RG_1_1ExtrinsicCurvature.html" target="_top" xlink:title="Computes the extrinsic curvature tensor &#160;from BSSN variables.">
 <polygon fill="white" stroke="#666666" points="210.25,-20.75 0,-20.75 0,0 210.25,0 210.25,-20.75"/>
 <text text-anchor="middle" x="105.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::ExtrinsicCurvature&lt; K &gt;</text>
 </a>

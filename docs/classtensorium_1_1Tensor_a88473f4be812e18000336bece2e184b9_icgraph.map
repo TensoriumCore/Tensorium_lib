@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="477,109,622,154"/>
 <area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols Γ̃^k_{ij}." alt="" coords="206,5,429,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="500,103,428,65,398,53,400,48,430,60,502,99"/>
-<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Compute the vector \tilde{tensorium::Tensor::shapeamma}^i = \tilde{\gamma}^{jk} \tilde{tensorium::Tensor::shapeamma}^i_{jk}." alt="" coords="215,75,420,119"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Computes ." alt="" coords="215,75,420,119"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="462,121,420,115,421,110,462,116"/>
 <area shape="rect" id="Node000005" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the metric derivatives locally." alt="" coords="228,144,407,189"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="462,147,407,156,407,150,462,142"/>
