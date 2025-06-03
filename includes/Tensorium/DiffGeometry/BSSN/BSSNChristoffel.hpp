@@ -7,17 +7,32 @@
 #include <stdexcept>
 
 namespace tensorium_RG {
-
+	/**
+	 * @class BSSNChristoffel
+	 * @brief Compute the conformal Christoffel symbols \f$ \tilde{\Gamma}^k_{ij} \f$
+	 *
+	 * The conformal Christoffel symbols are computed from the inverse conformal metric 
+	 * \f$ \tilde{\gamma}^{kl} \f$ and the derivatives of the conformal metric \f$ \partial_m \tilde{\gamma}_{ij} \f$
+	 * using the formula:
+	 *
+	 * \f[
+	 * \tilde{\Gamma}^k_{ij} =
+	 * \frac{1}{2} \tilde{\gamma}^{kl}
+	 * \left( \partial_i \tilde{\gamma}_{jl}
+	 *      + \partial_j \tilde{\gamma}_{il}
+	 *      - \partial_l \tilde{\gamma}_{ij} \right)
+	 * \f]
+	 */
 	template<typename T>
 		class BSSNChristoffel {
 			public:
 				/**
-				 * @brief Compute the conformal Christoffel symbols Γ̃^k_{ij}
-				 * 
-				 * @param gamma_tilde      3×3 conformal metric tensor γ̃_ij
-				 * @param dgamma_tilde     3×3×3 array ∂_k γ̃_ij (dgamma_tilde[k][i][j])
-				 * @param gamma_tilde_inv  3×3 inverse of γ̃_ij
-				 * @param Christoffel      Output 3×3×3 array Γ̃^k_{ij}
+				 * @brief Compute the conformal Christoffel symbols \f$ \tilde{\Gamma}^k_{ij} \f$
+				 *
+				 * @param gamma_tilde       3×3 conformal metric \f$ \tilde{\gamma}_{ij} \f$
+				 * @param dgamma_tilde      3×3×3 partial derivatives \f$ \partial_k \tilde{\gamma}_{ij} \f$
+				 * @param gamma_tilde_inv   3×3 inverse metric \f$ \tilde{\gamma}^{ij} \f$
+				 * @param Christoffel       Output: \f$ \tilde{\Gamma}^k_{ij} \f$
 				 */
 				static void compute(
 						const tensorium::Tensor<T, 2>& gamma_tilde,
@@ -52,19 +67,30 @@ namespace tensorium_RG {
 
 
 		};
-
 	/**
-	 * @brief Compute the metric derivatives locally 
-	 * 
-	 * @param field			   5×5 tensorium::Tensor field of the metric
-	 * @param i, j, k          indexes of the local grid
-	 * @param dgamma_out       Output 3×3×3 array Y_{ij}
+	 * @brief Compute the 3D partial derivatives \f$ \partial_k \tilde{\gamma}_{ij} \f$ from a 5D field tensor
+	 *
+	 * Uses centered 4th-order or 2nd-order finite differences for inner and boundary points.
+	 *
+	 * \f[
+	 * \partial_k \tilde{\gamma}_{ij} =
+	 * \begin{cases}
+	 * \frac{-f(x+2h) + 8f(x+h) - 8f(x-h) + f(x-2h)}{12h} & \text{if inner} \\
+	 * \frac{f(x+h) - f(x-h)}{2h} & \text{if near boundary} \\
+	 * 0 & \text{otherwise}
+	 * \end{cases}
+	 * \f]
+	 *
+	 * @param gamma_field      Field of type Tensor<T, 5> with dimensions [Nx, Ny, Nz, 3, 3]
+	 * @param i,j,k            Grid position
+	 * @param dx,dy,dz         Grid spacings
+	 * @param dgamma_out       Output tensor \f$ \partial_k \tilde{\gamma}_{ij} \f$
 	 */
 	template<typename T>
-			inline void compute_partial_derivatives_3D(
-					const tensorium::Tensor<T, 5>& gamma_field,
-					size_t i, size_t j, size_t k,
-					T dx, T dy, T dz,
+		inline void compute_partial_derivatives_3D(
+				const tensorium::Tensor<T, 5>& gamma_field,
+				size_t i, size_t j, size_t k,
+				T dx, T dy, T dz,
 					tensorium::Tensor<T, 3>& dgamma_out) {
 
 				dgamma_out.resize(3, 3, 3);

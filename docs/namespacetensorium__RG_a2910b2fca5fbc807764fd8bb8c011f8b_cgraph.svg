@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Compute the metric derivatives locally.">
+<g id="a_Node000001"><a xlink:title="Compute the 3D partial derivatives &#160;from a 5D field tensor.">
 <polygon fill="#999999" stroke="#666666" points="133.75,-59.5 0,-59.5 0,-26 133.75,-26 133.75,-59.5"/>
 <text text-anchor="start" x="8" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::compute</text>
 <text text-anchor="middle" x="66.88" y="-33.25" font-family="Helvetica,sans-Serif" font-size="10.00">_partial_derivatives_3D</text>

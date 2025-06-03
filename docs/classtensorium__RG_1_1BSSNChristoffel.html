@@ -105,6 +105,9 @@ $(function(){initNavTree('classtensorium__RG_1_1BSSNChristoffel.html',''); initR
 </div><!--header-->
 <div class="contents">
 
+<p>Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \).  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="BSSNChristoffel_8hpp_source.html">BSSNChristoffel.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::BSSNChristoffel&lt; T &gt;:</div>
@@ -115,10 +118,23 @@ Collaboration diagram for tensorium_RG::BSSNChristoffel&lt; T &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9a0ad2299106000688f3caa62639683" id="r_ad9a0ad2299106000688f3caa62639683"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9a0ad2299106000688f3caa62639683">compute</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;dgamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_tilde_inv, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;Christoffel)</td></tr>
-<tr class="memdesc:ad9a0ad2299106000688f3caa62639683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the conformal Christoffel symbols Γ̃^k_{ij}.  <br /></td></tr>
+<tr class="memdesc:ad9a0ad2299106000688f3caa62639683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \).  <br /></td></tr>
 <tr class="separator:ad9a0ad2299106000688f3caa62639683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
+class tensorium_RG::BSSNChristoffel&lt; T &gt;</div><p>Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \). </p>
+<p>The conformal Christoffel symbols are computed from the inverse conformal metric \( \tilde{\gamma}^{kl} \) and the derivatives of the conformal metric \( \partial_m \tilde{\gamma}_{ij} \) using the formula:</p>
+<p class="formulaDsp">
+\[
+\tilde{\Gamma}^k_{ij} =
+\frac{1}{2} \tilde{\gamma}^{kl}
+\left( \partial_i \tilde{\gamma}_{jl}
+     + \partial_j \tilde{\gamma}_{il}
+     - \partial_l \tilde{\gamma}_{ij} \right)
+\]
+</p>
+ </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad9a0ad2299106000688f3caa62639683" name="ad9a0ad2299106000688f3caa62639683"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9a0ad2299106000688f3caa62639683">&#9670;&#160;</a></span>compute()</h2>
 
@@ -158,13 +174,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Compute the conformal Christoffel symbols Γ̃^k_{ij}. </p>
+<p>Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gamma_tilde</td><td>3×3 conformal metric tensor γ̃_ij </td></tr>
-    <tr><td class="paramname">dgamma_tilde</td><td>3×3×3 array ∂_k γ̃_ij (dgamma_tilde[k][i][j]) </td></tr>
-    <tr><td class="paramname">gamma_tilde_inv</td><td>3×3 inverse of γ̃_ij </td></tr>
-    <tr><td class="paramname">Christoffel</td><td>Output 3×3×3 array Γ̃^k_{ij} </td></tr>
+    <tr><td class="paramname">gamma_tilde</td><td>3×3 conformal metric \( \tilde{\gamma}_{ij} \) </td></tr>
+    <tr><td class="paramname">dgamma_tilde</td><td>3×3×3 partial derivatives \( \partial_k \tilde{\gamma}_{ij} \) </td></tr>
+    <tr><td class="paramname">gamma_tilde_inv</td><td>3×3 inverse metric \( \tilde{\gamma}^{ij} \) </td></tr>
+    <tr><td class="paramname">Christoffel</td><td>Output: \( \tilde{\Gamma}^k_{ij} \) </td></tr>
   </table>
   </dd>
 </dl>
