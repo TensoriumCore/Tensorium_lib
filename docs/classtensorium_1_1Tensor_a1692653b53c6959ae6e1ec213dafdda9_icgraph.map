@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="697,456,843,501"/>
 <area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="504,456,649,501"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="682,481,650,481,650,476,682,476"/>
-<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols Γ̃^k_{ij}." alt="" coords="233,5,456,50"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols ." alt="" coords="233,5,456,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="573,441,568,363,552,262,537,209,516,156,489,107,454,64,440,53,443,49,458,60,493,104,521,154,542,207,557,261,574,362,578,441"/>
 <area shape="rect" id="Node000005" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Computes ." alt="" coords="242,75,447,119"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="571,441,562,375,543,292,528,249,508,207,484,168,454,134,439,122,442,118,458,130,488,165,513,205,533,247,548,291,567,374,576,440"/>
@@ -18,7 +18,7 @@
 <area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="489,468,426,459,427,453,490,463"/>
 <area shape="rect" id="Node000013" href="$classtensorium__RG_1_1Metric.html#ad4c177f4c002cda2e752a0499f5a199e" title="Minkowski metric in Cartesian coordinates." alt="" coords="263,491,426,535"/>
 <area shape="poly" id="edge14_Node000002_Node000013" title=" " alt="" coords="490,494,427,503,426,498,489,489"/>
-<area shape="rect" id="Node000014" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the metric derivatives locally." alt="" coords="255,560,434,605"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the 3D partial derivatives &#160;from a 5D field tensor." alt="" coords="255,560,434,605"/>
 <area shape="poly" id="edge16_Node000002_Node000014" title=" " alt="" coords="529,511,457,550,427,562,425,557,455,545,527,507"/>
 <area shape="rect" id="Node000015" href="$namespacetensorium__RG.html#adeed4f720e5567e4c715a013d7ed787e" title=" " alt="" coords="255,629,434,691"/>
 <area shape="poly" id="edge17_Node000002_Node000015" title=" " alt="" coords="555,515,513,568,487,595,458,619,435,632,432,628,454,615,483,591,509,564,551,512"/>

@@ -112,6 +112,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1BSSNAtildeTensor.html">BSSNAtildeTensor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtensorium__RG_1_1BSSNChristoffel.html">BSSNChristoffel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \).  <a href="classtensorium__RG_1_1BSSNChristoffel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorium__RG_1_1BSSNGrid.html">BSSNGrid</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage structure for all evolved <a class="el" href="classtensorium__RG_1_1BSSN.html">BSSN</a> variables on a single grid point or patch.  <a href="structtensorium__RG_1_1BSSNGrid.html#details">More...</a><br /></td></tr>
@@ -139,7 +140,7 @@ Classes</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a2910b2fca5fbc807764fd8bb8c011f8b" id="r_a2910b2fca5fbc807764fd8bb8c011f8b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2910b2fca5fbc807764fd8bb8c011f8b">compute_partial_derivatives_3D</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;gamma_field, size_t i, size_t j, size_t k, T dx, T dy, T dz, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;dgamma_out)</td></tr>
-<tr class="memdesc:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the metric derivatives locally.  <br /></td></tr>
+<tr class="memdesc:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 3D partial derivatives \( \partial_k \tilde{\gamma}_{ij} \) from a 5D field tensor.  <br /></td></tr>
 <tr class="separator:a2910b2fca5fbc807764fd8bb8c011f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeed4f720e5567e4c715a013d7ed787e" id="r_adeed4f720e5567e4c715a013d7ed787e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TensorFunc &gt; </td></tr>
 <tr class="memitem:adeed4f720e5567e4c715a013d7ed787e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adeed4f720e5567e4c715a013d7ed787e">compute_partial_derivatives_tensor2D</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, TensorFunc &amp;&amp;func, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;out)</td></tr>
@@ -273,12 +274,24 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Compute the metric derivatives locally. </p>
+<p>Compute the 3D partial derivatives \( \partial_k \tilde{\gamma}_{ij} \) from a 5D field tensor. </p>
+<p>Uses centered 4th-order or 2nd-order finite differences for inner and boundary points.</p>
+<p class="formulaDsp">
+\[
+\partial_k \tilde{\gamma}_{ij} =
+\begin{cases}
+\frac{-f(x+2h) + 8f(x+h) - 8f(x-h) + f(x-2h)}{12h} &amp; \text{if inner} \\
+\frac{f(x+h) - f(x-h)}{2h} &amp; \text{if near boundary} \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]
+</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">field</td><td>5×5 <a class="el" href="classtensorium_1_1Tensor.html" title="Multi-dimensional tensor class with fixed rank and SIMD support.">tensorium::Tensor</a> field of the metric </td></tr>
-    <tr><td class="paramname">i,j,k</td><td>indexes of the local grid </td></tr>
-    <tr><td class="paramname">dgamma_out</td><td>Output 3×3×3 array Y_{ij} </td></tr>
+    <tr><td class="paramname">gamma_field</td><td>Field of type Tensor&lt;T, 5&gt; with dimensions [Nx, Ny, Nz, 3, 3] </td></tr>
+    <tr><td class="paramname">i,j,k</td><td>Grid position </td></tr>
+    <tr><td class="paramname">dx,dy,dz</td><td>Grid spacings </td></tr>
+    <tr><td class="paramname">dgamma_out</td><td>Output tensor \( \partial_k \tilde{\gamma}_{ij} \) </td></tr>
   </table>
   </dd>
 </dl>

@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classtensorium__RG_1_1BSSNChristoffel.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="classtensorium__RG_1_1BSSNChristoffel.html" target="_top" xlink:title="Compute the conformal Christoffel symbols .">
 <polygon fill="white" stroke="#666666" points="196,-20.75 0,-20.75 0,0 196,0 196,-20.75"/>
 <text text-anchor="middle" x="98" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::BSSNChristoffel&lt; T &gt;</text>
 </a>
