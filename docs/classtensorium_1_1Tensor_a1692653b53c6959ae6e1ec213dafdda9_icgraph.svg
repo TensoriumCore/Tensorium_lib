@@ -327,7 +327,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" target="_top" xlink:title="Generate the conformal 3&#45;metric field &#160;on a 3D grid.">
 <polygon fill="white" stroke="#666666" points="134.5,-577.5 0,-577.5 0,-544 134.5,-544 134.5,-577.5"/>
 <text text-anchor="start" x="8" y="-564" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::generate</text>
 <text text-anchor="middle" x="67.25" y="-551.25" font-family="Helvetica,sans-Serif" font-size="10.00">_conformal_metric_field</text>

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Generate the conformal 3&#45;metric field &#160;on a 3D grid.">
 <polygon fill="#999999" stroke="#666666" points="134.5,-107.5 0,-107.5 0,-74 134.5,-74 134.5,-107.5"/>
 <text text-anchor="start" x="8" y="-94" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::generate</text>
 <text text-anchor="middle" x="67.25" y="-81.25" font-family="Helvetica,sans-Serif" font-size="10.00">_conformal_metric_field</text>
