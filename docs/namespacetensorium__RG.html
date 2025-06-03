@@ -152,6 +152,7 @@ Functions</h2></td></tr>
 <tr class="separator:a67e26edcecca2502f504021269c12ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa604428c09040b0465309959586f05f7" id="r_aa604428c09040b0465309959586f05f7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa604428c09040b0465309959586f05f7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa604428c09040b0465309959586f05f7">generate_conformal_metric_field</a> (const <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt; &amp;metric, size_t Nx, size_t Ny, size_t Nz, T dx, T dy, T dz)</td></tr>
+<tr class="memdesc:aa604428c09040b0465309959586f05f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the conformal 3-metric field \( \tilde{\gamma}_{ij}(x^i) \) on a 3D grid.  <br /></td></tr>
 <tr class="separator:aa604428c09040b0465309959586f05f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c0700c897553df855b385b0a9b2eb47" id="r_a1c0700c897553df855b385b0a9b2eb47"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1c0700c897553df855b385b0a9b2eb47"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1c0700c897553df855b385b0a9b2eb47">__attribute__</a> ((always_inline, hot, flatten)) inline tensorium</td></tr>
@@ -452,6 +453,30 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Generate the conformal 3-metric field \( \tilde{\gamma}_{ij}(x^i) \) on a 3D grid. </p>
+<p>For each spatial grid point \( (x, y, z) \), the spatial metric \( \gamma_{ij} \) is extracted from the given metric, the conformal factor \( \chi \) is computed, and the conformal metric is defined as:  </p><p class="formulaDsp">
+\[
+\tilde{\gamma}_{ij} = \chi \, \gamma_{ij}
+\]
+</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Scalar type (typically <code>double</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">metric</td><td>A metric object providing <code><a class="el" href="classtensorium__RG_1_1BSSN.html" title="Driver class to initialize and store BSSN variables from an input spacetime metric.">BSSN</a>(X, α, β, γ)</code> and <code>compute_conformal_factor(γ)</code> </td></tr>
+    <tr><td class="paramname">Nx,Ny,Nz</td><td>Grid resolution in x, y, z directions </td></tr>
+    <tr><td class="paramname">dx,dy,dz</td><td>Grid spacings in x, y, z directions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A 5D tensor with shape \( (N_x, N_y, N_z, 3, 3) \) containing \( \tilde{\gamma}_{ij} \) at each grid point </dd></dl>
+<p>&lt; Coordinates X^μ = (t, x, y, z)</p>
+<p>&lt; Time is fixed at t = 0</p>
 
 <p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>, <a class="el" href="classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04">tensorium_RG::Metric&lt; T &gt;::BSSN()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, <a class="el" href="classtensorium__RG_1_1Metric.html#a4c07e5ceadb53d242687c73a039b7c48">tensorium_RG::Metric&lt; T &gt;::compute_conformal_factor()</a>, <a class="el" href="classtensorium__RG_1_1Metric.html#a0e0baebd20831f8e546f3c7a4beaa887">tensorium_RG::Metric&lt; T &gt;::compute_conformal_metric()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 <div class="dynheader">

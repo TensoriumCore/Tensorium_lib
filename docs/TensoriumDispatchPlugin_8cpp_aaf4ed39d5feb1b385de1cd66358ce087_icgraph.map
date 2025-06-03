@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="517,497,513,401,503,274,495,210,484,152,470,104,452,71,431,52,434,48,456,67,474,102,489,150,500,209,509,274,519,401,522,497"/>
 <area shape="rect" id="Node000003" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="262,125,425,170"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="515,497,508,425,496,334,477,247,465,214,452,191,423,169,427,165,456,187,470,212,482,246,501,333,514,424,520,497"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title=" " alt="" coords="5,79,185,123"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="5,79,185,123"/>
 <area shape="poly" id="edge20_Node000001_Node000004" title=" " alt="" coords="517,497,515,408,505,292,497,235,486,183,471,142,452,115,422,94,389,79,353,70,315,66,241,69,174,81,173,75,240,64,316,61,354,65,390,74,425,89,456,111,476,139,491,182,502,234,511,292,520,408,522,497"/>
 <area shape="rect" id="Node000005" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title="Initialize BSSN variables at a given spatial point." alt="" coords="17,173,173,218"/>
 <area shape="poly" id="edge22_Node000001_Node000005" title=" " alt="" coords="515,497,508,432,496,353,477,280,465,253,452,235,433,223,406,214,333,202,251,197,174,196,174,191,251,192,334,197,407,209,435,219,456,231,470,250,482,279,501,352,513,432,520,497"/>

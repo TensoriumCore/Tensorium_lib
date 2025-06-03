@@ -32,7 +32,7 @@
 <area shape="poly" id="edge22_Node000002_Node000019" title=" " alt="" coords="573,516,557,613,532,736,499,851,479,897,458,928,439,943,418,952,416,948,437,938,454,925,474,894,493,850,527,734,552,612,567,516"/>
 <area shape="rect" id="Node000004" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="19,5,171,50"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="217,30,172,30,172,25,217,25"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title=" " alt="" coords="5,213,185,258"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="5,213,185,258"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="225,238,185,238,185,233,225,233"/>
 <area shape="rect" id="Node000010" href="$classtensorium__RG_1_1Metric.html#a4bd48f127fbc00ce5e692f4cb5e43d99" title="Evaluate the metric tensor ." alt="" coords="14,421,176,466"/>
 <area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="250,335,234,342,172,382,122,423,119,419,169,378,231,337,248,330"/>
