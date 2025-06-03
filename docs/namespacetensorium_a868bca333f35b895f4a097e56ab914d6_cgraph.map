@@ -1,0 +1,9 @@
+<map id="tensorium::compute_partial_derivatives_tensor2D" name="tensorium::compute_partial_derivatives_tensor2D">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,28,158,89"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="206,5,351,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,44,190,39,191,44,158,49"/>
+<area shape="rect" id="Node000004" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="259,74,298,102"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="158,67,244,80,243,85,158,72"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="399,5,544,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,25,383,25,383,30,351,30"/>
+</map>

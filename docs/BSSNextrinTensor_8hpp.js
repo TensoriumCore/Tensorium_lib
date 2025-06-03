@@ -1,4 +1,4 @@
 var BSSNextrinTensor_8hpp =
 [
-    [ "tensorium::ExtrinsicCurvature< K >", "classtensorium_1_1ExtrinsicCurvature.html", "classtensorium_1_1ExtrinsicCurvature" ]
+    [ "tensorium_RG::ExtrinsicCurvature< K >", "classtensorium__RG_1_1ExtrinsicCurvature.html", "classtensorium__RG_1_1ExtrinsicCurvature" ]
 ];

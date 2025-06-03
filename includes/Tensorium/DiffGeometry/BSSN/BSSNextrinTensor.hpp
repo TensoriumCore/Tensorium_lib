@@ -5,76 +5,47 @@
 #include "../../Core/Tensor.hpp"
 #include "../../Core/Vector.hpp"
 #include "../../Core/Derivate.hpp"
-namespace tensorium {
+#include "BSSNSetup.hpp"
+
+namespace tensorium_RG {
 
 	template<typename K>
 		class ExtrinsicCurvature {
 			public:
-				using Vec = Vector<K>;
-				using Mat = Tensor<K, 2>;
+				using Vec = tensorium::Vector<K>;
+				using Mat = tensorium::Tensor<K, 2>;
+				
 
-				ExtrinsicCurvature(const Metric<K>& metric) : metric_(metric) {}
+				template<typename T>
+					tensorium::Tensor<T, 2> compute_Kij(
+							const tensorium::Tensor<T, 2>& dgt,
+							const tensorium::Tensor<T, 2>& gamma,
+							const tensorium::Vector<T>& beta,
+							const tensorium::Tensor<T, 2>& partial_beta,
+							const tensorium::Tensor<T, 3>& christoffel,
+							const T alpha
+							) {
+						tensorium::Tensor<T, 2> Kij({3, 3});
 
-				Mat compute_K_tensor(const Vec& X, K dx) const {
-					Mat gamma; Vec beta; K alpha;
-					metric_.BSSN(X, alpha, beta, gamma);
+						for (size_t i = 0; i < 3; ++i) {
+							for (size_t j = 0; j < 3; ++j) {
+								T sym_grad_beta = partial_beta(i, j) + partial_beta(j, i);
+								T gamma_beta = T(0.0);
+								for (size_t k = 0; k < 3; ++k)
+									gamma_beta += 2.0 * christoffel(i, j, k) * beta(k);
 
-					Mat dgdt(3, 3);
-					dgdt.fill(K(0));
-
-					for (size_t i = 0; i < 3; ++i) {
-						for (size_t j = 0; j < 3; ++j) {
-							K sum = K(0);
-							for (size_t k = 0; k < 3; ++k) {
-								Vec Xp = X, Xm = X;
-								Xp(k+1) += dx;  
-								Xm(k+1) -= dx;
-								Tensor<K,2> gp, gm;
-								metric_.BSSN(Xp, alpha, beta, gp);
-								metric_.BSSN(Xm, alpha, beta, gm);
-								K dgamma_dk = (gp(i,j) - gm(i,j)) / (2*dx);
-
-								sum += beta(k) * dgamma_dk;
+								Kij(i, j) = -0.5 / alpha * (dgt(i, j) - (sym_grad_beta - gamma_beta));
 							}
-							dgdt(i,j) = sum;
 						}
+						for (size_t i = 0; i < 3; ++i)
+							for (size_t j = i+1; j < 3; ++j) {
+								T sym_val = 0.5 * (Kij(i, j) + Kij(j, i));
+								Kij(i, j) = Kij(j, i) = sym_val;
+							}
+
+
+						return Kij;
 					}
-
-					Mat Kij(3,3);
-					for (size_t i = 0; i < 3; ++i)
-						for (size_t j = 0; j < 3; ++j)
-							Kij(i,j) = -0.5/alpha * dgdt(i,j);
-
-					return Kij;
-				}
-
-				K compute_K_scalar(const Vec& X, K dx) const {
-					Mat Kij = compute_K_tensor(X, dx);
-					K trace = K(0);
-					for (size_t i = 0; i < 3; ++i)
-						trace += Kij(i, i);
-					return trace;
-				}
-
-
-				// Ã_{ij} = K_{ij} − (1/3) γ_{ij} K
-				Mat compute_Atilde_tensor(const Vec& X, K dx) const {
-					auto Kij = compute_K_tensor(X, dx);
-					auto Kscalar = compute_K_scalar(X, dx);
-
-					Mat gamma; Vec beta; K alpha;
-					metric_.BSSN(X, alpha, beta, gamma);
-
-					Mat Atilde(3, 3);
-					for (size_t i = 0; i < 3; ++i)
-						for (size_t j = 0; j < 3; ++j)
-							Atilde(i, j) = Kij(i, j) - (Kscalar / 3.0) * gamma(i, j);
-
-					return Atilde;
-				}
-
-			private:
-				const Metric<K>& metric_;
 		};
 
 }

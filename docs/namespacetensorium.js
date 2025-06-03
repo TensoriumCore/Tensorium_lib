@@ -20,7 +20,6 @@ var namespacetensorium =
     [ "CacheInfo", "classtensorium_1_1CacheInfo.html", "classtensorium_1_1CacheInfo" ],
     [ "Derivate", "classtensorium_1_1Derivate.html", "classtensorium_1_1Derivate" ],
     [ "DerivateND", "classtensorium_1_1DerivateND.html", "classtensorium_1_1DerivateND" ],
-    [ "ExtrinsicCurvature", "classtensorium_1_1ExtrinsicCurvature.html", "classtensorium_1_1ExtrinsicCurvature" ],
     [ "GemmKernelBig", "classtensorium_1_1GemmKernelBig.html", "classtensorium_1_1GemmKernelBig" ],
     [ "GemmKernelBigger", "classtensorium_1_1GemmKernelBigger.html", "classtensorium_1_1GemmKernelBigger" ],
     [ "Matrix", "classtensorium_1_1Matrix.html", "classtensorium_1_1Matrix" ],
