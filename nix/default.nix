@@ -21,6 +21,13 @@ pkgs.stdenv.mkDerivation {
     	find . \( -name '*.h' -o -name '*.hpp' \) -exec cp --parents {} $out/include/ \;
   '';
 
+  propagatedBuildInputs = [
+    llvmPkgs.clang
+    llvmPkgs.llvm
+    llvmPkgs.libclang
+    llvmPkgs.openmp
+  ];
+
   meta = with lib; {
     description = "An optimized Tensor/Matrix library for HPC applications an numerical relativity (AVX2/AVX512 and thread safe) with a Symbolic parser and Python wrapper";
     homepage = "https://at0m741.github.io/Tensorium_lib/";
