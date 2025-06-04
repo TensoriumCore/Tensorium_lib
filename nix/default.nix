@@ -11,31 +11,14 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = lib.cleanSource self;
 
-  nativeBuildInputs =
-    with pkgs;
-    [
-      gnumake
-    ]
-    ++ (with llvmPkgs; [
-      clang
-      libclang
-      openmp
-      llvm
-    ]);
-
-  CXXFLAGS = "-fPIC";
-
-  buildPhase = ''
-    make lib
-  '';
+  configurePhase = "true";
+  buildPhase = "true";
+  checkPhase = "true";
 
   installPhase = ''
-       	mkdir -p $out/lib
-      	find . -name '*.so' -exec cp -v {} $out/lib/ \;
-
-      	mkdir -p $out/include
-		cd includes/
-    find . \( -name '*.h' -o -name '*.hpp' \) -exec cp --parents {} $out/include/ \;
+    	mkdir -p $out/include
+    	cd includes/
+    	find . \( -name '*.h' -o -name '*.hpp' \) -exec cp --parents {} $out/include/ \;
   '';
 
   meta = with lib; {
