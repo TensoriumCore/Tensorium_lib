@@ -303,7 +303,7 @@ int matrix_tests() {
 
 	std::cout << "X = " << X(0) << " " << X(1) << " " << X(2) << " " << X(3) << "\n";
 
-	tensorium_RG::Metric<double> metric("kerr_schild", 1.0, 0.0);
+	tensorium_RG::Metric<double> metric("kerr_schild", 1.0, 0.9);
 	metric(X, g);
 
 	std::cout << "Metric tensor g at X = (t=0, r=10, θ=π/2, φ=0):\n";
@@ -313,7 +313,7 @@ int matrix_tests() {
 	std::cout << "Christoffel symbols Γ^λ_{μν} at X = (t=0, r=10, θ=π/2, φ=0):\n";
 	auto gamma = tensorium::compute_christoffel(X, 1e-5, g, g_inv, metric);
 	gamma.print();
-	auto R = tensorium::compute_riemann_tensor<double>(X, 1e-5, tensorium_RG::Metric<double>("kerr_schild", 1.0, 0.8));
+	auto R = tensorium::compute_riemann_tensor<double>(X, 1e-5, tensorium_RG::Metric<double>("kerr_schild", 1.0, 0.9));
 	tensorium::print_riemann_tensor(R);
 	tensorium::contract_tensor<0, 1>(R);
 	std::cout << "Riemann tensor contracted:\n";
