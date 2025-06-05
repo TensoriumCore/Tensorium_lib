@@ -83,8 +83,9 @@ namespace tensorium_RG {
 							for (size_t j = 0; j < 3; ++j) {
 								T sym_grad_beta = partial_beta(i, j) + partial_beta(j, i);
 								T gamma_beta = T(0.0);
+							
 								for (size_t k = 0; k < 3; ++k)
-									gamma_beta += 2.0 * christoffel(i, j, k) * beta(k);
+									gamma_beta += 2.0 * christoffel(k, i, j) * beta(k);
 
 								Kij(i, j) = -0.5 / alpha * (dgt(i, j) - (sym_grad_beta - gamma_beta));
 							}

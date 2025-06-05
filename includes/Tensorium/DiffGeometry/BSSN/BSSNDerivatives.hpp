@@ -122,5 +122,23 @@ namespace tensorium_RG {
 			gp2 = shifted(0, 0, 2 * dz);
 			out[2] = (-gp2 + 8 * gp1 - 8 * gm1 + gm2) / (12 * dz);
 		}
+
+	template <typename T>
+		tensorium::Tensor<T, 2> compute_dt_gamma_from_beta(
+				const tensorium::Tensor<T, 2>& gamma,
+				const tensorium::Vector<T>& beta,
+				const tensorium::Tensor<T, 2>& partial_beta,
+				const tensorium::Tensor<T, 3>& christoffel) {
+
+			tensorium::Tensor<T, 2> dtg({3, 3});
+			for (size_t i = 0; i < 3; ++i)
+				for (size_t j = 0; j < 3; ++j) {
+					T val = partial_beta(i, j) + partial_beta(j, i);
+					for (size_t k = 0; k < 3; ++k)
+						val -= 2.0 * christoffel(i, j, k) * beta(k);
+					dtg(i, j) = val;
+				}
+			return dtg;
+		}
 }
 
