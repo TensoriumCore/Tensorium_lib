@@ -32,17 +32,23 @@ var annotated_dup =
       [ "SpectalChebyshev", "classtensorium_1_1SpectalChebyshev.html", "classtensorium_1_1SpectalChebyshev" ],
       [ "SpectralFFT", "classtensorium_1_1SpectralFFT.html", "classtensorium_1_1SpectralFFT" ],
       [ "Tensor", "classtensorium_1_1Tensor.html", "classtensorium_1_1Tensor" ],
+      [ "TensorTraits", "structtensorium_1_1TensorTraits.html", "structtensorium_1_1TensorTraits" ],
+      [ "TensorTraits< Tensor< T, Rank > >", "structtensorium_1_1TensorTraits_3_01Tensor_3_01T_00_01Rank_01_4_01_4.html", "structtensorium_1_1TensorTraits_3_01Tensor_3_01T_00_01Rank_01_4_01_4" ],
+      [ "TensorTraits< Vector< T > >", "structtensorium_1_1TensorTraits_3_01Vector_3_01T_01_4_01_4.html", "structtensorium_1_1TensorTraits_3_01Vector_3_01T_01_4_01_4" ],
       [ "Vector", "classtensorium_1_1Vector.html", "classtensorium_1_1Vector" ]
     ] ],
     [ "tensorium_RG", "namespacetensorium__RG.html", [
       [ "BSSN", "classtensorium__RG_1_1BSSN.html", "classtensorium__RG_1_1BSSN" ],
       [ "BSSNAtildeTensor", "classtensorium__RG_1_1BSSNAtildeTensor.html", "classtensorium__RG_1_1BSSNAtildeTensor" ],
       [ "BSSNChristoffel", "classtensorium__RG_1_1BSSNChristoffel.html", "classtensorium__RG_1_1BSSNChristoffel" ],
+      [ "BSSNContractedGamma", "classtensorium__RG_1_1BSSNContractedGamma.html", "classtensorium__RG_1_1BSSNContractedGamma" ],
       [ "BSSNGrid", "structtensorium__RG_1_1BSSNGrid.html", "structtensorium__RG_1_1BSSNGrid" ],
       [ "ChristoffelSym", "classtensorium__RG_1_1ChristoffelSym.html", "classtensorium__RG_1_1ChristoffelSym" ],
+      [ "ConstraintSolver", "classtensorium__RG_1_1ConstraintSolver.html", "classtensorium__RG_1_1ConstraintSolver" ],
       [ "ExtrinsicCurvature", "classtensorium__RG_1_1ExtrinsicCurvature.html", "classtensorium__RG_1_1ExtrinsicCurvature" ],
       [ "Metric", "classtensorium__RG_1_1Metric.html", "classtensorium__RG_1_1Metric" ],
       [ "RicciTensor", "classtensorium__RG_1_1RicciTensor.html", "classtensorium__RG_1_1RicciTensor" ],
+      [ "RicciTensor3D", "classtensorium__RG_1_1RicciTensor3D.html", "classtensorium__RG_1_1RicciTensor3D" ],
       [ "RiemannTensor", "classtensorium__RG_1_1RiemannTensor.html", "classtensorium__RG_1_1RiemannTensor" ],
       [ "TildeGamma", "classtensorium__RG_1_1TildeGamma.html", "classtensorium__RG_1_1TildeGamma" ]
     ] ],

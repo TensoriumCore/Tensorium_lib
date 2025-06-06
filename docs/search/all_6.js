@@ -1,7 +1,7 @@
 var searchData=
 [
   ['f_0',['f',['../test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc',1,'test.cpp']]],
-  ['features_1',['Features',['../md_includes_2Tensorium_2Core_2README.html#autotoc_md13',1,'Features'],['../md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md26',1,'Features'],['../md_includes_2Tensorium_2SIMD_2README.html#autotoc_md35',1,'Features']]],
+  ['features_1',['Features',['../md_includes_2Tensorium_2Core_2README.html#autotoc_md13',1,'Features'],['../md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md30',1,'Features'],['../md_includes_2Tensorium_2SIMD_2README.html#autotoc_md39',1,'Features']]],
   ['fill_2',['fill',['../classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e',1,'tensorium::Tensor::fill()'],['../classtensorium__RG_1_1ChristoffelSym.html#adee93825abb26759999a9533517e9608',1,'tensorium_RG::ChristoffelSym::fill()']]],
   ['finalize_3',['finalize',['../namespacetensorium_1_1mpi.html#a3a653d9d4805bc5d74a7edc29e369934',1,'tensorium::mpi']]],
   ['flatten_5findex_4',['flatten_index',['../classtensorium_1_1DerivateND.html#a9ff21e4e47c8f6b7d0248ed94036193c',1,'tensorium::DerivateND::flatten_index()'],['../classtensorium_1_1Tensor.html#a8079114e5205c25b6119e080d9bdbfd0',1,'tensorium::Tensor::flatten_index()']]],
@@ -17,7 +17,7 @@ var searchData=
   ['for_20special_20targets_20and_20options_14',['Build C++ only for special targets and options',['../index.html#autotoc_md7',1,'']]],
   ['forward_15',['forward',['../classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2',1,'tensorium::SpectralFFT']]],
   ['forwardfft_16',['forwardFFT',['../namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f',1,'tensorium']]],
-  ['from_20kerr_20metric_17',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29',1,'']]],
+  ['from_20kerr_20metric_17',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md33',1,'']]],
   ['functional_2ehpp_18',['Functional.hpp',['../Functional_8hpp.html',1,'']]],
   ['functioncall_19',['FunctionCall',['../namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4affb017548928ab2305e7c55cb67c04ca',1,'tensorium']]],
   ['functionnalrg_2ehpp_20',['FunctionnalRG.hpp',['../FunctionnalRG_8hpp.html',1,'']]]

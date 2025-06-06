@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['diffgeometry_20module_0',['Tensorium — DiffGeometry Module',['../md_includes_2Tensorium_2DiffGeometry_2README.html',1,'']]]
+  ['core_20module_0',['Tensorium — Core Module',['../md_includes_2Tensorium_2Core_2README.html',1,'']]]
 ];

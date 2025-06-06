@@ -112,7 +112,7 @@ $(function(){initNavTree('structtensorium__RG_1_1BSSNGrid.html',''); initResizab
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::BSSNGrid:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structtensorium__RG_1_1BSSNGrid__coll__graph.svg" width="186" height="294"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structtensorium__RG_1_1BSSNGrid__coll__graph.svg" width="186" height="358"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -150,6 +150,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab788f37750d445c9b2ee3faad9fcc6ec" id="r_ab788f37750d445c9b2ee3faad9fcc6ec"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab788f37750d445c9b2ee3faad9fcc6ec">A_tildeTensor</a></td></tr>
 <tr class="memdesc:ab788f37750d445c9b2ee3faad9fcc6ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trace-free extrinsic curvature \(\tilde{A}_{ij}\).  <br /></td></tr>
 <tr class="separator:ab788f37750d445c9b2ee3faad9fcc6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f154e15d8526dc0875d1be893083202" id="r_a8f154e15d8526dc0875d1be893083202"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f154e15d8526dc0875d1be893083202">tilde_Gamma</a></td></tr>
+<tr class="memdesc:a8f154e15d8526dc0875d1be893083202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conformal contracted symbols \(\tilde{\Gamma}^i\).  <br /></td></tr>
+<tr class="separator:a8f154e15d8526dc0875d1be893083202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80e0a9a15b8c6948a257109e30692360" id="r_a80e0a9a15b8c6948a257109e30692360"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80e0a9a15b8c6948a257109e30692360">contracted_Gamma</a></td></tr>
+<tr class="memdesc:a80e0a9a15b8c6948a257109e30692360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contracted symbols \(\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln \chi\).  <br /></td></tr>
+<tr class="separator:a80e0a9a15b8c6948a257109e30692360"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a52863212e80789ac4a909151c799d" id="r_af7a52863212e80789ac4a909151c799d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; double, 5 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7a52863212e80789ac4a909151c799d">ricci_tilde</a></td></tr>
+<tr class="separator:af7a52863212e80789ac4a909151c799d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Storage structure for all evolved <a class="el" href="classtensorium__RG_1_1BSSN.html" title="Driver class to initialize and store BSSN variables from an input spacetime metric.">BSSN</a> variables on a single grid point or patch. </p>
@@ -250,6 +258,24 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Christoffel symbols \(\tilde{\Gamma}^k_{ij}\). </p>
+
+<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+
+</div>
+</div>
+<a id="a80e0a9a15b8c6948a257109e30692360" name="a80e0a9a15b8c6948a257109e30692360"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80e0a9a15b8c6948a257109e30692360">&#9670;&#160;</a></span>contracted_Gamma</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;double&gt; &gt; tensorium_RG::BSSNGrid::contracted_Gamma</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Contracted symbols \(\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln \chi\). </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 
@@ -358,6 +384,38 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Inverse \(\tilde{\gamma}^{ij}\). </p>
+
+<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+
+</div>
+</div>
+<a id="af7a52863212e80789ac4a909151c799d" name="af7a52863212e80789ac4a909151c799d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a52863212e80789ac4a909151c799d">&#9670;&#160;</a></span>ricci_tilde</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;double, 5&gt; &gt; tensorium_RG::BSSNGrid::ricci_tilde</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f154e15d8526dc0875d1be893083202" name="a8f154e15d8526dc0875d1be893083202"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f154e15d8526dc0875d1be893083202">&#9670;&#160;</a></span>tilde_Gamma</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;double&gt; &gt; tensorium_RG::BSSNGrid::tilde_Gamma</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Conformal contracted symbols \(\tilde{\Gamma}^i\). </p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 

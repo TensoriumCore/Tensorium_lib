@@ -101,8 +101,8 @@ $(function(){initNavTree('md_includes_2Tensorium_2DiffGeometry_2README.html','')
   <div class="headertitle"><div class="title">Tensorium — DiffGeometry Module</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md23"></a> This directory provides the core components for differential geometry computations in general relativity. It supports both symbolic 4D analytical calculations and the foundations for ADM/BSSN-based 3+1 numerical simulations.</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md27"></a> This directory provides the core components for differential geometry computations in general relativity. It supports both symbolic 4D analytical calculations and the foundations for ADM/BSSN-based 3+1 numerical simulations.</p>
+<h1><a class="anchor" id="autotoc_md28"></a>
 Purpose</h1>
 <p>This module enables:</p><ul>
 <li>Representation and manipulation of the spacetime metric</li>
@@ -110,7 +110,7 @@ Purpose</h1>
 <li>Construction of curvature tensors: Riemann, Ricci, and Ricci scalar</li>
 <li>(Upcoming) Support for the BSSN conformal formalism on spatial grids</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 Structure</h1>
 <div class="fragment"><div class="line">DiffGeometry/</div>
 <div class="line">├── Metric.hpp              // Spacetime metric representation</div>
@@ -119,7 +119,7 @@ Structure</h1>
 <div class="line">├── RiemannTensor.hpp       // Full Riemann tensor computation</div>
 <div class="line">├── Tensor.hpp              // Basic tensor structures</div>
 <div class="line">└── BSSN/                   // Conformal BSSN variables and evolution (WIP)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
 Features</h1>
 <ul>
 <li><code>Metric</code> provides the metric components, inverse metric, and determinant.</li>
@@ -128,21 +128,21 @@ Features</h1>
 <li><code>RiemannTensor</code> provides full access to the Riemann curvature tensor ( R^\mu_{\ \nu\rho\sigma} ).</li>
 <li><code>BSSN/</code> (to be implemented) will handle the conformal metric decomposition, trace-free extrinsic curvature, and conformal connection functions.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 Internal Dependencies</h1>
 <ul>
 <li>Uses <code><a class="el" href="Tensor_8hpp.html">Tensor.hpp</a></code> from <code>Core/</code> for generic tensor representation.</li>
 <li>Uses <code>DerivateND</code> from <code>Core/</code> for partial derivatives (via centered difference or spectral methods).</li>
 <li>Fully self-contained, with no external library dependency.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 Current Supported Metrics</h1>
 <ul>
 <li>Minkowski (flat spacetime)</li>
 <li>Schwarzschild (non-rotating black hole)</li>
 <li>Kerr (rotating black hole)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Example: Compute Riemann and Ricci Tensors from Kerr Metric</h1>
 <div class="fragment"><div class="line"><span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> dim = 4;</div>
 <div class="line"> </div>
@@ -169,10 +169,10 @@ Example: Compute Riemann and Ricci Tensors from Kerr Metric</h1>
 <div class="ttc" id="aclasstensorium__RG_1_1Metric_html"><div class="ttname"><a href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a></div><div class="ttdoc">A callable 4D metric class for general relativity (Minkowski, Schwarzschild, Kerr,...</div><div class="ttdef"><b>Definition</b> Metric.hpp:27</div></div>
 <div class="ttc" id="anamespacetensorium_html_a7c9c0e180ff6fb68bcb41be3fc69d9ff"><div class="ttname"><a href="namespacetensorium.html#a7c9c0e180ff6fb68bcb41be3fc69d9ff">tensorium::compute_christoffel</a></div><div class="ttdeci">tensorium_RG::ChristoffelSym&lt; T &gt; compute_christoffel(const tensorium::Vector&lt; T &gt; &amp;X, T h, const tensorium::Tensor&lt; T, 2 &gt; &amp;g, const tensorium::Tensor&lt; T, 2 &gt; &amp;g_inv, MetricFunc &amp;&amp;metric_generator)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:57</div></div>
 <div class="ttc" id="anamespacetensorium_html_ab41939a469fac102de3e3faee664723b"><div class="ttname"><a href="namespacetensorium.html#ab41939a469fac102de3e3faee664723b">tensorium::inv_mat_tensor</a></div><div class="ttdeci">tensorium::Tensor&lt; T, 2 &gt; inv_mat_tensor(const tensorium::Tensor&lt; T, 2 &gt; &amp;g)</div><div class="ttdef"><b>Definition</b> FunctionnalRG.hpp:17</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md30"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md34"></a>
 Status</h1>
 <p>The module is stable for 4D analytical computations. Symbolic initializations and automation through the <code>Symbolics/</code> and BSSN modules are under active development.</p>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 References</h1>
 <ul>
 <li>M. Alcubierre, <em>Introduction to 3+1 Numerical Relativity</em></li>

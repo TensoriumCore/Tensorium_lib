@@ -101,8 +101,8 @@ $(function(){initNavTree('md_includes_2Tensorium_2SIMD_2README.html',''); initRe
   <div class="headertitle"><div class="title">Tensorium — SIMD Module</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md32"></a> This directory contains the low-level SIMD backend used throughout Tensorium to accelerate vector, matrix, and tensor operations. It provides abstraction layers over AVX, AVX2, AVX512, and SSE instruction sets, with automatic runtime detection and alignment-aware memory allocation. Writing separate code for each ISA is unnecessary — all operations are unified through <code>SimdTraits</code> with graceful fallback to the best supported instruction set.</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md36"></a> This directory contains the low-level SIMD backend used throughout Tensorium to accelerate vector, matrix, and tensor operations. It provides abstraction layers over AVX, AVX2, AVX512, and SSE instruction sets, with automatic runtime detection and alignment-aware memory allocation. Writing separate code for each ISA is unnecessary — all operations are unified through <code>SimdTraits</code> with graceful fallback to the best supported instruction set.</p>
+<h1><a class="anchor" id="autotoc_md37"></a>
 Purpose</h1>
 <p>The module enables:</p><ul>
 <li>High-performance vectorized operations on aligned data</li>
@@ -110,16 +110,16 @@ Purpose</h1>
 <li>Architecture-specific runtime dispatching</li>
 <li>Cache hierarchy introspection and memory-aware optimization</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 Structure</h1>
 <div class="fragment"><div class="line">SIMD/</div>
 <div class="line">├── SIMD.hpp         // Abstractions for AVX, AVX512, and SSE intrinsics</div>
 <div class="line">├── Allocator.hpp    // Aligned memory allocation (posix_memalign / hbwmalloc)</div>
 <div class="line">├── CPU_id.hpp       // CPU feature detection (AVX, AVX2, AVX512F, SSE4.2, etc.)</div>
 <div class="line">└── CacheInfo.hpp    // L1/L2/L3 cache size detection and prefetch tuning</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md39"></a>
 Features</h1>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 SIMD.hpp</h2>
 <ul>
 <li><code>SimdTraits&lt;T, ISA&gt;</code> specialization for scalar types (<code>float</code>, <code>double</code>, <code>size_t</code>)</li>
@@ -132,28 +132,28 @@ SIMD.hpp</h2>
 </li>
 <li>Auto-selection of best ISA at runtime or compile-time</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Allocator.hpp</h2>
 <ul>
 <li>Provides <code>aligned_allocator&lt;T&gt;</code> for STL compatibility</li>
 <li>Uses <code>posix_memalign</code> or <code>hbwmalloc</code> (on Xeon Phi)</li>
 <li>Ensures 32-byte or 64-byte alignment depending on ISA</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 CPU_id.hpp</h2>
 <ul>
 <li>Detects CPU SIMD capabilities via CPUID</li>
 <li>Flags: SSE4.2, AVX, AVX2, AVX512F, AVX512DQ, etc.</li>
 <li>Used for runtime dispatching in templated kernels</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 CacheInfo.hpp</h2>
 <ul>
 <li>Detects L1, L2, and L3 cache sizes per core</li>
 <li>Used to tune matrix blocking and tiling strategies</li>
 <li>Helps choose loop unrolling depth based on available cache</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Example Usage</h1>
 <div class="fragment"><div class="line"><span class="keyword">using namespace </span>tensorium::simd;</div>
 <div class="line"><span class="keyword">using </span>T    = float;</div>
@@ -173,10 +173,10 @@ Example Usage</h1>
 <div class="line"> </div>
 <div class="line"><span class="keywordflow">for</span> (std::size_t i = 0; i &lt; Simd::width; ++i)</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;result[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span> &lt;&lt; result[i] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md41"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md45"></a>
 Status</h1>
 <p>Fully functional and integrated into all math kernels of Tensorium, including <code>Vector</code>, <code>Matrix</code>, <code>Tensor</code>, and numerical methods. Portability fallback to SSE is provided for older CPUs. AVX512 path is fully optimized.</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Supported Architectures</h1>
 <ul>
 <li>SSE4.2 (128-bit)</li>
