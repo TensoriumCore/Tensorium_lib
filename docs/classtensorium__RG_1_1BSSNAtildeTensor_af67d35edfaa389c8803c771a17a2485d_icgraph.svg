@@ -22,7 +22,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" target="_top" xlink:title="Initialize BSSN variables at a given spatial point.">
+<g id="a_Node000002"><a xlink:href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="117.25,-39.88 0,-39.88 0,-6.38 117.25,-6.38 117.25,-39.88"/>
 <text text-anchor="start" x="8" y="-26.38" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::BSSN</text>
 <text text-anchor="middle" x="58.62" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">::init_BSSN</text>

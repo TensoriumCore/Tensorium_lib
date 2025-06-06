@@ -1,29 +1,35 @@
 <map id="includes/Tensorium/DiffGeometry/BSSN/BSSNChristoffel.hpp" name="includes/Tensorium/DiffGeometry/BSSN/BSSNChristoffel.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="313,5,599,50"/>
-<area shape="rect" id="Node000002" href="$BSSNSetup_8hpp.html" title=" " alt="" coords="245,98,502,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="428,63,395,100,391,96,424,60"/>
-<area shape="rect" id="Node000005" href="$FunctionnalRG_8hpp.html" title=" " alt="" coords="512,199,739,244"/>
-<area shape="poly" id="edge17_Node000001_Node000005" title=" " alt="" coords="487,60,609,197,605,201,483,64"/>
-<area shape="rect" id="Node000003" href="$BSSNAtildeTensor_8hpp.html" title=" " alt="" coords="5,191,235,252"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="297,151,190,192,188,188,295,146"/>
-<area shape="rect" id="Node000004" href="$BSSNextrinTensor_8hpp.html" title=" " alt="" coords="259,191,488,252"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="367,158,368,190,362,190,362,158"/>
-<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="443,146,571,196,569,201,441,151"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="219,182,324,141,326,146,221,187"/>
-<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="380,175,378,143,384,143,385,175"/>
-<area shape="rect" id="Node000006" href="$ChristoffelSymbol_8hpp.html" title=" " alt="" coords="495,300,756,345"/>
-<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="619,259,620,300,615,300,614,259"/>
-<area shape="rect" id="Node000008" href="$RiemannTensor_8hpp.html" title=" " alt="" coords="323,393,568,438"/>
-<area shape="poly" id="edge15_Node000005_Node000008" title=" " alt="" coords="540,253,503,274,473,302,459,324,449,348,442,393,436,392,444,346,454,321,469,299,500,270,537,248"/>
-<area shape="rect" id="Node000009" href="$Tensorium_8hpp.html" title=" " alt="" coords="572,486,719,530"/>
-<area shape="poly" id="edge16_Node000005_Node000009" title=" " alt="" coords="717,248,756,269,791,299,808,321,816,342,824,392,829,416,829,427,824,439,803,462,777,479,748,492,719,500,718,495,746,487,774,475,799,458,819,436,824,426,824,417,819,394,811,343,803,324,787,302,753,274,714,252"/>
-<area shape="poly" id="edge14_Node000006_Node000005" title=" " alt="" coords="631,285,630,244,636,244,637,285"/>
-<area shape="rect" id="Node000007" href="$RicciTensor_8hpp.html" title=" " alt="" coords="591,393,809,438"/>
-<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="655,355,684,391,680,395,650,358"/>
-<area shape="poly" id="edge10_Node000006_Node000008" title=" " alt="" coords="570,355,489,395,487,390,567,350"/>
-<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="740,380,754,363,766,344,772,322,766,302,752,284,736,269,696,247,699,242,739,265,756,280,770,299,777,322,770,346,759,366,744,384"/>
-<area shape="poly" id="edge11_Node000008_Node000005" title=" " alt="" coords="458,377,471,337,493,299,530,265,572,242,575,247,534,270,497,302,476,339,463,379"/>
-<area shape="poly" id="edge12_Node000008_Node000009" title=" " alt="" coords="508,442,599,483,596,488,506,447"/>
-<area shape="rect" id="Node000010" href="$test_8cpp.html" title=" " alt="" coords="583,578,708,606"/>
-<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="648,546,648,578,643,578,643,546"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="450,5,737,50"/>
+<area shape="rect" id="Node000002" href="$BSSNRicciTensor_8hpp.html" title=" " alt="" coords="334,98,557,160"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="550,61,492,100,489,95,547,57"/>
+<area shape="rect" id="Node000003" href="$BSSNSetup_8hpp.html" title=" " alt="" coords="317,208,574,252"/>
+<area shape="poly" id="edge20_Node000001_Node000003" title=" " alt="" coords="597,66,591,114,583,139,570,161,541,189,507,210,505,205,538,185,566,158,578,136,585,112,592,65"/>
+<area shape="rect" id="Node000007" href="$FunctionnalRG_8hpp.html" title=" " alt="" coords="758,309,984,354"/>
+<area shape="poly" id="edge21_Node000001_Node000007" title=" " alt="" coords="625,60,853,307,849,310,622,63"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,175,448,207,443,207,443,175"/>
+<area shape="rect" id="Node000004" href="$BSSNAtildeTensor_8hpp.html" title=" " alt="" coords="5,300,235,362"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="352,260,212,302,210,297,351,255"/>
+<area shape="rect" id="Node000005" href="$BSSNPrintDebug_8hpp.html" title=" " alt="" coords="259,300,480,362"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="414,266,386,302,382,298,409,263"/>
+<area shape="rect" id="Node000006" href="$BSSNextrinTensor_8hpp.html" title=" " alt="" coords="504,300,733,362"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="490,258,559,297,556,302,487,263"/>
+<area shape="poly" id="edge9_Node000003_Node000007" title=" " alt="" coords="555,254,746,298,780,306,778,311,745,303,554,259"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="242,293,381,250,382,256,243,298"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="408,286,434,251,439,254,413,290"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="560,294,490,255,492,251,562,290"/>
+<area shape="rect" id="Node000008" href="$ChristoffelSymbol_8hpp.html" title=" " alt="" coords="740,410,1001,455"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="865,369,866,410,860,410,859,369"/>
+<area shape="rect" id="Node000010" href="$RiemannTensor_8hpp.html" title=" " alt="" coords="569,503,813,547"/>
+<area shape="poly" id="edge18_Node000007_Node000010" title=" " alt="" coords="785,363,749,384,718,412,704,433,694,458,687,503,682,502,689,456,699,431,714,408,745,380,782,358"/>
+<area shape="rect" id="Node000011" href="$Tensorium_8hpp.html" title=" " alt="" coords="818,595,964,640"/>
+<area shape="poly" id="edge19_Node000007_Node000011" title=" " alt="" coords="962,357,1002,379,1037,408,1053,431,1061,452,1069,502,1075,526,1074,537,1069,549,1048,572,1022,589,994,601,965,610,963,605,992,596,1019,584,1044,568,1064,546,1069,536,1069,526,1064,503,1056,453,1049,433,1033,412,999,383,959,362"/>
+<area shape="poly" id="edge17_Node000008_Node000007" title=" " alt="" coords="877,395,876,354,881,354,882,394"/>
+<area shape="rect" id="Node000009" href="$RicciTensor_8hpp.html" title=" " alt="" coords="837,503,1054,547"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="900,465,930,501,926,504,896,468"/>
+<area shape="poly" id="edge13_Node000008_Node000010" title=" " alt="" coords="815,464,735,505,732,500,813,460"/>
+<area shape="poly" id="edge12_Node000009_Node000007" title=" " alt="" coords="985,490,1000,473,1011,454,1017,432,1011,411,998,394,981,379,942,356,944,352,984,375,1002,390,1016,409,1023,432,1016,456,1004,476,989,494"/>
+<area shape="poly" id="edge14_Node000010_Node000007" title=" " alt="" coords="703,487,716,447,738,408,776,375,818,352,820,356,779,380,742,412,721,449,708,488"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="753,552,844,592,842,597,751,557"/>
+<area shape="rect" id="Node000012" href="$test_8cpp.html" title=" " alt="" coords="829,688,953,716"/>
+<area shape="poly" id="edge16_Node000011_Node000012" title=" " alt="" coords="893,656,893,687,888,687,888,656"/>
 </map>

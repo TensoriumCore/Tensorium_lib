@@ -28,6 +28,9 @@ var namespacetensorium =
     [ "SpectalChebyshev", "classtensorium_1_1SpectalChebyshev.html", "classtensorium_1_1SpectalChebyshev" ],
     [ "SpectralFFT", "classtensorium_1_1SpectralFFT.html", "classtensorium_1_1SpectralFFT" ],
     [ "Tensor", "classtensorium_1_1Tensor.html", "classtensorium_1_1Tensor" ],
+    [ "TensorTraits", "structtensorium_1_1TensorTraits.html", "structtensorium_1_1TensorTraits" ],
+    [ "TensorTraits< Tensor< T, Rank > >", "structtensorium_1_1TensorTraits_3_01Tensor_3_01T_00_01Rank_01_4_01_4.html", "structtensorium_1_1TensorTraits_3_01Tensor_3_01T_00_01Rank_01_4_01_4" ],
+    [ "TensorTraits< Vector< T > >", "structtensorium_1_1TensorTraits_3_01Vector_3_01T_01_4_01_4.html", "structtensorium_1_1TensorTraits_3_01Vector_3_01T_01_4_01_4" ],
     [ "Vector", "classtensorium_1_1Vector.html", "classtensorium_1_1Vector" ],
     [ "ASTNodeType", "namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4", [
       [ "Number", "namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4ab2ee912b91d69b435159c7c3f6df7f5f", null ],
@@ -79,6 +82,8 @@ var namespacetensorium =
     [ "norm1_vec", "namespacetensorium.html#a9cf7aa7b7f22ee35b6aebe14418d3550", null ],
     [ "norm2_vec", "namespacetensorium.html#a753cb1eae7b151852b91836f536c0790", null ],
     [ "normInf_vec", "namespacetensorium.html#add383e7be1f7ffe468f45cc5d35ce67e", null ],
+    [ "operator+", "namespacetensorium.html#ab6dec74f805a025ac10b68839dd7ccd5", null ],
+    [ "operator-", "namespacetensorium.html#a4e9cf94b9190cc49d7471f5be4c2ffbe", null ],
     [ "print_ast", "namespacetensorium.html#a1248de4131517594cbc3d21d30e051c0", null ],
     [ "print_ricci_scalar", "namespacetensorium.html#a2c1b563f2abeb6b4713764c7ac84642f", null ],
     [ "print_ricci_tensor", "namespacetensorium.html#adc27d66b7cac986daf1685f26a0871ae", null ],

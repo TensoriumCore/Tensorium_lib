@@ -1,0 +1,8 @@
+<map id="tensorium_RG::BSSNContractedGamma::compute" name="tensorium_RG::BSSNContractedGamma::compute">
+<area shape="rect" id="Node000001" title="Compute the contracted Christoffel symbol ." alt="" coords="5,36,233,81"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="281,5,443,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,41,265,37,265,42,233,47"/>
+<area shape="rect" id="Node000003" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="491,45,529,72"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="233,59,443,60,475,58,475,63,443,65,233,65"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="444,42,476,49,475,54,443,47"/>
+</map>

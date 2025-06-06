@@ -1,0 +1,5 @@
+<map id="tensorium_RG::ConstraintSolver::solveLichnerowicz" name="tensorium_RG::ConstraintSolver::solveLichnerowicz">
+<area shape="rect" id="Node000001" title="Solve the Lichnerowicz equation to enforce the Hamiltonian constraint in BSSN." alt="" coords="5,5,195,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="243,5,388,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,25,227,25,227,30,195,30"/>
+</map>

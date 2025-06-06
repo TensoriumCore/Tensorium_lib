@@ -141,26 +141,27 @@ $(function(){initNavTree('BSSNextrinTensor_8hpp_source.html',''); initResizable(
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; 3; ++j) {</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                                T sym_grad_beta = partial_beta(i, j) + partial_beta(j, i);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                                T gamma_beta = T(0.0);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; 3; ++k)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                                    gamma_beta += 2.0 * christoffel(i, j, k) * <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>(k);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                                Kij(i, j) = -0.5 / <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a> * (dgt(i, j) - (sym_grad_beta - gamma_beta));</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                            }</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                        }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 3; ++i)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = i+1; j &lt; 3; ++j) {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                T sym_val = 0.5 * (Kij(i, j) + Kij(j, i));</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                                Kij(i, j) = Kij(j, i) = sym_val;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                            }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                            </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; 3; ++k)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                                    gamma_beta += 2.0 * christoffel(k, i, j) * <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>(k);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                Kij(i, j) = -0.5 / <a class="code hl_enumvalue" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a> * (dgt(i, j) - (sym_grad_beta - gamma_beta));</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                            }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                        }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 3; ++i)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = i+1; j &lt; 3; ++j) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                                T sym_val = 0.5 * (Kij(i, j) + Kij(j, i));</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                                Kij(i, j) = Kij(j, i) = sym_val;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                            }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                        <span class="keywordflow">return</span> Kij;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                        <span class="keywordflow">return</span> Kij;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    }</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        };</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        };</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
 <div class="ttc" id="aBSSNSetup_8hpp_html"><div class="ttname"><a href="BSSNSetup_8hpp.html">BSSNSetup.hpp</a></div></div>
 <div class="ttc" id="aDerivate_8hpp_html"><div class="ttname"><a href="Derivate_8hpp.html">Derivate.hpp</a></div><div class="ttdoc">Numerical differentiation operators using SIMD.</div></div>
 <div class="ttc" id="aLatex_8hpp_html_ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea"><div class="ttname"><a href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">GreekSymbolminus::gamma</a></div><div class="ttdeci">@ gamma</div></div>

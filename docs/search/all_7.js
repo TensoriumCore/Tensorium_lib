@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gamma_0',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
-  ['gamma_1',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
+  ['gamma_0',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
+  ['gamma_1',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
   ['gamma_5fij_2',['gamma_ij',['../structtensorium__RG_1_1BSSNGrid.html#a1f0fc82a7891cb34f654a92d36c61ccc',1,'tensorium_RG::BSSNGrid']]],
   ['gamma_5fij_5finv_3',['gamma_ij_inv',['../structtensorium__RG_1_1BSSNGrid.html#a65ef23fea6c5f7ef2ce9e250a1f0d56c',1,'tensorium_RG::BSSNGrid']]],
   ['gamma_5ftilde_4',['gamma_tilde',['../structtensorium__RG_1_1BSSNGrid.html#a7484c43c3879148067a8fda7101c3bae',1,'tensorium_RG::BSSNGrid']]],

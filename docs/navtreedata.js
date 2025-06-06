@@ -50,28 +50,33 @@ var NAVTREE =
       [ "Status", "md_includes_2Tensorium_2Core_2README.html#autotoc_md21", null ],
       [ "Notes", "md_includes_2Tensorium_2Core_2README.html#autotoc_md22", null ]
     ] ],
+    [ "Tensorium — BSSN Module", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html", [
+      [ "Header Overview", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md24", null ],
+      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md25", null ],
+      [ "Usage", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md26", null ]
+    ] ],
     [ "Tensorium — DiffGeometry Module", "md_includes_2Tensorium_2DiffGeometry_2README.html", [
-      [ "Purpose", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md24", null ],
-      [ "Structure", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md25", null ],
-      [ "Features", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md26", null ],
-      [ "Internal Dependencies", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md27", null ],
-      [ "Current Supported Metrics", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md28", null ],
-      [ "Example: Compute Riemann and Ricci Tensors from Kerr Metric", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29", null ],
-      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md30", null ],
-      [ "References", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md31", null ]
+      [ "Purpose", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md28", null ],
+      [ "Structure", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29", null ],
+      [ "Features", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md30", null ],
+      [ "Internal Dependencies", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md31", null ],
+      [ "Current Supported Metrics", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md32", null ],
+      [ "Example: Compute Riemann and Ricci Tensors from Kerr Metric", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md33", null ],
+      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md34", null ],
+      [ "References", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md35", null ]
     ] ],
     [ "Tensorium — SIMD Module", "md_includes_2Tensorium_2SIMD_2README.html", [
-      [ "Purpose", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md33", null ],
-      [ "Structure", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md34", null ],
-      [ "Features", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md35", [
-        [ "SIMD.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md36", null ],
-        [ "Allocator.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md37", null ],
-        [ "CPU_id.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md38", null ],
-        [ "CacheInfo.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md39", null ]
+      [ "Purpose", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md37", null ],
+      [ "Structure", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md38", null ],
+      [ "Features", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md39", [
+        [ "SIMD.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md40", null ],
+        [ "Allocator.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md41", null ],
+        [ "CPU_id.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md42", null ],
+        [ "CacheInfo.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md43", null ]
       ] ],
-      [ "Example Usage", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md40", null ],
-      [ "Status", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md41", null ],
-      [ "Supported Architectures", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md42", null ]
+      [ "Example Usage", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md44", null ],
+      [ "Status", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md45", null ],
+      [ "Supported Architectures", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md46", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -109,13 +114,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AST_8hpp.html",
-"Tensorium_8hpp_source.html",
-"classtensorium_1_1GemmKernelBigger.html#ab63bf17e01b9f4e4f61b0a33b3c53753",
-"classtensorium_1_1Vector.html#a1a7558978d83a34752457097f3ac59fa",
-"classtensorium__RG_1_1RiemannTensor.html#a2e1321ded64afb8a925b258a869b4f2a",
-"structToken.html#ac69984ec54f4fb412011934ad5e5b4b0",
-"structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html#a6f452a5a75d3d47fc61ad03863cba404",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html#aaf4f349eab839f3669eb6f05b8912d0f"
+"MathsUtils_8hpp_source.html",
+"classtensorium_1_1GemmKernelBigger.html#a6e347714c3ad11974ef250a2e7191edb",
+"classtensorium_1_1Tensor.html#aaed4ba1bd853eedbe0e9f8dd3c942abd",
+"classtensorium__RG_1_1Metric.html#a088bb0e1c78e4411b0f13f08aa0169b5",
+"namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4a02c86eb2792f3262c21d030a87e19793",
+"structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#aba15c897cea130eacd7b4ee81cd0ebd0",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#aaca0142fe7ee4283bd3525818f40095a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

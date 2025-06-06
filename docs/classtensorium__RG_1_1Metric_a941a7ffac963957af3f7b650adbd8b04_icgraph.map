@@ -1,7 +1,16 @@
 <map id="tensorium_RG::Metric::BSSN" name="tensorium_RG::Metric::BSSN">
-<area shape="rect" id="Node000001" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="233,40,395,85"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="5,5,185,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,50,185,45,186,39,218,44"/>
-<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title="Initialize BSSN variables at a given spatial point." alt="" coords="17,75,173,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,80,174,87,173,82,217,75"/>
+<area shape="rect" id="Node000001" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="556,121,718,165"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNContractedGamma.html#a4dfaae0acf2a078d4031597229b79b12" title="Compute the contracted Christoffel symbol ." alt="" coords="281,121,508,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="540,146,508,146,508,140,540,140"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234" title=" " alt="" coords="5,5,233,67"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="579,116,507,88,437,71,366,59,233,44,233,39,366,54,438,66,509,83,580,111"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#a538c60a1a84620e61fe103a655a75dec" title=" " alt="" coords="30,94,208,139"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="549,119,508,111,429,104,350,103,209,109,208,104,350,97,429,99,508,106,550,114"/>
+<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="41,169,197,213"/>
+<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="548,172,508,180,426,190,342,195,198,196,198,191,342,189,425,184,508,175,547,167"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="305,241,484,285"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="591,176,509,224,465,243,463,238,507,219,589,172"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,117,199,70,201,65,321,112"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="265,133,208,127,209,122,265,128"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="266,168,198,180,197,175,265,163"/>
 </map>
