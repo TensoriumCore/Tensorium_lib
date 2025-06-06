@@ -88,12 +88,12 @@ namespace tensorium_RG {
 
 					auto dgamma_tilde = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-							T a_tmp;
-							tensorium::Vector<T> b_tmp(3);
-							tensorium::Tensor<T,2> g_tmp({3, 3});
-							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-							T chi_tmp = compute_conformal_factor(metric, g_tmp);
-							return compute_conformal_metric(metric, g_tmp, chi_tmp);
+								T a_tmp;
+								tensorium::Vector<T> b_tmp(3);
+								tensorium::Tensor<T,2> g_tmp({3, 3});
+								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+								T chi_tmp = compute_conformal_factor(metric, g_tmp);
+								return compute_conformal_metric(metric, g_tmp, chi_tmp);
 							},
 							DiffMode::PARTIAL
 							);
@@ -110,22 +110,22 @@ namespace tensorium_RG {
 
 					auto d_beta = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-							T a_tmp;
-							tensorium::Vector<T> b_tmp(3);
-							tensorium::Tensor<T,2> g_tmp({3, 3});
-							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-							return b_tmp;
+								T a_tmp;
+								tensorium::Vector<T> b_tmp(3);
+								tensorium::Tensor<T,2> g_tmp({3, 3});
+								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+								return b_tmp;
 							},
 							DiffMode::PARTIAL
 							);
 
 					auto dgamma_phys = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-							T a_tmp;
-							tensorium::Vector<T> b_tmp(3);
-							tensorium::Tensor<T,2> g_tmp({3, 3});
-							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-							return g_tmp;
+								T a_tmp;
+								tensorium::Vector<T> b_tmp(3);
+								tensorium::Tensor<T,2> g_tmp({3, 3});
+								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+								return g_tmp;
 							},
 							DiffMode::PARTIAL
 							);
