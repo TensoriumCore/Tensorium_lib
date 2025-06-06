@@ -5,6 +5,7 @@
 
 namespace tensorium_RG {
 
+
 	template<typename T, typename TensorFunc>
 		void compute_partial_derivatives_tensor2D(
 				const tensorium::Vector<T>& X,
@@ -227,6 +228,331 @@ namespace tensorium_RG {
 					dvec_out(2, a) = T(0);
 			}
 		}
+
+	template<typename T, typename ScalarFunc>
+		inline void compute_second_derivatives_scalar(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				ScalarFunc&& func,
+				tensorium::Tensor<T, 2>& out)
+		{
+			out.resize(3, 3);
+
+			auto shifted = [&](T dx_, T dy_, T dz_) {
+				tensorium::Vector<T> Xs = X;
+				Xs(0) += dx_; Xs(1) += dy_; Xs(2) += dz_;
+				return func(Xs);
+			};
+
+			// ∂²/∂x²
+			{
+				T gm2 = shifted(-2 * dx, 0, 0);
+				T gm1 = shifted(-dx, 0, 0);
+				T g0  = shifted(0, 0, 0);
+				T gp1 = shifted(dx, 0, 0);
+				T gp2 = shifted(2 * dx, 0, 0);
+				out(0, 0) = (-gp2 + 16 * gp1 - 30 * g0 + 16 * gm1 - gm2) / (12 * dx * dx);
+			}
+
+			// ∂²/∂y²
+			{
+				T gm2 = shifted(0, -2 * dy, 0);
+				T gm1 = shifted(0, -dy, 0);
+				T g0  = shifted(0, 0, 0);
+				T gp1 = shifted(0, dy, 0);
+				T gp2 = shifted(0, 2 * dy, 0);
+				out(1, 1) = (-gp2 + 16 * gp1 - 30 * g0 + 16 * gm1 - gm2) / (12 * dy * dy);
+			}
+
+			// ∂²/∂z²
+			{
+				T gm2 = shifted(0, 0, -2 * dz);
+				T gm1 = shifted(0, 0, -dz);
+				T g0  = shifted(0, 0, 0);
+				T gp1 = shifted(0, 0, dz);
+				T gp2 = shifted(0, 0, 2 * dz);
+				out(2, 2) = (-gp2 + 16 * gp1 - 30 * g0 + 16 * gm1 - gm2) / (12 * dz * dz);
+			}
+
+			// ∂²/∂x∂y
+			{
+				T pp = shifted(dx, dy, 0);
+				T pm = shifted(dx, -dy, 0);
+				T mp = shifted(-dx, dy, 0);
+				T mm = shifted(-dx, -dy, 0);
+				out(0, 1) = out(1, 0) = (pp - pm - mp + mm) / (4 * dx * dy);
+			}
+
+			// ∂²/∂x∂z
+			{
+				T pp = shifted(dx, 0, dz);
+				T pm = shifted(dx, 0, -dz);
+				T mp = shifted(-dx, 0, dz);
+				T mm = shifted(-dx, 0, -dz);
+				out(0, 2) = out(2, 0) = (pp - pm - mp + mm) / (4 * dx * dz);
+			}
+
+			// ∂²/∂y∂z
+			{
+				T pp = shifted(0, dy, dz);
+				T pm = shifted(0, dy, -dz);
+				T mp = shifted(0, -dy, dz);
+				T mm = shifted(0, -dy, -dz);
+				out(1, 2) = out(2, 1) = (pp - pm - mp + mm) / (4 * dy * dz);
+			}
+		}
+
+	template<typename T, typename ScalarFunc>
+		tensorium::Tensor<T, 2> covariant_scalar_second(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				ScalarFunc&& func,
+				const tensorium::Tensor<T, 3>& christoffel)
+		{
+			using namespace tensorium;
+
+			Vector<T> grad(3);
+			compute_partial_derivatives_scalar(X, dx, dy, dz, func, grad);
+
+			Tensor<T, 2> hess({3, 3});
+			compute_second_derivatives_scalar(X, dx, dy, dz, std::forward<ScalarFunc>(func), hess);
+
+			Tensor<T, 2> result({3, 3});
+			for (int i = 0; i < 3; ++i)
+				for (int j = 0; j < 3; ++j) {
+					result(i, j) = hess(i, j);
+					for (int k = 0; k < 3; ++k)
+						result(i, j) -= christoffel(k, i, j) * grad(k); // D_i D_j φ = ∂_i ∂_j φ - Γ^k_{ij} ∂_k φ
+				}
+			return result;
+		}
+
+
+	template<typename T>
+		void compute_second_derivatives_scalar3D(
+				const tensorium::Tensor<T, 3>& scalar_field,
+				T dx, T dy, T dz,
+				tensorium::Tensor<T, 5>& hessian_out)
+		{
+			const auto& shape = scalar_field.shape();
+			const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+
+			hessian_out.resize(NX, NY, NZ, 3, 3);
+
+			auto get = [&](int i, int j, int k) -> T {
+				if (i < 0) i = 0;
+				if (j < 0) j = 0;
+				if (k < 0) k = 0;
+				if (i >= NX) i = NX - 1;
+				if (j >= NY) j = NY - 1;
+				if (k >= NZ) k = NZ - 1;
+				return scalar_field(i, j, k);
+			};
+
+			for (size_t i = 0; i < NX; ++i) {
+				for (size_t j = 0; j < NY; ++j) {
+					for (size_t k = 0; k < NZ; ++k) {
+
+						auto d2f_xx = (-get(i+2,j,k) + 16*get(i+1,j,k) - 30*get(i,j,k) + 16*get(i-1,j,k) - get(i-2,j,k)) / (12 * dx * dx);
+						auto d2f_yy = (-get(i,j+2,k) + 16*get(i,j+1,k) - 30*get(i,j,k) + 16*get(i,j-1,k) - get(i,j-2,k)) / (12 * dy * dy);
+						auto d2f_zz = (-get(i,j,k+2) + 16*get(i,j,k+1) - 30*get(i,j,k) + 16*get(i,j,k-1) - get(i,j,k-2)) / (12 * dz * dz);
+
+						auto d2f_xy = ( get(i+1,j+1,k) - get(i+1,j-1,k) - get(i-1,j+1,k) + get(i-1,j-1,k) ) / (4 * dx * dy);
+						auto d2f_xz = ( get(i+1,j,k+1) - get(i+1,j,k-1) - get(i-1,j,k+1) + get(i-1,j,k-1) ) / (4 * dx * dz);
+						auto d2f_yz = ( get(i,j+1,k+1) - get(i,j+1,k-1) - get(i,j-1,k+1) + get(i,j-1,k-1) ) / (4 * dy * dz);
+
+						hessian_out(i,j,k,0,0) = d2f_xx;
+						hessian_out(i,j,k,1,1) = d2f_yy;
+						hessian_out(i,j,k,2,2) = d2f_zz;
+
+						hessian_out(i,j,k,0,1) = hessian_out(i,j,k,1,0) = d2f_xy;
+						hessian_out(i,j,k,0,2) = hessian_out(i,j,k,2,0) = d2f_xz;
+						hessian_out(i,j,k,1,2) = hessian_out(i,j,k,2,1) = d2f_yz;
+					}
+				}
+			}
+		}
+
+
+
+	template<typename T>
+		tensorium::Tensor<T, 5> covariant_scalar_second_3D(
+				const tensorium::Tensor<T, 3>& chi,
+				const tensorium::Tensor<T, 5>& christoffel, 
+				T dx, T dy, T dz)
+		{
+			const auto& shape = chi.shape();
+			const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+
+			tensorium::Tensor<T, 5> result({NX, NY, NZ, 3, 3});
+
+			tensorium::Vector<T> grad(3);
+			tensorium::Tensor<T, 2> hess({3, 3});
+
+			for (size_t i = 0; i < NX; ++i)
+				for (size_t j = 0; j < NY; ++j)
+					for (size_t k = 0; k < NZ; ++k)
+					{
+						auto func = [&](const tensorium::Vector<T>& X) -> T {
+							return chi(i, j, k); 
+						};
+
+						compute_partial_derivatives_scalar({T(i), T(j), T(k)}, dx, dy, dz, func, grad);
+						compute_second_derivatives_scalar({T(i), T(j), T(k)}, dx, dy, dz, func, hess);
+
+						for (int a = 0; a < 3; ++a)
+							for (int b = 0; b < 3; ++b)
+							{
+								T val = hess(a, b);
+								for (int c = 0; c < 3; ++c)
+									val -= christoffel(i, j, k, c, a, b) * grad(c);
+								result(i, j, k, a, b) = val;
+							}
+					}
+
+			return result;
+		}
+
+	template<typename T, typename VectorFunc>
+		tensorium::Tensor<T, 2> covariant_vector(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				VectorFunc&& func,
+				const tensorium::Tensor<T, 3>& Gamma)
+		{
+			auto dVi = partial_vector(X, dx, dy, dz, std::forward<VectorFunc>(func));
+
+			tensorium::Tensor<T, 2> result({3, 3});
+
+			for (int i = 0; i < 3; ++i)
+				for (int j = 0; j < 3; ++j) {
+					result(i, j) = dVi(i, j);
+					for (int k = 0; k < 3; ++k)
+						result(i, j) += Gamma(i, j, k) * func(X)(k);
+				}
+
+			return result;
+		}
+
+	template<typename T, typename TensorFunc>
+		tensorium::Tensor<T, 3> covariant_tensor2(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				TensorFunc&& func,
+				const tensorium::Tensor<T, 3>& Gamma)
+		{
+			auto dTij = partial_tensor2(X, dx, dy, dz, std::forward<TensorFunc>(func));
+			tensorium::Tensor<T, 2> Tij = func(X);
+			tensorium::Tensor<T, 3> result({3, 3, 3});
+
+			for (int i = 0; i < 3; ++i)
+				for (int j = 0; j < 3; ++j)
+					for (int k = 0; k < 3; ++k) {
+						result(i, j, k) = dTij(i, j, k);
+						for (int l = 0; l < 3; ++l)
+							result(i, j, k) += -Gamma(l, k, i) * Tij(l, j)
+								- Gamma(l, k, j) * Tij(i, l);
+					}
+
+			return result;
+		}
+
+	template<typename T, typename ScalarFunc>
+		tensorium::Vector<T> partial_scalar(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				ScalarFunc&& func)
+		{
+			tensorium::Vector<T> grad(3);
+
+			T fxm = func(X - tensorium::Vector<T>{dx, 0, 0});
+			T fxp = func(X + tensorium::Vector<T>{dx, 0, 0});
+			grad(0) = (fxp - fxm) / (2 * dx);
+
+			T fym = func(X - tensorium::Vector<T>{0, dy, 0});
+			T fyp = func(X + tensorium::Vector<T>{0, dy, 0});
+			grad(1) = (fyp - fym) / (2 * dy);
+
+			T fzm = func(X - tensorium::Vector<T>{0, 0, dz});
+			T fzp = func(X + tensorium::Vector<T>{0, 0, dz});
+			grad(2) = (fzp - fzm) / (2 * dz);
+
+			return grad;
+		}
+
+	template<typename T, typename VectorFunc>
+		tensorium::Tensor<T, 2> partial_vector(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				VectorFunc&& func)
+		{
+			tensorium::Tensor<T, 2> result({3, 3});
+
+			for (int i = 0; i < 3; ++i) {
+				tensorium::Vector<T> dx_vec = {0, 0, 0};
+				dx_vec(i) = (i == 0) ? dx : (i == 1 ? dy : dz);
+
+				tensorium::Vector<T> fm = func(X - dx_vec);
+				tensorium::Vector<T> fp = func(X + dx_vec);
+
+				for (int j = 0; j < 3; ++j)
+					result(j, i) = (fp(j) - fm(j)) / (2 * dx_vec(i));
+			}
+			return result;
+		}
+
+	template<typename T, typename TensorFunc>
+		tensorium::Tensor<T, 3> partial_tensor2(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				TensorFunc&& func)
+		{
+			tensorium::Tensor<T, 3> result({3, 3, 3});
+
+			for (int k = 0; k < 3; ++k) {
+				tensorium::Vector<T> dx_vec = {0, 0, 0};
+				dx_vec(k) = (k == 0) ? dx : (k == 1 ? dy : dz);
+
+				tensorium::Tensor<T, 2> fm = func(X - dx_vec);
+				tensorium::Tensor<T, 2> fp = func(X + dx_vec);
+
+				for (int i = 0; i < 3; ++i)
+					for (int j = 0; j < 3; ++j)
+						result(i, j, k) = (fp(i, j) - fm(i, j)) / (2 * dx_vec(k));
+			}
+
+			return result;
+		}
+
+
+
+	template<typename T, typename TensorFunc>
+		tensorium::Tensor<T, 4> covariant_tensor2_second(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				TensorFunc&& func,
+				const tensorium::Tensor<T, 3>& Gamma)
+		{
+			auto cov1 = [&](const tensorium::Vector<T>& Y) {
+				return covariant_tensor2<T>(Y, dx, dy, dz, func, Gamma);
+			};
+
+			tensorium::Tensor<T, 4> result({3, 3, 3, 3}); // ∇_i ∇_j T_{kl}
+		for (int i = 0; i < 3; ++i)
+			for (int j = 0; j < 3; ++j)
+				for (int k = 0; k < 3; ++k)
+					for (int l = 0; l < 3; ++l) {
+						// très simpliste, pas d'optimisation pour la structure de symétrie
+						T cov_minus = cov1(X - tensorium::Vector<T>::canonical(j, dx, dy, dz))(k, l, i);
+						T cov_plus  = cov1(X + tensorium::Vector<T>::canonical(j, dx, dy, dz))(k, l, i);
+						T cov0      = cov1(X)(k, l, i);
+						T h = (j == 0) ? dx : (j == 1 ? dy : dz);
+						result(i, j, k, l) = (cov_plus - cov_minus) / (2 * h);  // ∂_j (∇_i T_kl)
+					}
+
+		return result;
+		}
+
 
 }
 
