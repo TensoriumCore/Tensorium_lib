@@ -14,7 +14,7 @@
 #include "../../Core/Tensor.hpp"
 #include "BSSNChristoffel.hpp"
 #include "BSSNMetricUtils.hpp"
-#include "BSSNDerivatives.hpp"
+#include "BSSNAutoDiff.hpp"
 #include "BSSNextrinTensor.hpp"
 #include "BSSNAtildeTensor.hpp"
 #include "BSSNTildeChristoffel.hpp"
@@ -40,7 +40,7 @@ namespace tensorium_RG {
 	 * - Extrinsic curvature \f$K_{ij}\f$
 	 * - Trace-free conformal extrinsic curvature \f$\tilde{A}_{ij}\f$
 	 */
-	struct BSSNGrid {
+	struct alignas(32) BSSNGrid {
 
 		std::vector<double> alpha;                                   ///< Lapse function \f$\alpha\f$
 		std::vector<tensorium::Vector<double>> beta;                 ///< Shift vector \f$\beta^i\f$
@@ -55,7 +55,7 @@ namespace tensorium_RG {
 		std::vector<tensorium::Tensor<double, 2>> A_tildeTensor;     ///< Trace-free extrinsic curvature \f$\tilde{A}_{ij}\f$
 		std::vector<tensorium::Vector<double>> tilde_Gamma;			 ///< Conformal contracted symbols \f$\tilde{\Gamma}^i\f$
 		std::vector<tensorium::Vector<double>> contracted_Gamma;	 ///< Contracted symbols \f$\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln \chi\f$
-		std::vector<tensorium::Tensor<double, 2>> ricci_tilde; ///< Ricci tensor \f$\tilde{R}_{ij}\f$
+		std::vector<tensorium::Tensor<double, 5>> ricci_tilde;		// [NX, NY, NZ, 3, 3]
 
 	};
 	/**
@@ -86,17 +86,17 @@ namespace tensorium_RG {
 					tensorium::Tensor<T,2> gamma_tilde = compute_conformal_metric(metric, gamma_ij, chi);
 					tensorium::Tensor<T,2> gamma_tilde_inv = inv_mat_tensor(gamma_tilde);
 
-					tensorium::Tensor<T,3> dgamma_tilde({3, 3, 3});
-					tensorium_RG::compute_partial_derivatives_tensor2D<T>(
-							X, dx, dy, dz,
-							[&](const tensorium::Vector<T>& Xs, tensorium::Tensor<T,2>& out) {
+					auto dgamma_tilde = autodiff(X, dx, dy, dz,
+							[&](const tensorium::Vector<T>& Xs) {
 							T a_tmp;
 							tensorium::Vector<T> b_tmp(3);
 							tensorium::Tensor<T,2> g_tmp({3, 3});
 							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
 							T chi_tmp = compute_conformal_factor(metric, g_tmp);
-							out = compute_conformal_metric(metric, g_tmp, chi_tmp);
-							}, dgamma_tilde);
+							return compute_conformal_metric(metric, g_tmp, chi_tmp);
+							},
+							DiffMode::PARTIAL
+							);
 
 					tensorium::Tensor<T,3> christoffel_tilde({3, 3, 3});
 					compute_christoffel_3D(gamma_tilde, dgamma_tilde, gamma_tilde_inv, christoffel_tilde);
@@ -108,27 +108,27 @@ namespace tensorium_RG {
 					auto contracted_Gamma = tensorium_RG::BSSNContractedGamma<T>::compute(
 							X, metric, dx, dy, dz, chi);
 
-					tensorium::Tensor<T,2> d_beta({3, 3});
-					tensorium_RG::compute_partial_derivatives_vector<T>(
-							X, dx, dy, dz,
-							[&](const tensorium::Vector<T>& Xs, tensorium::Vector<T>& out) {
+					auto d_beta = autodiff(X, dx, dy, dz,
+							[&](const tensorium::Vector<T>& Xs) {
 							T a_tmp;
 							tensorium::Vector<T> b_tmp(3);
 							tensorium::Tensor<T,2> g_tmp({3, 3});
 							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-							out = b_tmp;
-							}, d_beta);
+							return b_tmp;
+							},
+							DiffMode::PARTIAL
+							);
 
-					tensorium::Tensor<T,3> dgamma_phys({3, 3, 3});
-					tensorium_RG::compute_partial_derivatives_tensor2D<T>(
-							X, dx, dy, dz,
-							[&](const tensorium::Vector<T>& Xs, tensorium::Tensor<T,2>& out) {
+					auto dgamma_phys = autodiff(X, dx, dy, dz,
+							[&](const tensorium::Vector<T>& Xs) {
 							T a_tmp;
 							tensorium::Vector<T> b_tmp(3);
 							tensorium::Tensor<T,2> g_tmp({3, 3});
 							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-							out = g_tmp;
-							}, dgamma_phys);
+							return g_tmp;
+							},
+							DiffMode::PARTIAL
+							);
 
 					tensorium::Tensor<T,3> christoffel_phys({3, 3, 3});
 					compute_christoffel_3D(gamma_ij, dgamma_phys, gamma_ij_inv, christoffel_phys);
@@ -169,6 +169,7 @@ namespace tensorium_RG {
 						grid.chi = { new_chi };
 					}
 
+				
 					grid.alpha             = {alpha};
 					grid.beta              = {beta};
 					grid.gamma_ij          = {gamma_ij};
@@ -183,35 +184,38 @@ namespace tensorium_RG {
 					grid.ExtrinsicTensor   = {Kij};
 					grid.A_tildeTensor     = {AtildeTensor};
 
+
 					std::cout << std::setprecision(6) << std::fixed;
 					std::cout << "\n========= BSSN Quantities at X =========\n";
-
+					
 					std::cout << "--- alpha ---\n" << grid.alpha[0] << "\n";
 					print_vector("beta", grid.beta[0]);
-
+					
 					std::cout << "dbeta\n";
 					d_beta.print();
-
+					
 					print_tensor2("gamma_ij", grid.gamma_ij[0]);
 					print_tensor2("gamma_ij_inv", grid.gamma_ij_inv[0]);
-
+					
 					print_tensor2("gamma_tilde", grid.gamma_tilde[0]);
 					print_tensor2("gamma_tilde_inv", grid.gamma_tilde_inv[0]);
-
+					
 					print_tensor3("dgamma_tilde", grid.dgamma_tilde[0]);
 					print_tensor3("christoffel_tilde", grid.christoffel_tilde[0]);
 					print_vector("tilde_Gamma", grid.tilde_Gamma[0]);
-
+					
 					print_tensor2("∂_t gamma_ij (dgt)", dgt);
 					print_vector("contracted_Gamma", grid.contracted_Gamma[0]);
-
+					
 					print_tensor3("dgamma_phys", dgamma_phys);
 					print_tensor3("christoffel_phys", christoffel_phys);
 					print_tensor2("Extrinsic curvature K_ij", grid.ExtrinsicTensor[0]);
 					print_tensor2("A_tilde_ij", grid.A_tildeTensor[0]);
 					std::cout << "--- chi ---\n" << grid.chi[0] << "\n";
-
+					
 					std::cout << "========================================\n\n";
+					
+					
 				}
 		};
 }

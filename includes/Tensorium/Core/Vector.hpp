@@ -84,7 +84,8 @@ namespace tensorium {
 				void resize(size_t n) { data.resize(n); }
 				///@}
 
-			
+
+
 				/** @name Debug and Utilities */
 				///@{
 
@@ -100,19 +101,32 @@ namespace tensorium {
 				/** @name Basic Operations */
 				///@{
 
+				static Vector<K> canonical(int index, K dx, K dy, K dz) {
+					Vector<K> out(3, K(0));
+					if (index == 0) out(0) = dx;
+					else if (index == 1) out(1) = dy;
+					else if (index == 2) out(2) = dz;
+					else throw std::invalid_argument("Index must be 0, 1, or 2");
+					return out;
+				}
 				/**
 				 * @brief Subtract two vectors.
 				 * @param other The vector to subtract.
 				 * @return A new Vector containing the difference.
 				 */
 				__attribute__((always_inline, hot, flatten))
+
+					__attribute__((always_inline, hot, flatten))
 					Vector<K> operator-(const Vector<K>& other) const {
-						assert(data.size() == other.data.size());
 						Vector<K> result(data.size());
-						for (size_t i = 0; i < data.size(); ++i)
+						size_t m = std::min(data.size(), other.data.size());
+						for (size_t i = 0; i < m; ++i)
 							result[i] = data[i] - other[i];
+						for (size_t i = m; i < data.size(); ++i)
+							result[i] = data[i];
 						return result;
 					}
+
 
 				/**
 				 * @brief Add another vector to this one (in-place).
@@ -451,4 +465,28 @@ namespace tensorium {
 						return r;
 					}
 		};
-	}
+
+
+		template<typename K>
+			inline Vector<K> operator+(const Vector<K>& a, const Vector<K>& b) {
+				size_t n = a.size();
+				Vector<K> result(n);
+				size_t m = std::min(n, b.size());
+				for (size_t i = 0; i < m; ++i)
+					result[i] = a[i] + b[i];
+				for (size_t i = m; i < n; ++i)
+					result[i] = a[i];
+				return result;
+			}
+
+
+		template<typename K>
+			inline Vector<K> operator-(const Vector<K>& a, const Vector<K>& b) {
+				assert(a.size() == b.size());
+				Vector<K> result(a.size());
+				for (size_t i = 0; i < a.size(); ++i)
+					result[i] = a[i] - b[i];
+				return result;
+			}
+
+		}
