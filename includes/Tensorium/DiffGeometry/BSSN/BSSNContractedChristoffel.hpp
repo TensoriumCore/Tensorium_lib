@@ -48,6 +48,42 @@ namespace tensorium_RG {
 
 					return out;
 				}
+
+					void compute_contracted_christoffel(
+							const tensorium::Vector<T>& X,
+							T dx, T dy, T dz,
+							const tensorium_RG::Metric<T>& metric,
+							tensorium::Tensor<T, 5>& dGamma_contract
+							) {
+						auto shape = dGamma_contract.shape();
+						const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+
+						for (size_t i = 0; i < NX; ++i)
+							for (size_t j = 0; j < NY; ++j)
+								for (size_t k = 0; k < NZ; ++k) {
+									tensorium::Vector<T> Xs = {
+										X(0) + dx * (i - NX/2),
+										X(1) + dy * (j - NY/2),
+										X(2) + dz * (k - NZ/2)
+									};
+
+									// 1. get metric at Xs
+									T alpha;
+									tensorium::Vector<T> beta(3);
+									tensorium::Tensor<T,2> gamma({3,3});
+									metric.BSSN(Xs, alpha, beta, gamma);
+
+									T chi = compute_conformal_factor(metric, gamma);
+
+									tensorium::Vector<T> gamma_contract = tensorium_RG::BSSNContractedGamma<T>::compute(
+											Xs, metric, dx, dy, dz, chi
+											);
+
+									for (size_t a = 0; a < 3; ++a)
+										for (size_t b = 0; b < 3; ++b)
+											dGamma_contract(i,j,k,a,b) = (a == b) ? gamma_contract[a] : T(0);
+								}
+					}
 		};
 
 } // namespace tensorium_RG
