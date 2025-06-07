@@ -17,4 +17,4 @@ if [ -z "$SO_FILE" ]; then
     exit 1
 fi
 
-mv "$SO_FILE" ../pysrc/tensorium/
+mv "$SO_FILE" ../Pysrc/tensorium/
