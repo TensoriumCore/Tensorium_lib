@@ -115,8 +115,6 @@ namespace tensorium {
 				 * @return A new Vector containing the difference.
 				 */
 				__attribute__((always_inline, hot, flatten))
-
-					__attribute__((always_inline, hot, flatten))
 					Vector<K> operator-(const Vector<K>& other) const {
 						Vector<K> result(data.size());
 						size_t m = std::min(data.size(), other.data.size());
