@@ -1,6 +1,8 @@
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
-import os, subprocess, sys
+import os
+import subprocess
+import sys
 
 
 class CMakeExtension(Extension):
@@ -25,14 +27,12 @@ class CMakeBuild(build_ext):
         subprocess.check_call(["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp)
         subprocess.check_call(["cmake", "--build", ".", "--target", "tensorium"] + build_args, cwd=self.build_temp)
 
-    def get_ext_filename(self, ext_name):
-        return f"{ext_name}.cpython-{sys.version_info.major}{sys.version_info.minor}-darwin.so"
 
 setup(
     name="tensorium",
     version="0.1.0",
-    package_dir={"": "pysrc"},
-    packages=find_packages(where="pysrc"),
+    package_dir={"": "Pysrc"},
+    packages=find_packages(where="Pysrc"),
     ext_modules=[CMakeExtension("tensorium")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
