@@ -169,7 +169,21 @@ namespace tensorium_RG {
 						grid.chi = { new_chi };
 					}
 
-				
+					auto R1 = RicciTensor3D<double>::compute_laplacian_term(X, dx, dy, dz, metric, gamma_tilde_inv);
+					auto R2 = RicciTensor3D<double>::compute_dGamma_term(X, dx, dy, dz, tilde_Gamma, gamma_tilde);
+					auto R3 = RicciTensor3D<double>::compute_GammaGamma_term(tilde_Gamma, christoffel_tilde, gamma_tilde);
+					auto R4 = RicciTensor3D<T>::compute_GammaProduct_term(gamma_tilde_inv, christoffel_tilde);
+					tensorium::Tensor<T,2> Ricci({3,3});
+					for (size_t i = 0; i < 3; ++i) {
+						for (size_t j = 0; j < 3; ++j) {
+							Ricci(i,j) = R1(i,j)
+								+ R2(i,j)
+								+ R3(i,j)
+								+ R4(i,j);
+						}
+					}
+					
+
 					grid.alpha             = {alpha};
 					grid.beta              = {beta};
 					grid.gamma_ij          = {gamma_ij};
@@ -213,6 +227,12 @@ namespace tensorium_RG {
 					print_tensor2("A_tilde_ij", grid.A_tildeTensor[0]);
 					std::cout << "--- chi ---\n" << grid.chi[0] << "\n";
 					
+					print_tensor2("R1 = -1/2 ∇² γ̃_ij", R1);
+					print_tensor2("R2 = 1/2 (∂_j Γ̃^k γ̃_{ki} + ∂_i Γ̃^k γ̃_{kj})", R2);
+					print_tensor2("R3 = Γ̃^k Γ̃_{(i j) k}", R3);
+					std::cout << "\n--- R4 = γ̃^{ℓm} [ 2 Γ̃^k_{ℓ(i} Γ̃_{j) k m} + Γ̃^k_{i m} Γ̃_{k ℓ j} ] ---\n";
+					print_tensor2("R4", R4);
+					print_tensor2("Full Ricci  R_ij", Ricci);
 					std::cout << "========================================\n\n";
 					
 					

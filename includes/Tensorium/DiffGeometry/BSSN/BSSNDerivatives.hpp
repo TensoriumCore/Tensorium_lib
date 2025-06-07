@@ -6,6 +6,93 @@
 namespace tensorium_RG {
 
 
+
+	template<typename T, typename ScalarFunc>
+		tensorium::Vector<T> partial_scalar(
+				const tensorium::Vector<T>& X, 
+				T dx, T dy, T dz,
+				ScalarFunc&& func)
+		{
+			tensorium::Vector<T> grad(3);  // <-- ici 3, pas 4
+
+			// dérivée selon x¹
+			{
+				tensorium::Vector<T> Xs = X;
+				T gm2, gm1, gp1, gp2;
+				Xs(1) = X(1) - 2*dx; gm2 = func(Xs);
+				Xs(1) = X(1) -   dx; gm1 = func(Xs);
+				Xs(1) = X(1) +   dx; gp1 = func(Xs);
+				Xs(1) = X(1) + 2*dx; gp2 = func(Xs);
+				grad(0) = (-gp2 + 8*gp1 - 8*gm1 + gm2) / (12*dx);
+			}
+			// dérivée selon x²
+			{
+				tensorium::Vector<T> Xs = X;
+				T gm2, gm1, gp1, gp2;
+				Xs(2) = X(2) - 2*dy; gm2 = func(Xs);
+				Xs(2) = X(2) -   dy; gm1 = func(Xs);
+				Xs(2) = X(2) +   dy; gp1 = func(Xs);
+				Xs(2) = X(2) + 2*dy; gp2 = func(Xs);
+				grad(1) = (-gp2 + 8*gp1 - 8*gm1 + gm2) / (12*dy);
+			}
+			// dérivée selon x³
+			{
+				tensorium::Vector<T> Xs = X;
+				T gm2, gm1, gp1, gp2;
+				Xs(3) = X(3) - 2*dz; gm2 = func(Xs);
+				Xs(3) = X(3) -   dz; gm1 = func(Xs);
+				Xs(3) = X(3) +   dz; gp1 = func(Xs);
+				Xs(3) = X(3) + 2*dz; gp2 = func(Xs);
+				grad(2) = (-gp2 + 8*gp1 - 8*gm1 + gm2) / (12*dz);
+			}
+
+			return grad;
+		}
+
+
+	template<typename T, typename VectorFunc>
+		tensorium::Tensor<T,2> partial_vector(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				VectorFunc&& func)
+		{
+			tensorium::Tensor<T,2> result({3,3});
+			// dérivée ∂/∂x
+			{
+				tensorium::Vector<T> Xs = X;
+				tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
+				Xs(1) = X(1) - 2*dx; Vm2 = func(Xs);
+				Xs(1) = X(1) -   dx; Vm1 = func(Xs);
+				Xs(1) = X(1) +   dx; Vp1 = func(Xs);
+				Xs(1) = X(1) + 2*dx; Vp2 = func(Xs);
+				for(int i=0;i<3;++i)
+					result(i,0) = (-Vp2(i) + 8*Vp1(i) - 8*Vm1(i) + Vm2(i)) / (12*dx);
+			}
+			// dérivée ∂/∂y
+			{
+				tensorium::Vector<T> Xs = X;
+				tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
+				Xs(2) = X(2) - 2*dy; Vm2 = func(Xs);
+				Xs(2) = X(2) -   dy; Vm1 = func(Xs);
+				Xs(2) = X(2) +   dy; Vp1 = func(Xs);
+				Xs(2) = X(2) + 2*dy; Vp2 = func(Xs);
+				for(int i=0;i<3;++i)
+					result(i,1) = (-Vp2(i) + 8*Vp1(i) - 8*Vm1(i) + Vm2(i)) / (12*dy);
+			}
+			// dérivée ∂/∂z
+			{
+				tensorium::Vector<T> Xs = X;
+				tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
+				Xs(3) = X(3) - 2*dz; Vm2 = func(Xs);
+				Xs(3) = X(3) -   dz; Vm1 = func(Xs);
+				Xs(3) = X(3) +   dz; Vp1 = func(Xs);
+				Xs(3) = X(3) + 2*dz; Vp2 = func(Xs);
+				for(int i=0;i<3;++i)
+					result(i,2) = (-Vp2(i) + 8*Vp1(i) - 8*Vm1(i) + Vm2(i)) / (12*dz);
+			}
+			return result;
+		}
+
 	template<typename T, typename TensorFunc>
 		void compute_partial_derivatives_tensor2D(
 				const tensorium::Vector<T>& X,
@@ -454,50 +541,6 @@ namespace tensorium_RG {
 								- Gamma(l, k, j) * Tij(i, l);
 					}
 
-			return result;
-		}
-
-	template<typename T, typename ScalarFunc>
-		tensorium::Vector<T> partial_scalar(
-				const tensorium::Vector<T>& X,
-				T dx, T dy, T dz,
-				ScalarFunc&& func)
-		{
-			tensorium::Vector<T> grad(3);
-
-			T fxm = func(X - tensorium::Vector<T>{dx, 0, 0});
-			T fxp = func(X + tensorium::Vector<T>{dx, 0, 0});
-			grad(0) = (fxp - fxm) / (2 * dx);
-
-			T fym = func(X - tensorium::Vector<T>{0, dy, 0});
-			T fyp = func(X + tensorium::Vector<T>{0, dy, 0});
-			grad(1) = (fyp - fym) / (2 * dy);
-
-			T fzm = func(X - tensorium::Vector<T>{0, 0, dz});
-			T fzp = func(X + tensorium::Vector<T>{0, 0, dz});
-			grad(2) = (fzp - fzm) / (2 * dz);
-
-			return grad;
-		}
-
-	template<typename T, typename VectorFunc>
-		tensorium::Tensor<T, 2> partial_vector(
-				const tensorium::Vector<T>& X,
-				T dx, T dy, T dz,
-				VectorFunc&& func)
-		{
-			tensorium::Tensor<T, 2> result({3, 3});
-
-			for (int i = 0; i < 3; ++i) {
-				tensorium::Vector<T> dx_vec = {0, 0, 0};
-				dx_vec(i) = (i == 0) ? dx : (i == 1 ? dy : dz);
-
-				tensorium::Vector<T> fm = func(X - dx_vec);
-				tensorium::Vector<T> fp = func(X + dx_vec);
-
-				for (int j = 0; j < 3; ++j)
-					result(j, i) = (fp(j) - fm(j)) / (2 * dx_vec(i));
-			}
 			return result;
 		}
 
