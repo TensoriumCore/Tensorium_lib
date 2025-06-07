@@ -1,0 +1,13 @@
+from typing import List
+from .tensorium import Vector, Vectord
+
+
+def add(a: Vector, b: Vector) -> Vector: ...
+
+def sub(a: Vector, b: Vector) -> Vector: ...
+
+def scale(a: Vector, factor: float) -> Vector: ...
+
+def dot(a: Vector, b: Vector) -> float: ...
+
+__all__: list[str]
