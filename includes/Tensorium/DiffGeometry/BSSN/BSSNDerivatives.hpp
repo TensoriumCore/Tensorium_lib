@@ -1,10 +1,94 @@
 #pragma once
 
 #include "../Metric.hpp"
-
+#include "../../Core/Spectral.hpp"
 
 namespace tensorium_RG {
 
+
+	template<typename T>
+		void spectral_derivative_1D(tensorium::Vector<T>& field, tensorium::Vector<T>& dfield, T dx) {
+			using C = std::complex<T>;
+			using FFT = tensorium::SpectralFFT<T>;
+
+			tensorium::Vector<C> field_fft(field.size());
+			for (size_t i = 0; i < field.size(); ++i)
+				field_fft(i) = field(i);
+
+			FFT::forward(field_fft);
+
+			const T L = dx * field.size();
+			for (size_t k = 0; k < field.size(); ++k) {
+				int n = (k <= field.size()/2) ? k : (int)k - (int)field.size();
+				C factor = C(0, 2.0 * M_PI * n / L);
+				field_fft(k) *= factor;
+			}
+
+			FFT::backward(field_fft);
+			for (size_t i = 0; i < field.size(); ++i)
+				dfield(i) = field_fft(i).real(); 
+		}
+
+	template<typename T>
+		void spectral_partial_scalar_3D(
+				const tensorium::Tensor<T, 3>& scalar_field,
+				T dx, T dy, T dz,
+				tensorium::Tensor<T, 4>& grad_out) {
+
+			using namespace tensorium;
+			using C = std::complex<T>;
+			using FFT = SpectralFFT<T>;
+
+			const auto& shape = scalar_field.shape();
+			const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+			const size_t N = NX * NY * NZ;
+
+			grad_out.resize(NX, NY, NZ, 3);
+
+			Tensor<C, 3> field_cplx({NX, NY, NZ});
+			for (size_t i = 0; i < NX; ++i)
+				for (size_t j = 0; j < NY; ++j)
+					for (size_t k = 0; k < NZ; ++k)
+						field_cplx(i,j,k) = C(scalar_field(i,j,k), 0.0);
+
+			FFT::forward_3D(field_cplx);
+
+			for (size_t i = 0; i < NX; ++i) {
+				int ni = (i <= NX/2) ? i : int(i) - int(NX);
+				T kx = 2.0 * M_PI * ni / (NX * dx);
+
+				for (size_t j = 0; j < NY; ++j) {
+					int nj = (j <= NY/2) ? j : int(j) - int(NY);
+					T ky = 2.0 * M_PI * nj / (NY * dy);
+
+					for (size_t k = 0; k < NZ; ++k) {
+						int nk = (k <= NZ/2) ? k : int(k) - int(NZ);
+						T kz = 2.0 * M_PI * nk / (NZ * dz);
+
+						C f_hat = field_cplx(i,j,k);
+
+						grad_out(i,j,k,0) = (f_hat * C(0, kx)).real(); 
+						grad_out(i,j,k,1) = (f_hat * C(0, ky)).real();
+						grad_out(i,j,k,2) = (f_hat * C(0, kz)).real();
+					}
+				}
+			}
+
+			for (int dim = 0; dim < 3; ++dim) {
+				Tensor<C, 3> dfield_cplx({NX, NY, NZ});
+				for (size_t i = 0; i < NX; ++i)
+					for (size_t j = 0; j < NY; ++j)
+						for (size_t k = 0; k < NZ; ++k)
+							dfield_cplx(i,j,k) = C(grad_out(i,j,k,dim), 0.0);
+
+				FFT::backward_3D(dfield_cplx);
+
+				for (size_t i = 0; i < NX; ++i)
+					for (size_t j = 0; j < NY; ++j)
+						for (size_t k = 0; k < NZ; ++k)
+							grad_out(i,j,k,dim) = dfield_cplx(i,j,k).real();
+			}
+		}
 
 
 	template<typename T, typename ScalarFunc>

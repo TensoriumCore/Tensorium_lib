@@ -22,6 +22,6 @@ int main() {
 	matrix_tests();
 	tensor_test();
 	vector_tests();
-
+	deriv_test_spectral_fft();
 	return 0;
 }

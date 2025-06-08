@@ -37,12 +37,109 @@ namespace tensorium {
 				 * @param a Input/output complex vector (must have power-of-two size)
 				 */
 				static inline void forward(CVectorT& a)  { transform_impl(a, false); }
+
+				static void forward_3D(Tensor<std::complex<T>, 3>& a) {
+					const auto shape = a.shape();
+					const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+					using CVector = Vector<std::complex<T>>;
+
+#pragma omp parallel for collapse(2)
+					for (size_t i = 0; i < NX; ++i) {
+						for (size_t j = 0; j < NY; ++j) {
+							CVector sliceZ(NZ);
+							for (size_t k = 0; k < NZ; ++k)
+								sliceZ(k) = a(i,j,k);
+
+							forward(sliceZ);
+
+							for (size_t k = 0; k < NZ; ++k)
+								a(i,j,k) = sliceZ(k);
+						}
+					}
+
+#pragma omp parallel for collapse(2)
+					for (size_t i = 0; i < NX; ++i) {
+						for (size_t k = 0; k < NZ; ++k) {
+							CVector sliceY(NY);
+							for (size_t j = 0; j < NY; ++j)
+								sliceY(j) = a(i,j,k);
+
+							forward(sliceY);
+
+							for (size_t j = 0; j < NY; ++j)
+								a(i,j,k) = sliceY(j);
+						}
+					}
+
+#pragma omp parallel for collapse(2)
+					for (size_t j = 0; j < NY; ++j) {
+						for (size_t k = 0; k < NZ; ++k) {
+							CVector sliceX(NX);
+							for (size_t i = 0; i < NX; ++i)
+								sliceX(i) = a(i,j,k);
+
+							forward(sliceX);
+
+							for (size_t i = 0; i < NX; ++i)
+								a(i,j,k) = sliceX(i);
+						}
+					}
+				}
+
 				/**
 				 * @brief Perform inverse FFT (in-place)
 				 *
 				 * @param a Input/output complex vector (must have power-of-two size)
 				 */
 				static inline void backward(CVectorT& a) { transform_impl(a, true ); }
+
+				static void backward_3D(Tensor<std::complex<T>, 3>& a) {
+					const auto shape = a.shape();
+					const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
+					using CVector = Vector<std::complex<T>>;
+
+#pragma omp parallel for collapse(2)
+					for (size_t j = 0; j < NY; ++j) {
+						for (size_t k = 0; k < NZ; ++k) {
+							CVector sliceX(NX);
+							for (size_t i = 0; i < NX; ++i)
+								sliceX(i) = a(i,j,k);
+
+							backward(sliceX);
+
+							for (size_t i = 0; i < NX; ++i)
+								a(i,j,k) = sliceX(i);
+						}
+					}
+
+#pragma omp parallel for collapse(2)
+					for (size_t i = 0; i < NX; ++i) {
+						for (size_t k = 0; k < NZ; ++k) {
+							CVector sliceY(NY);
+							for (size_t j = 0; j < NY; ++j)
+								sliceY(j) = a(i,j,k);
+
+							backward(sliceY);
+
+							for (size_t j = 0; j < NY; ++j)
+								a(i,j,k) = sliceY(j);
+						}
+					}
+
+#pragma omp parallel for collapse(2)
+					for (size_t i = 0; i < NX; ++i) {
+						for (size_t j = 0; j < NY; ++j) {
+							CVector sliceZ(NZ);
+							for (size_t k = 0; k < NZ; ++k)
+								sliceZ(k) = a(i,j,k);
+
+							backward(sliceZ);
+
+							for (size_t k = 0; k < NZ; ++k)
+								a(i,j,k) = sliceZ(k);
+						}
+					}
+				}
 
 			private:
 				/**

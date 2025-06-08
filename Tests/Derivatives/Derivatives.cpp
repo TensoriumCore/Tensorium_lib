@@ -1,4 +1,142 @@
 #include "../test.hpp"
+#include <fstream>
+int deriv_test_spectral_fft() {
+    using T = float;
+    using C = std::complex<T>;
+    using Tensor3D = tensorium::Tensor<C, 3>;
+
+    const size_t N = 128;
+    const T L = 1.0;
+    const T dx = L / N;
+    const T pi = static_cast<T>(3.14159265358979323846);
+    const T TWO_PI = 2 * pi;
+
+    Tensor3D f({N, N, N});
+    Tensor3D df_dx_exact({N, N, N});
+    Tensor3D df_dx_numeric({N, N, N});
+
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            for (size_t k = 0; k < N; ++k) {
+                T x = i * dx;
+                T y = j * dx;
+                T z = k * dx;
+                f(i, j, k) = std::sin(TWO_PI * x) * std::sin(TWO_PI * y) * std::sin(TWO_PI * z);
+                df_dx_exact(i, j, k) = TWO_PI * std::cos(TWO_PI * x) * std::sin(TWO_PI * y) * std::sin(TWO_PI * z);
+            }
+        }
+    }
+
+    Tensor3D F = f;
+    tensorium::SpectralFFT<T>::forward_3D(F);
+
+    for (size_t i = 0; i < N; ++i) {
+        int ki = (i <= N / 2) ? i : i - N;
+        T kx = TWO_PI * ki / L;
+        for (size_t j = 0; j < N; ++j) {
+            for (size_t k = 0; k < N; ++k) {
+                F(i,j,k) *= C(0, kx); 
+            }
+        }
+    }
+
+    tensorium::SpectralFFT<T>::backward_3D(F);
+    df_dx_numeric = F;
+
+    T max_err = 0;
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j)
+            for (size_t k = 0; k < N; ++k)
+                max_err = std::max(max_err, std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()));
+
+    std::cout << "\n=== Spectral Derivative Test (3D FFT) ===\n";
+    std::cout << "Erreur max sur d/dx (FFT vs exact): " << max_err << "\n";
+
+    std::cout << "\nValeurs (x=0 to 1):\n";
+    for (size_t i = 0; i < 4; ++i) {
+        for (size_t j = 0; j < 1; ++j) {
+            for (size_t k = 0; k < 1; ++k) {
+                std::cout << "x=" << i * dx << "\tf=" << f(i,j,k).real()
+                          << "\texact=" << df_dx_exact(i,j,k).real()
+                          << "\tnumeric=" << df_dx_numeric(i,j,k).real() << "\n";
+				T err = std::abs(df_dx_numeric(i,j,k).real() - df_dx_exact(i,j,k).real());
+				std::cout << "\terreur=" << err << "\n";
+
+            }
+        }
+    }
+
+
+	std::cout << "\n=== Fonction test cos*sin*cos ===\n";
+
+    const T A = 2 * pi;  // freq_x
+    const T B = 4 * pi;  // freq_y
+    const T Ce = 6 * pi;  // freq_z
+
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            for (size_t k = 0; k < N; ++k) {
+                T x = i * dx;
+                T y = j * dx;
+                T z = k * dx;
+                f(i, j, k) = std::sin(A * x) * std::cos(B * y) * std::sin(Ce * z);
+                df_dx_exact(i, j, k) = A * std::cos(A * x) * std::cos(B * y) * std::sin(Ce * z);
+            }
+        }
+    }
+
+	F = f;
+	tensorium::SpectralFFT<T>::forward_3D(F);
+
+	for (size_t i = 0; i < N; ++i) {
+		int ki = (i <= N / 2) ? i : i - N;
+		T kx = TWO_PI * ki / L;
+		for (size_t j = 0; j < N; ++j) {
+			for (size_t k = 0; k < N; ++k) {
+				F(i,j,k) *= C(0, kx); 
+			}
+		}
+	}
+
+	tensorium::SpectralFFT<T>::backward_3D(F);
+	df_dx_numeric = F;
+
+	max_err = 0;
+	for (size_t i = 0; i < N; ++i)
+		for (size_t j = 0; j < N; ++j)
+			for (size_t k = 0; k < N; ++k)
+				max_err = std::max(max_err, std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()));
+
+	std::cout << "Erreur max (cos*sin*cos): " << max_err << "\n";
+	for (size_t i = 0; i < 4; ++i) {
+		size_t j = 1, k = 1;
+		T x = i * dx;
+		std::cout << "x=" << x
+			<< "\tf=" << f(i,j,k).real()
+			<< "\texact=" << df_dx_exact(i,j,k).real()
+			<< "\tnumeric=" << df_dx_numeric(i,j,k).real()
+			<< "\terreur=" << std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()) << "\n";
+	}
+
+	std::ofstream file("spectral_deriv_output.csv");
+	file << "x,y,z,f,dfdx_exact,dfdx_numeric\n";
+	for (size_t i = 0; i < N; ++i) {
+		for (size_t j = 0; j < N; ++j) {
+			for (size_t k = 0; k < N; ++k) {
+				T x = i * dx;
+				T y = j * dx;
+				T z = k * dx;
+				file << x << "," << y << "," << z << ","
+					<< f(i,j,k).real() << ","
+					<< df_dx_exact(i,j,k).real() << ","
+					<< df_dx_numeric(i,j,k).real() << "\n";
+			}
+		}
+	}
+	file.close();
+
+	return 0;
+}
 
 int deriv_test() {
 	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202x) ===\n";
