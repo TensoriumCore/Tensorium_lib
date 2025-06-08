@@ -29,7 +29,7 @@ namespace tensorium {
 
 namespace tensorium_RG {
 
-    enum class DiffMode { PARTIAL, COV, COV2 };
+    enum class DiffMode { PARTIAL, COV, COV2, SPEC };
 
 
 	template<typename T, typename ScalarFunc>
@@ -108,8 +108,9 @@ namespace tensorium_RG {
         }
         else if (mode == DiffMode::COV) {
             return covariant_tensor2(X, dx, dy, dz, std::forward<TensorFunc>(func), christoffel);
-        }
-        else {
+        }else if (mode == DiffMode::SPEC) {
+			return spectral_partial_tensor2<T>(X, dx, dy, dz, std::forward<TensorFunc>(func), 64, 64, 64);
+		} else {
             throw std::invalid_argument("autodiff_rank2_first: uniquement PARTIAL ou COV autorisés pour un tenseur d'ordre 2");
         }
     }

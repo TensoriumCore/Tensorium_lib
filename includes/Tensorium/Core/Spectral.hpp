@@ -139,6 +139,13 @@ namespace tensorium {
 								a(i,j,k) = sliceZ(k);
 						}
 					}
+					const T norm = 1.0 / (NX * NY * NZ);
+#pragma omp parallel for collapse(3)
+					for (size_t i = 0; i < NX; ++i)
+						for (size_t j = 0; j < NY; ++j)
+							for (size_t k = 0; k < NZ; ++k)
+								a(i, j, k) *= norm;
+
 				}
 
 			private:

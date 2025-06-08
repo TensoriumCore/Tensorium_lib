@@ -2,7 +2,7 @@
 
 #include "../Metric.hpp"
 #include "../../Core/Spectral.hpp"
-
+#include "BSSNGridSetupUtils.hpp"
 namespace tensorium_RG {
 
 
@@ -33,63 +33,95 @@ namespace tensorium_RG {
 		void spectral_partial_scalar_3D(
 				const tensorium::Tensor<T, 3>& scalar_field,
 				T dx, T dy, T dz,
-				tensorium::Tensor<T, 4>& grad_out) {
-
+				tensorium::Tensor<T, 4>& grad_out)
+		{
 			using namespace tensorium;
 			using C = std::complex<T>;
 			using FFT = SpectralFFT<T>;
 
 			const auto& shape = scalar_field.shape();
 			const size_t NX = shape[0], NY = shape[1], NZ = shape[2];
-			const size_t N = NX * NY * NZ;
 
-			grad_out.resize(NX, NY, NZ, 3);
+			grad_out.resize({NX, NY, NZ, 3});
 
 			Tensor<C, 3> field_cplx({NX, NY, NZ});
 			for (size_t i = 0; i < NX; ++i)
 				for (size_t j = 0; j < NY; ++j)
 					for (size_t k = 0; k < NZ; ++k)
-						field_cplx(i,j,k) = C(scalar_field(i,j,k), 0.0);
+						field_cplx(i, j, k) = C(scalar_field(i, j, k), 0.0);
 
 			FFT::forward_3D(field_cplx);
 
 			for (size_t i = 0; i < NX; ++i) {
-				int ni = (i <= NX/2) ? i : int(i) - int(NX);
+				int ni = (i <= NX / 2) ? int(i) : int(i) - int(NX);
 				T kx = 2.0 * M_PI * ni / (NX * dx);
 
 				for (size_t j = 0; j < NY; ++j) {
-					int nj = (j <= NY/2) ? j : int(j) - int(NY);
+					int nj = (j <= NY / 2) ? int(j) : int(j) - int(NY);
 					T ky = 2.0 * M_PI * nj / (NY * dy);
 
 					for (size_t k = 0; k < NZ; ++k) {
-						int nk = (k <= NZ/2) ? k : int(k) - int(NZ);
+						int nk = (k <= NZ / 2) ? int(k) : int(k) - int(NZ);
 						T kz = 2.0 * M_PI * nk / (NZ * dz);
 
-						C f_hat = field_cplx(i,j,k);
+						C f_hat = field_cplx(i, j, k);
 
-						grad_out(i,j,k,0) = (f_hat * C(0, kx)).real(); 
-						grad_out(i,j,k,1) = (f_hat * C(0, ky)).real();
-						grad_out(i,j,k,2) = (f_hat * C(0, kz)).real();
+						field_cplx(i, j, k) = f_hat; 
+
+						grad_out(i, j, k, 0) = (f_hat * C(0, kx)).real();
+						grad_out(i, j, k, 1) = (f_hat * C(0, ky)).real();
+						grad_out(i, j, k, 2) = (f_hat * C(0, kz)).real();
 					}
 				}
 			}
 
 			for (int dim = 0; dim < 3; ++dim) {
 				Tensor<C, 3> dfield_cplx({NX, NY, NZ});
+
 				for (size_t i = 0; i < NX; ++i)
 					for (size_t j = 0; j < NY; ++j)
 						for (size_t k = 0; k < NZ; ++k)
-							dfield_cplx(i,j,k) = C(grad_out(i,j,k,dim), 0.0);
+							dfield_cplx(i, j, k) = C(grad_out(i, j, k, dim), 0.0);
 
 				FFT::backward_3D(dfield_cplx);
 
 				for (size_t i = 0; i < NX; ++i)
 					for (size_t j = 0; j < NY; ++j)
 						for (size_t k = 0; k < NZ; ++k)
-							grad_out(i,j,k,dim) = dfield_cplx(i,j,k).real();
+							grad_out(i, j, k, dim) = dfield_cplx(i, j, k).real();
 			}
 		}
 
+	template<typename T, typename TensorFunc>
+		tensorium::Tensor<T, 3> spectral_partial_tensor2(
+				const tensorium::Vector<T>& X,
+				T dx, T dy, T dz,
+				TensorFunc&& func,
+				size_t NX, size_t NY, size_t NZ)
+		{
+			using namespace tensorium;
+			using C = std::complex<T>;
+			using FFT = SpectralFFT<T>;
+
+			Tensor<T, 2> gamma = func(X);
+			Tensor<T, 3> grad_gamma({3, 3, 3}); 
+
+			for (size_t i = 0; i < 3; ++i) {
+				for (size_t j = 0; j < 3; ++j) {
+					Tensor<T, 3> gamma_ij_grid =
+						tensorium_RG::populate_tensor3D_component<T>(
+								i, j, func, dx, dy, dz, NX, NY, NZ);
+
+					Tensor<T, 4> grad_tmp;
+					spectral_partial_scalar_3D(gamma_ij_grid, dx, dy, dz, grad_tmp);
+
+					for (size_t k = 0; k < 3; ++k)
+						grad_gamma(i, j, k) = grad_tmp(NX/2, NY/2, NZ/2, k);
+				}
+			}
+
+			return grad_gamma;
+		}
 
 	template<typename T, typename ScalarFunc>
 		tensorium::Vector<T> partial_scalar(
@@ -97,9 +129,8 @@ namespace tensorium_RG {
 				T dx, T dy, T dz,
 				ScalarFunc&& func)
 		{
-			tensorium::Vector<T> grad(3);  // <-- ici 3, pas 4
+			tensorium::Vector<T> grad(3);  
 
-			// dérivée selon x¹
 			{
 				tensorium::Vector<T> Xs = X;
 				T gm2, gm1, gp1, gp2;

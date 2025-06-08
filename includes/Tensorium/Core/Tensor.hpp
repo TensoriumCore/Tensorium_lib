@@ -68,12 +68,18 @@ namespace tensorium {
 				}
 				/** @brief Resize 2D tensor */
 				///@{
-				void resize(const std::array<size_t, 2>& dims) {
+				void resize(const std::array<size_t, Rank>& dims) {
 					dimensions = dims;
 					update_strides();
-					total_size = dims[0] * dims[1];
-					data.resize(total_size);
+
+					size_t total = 1;
+					for (size_t i = 0; i < Rank; ++i)
+						total *= dims[i];
+
+					total_size = total;
+					data.resize(total);
 				}
+
 				/** @brief Resize 2D tensor */
 				void resize(size_t d0, size_t d1) {
 					resize(std::array<size_t, 2>{d0, d1});

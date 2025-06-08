@@ -134,15 +134,29 @@ namespace tensorium {
 					Tensor<T, 3>& Christoffel) {
 				tensorium_RG::BSSNChristoffel<T>::compute(gamma_tilde, dgamma_tilde, gamma_tilde_inv, Christoffel);
 			}
-		
 
 		template<typename T>
-			inline tensorium_RG::BSSN<T> setup_BSSN_grid(const Vector<T>& X,
+			inline void compute_christoffel_3D_Grid(const Tensor<T, 5>& gamma_tilde,
+					const Tensor<T, 6>& dgamma_tilde,
+					const Tensor<T, 5>& gamma_tilde_inv,
+					Tensor<T, 6>& Christoffel) {
+				tensorium_RG::BSSNChristoffel<T>::compute3D(gamma_tilde, dgamma_tilde, gamma_tilde_inv, Christoffel);
+			}
+
+		template<typename T>
+			inline tensorium_RG::BSSN<T> setup_BSSN(const Vector<T>& X,
 					const tensorium_RG::Metric<T>& metric,
 					T dx, T dy, T dz) {
 				tensorium_RG::BSSN<T> bssn;
 				bssn.init_BSSN(X, metric, dx, dy, dz);
 				return bssn;
 			}
-
+		template<typename T>
+			inline tensorium_RG::BSSN<T> setup_BSSN_grid(const Vector<T>& X,
+					const tensorium_RG::Metric<T>& metric,
+					T dx, T dy, T dz) {
+				tensorium_RG::BSSN<T> bssn;
+				bssn.init_BSSN3D(X, metric, dx, dy, dz);
+				return bssn;
+			}
 }

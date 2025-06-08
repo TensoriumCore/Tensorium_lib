@@ -343,8 +343,9 @@ int matrix_tests() {
 	gammaj_inv.print();
 
 	std::cout << "--- SETUP BSSN TEST---\n";	
-	auto bssn = tensorium::setup_BSSN_grid(X, metric, dx, dy, dz);
+	auto bssn = tensorium::setup_BSSN(X, metric, dx, dy, dz);
 
+	auto bssn3D = tensorium::setup_BSSN_grid(X, metric, dx, dy, dz);
 	return 0;
 }
 

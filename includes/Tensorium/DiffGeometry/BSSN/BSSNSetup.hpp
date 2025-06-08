@@ -88,12 +88,12 @@ namespace tensorium_RG {
 
 					auto dgamma_tilde = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-								T a_tmp;
-								tensorium::Vector<T> b_tmp(3);
-								tensorium::Tensor<T,2> g_tmp({3, 3});
-								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-								T chi_tmp = compute_conformal_factor(metric, g_tmp);
-								return compute_conformal_metric(metric, g_tmp, chi_tmp);
+							T a_tmp;
+							tensorium::Vector<T> b_tmp(3);
+							tensorium::Tensor<T,2> g_tmp({3, 3});
+							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+							T chi_tmp = compute_conformal_factor(metric, g_tmp);
+							return compute_conformal_metric(metric, g_tmp, chi_tmp);
 							},
 							DiffMode::PARTIAL
 							);
@@ -110,22 +110,22 @@ namespace tensorium_RG {
 
 					auto d_beta = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-								T a_tmp;
-								tensorium::Vector<T> b_tmp(3);
-								tensorium::Tensor<T,2> g_tmp({3, 3});
-								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-								return b_tmp;
+							T a_tmp;
+							tensorium::Vector<T> b_tmp(3);
+							tensorium::Tensor<T,2> g_tmp({3, 3});
+							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+							return b_tmp;
 							},
 							DiffMode::PARTIAL
 							);
 
 					auto dgamma_phys = autodiff(X, dx, dy, dz,
 							[&](const tensorium::Vector<T>& Xs) {
-								T a_tmp;
-								tensorium::Vector<T> b_tmp(3);
-								tensorium::Tensor<T,2> g_tmp({3, 3});
-								metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
-								return g_tmp;
+							T a_tmp;
+							tensorium::Vector<T> b_tmp(3);
+							tensorium::Tensor<T,2> g_tmp({3, 3});
+							metric.BSSN(Xs, a_tmp, b_tmp, g_tmp);
+							return g_tmp;
 							},
 							DiffMode::PARTIAL
 							);
@@ -182,7 +182,7 @@ namespace tensorium_RG {
 								+ R4(i,j);
 						}
 					}
-					
+
 
 					grid.alpha             = {alpha};
 					grid.beta              = {beta};
@@ -201,32 +201,32 @@ namespace tensorium_RG {
 
 					std::cout << std::setprecision(6) << std::fixed;
 					std::cout << "\n========= BSSN Quantities at X =========\n";
-					
+
 					std::cout << "--- alpha ---\n" << grid.alpha[0] << "\n";
 					print_vector("beta", grid.beta[0]);
-					
+
 					std::cout << "dbeta\n";
 					d_beta.print();
-					
+
 					print_tensor2("gamma_ij", grid.gamma_ij[0]);
 					print_tensor2("gamma_ij_inv", grid.gamma_ij_inv[0]);
-					
+
 					print_tensor2("gamma_tilde", grid.gamma_tilde[0]);
 					print_tensor2("gamma_tilde_inv", grid.gamma_tilde_inv[0]);
-					
+
 					print_tensor3("dgamma_tilde", grid.dgamma_tilde[0]);
 					print_tensor3("christoffel_tilde", grid.christoffel_tilde[0]);
 					print_vector("tilde_Gamma", grid.tilde_Gamma[0]);
-					
+
 					print_tensor2("∂_t gamma_ij (dgt)", dgt);
 					print_vector("contracted_Gamma", grid.contracted_Gamma[0]);
-					
+
 					print_tensor3("dgamma_phys", dgamma_phys);
 					print_tensor3("christoffel_phys", christoffel_phys);
 					print_tensor2("Extrinsic curvature K_ij", grid.ExtrinsicTensor[0]);
 					print_tensor2("A_tilde_ij", grid.A_tildeTensor[0]);
 					std::cout << "--- chi ---\n" << grid.chi[0] << "\n";
-					
+
 					print_tensor2("R1 = -1/2 ∇² γ̃_ij", R1);
 					print_tensor2("R2 = 1/2 (∂_j Γ̃^k γ̃_{ki} + ∂_i Γ̃^k γ̃_{kj})", R2);
 					print_tensor2("R3 = Γ̃^k Γ̃_{(i j) k}", R3);
@@ -234,8 +234,8 @@ namespace tensorium_RG {
 					print_tensor2("R4", R4);
 					print_tensor2("Full Ricci  R_ij", Ricci);
 					std::cout << "========================================\n\n";
-					
-					
+
+
 				}
 		};
 }
