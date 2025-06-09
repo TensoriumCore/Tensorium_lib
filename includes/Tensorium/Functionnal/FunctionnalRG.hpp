@@ -151,12 +151,5 @@ namespace tensorium {
 				bssn.init_BSSN(X, metric, dx, dy, dz);
 				return bssn;
 			}
-		template<typename T>
-			inline tensorium_RG::BSSN<T> setup_BSSN_grid(const Vector<T>& X,
-					const tensorium_RG::Metric<T>& metric,
-					T dx, T dy, T dz) {
-				tensorium_RG::BSSN<T> bssn;
-				bssn.init_BSSN3D(X, metric, dx, dy, dz);
-				return bssn;
-			}
+
 }

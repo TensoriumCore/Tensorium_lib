@@ -1,13 +1,12 @@
-#pragma once
+// #pragma once
 
 #include "../Matrix.hpp"
 
 namespace tensorium {
-	template<typename T>
-		class GemmKernelBig {
-			public:
-				using Simd = simd::SimdTraits<T, DefaultISA>;
-				using reg = typename Simd::reg;
-				static constexpr int SimdWidth = Simd::width;
-		};
-}
+template <typename T> class GemmKernelBig {
+  public:
+    using Simd = simd::SimdTraits<T, DefaultISA>;
+    using reg = typename Simd::reg;
+    static constexpr int SimdWidth = Simd::width;
+};
+} // namespace tensorium

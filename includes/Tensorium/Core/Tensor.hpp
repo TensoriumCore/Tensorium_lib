@@ -1,429 +1,427 @@
 #pragma once
 
+#include "../SIMD/Allocator.hpp"
+#include "../SIMD/CPU_id.hpp"
+#include "../SIMD/SIMD.hpp"
+#include <array>
+#include <cassert>
+#include <cmath>
 #include <cstdint>
+#include <iomanip>
 #include <iostream>
 #include <vector>
-#include <cassert>
-#include <array>
-#include <iomanip>
-#include <vector>
-#include <cmath>
-#include "../SIMD/SIMD.hpp" 
-#include "../SIMD/CPU_id.hpp" 
-#include "../SIMD/Allocator.hpp"
 
 namespace tensorium {
-	/**
-	 * @brief Multi-dimensional tensor class with fixed rank and SIMD support
-	 *
-	 * This class provides high-performance operations on tensors of arbitrary rank,
-	 * supporting element-wise access, contraction, transposition, and tensor product,
-	 * all implemented with SIMD optimization and aligned memory.
-	 *
-	 * @tparam K Scalar type (e.g., float or double)
-	 * @tparam Rank Number of tensor dimensions
-	 */
-	template<typename K, std::size_t Rank>
-		class Tensor {
-			public:
-				using value_type = K;
-				/** @brief Dimensions of the tensor (e.g., {4,4,4,4}) */
-				std::array<size_t, Rank> dimensions;
-				size_t total_size;
-				aligned_vector<K> data;
-				size_t block_size;
-				std::array<size_t, Rank> strides;
-				/** @brief Default constructor */
-				Tensor() : total_size(0), block_size(128) {}
+/**
+ * @brief Multi-dimensional tensor class with fixed rank and SIMD support
+ *
+ * This class provides high-performance operations on tensors of arbitrary rank,
+ * supporting element-wise access, contraction, transposition, and tensor product,
+ * all implemented with SIMD optimization and aligned memory.
+ *
+ * @tparam K Scalar type (e.g., float or double)
+ * @tparam Rank Number of tensor dimensions
+ */
+template <typename K, std::size_t Rank> class Tensor {
+  public:
+    using value_type = K;
+    /** @brief Dimensions of the tensor (e.g., {4,4,4,4}) */
+    std::array<size_t, Rank> dimensions;
+    size_t                   total_size;
+    aligned_vector<K>        data;
+    size_t                   block_size;
+    std::array<size_t, Rank> strides;
+    /** @brief Default constructor */
+    Tensor() : total_size(0), block_size(128) {}
 
-				/**
-				 * @brief Construct tensor with given dimensions
-				 * @param dims Dimension sizes
-				 */
-				Tensor(const std::array<size_t, Rank>& dims)
-					: dimensions(dims), total_size(1), block_size(128) {
-						strides[Rank - 1] = 1;
-						for (int64_t i = Rank - 2; i >= 0; --i) {
-							strides[i] = strides[i + 1] * dimensions[i + 1];
-						}
+    /**
+     * @brief Construct tensor with given dimensions
+     * @param dims Dimension sizes
+     */
+    Tensor(const std::array<size_t, Rank> &dims)
+        : dimensions(dims),
+          total_size(1),
+          block_size(128) {
+        strides[Rank - 1] = 1;
+        for (int64_t i = Rank - 2; i >= 0; --i) {
+            strides[i] = strides[i + 1] * dimensions[i + 1];
+        }
 
-						size_t total = 1;
-						for (size_t i = 0; i < Rank; ++i)
-							total *= dimensions[i];
-						data.resize(total);
-						total_size = total;
-					}
+        size_t total = 1;
+        for (size_t i = 0; i < Rank; ++i)
+            total *= dimensions[i];
+        data.resize(total);
+        total_size = total;
+    }
 
-				size_t flatten_index(size_t i, size_t j, size_t k, size_t l) const {
-					std::array<size_t, 4> idx = {i, j, k, l};
-					return flatten_index(idx);
-				}
+    size_t flatten_index(size_t i, size_t j, size_t k, size_t l) const {
+        std::array<size_t, 4> idx = {i, j, k, l};
+        return flatten_index(idx);
+    }
 
-				
-				std::array<size_t, Rank> shape() const { return dimensions; }
-				void update_strides() {
-					strides[Rank - 1] = 1;
-					for (int64_t i = Rank - 2; i >= 0; --i)
-						strides[i] = strides[i + 1] * dimensions[i + 1];
-				}
-				/** @brief Resize 2D tensor */
-				///@{
-				void resize(const std::array<size_t, Rank>& dims) {
-					dimensions = dims;
-					update_strides();
+    std::array<size_t, Rank> shape() const { return dimensions; }
+    void                     update_strides() {
+        strides[Rank - 1] = 1;
+        for (int64_t i = Rank - 2; i >= 0; --i)
+            strides[i] = strides[i + 1] * dimensions[i + 1];
+    }
+    /** @brief Resize 2D tensor */
+    ///@{
+    void resize(const std::array<size_t, Rank> &dims) {
+        dimensions = dims;
+        update_strides();
 
-					size_t total = 1;
-					for (size_t i = 0; i < Rank; ++i)
-						total *= dims[i];
+        size_t total = 1;
+        for (size_t i = 0; i < Rank; ++i)
+            total *= dims[i];
 
-					total_size = total;
-					data.resize(total);
-				}
+        total_size = total;
+        data.resize(total);
+    }
 
-				/** @brief Resize 2D tensor */
-				void resize(size_t d0, size_t d1) {
-					resize(std::array<size_t, 2>{d0, d1});
-				}
-				///@}
-				/** @name Element Access */
-				
-				void resize(size_t d0, size_t d1, size_t d2) {
-					static_assert(Rank == 3, "Rank mismatch in resize()");
-					
-					dimensions = {d0, d1, d2};
-					data.resize(d0 * d1 * d2, K(0));
-				}
-				///@{		
-				K& operator()(const std::array<size_t, Rank>& indices) {
-					size_t index = flatten_index(indices);
-					assert(index < total_size);
-					return data[index];
-				}
-				const K& operator()(const std::array<size_t, Rank>& indices) const {
-					size_t index = flatten_index(indices);
-					assert(index < total_size);
-					return data[index];
-				}
-				const K& operator()(size_t i, size_t j, size_t k, size_t l) const {
-					std::array<size_t, 4> idx = {i, j, k, l};
-					return data[flatten_index(idx)];
-				}
-								K& operator()(size_t i, size_t j) {
-					return data[i * dimensions[1] + j];
-				}
-				K& operator()(size_t i, size_t j, size_t k, size_t l) {
-					std::array<size_t, 4> idx = {i, j, k, l};
-					return data[flatten_index(idx)];
-				}
-				const K& operator()(size_t i, size_t j) const {
-					return data[i * dimensions[1] + j];
-				}
-				K& operator()(size_t i, size_t j, size_t k) {
-					static_assert(Rank == 3, "Rank mismatch in operator()");
-					return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
-				}
-				const K& operator()(size_t i, size_t j, size_t k) const {
-					static_assert(Rank == 3, "Rank mismatch in operator()");
-					return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
-				}
+    /** @brief Resize 2D tensor */
+    void resize(size_t d0, size_t d1) { resize(std::array<size_t, 2>{d0, d1}); }
+    ///@}
+    /** @name Element Access */
 
-				///@}
-				/** @brief Fill tensor with a constant value */
-				void fill(K value) {
-					std::fill(data.begin(), data.end(), value);
-				}
-				/** @name Debug and Utilities */
-				///@{
-				/** @brief Print the shape (dimensions) of the tensor */
-				void print_shape() const {
-					std::cout << "Tensor shape: (";
-					for (size_t i = 0; i < Rank; ++i) {
-						std::cout << dimensions[i];
-						if (i + 1 < Rank) std::cout << ", ";
-					}
-					std::cout << ")\n";
-				}
+    void resize(size_t d0, size_t d1, size_t d2) {
+        static_assert(Rank == 3, "Rank mismatch in resize()");
 
-				/** @brief Print a 2D tensor (Rank == 2) */
-				void print() const {
-					for (size_t i = 0; i < dimensions[0]; ++i) {
-						for (size_t j = 0; j < dimensions[1]; ++j) {
-							std::cout << std::setw(10) << std::setprecision(4) << std::fixed << (*this)({i, j}) << " ";
-						}
-						std::cout << "\n";
-					}
-				}
-				///@}
-				/** @name basic tensor operations (Rank == 2) */
-				///@{
-				__attribute__((always_inline, hot, flatten))
-					/**
-					 * @brief Convert a multi-index into a flattened linear index using SIMD
-					 *
-					 * @param indices Array of indices
-					 * @param strides Array of strides
-					 * @return Flattened index
-					 */
-					inline size_t flatten_index_simd(const size_t* indices, const size_t* strides) const {
-						using Simd = simd::SimdTraits<size_t, DefaultISA>;
-						using reg = typename Simd::reg;
-						constexpr size_t W = Simd::width / sizeof(size_t);
+        dimensions = {d0, d1, d2};
+        data.resize(d0 * d1 * d2, K(0));
+    }
+    ///@{
+    K &operator()(const std::array<size_t, Rank> &indices) {
+        size_t index = flatten_index(indices);
+        assert(index < total_size);
+        return data[index];
+    }
+    const K &operator()(const std::array<size_t, Rank> &indices) const {
+        size_t index = flatten_index(indices);
+        assert(index < total_size);
+        return data[index];
+    }
+    const K &operator()(size_t i, size_t j, size_t k, size_t l) const {
+        std::array<size_t, 4> idx = {i, j, k, l};
+        return data[flatten_index(idx)];
+    }
+    K &operator()(size_t i, size_t j) { return data[i * dimensions[1] + j]; }
+    K &operator()(size_t i, size_t j, size_t k, size_t l) {
+        std::array<size_t, 4> idx = {i, j, k, l};
+        return data[flatten_index(idx)];
+    }
+    const K &operator()(size_t i, size_t j) const { return data[i * dimensions[1] + j]; }
+    K       &operator()(size_t i, size_t j, size_t k) {
+        static_assert(Rank == 3, "Rank mismatch in operator()");
+        return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
+    }
+    const K &operator()(size_t i, size_t j, size_t k) const {
+        static_assert(Rank == 3, "Rank mismatch in operator()");
+        return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
+    }
 
-						size_t acc = 0;
-						size_t i = 0;
+    ///@}
+    /** @brief Fill tensor with a constant value */
+    void fill(K value) { std::fill(data.begin(), data.end(), value); }
+    /** @name Debug and Utilities */
+    ///@{
+    /** @brief Print the shape (dimensions) of the tensor */
+    void print_shape() const {
+        std::cout << "Tensor shape: (";
+        for (size_t i = 0; i < Rank; ++i) {
+            std::cout << dimensions[i];
+            if (i + 1 < Rank)
+                std::cout << ", ";
+        }
+        std::cout << ")\n";
+    }
 
-						for (; i + W - 1 < Rank; i += W) {
-							reg idx = Simd::load(&indices[i]);
-							reg str = Simd::load(&strides[i]);
-							reg prod = Simd::mul(idx, str);
-							acc += detail::reduce_sum(prod);
-						}
-						for (; i < Rank; ++i)
-							acc += indices[i] * strides[i];
+    /** @brief Print a 2D tensor (Rank == 2) */
+    void print() const {
+        for (size_t i = 0; i < dimensions[0]; ++i) {
+            for (size_t j = 0; j < dimensions[1]; ++j) {
+                std::cout << std::setw(10) << std::setprecision(4) << std::fixed << (*this)({i, j})
+                          << " ";
+            }
+            std::cout << "\n";
+        }
+    }
+    ///@}
+    /** @name basic tensor operations (Rank == 2) */
+    ///@{
+    __attribute__((always_inline, hot, flatten))
+    /**
+     * @brief Convert a multi-index into a flattened linear index using SIMD
+     *
+     * @param indices Array of indices
+     * @param strides Array of strides
+     * @return Flattened index
+     */
+    inline size_t
+    flatten_index_simd(const size_t *indices, const size_t *strides) const {
+        using Simd = simd::SimdTraits<size_t, DefaultISA>;
+        using reg = typename Simd::reg;
+        constexpr size_t W = Simd::width / sizeof(size_t);
 
-						return acc;
-					}
+        size_t acc = 0;
+        size_t i = 0;
 
-				__attribute__((always_inline, hot, flatten))				
-					/**
-					 * @brief Convert multi-index to flat index
-					 *
-					 * @param indices Array of indices
-					 * @return Flattened index
-					 */
-					inline size_t flatten_index(const std::array<size_t, Rank>& indices) const {
-						return flatten_index_simd(indices.data(), strides.data());
-					}
+        for (; i + W - 1 < Rank; i += W) {
+            reg idx = Simd::load(&indices[i]);
+            reg str = Simd::load(&strides[i]);
+            reg prod = Simd::mul(idx, str);
+            acc += detail::reduce_sum(prod);
+        }
+        for (; i < Rank; ++i)
+            acc += indices[i] * strides[i];
 
-				__attribute__((always_inline, hot, flatten))
-					/**
-					 * @brief Perform contraction over two indices using SIMD
-					 *
-					 * Contracts a tensor \f$ T_{i_1 \dots i_k i j i_{k+1} \dots i_n} \f$
-					 * to \f$ T'_{i_1 \dots i_k i_{k+1} \dots i_n} \f$
-					 *
-					 * @param t Input tensor
-					 * @param i First index to contract
-					 * @param j Second index to contract
-					 * @return Contracted tensor of rank (Rank - 2)
-					 */
-					Tensor<K, Rank - 2> contract_simd(const Tensor<K, Rank>& t, size_t i, size_t j) const {
-						static_assert(Rank >= 2, "Cannot contract tensor of rank < 2");
-						assert(i < Rank && j < Rank && i != j);
-						assert(t.dimensions[i] == t.dimensions[j]);
+        return acc;
+    }
 
-						using SimdIndex = simd::SimdTraits<size_t, DefaultISA>;
-						using SimdValue = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename SimdValue::reg;
-						constexpr size_t W = SimdValue::width;
+    __attribute__((always_inline, hot, flatten))
+    /**
+     * @brief Convert multi-index to flat index
+     *
+     * @param indices Array of indices
+     * @return Flattened index
+     */
+    inline size_t
+    flatten_index(const std::array<size_t, Rank> &indices) const {
+        return flatten_index_simd(indices.data(), strides.data());
+    }
 
-						std::array<size_t, Rank - 2> new_dims;
-						size_t d_idx = 0;
-						for (size_t d = 0; d < Rank; ++d) {
-							if (d != i && d != j)
-								new_dims[d_idx++] = t.dimensions[d];
-						}
-						Tensor<K, Rank - 2> result(new_dims);
+    __attribute__((always_inline, hot, flatten))
+    /**
+     * @brief Perform contraction over two indices using SIMD
+     *
+     * Contracts a tensor \f$ T_{i_1 \dots i_k i j i_{k+1} \dots i_n} \f$
+     * to \f$ T'_{i_1 \dots i_k i_{k+1} \dots i_n} \f$
+     *
+     * @param t Input tensor
+     * @param i First index to contract
+     * @param j Second index to contract
+     * @return Contracted tensor of rank (Rank - 2)
+     */
+    Tensor<K, Rank - 2>
+    contract_simd(const Tensor<K, Rank> &t, size_t i, size_t j) const {
+        static_assert(Rank >= 2, "Cannot contract tensor of rank < 2");
+        assert(i < Rank && j < Rank && i != j);
+        assert(t.dimensions[i] == t.dimensions[j]);
 
-						std::array<size_t, Rank> indices{};
-						std::array<size_t, Rank - 2> reduced_idx{};
+        using SimdIndex = simd::SimdTraits<size_t, DefaultISA>;
+        using SimdValue = simd::SimdTraits<K, DefaultISA>;
+        using reg = typename SimdValue::reg;
+        constexpr size_t W = SimdValue::width;
 
-						for (size_t flat = 0; flat < result.data.size(); ++flat) {
-							size_t tmp = flat;
-							d_idx = 0;
-							for (size_t d = 0; d < Rank; ++d) {
-								if (d == i || d == j) {
-									indices[d] = 0;
-								} else {
-									indices[d] = tmp % result.dimensions[d_idx];
-									tmp /= result.dimensions[d_idx++];
-								}
-							}
+        std::array<size_t, Rank - 2> new_dims;
+        size_t                       d_idx = 0;
+        for (size_t d = 0; d < Rank; ++d) {
+            if (d != i && d != j)
+                new_dims[d_idx++] = t.dimensions[d];
+        }
+        Tensor<K, Rank - 2> result(new_dims);
 
-							const size_t dim = t.dimensions[i];
-							size_t k = 0;
-							reg acc = SimdValue::zero();
+        std::array<size_t, Rank>     indices{};
+        std::array<size_t, Rank - 2> reduced_idx{};
 
-							for (; k + W - 1 < dim; k += W) {
-								alignas(64) size_t k_vec[W];
-								for (size_t w = 0; w < W; ++w) {
-									k_vec[w] = k + w;
-									indices[i] = k_vec[w];
-									indices[j] = k_vec[w];
-								}
+        for (size_t flat = 0; flat < result.data.size(); ++flat) {
+            size_t tmp = flat;
+            d_idx = 0;
+            for (size_t d = 0; d < Rank; ++d) {
+                if (d == i || d == j) {
+                    indices[d] = 0;
+                } else {
+                    indices[d] = tmp % result.dimensions[d_idx];
+                    tmp /= result.dimensions[d_idx++];
+                }
+            }
 
-								alignas(64) K vals[W];
-								for (size_t w = 0; w < W; ++w)
-									vals[w] = t(indices);
+            const size_t dim = t.dimensions[i];
+            size_t       k = 0;
+            reg          acc = SimdValue::zero();
 
-								reg vec = SimdValue::load(vals);
-								acc = SimdValue::add(acc, vec);
-							}
+            for (; k + W - 1 < dim; k += W) {
+                alignas(64) size_t k_vec[W];
+                for (size_t w = 0; w < W; ++w) {
+                    k_vec[w] = k + w;
+                    indices[i] = k_vec[w];
+                    indices[j] = k_vec[w];
+                }
 
-							K sum = detail::reduce_sum(acc);
-							for (; k < dim; ++k) {
-								indices[i] = k;
-								indices[j] = k;
-								sum += t(indices);
-							}
+                alignas(64) K vals[W];
+                for (size_t w = 0; w < W; ++w)
+                    vals[w] = t(indices);
 
-							d_idx = 0;
-							for (size_t d = 0; d < Rank; ++d) {
-								if (d != i && d != j)
-									reduced_idx[d_idx++] = indices[d];
-							}
-							result(reduced_idx) = sum;
-						}
+                reg vec = SimdValue::load(vals);
+                acc = SimdValue::add(acc, vec);
+            }
 
-						return result;
-					}
+            K sum = detail::reduce_sum(acc);
+            for (; k < dim; ++k) {
+                indices[i] = k;
+                indices[j] = k;
+                sum += t(indices);
+            }
 
-				template <size_t I, size_t J>
-					Tensor<K, Rank - 2> contract_tensor() const;
+            d_idx = 0;
+            for (size_t d = 0; d < Rank; ++d) {
+                if (d != i && d != j)
+                    reduced_idx[d_idx++] = indices[d];
+            }
+            result(reduced_idx) = sum;
+        }
 
-				__attribute__((always_inline, hot, flatten))
-					/**
-					 * @brief Transpose a 2D tensor using SIMD
-					 *
-					 * Only valid for tensors of rank 2.
-					 * @return Transposed tensor
-					 */
-					Tensor<K, 2> transpose_simd() const {
-						const size_t rows = dimensions[0];
-						const size_t cols = dimensions[1];
+        return result;
+    }
 
-						Tensor<K, 2> result({cols, rows});
+    template <size_t I, size_t J> Tensor<K, Rank - 2> contract_tensor() const;
 
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						constexpr size_t W = Simd::width / sizeof(K);
+    __attribute__((always_inline, hot, flatten))
+    /**
+     * @brief Transpose a 2D tensor using SIMD
+     *
+     * Only valid for tensors of rank 2.
+     * @return Transposed tensor
+     */
+    Tensor<K, 2>
+    transpose_simd() const {
+        const size_t rows = dimensions[0];
+        const size_t cols = dimensions[1];
 
-						for (size_t i = 0; i < rows; ++i) {
-							size_t j = 0;
-							for (; j + W - 1 < cols; j += W) {
-								reg vec = Simd::load(&(*this)({i, j}));
+        Tensor<K, 2> result({cols, rows});
 
-								alignas(64) K temp[W];
-								Simd::store(temp, vec);
-								for (size_t k = 0; k < W; ++k)
-									result({j + k, i}) = temp[k];
-							}
-							for (; j < cols; ++j)
-								result({j, i}) = (*this)({i, j});
-						}
+        using Simd = simd::SimdTraits<K, DefaultISA>;
+        using reg = typename Simd::reg;
+        constexpr size_t W = Simd::width / sizeof(K);
 
-						return result;
-					}
+        for (size_t i = 0; i < rows; ++i) {
+            size_t j = 0;
+            for (; j + W - 1 < cols; j += W) {
+                reg vec = Simd::load(&(*this)({i, j}));
 
-				/**
-				 * @brief Compute the tensor (outer) product of two tensors
-				 *
-				 * Resulting tensor has rank = R1 + R2.
-				 *
-				 * \f[
-				 * (A \otimes B)_{i_1 \dots i_R} = A_{i_1 \dots i_{R_1}} \cdot B_{i_{R_1 + 1} \dots i_R}
-				 * \f]
-				 *
-				 * @tparam R1 Rank of tensor A
-				 * @tparam R2 Rank of tensor B
-				 * @param A Tensor A
-				 * @param B Tensor B
-				 * @return Tensor product \f$ A \otimes B \f$
-				 */
-				template<size_t R1, size_t R2>
-					static inline Tensor<K, R1 + R2> tensor_product(const Tensor<K, R1>& A, const Tensor<K, R2>& B) {
-						using Simd = simd::SimdTraits<K, DefaultISA>;
-						using reg = typename Simd::reg;
-						constexpr size_t W = Simd::width / sizeof(K);
-						constexpr size_t R = R1 + R2;
-						constexpr size_t L3_BLOCK = 128;
-						constexpr size_t L1_BLOCK = 128;
+                alignas(64) K temp[W];
+                Simd::store(temp, vec);
+                for (size_t k = 0; k < W; ++k)
+                    result({j + k, i}) = temp[k];
+            }
+            for (; j < cols; ++j)
+                result({j, i}) = (*this)({i, j});
+        }
 
-						std::array<size_t, R> shape;
-						for (size_t i = 0; i < R1; ++i) 
-							shape[i] = A.dimensions[i];
-						for (size_t i = 0; i < R2; ++i) 
-							shape[R1 + i] = B.dimensions[i];
+        return result;
+    }
 
-						Tensor<K, R> result(shape);
+    /**
+     * @brief Compute the tensor (outer) product of two tensors
+     *
+     * Resulting tensor has rank = R1 + R2.
+     *
+     * \f[
+     * (A \otimes B)_{i_1 \dots i_R} = A_{i_1 \dots i_{R_1}} \cdot B_{i_{R_1 + 1} \dots i_R}
+     * \f]
+     *
+     * @tparam R1 Rank of tensor A
+     * @tparam R2 Rank of tensor B
+     * @param A Tensor A
+     * @param B Tensor B
+     * @return Tensor product \f$ A \otimes B \f$
+     */
+    template <size_t R1, size_t R2>
+    static inline Tensor<K, R1 + R2> tensor_product(const Tensor<K, R1> &A,
+                                                    const Tensor<K, R2> &B) {
+        using Simd = simd::SimdTraits<K, DefaultISA>;
+        using reg = typename Simd::reg;
+        constexpr size_t W = Simd::width / sizeof(K);
+        constexpr size_t R = R1 + R2;
+        constexpr size_t L3_BLOCK = 128;
+        constexpr size_t L1_BLOCK = 128;
 
-						const size_t max_b_safe = B.data.size() - (W - 1);
-						std::fill(result.data.begin(), result.data.end(), K(0));
+        std::array<size_t, R> shape;
+        for (size_t i = 0; i < R1; ++i)
+            shape[i] = A.dimensions[i];
+        for (size_t i = 0; i < R2; ++i)
+            shape[R1 + i] = B.dimensions[i];
+
+        Tensor<K, R> result(shape);
+
+        const size_t max_b_safe = B.data.size() - (W - 1);
+        std::fill(result.data.begin(), result.data.end(), K(0));
 #pragma omp parallel for collapse(2)
-						for (size_t a_outer = 0; a_outer < A.total_size; a_outer += L3_BLOCK) {
-							for (size_t b_outer = 0; b_outer < B.total_size; b_outer += L3_BLOCK) {
-								_mm_prefetch(&A.data[a_outer + L3_BLOCK], _MM_HINT_NTA);
-								_mm_prefetch(&B.data[b_outer + L3_BLOCK], _MM_HINT_NTA);
-								const size_t a_outer_end = std::min(a_outer + L3_BLOCK, A.total_size);
-								const size_t b_outer_end = std::min(b_outer + L3_BLOCK, B.total_size);
+        for (size_t a_outer = 0; a_outer < A.total_size; a_outer += L3_BLOCK) {
+            for (size_t b_outer = 0; b_outer < B.total_size; b_outer += L3_BLOCK) {
+                _mm_prefetch(&A.data[a_outer + L3_BLOCK], _MM_HINT_NTA);
+                _mm_prefetch(&B.data[b_outer + L3_BLOCK], _MM_HINT_NTA);
+                const size_t a_outer_end = std::min(a_outer + L3_BLOCK, A.total_size);
+                const size_t b_outer_end = std::min(b_outer + L3_BLOCK, B.total_size);
 
-								for (size_t a_inner = a_outer; a_inner < a_outer_end; a_inner += L1_BLOCK) {
-									for (size_t b_inner = b_outer; b_inner < b_outer_end; b_inner += L1_BLOCK) {
-										_mm_prefetch(&A.data[a_inner + L1_BLOCK], _MM_HINT_T0);
-										_mm_prefetch(&B.data[b_inner + L1_BLOCK], _MM_HINT_T0);
-										const size_t a_end = std::min(a_inner + L1_BLOCK, a_outer_end);
-										const size_t b_end = std::min(b_inner + L1_BLOCK, b_outer_end);
-										if (B.total_size < W){}
-										for (size_t a_flat = a_inner; a_flat < a_end; ++a_flat) {
-											std::array<size_t, R1> idx_A;
-											size_t tmp = a_flat;
-											for (ssize_t i = R1 - 1; i >= 0; --i) {
-												idx_A[i] = tmp % A.dimensions[i];
-												tmp /= A.dimensions[i];
-											}
-											K a_scalar = A(idx_A);
-											reg a_vec = Simd::set1(a_scalar);
+                for (size_t a_inner = a_outer; a_inner < a_outer_end; a_inner += L1_BLOCK) {
+                    for (size_t b_inner = b_outer; b_inner < b_outer_end; b_inner += L1_BLOCK) {
+                        _mm_prefetch(&A.data[a_inner + L1_BLOCK], _MM_HINT_T0);
+                        _mm_prefetch(&B.data[b_inner + L1_BLOCK], _MM_HINT_T0);
+                        const size_t a_end = std::min(a_inner + L1_BLOCK, a_outer_end);
+                        const size_t b_end = std::min(b_inner + L1_BLOCK, b_outer_end);
+                        if (B.total_size < W) {
+                        }
+                        for (size_t a_flat = a_inner; a_flat < a_end; ++a_flat) {
+                            std::array<size_t, R1> idx_A;
+                            size_t                 tmp = a_flat;
+                            for (ssize_t i = R1 - 1; i >= 0; --i) {
+                                idx_A[i] = tmp % A.dimensions[i];
+                                tmp /= A.dimensions[i];
+                            }
+                            K   a_scalar = A(idx_A);
+                            reg a_vec = Simd::set1(a_scalar);
 
-											if (b_inner < max_b_safe && W != 0){
-												for (size_t b_flat = b_inner; b_flat + W <= b_end; b_flat += W) {
-													reg b_vec = Simd::loadu(&B.data[b_flat]);
-													reg c_vec = Simd::mul(a_vec, b_vec);
+                            if (b_inner < max_b_safe && W != 0) {
+                                for (size_t b_flat = b_inner; b_flat + W <= b_end; b_flat += W) {
+                                    reg b_vec = Simd::loadu(&B.data[b_flat]);
+                                    reg c_vec = Simd::mul(a_vec, b_vec);
 
-													for (size_t w = 0; w < W; ++w) {
-														std::array<size_t, R2> idx_B;
-														std::array<size_t, R> idx_C;
+                                    for (size_t w = 0; w < W; ++w) {
+                                        std::array<size_t, R2> idx_B;
+                                        std::array<size_t, R>  idx_C;
 
-														size_t tmpb = b_flat + w;
-														for (ssize_t i = R2 - 1; i >= 0; --i) {
-															idx_B[i] = tmpb % B.dimensions[i];
-															tmpb /= B.dimensions[i];
-														}
-#pragma unroll(R1 + R2 - 1) 
-														for (size_t i = 0; i < R1; ++i)
-															idx_C[i] = idx_A[i];
+                                        size_t tmpb = b_flat + w;
+                                        for (ssize_t i = R2 - 1; i >= 0; --i) {
+                                            idx_B[i] = tmpb % B.dimensions[i];
+                                            tmpb /= B.dimensions[i];
+                                        }
 #pragma unroll(R1 + R2 - 1)
-														for (size_t i = 0; i < R2; ++i) 
-															idx_C[R1 + i] = idx_B[i];
+                                        for (size_t i = 0; i < R1; ++i)
+                                            idx_C[i] = idx_A[i];
+#pragma unroll(R1 + R2 - 1)
+                                        for (size_t i = 0; i < R2; ++i)
+                                            idx_C[R1 + i] = idx_B[i];
 
-														result(idx_C) = Simd::extract(c_vec, w);
-													}
-												}
-											} else {
-												for (size_t b_flat = b_inner; b_flat < b_end; ++b_flat) {
-													std::array<size_t, R2> idx_B;
-													std::array<size_t, R> idx_C;
+                                        result(idx_C) = Simd::extract(c_vec, w);
+                                    }
+                                }
+                            } else {
+                                for (size_t b_flat = b_inner; b_flat < b_end; ++b_flat) {
+                                    std::array<size_t, R2> idx_B;
+                                    std::array<size_t, R>  idx_C;
 
-													size_t tmpb = b_flat;
-													for (ssize_t i = R2 - 1; i >= 0; --i) {
-														idx_B[i] = tmpb % B.dimensions[i];
-														tmpb /= B.dimensions[i];
-													}
-													for (size_t i = 0; i < R1; ++i)
-														idx_C[i] = idx_A[i];
-													for (size_t i = 0; i < R2; ++i)
-														idx_C[R1 + i] = idx_B[i];
+                                    size_t tmpb = b_flat;
+                                    for (ssize_t i = R2 - 1; i >= 0; --i) {
+                                        idx_B[i] = tmpb % B.dimensions[i];
+                                        tmpb /= B.dimensions[i];
+                                    }
+                                    for (size_t i = 0; i < R1; ++i)
+                                        idx_C[i] = idx_A[i];
+                                    for (size_t i = 0; i < R2; ++i)
+                                        idx_C[R1 + i] = idx_B[i];
 
-													result(idx_C) = a_scalar * B(idx_B);
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+                                    result(idx_C) = a_scalar * B(idx_B);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-						return result;
-					}
-				///@}
-		};
-}
+        return result;
+    }
+    ///@}
+};
+} // namespace tensorium

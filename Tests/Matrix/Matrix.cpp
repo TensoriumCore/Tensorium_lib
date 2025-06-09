@@ -294,7 +294,7 @@ int matrix_tests() {
 
 	tensorium::Vector<double> X(dim);
 	X(0) = 0.0; 
-	X(1) = 4.0;
+	X(1) = 10.0;
 	X(2) = M_PI / 2.0;
 	X(3) = 0.0;
 
@@ -318,7 +318,7 @@ int matrix_tests() {
 	tensorium::contract_tensor<0, 1>(R);
 	std::cout << "Riemann tensor contracted:\n";
 	std::cout << "Riemann tensor contracted to Ricci tensor:\n";
-	double dx = 1e-5, dy = 1e-5, dz = 1e-5;
+	double dx = 1e-4, dy = 1e-4, dz = 1e-4;
 
 	double alpha;
 	tensorium::Vector<double> beta(3);
@@ -345,7 +345,6 @@ int matrix_tests() {
 	std::cout << "--- SETUP BSSN TEST---\n";	
 	auto bssn = tensorium::setup_BSSN(X, metric, dx, dy, dz);
 
-	auto bssn3D = tensorium::setup_BSSN_grid(X, metric, dx, dy, dz);
 	return 0;
 }
 
