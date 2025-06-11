@@ -1,5 +1,20 @@
 <map id="tensorium_RG::partial_scalar" name="tensorium_RG::partial_scalar">
-<area shape="rect" id="Node000001" title=" " alt="" coords="225,5,388,50"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#ade9c03093154e5d5daf873115f172a7e" title=" " alt="" coords="5,5,177,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,30,177,30,177,25,209,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="978,65,1141,110"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#ab3aca68f81cb9487774bf6e79b5ad770" title=" " alt="" coords="471,5,642,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1010,60,971,40,929,25,855,13,778,9,706,11,643,17,642,12,706,6,778,4,855,7,930,20,973,35,1012,55"/>
+<area shape="rect" id="Node000003" href="$structtensorium__RG_1_1ChiContext.html#a9097d269c12e8adae4f97eaa233bacc1" title=" " alt="" coords="216,95,410,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="962,94,410,116,410,111,962,89"/>
+<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1RicciTildeTensor.html#a3f75284d5d6b52e8e9735ae6261331ba" title="Compute ." alt="" coords="696,159,930,203"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="985,118,875,161,873,156,983,113"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium__RG.html#a60b0ce4980d922619a5d93d8e39b7a5a" title=" " alt="" coords="722,35,904,79"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="962,78,904,71,905,66,963,73"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="5,155,162,199"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="211,146,163,159,161,154,210,141"/>
+<area shape="rect" id="Node000006" href="$classtensorium__RG_1_1RicciTildeTensor.html#a6378f16a0a94a50f0d969583fef94ddb" title="Combine all four contributions to compute the conformal Ricci tensor:" alt="" coords="464,154,648,216"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="681,186,649,186,649,181,681,180"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="448,186,162,181,162,176,448,181"/>
+<area shape="rect" id="Node000007" href="$classtensorium__RG_1_1RicciPhysicalTensor.html#acd197d723568eaead792e516a55c7e7e" title="Compute the full Ricci tensor &#160;as the sum of &#160;and ." alt="" coords="210,215,416,259"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="449,211,417,218,416,212,448,205"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="210,213,161,200,163,195,211,208"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="706,48,642,40,643,35,707,42"/>
 </map>

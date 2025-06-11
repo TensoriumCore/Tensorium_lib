@@ -112,7 +112,7 @@ $(function(){initNavTree('classtensorium__RG_1_1BSSNChristoffel.html',''); initR
 <div class="dynheader">
 Collaboration diagram for tensorium_RG::BSSNChristoffel&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel__coll__graph.svg" width="264" height="80"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel__coll__graph.svg" width="264" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -120,11 +120,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9a0ad2299106000688f3caa62639683" id="r_ad9a0ad2299106000688f3caa62639683"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9a0ad2299106000688f3caa62639683">compute</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;dgamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_tilde_inv, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;Christoffel)</td></tr>
 <tr class="memdesc:ad9a0ad2299106000688f3caa62639683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \).  <br /></td></tr>
 <tr class="separator:ad9a0ad2299106000688f3caa62639683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ad645258d2cd7d2bd40fd770c65bb60" id="r_a2ad645258d2cd7d2bd40fd770c65bb60"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ad645258d2cd7d2bd40fd770c65bb60">compute3D</a> (const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;gamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 6 &gt; &amp;dgamma_tilde, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;gamma_tilde_inv, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 6 &gt; &amp;Christoffel)</td></tr>
+<tr class="separator:a2ad645258d2cd7d2bd40fd770c65bb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 class tensorium_RG::BSSNChristoffel&lt; T &gt;</div><p>Compute the conformal Christoffel symbols \( \tilde{\Gamma}^k_{ij} \). </p>
-<p>The conformal Christoffel symbols are computed from the inverse conformal metric \( \tilde{\gamma}^{kl} \) and the derivatives of the conformal metric \( \partial_m \tilde{\gamma}_{ij} \) using the formula:</p>
+<p>The conformal Christoffel symbols are computed from the inverse conformal metric \( \tilde{\gamma}^{kl} \) and the derivatives of the conformal metric \( \partial_m
+\tilde{\gamma}_{ij} \) using the formula:</p>
 <p class="formulaDsp">
 \[
 \tilde{\Gamma}^k_{ij} =
@@ -185,9 +188,9 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">tensorium::Tensor&lt; K, Rank &gt;::shape()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">tensorium::Tensor&lt; K, Rank &gt;::shape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870">tensorium::compute_christoffel_3D()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a2ad645258d2cd7d2bd40fd770c65bb60">tensorium_RG::BSSNChristoffel&lt; T &gt;::compute3D()</a>, and <a class="el" href="namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870">tensorium::compute_christoffel_3D()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -196,7 +199,62 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel_ad9a0ad2299106000688f3caa62639683_icgraph.svg" width="435" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel_ad9a0ad2299106000688f3caa62639683_icgraph.svg" width="706" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2ad645258d2cd7d2bd40fd770c65bb60" name="a2ad645258d2cd7d2bd40fd770c65bb60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ad645258d2cd7d2bd40fd770c65bb60">&#9670;&#160;</a></span>compute3D()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="classtensorium__RG_1_1BSSNChristoffel.html">tensorium_RG::BSSNChristoffel</a>&lt; T &gt;::compute3D </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma_tilde</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 6 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dgamma_tilde</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 5 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gamma_tilde_inv</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 6 &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>Christoffel</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="#ad9a0ad2299106000688f3caa62639683">tensorium_RG::BSSNChristoffel&lt; T &gt;::compute()</a>, and <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#a1a463a52e8e5f512243bcdecec856eb8">tensorium::compute_christoffel_3D_Grid()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel_a2ad645258d2cd7d2bd40fd770c65bb60_cgraph.svg" width="892" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1BSSNChristoffel_a2ad645258d2cd7d2bd40fd770c65bb60_icgraph.svg" width="435" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

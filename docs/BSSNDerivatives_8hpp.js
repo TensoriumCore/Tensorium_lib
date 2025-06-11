@@ -15,5 +15,8 @@ var BSSNDerivatives_8hpp =
     [ "covariant_vector", "BSSNDerivatives_8hpp.html#a4e1949feb0bbcbb574d73f816e048d26", null ],
     [ "partial_scalar", "BSSNDerivatives_8hpp.html#a7a888ebe96778265c59526da5e73cb57", null ],
     [ "partial_tensor2", "BSSNDerivatives_8hpp.html#a77ec31ba0fe314dbb821107831bdadc3", null ],
-    [ "partial_vector", "BSSNDerivatives_8hpp.html#a21f973abe049559631ae70dfa8975da0", null ]
+    [ "partial_vector", "BSSNDerivatives_8hpp.html#a21f973abe049559631ae70dfa8975da0", null ],
+    [ "spectral_derivative_1D", "BSSNDerivatives_8hpp.html#a853ee85109fd3cf65db0d92889c5dd1a", null ],
+    [ "spectral_partial_scalar_3D", "BSSNDerivatives_8hpp.html#a531e5cd0c6e3d677c9aa29de35864d8a", null ],
+    [ "spectral_partial_tensor2", "BSSNDerivatives_8hpp.html#a1acfbb966721cbe68fd2d4fdec07d28d", null ]
 ];

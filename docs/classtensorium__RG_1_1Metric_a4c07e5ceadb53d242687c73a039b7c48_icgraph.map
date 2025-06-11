@@ -1,7 +1,9 @@
 <map id="tensorium_RG::Metric::compute_conformal_factor" name="tensorium_RG::Metric::compute_conformal_factor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="233,40,437,85"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="5,5,185,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,48,185,43,186,38,218,43"/>
-<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="17,75,173,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,82,174,88,173,83,217,77"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="233,75,437,119"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a6b62911850464ab7b786a6356b41ed19" title=" " alt="" coords="19,5,171,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,73,171,52,172,47,242,67"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7" title="Generate the conformal 3&#45;metric field &#160;on a 3D grid." alt="" coords="5,75,185,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,100,185,100,185,94,217,94"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="17,144,173,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="242,127,175,146,173,141,240,122"/>
 </map>

@@ -9,7 +9,6 @@
 namespace py = pybind11;
 using namespace tensorium;
 
-// === Conversions NumPy -> Tensorium ===
 tensorium::Vector<double> numpy_to_vector(py::array_t<double> arr) {
     auto buf = arr.request();
     if (buf.ndim != 1)

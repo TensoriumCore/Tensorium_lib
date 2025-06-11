@@ -1,16 +1,14 @@
 <map id="tensorium::row_echelon" name="tensorium::row_echelon">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,116,183,144"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1" title=" " alt="" coords="231,108,413,152"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,127,215,127,215,133,183,133"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,87,183,114"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1solver_1_1Gauss.html#adf23a56b0125676a1b2d7095f8e240c1" title=" " alt="" coords="231,78,413,123"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,98,215,98,215,103,183,103"/>
 <area shape="rect" id="Node000003" href="$classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="469,5,598,33"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="359,105,460,49,483,37,486,42,462,54,362,109"/>
-<area shape="rect" id="Node000004" href="$classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="654,147,795,174"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,104,440,93,494,86,551,84,607,93,654,111,694,135,691,140,652,116,606,98,551,90,495,91,441,99,393,110"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="381,75,481,36,483,41,383,80"/>
+<area shape="rect" id="Node000004" href="$classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="654,121,795,149"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="413,88,507,85,557,87,607,93,643,101,678,113,676,118,642,106,606,98,557,92,507,90,413,93"/>
 <area shape="rect" id="Node000005" href="$classtensorium_1_1solver_1_1Gauss.html#a0123c8a4ad531c3667d38b46d406982f" title=" " alt="" coords="462,108,605,152"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="413,127,446,127,446,133,413,133"/>
-<area shape="rect" id="Node000006" href="$test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc" title=" " alt="" coords="514,176,553,204"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="404,150,500,178,499,183,402,155"/>
-<area shape="rect" id="Node000007" href="$classtensorium_1_1Matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832" title="Swap two rows of the matrix." alt="" coords="461,228,606,272"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="359,150,462,213,471,218,469,222,460,217,356,155"/>
-<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="582,225,678,179,680,184,584,229"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="413,110,447,115,446,120,413,116"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1Matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832" title="Swap two rows of the matrix." alt="" coords="461,177,606,222"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="373,121,471,167,469,172,371,126"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="602,174,666,152,668,157,603,179"/>
 </map>

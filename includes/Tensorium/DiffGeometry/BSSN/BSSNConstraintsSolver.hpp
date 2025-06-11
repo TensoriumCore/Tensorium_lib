@@ -63,7 +63,6 @@ template <typename T> class ConstraintSolver {
                             for (int b = 0; b < 3; ++b) {
                                 for (int c = 0; c < 3; ++c) {
                                     for (int d = 0; d < 3; ++d) {
-                                        // accès à g_tilde_inv et Atilde par array d’indices
                                         T g1 = g_tilde_inv({i, j, k, (size_t)a, (size_t)c});
                                         T g2 = g_tilde_inv({i, j, k, (size_t)b, (size_t)d});
                                         T A3 = Atilde({i, j, k, (size_t)c, (size_t)d});

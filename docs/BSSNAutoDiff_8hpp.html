@@ -106,18 +106,18 @@ $(function(){initNavTree('BSSNAutoDiff_8hpp.html',''); initResizable(); });
   <div class="headertitle"><div class="title">BSSNAutoDiff.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="Metric_8hpp_source.html">../Metric.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="Tensor_8hpp_source.html">../../Core/Tensor.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Metric_8hpp_source.html">../Metric.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="BSSNDerivatives_8hpp_source.html">BSSNDerivatives.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Tensor_8hpp_source.html">../../Core/Tensor.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNAutoDiff.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="BSSNAutoDiff_8hpp__incl.svg" width="1486" height="527"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="BSSNAutoDiff_8hpp__incl.svg" width="2367" height="619"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="BSSNAutoDiff_8hpp__dep__incl.svg" width="1076" height="628"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="BSSNAutoDiff_8hpp__dep__incl.svg" width="1179" height="772"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="BSSNAutoDiff_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -143,14 +143,21 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a3572ba60924be18ca9dcccd98b210f53" id="r_a3572ba60924be18ca9dcccd98b210f53"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53">tensorium_RG::DiffMode</a> { <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53afba5cdfa4bcb408f641c743519a0fe19">tensorium_RG::PARTIAL</a>
 , <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53a18448d7ac6e52fa9f9bb5861b0397b6e">tensorium_RG::COV</a>
 , <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53a62045c7cc6e725c2e627406241191c01">tensorium_RG::COV2</a>
+, <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53ad95ec0698c91797e190b1508c2d91b24">tensorium_RG::SPEC</a>
  }</td></tr>
 <tr class="separator:a3572ba60924be18ca9dcccd98b210f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ade9c03093154e5d5daf873115f172a7e" id="r_ade9c03093154e5d5daf873115f172a7e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ScalarFunc &gt; </td></tr>
-<tr class="memitem:ade9c03093154e5d5daf873115f172a7e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#ade9c03093154e5d5daf873115f172a7e">tensorium_RG::autodiff_rank0</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, ScalarFunc &amp;&amp;func, <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53">DiffMode</a> mode, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel)</td></tr>
-<tr class="separator:ade9c03093154e5d5daf873115f172a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b0ce4980d922619a5d93d8e39b7a5a" id="r_a60b0ce4980d922619a5d93d8e39b7a5a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ScalarFunc &gt; </td></tr>
+<tr class="memitem:a60b0ce4980d922619a5d93d8e39b7a5a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#a60b0ce4980d922619a5d93d8e39b7a5a">tensorium_RG::covariant_scalar</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, ScalarFunc &amp;&amp;func, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel)</td></tr>
+<tr class="separator:a60b0ce4980d922619a5d93d8e39b7a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e83b6a29b042da98a47a29ccb8e7162" id="r_a1e83b6a29b042da98a47a29ccb8e7162"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ScalarFunc &gt; </td></tr>
+<tr class="memitem:a1e83b6a29b042da98a47a29ccb8e7162"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#a1e83b6a29b042da98a47a29ccb8e7162">tensorium_RG::autodiff_scalar_second</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, ScalarFunc &amp;&amp;func, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel)</td></tr>
+<tr class="separator:a1e83b6a29b042da98a47a29ccb8e7162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3aca68f81cb9487774bf6e79b5ad770" id="r_ab3aca68f81cb9487774bf6e79b5ad770"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ScalarFunc &gt; </td></tr>
+<tr class="memitem:ab3aca68f81cb9487774bf6e79b5ad770"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#ab3aca68f81cb9487774bf6e79b5ad770">tensorium_RG::autodiff_rank0</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, ScalarFunc &amp;&amp;func, <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53">DiffMode</a> mode, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel)</td></tr>
+<tr class="separator:ab3aca68f81cb9487774bf6e79b5ad770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa174c367530f62cd7a8013138f8531c7" id="r_aa174c367530f62cd7a8013138f8531c7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename VectorFunc &gt; </td></tr>
 <tr class="memitem:aa174c367530f62cd7a8013138f8531c7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacetensorium__RG.html#aa174c367530f62cd7a8013138f8531c7">tensorium_RG::autodiff_rank1</a> (const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, T dx, T dy, T dz, VectorFunc &amp;&amp;func, <a class="el" href="namespacetensorium__RG.html#a3572ba60924be18ca9dcccd98b210f53">DiffMode</a> mode, const <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 3 &gt; &amp;christoffel)</td></tr>
 <tr class="separator:aa174c367530f62cd7a8013138f8531c7"><td class="memSeparator" colspan="2">&#160;</td></tr>

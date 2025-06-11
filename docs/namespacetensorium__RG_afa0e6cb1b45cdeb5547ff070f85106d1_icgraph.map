@@ -1,9 +1,13 @@
 <map id="tensorium_RG::compute_second_derivatives_scalar" name="tensorium_RG::compute_second_derivatives_scalar">
-<area shape="rect" id="Node000001" title=" " alt="" coords="455,40,655,85"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium__RG.html#a658ca32d07531f6c932d234c5c051b54" title=" " alt="" coords="225,5,407,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="439,48,407,44,408,38,440,43"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#aa8b5ab2441cbf4db047fe92d71b6ea1c" title=" " alt="" coords="225,75,407,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="440,82,408,86,407,81,439,76"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium__RG.html#ade9c03093154e5d5daf873115f172a7e" title=" " alt="" coords="5,5,177,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="209,30,177,30,177,25,209,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="466,75,666,119"/>
+<area shape="rect" id="Node000002" href="$structtensorium__RG_1_1ChiContext.html#a9097d269c12e8adae4f97eaa233bacc1" title=" " alt="" coords="225,5,418,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="469,72,402,53,403,48,471,67"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium__RG.html#a658ca32d07531f6c932d234c5c051b54" title=" " alt="" coords="230,75,413,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="450,100,413,100,413,94,450,94"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium__RG.html#aa8b5ab2441cbf4db047fe92d71b6ea1c" title=" " alt="" coords="230,144,413,189"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="471,127,403,146,402,141,469,122"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="13,5,169,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="209,30,170,30,170,25,209,25"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium__RG.html#a1e83b6a29b042da98a47a29ccb8e7162" title=" " alt="" coords="5,75,177,119"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="215,100,177,100,177,94,215,94"/>
 </map>

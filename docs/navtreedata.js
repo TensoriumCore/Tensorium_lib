@@ -114,13 +114,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AST_8hpp.html",
-"MathsUtils_8hpp_source.html",
-"classtensorium_1_1GemmKernelBigger.html#a6e347714c3ad11974ef250a2e7191edb",
-"classtensorium_1_1Tensor.html#aaed4ba1bd853eedbe0e9f8dd3c942abd",
-"classtensorium__RG_1_1Metric.html#a088bb0e1c78e4411b0f13f08aa0169b5",
-"namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4a02c86eb2792f3262c21d030a87e19793",
-"structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html#aba15c897cea130eacd7b4ee81cd0ebd0",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html#aaca0142fe7ee4283bd3525818f40095a"
+"MPI__init_8hpp.html",
+"classtensorium_1_1GemmKernelBigger.html#a5dd51f05cda9f734a5b472cc071d837e",
+"classtensorium_1_1Tensor.html#a71e52428f5ef16ee37aa67876643b076",
+"classtensorium__RG_1_1ConstraintSolver.html",
+"namespacetensorium.html#a21158d87bb9dbf16b2b9d142ace4f7eb",
+"structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#af0952e2f290d4d32ca3a3f5701fa9555",
+"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#acdfc066e5f3955fed7dc9b435db67c65",
+"tensorium-opt_8cpp.html#a042d3140e9db663382ef88f85d6cf615"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,6 @@
 <map id="tensorium_RG::compute_second_derivatives_scalar" name="tensorium_RG::compute_second_derivatives_scalar">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,36,206,81"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="254,5,399,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="254,5,399,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,42,238,37,239,42,206,47"/>
 <area shape="rect" id="Node000004" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="307,74,346,102"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="206,69,292,81,291,86,205,74"/>

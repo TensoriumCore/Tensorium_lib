@@ -1,9 +1,7 @@
 <map id="tensorium_RG::BSSNContractedGamma::compute" name="tensorium_RG::BSSNContractedGamma::compute">
-<area shape="rect" id="Node000001" title="Compute the contracted Christoffel symbol ." alt="" coords="281,91,508,136"/>
+<area shape="rect" id="Node000001" title="Compute the contracted Christoffel symbol ." alt="" coords="281,53,508,97"/>
 <area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234" title=" " alt="" coords="5,5,233,67"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="297,89,231,70,232,65,298,84"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium__RG.html#a538c60a1a84620e61fe103a655a75dec" title=" " alt="" coords="30,91,208,136"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="265,116,209,116,209,111,265,111"/>
-<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="41,161,197,205"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="289,143,198,166,197,161,287,138"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,59,233,55,233,50,265,54"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="41,91,197,136"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="265,96,198,105,197,100,265,90"/>
 </map>

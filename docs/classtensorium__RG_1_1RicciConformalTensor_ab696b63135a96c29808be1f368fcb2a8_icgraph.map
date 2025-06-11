@@ -1,0 +1,10 @@
+<map id="tensorium_RG::RicciConformalTensor::compute_Ricci_chi_Laplacian" name="tensorium_RG::RicciConformalTensor::compute_Ricci_chi_Laplacian">
+<area shape="rect" id="Node000001" title="Computes the Laplacian contribution:" alt="" coords="741,28,962,89"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciConformalTensor.html#a3b1adb77938c5a7decd707864f45b07b" title="Computes the total &#160;contribution as:" alt="" coords="464,36,693,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="726,61,694,61,694,56,726,56"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1RicciPhysicalTensor.html#acd197d723568eaead792e516a55c7e7e" title="Compute the full Ricci tensor &#160;as the sum of &#160;and ." alt="" coords="210,5,416,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,46,416,42,417,37,449,41"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="5,36,162,81"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="449,64,416,65,210,65,162,64,162,59,210,60,416,60,449,59"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="195,46,163,51,162,45,194,41"/>
+</map>

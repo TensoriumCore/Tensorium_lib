@@ -6,5 +6,7 @@ var searchData=
   ['dim_5faxis_3',['dim_axis',['../classtensorium_1_1DerivateND.html#a361f7922c74c8243a4d94adc2a677bec',1,'tensorium::DerivateND']]],
   ['dimensions_4',['dimensions',['../classtensorium_1_1Tensor.html#aaa22549a588a313c5fff0666d8a94c92',1,'tensorium::Tensor']]],
   ['dot_5',['dot',['../classtensorium_1_1Vector.html#a7b07d715b12708149ec45ea5a16b9641',1,'tensorium::Vector']]],
-  ['dx_6',['dx',['../classtensorium_1_1Derivate.html#a62726bbf7feecaf6b6de2a7475cf0c49',1,'tensorium::Derivate']]]
+  ['dx_6',['dx',['../classtensorium_1_1Derivate.html#a62726bbf7feecaf6b6de2a7475cf0c49',1,'tensorium::Derivate::dx'],['../structtensorium__RG_1_1ChiContext.html#a73be91978f03f9bd36c9abc5bd19ab1b',1,'tensorium_RG::ChiContext::dx']]],
+  ['dy_7',['dy',['../structtensorium__RG_1_1ChiContext.html#a89543fe2d7b4204d4ad0d3c87836292f',1,'tensorium_RG::ChiContext']]],
+  ['dz_8',['dz',['../structtensorium__RG_1_1ChiContext.html#a8c6818b14ec12b4df430cd4e64e0a563',1,'tensorium_RG::ChiContext']]]
 ];

@@ -20,7 +20,7 @@ var classtensorium_1_1Tensor =
     [ "operator()", "classtensorium_1_1Tensor.html#aeb456fefaef622b8a35850d7059d79aa", null ],
     [ "print", "classtensorium_1_1Tensor.html#a31bf2dfaa92e863a3d5812a25d433b8b", null ],
     [ "print_shape", "classtensorium_1_1Tensor.html#ad16a0bad3578612b855702d3a3594445", null ],
-    [ "resize", "classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16", null ],
+    [ "resize", "classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe", null ],
     [ "resize", "classtensorium_1_1Tensor.html#aaed4ba1bd853eedbe0e9f8dd3c942abd", null ],
     [ "resize", "classtensorium_1_1Tensor.html#a062f86c766318d6f7555f2dbe4d208fa", null ],
     [ "shape", "classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9", null ],

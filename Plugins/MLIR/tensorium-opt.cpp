@@ -2,13 +2,13 @@
 #include "mlir/InitAllDialects.h"
 #include "mlir/InitAllPasses.h"
 #include "mlir/Pass/PassManager.h"
-#include "mlir/Tools/Plugins/PassPlugin.h"  
 #include "mlir/Support/FileUtilities.h"
+#include "mlir/Tools/Plugins/PassPlugin.h"
 #include "mlir/Tools/mlir-opt/MlirOptMain.h"
 
-#include "mlir/Conversion/MemRefToLLVM/MemRefToLLVM.h"
 #include "mlir/Conversion/LLVMCommon/ConversionTarget.h"
 #include "mlir/Conversion/LLVMCommon/TypeConverter.h"
+#include "mlir/Conversion/MemRefToLLVM/MemRefToLLVM.h"
 #include "mlir/Dialect/MemRef/IR/MemRef.h"
 #include "mlir/IR/BuiltinOps.h"
 #include "mlir/Transforms/DialectConversion.h"
@@ -18,34 +18,29 @@ using namespace mlir;
 namespace {
 struct ConvertMemRefToLLVMPass
     : public PassWrapper<ConvertMemRefToLLVMPass, OperationPass<ModuleOp>> {
-  void runOnOperation() override {
-    MLIRContext &ctx = getContext();
-    RewritePatternSet patterns(&ctx);
-    LLVMTypeConverter converter(&ctx);
-    populateFinalizeMemRefToLLVMConversionPatterns(converter, patterns);
+    void runOnOperation() override {
+        MLIRContext      &ctx = getContext();
+        RewritePatternSet patterns(&ctx);
+        LLVMTypeConverter converter(&ctx);
+        populateFinalizeMemRefToLLVMConversionPatterns(converter, patterns);
 
-    ConversionTarget target(ctx);
-    target.addLegalDialect("llvm");
-    target.addIllegalDialect<memref::MemRefDialect>();
+        ConversionTarget target(ctx);
+        target.addLegalDialect("llvm");
+        target.addIllegalDialect<memref::MemRefDialect>();
 
-    if (failed(applyPartialConversion(getOperation(), target,
-                                      std::move(patterns))))
-      signalPassFailure();
-  }
+        if (failed(applyPartialConversion(getOperation(), target, std::move(patterns))))
+            signalPassFailure();
+    }
 };
 } // namespace
 
-static PassPipelineRegistration<EmptyPipelineOptions> pipeline(
-    "convert-memref-to-llvm",
-    "Convert MemRef dialect to LLVM dialect",
-    [](OpPassManager &pm) {
-      pm.addPass(std::make_unique<ConvertMemRefToLLVMPass>());
-    });
+static PassPipelineRegistration<EmptyPipelineOptions>
+    pipeline("convert-memref-to-llvm", "Convert MemRef dialect to LLVM dialect",
+             [](OpPassManager &pm) { pm.addPass(std::make_unique<ConvertMemRefToLLVMPass>()); });
 
 int main(int argc, char **argv) {
-  DialectRegistry registry;
-  registerAllDialects(registry);
-  registerAllPasses();
-  return asMainReturnCode(
-      MlirOptMain(argc, argv, "Tensorium MLIR optimizer\n", registry));
+    DialectRegistry registry;
+    registerAllDialects(registry);
+    registerAllPasses();
+    return asMainReturnCode(MlirOptMain(argc, argv, "Tensorium MLIR optimizer\n", registry));
 }

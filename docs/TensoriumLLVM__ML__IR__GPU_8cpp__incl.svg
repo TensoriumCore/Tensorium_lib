@@ -5,16 +5,16 @@
  -->
 <!-- Title: Plugins/TensoriumLLVM_ML_IR_GPU.cpp Pages: 1 -->
 <svg width="827pt" height="98pt"
- viewBox="0.00 0.00 826.88 98.25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ viewBox="0.00 0.00 826.75 98.25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 94.25)">
 <title>Plugins/TensoriumLLVM_ML_IR_GPU.cpp</title>
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="460.12,-90.25 330.12,-90.25 330.12,-56.75 460.12,-56.75 460.12,-90.25"/>
-<text text-anchor="start" x="338.12" y="-76.75" font-family="Helvetica,sans-Serif" font-size="10.00">Plugins/TensoriumLLVM</text>
-<text text-anchor="middle" x="395.12" y="-64" font-family="Helvetica,sans-Serif" font-size="10.00">_ML_IR_GPU.cpp</text>
+<polygon fill="#999999" stroke="#666666" points="441,-90.25 311,-90.25 311,-56.75 441,-56.75 441,-90.25"/>
+<text text-anchor="start" x="319" y="-76.75" font-family="Helvetica,sans-Serif" font-size="10.00">Plugins/TensoriumLLVM</text>
+<text text-anchor="middle" x="376" y="-64" font-family="Helvetica,sans-Serif" font-size="10.00">_ML_IR_GPU.cpp</text>
 </a>
 </g>
 </g>
@@ -22,8 +22,8 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="126.25,-20.75 0,-20.75 0,0 126.25,0 126.25,-20.75"/>
-<text text-anchor="middle" x="63.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/PassManager.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="106,-20.75 0,-20.75 0,0 106,0 106,-20.75"/>
+<text text-anchor="middle" x="53" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/IRBuilder.h</text>
 </a>
 </g>
 </g>
@@ -31,8 +31,8 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M329.93,-60.5C271.51,-49.74 186.27,-34.05 127.96,-23.31"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="128.63,-19.88 118.16,-21.51 127.36,-26.76 128.63,-19.88"/>
+<path fill="none" stroke="#63b8ff" d="M310.64,-60.13C253.9,-49.39 172.27,-33.95 116.18,-23.33"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="116.93,-19.91 106.46,-21.49 115.63,-26.79 116.93,-19.91"/>
 </a>
 </g>
 </g>
@@ -40,8 +40,8 @@
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="263.88,-20.75 144.38,-20.75 144.38,0 263.88,0 263.88,-20.75"/>
-<text text-anchor="middle" x="204.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/Instructions.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="243.75,-20.75 124.25,-20.75 124.25,0 243.75,0 243.75,-20.75"/>
+<text text-anchor="middle" x="184" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/Instructions.h</text>
 </a>
 </g>
 </g>
@@ -49,8 +49,8 @@
 <g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
 <g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M344.44,-56.28C313.47,-46.37 274.38,-33.86 245.32,-24.56"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="246.75,-21.34 236.16,-21.63 244.62,-28.01 246.75,-21.34"/>
+<path fill="none" stroke="#63b8ff" d="M325.05,-56.28C293.92,-46.37 254.62,-33.86 225.41,-24.56"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="226.78,-21.32 216.19,-21.62 224.66,-27.99 226.78,-21.32"/>
 </a>
 </g>
 </g>
@@ -58,8 +58,8 @@
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="388.12,-20.75 282.12,-20.75 282.12,0 388.12,0 388.12,-20.75"/>
-<text text-anchor="middle" x="335.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/IRBuilder.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="360.25,-20.75 261.75,-20.75 261.75,0 360.25,0 360.25,-20.75"/>
+<text text-anchor="middle" x="311" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/Module.h</text>
 </a>
 </g>
 </g>
@@ -67,8 +67,8 @@
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M379.36,-56.44C371.22,-48.14 361.25,-37.99 352.84,-29.43"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="355.35,-26.98 345.85,-22.3 350.35,-31.89 355.35,-26.98"/>
+<path fill="none" stroke="#63b8ff" d="M358.92,-56.44C349.91,-47.97 338.85,-37.56 329.62,-28.89"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="332.25,-26.55 322.57,-22.25 327.46,-31.65 332.25,-26.55"/>
 </a>
 </g>
 </g>
@@ -76,8 +76,8 @@
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="504.38,-20.75 405.88,-20.75 405.88,0 504.38,0 504.38,-20.75"/>
-<text text-anchor="middle" x="455.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/Module.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="504.12,-20.75 377.88,-20.75 377.88,0 504.12,0 504.12,-20.75"/>
+<text text-anchor="middle" x="441" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/IR/PassManager.h</text>
 </a>
 </g>
 </g>
@@ -85,8 +85,8 @@
 <g id="edge4_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
 <g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M410.89,-56.44C419.03,-48.14 429,-37.99 437.41,-29.43"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="439.9,-31.89 444.4,-22.3 434.9,-26.98 439.9,-31.89"/>
+<path fill="none" stroke="#63b8ff" d="M393.08,-56.44C402.09,-47.97 413.15,-37.56 422.38,-28.89"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="424.54,-31.65 429.43,-22.25 419.75,-26.55 424.54,-31.65"/>
 </a>
 </g>
 </g>
@@ -94,8 +94,8 @@
 <g id="Node000006" class="node">
 <title>Node6</title>
 <g id="a_Node000006"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="663.75,-20.75 522.5,-20.75 522.5,0 663.75,0 663.75,-20.75"/>
-<text text-anchor="middle" x="593.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/Passes/PassBuilder.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="663.62,-20.75 522.38,-20.75 522.38,0 663.62,0 663.62,-20.75"/>
+<text text-anchor="middle" x="593" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/Passes/PassBuilder.h</text>
 </a>
 </g>
 </g>
@@ -103,8 +103,8 @@
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M447.67,-56.28C479.77,-46.37 520.3,-33.86 550.42,-24.56"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="551.44,-27.91 559.97,-21.61 549.38,-21.22 551.44,-27.91"/>
+<path fill="none" stroke="#63b8ff" d="M433.58,-56.28C469.23,-46.24 514.36,-33.53 547.5,-24.19"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="548.11,-27.66 556.79,-21.58 546.21,-20.92 548.11,-27.66"/>
 </a>
 </g>
 </g>
@@ -112,8 +112,8 @@
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:title=" ">
-<polygon fill="#e0e0e0" stroke="#999999" points="818.88,-20.75 681.38,-20.75 681.38,0 818.88,0 818.88,-20.75"/>
-<text text-anchor="middle" x="750.12" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/Passes/PassPlugin.h</text>
+<polygon fill="#e0e0e0" stroke="#999999" points="818.75,-20.75 681.25,-20.75 681.25,0 818.75,0 818.75,-20.75"/>
+<text text-anchor="middle" x="750" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">llvm/Passes/PassPlugin.h</text>
 </a>
 </g>
 </g>
@@ -121,8 +121,8 @@
 <g id="edge6_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
 <g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M460.24,-61.29C523.12,-50.46 617.96,-34.13 681.88,-23.13"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="682.29,-26.61 691.55,-21.46 681.1,-19.71 682.29,-26.61"/>
+<path fill="none" stroke="#63b8ff" d="M441.15,-61.85C507.46,-51.01 609.98,-34.26 678.5,-23.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="678.82,-26.55 688.12,-21.49 677.69,-19.65 678.82,-26.55"/>
 </a>
 </g>
 </g>

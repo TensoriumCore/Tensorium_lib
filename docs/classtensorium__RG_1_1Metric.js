@@ -13,7 +13,7 @@ var classtensorium__RG_1_1Metric =
     [ "operator()", "classtensorium__RG_1_1Metric.html#a4bd48f127fbc00ce5e692f4cb5e43d99", null ],
     [ "set_custom", "classtensorium__RG_1_1Metric.html#a088bb0e1c78e4411b0f13f08aa0169b5", null ],
     [ "a", "classtensorium__RG_1_1Metric.html#a1290e85cb6b1e1c77bfbe4d5ec16f8fe", null ],
-    [ "custom_metric_fn", "classtensorium__RG_1_1Metric.html#a35cbbc9b59b273eeeeaf478383ebb489", null ],
+    [ "custom_metric_fn", "classtensorium__RG_1_1Metric.html#a5a8b27a185b3bcce563670c8d5176179", null ],
     [ "M", "classtensorium__RG_1_1Metric.html#ac68e0a40729e0473d19321eee932a8f0", null ],
     [ "type", "classtensorium__RG_1_1Metric.html#a7e73ebfef6a0862cccd8df4651d1e480", null ]
 ];

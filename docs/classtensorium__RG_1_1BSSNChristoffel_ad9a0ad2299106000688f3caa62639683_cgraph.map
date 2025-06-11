@@ -1,6 +1,6 @@
 <map id="tensorium_RG::BSSNChristoffel::compute" name="tensorium_RG::BSSNChristoffel::compute">
 <area shape="rect" id="Node000001" title="Compute the conformal Christoffel symbols ." alt="" coords="5,40,229,85"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" title="Resize 2D tensor." alt="" coords="277,5,422,50"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="277,5,422,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,43,261,38,262,43,230,48"/>
 <area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="277,75,422,119"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,76,262,81,261,87,229,82"/>

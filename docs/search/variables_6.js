@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hot_0',['hot',['../classtensorium_1_1Vector.html#a9e558122be5d15c6c5223d2cc617c349',1,'tensorium::Vector']]]
+  ['hessian_5fchi_0',['hessian_chi',['../structtensorium__RG_1_1ChiContext.html#a60044d149f00f54eece614b43f718839',1,'tensorium_RG::ChiContext']]]
 ];

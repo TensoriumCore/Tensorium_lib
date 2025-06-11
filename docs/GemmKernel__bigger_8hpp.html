@@ -106,21 +106,21 @@ $(function(){initNavTree('GemmKernel__bigger_8hpp.html',''); initResizable(); })
   <div class="headertitle"><div class="title">GemmKernel_bigger.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="Matrix_8hpp_source.html">../Matrix.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="MathsUtils_8hpp_source.html">../../MathUtils/MathsUtils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Matrix_8hpp_source.html">../Matrix.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;immintrin.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="MathsUtils_8hpp_source.html">../../MathUtils/MathsUtils.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for GemmKernel_bigger.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="GemmKernel__bigger_8hpp__incl.svg" width="1363" height="451"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="GemmKernel__bigger_8hpp__incl.svg" width="1398" height="451"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="GemmKernel__bigger_8hpp__dep__incl.svg" width="1752" height="831"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="GemmKernel__bigger_8hpp__dep__incl.svg" width="1891" height="1178"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="GemmKernel__bigger_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -145,7 +145,7 @@ Macros</h2></td></tr>
 <tr class="separator:a73764abcca0b8bbf6bf355d9f1bab0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23242303a9f9b5f71f07e8c03a42e7d2" id="r_a23242303a9f9b5f71f07e8c03a42e7d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23242303a9f9b5f71f07e8c03a42e7d2">_min</a>(x,  y)&#160;&#160;&#160;((x) &lt; (y) ? (x) : (y))</td></tr>
 <tr class="separator:a23242303a9f9b5f71f07e8c03a42e7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50baa6d5a56e8e26f7651ad7363fe389" id="r_a50baa6d5a56e8e26f7651ad7363fe389"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50baa6d5a56e8e26f7651ad7363fe389">PRAGMA_OMP_PARALLEL_FOR</a>&#160;&#160;&#160;_Pragma(&quot;omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)&quot;)</td></tr>
+<tr class="memitem:a50baa6d5a56e8e26f7651ad7363fe389" id="r_a50baa6d5a56e8e26f7651ad7363fe389"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50baa6d5a56e8e26f7651ad7363fe389">PRAGMA_OMP_PARALLEL_FOR</a>&#160;&#160;&#160;    _Pragma(&quot;omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)&quot;)</td></tr>
 <tr class="separator:a50baa6d5a56e8e26f7651ad7363fe389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -236,7 +236,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PRAGMA_OMP_PARALLEL_FOR&#160;&#160;&#160;_Pragma(&quot;omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)&quot;)</td>
+          <td class="memname">#define PRAGMA_OMP_PARALLEL_FOR&#160;&#160;&#160;    _Pragma(&quot;omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

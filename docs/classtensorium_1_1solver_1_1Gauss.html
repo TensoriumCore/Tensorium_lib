@@ -129,7 +129,7 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adacf523b342a05218c6a1c6b30e3c153" id="r_adacf523b342a05218c6a1c6b30e3c153"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adacf523b342a05218c6a1c6b30e3c153">rows</a> () const</td></tr>
 <tr class="separator:adacf523b342a05218c6a1c6b30e3c153"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62f5ab4a715a168768155e96ca4759c0" id="r_a62f5ab4a715a168768155e96ca4759c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62f5ab4a715a168768155e96ca4759c0">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">static</a> <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; solve(const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A_in</a></td></tr>
+<tr class="memitem:a62f5ab4a715a168768155e96ca4759c0" id="r_a62f5ab4a715a168768155e96ca4759c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62f5ab4a715a168768155e96ca4759c0">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">static</a> <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Vector.html">Vector</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; solve(const <a class="el" href="classtensorium_1_1Matrix.html">Matrix</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt; &amp;<a class="el" href="classtensorium_1_1Tensor.html">A_in</a></td></tr>
 <tr class="memdesc:a62f5ab4a715a168768155e96ca4759c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the linear system \( Ax = b \).  <br /></td></tr>
 <tr class="separator:a62f5ab4a715a168768155e96ca4759c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0123c8a4ad531c3667d38b46d406982f" id="r_a0123c8a4ad531c3667d38b46d406982f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0123c8a4ad531c3667d38b46d406982f">assert</a> (<a class="el" href="#afb672d77f5cd5254f91432139dff80c1">n</a>==A_in.cols &amp;&amp;<a class="el" href="#afb672d77f5cd5254f91432139dff80c1">n</a>==b_in.size())</td></tr>
@@ -224,7 +224,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
         <tr>
           <td class="memname"><a class="el" href="classtensorium_1_1solver_1_1Gauss.html">tensorium::solver::Gauss</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a> &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const &amp;</td>
         </tr>
       </table>
@@ -300,11 +300,11 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#ab9da31ac3194eadd39f1e04eec74811b">tensorium::solver::Gauss&lt; K &gt;::B</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a7d013c6886e00c34f7d0ba22bcd616b6">tensorium::solver::Gauss&lt; K &gt;::M</a>, <a class="el" href="#afb672d77f5cd5254f91432139dff80c1">tensorium::solver::Gauss&lt; K &gt;::n</a>, <a class="el" href="#ad36a70f809163b10ec1cd3272e870355">tensorium::solver::Gauss&lt; K &gt;::rowi()</a>, <a class="el" href="#a6508dd70e46e1bf58c54de7fb3867917">tensorium::solver::Gauss&lt; K &gt;::rowj()</a>, <a class="el" href="SIMD_8hpp.html#a870020ccb79b9bf241010e975e029bde">UNROLL</a>, and <a class="el" href="#a9d2f2d251ea809a11550139a6e73863c">tensorium::solver::Gauss&lt; K &gt;::W</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#ab9da31ac3194eadd39f1e04eec74811b">tensorium::solver::Gauss&lt; K &gt;::B</a>, <a class="el" href="#a7d013c6886e00c34f7d0ba22bcd616b6">tensorium::solver::Gauss&lt; K &gt;::M</a>, <a class="el" href="#afb672d77f5cd5254f91432139dff80c1">tensorium::solver::Gauss&lt; K &gt;::n</a>, <a class="el" href="#ad36a70f809163b10ec1cd3272e870355">tensorium::solver::Gauss&lt; K &gt;::rowi()</a>, <a class="el" href="#a6508dd70e46e1bf58c54de7fb3867917">tensorium::solver::Gauss&lt; K &gt;::rowj()</a>, <a class="el" href="SIMD_8hpp.html#a870020ccb79b9bf241010e975e029bde">UNROLL</a>, and <a class="el" href="#a9d2f2d251ea809a11550139a6e73863c">tensorium::solver::Gauss&lt; K &gt;::W</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1solver_1_1Gauss_a2e9b0155c1b43b9678959ddc3562335e_cgraph.svg" width="346" height="280"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1solver_1_1Gauss_a2e9b0155c1b43b9678959ddc3562335e_cgraph.svg" width="346" height="228"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -381,13 +381,13 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#a0123c8a4ad531c3667d38b46d406982f">tensorium::solver::Gauss&lt; K &gt;::assert()</a>, <a class="el" href="classtensorium_1_1Matrix.html#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#afb672d77f5cd5254f91432139dff80c1">tensorium::solver::Gauss&lt; K &gt;::n</a>, <a class="el" href="classtensorium_1_1Matrix.html#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>.</p>
+<p class="reference">References <a class="el" href="classMathsUtils.html#aef7c171225ec5072076aa1bc0182cc02">MathsUtils::_abs()</a>, <a class="el" href="classMathsUtils.html#aa093fbcf1ecdba98b77fcf259a269d70">MathsUtils::_swap()</a>, <a class="el" href="#a0123c8a4ad531c3667d38b46d406982f">tensorium::solver::Gauss&lt; K &gt;::assert()</a>, <a class="el" href="classtensorium_1_1Matrix.html#ac70be3bba8bbc25189117b7a31589e67">tensorium::Matrix&lt; K, RowMajor &gt;::cols</a>, <a class="el" href="#afb672d77f5cd5254f91432139dff80c1">tensorium::solver::Gauss&lt; K &gt;::n</a>, <a class="el" href="classtensorium_1_1Matrix.html#a247523f65bacfbda84f956c32bc02a2f">tensorium::Matrix&lt; K, RowMajor &gt;::rows</a>, and <a class="el" href="classtensorium_1_1Matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832">tensorium::Matrix&lt; K, RowMajor &gt;::swap_rows()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium.html#a48b8f2d501b658de2f7cef3565d1ccc8">tensorium::row_echelon()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1solver_1_1Gauss_adf23a56b0125676a1b2d7095f8e240c1_cgraph.svg" width="575" height="278"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1solver_1_1Gauss_adf23a56b0125676a1b2d7095f8e240c1_cgraph.svg" width="575" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -520,7 +520,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">                        <span class="keyword">static_assert</span>(std::is_floating_point&lt;K&gt;::value, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line">        <span class="keyword">static_assert</span>(std::is_floating_point&lt;K&gt;::value, <span class="stringliteral">&quot;&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>

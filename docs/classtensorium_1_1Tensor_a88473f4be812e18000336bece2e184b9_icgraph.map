@@ -1,30 +1,34 @@
 <map id="tensorium::Tensor::shape" name="tensorium::Tensor::shape">
-<area shape="rect" id="Node000001" title=" " alt="" coords="507,345,652,390"/>
-<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols ." alt="" coords="234,5,457,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="571,330,561,272,540,200,525,163,506,127,484,94,457,64,442,53,445,48,461,60,488,90,511,124,530,161,545,198,566,270,577,329"/>
-<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Computes ." alt="" coords="243,75,448,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="567,331,552,285,530,232,498,179,479,155,457,134,440,122,443,118,461,130,483,151,503,176,535,230,557,284,572,329"/>
-<area shape="rect" id="Node000006" href="$classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234" title=" " alt="" coords="232,144,459,205"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="556,334,515,275,488,245,457,219,440,208,443,204,461,215,491,241,519,272,560,331"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the 3D partial derivatives &#160;from a 5D field tensor." alt="" coords="256,229,435,274"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="537,338,499,312,458,289,430,277,432,272,460,284,502,308,540,334"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium__RG.html#a9c96c830df6faf7d5d144b1461e73f81" title=" " alt="" coords="256,298,435,360"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="492,356,435,346,435,341,493,351"/>
-<area shape="rect" id="Node000009" href="$classtensorium__RG_1_1RicciTensor3D.html#ab88ef32e29306967428b2c960f07a41d" title=" " alt="" coords="244,592,447,637"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="570,406,554,447,531,494,500,541,461,582,442,594,439,589,457,578,496,538,526,491,549,444,565,404"/>
-<area shape="rect" id="Node000011" href="$namespacetensorium__RG.html#a216f35bcfec1c39f5c0adff53c58b7b8" title=" " alt="" coords="236,453,455,498"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="535,401,460,443,430,455,428,450,458,439,533,396"/>
-<area shape="rect" id="Node000012" href="$namespacetensorium__RG.html#aa8b5ab2441cbf4db047fe92d71b6ea1c" title=" " alt="" coords="254,523,437,567"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="559,405,518,460,491,488,460,513,438,525,436,520,458,508,487,484,514,457,555,402"/>
-<area shape="rect" id="Node000013" href="$classtensorium__RG_1_1ConstraintSolver.html#aff668309ac473bdb6a7dc2699afc3a37" title="Solve the Lichnerowicz equation to enforce the Hamiltonian constraint in BSSN." alt="" coords="251,384,440,429"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="492,385,441,393,440,388,491,379"/>
-<area shape="rect" id="Node000014" href="$classtensorium_1_1Tensor.html#ae1c0d2646baa7f397b814972fb282e70" title="Compute the tensor (outer) product of two tensors." alt="" coords="273,661,418,706"/>
-<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="575,406,563,460,542,526,508,593,486,624,461,651,441,665,419,674,417,669,438,660,457,647,482,620,504,590,537,524,558,459,570,405"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="18,5,171,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="218,30,171,30,171,25,218,25"/>
-<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="16,229,173,274"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="244,128,233,134,199,156,167,182,118,231,114,227,164,178,196,152,230,129,241,124"/>
-<area shape="rect" id="Node000010" href="$namespacetensorium__RG.html#a538c60a1a84620e61fe103a655a75dec" title=" " alt="" coords="5,592,184,637"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="228,617,184,617,184,612,228,612"/>
-<area shape="poly" id="edge13_Node000013_Node000005" title=" " alt="" coords="241,380,230,374,196,351,164,325,114,276,118,272,167,321,199,347,233,369,244,375"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="752,380,898,425"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols ." alt="" coords="479,40,702,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="817,365,806,306,785,235,770,198,752,162,729,128,703,99,687,87,690,83,706,95,733,125,756,159,775,195,790,233,811,305,822,364"/>
+<area shape="rect" id="Node000006" href="$classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c" title="Computes ." alt="" coords="488,109,693,154"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="812,366,798,320,775,267,744,214,724,190,703,168,685,157,688,152,706,164,728,186,748,211,780,265,803,318,817,364"/>
+<area shape="rect" id="Node000008" href="$classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234" title=" " alt="" coords="477,178,704,240"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="801,368,760,310,733,280,703,254,685,243,688,238,706,250,737,276,764,307,806,365"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium__RG.html#a2910b2fca5fbc807764fd8bb8c011f8b" title="Compute the 3D partial derivatives &#160;from a 5D field tensor." alt="" coords="502,264,680,309"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="782,373,745,347,703,323,675,312,677,307,706,319,747,342,785,368"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium__RG.html#a9c96c830df6faf7d5d144b1461e73f81" title=" " alt="" coords="502,333,680,395"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="737,391,680,381,681,376,738,385"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium__RG.html#a216f35bcfec1c39f5c0adff53c58b7b8" title=" " alt="" coords="482,419,700,463"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="738,419,701,426,700,420,737,414"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium__RG.html#aa8b5ab2441cbf4db047fe92d71b6ea1c" title=" " alt="" coords="500,488,682,533"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="781,436,705,478,675,490,674,485,703,473,778,431"/>
+<area shape="rect" id="Node000013" href="$classtensorium__RG_1_1ConstraintSolver.html#aff668309ac473bdb6a7dc2699afc3a37" title="Solve the Lichnerowicz equation to enforce the Hamiltonian constraint in BSSN." alt="" coords="496,557,685,602"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="805,440,763,495,736,523,706,547,684,559,682,554,703,543,733,519,759,491,800,436"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium__RG.html#a531e5cd0c6e3d677c9aa29de35864d8a" title=" " alt="" coords="504,627,677,671"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="815,440,799,481,776,529,745,576,706,616,679,633,676,628,703,612,741,573,771,526,794,479,810,438"/>
+<area shape="rect" id="Node000016" href="$classtensorium_1_1Tensor.html#ae1c0d2646baa7f397b814972fb282e70" title="Compute the tensor (outer) product of two tensors." alt="" coords="518,696,663,741"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="821,441,808,495,787,561,754,628,732,658,706,686,686,699,664,709,662,704,684,695,703,682,728,655,749,625,782,559,803,494,815,439"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1BSSNChristoffel.html#a2ad645258d2cd7d2bd40fd770c65bb60" title=" " alt="" coords="206,5,429,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,49,429,44,430,39,464,44"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="241,75,394,119"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="464,81,394,90,394,85,463,76"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#a1a463a52e8e5f512243bcdecec856eb8" title=" " alt="" coords="5,5,158,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="190,30,158,30,158,25,190,25"/>
+<area shape="rect" id="Node000007" href="$classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="239,333,396,378"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="486,164,479,169,431,208,390,253,357,298,334,334,329,331,353,295,386,250,427,204,475,164,483,159"/>
+<area shape="poly" id="edge13_Node000013_Node000007" title=" " alt="" coords="483,552,475,547,427,508,386,462,353,417,329,380,334,377,357,414,390,458,431,504,479,543,486,547"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium__RG.html#a1acfbb966721cbe68fd2d4fdec07d28d" title=" " alt="" coords="231,627,404,671"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="489,652,404,652,404,646,489,646"/>
 </map>

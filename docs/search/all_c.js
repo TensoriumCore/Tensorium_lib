@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['lambda_0',['lambda',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c',1,'Latex.hpp']]],
-  ['lambda_1',['Lambda',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea04a7da3c5b04cad85da1eebb92315b8b',1,'Latex.hpp']]],
+  ['lambda_0',['Lambda',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea04a7da3c5b04cad85da1eebb92315b8b',1,'Latex.hpp']]],
+  ['lambda_1',['lambda',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea945f3fc449518a73b9f5f32868db466c',1,'Latex.hpp']]],
   ['latex_2ehpp_2',['Latex.hpp',['../Latex_8hpp.html',1,'']]],
   ['lbrace_3',['lbrace',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921ab352cf02a7c4178140fb2e341e09be69',1,'Latex.hpp']]],
   ['lerp_4',['lerp',['../classtensorium_1_1Matrix.html#a520af5a3e3c982c67dc1bd0611975808',1,'tensorium::Matrix']]],

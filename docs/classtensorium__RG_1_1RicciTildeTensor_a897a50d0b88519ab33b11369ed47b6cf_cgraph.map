@@ -1,0 +1,8 @@
+<map id="tensorium_RG::RicciTildeTensor::compute_laplacian_term" name="tensorium_RG::RicciTildeTensor::compute_laplacian_term">
+<area shape="rect" id="Node000001" title="Compute &#160;using scalar autodiff." alt="" coords="5,36,238,81"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="286,5,448,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,41,270,37,270,42,238,46"/>
+<area shape="rect" id="Node000003" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="496,45,534,72"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="238,59,448,60,480,58,480,63,448,65,238,65"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="449,42,481,49,480,54,448,47"/>
+</map>

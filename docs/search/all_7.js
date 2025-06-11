@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gamma_0',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
-  ['gamma_1',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
+  ['gamma_0',['gamma',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea',1,'Latex.hpp']]],
+  ['gamma_1',['Gamma',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9cdb0f6e0d556347c10a8695545a4b5',1,'Latex.hpp']]],
   ['gamma_5fij_2',['gamma_ij',['../structtensorium__RG_1_1BSSNGrid.html#a1f0fc82a7891cb34f654a92d36c61ccc',1,'tensorium_RG::BSSNGrid']]],
   ['gamma_5fij_5finv_3',['gamma_ij_inv',['../structtensorium__RG_1_1BSSNGrid.html#a65ef23fea6c5f7ef2ce9e250a1f0d56c',1,'tensorium_RG::BSSNGrid']]],
   ['gamma_5ftilde_4',['gamma_tilde',['../structtensorium__RG_1_1BSSNGrid.html#a7484c43c3879148067a8fda7101c3bae',1,'tensorium_RG::BSSNGrid']]],
@@ -23,11 +23,12 @@ var searchData=
   ['getl1cachesize_20',['getL1CacheSize',['../classtensorium_1_1CacheInfo.html#a830d0c7e66f7700062ebae521d45902a',1,'tensorium::CacheInfo']]],
   ['getl2cachesize_21',['getL2CacheSize',['../classtensorium_1_1CacheInfo.html#aae3c70ea0290d0a343a04d7eff5b7e28',1,'tensorium::CacheInfo']]],
   ['getl3cachesize_22',['getL3CacheSize',['../classtensorium_1_1CacheInfo.html#a64a015f6539b948814373af8f24cc457',1,'tensorium::CacheInfo']]],
-  ['greek_5fminus_23',['greek_minus',['../structToken.html#ac69984ec54f4fb412011934ad5e5b4b0',1,'Token']]],
-  ['greek_5fplus_24',['greek_plus',['../structToken.html#aa8e8db5194fe9a670951df71eb6d8831',1,'Token']]],
-  ['greekmaplower_25',['GreekMapLower',['../classLexer.html#aa5e5a7cefe1a1ba23d53e26548c36c56',1,'Lexer']]],
-  ['greekmapupper_26',['GreekMapUpper',['../classLexer.html#a3add295fdc3cbd0e0e44d6a0f9c08ab0',1,'Lexer']]],
-  ['greeksymbolminus_27',['GreekSymbolminus',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15e',1,'Latex.hpp']]],
-  ['greeksymbolplus_28',['GreekSymbolplus',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fe',1,'Latex.hpp']]],
-  ['grid_29',['grid',['../classtensorium__RG_1_1BSSN.html#a64150bbf274a85f6bb1b229cb4577e6d',1,'tensorium_RG::BSSN']]]
+  ['grad_5fchi_23',['grad_chi',['../structtensorium__RG_1_1ChiContext.html#a3e66c13287811945750ffcecbd09e24a',1,'tensorium_RG::ChiContext']]],
+  ['greek_5fminus_24',['greek_minus',['../structToken.html#ac69984ec54f4fb412011934ad5e5b4b0',1,'Token']]],
+  ['greek_5fplus_25',['greek_plus',['../structToken.html#aa8e8db5194fe9a670951df71eb6d8831',1,'Token']]],
+  ['greekmaplower_26',['GreekMapLower',['../classLexer.html#aa5e5a7cefe1a1ba23d53e26548c36c56',1,'Lexer']]],
+  ['greekmapupper_27',['GreekMapUpper',['../classLexer.html#a3add295fdc3cbd0e0e44d6a0f9c08ab0',1,'Lexer']]],
+  ['greeksymbolminus_28',['GreekSymbolminus',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15e',1,'Latex.hpp']]],
+  ['greeksymbolplus_29',['GreekSymbolplus',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fe',1,'Latex.hpp']]],
+  ['grid_30',['grid',['../classtensorium__RG_1_1BSSN.html#a64150bbf274a85f6bb1b229cb4577e6d',1,'tensorium_RG::BSSN']]]
 ];

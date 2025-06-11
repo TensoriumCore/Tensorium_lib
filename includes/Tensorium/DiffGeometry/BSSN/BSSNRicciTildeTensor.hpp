@@ -1,3 +1,8 @@
+/**
+ * @file BSSNRicciTildeTensor.hpp
+ * @brief Computes the conformal part \f$ \tilde{R}_{ij} \f$ of the Ricci tensor in the BSSN formalism.
+ */
+
 #pragma once
 
 #include "../../Core/Matrix.hpp"
@@ -11,17 +16,33 @@
 #include "BSSNDerivatives.hpp"
 
 namespace tensorium_RG {
-
+/**
+ * @class RicciTildeTensor
+ * @brief Provides methods to compute the conformal Ricci tensor \f$ \tilde{R}_{ij} \f$ in the BSSN formulation.
+ *
+ * The conformal Ricci tensor is given by:
+ * \f[
+ * \tilde{R}_{ij} = R^{(1)}_{ij} + R^{(2)}_{ij} + R^{(3)}_{ij} + R^{(4)}_{ij}
+ * \f]
+ *
+ * where:
+ * - \f$ R^{(1)}_{ij} = -\frac{1}{2} \tilde{\gamma}^{kl} \partial_k \partial_l \tilde{\gamma}_{ij} \f$
+ * - \f$ R^{(2)}_{ij} = \frac{1}{2} \left( \nabla_i \tilde{\Gamma}_j + \nabla_j \tilde{\Gamma}_i \right) \f$
+ * - \f$ R^{(3)}_{ij} = \frac{1}{2} \tilde{\Gamma}^k \left( \tilde{\gamma}_{ki} \tilde{\Gamma}^l_{jl} + \tilde{\gamma}_{kj} \tilde{\Gamma}^l_{il} \right) \f$
+ * - \f$ R^{(4)}_{ij} = \tilde{\gamma}^{\ell m} \left( 2 \tilde{\Gamma}^k_{\ell(i} \tilde{\Gamma}_{j)km} + \tilde{\Gamma}^k_{im} \tilde{\Gamma}_{k\ell j} \right) \f$
+ *
+ * Each term is computed separately and combined to give \f$ \tilde{R}_{ij} \f$.
+ */
 template <typename T> class RicciTildeTensor {
   public:
     /**
-     * @brief Compute R_ij^(1) = -½ γ̃^{kl} ∂ₖ∂ₗ γ̃_{ij} using autodiff scalar
+     * @brief Compute \f$ R^{(1)}_{ij} = -\frac{1}{2} \tilde{\gamma}^{kl} \partial_k \partial_l \tilde{\gamma}_{ij} \f$ using scalar autodiff.
      *
-     * @param X         : Position vector
-     * @param dx,dy,dz  : Grid spacing
-     * @param metric    : Metric object (for γ̃_ij construction)
-     * @param gamma_tilde_inv : Inverse conformal metric at X
-     * @return tensorium::Tensor<T, 2> : Laplacian term of Ricci
+     * @param X               Position vector
+     * @param dx,dy,dz        Grid spacings
+     * @param metric          Metric object to evaluate \f$ \tilde{\gamma}_{ij} \f$
+     * @param gamma_tilde_inv Inverse of the conformal metric \f$ \tilde{\gamma}^{kl} \f$
+     * @return Laplacian term \f$ R^{(1)}_{ij} \f$
      */
     static tensorium::Tensor<T, 2>
     compute_laplacian_term(const tensorium::Vector<T> &X, T dx, T dy, T dz, const Metric<T> &metric,
@@ -71,17 +92,13 @@ template <typename T> class RicciTildeTensor {
     }
 
     /**
-     * @brief Compute the term R^(2)_ij = (1/2)(∇_i Γ̃_j + ∇_j Γ̃_i) for the conformal Ricci tensor.
+     * @brief Compute \f$ R^{(2)}_{ij} = \frac{1}{2} \left( \nabla_i \tilde{\Gamma}_j + \nabla_j \tilde{\Gamma}_i \right) \f$
      *
-     * This term is derived from the contraction of the conformal Christoffel symbols:
-     *   Γ̃^i = γ̃^{jk} Γ̃^i_{jk}
-     * and its spatial derivatives.
-     *
-     * @tparam T Scalar type (e.g., float, double)
-     * @param X           Spatial point
-     * @param dx, dy, dz  Grid spacing
-     * @param tilde_Gamma Contracted conformal Christoffel symbol at X (i.e. Γ̃^i)
-     * @return Symmetric 3×3 tensor representing (1/2)(∇_i Γ̃_j + ∇_j Γ̃_i)
+     * @param X                 Spatial point
+     * @param dx, dy, dz        Grid spacings
+     * @param tilde_Gamma       Contracted conformal Christoffel vector \f$ \tilde{\Gamma}^i \f$
+     * @param tilde_gamma       Conformal metric \f$ \tilde{\gamma}_{ij} \f$
+     * @return Symmetrized derivative term \f$ R^{(2)}_{ij} \f$
      */
     static tensorium::Tensor<T, 2>
     compute_dGamma_term(const tensorium::Vector<T> &X, T dx, T dy, T dz,
@@ -114,12 +131,15 @@ template <typename T> class RicciTildeTensor {
     }
 
     /**
-     * @brief Compute R^{(3)}_{ij} = ½ Γ̃^k (γ̃_{k i} Γ̃^k_{j k} + γ̃_{k j} Γ̃^k_{i k})
+     * @brief Compute the nonlinear contracted term:
+     * \f[
+     * R^{(3)}_{ij} = \frac{1}{2} \tilde{\Gamma}^k \left( \tilde{\gamma}_{ki} \tilde{\Gamma}^l_{jl} + \tilde{\gamma}_{kj} \tilde{\Gamma}^l_{il} \right)
+     * \f]
      *
-     * @param tilde_Gamma          Contracted conformal Christoffel Γ̃^k
-     * @param christoffel_tilde    Conformal Christoffel symbols Γ̃^i_{j k}
-     * @param gamma_tilde          Conformal metric γ̃_{ij}
-     * @return tensorium::Tensor<T,2>  The R^{(3)}_{ij} contribution
+     * @param tilde_Gamma        Contracted Christoffel symbols \f$ \tilde{\Gamma}^k \f$
+     * @param christoffel_tilde  Christoffel symbols \f$ \tilde{\Gamma}^i_{jk} \f$
+     * @param gamma_tilde        Conformal metric \f$ \tilde{\gamma}_{ij} \f$
+     * @return Tensor \f$ R^{(3)}_{ij} \f$
      */
     static tensorium::Tensor<T, 2>
     compute_GammaGamma_term(const tensorium::Vector<T>    &tilde_Gamma,
@@ -147,11 +167,14 @@ template <typename T> class RicciTildeTensor {
     }
 
     /**
-     * @brief Compute R̃_{ij}^{(4)} = γ̃^{ℓ m} [ 2 Γ̃^k_{ℓ(i} Γ̃_{j) k m} + Γ̃^k_{i m} Γ̃_{k ℓ j} ]
+     * @brief Compute the quadratic Christoffel term:
+     * \f[
+     * R^{(4)}_{ij} = \tilde{\gamma}^{\ell m} \left( 2 \tilde{\Gamma}^k_{\ell(i} \tilde{\Gamma}_{j)km} + \tilde{\Gamma}^k_{im} \tilde{\Gamma}_{k\ell j} \right)
+     * \f]
      *
-     * @param gamma_tilde_inv    Inverse conformal metric γ̃^{ℓ m}
-     * @param christoffel_tilde  Conformal Christoffel symbols Γ̃^k_{ i j }
-     * @return tensorium::Tensor<T,2>  The R^{(4)}_{ij} contribution
+     * @param gamma_tilde_inv    Inverse conformal metric \f$ \tilde{\gamma}^{\ell m} \f$
+     * @param christoffel_tilde  Christoffel symbols \f$ \tilde{\Gamma}^i_{jk} \f$
+     * @return Tensor \f$ R^{(4)}_{ij} \f$
      */
     static tensorium::Tensor<T, 2>
     compute_GammaProduct_term(const tensorium::Tensor<T, 2> &gamma_tilde_inv,
@@ -183,7 +206,19 @@ template <typename T> class RicciTildeTensor {
         }
         return R4;
     }
-
+    /**
+     * @brief Combine all four contributions to compute the conformal Ricci tensor:
+     * \f[
+     * \tilde{R}_{ij} = R^{(1)}_{ij} + R^{(2)}_{ij} + R^{(3)}_{ij} + R^{(4)}_{ij}
+     * \f]
+     *
+     * @param chi_context        ChiContext (holds metric, position, grid spacing, etc.)
+     * @param gamma_tilde_inv    Inverse conformal metric
+     * @param tilde_Gamma        Contracted conformal Christoffel vector
+     * @param christoffel_tilde  Conformal Christoffel symbols
+     * @param gamma_tilde        Conformal metric
+     * @return Tensor \f$ \tilde{R}_{ij} \f$
+     */
     static tensorium::Tensor<T, 2> compute_Ricci_Tilde_tensor(
         const ChiContext<T> &chi_context, const tensorium::Tensor<T, 2> &gamma_tilde_inv,
         const tensorium::Vector<T> &tilde_Gamma, const tensorium::Tensor<T, 3> &christoffel_tilde,

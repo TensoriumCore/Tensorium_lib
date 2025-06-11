@@ -1,5 +1,9 @@
 <map id="tensorium_RG::BSSNChristoffel::compute" name="tensorium_RG::BSSNChristoffel::compute">
-<area shape="rect" id="Node000001" title="Compute the conformal Christoffel symbols ." alt="" coords="206,5,429,50"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="5,5,158,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,30,158,30,158,25,190,25"/>
+<area shape="rect" id="Node000001" title="Compute the conformal Christoffel symbols ." alt="" coords="477,40,700,85"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1BSSNChristoffel.html#a2ad645258d2cd7d2bd40fd770c65bb60" title=" " alt="" coords="206,5,429,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="461,49,429,45,430,39,462,43"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#ac0f7060820c6fee60fb16d7cb31d1870" title=" " alt="" coords="241,75,394,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="462,81,394,90,394,85,461,76"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#a1a463a52e8e5f512243bcdecec856eb8" title=" " alt="" coords="5,5,158,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,30,158,30,158,25,190,25"/>
 </map>

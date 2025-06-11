@@ -180,59 +180,21 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node10 -->
-<g id="edge20_Node000001_Node000010" class="edge">
+<g id="edge22_Node000001_Node000010" class="edge">
 <title>Node1&#45;&gt;Node10</title>
-<g id="a_edge20_Node000001_Node000010"><a xlink:title=" ">
+<g id="a_edge22_Node000001_Node000010"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M716.31,-295.72C698.28,-276.61 667.52,-248.38 634,-236.75 580.33,-218.13 515.26,-221.17 468.11,-227.52"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="713.53,-297.87 722.85,-302.9 718.7,-293.15 713.53,-297.87"/>
-</a>
-</g>
-</g>
-<!-- Node16 -->
-<g id="Node000016" class="node">
-<title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classtensorium_1_1Matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" target="_top" xlink:title="Multiply matrix by a vector using SIMD.">
-<polygon fill="white" stroke="#666666" points="624.25,-189.5 515.25,-189.5 515.25,-156 624.25,-156 624.25,-189.5"/>
-<text text-anchor="start" x="523.25" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
-<text text-anchor="middle" x="569.75" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">mul_vec</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node16 -->
-<g id="edge15_Node000001_Node000016" class="edge">
-<title>Node1&#45;&gt;Node16</title>
-<g id="a_edge15_Node000001_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M718.92,-294.83C701.31,-270.82 669.07,-230.38 634,-203.75 627.18,-198.57 619.36,-193.91 611.6,-189.87"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="715.97,-296.73 724.65,-302.8 721.65,-292.64 715.97,-296.73"/>
-</a>
-</g>
-</g>
-<!-- Node17 -->
-<g id="Node000017" class="node">
-<title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classtensorium_1_1Matrix.html#a469003c35c507e7556d9a85209d1f21a" target="_top" xlink:title="Multiply matrix by a vector (naïve fallback)">
-<polygon fill="white" stroke="#666666" points="624.25,-137.5 515.25,-137.5 515.25,-104 624.25,-104 624.25,-137.5"/>
-<text text-anchor="start" x="523.25" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
-<text text-anchor="middle" x="569.75" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">operator*</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node17 -->
-<g id="edge16_Node000001_Node000017" class="edge">
-<title>Node1&#45;&gt;Node17</title>
-<g id="a_edge16_Node000001_Node000017"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M725.59,-293.68C712.49,-258.65 681.78,-188.19 634,-146.75 630.14,-143.41 625.8,-140.45 621.24,-137.85"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="722.16,-294.47 728.84,-302.69 728.74,-292.09 722.16,-294.47"/>
 </a>
 </g>
 </g>
 <!-- Node18 -->
 <g id="Node000018" class="node">
 <title>Node18</title>
-<g id="a_Node000018"><a xlink:href="classtensorium_1_1Vector.html#a7db6c6af21eb17c4721af3472bc81fd6" target="_top" xlink:title="Print the vector to stdout.">
-<polygon fill="white" stroke="#666666" points="623.88,-85.5 515.62,-85.5 515.62,-52 623.88,-52 623.88,-85.5"/>
-<text text-anchor="start" x="523.62" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Vector::</text>
-<text text-anchor="middle" x="569.75" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">print</text>
+<g id="a_Node000018"><a xlink:href="classtensorium_1_1Matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" target="_top" xlink:title="Multiply matrix by a vector using SIMD.">
+<polygon fill="white" stroke="#666666" points="624.25,-189.5 515.25,-189.5 515.25,-156 624.25,-156 624.25,-189.5"/>
+<text text-anchor="start" x="523.25" y="-176" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
+<text text-anchor="middle" x="569.75" y="-163.25" font-family="Helvetica,sans-Serif" font-size="10.00">mul_vec</text>
 </a>
 </g>
 </g>
@@ -240,18 +202,18 @@
 <g id="edge17_Node000001_Node000018" class="edge">
 <title>Node1&#45;&gt;Node18</title>
 <g id="a_edge17_Node000001_Node000018"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M728.67,-292.75C719.26,-249.24 692.6,-151.48 634,-94.75 630.59,-91.45 626.7,-88.54 622.56,-85.99"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="725.23,-293.38 730.66,-302.48 732.08,-291.98 725.23,-293.38"/>
+<path fill="none" stroke="#63b8ff" d="M718.92,-294.83C701.31,-270.82 669.07,-230.38 634,-203.75 627.18,-198.57 619.36,-193.91 611.6,-189.87"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="715.97,-296.73 724.65,-302.8 721.65,-292.64 715.97,-296.73"/>
 </a>
 </g>
 </g>
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9" target="_top" xlink:title="Solve the system using the Jacobi method.">
-<polygon fill="white" stroke="#666666" points="623.5,-33.5 516,-33.5 516,0 623.5,0 623.5,-33.5"/>
-<text text-anchor="start" x="524" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::solver::</text>
-<text text-anchor="middle" x="569.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">Jacobi::solve</text>
+<g id="a_Node000019"><a xlink:href="classtensorium_1_1Matrix.html#a469003c35c507e7556d9a85209d1f21a" target="_top" xlink:title="Multiply matrix by a vector (naïve fallback)">
+<polygon fill="white" stroke="#666666" points="624.25,-137.5 515.25,-137.5 515.25,-104 624.25,-104 624.25,-137.5"/>
+<text text-anchor="start" x="523.25" y="-124" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Matrix::</text>
+<text text-anchor="middle" x="569.75" y="-111.25" font-family="Helvetica,sans-Serif" font-size="10.00">operator*</text>
 </a>
 </g>
 </g>
@@ -259,6 +221,44 @@
 <g id="edge18_Node000001_Node000019" class="edge">
 <title>Node1&#45;&gt;Node19</title>
 <g id="a_edge18_Node000001_Node000019"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M725.59,-293.68C712.49,-258.65 681.78,-188.19 634,-146.75 630.14,-143.41 625.8,-140.45 621.24,-137.85"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="722.16,-294.47 728.84,-302.69 728.74,-292.09 722.16,-294.47"/>
+</a>
+</g>
+</g>
+<!-- Node20 -->
+<g id="Node000020" class="node">
+<title>Node20</title>
+<g id="a_Node000020"><a xlink:href="classtensorium_1_1Vector.html#a7db6c6af21eb17c4721af3472bc81fd6" target="_top" xlink:title="Print the vector to stdout.">
+<polygon fill="white" stroke="#666666" points="623.88,-85.5 515.62,-85.5 515.62,-52 623.88,-52 623.88,-85.5"/>
+<text text-anchor="start" x="523.62" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Vector::</text>
+<text text-anchor="middle" x="569.75" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">print</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node20 -->
+<g id="edge19_Node000001_Node000020" class="edge">
+<title>Node1&#45;&gt;Node20</title>
+<g id="a_edge19_Node000001_Node000020"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M728.67,-292.75C719.26,-249.24 692.6,-151.48 634,-94.75 630.59,-91.45 626.7,-88.54 622.56,-85.99"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="725.23,-293.38 730.66,-302.48 732.08,-291.98 725.23,-293.38"/>
+</a>
+</g>
+</g>
+<!-- Node21 -->
+<g id="Node000021" class="node">
+<title>Node21</title>
+<g id="a_Node000021"><a xlink:href="classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9" target="_top" xlink:title="Solve the system using the Jacobi method.">
+<polygon fill="white" stroke="#666666" points="623.5,-33.5 516,-33.5 516,0 623.5,0 623.5,-33.5"/>
+<text text-anchor="start" x="524" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::solver::</text>
+<text text-anchor="middle" x="569.75" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">Jacobi::solve</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node21 -->
+<g id="edge20_Node000001_Node000021" class="edge">
+<title>Node1&#45;&gt;Node21</title>
+<g id="a_edge20_Node000001_Node000021"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M730.86,-292.9C725.09,-242.28 704.07,-115.78 634,-42.75 630.79,-39.41 627.1,-36.48 623.13,-33.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="727.35,-292.96 731.87,-302.54 734.31,-292.24 727.35,-292.96"/>
 </a>
@@ -277,9 +277,9 @@
 <g id="Node000011" class="node">
 <title>Node11</title>
 <g id="a_Node000011"><a xlink:href="classtensorium_1_1SpectralFFT.html#ac615fe5b4689900c9e54f6662372597a" target="_top" xlink:title="Perform inverse FFT (in&#45;place)">
-<polygon fill="white" stroke="#666666" points="301.25,-282.5 172.75,-282.5 172.75,-249 301.25,-249 301.25,-282.5"/>
-<text text-anchor="start" x="180.75" y="-269" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
-<text text-anchor="middle" x="237" y="-256.25" font-family="Helvetica,sans-Serif" font-size="10.00">::backward</text>
+<polygon fill="white" stroke="#666666" points="301.25,-290.5 172.75,-290.5 172.75,-257 301.25,-257 301.25,-290.5"/>
+<text text-anchor="start" x="180.75" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
+<text text-anchor="middle" x="237" y="-264.25" font-family="Helvetica,sans-Serif" font-size="10.00">::backward</text>
 </a>
 </g>
 </g>
@@ -287,36 +287,37 @@
 <g id="edge10_Node000010_Node000011" class="edge">
 <title>Node10&#45;&gt;Node11</title>
 <g id="a_edge10_Node000010_Node000011"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M327.55,-251.59C318.9,-252.95 310.14,-254.34 301.65,-255.68"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="328,-255.06 337.33,-250.04 326.9,-248.14 328,-255.06"/>
+<path fill="none" stroke="#63b8ff" d="M327.84,-255.17C319.09,-256.98 310.23,-258.81 301.65,-260.58"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="328.26,-258.65 337.34,-253.2 326.84,-251.8 328.26,-258.65"/>
 </a>
 </g>
 </g>
-<!-- Node14 -->
-<g id="Node000014" class="node">
-<title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2" target="_top" xlink:title="Perform forward FFT (in&#45;place)">
-<polygon fill="white" stroke="#666666" points="301.25,-230.5 172.75,-230.5 172.75,-197 301.25,-197 301.25,-230.5"/>
-<text text-anchor="start" x="180.75" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
-<text text-anchor="middle" x="237" y="-204.25" font-family="Helvetica,sans-Serif" font-size="10.00">::forward</text>
+<!-- Node15 -->
+<g id="Node000015" class="node">
+<title>Node15</title>
+<g id="a_Node000015"><a xlink:href="classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2" target="_top" xlink:title="Perform forward FFT (in&#45;place)">
+<polygon fill="white" stroke="#666666" points="301.25,-222.5 172.75,-222.5 172.75,-189 301.25,-189 301.25,-222.5"/>
+<text text-anchor="start" x="180.75" y="-209" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
+<text text-anchor="middle" x="237" y="-196.25" font-family="Helvetica,sans-Serif" font-size="10.00">::forward</text>
 </a>
 </g>
 </g>
-<!-- Node10&#45;&gt;Node14 -->
-<g id="edge13_Node000010_Node000014" class="edge">
-<title>Node10&#45;&gt;Node14</title>
-<g id="a_edge13_Node000010_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M327.55,-227.91C318.9,-226.55 310.14,-225.16 301.65,-223.82"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="326.9,-231.36 337.33,-229.46 328,-224.44 326.9,-231.36"/>
+<!-- Node10&#45;&gt;Node15 -->
+<g id="edge14_Node000010_Node000015" class="edge">
+<title>Node10&#45;&gt;Node15</title>
+<g id="a_edge14_Node000010_Node000015"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M327.84,-224.33C319.09,-222.52 310.23,-220.69 301.65,-218.92"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="326.84,-227.7 337.34,-226.3 328.26,-220.85 326.84,-227.7"/>
 </a>
 </g>
 </g>
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="136.75,-308.12 0,-308.12 0,-287.38 136.75,-287.38 136.75,-308.12"/>
-<text text-anchor="middle" x="68.38" y="-294.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::backwardFFP</text>
+<g id="a_Node000012"><a xlink:href="classtensorium_1_1SpectralFFT.html#a7be9f0a678eee96f7b7d62bd94b4e1c5" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="132.62,-351.5 4.12,-351.5 4.12,-318 132.62,-318 132.62,-351.5"/>
+<text text-anchor="start" x="12.12" y="-338" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
+<text text-anchor="middle" x="68.38" y="-325.25" font-family="Helvetica,sans-Serif" font-size="10.00">::backward_3D</text>
 </a>
 </g>
 </g>
@@ -324,17 +325,17 @@
 <g id="edge11_Node000011_Node000012" class="edge">
 <title>Node11&#45;&gt;Node12</title>
 <g id="a_edge11_Node000011_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M161.24,-280.11C149.35,-282.39 137.22,-284.72 125.85,-286.9"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="161.88,-283.55 171.04,-278.22 160.56,-276.67 161.88,-283.55"/>
+<path fill="none" stroke="#63b8ff" d="M178.48,-294.81C158.24,-302.22 135.74,-310.45 116.46,-317.51"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="179.53,-298.15 187.72,-291.42 177.13,-291.58 179.53,-298.15"/>
 </a>
 </g>
 </g>
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="136.38,-269.12 0.38,-269.12 0.38,-248.38 136.38,-248.38 136.38,-269.12"/>
-<text text-anchor="middle" x="68.38" y="-255.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::backwardFFT</text>
+<g id="a_Node000013"><a xlink:href="namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="136.75,-300.12 0,-300.12 0,-279.38 136.75,-279.38 136.75,-300.12"/>
+<text text-anchor="middle" x="68.38" y="-286.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::backwardFFP</text>
 </a>
 </g>
 </g>
@@ -342,42 +343,79 @@
 <g id="edge12_Node000011_Node000013" class="edge">
 <title>Node11&#45;&gt;Node13</title>
 <g id="a_edge12_Node000011_Node000013"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M161.17,-262.61C153.06,-262.27 144.84,-261.92 136.83,-261.58"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="160.88,-266.1 171.02,-263.02 161.17,-259.1 160.88,-266.1"/>
+<path fill="none" stroke="#63b8ff" d="M161.26,-280.93C153.21,-281.7 145.06,-282.48 137.1,-283.25"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="161.4,-284.43 171.02,-279.99 160.74,-277.46 161.4,-284.43"/>
 </a>
 </g>
 </g>
-<!-- Node15 -->
-<g id="Node000015" class="node">
-<title>Node15</title>
-<g id="a_Node000015"><a xlink:href="namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="131.5,-224.12 5.25,-224.12 5.25,-203.38 131.5,-203.38 131.5,-224.12"/>
-<text text-anchor="middle" x="68.38" y="-210.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::forwardFFT</text>
+<!-- Node14 -->
+<g id="Node000014" class="node">
+<title>Node14</title>
+<g id="a_Node000014"><a xlink:href="namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="136.38,-261.12 0.38,-261.12 0.38,-240.38 136.38,-240.38 136.38,-261.12"/>
+<text text-anchor="middle" x="68.38" y="-247.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::backwardFFT</text>
 </a>
 </g>
 </g>
-<!-- Node14&#45;&gt;Node15 -->
-<g id="edge14_Node000014_Node000015" class="edge">
-<title>Node14&#45;&gt;Node15</title>
-<g id="a_edge14_Node000014_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M161.14,-213.75C151.35,-213.75 141.4,-213.75 131.84,-213.75"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="161.02,-217.25 171.02,-213.75 161.02,-210.25 161.02,-217.25"/>
+<!-- Node11&#45;&gt;Node14 -->
+<g id="edge13_Node000011_Node000014" class="edge">
+<title>Node11&#45;&gt;Node14</title>
+<g id="a_edge13_Node000011_Node000014"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M161.17,-263.42C153.06,-262.3 144.84,-261.17 136.83,-260.06"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="160.65,-266.88 171.03,-264.78 161.6,-259.95 160.65,-266.88"/>
 </a>
 </g>
 </g>
-<!-- Node20 -->
-<g id="Node000020" class="node">
-<title>Node20</title>
-<g id="a_Node000020"><a xlink:href="namespacetensorium.html#a961202aa0f295c710913121232c4863b" target="_top" xlink:title=" ">
+<!-- Node16 -->
+<g id="Node000016" class="node">
+<title>Node16</title>
+<g id="a_Node000016"><a xlink:href="classtensorium_1_1SpectralFFT.html#a03191127cc8ef29a212c9bceaa6f10ef" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="132.62,-222.5 4.12,-222.5 4.12,-189 132.62,-189 132.62,-222.5"/>
+<text text-anchor="start" x="12.12" y="-209" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::SpectralFFT</text>
+<text text-anchor="middle" x="68.38" y="-196.25" font-family="Helvetica,sans-Serif" font-size="10.00">::forward_3D</text>
+</a>
+</g>
+</g>
+<!-- Node15&#45;&gt;Node16 -->
+<g id="edge15_Node000015_Node000016" class="edge">
+<title>Node15&#45;&gt;Node16</title>
+<g id="a_edge15_Node000015_Node000016"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M161.15,-205.75C151.73,-205.75 142.17,-205.75 132.94,-205.75"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="161.02,-209.25 171.02,-205.75 161.02,-202.25 161.02,-209.25"/>
+</a>
+</g>
+</g>
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="131.5,-171.12 5.25,-171.12 5.25,-150.38 131.5,-150.38 131.5,-171.12"/>
+<text text-anchor="middle" x="68.38" y="-157.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::forwardFFT</text>
+</a>
+</g>
+</g>
+<!-- Node15&#45;&gt;Node17 -->
+<g id="edge16_Node000015_Node000017" class="edge">
+<title>Node15&#45;&gt;Node17</title>
+<g id="a_edge16_Node000015_Node000017"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M161.49,-185.63C143.6,-180.8 125.17,-175.82 109.53,-171.6"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="160.5,-188.99 171.07,-188.21 162.33,-182.23 160.5,-188.99"/>
+</a>
+</g>
+</g>
+<!-- Node22 -->
+<g id="Node000022" class="node">
+<title>Node22</title>
+<g id="a_Node000022"><a xlink:href="namespacetensorium.html#a961202aa0f295c710913121232c4863b" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="469.5,-27.12 337.25,-27.12 337.25,-6.38 469.5,-6.38 469.5,-27.12"/>
 <text text-anchor="middle" x="403.38" y="-13.62" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::jacobi_solve</text>
 </a>
 </g>
 </g>
-<!-- Node19&#45;&gt;Node20 -->
-<g id="edge19_Node000019_Node000020" class="edge">
-<title>Node19&#45;&gt;Node20</title>
-<g id="a_edge19_Node000019_Node000020"><a xlink:title=" ">
+<!-- Node21&#45;&gt;Node22 -->
+<g id="edge21_Node000021_Node000022" class="edge">
+<title>Node21&#45;&gt;Node22</title>
+<g id="a_edge21_Node000021_Node000022"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M504.62,-16.75C493.21,-16.75 481.31,-16.75 469.86,-16.75"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="504.32,-20.25 514.32,-16.75 504.32,-13.25 504.32,-20.25"/>
 </a>

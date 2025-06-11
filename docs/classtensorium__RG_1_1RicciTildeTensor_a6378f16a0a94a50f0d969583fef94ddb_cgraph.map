@@ -1,0 +1,21 @@
+<map id="tensorium_RG::RicciTildeTensor::compute_Ricci_Tilde_tensor" name="tensorium_RG::RicciTildeTensor::compute_Ricci_Tilde_tensor">
+<area shape="rect" id="Node000001" title="Combine all four contributions to compute the conformal Ricci tensor:" alt="" coords="5,168,190,229"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciTildeTensor.html#a3f75284d5d6b52e8e9735ae6261331ba" title="Compute ." alt="" coords="260,56,493,101"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,165,189,140,237,117,273,103,275,108,239,122,192,145,149,169"/>
+<area shape="rect" id="Node000004" href="$TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title="Register the plugin under the name &quot;tensorium&#45;dispatch&quot;." alt="" coords="774,125,813,152"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="190,170,237,161,389,145,539,137,759,135,759,140,539,142,390,150,238,166,191,175"/>
+<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1RicciTildeTensor.html#ac279019b1438d4fb54f46b73a82632a8" title="Compute the nonlinear contracted term:" alt="" coords="238,176,515,221"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="190,196,222,196,222,201,190,201"/>
+<area shape="rect" id="Node000006" href="$classtensorium__RG_1_1RicciTildeTensor.html#a7bf239b2a22d251ad8ac07ba70e507d2" title="Compute the quadratic Christoffel term:" alt="" coords="239,245,513,290"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="191,219,269,238,268,244,189,224"/>
+<area shape="rect" id="Node000007" href="$classtensorium__RG_1_1RicciTildeTensor.html#a897a50d0b88519ab33b11369ed47b6cf" title="Compute &#160;using scalar autodiff." alt="" coords="260,315,492,359"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="134,227,182,265,239,300,253,306,251,311,236,305,179,270,131,232"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium__RG.html#a7a888ebe96778265c59526da5e73cb57" title=" " alt="" coords="563,5,726,50"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="493,54,548,43,549,48,494,59"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="494,85,607,98,727,117,760,125,759,130,726,122,606,103,493,90"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="698,48,728,67,774,111,770,115,725,71,695,53"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="481,312,514,300,565,274,632,235,759,156,762,161,635,240,567,279,516,305,483,317"/>
+<area shape="rect" id="Node000008" href="$classtensorium__RG_1_1Metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)" alt="" coords="563,292,726,337"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="493,324,548,320,549,325,493,330"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="667,290,724,227,772,163,777,166,728,231,671,293"/>
+</map>

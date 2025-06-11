@@ -3,19 +3,17 @@
 <area shape="rect" id="Node000002" href="$ChristoffelSymbol_8hpp.html" title=" " alt="" coords="142,98,403,143"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="328,63,294,100,290,96,324,60"/>
 <area shape="rect" id="Node000006" href="$Tensorium_8hpp.html" title=" " alt="" coords="208,469,354,513"/>
-<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="392,60,418,97,439,152,443,212,443,307,443,368,435,394,417,422,387,451,351,470,348,466,384,446,413,419,430,392,437,367,438,307,438,212,434,153,413,99,388,63"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="392,60,418,97,439,152,443,212,443,307,443,368,435,394,417,422,387,451,351,470,348,466,384,446,413,419,430,392,437,367,438,307,438,212,434,153,413,99,388,63"/>
 <area shape="rect" id="Node000003" href="$RicciTensor_8hpp.html" title=" " alt="" coords="5,191,223,235"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="223,153,153,193,150,188,220,148"/>
 <area shape="rect" id="Node000004" href="$FunctionnalRG_8hpp.html" title=" " alt="" coords="98,283,325,328"/>
-<area shape="poly" id="edge11_Node000002_Node000004" title=" " alt="" coords="256,158,232,223,215,284,210,282,227,221,251,156"/>
+<area shape="poly" id="edge10_Node000002_Node000004" title=" " alt="" coords="256,158,232,223,215,284,210,282,227,221,251,156"/>
 <area shape="rect" id="Node000005" href="$RiemannTensor_8hpp.html" title=" " alt="" coords="159,376,403,421"/>
-<area shape="poly" id="edge10_Node000002_Node000005" title=" " alt="" coords="293,155,319,214,339,283,343,306,339,329,325,356,306,378,302,374,320,353,334,327,338,306,334,284,314,216,288,157"/>
+<area shape="poly" id="edge9_Node000002_Node000005" title=" " alt="" coords="293,155,319,214,339,283,343,306,339,329,325,356,306,378,302,374,320,353,334,327,338,306,334,284,314,216,288,157"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,244,190,281,186,285,146,248"/>
 <area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="228,269,251,203,269,142,274,144,257,205,233,270"/>
 <area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="231,339,259,374,255,377,227,343"/>
-<area shape="poly" id="edge9_Node000004_Node000006" title=" " alt="" coords="175,341,159,359,147,379,143,400,148,419,174,447,208,467,206,471,171,451,144,422,137,400,142,377,155,356,171,337"/>
+<area shape="poly" id="edge8_Node000004_Node000006" title=" " alt="" coords="175,341,159,359,147,379,143,400,148,419,174,447,208,467,206,471,171,451,144,422,137,400,142,377,155,356,171,337"/>
 <area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="261,365,233,330,238,327,265,362"/>
 <area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="283,436,283,468,278,468,278,436"/>
-<area shape="rect" id="Node000007" href="$test_8cpp.html" title=" " alt="" coords="219,561,343,589"/>
-<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="283,529,283,561,278,561,278,529"/>
 </map>

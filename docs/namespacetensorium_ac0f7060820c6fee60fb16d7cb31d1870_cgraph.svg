@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16" target="_top" xlink:title="Resize 2D tensor.">
+<g id="a_Node000003"><a xlink:href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" target="_top" xlink:title="Resize 2D tensor.">
 <polygon fill="white" stroke="#666666" points="462.75,-85.5 353.75,-85.5 353.75,-52 462.75,-52 462.75,-85.5"/>
 <text text-anchor="start" x="361.75" y="-72" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium::Tensor::</text>
 <text text-anchor="middle" x="408.25" y="-59.25" font-family="Helvetica,sans-Serif" font-size="10.00">resize</text>

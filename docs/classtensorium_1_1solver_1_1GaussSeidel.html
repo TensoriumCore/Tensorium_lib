@@ -133,7 +133,8 @@ class tensorium::solver::GaussSeidel&lt; K &gt;</div><p>Placeholder for Gauss–
 <p>The Gauss–Seidel method improves on <a class="el" href="classtensorium_1_1solver_1_1Jacobi.html" title="Iterative Jacobi solver with SIMD and OpenMP support.">Jacobi</a> by using updated values as soon as they are available.</p>
 <p>Update rule:  </p><p class="formulaDsp">
 \[
-x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j &lt; i} A_{ij} x_j^{(k+1)} - \sum_{j &gt; i} A_{ij} x_j^{(k)} \right)
+x_i^{(k+1)} = \frac{1}{A_{ii}} \left(b_i - \sum_{j &lt; i} A_{ij} x_j^{(k+1)} - \sum_{j &gt; i} A_{ij}
+x_j^{(k)} \right)
 \]
 </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>

@@ -107,52 +107,49 @@ $(function(){initNavTree('BSSNTildeChristoffel_8hpp_source.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <a href="BSSNTildeChristoffel_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="Tensor_8hpp.html">../../Core/Tensor.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="Vector_8hpp.html">../../Core/Vector.hpp</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorium__RG.html">tensorium_RG</a> {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="Tensor_8hpp.html">../../Core/Tensor.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="Vector_8hpp.html">../../Core/Vector.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorium__RG.html">tensorium_RG</a> {</div>
 <div class="foldopen" id="foldopen00038" data-start="{" data-end="};">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classtensorium__RG_1_1TildeGamma.html">   38</a></span>        <span class="keyword">class </span><a class="code hl_class" href="classtensorium__RG_1_1TildeGamma.html">TildeGamma</a> {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">   56</a></span>                <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">compute</a>(</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                        <span class="keyword">const</span> <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;T, 2&gt;</a>&amp; gamma_tilde_inv,</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                        <span class="keyword">const</span> <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;T, 3&gt;</a>&amp; christoffel,</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                        <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Vector&lt;T&gt;</a>&amp; tildeGamma</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                        ) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                    <span class="keywordflow">if</span> (gamma_tilde_inv.<a class="code hl_function" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">shape</a>() != std::array&lt;size_t, 2&gt;{3, 3})</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;gamma_tilde_inv must be 3x3&quot;</span>);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                    <span class="keywordflow">if</span> (christoffel.<a class="code hl_function" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">shape</a>() != std::array&lt;size_t, 3&gt;{3, 3, 3})</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;christoffel must be 3x3x3&quot;</span>);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                    tildeGamma.<a class="code hl_function" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">resize</a>(3);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 3; ++i) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                        T sum = 0.0;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; 3; ++j) {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; 3; ++k) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                sum += gamma_tilde_inv(j, k) * christoffel(i, j, k);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                            }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                        }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                        tildeGamma[i] = sum;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                    }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classtensorium__RG_1_1TildeGamma.html">   38</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class </span><a class="code hl_class" href="classtensorium__RG_1_1TildeGamma.html">TildeGamma</a> {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">   57</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">compute</a>(<span class="keyword">const</span> <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;T, 2&gt;</a> &amp;gamma_tilde_inv,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                        <span class="keyword">const</span> <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Tensor&lt;T, 3&gt;</a> &amp;christoffel,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                        <a class="code hl_class" href="classtensorium_1_1Tensor.html">tensorium::Vector&lt;T&gt;</a>          &amp;tildeGamma) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">if</span> (gamma_tilde_inv.<a class="code hl_function" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">shape</a>() != std::array&lt;size_t, 2&gt;{3, 3})</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;gamma_tilde_inv must be 3x3&quot;</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">if</span> (christoffel.<a class="code hl_function" href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">shape</a>() != std::array&lt;size_t, 3&gt;{3, 3, 3})</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;christoffel must be 3x3x3&quot;</span>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        tildeGamma.<a class="code hl_function" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">resize</a>(3);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 3; ++i) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            T sum = 0.0;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; 3; ++j) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> k = 0; k &lt; 3; ++k) {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                    sum += gamma_tilde_inv(j, k) * christoffel(i, j, k);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            tildeGamma[i] = sum;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        };</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>}</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace tensorium_RG</span></div>
 <div class="ttc" id="aTensor_8hpp_html"><div class="ttname"><a href="Tensor_8hpp.html">Tensor.hpp</a></div></div>
 <div class="ttc" id="aVector_8hpp_html"><div class="ttname"><a href="Vector_8hpp.html">Vector.hpp</a></div></div>
-<div class="ttc" id="aclasstensorium_1_1Tensor_html"><div class="ttname"><a href="classtensorium_1_1Tensor.html">tensorium::Tensor</a></div><div class="ttdoc">Multi-dimensional tensor class with fixed rank and SIMD support.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:27</div></div>
-<div class="ttc" id="aclasstensorium_1_1Tensor_html_a88473f4be812e18000336bece2e184b9"><div class="ttname"><a href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">tensorium::Tensor::shape</a></div><div class="ttdeci">std::array&lt; size_t, Rank &gt; shape() const</div><div class="ttdef"><b>Definition</b> Tensor.hpp:63</div></div>
-<div class="ttc" id="aclasstensorium_1_1Tensor_html_ae7c1c6af702767069eadc073e23f3a16"><div class="ttname"><a href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor::resize</a></div><div class="ttdeci">void resize(const std::array&lt; size_t, 2 &gt; &amp;dims)</div><div class="ttdoc">Resize 2D tensor.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:71</div></div>
+<div class="ttc" id="aclasstensorium_1_1Tensor_html"><div class="ttname"><a href="classtensorium_1_1Tensor.html">tensorium::Tensor</a></div><div class="ttdoc">Multi-dimensional tensor class with fixed rank and SIMD support.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:25</div></div>
+<div class="ttc" id="aclasstensorium_1_1Tensor_html_a06a4e5ac39fcbbe14fca3d05924befbe"><div class="ttname"><a href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor::resize</a></div><div class="ttdeci">void resize(const std::array&lt; size_t, Rank &gt; &amp;dims)</div><div class="ttdoc">Resize 2D tensor.</div><div class="ttdef"><b>Definition</b> Tensor.hpp:70</div></div>
+<div class="ttc" id="aclasstensorium_1_1Tensor_html_a88473f4be812e18000336bece2e184b9"><div class="ttname"><a href="classtensorium_1_1Tensor.html#a88473f4be812e18000336bece2e184b9">tensorium::Tensor::shape</a></div><div class="ttdeci">std::array&lt; size_t, Rank &gt; shape() const</div><div class="ttdef"><b>Definition</b> Tensor.hpp:62</div></div>
 <div class="ttc" id="aclasstensorium__RG_1_1TildeGamma_html"><div class="ttname"><a href="classtensorium__RG_1_1TildeGamma.html">tensorium_RG::TildeGamma</a></div><div class="ttdoc">Computes the contracted conformal Christoffel vector .</div><div class="ttdef"><b>Definition</b> BSSNTildeChristoffel.hpp:38</div></div>
-<div class="ttc" id="aclasstensorium__RG_1_1TildeGamma_html_aa9a452b68708cff871692ccaff81d52c"><div class="ttname"><a href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">tensorium_RG::TildeGamma::compute</a></div><div class="ttdeci">static void compute(const tensorium::Tensor&lt; T, 2 &gt; &amp;gamma_tilde_inv, const tensorium::Tensor&lt; T, 3 &gt; &amp;christoffel, tensorium::Vector&lt; T &gt; &amp;tildeGamma)</div><div class="ttdoc">Computes .</div><div class="ttdef"><b>Definition</b> BSSNTildeChristoffel.hpp:56</div></div>
+<div class="ttc" id="aclasstensorium__RG_1_1TildeGamma_html_aa9a452b68708cff871692ccaff81d52c"><div class="ttname"><a href="classtensorium__RG_1_1TildeGamma.html#aa9a452b68708cff871692ccaff81d52c">tensorium_RG::TildeGamma::compute</a></div><div class="ttdeci">static void compute(const tensorium::Tensor&lt; T, 2 &gt; &amp;gamma_tilde_inv, const tensorium::Tensor&lt; T, 3 &gt; &amp;christoffel, tensorium::Vector&lt; T &gt; &amp;tildeGamma)</div><div class="ttdoc">Computes .</div><div class="ttdef"><b>Definition</b> BSSNTildeChristoffel.hpp:57</div></div>
 <div class="ttc" id="anamespacetensorium__RG_html"><div class="ttname"><a href="namespacetensorium__RG.html">tensorium_RG</a></div><div class="ttdef"><b>Definition</b> BSSNAtildeTensor.hpp:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

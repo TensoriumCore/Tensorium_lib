@@ -17,26 +17,30 @@
 <area shape="rect" id="Node000009" href="$classtensorium_1_1SpectralFFT.html#acf37df5e87c3a03c72fef953d1fdf4ca" title="Bit&#45;reversal permutation step." alt="" coords="679,491,851,535"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="924,465,839,493,837,488,922,460"/>
 <area shape="rect" id="Node000010" href="$classtensorium_1_1SpectralFFT.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)" alt="" coords="458,521,629,566"/>
-<area shape="poly" id="edge20_Node000001_Node000010" title=" " alt="" coords="962,471,915,514,885,535,852,550,795,564,737,569,680,568,629,563,630,557,681,562,737,564,794,559,850,545,882,530,912,510,959,467"/>
-<area shape="rect" id="Node000016" href="$classtensorium_1_1Matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" title="Multiply matrix by a vector using SIMD." alt="" coords="692,611,838,655"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="966,472,918,531,887,564,852,594,822,612,819,608,849,590,883,560,914,528,962,469"/>
-<area shape="rect" id="Node000017" href="$classtensorium_1_1Matrix.html#a469003c35c507e7556d9a85209d1f21a" title="Multiply matrix by a vector (naïve fallback)" alt="" coords="692,680,838,725"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="975,473,958,515,931,568,896,622,852,670,835,682,832,677,849,666,892,619,927,565,953,513,970,471"/>
-<area shape="rect" id="Node000018" href="$classtensorium_1_1Vector.html#a7db6c6af21eb17c4721af3472bc81fd6" title="Print the vector to stdout." alt="" coords="693,749,837,794"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="979,474,965,529,941,599,904,673,880,708,852,739,837,751,834,747,849,735,876,705,899,671,936,597,960,527,974,472"/>
-<area shape="rect" id="Node000019" href="$classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9" title="Solve the system using the Jacobi method." alt="" coords="693,819,837,863"/>
-<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="982,473,972,540,950,629,933,677,912,724,885,768,853,808,838,820,834,816,849,804,881,765,907,721,928,675,945,628,967,539,977,472"/>
+<area shape="poly" id="edge22_Node000001_Node000010" title=" " alt="" coords="962,471,915,514,885,535,852,550,795,564,737,569,680,568,629,563,630,557,681,562,737,564,794,559,850,545,882,530,912,510,959,467"/>
+<area shape="rect" id="Node000018" href="$classtensorium_1_1Matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" title="Multiply matrix by a vector using SIMD." alt="" coords="692,611,838,655"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="966,472,918,531,887,564,852,594,822,612,819,608,849,590,883,560,914,528,962,469"/>
+<area shape="rect" id="Node000019" href="$classtensorium_1_1Matrix.html#a469003c35c507e7556d9a85209d1f21a" title="Multiply matrix by a vector (naïve fallback)" alt="" coords="692,680,838,725"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="975,473,958,515,931,568,896,622,852,670,835,682,832,677,849,666,892,619,927,565,953,513,970,471"/>
+<area shape="rect" id="Node000020" href="$classtensorium_1_1Vector.html#a7db6c6af21eb17c4721af3472bc81fd6" title="Print the vector to stdout." alt="" coords="693,749,837,794"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="979,474,965,529,941,599,904,673,880,708,852,739,837,751,834,747,849,735,876,705,899,671,936,597,960,527,974,472"/>
+<area shape="rect" id="Node000021" href="$classtensorium_1_1solver_1_1Jacobi.html#a65dc458a7572a127c93ed2becbed88f9" title="Solve the system using the Jacobi method." alt="" coords="693,819,837,863"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="982,473,972,540,950,629,933,677,912,724,885,768,853,808,838,820,834,816,849,804,881,765,907,721,928,675,945,628,967,539,977,472"/>
 <area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="664,530,630,534,629,529,664,524"/>
-<area shape="rect" id="Node000011" href="$classtensorium_1_1SpectralFFT.html#ac615fe5b4689900c9e54f6662372597a" title="Perform inverse FFT (in&#45;place)" alt="" coords="236,487,407,531"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="442,531,407,525,408,520,442,525"/>
-<area shape="rect" id="Node000014" href="$classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2" title="Perform forward FFT (in&#45;place)" alt="" coords="236,556,407,601"/>
-<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="442,562,408,568,407,562,442,557"/>
-<area shape="rect" id="Node000012" href="$namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" title=" " alt="" coords="5,453,188,480"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="220,492,173,483,174,478,221,487"/>
-<area shape="rect" id="Node000013" href="$namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" title=" " alt="" coords="6,505,187,532"/>
-<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="220,516,188,517,188,512,220,511"/>
-<area shape="rect" id="Node000015" href="$namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f" title=" " alt="" coords="12,565,181,592"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="220,581,181,581,181,576,220,576"/>
-<area shape="rect" id="Node000020" href="$namespacetensorium.html#a961202aa0f295c710913121232c4863b" title=" " alt="" coords="455,827,631,855"/>
-<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="678,844,632,844,632,838,678,838"/>
+<area shape="rect" id="Node000011" href="$classtensorium_1_1SpectralFFT.html#ac615fe5b4689900c9e54f6662372597a" title="Perform inverse FFT (in&#45;place)" alt="" coords="236,476,407,521"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="442,526,407,518,408,513,443,520"/>
+<area shape="rect" id="Node000015" href="$classtensorium_1_1SpectralFFT.html#ae7bcd4382d411ef6450b15c088f0bdf2" title="Perform forward FFT (in&#45;place)" alt="" coords="236,567,407,611"/>
+<area shape="poly" id="edge14_Node000010_Node000015" title=" " alt="" coords="443,567,408,574,407,569,442,562"/>
+<area shape="rect" id="Node000012" href="$classtensorium_1_1SpectralFFT.html#a7be9f0a678eee96f7b7d62bd94b4e1c5" title=" " alt="" coords="11,395,182,439"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="242,473,160,442,162,437,244,468"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" title=" " alt="" coords="5,463,188,491"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="220,491,188,488,188,483,221,486"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" title=" " alt="" coords="6,515,187,543"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="221,515,188,519,187,514,220,509"/>
+<area shape="rect" id="Node000016" href="$classtensorium_1_1SpectralFFT.html#a03191127cc8ef29a212c9bceaa6f10ef" title=" " alt="" coords="11,567,182,611"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="220,592,183,592,183,586,220,586"/>
+<area shape="rect" id="Node000017" href="$namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f" title=" " alt="" coords="12,635,181,663"/>
+<area shape="poly" id="edge16_Node000015_Node000017" title=" " alt="" coords="221,618,152,637,151,632,220,613"/>
+<area shape="rect" id="Node000022" href="$namespacetensorium.html#a961202aa0f295c710913121232c4863b" title=" " alt="" coords="455,827,631,855"/>
+<area shape="poly" id="edge21_Node000021_Node000022" title=" " alt="" coords="678,844,632,844,632,838,678,838"/>
 </map>

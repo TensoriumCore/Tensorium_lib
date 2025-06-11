@@ -169,9 +169,9 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a35cbbc9b59b273eeeeaf478383ebb489" id="r_a35cbbc9b59b273eeeeaf478383ebb489"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35cbbc9b59b273eeeeaf478383ebb489">custom_metric_fn</a> ) = nullptr</td></tr>
-<tr class="memdesc:a35cbbc9b59b273eeeeaf478383ebb489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional user-defined metric function (must accept X and fill g)  <br /></td></tr>
-<tr class="separator:a35cbbc9b59b273eeeeaf478383ebb489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8b27a185b3bcce563670c8d5176179" id="r_a5a8b27a185b3bcce563670c8d5176179"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt; T &gt; &amp;, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a8b27a185b3bcce563670c8d5176179">custom_metric_fn</a> )</td></tr>
+<tr class="memdesc:a5a8b27a185b3bcce563670c8d5176179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional user-defined metric function (must accept X and fill g)  <br /></td></tr>
+<tr class="separator:a5a8b27a185b3bcce563670c8d5176179"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
@@ -293,7 +293,7 @@ ds^2 = -\alpha^2 dt^2 + \gamma_{ij} (dx^i + \beta^i dt)(dx^j + \beta^j dt)
 
 <p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9">alpha</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea987bcab01b929eb2c07877b224215c92">beta</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSNContractedGamma.html#a4dfaae0acf2a078d4031597229b79b12">tensorium_RG::BSSNContractedGamma&lt; T &gt;::compute()</a>, <a class="el" href="classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234">tensorium_RG::BSSNContractedGamma&lt; T &gt;::compute_contracted_christoffel()</a>, <a class="el" href="namespacetensorium__RG.html#a538c60a1a84620e61fe103a655a75dec">tensorium_RG::compute_ricci_tilde_at()</a>, <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>, and <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classtensorium__RG_1_1BSSNContractedGamma.html#a4dfaae0acf2a078d4031597229b79b12">tensorium_RG::BSSNContractedGamma&lt; T &gt;::compute()</a>, <a class="el" href="classtensorium__RG_1_1BSSNContractedGamma.html#a9e617d1bf34043d735aa8fc34d23b234">tensorium_RG::BSSNContractedGamma&lt; T &gt;::compute_contracted_christoffel()</a>, <a class="el" href="classtensorium__RG_1_1RicciTildeTensor.html#a897a50d0b88519ab33b11369ed47b6cf">tensorium_RG::RicciTildeTensor&lt; T &gt;::compute_laplacian_term()</a>, <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>, and <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -302,7 +302,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a941a7ffac963957af3f7b650adbd8b04_icgraph.svg" width="724" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a941a7ffac963957af3f7b650adbd8b04_icgraph.svg" width="1188" height="312"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -334,11 +334,11 @@ template&lt;typename T &gt; </div>
 
 <p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>, and <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#a6b62911850464ab7b786a6356b41ed19">tensorium::compute_conformal_factor()</a>, <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>, and <a class="el" href="classtensorium__RG_1_1BSSN.html#ac8d886a72d7d53ed7a7f2085932de8b8">tensorium_RG::BSSN&lt; T &gt;::init_BSSN()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a4c07e5ceadb53d242687c73a039b7c48_icgraph.svg" width="443" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a4c07e5ceadb53d242687c73a039b7c48_icgraph.svg" width="443" height="195"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -377,9 +377,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, and <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
+<p class="reference">References <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea1e6086b705c7161eeb93a8b249a5ca7c">chi</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea05b048d7242cb7b8b57cfa3b1d65ecea">gamma</a>, and <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium.html#a95e9e9350bb8b03dde2cb48231638376">tensorium::compute_conformal_metric()</a>, and <a class="el" href="namespacetensorium__RG.html#aa604428c09040b0465309959586f05f7">tensorium_RG::generate_conformal_metric_field()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -388,7 +388,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a0e0baebd20831f8e546f3c7a4beaa887_icgraph.svg" width="447" height="56"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a0e0baebd20831f8e546f3c7a4beaa887_icgraph.svg" width="447" height="126"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -424,7 +424,7 @@ template&lt;typename T &gt; </div>
 
 <p>Flat FLRW metric in comoving spherical coordinates. </p>
 
-<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>.</p>
 <div class="dynheader">
@@ -471,7 +471,7 @@ template&lt;typename T &gt; </div>
 
 <p>Kerr metric in Boyer–Lindquist coordinates. </p>
 
-<p class="reference">References <a class="el" href="#a1290e85cb6b1e1c77bfbe4d5ec16f8fe">tensorium_RG::Metric&lt; T &gt;::a</a>, <a class="el" href="Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397">Delta</a>, <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66">Sigma</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
+<p class="reference">References <a class="el" href="#a1290e85cb6b1e1c77bfbe4d5ec16f8fe">tensorium_RG::Metric&lt; T &gt;::a</a>, <a class="el" href="Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397">Delta</a>, <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea827faff1bdcfe446237c4d6289abce66">Sigma</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>.</p>
 <div class="dynheader">
@@ -518,7 +518,7 @@ template&lt;typename T &gt; </div>
 
 <p>Kerr–Schild metric in Cartesian coordinates. </p>
 
-<p class="reference">References <a class="el" href="#a1290e85cb6b1e1c77bfbe4d5ec16f8fe">tensorium_RG::Metric&lt; T &gt;::a</a>, <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#aeb6dc348cac770146d01164a44817fd7">tensorium_RG::Metric&lt; T &gt;::kerr_schild_radius()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80">mu</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650">nu</a>, <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
+<p class="reference">References <a class="el" href="#a1290e85cb6b1e1c77bfbe4d5ec16f8fe">tensorium_RG::Metric&lt; T &gt;::a</a>, <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#aeb6dc348cac770146d01164a44817fd7">tensorium_RG::Metric&lt; T &gt;::kerr_schild_radius()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea89aa4b196b48c8a13a6549bb1eaebd80">mu</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650">nu</a>, <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>.</p>
 <div class="dynheader">
@@ -561,7 +561,7 @@ template&lt;typename T &gt; </div>
 
 <p>Minkowski metric in Cartesian coordinates. </p>
 
-<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, and <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, and <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>.</p>
 <div class="dynheader">
@@ -608,13 +608,13 @@ template&lt;typename T &gt; </div>
 
 <p>Schwarzschild metric in spherical coordinates. </p>
 
-<p class="reference">References <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="classtensorium_1_1Tensor.html#ae7c1c6af702767069eadc073e23f3a16">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e">tensorium::Tensor&lt; K, Rank &gt;::fill()</a>, <a class="el" href="#ac68e0a40729e0473d19321eee932a8f0">tensorium_RG::Metric&lt; T &gt;::M</a>, <a class="el" href="classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe">tensorium::Tensor&lt; K, Rank &gt;::resize()</a>, <a class="el" href="Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea61a74be60d291cc4678ab46cc1cdaf91">theta</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a03dd227862693af5d4d4514e50462d92_cgraph.svg" width="598" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a03dd227862693af5d4d4514e50462d92_cgraph.svg" width="598" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -710,11 +710,11 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="#a0d3824582bfdacc8e8225057e0d7fa17">tensorium_RG::Metric&lt; T &gt;::compute_flrw()</a>, <a class="el" href="#aeb4ea8eec03bcb0e101dbb05646821a8">tensorium_RG::Metric&lt; T &gt;::compute_kerr()</a>, <a class="el" href="#ac074bebde700894884a2829caa7b1c84">tensorium_RG::Metric&lt; T &gt;::compute_kerr_schild()</a>, <a class="el" href="#ad4c177f4c002cda2e752a0499f5a199e">tensorium_RG::Metric&lt; T &gt;::compute_minkowski()</a>, <a class="el" href="#a03dd227862693af5d4d4514e50462d92">tensorium_RG::Metric&lt; T &gt;::compute_schwarzschild()</a>, <a class="el" href="#a35cbbc9b59b273eeeeaf478383ebb489">tensorium_RG::Metric&lt; T &gt;::custom_metric_fn</a>, <a class="el" href="#a7e73ebfef6a0862cccd8df4651d1e480">tensorium_RG::Metric&lt; T &gt;::type</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
+<p class="reference">References <a class="el" href="#a0d3824582bfdacc8e8225057e0d7fa17">tensorium_RG::Metric&lt; T &gt;::compute_flrw()</a>, <a class="el" href="#aeb4ea8eec03bcb0e101dbb05646821a8">tensorium_RG::Metric&lt; T &gt;::compute_kerr()</a>, <a class="el" href="#ac074bebde700894884a2829caa7b1c84">tensorium_RG::Metric&lt; T &gt;::compute_kerr_schild()</a>, <a class="el" href="#ad4c177f4c002cda2e752a0499f5a199e">tensorium_RG::Metric&lt; T &gt;::compute_minkowski()</a>, <a class="el" href="#a03dd227862693af5d4d4514e50462d92">tensorium_RG::Metric&lt; T &gt;::compute_schwarzschild()</a>, <a class="el" href="#a5a8b27a185b3bcce563670c8d5176179">tensorium_RG::Metric&lt; T &gt;::custom_metric_fn</a>, <a class="el" href="#a7e73ebfef6a0862cccd8df4651d1e480">tensorium_RG::Metric&lt; T &gt;::type</a>, and <a class="el" href="TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a4bd48f127fbc00ce5e692f4cb5e43d99_cgraph.svg" width="810" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium__RG_1_1Metric_a4bd48f127fbc00ce5e692f4cb5e43d99_cgraph.svg" width="810" height="372"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -746,7 +746,7 @@ template&lt;typename T &gt; </div>
 
 <p>Set a custom metric callable function. </p>
 
-<p class="reference">References <a class="el" href="#a35cbbc9b59b273eeeeaf478383ebb489">tensorium_RG::Metric&lt; T &gt;::custom_metric_fn</a>, and <a class="el" href="#a7e73ebfef6a0862cccd8df4651d1e480">tensorium_RG::Metric&lt; T &gt;::type</a>.</p>
+<p class="reference">References <a class="el" href="#a5a8b27a185b3bcce563670c8d5176179">tensorium_RG::Metric&lt; T &gt;::custom_metric_fn</a>, and <a class="el" href="#a7e73ebfef6a0862cccd8df4651d1e480">tensorium_RG::Metric&lt; T &gt;::type</a>.</p>
 
 </div>
 </div>
@@ -769,8 +769,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a35cbbc9b59b273eeeeaf478383ebb489" name="a35cbbc9b59b273eeeeaf478383ebb489"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35cbbc9b59b273eeeeaf478383ebb489">&#9670;&#160;</a></span>custom_metric_fn</h2>
+<a id="a5a8b27a185b3bcce563670c8d5176179" name="a5a8b27a185b3bcce563670c8d5176179"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a8b27a185b3bcce563670c8d5176179">&#9670;&#160;</a></span>custom_metric_fn</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -781,7 +781,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::function&lt;void(const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;T&gt;&amp;, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;T, 2&gt;&amp;) <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt;::custom_metric_fn)  = nullptr</td>
+          <td class="memname">std::function&lt;void(const <a class="el" href="classtensorium_1_1Vector.html">tensorium::Vector</a>&lt;T&gt; &amp;, <a class="el" href="classtensorium_1_1Tensor.html">tensorium::Tensor</a>&lt;T, 2&gt; &amp;) <a class="el" href="classtensorium__RG_1_1Metric.html">tensorium_RG::Metric</a>&lt; T &gt;::custom_metric_fn) </td>
         </tr>
       </table>
   </td>
@@ -790,7 +790,9 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">        <span class="keyword">nullptr</span></div>
+</div><!-- fragment -->
 <p>Optional user-defined metric function (must accept X and fill g) </p>
 
 <p class="reference">Referenced by <a class="el" href="#a4bd48f127fbc00ce5e692f4cb5e43d99">tensorium_RG::Metric&lt; T &gt;::operator()()</a>, and <a class="el" href="#a088bb0e1c78e4411b0f13f08aa0169b5">tensorium_RG::Metric&lt; T &gt;::set_custom()</a>.</p>

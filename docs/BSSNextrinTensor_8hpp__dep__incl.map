@@ -14,16 +14,14 @@
 <area shape="rect" id="Node000006" href="$ChristoffelSymbol_8hpp.html" title=" " alt="" coords="487,317,748,362"/>
 <area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="611,276,612,317,607,317,606,276"/>
 <area shape="rect" id="Node000008" href="$RiemannTensor_8hpp.html" title=" " alt="" coords="315,410,560,455"/>
-<area shape="poly" id="edge16_Node000005_Node000008" title=" " alt="" coords="532,270,495,291,465,319,451,341,441,365,434,410,428,409,436,363,446,338,461,316,492,287,529,265"/>
+<area shape="poly" id="edge15_Node000005_Node000008" title=" " alt="" coords="532,270,495,291,465,319,451,341,441,365,434,410,428,409,436,363,446,338,461,316,492,287,529,265"/>
 <area shape="rect" id="Node000009" href="$Tensorium_8hpp.html" title=" " alt="" coords="564,503,711,547"/>
-<area shape="poly" id="edge17_Node000005_Node000009" title=" " alt="" coords="711,265,750,286,785,316,801,338,808,359,815,410,820,433,820,444,814,456,794,479,768,496,740,508,712,517,710,512,738,503,766,491,790,475,810,453,815,443,815,434,809,410,803,360,796,341,781,319,747,291,708,270"/>
-<area shape="poly" id="edge15_Node000006_Node000005" title=" " alt="" coords="623,302,622,261,628,261,629,302"/>
+<area shape="poly" id="edge16_Node000005_Node000009" title=" " alt="" coords="711,265,750,286,785,316,801,338,808,359,815,410,820,433,820,444,814,456,794,479,768,496,740,508,712,517,710,512,738,503,766,491,790,475,810,453,815,443,815,434,809,410,803,360,796,341,781,319,747,291,708,270"/>
+<area shape="poly" id="edge14_Node000006_Node000005" title=" " alt="" coords="623,302,622,261,628,261,629,302"/>
 <area shape="rect" id="Node000007" href="$RicciTensor_8hpp.html" title=" " alt="" coords="583,410,801,455"/>
 <area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="647,372,676,408,672,412,642,375"/>
 <area shape="poly" id="edge11_Node000006_Node000008" title=" " alt="" coords="562,372,481,412,479,407,559,367"/>
 <area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="732,397,746,380,758,361,764,339,758,319,744,301,728,286,688,264,691,259,731,282,748,297,762,316,769,339,762,363,751,383,736,401"/>
 <area shape="poly" id="edge12_Node000008_Node000005" title=" " alt="" coords="450,394,463,354,485,316,522,282,564,259,567,264,526,287,489,319,468,356,455,396"/>
 <area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="500,459,591,500,588,505,498,464"/>
-<area shape="rect" id="Node000010" href="$test_8cpp.html" title=" " alt="" coords="575,595,700,623"/>
-<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="640,563,640,595,635,595,635,563"/>
 </map>

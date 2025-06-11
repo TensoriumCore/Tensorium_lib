@@ -140,14 +140,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a40522f6495980c9c8da4c1b1665d948c" id="r_a40522f6495980c9c8da4c1b1665d948c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtensorium_1_1Tensor.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40522f6495980c9c8da4c1b1665d948c">size</a> () <a class="el" href="#ad90a2bec6d1aec9dbb783cb3f2791539">const</a></td></tr>
 <tr class="memdesc:a40522f6495980c9c8da4c1b1665d948c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of elements in the tensor.  <br /></td></tr>
 <tr class="separator:a40522f6495980c9c8da4c1b1665d948c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0493b815cdc08dd1a704de955eb0081e" id="r_a0493b815cdc08dd1a704de955eb0081e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0493b815cdc08dd1a704de955eb0081e">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="namespacetensorium.html#aaf358d99814f404993ee4fad21fa34f3">centered_derivative</a>(<a class="el" href="#ad90a2bec6d1aec9dbb783cb3f2791539">const</a> <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a></td></tr>
+<tr class="memitem:a0493b815cdc08dd1a704de955eb0081e" id="r_a0493b815cdc08dd1a704de955eb0081e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0493b815cdc08dd1a704de955eb0081e">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="namespacetensorium.html#aaf358d99814f404993ee4fad21fa34f3">centered_derivative</a>(<a class="el" href="#ad90a2bec6d1aec9dbb783cb3f2791539">const</a> <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a></td></tr>
 <tr class="memdesc:a0493b815cdc08dd1a704de955eb0081e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute second-order centered derivative along an axis.  <br /></td></tr>
 <tr class="separator:a0493b815cdc08dd1a704de955eb0081e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb04b3fa2d46a8445870a4eb597dc518" id="r_aeb04b3fa2d46a8445870a4eb597dc518"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb04b3fa2d46a8445870a4eb597dc518">for</a> (<a class="el" href="classtensorium_1_1Tensor.html">int</a> i=Rank - 2;i &gt;=0;--i) <a class="el" href="#a29a576e604991dca296fd63a88128dd6">strides</a>[i]</td></tr>
 <tr class="separator:aeb04b3fa2d46a8445870a4eb597dc518"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae550f9a032c18c24ed9e5e0bcf418e8a" id="r_ae550f9a032c18c24ed9e5e0bcf418e8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae550f9a032c18c24ed9e5e0bcf418e8a">for</a> (<a class="el" href="classtensorium_1_1Tensor.html">size_t</a> <a class="el" href="classtensorium_1_1Tensor.html">flat</a>=0;<a class="el" href="classtensorium_1_1Tensor.html">flat</a>&lt; <a class="el" href="#a4d95a7fd7be0c0ee806ef307131bbd0b">total</a>;<a class="el" href="classtensorium_1_1Tensor.html">flat</a>+=<a class="el" href="#a618a7e8223e1db2747fe285b6ec3e895">simd_width</a>)</td></tr>
 <tr class="separator:ae550f9a032c18c24ed9e5e0bcf418e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c2fbbb686e5e207dd59ea6186dde4a2" id="r_a3c2fbbb686e5e207dd59ea6186dde4a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c2fbbb686e5e207dd59ea6186dde4a2">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Tensor.html">centered_derivative_order4_rank</a>(<a class="el" href="#ad90a2bec6d1aec9dbb783cb3f2791539">const</a> <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a></td></tr>
+<tr class="memitem:a3c2fbbb686e5e207dd59ea6186dde4a2" id="r_a3c2fbbb686e5e207dd59ea6186dde4a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c2fbbb686e5e207dd59ea6186dde4a2">__attribute__</a> ((<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)) <a class="el" href="classtensorium_1_1Tensor.html">inline</a> <a class="el" href="classtensorium_1_1Tensor.html">void</a> <a class="el" href="classtensorium_1_1Tensor.html">centered_derivative_order4_rank</a>(<a class="el" href="#ad90a2bec6d1aec9dbb783cb3f2791539">const</a> <a class="el" href="classtensorium_1_1DerivateND.html">DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a></td></tr>
 <tr class="memdesc:a3c2fbbb686e5e207dd59ea6186dde4a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute fourth-order centered derivative along an axis.  <br /></td></tr>
 <tr class="separator:a3c2fbbb686e5e207dd59ea6186dde4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb04b3fa2d46a8445870a4eb597dc518" id="r_aeb04b3fa2d46a8445870a4eb597dc518"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb04b3fa2d46a8445870a4eb597dc518">for</a> (<a class="el" href="classtensorium_1_1Tensor.html">int</a> i=Rank - 2;i &gt;=0;--i) <a class="el" href="#a29a576e604991dca296fd63a88128dd6">strides</a>[i]</td></tr>
@@ -289,7 +289,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
         <tr>
           <td class="memname"><a class="el" href="classtensorium_1_1DerivateND.html">tensorium::DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -319,7 +319,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
         <tr>
           <td class="memname"><a class="el" href="classtensorium_1_1DerivateND.html">tensorium::DerivateND</a>&lt; <a class="el" href="classtensorium_1_1Tensor.html">K</a>, Rank &gt;::__attribute__ </td>
           <td>(</td>
-          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, hot, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td class="paramtype">(<a class="el" href="classtensorium_1_1Tensor.html">always_inline</a>, <a class="el" href="classtensorium_1_1Tensor.html">hot</a>, <a class="el" href="classtensorium_1_1Tensor.html">flatten</a>)</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -437,12 +437,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a361f7922c74c8243a4d94adc2a677bec">tensorium::DerivateND&lt; K, Rank &gt;::dim_axis</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a76b807ecf17583b886412ddbcf584928">tensorium::DerivateND&lt; K, Rank &gt;::input</a>, <a class="el" href="#a5354e87907ee81fee7c7f66321786673">tensorium::DerivateND&lt; K, Rank &gt;::inv2dx</a>, <a class="el" href="#a885e999983417830b7df7172adebdc49">tensorium::DerivateND&lt; K, Rank &gt;::inv_2dx</a>, <a class="el" href="#a70ac77ba822ad7f0019edc9fe8671c32">tensorium::DerivateND&lt; K, Rank &gt;::output</a>, <a class="el" href="#a618a7e8223e1db2747fe285b6ec3e895">tensorium::DerivateND&lt; K, Rank &gt;::simd_width</a>, <a class="el" href="#a539eba3b254919f609a4506749ef6317">tensorium::DerivateND&lt; K, Rank &gt;::stride_axis</a>, and <a class="el" href="#a4d95a7fd7be0c0ee806ef307131bbd0b">tensorium::DerivateND&lt; K, Rank &gt;::total</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1DerivateND_ae550f9a032c18c24ed9e5e0bcf418e8a_cgraph.svg" width="295" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p class="reference">References <a class="el" href="#a361f7922c74c8243a4d94adc2a677bec">tensorium::DerivateND&lt; K, Rank &gt;::dim_axis</a>, <a class="el" href="#a76b807ecf17583b886412ddbcf584928">tensorium::DerivateND&lt; K, Rank &gt;::input</a>, <a class="el" href="#a5354e87907ee81fee7c7f66321786673">tensorium::DerivateND&lt; K, Rank &gt;::inv2dx</a>, <a class="el" href="#a885e999983417830b7df7172adebdc49">tensorium::DerivateND&lt; K, Rank &gt;::inv_2dx</a>, <a class="el" href="#a70ac77ba822ad7f0019edc9fe8671c32">tensorium::DerivateND&lt; K, Rank &gt;::output</a>, <a class="el" href="#a618a7e8223e1db2747fe285b6ec3e895">tensorium::DerivateND&lt; K, Rank &gt;::simd_width</a>, <a class="el" href="#a539eba3b254919f609a4506749ef6317">tensorium::DerivateND&lt; K, Rank &gt;::stride_axis</a>, and <a class="el" href="#a4d95a7fd7be0c0ee806ef307131bbd0b">tensorium::DerivateND&lt; K, Rank &gt;::total</a>.</p>
 
 </div>
 </div>
@@ -471,12 +466,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a361f7922c74c8243a4d94adc2a677bec">tensorium::DerivateND&lt; K, Rank &gt;::dim_axis</a>, <a class="el" href="test_8cpp.html#ac98b56079897338f0f7e64c44ef890cc">f()</a>, <a class="el" href="#a76b807ecf17583b886412ddbcf584928">tensorium::DerivateND&lt; K, Rank &gt;::input</a>, <a class="el" href="#aa6a1eb917d48fdf3b986208856b75f45">tensorium::DerivateND&lt; K, Rank &gt;::inv</a>, <a class="el" href="#a4bbe6e5a9c2cbc1f7bbffd30c287cb43">tensorium::DerivateND&lt; K, Rank &gt;::inv_12dx</a>, <a class="el" href="#a70ac77ba822ad7f0019edc9fe8671c32">tensorium::DerivateND&lt; K, Rank &gt;::output</a>, <a class="el" href="#a539eba3b254919f609a4506749ef6317">tensorium::DerivateND&lt; K, Rank &gt;::stride_axis</a>, <a class="el" href="#a4d95a7fd7be0c0ee806ef307131bbd0b">tensorium::DerivateND&lt; K, Rank &gt;::total</a>, and <a class="el" href="#ab4b04d5473523b26695029deb38c9fc4">tensorium::DerivateND&lt; K, Rank &gt;::W</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classtensorium_1_1DerivateND_a54da298a2adb7f27d5f54e358faa1638_cgraph.svg" width="295" height="39"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p class="reference">References <a class="el" href="#a361f7922c74c8243a4d94adc2a677bec">tensorium::DerivateND&lt; K, Rank &gt;::dim_axis</a>, <a class="el" href="#a76b807ecf17583b886412ddbcf584928">tensorium::DerivateND&lt; K, Rank &gt;::input</a>, <a class="el" href="#aa6a1eb917d48fdf3b986208856b75f45">tensorium::DerivateND&lt; K, Rank &gt;::inv</a>, <a class="el" href="#a4bbe6e5a9c2cbc1f7bbffd30c287cb43">tensorium::DerivateND&lt; K, Rank &gt;::inv_12dx</a>, <a class="el" href="#a70ac77ba822ad7f0019edc9fe8671c32">tensorium::DerivateND&lt; K, Rank &gt;::output</a>, <a class="el" href="#a539eba3b254919f609a4506749ef6317">tensorium::DerivateND&lt; K, Rank &gt;::stride_axis</a>, <a class="el" href="#a4d95a7fd7be0c0ee806ef307131bbd0b">tensorium::DerivateND&lt; K, Rank &gt;::total</a>, and <a class="el" href="#ab4b04d5473523b26695029deb38c9fc4">tensorium::DerivateND&lt; K, Rank &gt;::W</a>.</p>
 
 </div>
 </div>
@@ -647,7 +637,7 @@ template&lt;<a class="el" href="classtensorium_1_1Tensor.html">typename</a> <a c
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">                        <span class="keyword">using </span>Simd = <a class="code hl_struct" href="structsimd_1_1SimdTraits.html">simd::SimdTraits&lt;K, DefaultISA&gt;</a></div>
+<div class="line">        <span class="keyword">using </span>Simd = <a class="code hl_struct" href="structsimd_1_1SimdTraits.html">simd::SimdTraits&lt;K, DefaultISA&gt;</a></div>
 <div class="ttc" id="astructsimd_1_1SimdTraits_html"><div class="ttname"><a href="structsimd_1_1SimdTraits.html">simd::SimdTraits</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:177</div></div>
 </div><!-- fragment -->
 </div>

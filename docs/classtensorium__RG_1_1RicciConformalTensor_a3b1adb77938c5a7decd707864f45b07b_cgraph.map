@@ -1,0 +1,11 @@
+<map id="tensorium_RG::RicciConformalTensor::compute_Ricci_chi_total" name="tensorium_RG::RicciConformalTensor::compute_Ricci_chi_total">
+<area shape="rect" id="Node000001" title="Computes the total &#160;contribution as:" alt="" coords="5,142,235,187"/>
+<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciConformalTensor.html#a8764fe7ac7ac2f82b1275ff318b22b97" title="Computes the squared gradient term:" alt="" coords="283,5,503,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,139,282,76,294,71,296,76,284,81,162,144"/>
+<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1RicciConformalTensor.html#abe598b5a03de5caca9ed9459fbde3298" title="Computes the gradient norm term:" alt="" coords="283,91,503,152"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="235,144,267,139,268,144,236,149"/>
+<area shape="rect" id="Node000004" href="$classtensorium__RG_1_1RicciConformalTensor.html#a4194cd4e693012de654348c93f99a8e8" title="Computes the Hessian contribution:" alt="" coords="283,176,503,238"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,180,268,185,267,190,235,185"/>
+<area shape="rect" id="Node000005" href="$classtensorium__RG_1_1RicciConformalTensor.html#ab696b63135a96c29808be1f368fcb2a8" title="Computes the Laplacian contribution:" alt="" coords="283,261,503,323"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="162,184,284,247,296,252,294,257,282,252,160,189"/>
+</map>

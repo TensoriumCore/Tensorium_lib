@@ -1,7 +1,9 @@
 <map id="tensorium::SpectralFFT::backward" name="tensorium::SpectralFFT::backward">
-<area shape="rect" id="Node000001" title="Perform inverse FFT (in&#45;place)" alt="" coords="236,24,407,68"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" title=" " alt="" coords="5,5,188,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,37,188,33,188,27,221,31"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" title=" " alt="" coords="6,57,187,85"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="221,60,188,64,187,58,220,55"/>
+<area shape="rect" id="Node000001" title="Perform inverse FFT (in&#45;place)" alt="" coords="236,65,407,110"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1SpectralFFT.html#a7be9f0a678eee96f7b7d62bd94b4e1c5" title=" " alt="" coords="11,5,182,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,63,182,53,183,48,221,58"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#afe7813d8bcafd1acf49ff5c988f6612d" title=" " alt="" coords="5,74,188,102"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,90,188,90,188,85,220,85"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#aa8825c6215293801fce0857a1423cd32" title=" " alt="" coords="6,126,187,154"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="221,114,160,128,159,123,220,108"/>
 </map>

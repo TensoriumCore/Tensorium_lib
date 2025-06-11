@@ -11,7 +11,8 @@ var searchData=
   ['assert_8',['assert',['../classtensorium_1_1solver_1_1Gauss.html#a0123c8a4ad531c3667d38b46d406982f',1,'tensorium::solver::Gauss']]],
   ['astnode_9',['ASTNode',['../structtensorium_1_1ASTNode.html#a78667275be09effe14b0ea47a869ca50',1,'tensorium::ASTNode::ASTNode(ASTNodeType type, const std::string &amp;val=&quot;&quot;)'],['../structtensorium_1_1ASTNode.html#aa1d4ead4220c036eb529cfa3479c13f6',1,'tensorium::ASTNode::ASTNode(ASTNodeType type, const std::string &amp;val, const std::vector&lt; std::shared_ptr&lt; ASTNode &gt; &gt; &amp;childs)']]],
   ['autodiff_10',['autodiff',['../namespacetensorium__RG.html#a529b75ad656ec84ae284734c89fe9ce6',1,'tensorium_RG']]],
-  ['autodiff_5frank0_11',['autodiff_rank0',['../namespacetensorium__RG.html#ade9c03093154e5d5daf873115f172a7e',1,'tensorium_RG']]],
+  ['autodiff_5frank0_11',['autodiff_rank0',['../namespacetensorium__RG.html#ab3aca68f81cb9487774bf6e79b5ad770',1,'tensorium_RG']]],
   ['autodiff_5frank1_12',['autodiff_rank1',['../namespacetensorium__RG.html#aa174c367530f62cd7a8013138f8531c7',1,'tensorium_RG']]],
-  ['autodiff_5frank2_5ffirst_13',['autodiff_rank2_first',['../namespacetensorium__RG.html#a0934d688528627ca59e6470625937676',1,'tensorium_RG']]]
+  ['autodiff_5frank2_5ffirst_13',['autodiff_rank2_first',['../namespacetensorium__RG.html#a0934d688528627ca59e6470625937676',1,'tensorium_RG']]],
+  ['autodiff_5fscalar_5fsecond_14',['autodiff_scalar_second',['../namespacetensorium__RG.html#a1e83b6a29b042da98a47a29ccb8e7162',1,'tensorium_RG']]]
 ];
