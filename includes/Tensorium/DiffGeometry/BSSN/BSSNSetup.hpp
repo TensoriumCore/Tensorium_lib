@@ -147,7 +147,7 @@ template <typename T> class BSSN {
         tensorium_RG::BSSNAtildeTensor<T> Aij;
         auto AtildeTensor = Aij.compute_Atilde_tensor(Kij, gamma_ij_inv, gamma_ij, chi);
 
-        const size_t NX = 1, NY = 1, NZ = 1;
+        const size_t NX = 32, NY = 32, NZ = 32;
 
         tensorium::Tensor<T, 5> Atilde_full({NX, NY, NZ, 3, 3});
         tensorium::Tensor<T, 5> gtilde_inv_full({NX, NY, NZ, 3, 3});
@@ -167,9 +167,9 @@ template <typename T> class BSSN {
         }
 
         auto psi_full = ConstraintSolver<T>::solveLichnerowicz(Atilde_full, gtilde_inv_full, dx, dy,
-                                                               dz, 2000, T(1e-8));
+                                                               dz, 4000, T(1e-4));
         {
-            T psi_000 = std::fmax(psi_full(std::array<size_t, 3>{0, 0, 0}), T(1e-8));
+            T psi_000 = std::fmax(psi_full(std::array<size_t, 3>{0, 0, 0}), T(1e-4));
             T new_chi = T(1) / std::pow(psi_000, T(4));
             grid.chi = {new_chi};
         }
@@ -188,7 +188,7 @@ template <typename T> class BSSN {
         grid.beta = {beta};
         grid.gamma_ij = {gamma_ij};
         grid.gamma_ij_inv = {gamma_ij_inv};
-        grid.chi = {chi};
+        // grid.chi = {new_chi};
         grid.gamma_tilde = {gamma_tilde};
         grid.gamma_tilde_inv = {gamma_tilde_inv};
         grid.dgamma_tilde = {dgamma_tilde};

@@ -12,7 +12,7 @@ pkgs.mkShell {
     gcc
     openblas
     openmpi
-    valgrind
+    # valgrind
     cloc
     tree
 	doxygen 
@@ -30,7 +30,7 @@ pkgs.mkShell {
       pybind11
     ]))
 
-  ] ++ (with llvmPackages_18; [
+  ] ++ (with llvmPackages_19; [
     mlir
     clang
     llvm
