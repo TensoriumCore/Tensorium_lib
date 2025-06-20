@@ -166,14 +166,7 @@ template <typename T> class BSSN {
             }
         }
 
-        auto psi_full = ConstraintSolver<T>::solveLichnerowicz(Atilde_full, gtilde_inv_full, dx, dy,
-                                                               dz, 4000, T(1e-4));
-        {
-            T psi_000 = std::fmax(psi_full(std::array<size_t, 3>{0, 0, 0}), T(1e-4));
-            T new_chi = T(1) / std::pow(psi_000, T(4));
-            grid.chi = {new_chi};
-        }
-        auto chi_ctx = ChiContext<T>::compute(X, dx, dy, dz, gamma_ij, dgamma_phys, metric);
+		auto chi_ctx = ChiContext<T>::compute(X, dx, dy, dz, gamma_ij, dgamma_phys, metric);
 		auto Ricci_tilde = RicciTildeTensor<T>::compute_Ricci_Tilde_tensor(
 			chi_ctx, gamma_tilde_inv, tilde_Gamma, christoffel_tilde, gamma_tilde);
 
@@ -188,7 +181,7 @@ template <typename T> class BSSN {
         grid.beta = {beta};
         grid.gamma_ij = {gamma_ij};
         grid.gamma_ij_inv = {gamma_ij_inv};
-        // grid.chi = {new_chi};
+        grid.chi = {chi};
         grid.gamma_tilde = {gamma_tilde};
         grid.gamma_tilde_inv = {gamma_tilde_inv};
         grid.dgamma_tilde = {dgamma_tilde};

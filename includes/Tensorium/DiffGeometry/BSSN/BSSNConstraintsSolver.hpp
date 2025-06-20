@@ -30,6 +30,7 @@ template <typename T> class ConstraintSolver {
         const size_t          NY = shp[1];
         const size_t          NZ = shp[2];
 
+		assert(NX >= 3 && NY >= 3 && NZ >= 3 && "Grid size too small for Lichnerowicz solve");
         tensorium::Tensor<T, 3> psi({NX, NY, NZ});
         for (size_t i = 0; i < NX; ++i) {
             for (size_t j = 0; j < NY; ++j) {

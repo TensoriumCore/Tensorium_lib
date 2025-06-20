@@ -11,6 +11,7 @@ compile_commands.json
 *.o
 *.so
 *.a
+*.csv
 # python
 .venv/
 
