@@ -455,6 +455,37 @@ template <typename K, bool RowMajor = false> class Matrix {
         }
 
         return r;
-    }
+	}
+
+	Matrix& operator+=(const Matrix& m) { this->add(m); return *this; }
+	Matrix& operator-=(const Matrix& m) { this->sub(m); return *this; }
+	Matrix& operator*=(K alpha) { this->scl(alpha); return *this; }
 };
+template<typename K, bool RM>
+Matrix<K, RM> operator+(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
+	Matrix<K, RM> res = a;
+	res.add(b);
+	return res;
+}
+template<typename K, bool RM>
+Matrix<K, RM> operator-(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
+	Matrix<K, RM> res = a;
+	res.sub(b);
+	return res;
+}
+template<typename K, bool RM>
+Matrix<K, RM> operator*(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
+	return a._mul_mat(b);
+}
+template<typename K, bool RM>
+Matrix<K, RM> operator*(const Matrix<K, RM>& m, K alpha) {
+	Matrix<K, RM> res = m;
+	res.scl(alpha);
+	return res;
+}
+template<typename K, bool RM>
+Matrix<K, RM> operator*(K alpha, const Matrix<K, RM>& m) {
+	return m * alpha;
+}
+
 } // namespace tensorium

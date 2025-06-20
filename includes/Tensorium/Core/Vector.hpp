@@ -447,6 +447,11 @@ template <typename K> class Vector {
 
         return r;
     }
+
+	Vector<K>& operator+=(const Vector<K>& m) { this->add(m); return *this; }
+	Vector<K>& operator-=(const Vector<K>& m) { this->sub(m); return *this; }
+	Vector<K>& operator*=(K alpha) { this->scl(alpha); return *this; }
+
 };
 
 template <typename K> inline Vector<K> operator+(const Vector<K> &a, const Vector<K> &b) {

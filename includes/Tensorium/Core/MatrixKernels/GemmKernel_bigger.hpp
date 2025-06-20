@@ -11,14 +11,13 @@
  * sizes
  *
  */
-
 namespace tensorium {
 template <typename T> class GemmKernelBigger {
   public:
     using Simd = simd::SimdTraits<T, DefaultISA>;
     using reg = typename Simd::reg;
     static constexpr int SimdWidth = Simd::width;
-    static constexpr int TileRows = SimdWidth * 2;
+    static constexpr int TileRows = SimdWidth * 4;
     static constexpr int TileCols = 6;
     static constexpr int NThreads = 16;
 
