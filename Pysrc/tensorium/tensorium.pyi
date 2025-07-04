@@ -8,7 +8,7 @@ class Vector:
 
 class Vectord(Vector):
     ...
-
+    
 class Matrix:
     rows: int
     cols: int
