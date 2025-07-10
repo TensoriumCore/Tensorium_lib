@@ -8,6 +8,7 @@
 #include "Vector.hpp"
 #include <cassert>
 #include <cmath>
+#include <functional>
 #include <immintrin.h>
 #include <iostream>
 #include <vector>
@@ -455,6 +456,63 @@ template <typename K, bool RowMajor = false> class Matrix {
         }
 
         return r;
+	}
+
+	inline Matrix<K> broadcast(const Vector<K>& v)
+	{
+		if (rows != v.size())
+			throw std::invalid_argument("Matrix sizes do not match");
+
+		using Simd = simd::SimdTraits<K, DefaultISA>;
+		using reg = typename Simd::reg;
+		const size_t simd_width = Simd::width;
+
+		Matrix<K> res = this->transpose();
+
+		_mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
+
+		for (size_t i = 0; i < res.rows; ++i)
+		{
+			K scalar = v.data[i];
+			reg scalar_vec = Simd::set1(scalar);
+
+			size_t j = 0;
+			for (; j + simd_width <= res.cols; j += simd_width)
+			{
+				reg vec = Simd::load(&res(i, j));
+				vec = Simd::add(vec, scalar_vec);
+				Simd::store(&res(i, j), vec);
+			}
+
+			for (; j < res.cols; ++j)
+				res(i, j) += scalar;
+		}
+		return res.transpose();
+	}
+
+	inline Matrix<K> foreach(const std::function<typename Simd::reg(typename Simd::reg)>& simd_func,
+						  const std::function<K(K)>& scalar_func) const
+	{
+		using Simd = simd::SimdTraits<K, DefaultISA>;
+		using reg = typename Simd::reg;
+		const size_t simd_width = Simd::width;
+
+		Matrix<K> result(rows, cols);
+
+		for (size_t i = 0; i < rows; ++i)
+		{
+			size_t j = 0;
+			for (; j + simd_width <= cols; j += simd_width)
+			{
+				reg v = Simd::load(&this->operator()(i, j));
+				reg r = simd_func(v);
+				Simd::store(&result(i, j), r);
+			}
+
+			for (; j < cols; ++j)
+				result(i, j) = scalar_func((*this)(i, j));
+		}
+		return result;
 	}
 
 	Matrix& operator+=(const Matrix& m) { this->add(m); return *this; }

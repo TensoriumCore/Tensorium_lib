@@ -3,6 +3,7 @@
 #include "../SIMD/Allocator.hpp"
 #include "../SIMD/CPU_id.hpp"
 #include "../SIMD/SIMD.hpp"
+#include "Vector.hpp"
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -120,6 +121,21 @@ template <typename K, std::size_t Rank> class Tensor {
         return data[i * dimensions[1] * dimensions[2] + j * dimensions[2] + k];
     }
 
+	Tensor<K, 2> operator*(Tensor<K, 2> B) {
+		return Tensor<K, 2>(matrix_to_tensor(tensor_to_matrix(*this) * tensor_to_matrix(B)));
+	}
+
+	Tensor<K, 2> operator*(const Tensor<K, 2>& B) const {
+		return Tensor<K, 2>(matrix_to_tensor(tensor_to_matrix(*this) * tensor_to_matrix(B)));
+	}
+
+	Tensor<K, 2> operator+(Vector<K> v) {
+		return Tensor<K, 2>(matrix_to_tensor(tensor_to_matrix(*this).broadcast(v)));
+	}
+	
+	Tensor<K, 2> operator+(const Vector<K>& v) const {
+		return Tensor<K, 2>(matrix_to_tensor(tensor_to_matrix(*this).broadcast(v)));
+	}
     ///@}
     /** @brief Fill tensor with a constant value */
     void fill(K value) { std::fill(data.begin(), data.end(), value); }
