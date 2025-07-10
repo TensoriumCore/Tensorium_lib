@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 namespace tensorium {
@@ -136,6 +137,14 @@ template <typename K, std::size_t Rank> class Tensor {
 	Tensor<K, 2> operator+(const Vector<K>& v) const {
 		return Tensor<K, 2>(matrix_to_tensor(tensor_to_matrix(*this).broadcast(v)));
 	}
+
+	inline Vector<K> sum_rows()
+	{
+		if (Rank != 2)
+			throw std::invalid_argument("Can't sum rows of a Tensor of rank != 2");
+		return tensor_to_matrix(*this).sum_rows();
+	}
+
     ///@}
     /** @brief Fill tensor with a constant value */
     void fill(K value) { std::fill(data.begin(), data.end(), value); }

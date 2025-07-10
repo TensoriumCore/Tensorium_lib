@@ -515,6 +515,37 @@ template <typename K, bool RowMajor = false> class Matrix {
 		return result;
 	}
 
+	inline Vector<K> sum_rows() const
+	{
+		using Simd = simd::SimdTraits<K, DefaultISA>;
+		using reg = typename Simd::reg;
+		const size_t simd_width = Simd::width;
+
+		Vector<K> res(rows);
+
+		for (size_t i = 0; i < rows; ++i)
+		{
+			size_t j = 0;
+			reg acc = Simd::zero();
+			K* row_ptr = &data[i * cols];
+
+			for (; j + simd_width <= cols; j += simd_width)
+			{
+				reg v = Simd::load(row_ptr + j);
+				acc = Simd::add(acc, v);
+			}
+
+			K sum = detail::reduce_sum(acc);
+
+			for (; j < cols; ++j)
+				sum += row_ptr[j];
+
+			res[i] = sum;
+		}
+
+		return res;
+	}
+
 	Matrix& operator+=(const Matrix& m) { this->add(m); return *this; }
 	Matrix& operator-=(const Matrix& m) { this->sub(m); return *this; }
 	Matrix& operator*=(K alpha) { this->scl(alpha); return *this; }
