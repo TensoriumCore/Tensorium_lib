@@ -72,7 +72,6 @@ nix --extra-experimental-features 'nix-command flakes' develop && ./build_macos 
 ```
 
 Then you can use it as the .ipynb show
-
 ### Build C++ only for special targets and options
 
 ```bash
