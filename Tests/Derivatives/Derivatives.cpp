@@ -210,9 +210,6 @@ int deriv_test() {
 	avg_err_order2 /= valid;
 	avg_err_order4 /= valid;
 
-	std::cout << "Points valides: " << valid << " / " << N << "\n";
-	std::cout << "Erreur max (ordre 2): " << max_err_order2 << "\n";
-	std::cout << "Erreur max (ordre 4): " << max_err_order4 << "\n";
 	std::cout << "Erreur moyenne (ordre 2): " << avg_err_order2 << "\n";
 	std::cout << "Erreur moyenne (ordre 4): " << avg_err_order4 << "\n";
 
