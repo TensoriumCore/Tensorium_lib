@@ -6,7 +6,7 @@ The python binding is usable without any other python librairy, but I'm still wo
 
 **Tensorium_lib** is a high-performance scientific C++ library designed for demanding computational domains such as **numerical relativity**, **machine learning (ML)**, **deep learning (DL)** and general **scientific simulations**.
 
-Here is the full documentation : https://at0m741.github.io/Tensorium_lib/
+Here is the full documentation : https://tensoriumcore.github.io/Tensorium_lib/
 
 It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:
 - **SIMD acceleration** (SSE, AVX2, AVX512),
