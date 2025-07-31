@@ -36,23 +36,20 @@ This library is built with the goal of empowering projects that require both spe
 - Optional benchmark against BLAS (OpenBLAS, MKL)
 
 ## TODO
-- Symbolic LaTeX parser
 - Tensor operators
-- Multiple kernels for Tensors/Matrix (optimized for severql sizes)
-- LLVM passe to check user code and analyse LLVM_IR to improve performance
-- (!!! NOT AT THE MOMENT) MLIR dialect to auto-translate CPU code to a GPU friendly kernel
+- Multiple kernels for Tensors/Matrix (optimized for several sizes)
 - General relativity / differential geometry classes dans methods (BSSN)
 - CUDA runtime kernels for critical kernels and operators
-- Full MPI support (maybe Intel-TBB routines
 - Spectral Methdods (Chebychev/Fourrier)
 - Backward FDM
 - Some (several) optimizations
-
+- Plug Tensorium_MLIR and externalize Compiler plugins (subdependencies)
+- ARM support 
 ## Build Instructions
 
 ### Requirements
-
-- C++17 compiler with AVX2/FMA support or AVX512 if avalaible on your plateform (Intel compilers will be added later)
+- !!! USE CLANG/LLVM if you want to use the max performances of this lib !!!
+- C++17/20 compiler with AVX2/FMA support or AVX512 if avalaible on your plateform (Intel compilers will be added later)
 - fopenmp
 - MPI
 - libmemkind-dev (if you are using Xeon Phi knight landing CPU)
