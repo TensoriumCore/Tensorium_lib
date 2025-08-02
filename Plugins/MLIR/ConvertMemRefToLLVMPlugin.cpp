@@ -6,7 +6,7 @@
 #include "mlir/Transforms/DialectConversion.h"
 
 using namespace mlir;
-
+// to remove and add Tensorium_MLIR as a subdependence
 namespace {
 struct ConvertMemRefToLLVMPass
     : public PassWrapper<ConvertMemRefToLLVMPass, OperationPass<ModuleOp>> {
