@@ -15,6 +15,23 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+message(STATUS "Detecting architecture...")
+
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    message(STATUS "→ Building for x86_64 (AVX/AVX2/AVX512 enabled)")
+    add_compile_definitions(TENSORIUM_X86)
+    add_compile_options(-mavx2 -mfma)
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
+    message(STATUS "→ Building for ARM64 / Apple Silicon (NEON enabled)")
+    add_compile_definitions(TENSORIUM_ARM)
+    find_package(OpenMP)
+    if (OpenMP_CXX_FOUND)
+        target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
+    endif()
+else()
+    message(WARNING "→ Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}, using scalar fallback.")
+    add_compile_definitions(TENSORIUM_FALLBACK)
+endif()
 # ─────────────────────────────── Includes ──────────────────────────────
 include_directories(${CMAKE_SOURCE_DIR}/Includes)
 
