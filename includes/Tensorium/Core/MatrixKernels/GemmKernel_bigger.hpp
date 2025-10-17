@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include <immintrin.h>
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
  * sizes
