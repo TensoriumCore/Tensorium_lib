@@ -4,15 +4,12 @@
     };
   }
 }:
-
 pkgs.mkShell {
   buildInputs = with pkgs; [
-
     vscode
     gcc
     openblas
     openmpi
-    # valgrind
     cloc
     tree
 	doxygen 
@@ -29,7 +26,6 @@ pkgs.mkShell {
       pyzmq
       pybind11
     ]))
-
   ] ++ (with llvmPackages_19; [
     mlir
     clang
@@ -37,7 +33,6 @@ pkgs.mkShell {
     libclang
     openmp
   ]);
-
   shellHook = ''
     if [ ! -d .venv ]; then
       echo "[+] Creating .venv..."
