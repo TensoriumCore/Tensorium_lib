@@ -10,6 +10,8 @@
  * sizes
  *
  */
+#ifdef TENSORIUM_X86
+
 namespace tensorium {
 template <typename T> class GemmKernelBigger {
   public:
@@ -877,3 +879,4 @@ template <typename T> T GemmKernelBigger<T>::blockA_packed[MC * KC] __attribute_
 
 template <typename T> T GemmKernelBigger<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
 } // namespace tensorium
+#endif

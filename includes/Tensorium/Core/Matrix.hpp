@@ -8,7 +8,6 @@
 #include "Vector.hpp"
 #include <cassert>
 #include <cmath>
-#include <immintrin.h>
 #include <iostream>
 #include <vector>
 
@@ -209,25 +208,51 @@ template <typename K, bool RowMajor = false> class Matrix {
      * Uses blocking and micro-kernels to avoid cache bottleneck with FMA/AVX units repartition.
      * Fast-paths exist for 4×4, 8×8, and 16×16.
      */
+
     inline Matrix _mul_mat(const Matrix<K> &mat) const {
         if (cols != mat.rows)
             throw std::invalid_argument("Matrix dimensions do not match for multiplication");
 
         Matrix<K> result(rows, mat.cols);
 
-        const K *A = data.data();        // Already column-major (this)
-        const K *B = mat.data.data();    // Already column-major (rhs)
-        K       *C = result.data.data(); // Output (also column-major)
+        const K *A = data.data();        // column-major (this)
+        const K *B = mat.data.data();    // column-major (rhs)
+        K       *C = result.data.data(); // column-major output
 
+#if defined(TENSORIUM_X86)
+        // SIMD kernel for x86 (AVX2 / AVX512)
         tensorium::GemmKernelBigger<K> kernel;
         kernel.matmul(const_cast<K *>(A), const_cast<K *>(B), C,
                       static_cast<int>(rows),     // M
                       static_cast<int>(mat.cols), // N
-                      static_cast<int>(cols)      // K
-        );
+                      static_cast<int>(cols));    // K
+
+#elif defined(TENSORIUM_ARM)
+        // Temporary fallback (naïve scalar matmul)
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < mat.cols; ++j) {
+                K sum = static_cast<K>(0);
+                for (size_t k = 0; k < cols; ++k)
+                    sum += A[i + k * rows] * B[k + j * mat.rows];
+                C[i + j * rows] = sum;
+            }
+        }
+
+#else
+        // Generic scalar fallback
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < mat.cols; ++j) {
+                K sum = static_cast<K>(0);
+                for (size_t k = 0; k < cols; ++k)
+                    sum += A[i + k * rows] * B[k + j * mat.rows];
+                C[i + j * rows] = sum;
+            }
+        }
+#endif
 
         return result;
     }
+
     /**
      * @brief Multiply matrix by a vector using SIMD
      *
@@ -455,37 +480,44 @@ template <typename K, bool RowMajor = false> class Matrix {
         }
 
         return r;
-	}
+    }
 
-	Matrix& operator+=(const Matrix& m) { this->add(m); return *this; }
-	Matrix& operator-=(const Matrix& m) { this->sub(m); return *this; }
-	Matrix& operator*=(K alpha) { this->scl(alpha); return *this; }
+    Matrix &operator+=(const Matrix &m) {
+        this->add(m);
+        return *this;
+    }
+    Matrix &operator-=(const Matrix &m) {
+        this->sub(m);
+        return *this;
+    }
+    Matrix &operator*=(K alpha) {
+        this->scl(alpha);
+        return *this;
+    }
 };
-template<typename K, bool RM>
-Matrix<K, RM> operator+(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
-	Matrix<K, RM> res = a;
-	res.add(b);
-	return res;
+template <typename K, bool RM>
+Matrix<K, RM> operator+(const Matrix<K, RM> &a, const Matrix<K, RM> &b) {
+    Matrix<K, RM> res = a;
+    res.add(b);
+    return res;
 }
-template<typename K, bool RM>
-Matrix<K, RM> operator-(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
-	Matrix<K, RM> res = a;
-	res.sub(b);
-	return res;
+template <typename K, bool RM>
+Matrix<K, RM> operator-(const Matrix<K, RM> &a, const Matrix<K, RM> &b) {
+    Matrix<K, RM> res = a;
+    res.sub(b);
+    return res;
 }
-template<typename K, bool RM>
-Matrix<K, RM> operator*(const Matrix<K, RM>& a, const Matrix<K, RM>& b) {
-	return a._mul_mat(b);
+template <typename K, bool RM>
+Matrix<K, RM> operator*(const Matrix<K, RM> &a, const Matrix<K, RM> &b) {
+    return a._mul_mat(b);
 }
-template<typename K, bool RM>
-Matrix<K, RM> operator*(const Matrix<K, RM>& m, K alpha) {
-	Matrix<K, RM> res = m;
-	res.scl(alpha);
-	return res;
+template <typename K, bool RM> Matrix<K, RM> operator*(const Matrix<K, RM> &m, K alpha) {
+    Matrix<K, RM> res = m;
+    res.scl(alpha);
+    return res;
 }
-template<typename K, bool RM>
-Matrix<K, RM> operator*(K alpha, const Matrix<K, RM>& m) {
-	return m * alpha;
+template <typename K, bool RM> Matrix<K, RM> operator*(K alpha, const Matrix<K, RM> &m) {
+    return m * alpha;
 }
 
 } // namespace tensorium

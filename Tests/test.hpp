@@ -5,7 +5,6 @@
 #include <cmath>
 #include <vector>
 #include <chrono>
-#include <immintrin.h>
 #include <cassert>
 #include <cstdlib>
 #include <cstring>

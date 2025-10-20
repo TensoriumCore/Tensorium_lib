@@ -49,7 +49,6 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "am
 
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
   message(STATUS "Configuring for Apple Silicon ARM64: disabling AVX flags")
-  # Apple Clang n’a pas de support AVX/FMA → on reste sur les optimisations génériques ARM
   set(CMAKE_CXX_FLAGS "-O3 -mcpu=apple-m1 -Wno-ignored-attributes")
 else()
   message(WARNING "Unknown architecture (${CMAKE_SYSTEM_PROCESSOR}); using generic optimization flags.")

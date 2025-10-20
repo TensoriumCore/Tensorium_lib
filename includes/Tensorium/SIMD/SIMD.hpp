@@ -27,6 +27,21 @@
 #    define ALIGN 8
 #endif
 
+// Défauts si rien d'autre ne les fixe plus bas
+#ifndef UNROLL
+#    define UNROLL 4
+#endif
+#ifndef SIMD_WIDTH
+#    define SIMD_WIDTH 4
+#endif
+#ifndef ALIGN
+#    define ALIGN 16
+#endif
+
+// OpenMP : laisse l'include compiler seulement si activé par le compilateur
+#ifdef _OPENMP
+#    include <omp.h>
+#endif
 // disable x86-only prefetch macros on ARM
 #if !defined(__x86_64__)
 #    define _MM_HINT_T0 0
@@ -1071,7 +1086,15 @@ template <typename F> inline void dispatch_simd(F &&f) { f(DefaultISA{}); }
 
 namespace simd {
 
-// ───────────────────────── float32 (neon32_t) ─────────────────────────
+static inline float32x4_t andnot_f32(float32x4_t a, float32x4_t b) {
+    uint32x4_t na = veorq_u32(vreinterpretq_u32_f32(a), vdupq_n_u32(~0u));
+    return vreinterpretq_f32_u32(vandq_u32(na, vreinterpretq_u32_f32(b)));
+}
+static inline float64x2_t andnot_f64(float64x2_t a, float64x2_t b) {
+    uint64x2_t na = veorq_u64(vreinterpretq_u64_f64(a), vdupq_n_u64(~0ULL));
+    return vreinterpretq_f64_u64(vandq_u64(na, vreinterpretq_u64_f64(b)));
+}
+
 template <> struct SimdTraits<float, neon32_t> {
     using reg = float32x4_t;
     static constexpr size_t width = 4;
@@ -1083,6 +1106,7 @@ template <> struct SimdTraits<float, neon32_t> {
     static inline reg  loadu(const float *p) { return vld1q_f32(p); }
     static inline void store(float *p, reg v) { vst1q_f32(p, v); }
     static inline void storeu(float *p, reg v) { vst1q_f32(p, v); }
+    static inline void store_stream(float *p, reg v) { vst1q_f32(p, v); } // pas de NT-store NEON
     static inline reg  zero() { return vdupq_n_f32(0.f); }
     static inline reg  add(reg a, reg b) { return vaddq_f32(a, b); }
     static inline reg  sub(reg a, reg b) { return vsubq_f32(a, b); }
@@ -1092,6 +1116,17 @@ template <> struct SimdTraits<float, neon32_t> {
 #    else
     static inline reg fmadd(reg a, reg b, reg c) { return vaddq_f32(c, vmulq_f32(a, b)); }
 #    endif
+    static inline reg max(reg a, reg b) { return vmaxq_f32(a, b); }
+    static inline reg min(reg a, reg b) { return vminq_f32(a, b); }
+    static inline reg andnot(reg a, reg b) { return andnot_f32(a, b); }
+
+    // float (neon32_t)
+    static inline float extract(reg x, size_t idx) {
+        alignas(16) float t[4];
+        vst1q_f32(t, x);
+        return t[idx & 3];
+    }
+
     static inline float horizontal_add(reg v) {
         float32x2_t lo = vget_low_f32(v);
         float32x2_t hi = vget_high_f32(v);
@@ -1112,24 +1147,31 @@ template <> struct SimdTraits<double, neon64_t> {
     static inline reg  loadu(const double *p) { return vld1q_f64(p); }
     static inline void store(double *p, reg v) { vst1q_f64(p, v); }
     static inline void storeu(double *p, reg v) { vst1q_f64(p, v); }
+    static inline void store_stream(double *p, reg v) { vst1q_f64(p, v); }
     static inline reg  zero() { return vdupq_n_f64(0.0); }
     static inline reg  add(reg a, reg b) { return vaddq_f64(a, b); }
     static inline reg  sub(reg a, reg b) { return vsubq_f64(a, b); }
     static inline reg  mul(reg a, reg b) { return vmulq_f64(a, b); }
 #    if defined(__aarch64__)
-    static inline reg fmadd(reg a, reg b, reg c) { return vfmaq_f64(c, a, b); } // c + a*b
+    static inline reg fmadd(reg a, reg b, reg c) { return vfmaq_f64(c, a, b); }
 #    else
     static inline reg fmadd(reg a, reg b, reg c) { return vaddq_f64(c, vmulq_f64(a, b)); }
 #    endif
+    static inline reg    max(reg a, reg b) { return vmaxq_f64(a, b); }
+    static inline reg    min(reg a, reg b) { return vminq_f64(a, b); }
+    static inline reg    andnot(reg a, reg b) { return andnot_f32(a, b); }
+    static inline double extract(reg x, size_t idx = 0) {
+        alignas(16) double t[2];
+        vst1q_f64(t, x);
+        return t[idx & 1];
+    }
     static inline double horizontal_add(reg v) {
         float64x1_t s = vadd_f64(vget_low_f64(v), vget_high_f64(v));
         return vget_lane_f64(s, 0);
     }
 };
 
-// ───────────────────────── entier 64-bit (fallback simple) ─────────────────────────
-// On s'en tient à des opérations élémentaires (pas de mul 64x64 SIMD portable en NEON).
-template <> struct SimdTraits<size_t, neon64_t> {
+template <> struct SimdTraits<size_t, neon32_t> {
     using reg = uint64x2_t;
     static constexpr size_t width = 2;
     static constexpr size_t alignment = 16;
@@ -1140,11 +1182,11 @@ template <> struct SimdTraits<size_t, neon64_t> {
     static inline reg  loadu(const size_t *p) { return vld1q_u64((const uint64_t *)p); }
     static inline void store(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
     static inline void storeu(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
+    static inline void store_stream(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
     static inline reg  zero() { return vdupq_n_u64(0); }
     static inline reg  add(reg a, reg b) { return vaddq_u64(a, b); }
     static inline reg  sub(reg a, reg b) { return vsubq_u64(a, b); }
-    // mul element-wise (scalaire) pour rester portable
-    static inline reg mul(reg a, reg b) {
+    static inline reg  mul(reg a, reg b) {
         uint64_t A[2], B[2], R[2];
         vst1q_u64(A, a);
         vst1q_u64(B, b);
@@ -1161,10 +1203,19 @@ template <> struct SimdTraits<size_t, neon64_t> {
         R[1] = A[1] * B[1] + C[1];
         return vld1q_u64(R);
     }
+    static inline reg andnot(reg a, reg b) {
+        uint64x2_t na = veorq_u64(a, vdupq_n_u64(~0ULL));
+        return vandq_u64(na, b);
+    }
+    static inline size_t extract(reg x, size_t idx) {
+        alignas(16) uint64_t t[2];
+        vst1q_u64(t, x);
+        return (size_t)t[idx & 1];
+    }
     static inline uint64_t horizontal_add(reg v) {
-        uint64_t tmp[2];
-        vst1q_u64(tmp, v);
-        return tmp[0] + tmp[1];
+        alignas(16) uint64_t t[2];
+        vst1q_u64(t, v);
+        return t[0] + t[1];
     }
 };
 
@@ -1247,12 +1298,21 @@ template <> struct SimdTraits<std::complex<double>, neon64_t> {
 } // namespace simd
 
 namespace detail {
-template <typename Simd> static inline typename Simd::reg reduce_sum(typename Simd::reg v) {
-#    if defined(__x86_64__)
-    return v;
-#    else
-    return v; 
-#    endif
+inline float reduce_sum(float32x4_t v) { // float
+    float32x2_t lo = vget_low_f32(v);
+    float32x2_t hi = vget_high_f32(v);
+    float32x2_t s = vadd_f32(lo, hi);
+    s = vpadd_f32(s, s);
+    return vget_lane_f32(s, 0);
+}
+inline double reduce_sum(float64x2_t v) { // double
+    float64x1_t s = vadd_f64(vget_low_f64(v), vget_high_f64(v));
+    return vget_lane_f64(s, 0);
+}
+inline uint64_t reduce_sum(uint64x2_t v) { // entier
+    uint64_t t[2];
+    vst1q_u64(t, v);
+    return t[0] + t[1];
 }
 } // namespace detail
 
