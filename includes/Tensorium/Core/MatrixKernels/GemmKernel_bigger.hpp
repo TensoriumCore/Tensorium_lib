@@ -20,7 +20,7 @@ template <typename T> class GemmKernelBigger {
     static constexpr int SimdWidth = Simd::width;
     static constexpr int TileRows = SimdWidth * 4;
     static constexpr int TileCols = 6;
-    static constexpr int NThreads = 16;
+    static constexpr int NThreads = 72;
 
     static constexpr int BlockDepth = 256;
     static constexpr int BlockRows = 384;
@@ -770,7 +770,7 @@ template <typename T> class GemmKernelBigger {
     }
 
 #ifndef NTHREADS
-#    define NTHREADS 8
+#    define NTHREADS 36
 #endif
 
 #define MC (16 * (40 / NTHREADS) * NTHREADS)
