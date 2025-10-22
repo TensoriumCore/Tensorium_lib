@@ -9,7 +9,6 @@ file(GLOB TEST_SOURCES
 
 add_executable(TensoriumTests ${TEST_SOURCES})
 
-# ─────────────────────────────── OpenMP flags ───────────────────────────────
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})
   link_directories(${OPENMP_LIB_PATH})
@@ -19,7 +18,6 @@ elseif(DEFINED OPENMP_LIB)
   target_link_libraries(TensoriumTests PRIVATE ${OPENMP_LIB})
 endif()
 
-# ─────────────────────────────── MPI / KNL options ───────────────────────────────
 if(USE_MPI)
   find_package(MPI REQUIRED)
   target_link_libraries(TensoriumTests PRIVATE MPI::MPI_CXX)
@@ -31,8 +29,6 @@ if(USE_KNL)
   target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
   target_link_libraries(TensoriumTests PRIVATE memkind)
 endif()
-
-# # ─────────────────────────────── Inject the plugins ───────────────────────────────
 # set(DISPATCH_PLUGIN_PATH "${CMAKE_BINARY_DIR}/Plugins/libTensoriumDispatchPlugin.so")
 #
 # add_dependencies(TensoriumTests TensoriumDispatchPlugin)
