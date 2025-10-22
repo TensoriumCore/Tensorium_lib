@@ -27,22 +27,19 @@
 #    define ALIGN 8
 #endif
 
-// Défauts si rien d'autre ne les fixe plus bas
-#ifndef UNROLL
-#    define UNROLL 4
-#endif
-#ifndef SIMD_WIDTH
-#    define SIMD_WIDTH 4
-#endif
-#ifndef ALIGN
-#    define ALIGN 16
-#endif
+// #ifndef UNROLL
+// #    define UNROLL 4
+// #endif
+// #ifndef SIMD_WIDTH
+// #    define SIMD_WIDTH 4
+// #endif
+// #ifndef ALIGN
+// #    define ALIGN 16
+// #endif
 
-// OpenMP : laisse l'include compiler seulement si activé par le compilateur
 #ifdef _OPENMP
 #    include <omp.h>
 #endif
-// disable x86-only prefetch macros on ARM
 #if !defined(__x86_64__)
 #    define _MM_HINT_T0 0
 #    define _mm_prefetch(PTR, HINT) ((void)0)

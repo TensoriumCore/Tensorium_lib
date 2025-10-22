@@ -1,4 +1,3 @@
-
 file(GLOB TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix/*.cpp
@@ -10,7 +9,7 @@ file(GLOB TEST_SOURCES
 
 add_executable(TensoriumTests ${TEST_SOURCES})
 
-# --- OpenMP flags selon architecture ---
+# ─────────────────────────────── OpenMP flags ───────────────────────────────
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})
   link_directories(${OPENMP_LIB_PATH})
@@ -20,7 +19,7 @@ elseif(DEFINED OPENMP_LIB)
   target_link_libraries(TensoriumTests PRIVATE ${OPENMP_LIB})
 endif()
 
-# --- MPI / KNL ---
+# ─────────────────────────────── MPI / KNL options ───────────────────────────────
 if(USE_MPI)
   find_package(MPI REQUIRED)
   target_link_libraries(TensoriumTests PRIVATE MPI::MPI_CXX)
@@ -33,3 +32,12 @@ if(USE_KNL)
   target_link_libraries(TensoriumTests PRIVATE memkind)
 endif()
 
+# # ─────────────────────────────── Inject the plugins ───────────────────────────────
+# set(DISPATCH_PLUGIN_PATH "${CMAKE_BINARY_DIR}/Plugins/libTensoriumDispatchPlugin.so")
+#
+# add_dependencies(TensoriumTests TensoriumDispatchPlugin)
+#
+# # inject the clang plugin (frontend)
+# set_property(TARGET TensoriumTests APPEND_STRING PROPERTY COMPILE_FLAGS
+#     " -Xclang -load -Xclang ${DISPATCH_PLUGIN_PATH} -Xclang -add-plugin -Xclang tensorium-dispatch"
+# )

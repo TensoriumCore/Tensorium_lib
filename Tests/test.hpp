@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
-#include <omp.h>
+// #include <omp.h>
 #include <iomanip>
 #include <random>
 

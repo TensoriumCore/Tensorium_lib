@@ -9,7 +9,7 @@ option(VERBOSE "Verbose runtime logs" OFF)
 option(DEBUG "Build with debug symbols" OFF)
 option(BUILD_PLUGINS "Build Clang/LLVM plugins" ON)
 option(BUILD_TESTS "Build test executables" ON)
-option(BUILD_PYBIND "Build Python bindings" ON)
+option(BUILD_PYBIND "Build Python bindings" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,6 +17,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message(STATUS "Detecting architecture...")
 
+# ─────────────────────────────── Architecture detection ───────────────────────────────
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
     message(STATUS "→ Building for x86_64 (AVX/AVX2/AVX512 enabled)")
     add_compile_definitions(TENSORIUM_X86)
@@ -24,18 +25,14 @@ if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
 elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
     message(STATUS "→ Building for ARM64 / Apple Silicon (NEON enabled)")
     add_compile_definitions(TENSORIUM_ARM)
-    find_package(OpenMP)
-    if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
-    endif()
 else()
     message(WARNING "→ Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}, using scalar fallback.")
     add_compile_definitions(TENSORIUM_FALLBACK)
 endif()
-# ─────────────────────────────── Includes ──────────────────────────────
+
 include_directories(${CMAKE_SOURCE_DIR}/Includes)
 
-# ─────────────────────────────── CPU architecture flags ───────────────────────────────
+# ─────────────────────────────── CPU optimization flags ───────────────────────────────
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64")
   message(STATUS "Configuring for x86_64: enabling AVX2/FMA or AVX512")
   set(BASE_FLAGS "-O3 -mtune=native -Wno-ignored-attributes -Rpass-analysis=tensorium-align")
@@ -46,7 +43,6 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "am
   else()
     set(CMAKE_CXX_FLAGS "${BASE_FLAGS} ${AVX2_FLAGS}")
   endif()
-
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
   message(STATUS "Configuring for Apple Silicon ARM64: disabling AVX flags")
   set(CMAKE_CXX_FLAGS "-O3 -mcpu=apple-m1 -Wno-ignored-attributes")
@@ -62,9 +58,6 @@ if(VERBOSE)
   add_compile_definitions(VERBOSE)
 endif()
 
-
-
-# ─────────────────────────────── Architecture detection ───────────────────────────────
 message(STATUS "Detected architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
 # ─────────────────────────────── OpenMP handling ───────────────────────────────
@@ -88,15 +81,12 @@ else()
   endif()
 endif()
 
-# ─────────────────────────────── Subdirectories ───────────────────────────────
+# ─────────────────────────────── Plugins ───────────────────────────────
 if(BUILD_PLUGINS)
   add_subdirectory(Plugins)
 endif()
 
+# ─────────────────────────────── Tests ───────────────────────────────
 if(BUILD_TESTS)
   add_subdirectory(Tests)
-endif()
-
-if(BUILD_PYBIND)
-  add_subdirectory(Pybind)
 endif()

@@ -31,7 +31,7 @@ tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K>& A, const tens
 }
 int matrix_bench() {
 	using namespace tensorium;
-	std::vector<std::size_t> sizes = {256};
+	std::vector<std::size_t> sizes = {8192};
 
 	for (std::size_t N : sizes) {
 		Matrix<double> A(N, N);
