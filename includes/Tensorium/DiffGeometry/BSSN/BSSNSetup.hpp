@@ -44,7 +44,7 @@ namespace tensorium_RG {
  * - Extrinsic curvature \f$K_{ij}\f$
  * - Trace-free conformal extrinsic curvature \f$\tilde{A}_{ij}\f$
  */
-struct alignas(32) BSSNGrid {
+struct alignas(64) BSSNGrid {
 
     std::vector<double>                       alpha;        ///< Lapse function \f$\alpha\f$
     std::vector<tensorium::Vector<double>>    beta;         ///< Shift vector \f$\beta^i\f$
@@ -68,6 +68,48 @@ struct alignas(32) BSSNGrid {
         contracted_Gamma; ///< Contracted symbols \f$\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln
     std::vector<tensorium::Tensor<double, 5>> ricci_tilde; // [NX, NY, NZ, 3, 3]
 };
+template <typename T>
+tensorium::Tensor<T, 2>
+compute_dt_gamma_from_beta(const tensorium::Tensor<T, 2> &gamma,
+                           const tensorium::Vector<T>    &beta_u,         // β^i
+                           const tensorium::Tensor<T, 2> &partial_beta_u, // (i,m)=∂_i β^m
+                           const tensorium::Tensor<T, 3> &christoffel,    // Γ^k_{ij}
+                           const tensorium::Tensor<T, 3> &dgamma_phys)    // (i,j,m)=∂_i γ_{jm}
+{
+    // β_j = γ_{jm} β^m
+    tensorium::Vector<T> beta_d(3);
+    for (int j = 0; j < 3; ++j) {
+        T s = 0;
+        for (int m = 0; m < 3; ++m)
+            s += gamma(j, m) * beta_u(m);
+        beta_d(j) = s;
+    }
+
+    // ∂_i β_j = (∂_i γ_{j m}) β^m + γ_{j m} (∂_i β^m)
+    tensorium::Tensor<T, 2> d_beta_d({3, 3}); // (i,j)
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) {
+            T s = 0;
+            for (int m = 0; m < 3; ++m)
+                s += dgamma_phys(i, j, m) * beta_u(m) + gamma(j, m) * partial_beta_u(i, m);
+            d_beta_d(i, j) = s;
+        }
+
+    // D_i β_j = ∂_i β_j - Γ^k_{ij} β_k
+    tensorium::Tensor<T, 2> Dt_g({3, 3}); // ∂_t γ_ij = D_i β_j + D_j β_i  (sans -2αK_ij ici)
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) {
+            T Di_bj = d_beta_d(i, j);
+            for (int k = 0; k < 3; ++k)
+                Di_bj -= christoffel(i, j, k) * beta_d(k);
+            T Dj_bi = d_beta_d(j, i);
+            for (int k = 0; k < 3; ++k)
+                Dj_bi -= christoffel(j, i, k) * beta_d(k);
+            Dt_g(i, j) = Di_bj + Dj_bi;
+        }
+    return Dt_g;
+}
+
 /**
  * @class BSSN
  * @brief Driver class to initialize and store BSSN variables from an input spacetime metric.
@@ -143,11 +185,24 @@ template <typename T> class BSSN {
 
         tensorium_RG::ExtrinsicCurvature<T> extr;
         auto Kij = extr.compute_Kij(dgt, gamma_ij, beta, d_beta, christoffel_phys, alpha);
+        dgt = compute_dt_gamma_from_beta(gamma_ij, beta, d_beta, christoffel_phys, dgamma_phys);
+        // Lie(γ) = ∇_i β_j + ∇_j β_i
+        auto Lie =
+            compute_dt_gamma_from_beta(gamma_ij, beta, d_beta, christoffel_phys, dgamma_phys);
+        print_tensor2("Lie_beta(gamma_ij)", Lie);
+
+        // Test de stationnarité analytique: ∂_t γ = 0  ⇒  2 α K - Lie ≈ 0
+        tensorium::Tensor<T, 2> resid({3, 3});
+        for (int i = 0; i < 3; ++i)
+            for (int j = 0; j < 3; ++j)
+                resid(i, j) = 2.0 * alpha * Kij(i, j) - Lie(i, j);
+
+        print_tensor2("Stationarity residual R_ij = 2α K_ij - Lie_beta(gamma_ij)", resid);
 
         tensorium_RG::BSSNAtildeTensor<T> Aij;
         auto AtildeTensor = Aij.compute_Atilde_tensor(Kij, gamma_ij_inv, gamma_ij, chi);
 
-        const size_t NX = 32, NY = 32, NZ = 32;
+        const size_t NX = 64, NY = 64, NZ = 64;
 
         tensorium::Tensor<T, 5> Atilde_full({NX, NY, NZ, 3, 3});
         tensorium::Tensor<T, 5> gtilde_inv_full({NX, NY, NZ, 3, 3});
@@ -166,16 +221,15 @@ template <typename T> class BSSN {
             }
         }
 
-		auto chi_ctx = ChiContext<T>::compute(X, dx, dy, dz, gamma_ij, dgamma_phys, metric);
-		auto Ricci_tilde = RicciTildeTensor<T>::compute_Ricci_Tilde_tensor(
-			chi_ctx, gamma_tilde_inv, tilde_Gamma, christoffel_tilde, gamma_tilde);
-
+        auto chi_ctx = ChiContext<T>::compute(X, dx, dy, dz, gamma_ij, dgamma_phys, metric);
+        auto Ricci_tilde = RicciTildeTensor<T>::compute_Ricci_Tilde_tensor(
+            chi_ctx, gamma_tilde_inv, tilde_Gamma, christoffel_tilde, gamma_tilde);
 
         auto Ricci_chi = RicciConformalTensor<T>::compute_Ricci_chi_total(
             chi_ctx, gamma_tilde, gamma_tilde_inv, christoffel_tilde);
 
-        auto Ricci = RicciPhysicalTensor<T>::compute_Ricci_total(chi_ctx, gamma_tilde, gamma_tilde_inv,
-                                                    tilde_Gamma, christoffel_tilde);
+        auto Ricci = RicciPhysicalTensor<T>::compute_Ricci_total(
+            chi_ctx, gamma_tilde, gamma_tilde_inv, tilde_Gamma, christoffel_tilde);
 
         grid.alpha = {alpha};
         grid.beta = {beta};
