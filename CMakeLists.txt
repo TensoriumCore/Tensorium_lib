@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 project(Tensorium LANGUAGES C CXX)
 
-# ─────────────────────────────── Options ───────────────────────────────
 option(USE_MPI "Enable MPI support" OFF)
 option(USE_KNL "Tune for Intel KNL" OFF)
 option(AVX512 "Enable AVX-512" OFF)
@@ -17,7 +16,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message(STATUS "Detecting architecture...")
 
-# ─────────────────────────────── Architecture detection ───────────────────────────────
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
     message(STATUS "→ Building for x86_64 (AVX/AVX2/AVX512 enabled)")
     add_compile_definitions(TENSORIUM_X86)
@@ -30,9 +28,55 @@ else()
     add_compile_definitions(TENSORIUM_FALLBACK)
 endif()
 
+find_package(CUDAToolkit QUIET)
+
+execute_process(
+  COMMAND bash -c "command -v nvidia-smi >/dev/null && nvidia-smi --query-gpu=name --format=csv,noheader | head -n 1 || echo none"
+  OUTPUT_VARIABLE GPU_NAME OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if (NOT GPU_NAME STREQUAL "none")
+  message(STATUS "Detected NVIDIA GPU: ${GPU_NAME}")
+  add_compile_definitions(TENSORIUM_GPU_PRESENT)
+else()
+  message(WARNING "⚠️ Aucun GPU NVIDIA détecté (ou nvidia-smi absent)")
+endif()
+
+
+option(USE_CUDA "Enable CUDA kernels (requires nvcc)" OFF)
+
+if (USE_CUDA)
+  if (NOT CUDAToolkit_FOUND)
+    message(FATAL_ERROR "USE_CUDA=ON mais aucun CUDA toolkit détecté ⚠️")
+  endif()
+
+  message(STATUS "CUDA toolkit found at: ${CUDAToolkit_ROOT}")
+  message(STATUS "→ Version: ${CUDAToolkit_VERSION}")
+  add_compile_definitions(TENSORIUM_CUDA)
+
+  enable_language(CUDA)
+  set(CMAKE_CUDA_COMPILER "${CUDAToolkit_NVCC_EXECUTABLE}")
+  message(STATUS "Using NVCC for CUDA compilation: ${CMAKE_CUDA_COMPILER}")
+
+  set(CMAKE_CUDA_ARCHITECTURES 61 70 75 80 86 90)
+  add_compile_definitions(TENSORIUM_CUDA_ARCH=${CMAKE_CUDA_ARCHITECTURES})
+
+  set(CMAKE_CUDA_STANDARD 17)
+  set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 -Xcompiler=-fPIC")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math -lineinfo -Wno-deprecated-gpu-targets")
+
+  include_directories(${CUDAToolkit_INCLUDE_DIRS})
+  link_directories(${CUDAToolkit_LIBRARY_DIR})
+
+  message(STATUS "→ CUDA architectures: ${CMAKE_CUDA_ARCHITECTURES}")
+
+else()
+  message(STATUS "CUDA support disabled (USE_CUDA=OFF)")
+  add_compile_definitions(TENSORIUM_NO_CUDA)
+endif()
 include_directories(${CMAKE_SOURCE_DIR}/Includes)
 
-# ─────────────────────────────── CPU optimization flags ───────────────────────────────
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64")
   message(STATUS "Configuring for x86_64: enabling AVX2/FMA or AVX512")
   set(BASE_FLAGS "-O3 -mtune=native -Wno-ignored-attributes -Rpass-analysis=tensorium-align")
@@ -60,7 +104,6 @@ endif()
 
 message(STATUS "Detected architecture: ${CMAKE_SYSTEM_PROCESSOR}")
 
-# ─────────────────────────────── OpenMP handling ───────────────────────────────
 if(APPLE)
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
     message(STATUS "Configuring OpenMP manually for macOS ARM64 (Apple Clang)")
@@ -81,12 +124,10 @@ else()
   endif()
 endif()
 
-# ─────────────────────────────── Plugins ───────────────────────────────
 if(BUILD_PLUGINS)
   add_subdirectory(Plugins)
 endif()
 
-# ─────────────────────────────── Tests ───────────────────────────────
 if(BUILD_TESTS)
   add_subdirectory(Tests)
 endif()
