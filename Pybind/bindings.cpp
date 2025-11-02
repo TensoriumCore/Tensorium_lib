@@ -1,6 +1,6 @@
-#include "Tensorium/Tensorium.hpp"
+#include "../includes/Tensorium/Tensorium.hpp"
 #include <iostream>
-#include <omp.h>
+// #include <omp.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>

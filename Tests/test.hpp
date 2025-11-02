@@ -5,12 +5,11 @@
 #include <cmath>
 #include <vector>
 #include <chrono>
-#include <immintrin.h>
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
-#include <omp.h>
+// #include <omp.h>
 #include <iomanip>
 #include <random>
 

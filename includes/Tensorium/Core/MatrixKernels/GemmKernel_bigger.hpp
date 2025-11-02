@@ -5,12 +5,13 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include <immintrin.h>
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
  * sizes
  *
  */
+#ifdef TENSORIUM_X86
+
 namespace tensorium {
 template <typename T> class GemmKernelBigger {
   public:
@@ -19,7 +20,7 @@ template <typename T> class GemmKernelBigger {
     static constexpr int SimdWidth = Simd::width;
     static constexpr int TileRows = SimdWidth * 4;
     static constexpr int TileCols = 6;
-    static constexpr int NThreads = 16;
+    static constexpr int NThreads = 72;
 
     static constexpr int BlockDepth = 256;
     static constexpr int BlockRows = 384;
@@ -769,7 +770,7 @@ template <typename T> class GemmKernelBigger {
     }
 
 #ifndef NTHREADS
-#    define NTHREADS 8
+#    define NTHREADS 36
 #endif
 
 #define MC (16 * (40 / NTHREADS) * NTHREADS)
@@ -878,3 +879,4 @@ template <typename T> T GemmKernelBigger<T>::blockA_packed[MC * KC] __attribute_
 
 template <typename T> T GemmKernelBigger<T>::blockB_packed[NC * KC] __attribute__((aligned(64)));
 } // namespace tensorium
+#endif

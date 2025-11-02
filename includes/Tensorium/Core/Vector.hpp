@@ -431,6 +431,7 @@ template <typename K> class Vector {
      * @param v Second 3D vector.
      * @return Resulting 3D vector.
      */
+
     __attribute__((always_inline, hot, flatten)) static inline Vector<float>
     cross_product(const Vector<float> &u, const Vector<float> &v) {
         if (u.size() != 3 || v.size() != 3)
@@ -438,20 +439,42 @@ template <typename K> class Vector {
 
         Vector<float> r(3);
 
+#if defined(TENSORIUM_X86)
         __m128 uxy = _mm_set_ps(0.0f, u.data[0], u.data[2], u.data[1]);
         __m128 vxy = _mm_set_ps(0.0f, v.data[0], v.data[2], v.data[1]);
+#elif defined(TENSORIUM_ARM)
+        float32x4_t uxy = {0.0f, u.data[0], u.data[2], u.data[1]};
+        float32x4_t vxy = {0.0f, v.data[0], v.data[2], v.data[1]};
+#else
+        (void)0; 
+#endif
 
+        // Produit vectoriel (portable et optimisé)
+#if defined(__FMA__) || defined(TENSORIUM_X86) || defined(TENSORIUM_ARM)
         r.data[0] = std::fma(u.data[1], v.data[2], -u.data[2] * v.data[1]);
         r.data[1] = std::fma(u.data[2], v.data[0], -u.data[0] * v.data[2]);
         r.data[2] = std::fma(u.data[0], v.data[1], -u.data[1] * v.data[0]);
+#else
+        r.data[0] = u.data[1] * v.data[2] - u.data[2] * v.data[1];
+        r.data[1] = u.data[2] * v.data[0] - u.data[0] * v.data[2];
+        r.data[2] = u.data[0] * v.data[1] - u.data[1] * v.data[0];
+#endif
 
         return r;
     }
 
-	Vector<K>& operator+=(const Vector<K>& m) { this->add(m); return *this; }
-	Vector<K>& operator-=(const Vector<K>& m) { this->sub(m); return *this; }
-	Vector<K>& operator*=(K alpha) { this->scl(alpha); return *this; }
-
+    Vector<K> &operator+=(const Vector<K> &m) {
+        this->add(m);
+        return *this;
+    }
+    Vector<K> &operator-=(const Vector<K> &m) {
+        this->sub(m);
+        return *this;
+    }
+    Vector<K> &operator*=(K alpha) {
+        this->scl(alpha);
+        return *this;
+    }
 };
 
 template <typename K> inline Vector<K> operator+(const Vector<K> &a, const Vector<K> &b) {

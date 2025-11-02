@@ -1,23 +1,137 @@
+cmake_minimum_required(VERSION 3.22)
+project(Tensorium LANGUAGES C CXX)
 
-cmake_minimum_required(VERSION 3.12)
-project(tensorium_bindings LANGUAGES CXX)
+option(USE_MPI "Enable MPI support" OFF)
+option(USE_KNL "Tune for Intel KNL" OFF)
+option(AVX512 "Enable AVX-512" OFF)
+option(VERBOSE "Verbose runtime logs" OFF)
+option(DEBUG "Build with debug symbols" OFF)
+option(BUILD_PLUGINS "Build Clang/LLVM plugins" ON)
+option(BUILD_TESTS "Build test executables" ON)
+option(BUILD_PYBIND "Build Python bindings" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_compile_options(-O3 -march=native -mavx2 -mfma -Wignored-attributes)
-add_compile_options(-Wno-ignored-attributes)
-find_package(pybind11 REQUIRED)
+message(STATUS "Detecting architecture...")
 
-find_package(OpenMP REQUIRED)
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    message(STATUS "→ Building for x86_64 (AVX/AVX2/AVX512 enabled)")
+    add_compile_definitions(TENSORIUM_X86)
+    add_compile_options(-mavx2 -mfma)
+elseif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
+    message(STATUS "→ Building for ARM64 / Apple Silicon (NEON enabled)")
+    add_compile_definitions(TENSORIUM_ARM)
+else()
+    message(WARNING "→ Unknown architecture: ${CMAKE_SYSTEM_PROCESSOR}, using scalar fallback.")
+    add_compile_definitions(TENSORIUM_FALLBACK)
+endif()
 
-include_directories(${CMAKE_SOURCE_DIR}/includes)
 
-pybind11_add_module(tensorium ./Pybind/bindings.cpp)
+#
+find_package(CUDAToolkit QUIET)
 
-target_link_libraries(tensorium PRIVATE OpenMP::OpenMP_CXX)
-# install(TARGETS tensorium
-#         LIBRARY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+execute_process(
+  COMMAND bash -c "command -v nvidia-smi >/dev/null && nvidia-smi --query-gpu=name --format=csv,noheader | head -n 1 || echo none"
+  OUTPUT_VARIABLE GPU_NAME OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+if (NOT GPU_NAME STREQUAL "none")
+  message(STATUS "Detected NVIDIA GPU: ${GPU_NAME}")
+  add_compile_definitions(TENSORIUM_GPU_PRESENT)
+else()
+  message(WARNING "⚠️ Aucun GPU NVIDIA détecté (ou nvidia-smi absent)")
+endif()
 
 
+option(USE_CUDA "Enable CUDA kernels (requires nvcc)" OFF)
+
+if (USE_CUDA)
+  if (NOT CUDAToolkit_FOUND)
+    message(FATAL_ERROR "USE_CUDA=ON mais aucun CUDA toolkit détecté ⚠️")
+  endif()
+
+  message(STATUS "CUDA toolkit found at: ${CUDAToolkit_ROOT}")
+  message(STATUS "→ Version: ${CUDAToolkit_VERSION}")
+  add_compile_definitions(TENSORIUM_CUDA)
+
+  enable_language(CUDA)
+  set(CMAKE_CUDA_COMPILER "${CUDAToolkit_NVCC_EXECUTABLE}")
+  message(STATUS "Using NVCC for CUDA compilation: ${CMAKE_CUDA_COMPILER}")
+
+  set(CMAKE_CUDA_ARCHITECTURES 61 70 75 80 86 90)
+  add_compile_definitions(TENSORIUM_CUDA_ARCH=${CMAKE_CUDA_ARCHITECTURES})
+
+  # Flags NVCC (propres)
+  set(CMAKE_CUDA_STANDARD 17)
+  set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 -Xcompiler=-fPIC")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math -lineinfo -Wno-deprecated-gpu-targets")
+
+  include_directories(${CUDAToolkit_INCLUDE_DIRS})
+  link_directories(${CUDAToolkit_LIBRARY_DIR})
+
+  message(STATUS "→ CUDA architectures: ${CMAKE_CUDA_ARCHITECTURES}")
+
+else()
+  message(STATUS "CUDA support disabled (USE_CUDA=OFF)")
+  add_compile_definitions(TENSORIUM_NO_CUDA)
+endif()
+
+include_directories(${CMAKE_SOURCE_DIR}/Includes)
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64")
+  message(STATUS "Configuring for x86_64: enabling AVX2/FMA or AVX512")
+  set(BASE_FLAGS "-O3 -mtune=native -Wno-ignored-attributes -Rpass-analysis=tensorium-align")
+  set(AVX2_FLAGS "-mfma -mavx2")
+  set(AVX512_FLAGS "-mfma -mavx512f -mavx512cd")
+  if(AVX512)
+    set(CMAKE_CXX_FLAGS "${BASE_FLAGS} ${AVX512_FLAGS}")
+  else()
+    set(CMAKE_CXX_FLAGS "${BASE_FLAGS} ${AVX2_FLAGS}")
+  endif()
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+  message(STATUS "Configuring for Apple Silicon ARM64: disabling AVX flags")
+  set(CMAKE_CXX_FLAGS "-O3 -mcpu=apple-m1 -Wno-ignored-attributes")
+else()
+  message(WARNING "Unknown architecture (${CMAKE_SYSTEM_PROCESSOR}); using generic optimization flags.")
+  set(CMAKE_CXX_FLAGS "-O3 -mtune=native")
+endif()
+
+if(DEBUG)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+endif()
+if(VERBOSE)
+  add_compile_definitions(VERBOSE)
+endif()
+
+message(STATUS "Detected architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+
+if(APPLE)
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+    message(STATUS "Configuring OpenMP manually for macOS ARM64 (Apple Clang)")
+    set(OPENMP_INCLUDE_PATH "/opt/homebrew/opt/libomp/include")
+    set(OPENMP_LIB_PATH "/opt/homebrew/opt/libomp/lib")
+    set(OPENMP_LIB "omp")
+  elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    message(STATUS "Using OpenMP for macOS x86_64 (Intel)")
+    find_package(OpenMP)
+    if(OpenMP_CXX_FOUND)
+      set(OPENMP_LIB "OpenMP::OpenMP_CXX")
+    endif()
+  endif()
+else()
+  find_package(OpenMP)
+  if(OpenMP_CXX_FOUND)
+    set(OPENMP_LIB "OpenMP::OpenMP_CXX")
+  endif()
+endif()
+
+if(BUILD_PLUGINS)
+  add_subdirectory(Plugins)
+endif()
+
+if(BUILD_TESTS)
+  add_subdirectory(Tests)
+endif()

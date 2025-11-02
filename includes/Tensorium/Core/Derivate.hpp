@@ -8,7 +8,6 @@
 #include "Vector.hpp"
 #include <cassert>
 #include <cmath>
-#include <immintrin.h>
 #include <iostream>
 #include <numeric>
 #include <vector>

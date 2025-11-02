@@ -6,6 +6,12 @@
 #include "clang/Lex/Preprocessor.h"
 #include "clang/Tooling/Tooling.h"
 #include "llvm/Support/MemoryBuffer.h"
+#include <iostream>
+//
+// static int _ = []() {
+//     std::cerr << "[TensoriumDispatchPlugin] Plugin loaded into Clang.\n";
+//     return 0;
+// }();
 // #include "LLVM_Handler.hpp"
 /**
  * @file TensoriumPlugin.cpp
@@ -59,7 +65,8 @@ class TensoriumASTConsumer : public ASTConsumer {
         // 		SourceLocation loc = FD->getBeginLoc();
         // 		for (const auto &entry : TensoriumTargetTable) {
         // 			if (Context.getSourceManager().isBeforeInTranslationUnit(entry.loc,
-        // loc)) { 				std::string fname = FD->getNameAsString(); 				llvm::errs() << "[tensorium] Target("
+        // loc)) { 				std::string fname = FD->getNameAsString();
+        // llvm::errs() << "[tensorium] Target("
         // << entry.platform << ", " << entry.isa
         // 					<< ") applies to function " << fname << "\n";
         //
@@ -300,6 +307,16 @@ class TensoriumPluginAction : public PluginASTAction {
 
 } // namespace
 
-/// @brief Register the plugin under the name "tensorium-dispatch"
-static FrontendPluginRegistry::Add<TensoriumPluginAction> X("tensorium-dispatch",
-                                                            "Handle #pragma tensorium directives");
+// @brief Register the plugin under the name "tensorium-dispatch"
+// Important: we avoid double-free issues by wrapping in a ManagedStatic,
+
+#include "clang/Frontend/FrontendPluginRegistry.h"
+
+// …
+
+using clang::FrontendPluginRegistry;
+
+static FrontendPluginRegistry::Add<TensoriumPluginAction>
+    X("tensorium-dispatch", "Handle #pragma tensorium directives");
+
+
