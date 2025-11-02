@@ -1,13 +1,16 @@
 ![Nouveau projet](https://github.com/user-attachments/assets/5f75f1f9-999d-410b-971e-ba3bd5e8b5e9)
 # Tensorium_lib
-### !!!DISCLAMER!!! 
+> !!!DISCLAMER!!! 
 Tensorium_lib is still in the early development phase, and many of its features work, but I'm not yet convinced of the solidity of some of them (especially the tensor manipulations).
 The python binding is usable without any other python librairy, but I'm still working on it to make it all clean and usable using a simple pip3 install (see the Jupiter Notebook).
 
 **Tensorium_lib** is a high-performance scientific C++ library designed for demanding computational domains such as **numerical relativity**, **machine learning (ML)**, **deep learning (DL)** and general **scientific simulations**.
 
-Here is the full documentation : https://tensoriumcore.github.io/Tensorium_lib/
+## Documentation 
 
+> Here is the full documentation : https://tensoriumcore.github.io/Tensorium_lib/
+
+## Highlight
 It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:
 - **SIMD acceleration** (SSE, AVX2, AVX512),
 - **Multithreading** with OpenMP,
@@ -23,6 +26,70 @@ This library is built with the goal of empowering projects that require both spe
 - Custom neural network training and inference on CPU (not really atm),
 - Fast manipulation of large scientific datasets and image matrices (not atm),
 - Research and education projects needing intuitive yet high-performance numerical tools.
+
+##  Requirements
+
+>  **Recommended:** build and use with **LLVM/Clang** for maximum performance.
+
+###  Core Dependencies
+- **C++17/20 compiler** with `AVX2` / `FMA` support  
+  → `AVX512` is automatically detected and enabled if available  
+  → Recommended: **Clang ≥ 17** or **LLVM ≥ 20**  
+- **OpenMP** (`fopenmp`)
+- **MPI** (for distributed parallelism)
+- **libmemkind-dev** *(required only for Intel Xeon Phi Knight Landing CPUs)*
+- **CMake ≥ 3.16**
+- **Python ≥ 3.10** (for Python bindings)
+- **pybind11**  
+  - Arch Linux: `sudo pacman -S python-pybind11`  
+  - Other: `pip install pybind11 --user`
+- **OpenBLAS** *(optional)* — used for benchmarking against BLAS kernels
+
+---
+## Build Instructions
+
+###  Recommended LLVM/Clang Toolchain
+
+If you want the best performance, use **LLVM/Clang 20+**.
+
+### Install LLVM/Clang (example for Linux)
+
+```bash
+# Clone the official LLVM project
+git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+mkdir llvm-build-release && cd llvm-build-release
+
+# Configure the build
+cmake -G Ninja ../llvm \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DLLVM_ENABLE_PROJECTS="clang;mlir;lld;lldb;openmp" \
+  -DLLVM_TARGETS_TO_BUILD="X86;AArch64;NVPTX" \
+  -DLLVM_ENABLE_RTTI=ON \
+  -DCMAKE_INSTALL_PREFIX=/opt/llvm-20
+
+# Build & install
+ninja -j$(nproc)
+sudo ninja install
+```
+Then you can compile the Tensorium_lib. If you want to use it on your own projects, simply change the Test rule to Srcs (or another) and set the recommended options in the CmakeLists.txt file in the `
+Tests` folder, or add a src rule and create a src folder :
+then
+```cmake
+###inside the main CmakeLists.txt
+if(BUILD_SRCS)
+  add_subdirectory(SRCS)
+endif()
+```
+### Build the lib
+
+```bash
+git clone https://github.com/TensoriumCore/Tensorium_lib.git && cd Tensorium_lib
+mkdir build && cd build
+cmake .. (options if you need, a documentation is comming soon)
+make -j
+```
+The Python module will be created as a .so file in the pybuild/ directory.
 
 ## Highlights
 
@@ -45,43 +112,8 @@ This library is built with the goal of empowering projects that require both spe
 - Some (several) optimizations
 - Plug Tensorium_MLIR and externalize Compiler plugins (subdependencies)
 - ARM support 
-## Build Instructions
 
-### Requirements
-- !!! USE CLANG/LLVM if you want to use the max performances of this lib !!!
-- C++17/20 compiler with AVX2/FMA support or AVX512 if avalaible on your plateform (Intel compilers will be added later)
-- fopenmp
-- MPI
-- libmemkind-dev (if you are using Xeon Phi knight landing CPU)
-- CMake ≥ 3.16
-- Python ≥ 3.10 (for Python bindings)
-- `pybind11` installed (`pacman -S python-pybind11` on Arch, or `pip install pybind11 --user`)
-- OpenBLAS (optional, for benchmarking with BLAS)
 
-## Build over Nix for pythton binding
-
-```bash
-./build_linux.sh && pip install --user -e .
-```
-if you are on Macos :
-```bash
-nix --extra-experimental-features 'nix-command flakes' develop && ./build_macos && pip install --user -e .
-```
-
-Then you can use it as the .ipynb show
-### Build C++ only for special targets and options
-
-```bash
-make                # Default AVX2
-make help	    # Show differents compile options 
-make AVX512=true    # AVX512
-make USE_KNL=true   # MCDRAM Memkind HBW (Xeon phi KNL)
-make DEBUG=true     # debug symbols
-make VERBOSE=true   # VERBOSE log
-make benchmark      # BLAS vs Tensorium mat_mult benchmark
-```
-
-The Python module will be created as a .so file in the pybuild/ directory.
 ### Exemple using in C++
 ```cpp
 #include "Tensorium.hpp"

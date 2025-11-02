@@ -9,6 +9,7 @@ option(DEBUG "Build with debug symbols" OFF)
 option(BUILD_PLUGINS "Build Clang/LLVM plugins" ON)
 option(BUILD_TESTS "Build test executables" ON)
 option(BUILD_PYBIND "Build Python bindings" OFF)
+option(USE_CUDA "Enable CUDA kernels (requires nvcc)" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,8 +29,6 @@ else()
     add_compile_definitions(TENSORIUM_FALLBACK)
 endif()
 
-
-#
 find_package(CUDAToolkit QUIET)
 
 execute_process(
@@ -41,15 +40,12 @@ if (NOT GPU_NAME STREQUAL "none")
   message(STATUS "Detected NVIDIA GPU: ${GPU_NAME}")
   add_compile_definitions(TENSORIUM_GPU_PRESENT)
 else()
-  message(WARNING "⚠️ Aucun GPU NVIDIA détecté (ou nvidia-smi absent)")
+  message(WARNING "No NVIDIA GPU detected or nvidia-smi missing")
 endif()
-
-
-option(USE_CUDA "Enable CUDA kernels (requires nvcc)" OFF)
 
 if (USE_CUDA)
   if (NOT CUDAToolkit_FOUND)
-    message(FATAL_ERROR "USE_CUDA=ON mais aucun CUDA toolkit détecté ⚠️")
+    message(FATAL_ERROR "USE_CUDA=ON but CUDA toolkit not found")
   endif()
 
   message(STATUS "CUDA toolkit found at: ${CUDAToolkit_ROOT}")
@@ -63,17 +59,14 @@ if (USE_CUDA)
   set(CMAKE_CUDA_ARCHITECTURES 61 70 75 80 86 90)
   add_compile_definitions(TENSORIUM_CUDA_ARCH=${CMAKE_CUDA_ARCHITECTURES})
 
-  # Flags NVCC (propres)
   set(CMAKE_CUDA_STANDARD 17)
   set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 -Xcompiler=-fPIC")
-  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math -lineinfo -Wno-deprecated-gpu-targets")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 -Xcompiler=-fPIC --use_fast_math -lineinfo -Wno-deprecated-gpu-targets")
 
   include_directories(${CUDAToolkit_INCLUDE_DIRS})
   link_directories(${CUDAToolkit_LIBRARY_DIR})
 
   message(STATUS "→ CUDA architectures: ${CMAKE_CUDA_ARCHITECTURES}")
-
 else()
   message(STATUS "CUDA support disabled (USE_CUDA=OFF)")
   add_compile_definitions(TENSORIUM_NO_CUDA)
@@ -92,7 +85,7 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "am
     set(CMAKE_CXX_FLAGS "${BASE_FLAGS} ${AVX2_FLAGS}")
   endif()
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-  message(STATUS "Configuring for Apple Silicon ARM64: disabling AVX flags")
+  message(STATUS "Configuring for ARM64: disabling AVX flags")
   set(CMAKE_CXX_FLAGS "-O3 -mcpu=apple-m1 -Wno-ignored-attributes")
 else()
   message(WARNING "Unknown architecture (${CMAKE_SYSTEM_PROCESSOR}); using generic optimization flags.")
