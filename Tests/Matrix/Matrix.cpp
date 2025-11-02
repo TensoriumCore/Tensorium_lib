@@ -34,8 +34,8 @@ int matrix_bench() {
 	std::vector<std::size_t> sizes = {8192};
 
 	for (std::size_t N : sizes) {
-		Matrix<double> A(N, N);
-		Matrix<double> B(N, N);
+		Matrix<float> A(N, N);
+		Matrix<float> B(N, N);
 
 #pragma omp parallel
 		{
