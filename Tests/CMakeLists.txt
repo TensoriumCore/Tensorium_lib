@@ -1,3 +1,4 @@
+
 file(GLOB TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix/*.cpp
@@ -29,6 +30,36 @@ if(USE_KNL)
   target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
   target_link_libraries(TensoriumTests PRIVATE memkind)
 endif()
+
+find_library(OPENBLAS_LIB
+    NAMES openblasp openblas
+    PATHS /opt/OpenBLAS/lib /usr/lib64 /usr/lib /usr/local/lib
+)
+
+if(OPENBLAS_LIB)
+  message(STATUS "OpenBLAS found: ${OPENBLAS_LIB}")
+  target_link_libraries(TensoriumTests PRIVATE ${OPENBLAS_LIB})
+
+  if(EXISTS "/opt/OpenBLAS/include/cblas.h")
+    target_include_directories(TensoriumTests PRIVATE /opt/OpenBLAS/include)
+  elseif(EXISTS "/usr/include/openblas/cblas.h")
+    target_include_directories(TensoriumTests PRIVATE /usr/include/openblas)
+  elseif(EXISTS "/usr/include/cblas.h")
+    target_include_directories(TensoriumTests PRIVATE /usr/include)
+  endif()
+
+else()
+  find_package(BLAS)
+  if(BLAS_FOUND)
+    message(STATUS "CMake BLAS found: ${BLAS_LIBRARIES}")
+    target_link_libraries(TensoriumTests PRIVATE ${BLAS_LIBRARIES})
+  else()
+    message(WARNING " No BLAS/OpenBLAS library found — BLAS tests will be skipped.")
+  endif()
+endif()
+
+
+
 # set(DISPATCH_PLUGIN_PATH "${CMAKE_BINARY_DIR}/Plugins/libTensoriumDispatchPlugin.so")
 #
 # add_dependencies(TensoriumTests TensoriumDispatchPlugin)

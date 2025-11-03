@@ -45,7 +45,7 @@ template <typename K> class BSSNAtildeTensor {
     tensorium::Tensor<K, 2> compute_Atilde_tensor(const tensorium::Tensor<K, 2> &Kij,
                                                   const tensorium::Tensor<K, 2> &gamma_inv,
                                                   const tensorium::Tensor<K, 2> &gamma, K chi) {
-        K trace_K = K(0);
+        K trace_K = 0.;
         for (size_t i = 0; i < 3; ++i)
             for (size_t j = 0; j < 3; ++j)
                 trace_K += gamma_inv(i, j) * Kij(i, j);

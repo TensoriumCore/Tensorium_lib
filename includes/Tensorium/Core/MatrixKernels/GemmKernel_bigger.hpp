@@ -22,9 +22,9 @@ template <typename T> class GemmKernelBigger {
     static constexpr int TileCols = 6;
     static constexpr int NThreads = 72;
 
-    static constexpr int BlockDepth = 256;
-    static constexpr int BlockRows = 384;
-    static constexpr int BlockCols = 512;
+    // static constexpr int BlockDepth = 256;
+    // static constexpr int BlockRows = 384;
+    // static constexpr int BlockCols = 512;
 
     static inline int8_t mask[32] __attribute__((aligned(64))) = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -507,7 +507,7 @@ template <typename T> class GemmKernelBigger {
         Simd::maskstore(&C[5 * M + 8], packed_mask_1, *C_accum_51);
     }
 
-    void kernel_16x6_load_accum(T *blockA_packed, T *blockB_packed, T *C, int mr, int nr, int kc,
+    void kernel_16x6_load_accum(T* __restrict blockA_packed, T* __restrict blockB_packed, T* __restrict C, int mr, int nr, int kc,
                                 int M) {
         reg C_accum_00 = {};
         reg C_accum_01 = {};
@@ -651,7 +651,7 @@ template <typename T> class GemmKernelBigger {
         }
     }
 
-    void kernel_16x6_zero_init_accum(T *blockA_packed, T *blockB_packed, T *C, int mr, int nr,
+    void kernel_16x6_zero_init_accum(T* __restrict blockA_packed, T* __restrict blockB_packed, T* __restrict C, int mr, int nr,
                                      int kc, int M) {
         reg C_accum_00 = {};
         reg C_accum_01 = {};

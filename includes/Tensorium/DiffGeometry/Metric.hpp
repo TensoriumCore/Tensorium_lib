@@ -86,11 +86,35 @@ template <typename T> class Metric {
         tensorium::Tensor<T, 2> g({4, 4});
         (*this)(X, g);
 
-        alpha = std::sqrt(-g({0, 0}));
+        T                    H = 0.0;
+        tensorium::Vector<T> l(3);
 
-        beta.resize(3);
-        for (size_t i = 0; i < 3; ++i)
-            beta(i) = g(0, i + 1);
+        if (type == "kerr_schild") {
+            T x = X(1), y = X(2), z = X(3);
+            T r = std::sqrt(x * x + y * y + z * z);
+            T denom = r * r + a * a;
+            H = (denom > 1e-14) ? M * r / denom : 0.0;
+
+            l(0) = (r * x + a * y) / denom;
+            l(1) = (r * y - a * x) / denom;
+            l(2) = z / r;
+
+            T norm = std::sqrt(l(0) * l(0) + l(1) * l(1) + l(2) * l(2));
+            if (norm > 1e-14) {
+                l(0) /= norm;
+                l(1) /= norm;
+                l(2) /= norm;
+            }
+        }
+
+        alpha = 1.0 / std::sqrt(1.0 + 2.0 * H);
+
+        for (int i = 0; i < 3; ++i)
+            beta(i) = (2.0 * H / (1.0 + 2.0 * H)) * l(i);
+
+        // beta.resize(3);
+        // for (size_t i = 0; i < 3; ++i)
+        //     beta(i) = g(0, i + 1);
 
         gamma.resize(3, 3);
         for (size_t i = 0; i < 3; ++i)
