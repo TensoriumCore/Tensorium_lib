@@ -30,6 +30,19 @@ if(USE_KNL)
   target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
   target_link_libraries(TensoriumTests PRIVATE memkind)
 endif()
+# ─────────────────────────────── ASM / LLVM dump options ───────────────────────────────
+option(DUMP_ASM "Dump generated assembly (.s files) for inspection" OFF)
+option(DUMP_LLVM "Dump LLVM IR (.ll files) for inspection" OFF)
+
+if(DUMP_ASM)
+  message(STATUS "Assembly dump enabled (-S -masm=intel -fverbose-asm)")
+  add_compile_options(-S -masm=intel -fverbose-asm)
+endif()
+
+if(DUMP_LLVM)
+  message(STATUS "LLVM IR dump enabled (-emit-llvm -S)")
+  add_compile_options(-emit-llvm -S)
+endif()
 
 find_library(OPENBLAS_LIB
     NAMES openblasp openblas

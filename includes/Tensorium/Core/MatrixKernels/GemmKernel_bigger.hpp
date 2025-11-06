@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
+#include <omp.h>
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
  * sizes
@@ -20,7 +21,7 @@ template <typename T> class GemmKernelBigger {
     static constexpr int SimdWidth = Simd::width;
     static constexpr int TileRows = SimdWidth * 4;
     static constexpr int TileCols = 6;
-    static constexpr int NThreads = 72;
+    static constexpr int NThreads = 36;
 
     // static constexpr int BlockDepth = 256;
     // static constexpr int BlockRows = 384;
@@ -196,7 +197,7 @@ template <typename T> class GemmKernelBigger {
     }
 
     inline static void build_masks(__m256i *packed_mask_0, __m256i *packed_mask_1, int mr) {
-#if defined(__AVX512F__)
+#    if defined(__AVX512F__)
         __m128i m0 = _mm_loadu_si128(reinterpret_cast<const __m128i *>(&mask[32 - mr]));
         __m128i m1 = _mm_loadu_si128(reinterpret_cast<const __m128i *>(&mask[32 - mr + 16]));
 
@@ -206,15 +207,15 @@ template <typename T> class GemmKernelBigger {
         *packed_mask_0 = _mm512_castsi512_si256(p0);
         *packed_mask_1 = _mm512_castsi512_si256(p1);
 
-#elif defined(__AVX2__)
+#    elif defined(__AVX2__)
         __m128i m0 = _mm_loadl_epi64(reinterpret_cast<const __m128i *>(&mask[16 - mr]));
         __m128i m1 = _mm_loadl_epi64(reinterpret_cast<const __m128i *>(&mask[16 - mr + 8]));
 
         *packed_mask_0 = _mm256_cvtepi8_epi32(m0);
         *packed_mask_1 = _mm256_cvtepi8_epi32(m1);
-#else
-#    error "AVX2 or AVX-512 required"
-#endif
+#    else
+#        error "AVX2 or AVX-512 required"
+#    endif
     }
 
     inline void maskload_accum_00(T *C, reg *C_accum_00, reg *C_accum_01, __m256i packed_mask_0,
@@ -507,8 +508,8 @@ template <typename T> class GemmKernelBigger {
         Simd::maskstore(&C[5 * M + 8], packed_mask_1, *C_accum_51);
     }
 
-    void kernel_16x6_load_accum(T* __restrict blockA_packed, T* __restrict blockB_packed, T* __restrict C, int mr, int nr, int kc,
-                                int M) {
+    inline void kernel_16x6_load_accum(T *__restrict blockA_packed, T *__restrict blockB_packed,
+                                       T *__restrict C, int mr, int nr, int kc, int M) {
         reg C_accum_00 = {};
         reg C_accum_01 = {};
         reg C_accum_10 = {};
@@ -651,8 +652,9 @@ template <typename T> class GemmKernelBigger {
         }
     }
 
-    void kernel_16x6_zero_init_accum(T* __restrict blockA_packed, T* __restrict blockB_packed, T* __restrict C, int mr, int nr,
-                                     int kc, int M) {
+    inline void kernel_16x6_zero_init_accum(T *__restrict blockA_packed,
+                                            T *__restrict blockB_packed, T *__restrict C, int mr,
+                                            int nr, int kc, int M) {
         reg C_accum_00 = {};
         reg C_accum_01 = {};
         reg C_accum_10 = {};
@@ -769,25 +771,25 @@ template <typename T> class GemmKernelBigger {
         }
     }
 
-#ifndef NTHREADS
-#    define NTHREADS 36
-#endif
+#    ifndef NTHREADS
+#        define NTHREADS 36
+#    endif
 
-#define MC (16 * (40 / NTHREADS) * NTHREADS)
-#define NC (6 * (800 / NTHREADS) * NTHREADS)
-#define KC 500
+#    define KC 512
+#    define MC 384
+#    define NC 4096
 
-#ifndef OMP_SCHEDULE
-#    define OMP_SCHEDULE auto
-#endif
-#define _min(x, y) ((x) < (y) ? (x) : (y))
-#define PRAGMA_OMP_PARALLEL_FOR                                                                    \
-    _Pragma("omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)")
+#    ifndef OMP_SCHEDULE
+#        define OMP_SCHEDULE dynamic
+#    endif
+#    define _min(x, y) ((x) < (y) ? (x) : (y))
+#    define PRAGMA_OMP_PARALLEL_FOR                                                                \
+        _Pragma("omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)")
 
     static T blockA_packed[MC * KC] __attribute__((aligned(64)));
     static T blockB_packed[NC * KC] __attribute__((aligned(64)));
 
-    void pack_panelB(T *B, T *blockB_packed, int nr, int kc, int K) {
+    inline void pack_panelB(T *B, T *blockB_packed, int nr, int kc, int K) {
         for (int p = 0; p < kc; p++) {
             for (int j = 0; j < nr; j++) {
                 *blockB_packed++ = B[j * K + p];
@@ -799,14 +801,14 @@ template <typename T> class GemmKernelBigger {
     }
 
     void pack_blockB(T *B, T *blockB_packed, int nc, int kc, int K) {
-#pragma omp for schedule(dynamic)
+#    pragma omp for schedule(dynamic)
         for (int j = 0; j < nc; j += 6) {
             int nr = _min(6, nc - j);
             pack_panelB(&B[j * K], &blockB_packed[j * kc], nr, kc, K);
         }
     }
 
-    void pack_panelA(T *A, T *blockA_packed, int mr, int kc, int M) {
+    inline void pack_panelA(T *A, T *blockA_packed, int mr, int kc, int M) {
         for (int p = 0; p < kc; p++) {
             for (int i = 0; i < mr; i++) {
                 *blockA_packed++ = A[p * M + i];
@@ -817,15 +819,22 @@ template <typename T> class GemmKernelBigger {
         }
     }
 
-    void pack_blockA(T *A, T *blockA_packed, int mc, int kc, int M) {
+    inline void pack_blockA(T *A, T *blockA_packed, int mc, int kc, int M) {
         PRAGMA_OMP_PARALLEL_FOR
         for (int i = 0; i < mc; i += 16) {
             int mr = _min(16, mc - i);
             pack_panelA(&A[i], &blockA_packed[i * kc], mr, kc, M);
         }
     }
-
     void matmul(T *A, T *B, T *C, int M, int N, int K) {
+#    pragma omp parallel
+        {
+            int       tid = omp_get_thread_num();
+            cpu_set_t cpuset;
+            CPU_ZERO(&cpuset);
+            CPU_SET(tid % 36, &cpuset);
+            sched_setaffinity(0, sizeof(cpuset), &cpuset);
+        }
         for (int j = 0; j < N; j += NC) {
             int nc = _min(NC, N - j);
             int kc = _min(KC, K);
