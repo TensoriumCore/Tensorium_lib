@@ -29,6 +29,16 @@ else()
     add_compile_definitions(TENSORIUM_FALLBACK)
 endif()
 
+find_library(NUMA_LIB numa)
+if (NUMA_LIB)
+    message(STATUS "→ libnuma detected: enabling NUMA-aware allocation")
+    add_compile_definitions(USE_NUMA)
+    set(HAVE_NUMA TRUE)
+else()
+    message(WARNING "libnuma not found: NUMA support disabled")
+    set(HAVE_NUMA FALSE)
+endif()
+
 find_package(CUDAToolkit QUIET)
 
 execute_process(
@@ -121,6 +131,10 @@ else()
   endif()
 endif()
 
+if (HAVE_NUMA)
+    message(STATUS "→ Linking libnuma to all targets (NUMA-aware allocation enabled)")
+    link_libraries(${NUMA_LIB})
+endif()
 if(BUILD_PLUGINS)
   add_subdirectory(Plugins)
 endif()

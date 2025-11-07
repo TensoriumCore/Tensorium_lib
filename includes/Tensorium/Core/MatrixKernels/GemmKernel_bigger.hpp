@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <omp.h>
+#include <cstdint>
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
  * sizes
@@ -826,7 +827,8 @@ template <typename T> class GemmKernelBigger {
             pack_panelA(&A[i], &blockA_packed[i * kc], mr, kc, M);
         }
     }
-    void matmul(T *A, T *B, T *C, int M, int N, int K) {
+    void matmul(T *A, T *B, T *C, int M, int N, int K) { 
+	__asm volatile("# LLVM-MCA-BEGIN foo":::"memory");
 #    pragma omp parallel
         {
             int       tid = omp_get_thread_num();
