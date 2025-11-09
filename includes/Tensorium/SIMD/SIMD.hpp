@@ -3,10 +3,12 @@
 #include <complex>
 #include <cstddef>
 #include <cstring>
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include <type_traits>
 #include <vector>
+#include "Analyzer.hpp"
 
 #if defined(__x86_64__) || defined(_M_X64)
 #    include <cpuid.h>

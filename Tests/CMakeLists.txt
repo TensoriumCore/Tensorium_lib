@@ -1,4 +1,3 @@
-
 file(GLOB TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Matrix/*.cpp
@@ -30,17 +29,15 @@ if(USE_KNL)
   target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
   target_link_libraries(TensoriumTests PRIVATE memkind)
 endif()
-# ─────────────────────────────── ASM / LLVM dump options ───────────────────────────────
+
 option(DUMP_ASM "Dump generated assembly (.s files) for inspection" OFF)
 option(DUMP_LLVM "Dump LLVM IR (.ll files) for inspection" OFF)
 
 if(DUMP_ASM)
-  message(STATUS "Assembly dump enabled (-S -masm=intel -fverbose-asm)")
   add_compile_options(-S -masm=intel -fverbose-asm)
 endif()
 
 if(DUMP_LLVM)
-  message(STATUS "LLVM IR dump enabled (-emit-llvm -S)")
   add_compile_options(-emit-llvm -S)
 endif()
 
@@ -50,34 +47,71 @@ find_library(OPENBLAS_LIB
 )
 
 if(OPENBLAS_LIB)
-  message(STATUS "OpenBLAS found: ${OPENBLAS_LIB}")
   target_link_libraries(TensoriumTests PRIVATE ${OPENBLAS_LIB})
-
   if(EXISTS "/opt/OpenBLAS/include/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /opt/OpenBLAS/include)
+    set(BLAS_INCLUDE_DIR "/opt/OpenBLAS/include")
   elseif(EXISTS "/usr/include/openblas/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /usr/include/openblas)
+    set(BLAS_INCLUDE_DIR "/usr/include/openblas")
   elseif(EXISTS "/usr/include/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /usr/include)
+    set(BLAS_INCLUDE_DIR "/usr/include")
   endif()
-
+  if(DEFINED BLAS_INCLUDE_DIR)
+    target_include_directories(TensoriumTests PRIVATE ${BLAS_INCLUDE_DIR})
+  endif()
 else()
   find_package(BLAS)
   if(BLAS_FOUND)
-    message(STATUS "CMake BLAS found: ${BLAS_LIBRARIES}")
     target_link_libraries(TensoriumTests PRIVATE ${BLAS_LIBRARIES})
-  else()
-    message(WARNING " No BLAS/OpenBLAS library found — BLAS tests will be skipped.")
+  endif()
+endif()
+option(GENERATE_BC "Emit LLVM bitcode (.bc) for TensoriumTests" OFF)
+
+if(GENERATE_BC)
+  set(BC_OUTPUT_DIR "${CMAKE_BINARY_DIR}/out/bitcode")
+  file(MAKE_DIRECTORY ${BC_OUTPUT_DIR})
+
+  if(TARGET TensoriumTests)
+    get_target_property(target_sources TensoriumTests SOURCES)
+    get_target_property(target_includes TensoriumTests INCLUDE_DIRECTORIES)
+    separate_arguments(CLANG_FLAGS UNIX_COMMAND "${CMAKE_CXX_FLAGS}")
+
+    set(INCLUDE_ARGS "")
+    if(DEFINED target_includes)
+      foreach(inc ${target_includes})
+        list(APPEND INCLUDE_ARGS "-I${inc}")
+      endforeach()
+    endif()
+    if(DEFINED BLAS_INCLUDE_DIR)
+      list(APPEND INCLUDE_ARGS "-I${BLAS_INCLUDE_DIR}")
+    endif()
+    if(EXISTS "${CMAKE_SOURCE_DIR}/Includes")
+      list(APPEND INCLUDE_ARGS "-I${CMAKE_SOURCE_DIR}/Includes")
+    endif()
+
+    set(BC_FILES "")
+    foreach(src ${target_sources})
+      get_filename_component(src_name ${src} NAME_WE)
+      set(bc_file "${BC_OUTPUT_DIR}/${src_name}.bc")
+      add_custom_command(
+        OUTPUT ${bc_file}
+        COMMAND ${CMAKE_CXX_COMPILER}
+                -emit-llvm -c ${src}
+                -std=c++17
+                ${CLANG_FLAGS}
+                ${INCLUDE_ARGS}
+                -o ${bc_file}
+        DEPENDS ${src}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        VERBATIM
+      )
+      list(APPEND BC_FILES ${bc_file})
+    endforeach()
+
+    add_custom_target(tensorium_bc ALL
+      COMMAND llvm-link ${BC_FILES} -o ${BC_OUTPUT_DIR}/Tensorium_full.bc
+      DEPENDS ${BC_FILES}
+      VERBATIM
+    )
   endif()
 endif()
 
-
-
-# set(DISPATCH_PLUGIN_PATH "${CMAKE_BINARY_DIR}/Plugins/libTensoriumDispatchPlugin.so")
-#
-# add_dependencies(TensoriumTests TensoriumDispatchPlugin)
-#
-# # inject the clang plugin (frontend)
-# set_property(TARGET TensoriumTests APPEND_STRING PROPERTY COMPILE_FLAGS
-#     " -Xclang -load -Xclang ${DISPATCH_PLUGIN_PATH} -Xclang -add-plugin -Xclang tensorium-dispatch"
-# )

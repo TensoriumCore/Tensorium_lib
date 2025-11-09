@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Matrix.hpp"
+#define TENSORIUM_DUMP     __attribute__((noinline, used, annotate("tensorium_dump")))
+#define TENSORIUM_ANNOTATE __attribute__((annotate("tensorium_dump")))
 
 namespace tensorium {
 
@@ -47,6 +49,8 @@ template <typename K> class MatrixKernel : public Matrix<K, true> {
      * @param B Right-hand matrix.
      * @return Result of multiplication.
      */
+	TENSORIUM_DUMP
+	__attribute__((noinline))
     inline Matrix<K> mul_mat2x2(const MatrixKernel<K> &B) const {
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
