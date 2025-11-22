@@ -22,7 +22,11 @@
 #if defined(TENSORIUM_X86)
 #    define ALIGN 32
 #elif defined(TENSORIUM_ARM)
+#    include <arm_neon.h>
+#    define TENSORIUM_ARM 1
 #    define ALIGN 16
+#    define SIMD_WIDTH 4
+#    define UNROLL 32 
 #else
 #    define ALIGN 8
 #endif
@@ -47,7 +51,6 @@
 
 namespace simd {
 
-// ────────────── Forward declaration (indispensable) ──────────────
 template <typename T, typename ISA> struct SimdTraits;
 
 } // namespace simd
@@ -1059,14 +1062,22 @@ template <> struct SimdTraits<std::complex<double>, avx512_t> {
 } // namespace simd
 
 #endif // TENSORIUM_X86
-
 #ifdef TENSORIUM_ARM
-// ───────────────────────── ARM / NEON types ─────────────────────────
+#    include <arm_neon.h>
+
+#    define ALIGN 16
+#    define SIMD_WIDTH 4
+#    define UNROLL 32
+
+struct complex_reg_f32 { float32x4_t v; };
+struct complex_reg_f64 { float64x2_t v; };
+
 struct neon32_t {
     static constexpr size_t width = 4;
     using reg = float32x4_t;
     static constexpr size_t alignment = 16;
 };
+
 struct neon64_t {
     static constexpr size_t width = 2;
     using reg = float64x2_t;
@@ -1087,10 +1098,6 @@ static inline float32x4_t andnot_f32(float32x4_t a, float32x4_t b) {
     uint32x4_t na = veorq_u32(vreinterpretq_u32_f32(a), vdupq_n_u32(~0u));
     return vreinterpretq_f32_u32(vandq_u32(na, vreinterpretq_u32_f32(b)));
 }
-static inline float64x2_t andnot_f64(float64x2_t a, float64x2_t b) {
-    uint64x2_t na = veorq_u64(vreinterpretq_u64_f64(a), vdupq_n_u64(~0ULL));
-    return vreinterpretq_f64_u64(vandq_u64(na, vreinterpretq_u64_f64(b)));
-}
 
 template <> struct SimdTraits<float, neon32_t> {
     using reg = float32x4_t;
@@ -1098,26 +1105,31 @@ template <> struct SimdTraits<float, neon32_t> {
     static constexpr size_t alignment = 16;
     using reg_aligned = aligned_reg<reg, alignment>;
 
-    static inline reg  set1(float x) { return vdupq_n_f32(x); }
-    static inline reg  load(const float *p) { return vld1q_f32(p); }
-    static inline reg  loadu(const float *p) { return vld1q_f32(p); }
-    static inline void store(float *p, reg v) { vst1q_f32(p, v); }
-    static inline void storeu(float *p, reg v) { vst1q_f32(p, v); }
-    static inline void store_stream(float *p, reg v) { vst1q_f32(p, v); } // pas de NT-store NEON
-    static inline reg  zero() { return vdupq_n_f32(0.f); }
-    static inline reg  add(reg a, reg b) { return vaddq_f32(a, b); }
-    static inline reg  sub(reg a, reg b) { return vsubq_f32(a, b); }
-    static inline reg  mul(reg a, reg b) { return vmulq_f32(a, b); }
-#    if defined(__aarch64__)
-    static inline reg fmadd(reg a, reg b, reg c) { return vfmaq_f32(c, a, b); } // c + a*b
-#    else
+    static inline reg   set1(float x) { return vdupq_n_f32(x); }
+    static inline reg   load(const float *p) { return vld1q_f32(p); }
+    static inline reg   loadu(const float *p) { return vld1q_f32(p); }
+    static inline void  store(float *p, reg v) { vst1q_f32(p, v); }
+    static inline void  storeu(float *p, reg v) { vst1q_f32(p, v); }
+    static inline void  store_stream(float *p, reg v) { vst1q_f32(p, v); }
+    
+    static inline reg   zero() { return vdupq_n_f32(0.f); }
+    static inline reg   setzero() { return zero(); }
+
+    static inline reg   add(reg a, reg b) { return vaddq_f32(a, b); }
+    static inline reg   sub(reg a, reg b) { return vsubq_f32(a, b); }
+    static inline reg   mul(reg a, reg b) { return vmulq_f32(a, b); }
+    
+#   if defined(__aarch64__)
+    static inline reg fmadd(reg a, reg b, reg c) { return vfmaq_f32(c, a, b); }
+#   else
     static inline reg fmadd(reg a, reg b, reg c) { return vaddq_f32(c, vmulq_f32(a, b)); }
-#    endif
+#   endif
+    static inline reg fma(reg a, reg b, reg c) { return fmadd(a,b,c); }
+
     static inline reg max(reg a, reg b) { return vmaxq_f32(a, b); }
     static inline reg min(reg a, reg b) { return vminq_f32(a, b); }
     static inline reg andnot(reg a, reg b) { return andnot_f32(a, b); }
 
-    // float (neon32_t)
     static inline float extract(reg x, size_t idx) {
         alignas(16) float t[4];
         vst1q_f32(t, x);
@@ -1125,46 +1137,48 @@ template <> struct SimdTraits<float, neon32_t> {
     }
 
     static inline float horizontal_add(reg v) {
-        float32x2_t lo = vget_low_f32(v);
-        float32x2_t hi = vget_high_f32(v);
-        float32x2_t s = vadd_f32(lo, hi);
-        s = vpadd_f32(s, s);
-        return vget_lane_f32(s, 0);
+        return vaddvq_f32(v);
     }
 };
 
-template <> struct SimdTraits<double, neon64_t> {
+template <> struct SimdTraits<double, neon32_t> {
     using reg = float64x2_t;
     static constexpr size_t width = 2;
     static constexpr size_t alignment = 16;
     using reg_aligned = aligned_reg<reg, alignment>;
 
-    static inline reg  set1(double x) { return vdupq_n_f64(x); }
-    static inline reg  load(const double *p) { return vld1q_f64(p); }
-    static inline reg  loadu(const double *p) { return vld1q_f64(p); }
-    static inline void store(double *p, reg v) { vst1q_f64(p, v); }
-    static inline void storeu(double *p, reg v) { vst1q_f64(p, v); }
-    static inline void store_stream(double *p, reg v) { vst1q_f64(p, v); }
-    static inline reg  zero() { return vdupq_n_f64(0.0); }
-    static inline reg  add(reg a, reg b) { return vaddq_f64(a, b); }
-    static inline reg  sub(reg a, reg b) { return vsubq_f64(a, b); }
-    static inline reg  mul(reg a, reg b) { return vmulq_f64(a, b); }
-#    if defined(__aarch64__)
+    static inline reg   set1(double x) { return vdupq_n_f64(x); }
+    static inline reg   load(const double *p) { return vld1q_f64(p); }
+    static inline reg   loadu(const double *p) { return vld1q_f64(p); }
+    static inline void  store(double *p, reg v) { vst1q_f64(p, v); }
+    static inline void  storeu(double *p, reg v) { vst1q_f64(p, v); }
+    static inline void  store_stream(double *p, reg v) { vst1q_f64(p, v); }
+    
+    static inline reg   zero() { return vdupq_n_f64(0.0); }
+    static inline reg   setzero() { return zero(); }
+
+    static inline reg   add(reg a, reg b) { return vaddq_f64(a, b); }
+    static inline reg   sub(reg a, reg b) { return vsubq_f64(a, b); }
+    static inline reg   mul(reg a, reg b) { return vmulq_f64(a, b); }
+
+#   if defined(__aarch64__)
     static inline reg fmadd(reg a, reg b, reg c) { return vfmaq_f64(c, a, b); }
-#    else
+#   else
     static inline reg fmadd(reg a, reg b, reg c) { return vaddq_f64(c, vmulq_f64(a, b)); }
-#    endif
-    static inline reg    max(reg a, reg b) { return vmaxq_f64(a, b); }
-    static inline reg    min(reg a, reg b) { return vminq_f64(a, b); }
-    static inline reg    andnot(reg a, reg b) { return andnot_f32(a, b); }
-    static inline double extract(reg x, size_t idx = 0) {
+#   endif
+    static inline reg fma(reg a, reg b, reg c) { return fmadd(a, b, c); }
+
+    static inline reg max(reg a, reg b) { return vmaxq_f64(a, b); }
+    static inline reg min(reg a, reg b) { return vminq_f64(a, b); }
+    
+    static inline double extract(reg x, size_t idx) {
         alignas(16) double t[2];
         vst1q_f64(t, x);
         return t[idx & 1];
     }
+    
     static inline double horizontal_add(reg v) {
-        float64x1_t s = vadd_f64(vget_low_f64(v), vget_high_f64(v));
-        return vget_lane_f64(s, 0);
+        return vaddvq_f64(v);
     }
 };
 
@@ -1174,143 +1188,160 @@ template <> struct SimdTraits<size_t, neon32_t> {
     static constexpr size_t alignment = 16;
     using reg_aligned = aligned_reg<reg, alignment>;
 
-    static inline reg  set1(size_t x) { return vdupq_n_u64((uint64_t)x); }
-    static inline reg  load(const size_t *p) { return vld1q_u64((const uint64_t *)p); }
-    static inline reg  loadu(const size_t *p) { return vld1q_u64((const uint64_t *)p); }
-    static inline void store(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
-    static inline void storeu(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
-    static inline void store_stream(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
-    static inline reg  zero() { return vdupq_n_u64(0); }
-    static inline reg  add(reg a, reg b) { return vaddq_u64(a, b); }
-    static inline reg  sub(reg a, reg b) { return vsubq_u64(a, b); }
-    static inline reg  mul(reg a, reg b) {
+    static inline reg   set1(size_t x) { return vdupq_n_u64((uint64_t)x); }
+    static inline reg   load(const size_t *p) { return vld1q_u64((const uint64_t *)p); }
+    static inline reg   loadu(const size_t *p) { return vld1q_u64((const uint64_t *)p); }
+    static inline void  store(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
+    static inline void  storeu(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
+    static inline void  store_stream(size_t *p, reg v) { vst1q_u64((uint64_t *)p, v); }
+    static inline reg   zero() { return vdupq_n_u64(0); }
+    static inline reg   setzero() { return zero(); }
+    
+    static inline reg   add(reg a, reg b) { return vaddq_u64(a, b); }
+    static inline reg   sub(reg a, reg b) { return vsubq_u64(a, b); }
+    
+    static inline reg   mul(reg a, reg b) {
         uint64_t A[2], B[2], R[2];
-        vst1q_u64(A, a);
-        vst1q_u64(B, b);
-        R[0] = A[0] * B[0];
-        R[1] = A[1] * B[1];
+        vst1q_u64(A, a); vst1q_u64(B, b);
+        R[0] = A[0] * B[0]; R[1] = A[1] * B[1];
         return vld1q_u64(R);
     }
     static inline reg fmadd(reg a, reg b, reg c) {
         uint64_t A[2], B[2], C[2], R[2];
-        vst1q_u64(A, a);
-        vst1q_u64(B, b);
-        vst1q_u64(C, c);
-        R[0] = A[0] * B[0] + C[0];
-        R[1] = A[1] * B[1] + C[1];
+        vst1q_u64(A, a); vst1q_u64(B, b); vst1q_u64(C, c);
+        R[0] = A[0] * B[0] + C[0]; R[1] = A[1] * B[1] + C[1];
         return vld1q_u64(R);
     }
+    static inline reg fma(reg a, reg b, reg c) { return fmadd(a,b,c); }
+
     static inline reg andnot(reg a, reg b) {
         uint64x2_t na = veorq_u64(a, vdupq_n_u64(~0ULL));
         return vandq_u64(na, b);
     }
+    
     static inline size_t extract(reg x, size_t idx) {
         alignas(16) uint64_t t[2];
         vst1q_u64(t, x);
-        return (size_t)t[idx & 1];
+        return t[idx & 1];
     }
+    
     static inline uint64_t horizontal_add(reg v) {
-        alignas(16) uint64_t t[2];
-        vst1q_u64(t, v);
-        return t[0] + t[1];
+         uint64_t low = vgetq_lane_u64(v, 0);
+         uint64_t high = vgetq_lane_u64(v, 1);
+         return low + high;
     }
 };
 
-// ───────────────────────── complexes (implémentation minimale) ─────────────────────────
 template <> struct SimdTraits<std::complex<float>, neon32_t> {
-    using reg = float32x4_t; // 2 complexes (re0,im0,re1,im1)
+    using reg = complex_reg_f32; // UTILISATION DU WRAPPER
     static constexpr size_t width = 2;
     static constexpr size_t alignment = 16;
     using reg_aligned = aligned_reg<reg, alignment>;
 
     static inline reg set1(std::complex<float> x) {
         float t[4] = {x.real(), x.imag(), x.real(), x.imag()};
-        return vld1q_f32(t);
+        return { vld1q_f32(t) };
     }
-    static inline reg load(const std::complex<float> *p) {
-        return vld1q_f32(reinterpret_cast<const float *>(p));
-    }
-    static inline void store(std::complex<float> *p, reg v) {
-        vst1q_f32(reinterpret_cast<float *>(p), v);
-    }
-    static inline reg add(reg a, reg b) { return vaddq_f32(a, b); }
-    static inline reg sub(reg a, reg b) { return vsubq_f32(a, b); }
+    static inline reg load(const std::complex<float> *p) { return { vld1q_f32(reinterpret_cast<const float *>(p)) }; }
+    static inline reg loadu(const std::complex<float> *p) { return { vld1q_f32(reinterpret_cast<const float *>(p)) }; }
+    
+    static inline void store(std::complex<float> *p, reg r) { vst1q_f32(reinterpret_cast<float *>(p), r.v); }
+    static inline void storeu(std::complex<float> *p, reg r) { vst1q_f32(reinterpret_cast<float *>(p), r.v); }
+    
+    static inline reg zero() { return { vdupq_n_f32(0.0f) }; }
+    static inline reg setzero() { return zero(); }
+
+    static inline reg add(reg a, reg b) { return { vaddq_f32(a.v, b.v) }; }
+    static inline reg sub(reg a, reg b) { return { vsubq_f32(a.v, b.v) }; }
+    
     static inline reg mul(reg a, reg b) {
-        // a = [ar0, ai0, ar1, ai1], b idem
-        float32x4_t ar = vuzpq_f32(a, a).val[0]; // [ar0, ar1, ar0, ar1] (approx via unzip)
-        float32x4_t ai = vuzpq_f32(a, a).val[1]; // [ai0, ai1, ai0, ai1]
-        float32x4_t br = vuzpq_f32(b, b).val[0];
-        float32x4_t bi = vuzpq_f32(b, b).val[1];
-        // real = ar*br - ai*bi ; imag = ar*bi + ai*br
+        float32x4_t av = a.v; float32x4_t bv = b.v;
+        float32x4_t ar = vuzpq_f32(av, av).val[0]; 
+        float32x4_t ai = vuzpq_f32(av, av).val[1]; 
+        float32x4_t br = vuzpq_f32(bv, bv).val[0];
+        float32x4_t bi = vuzpq_f32(bv, bv).val[1];
+        
         float32x4_t real = vsubq_f32(vmulq_f32(ar, br), vmulq_f32(ai, bi));
         float32x4_t imag = vaddq_f32(vmulq_f32(ar, bi), vmulq_f32(ai, br));
-        // re/Im re-mix: interleave real/imag pairs
-        float32x4_t lo = vzip1q_f32(real, imag); // [re0, im0, re1, im1]
-        return lo;
+        return { vzip1q_f32(real, imag) }; 
     }
-    static inline std::complex<float> horizontal_add(reg v) {
+
+    static inline reg fmadd(reg a, reg b, reg c) {
+        reg prod = mul(a, b);
+        return add(prod, c);
+    }
+    static inline reg fma(reg a, reg b, reg c) { return fmadd(a, b, c); }
+
+    static inline std::complex<float> extract(reg x, size_t idx) {
+        alignas(16) float t[4];
+        vst1q_f32(t, x.v);
+        return std::complex<float>(t[idx*2], t[idx*2 + 1]);
+    }
+
+    static inline std::complex<float> horizontal_add(reg x) {
         float t[4];
-        vst1q_f32(t, v);
+        vst1q_f32(t, x.v);
         return {t[0] + t[2], t[1] + t[3]};
     }
 };
 
-template <> struct SimdTraits<std::complex<double>, neon64_t> {
-    using reg = float64x2_t; // 1 complexe (re, im)
+template <> struct SimdTraits<std::complex<double>, neon32_t> {
+    using reg = complex_reg_f64; // UTILISATION DU WRAPPER
     static constexpr size_t width = 1;
     static constexpr size_t alignment = 16;
-    using reg_aligned = aligned_reg<reg, alignment>;
-
+    
     static inline reg set1(std::complex<double> x) {
         double t[2] = {x.real(), x.imag()};
-        return vld1q_f64(t);
+        return { vld1q_f64(t) };
     }
-    static inline reg load(const std::complex<double> *p) {
-        return vld1q_f64(reinterpret_cast<const double *>(p));
-    }
-    static inline void store(std::complex<double> *p, reg v) {
-        vst1q_f64(reinterpret_cast<double *>(p), v);
-    }
-    static inline reg add(reg a, reg b) { return vaddq_f64(a, b); }
-    static inline reg sub(reg a, reg b) { return vsubq_f64(a, b); }
+    static inline reg load(const std::complex<double> *p) { return { vld1q_f64((const double*)p) }; }
+    static inline reg loadu(const std::complex<double> *p) { return { vld1q_f64((const double*)p) }; }
+    static inline void store(std::complex<double> *p, reg r) { vst1q_f64((double*)p, r.v); }
+    static inline void storeu(std::complex<double> *p, reg r) { vst1q_f64((double*)p, r.v); }
+    static inline reg setzero() { return { vdupq_n_f64(0.0) }; }
+
+    static inline reg add(reg a, reg b) { return { vaddq_f64(a.v, b.v) }; }
+    
     static inline reg mul(reg a, reg b) {
-        // a=[ar,ai], b=[br,bi]
-        float64x2_t ar = vdupq_laneq_f64(a, 0);
-        float64x2_t ai = vdupq_laneq_f64(a, 1);
-        float64x2_t br = vdupq_laneq_f64(b, 0);
-        float64x2_t bi = vdupq_laneq_f64(b, 1);
-        float64x2_t real = vsubq_f64(vmulq_f64(ar, br), vmulq_f64(ai, bi));
-        float64x2_t imag = vaddq_f64(vmulq_f64(ar, bi), vmulq_f64(ai, br));
-        // pack [re,im]
-        double out[2] = {vgetq_lane_f64(real, 0), vgetq_lane_f64(imag, 0)};
-        return vld1q_f64(out);
+        double ar = vgetq_lane_f64(a.v, 0); double ai = vgetq_lane_f64(a.v, 1);
+        double br = vgetq_lane_f64(b.v, 0); double bi = vgetq_lane_f64(b.v, 1);
+        double rr = ar*br - ai*bi;
+        double ri = ar*bi + ai*br;
+        double res[2] = {rr, ri};
+        return { vld1q_f64(res) };
     }
-    static inline std::complex<double> horizontal_add(reg v) {
-        double t[2];
-        vst1q_f64(t, v);
-        return {t[0], t[1]};
+    static inline reg fmadd(reg a, reg b, reg c) { return add(mul(a,b), c); }
+    static inline reg fma(reg a, reg b, reg c) { return fmadd(a,b,c); }
+    
+    static inline std::complex<double> extract(reg x, size_t idx=0) {
+        double t[2]; vst1q_f64(t, x.v); return {t[0], t[1]};
     }
+    static inline std::complex<double> horizontal_add(reg v) { return extract(v, 0); }
 };
 
 } // namespace simd
 
 namespace detail {
-inline float reduce_sum(float32x4_t v) { // float
-    float32x2_t lo = vget_low_f32(v);
-    float32x2_t hi = vget_high_f32(v);
-    float32x2_t s = vadd_f32(lo, hi);
-    s = vpadd_f32(s, s);
-    return vget_lane_f32(s, 0);
+    
+    inline float reduce_sum(float32x4_t v) {
+        return vaddvq_f32(v);
+    }
+    
+    inline double reduce_sum(float64x2_t v) {
+        return vaddvq_f64(v);
+    }
+    
+    inline uint64_t reduce_sum(uint64x2_t v) {
+        return vgetq_lane_u64(v, 0) + vgetq_lane_u64(v, 1);
+    }
+
+    inline std::complex<float> reduce_sum(complex_reg_f32 w) {
+        return simd::SimdTraits<std::complex<float>, neon32_t>::horizontal_add(w);
+    }
+    
+    inline std::complex<double> reduce_sum(complex_reg_f64 w) {
+         return simd::SimdTraits<std::complex<double>, neon32_t>::horizontal_add(w);
+    }
 }
-inline double reduce_sum(float64x2_t v) { // double
-    float64x1_t s = vadd_f64(vget_low_f64(v), vget_high_f64(v));
-    return vget_lane_f64(s, 0);
-}
-inline uint64_t reduce_sum(uint64x2_t v) { // entier
-    uint64_t t[2];
-    vst1q_u64(t, v);
-    return t[0] + t[1];
-}
-} // namespace detail
 
 #endif // TENSORIUM_ARM

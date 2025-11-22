@@ -1,9 +1,18 @@
 #include "../test.hpp"
 using namespace tensorium;
 #include <complex>
-#include <cblas.h>
 #include <fstream>
+#include <iostream>
+#include <vector>
 
+// --- PROTECTION DU HEADER ---
+#ifdef TENSORIUM_USE_CBLAS
+#    ifdef __APPLE__
+#        include <Accelerate/Accelerate.h>
+#    else
+#        include <cblas.h>
+#    endif
+#endif
 #define CHECK(expr)                                                                                \
     do {                                                                                           \
         if (!(expr)) {                                                                             \
@@ -37,22 +46,29 @@ int matrix_bench() {
     using namespace tensorium;
 
     std::vector<std::size_t> sizes = {1024, 2048, 4096, 8192, 16384};
-    std::string csv_path = "matrix_bench_results.csv";
+    std::string              csv_path = "matrix_bench_results.csv";
 
     std::ofstream csv(csv_path);
+
+#ifdef TENSORIUM_USE_CBLAS
     csv << "N,Tensorium_GFLOPs,OpenBLAS_GFLOPs,Tensorium_Time(s),OpenBLAS_Time(s),Speedup\n";
+#else
+    csv << "N,Tensorium_GFLOPs,Tensorium_Time(s)\n";
+#endif
 
     std::cout << "Benchmarking GEMM performance...\n";
 
     for (std::size_t N : sizes) {
         Matrix<float> A(N, N);
         Matrix<float> B(N, N);
-        Matrix<float> C_ref(N, N);
         Matrix<float> C_our(N, N);
+#ifdef TENSORIUM_USE_CBLAS
+        Matrix<float> C_ref(N, N);
+#endif
 
 #pragma omp parallel
         {
-            std::mt19937 rng(42 + omp_get_thread_num());
+            std::mt19937                          rng(42 + omp_get_thread_num());
             std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
 #pragma omp for schedule(static)
@@ -69,15 +85,16 @@ int matrix_bench() {
         C_our = mul_mat(A, B);
         auto t1 = std::chrono::high_resolution_clock::now();
 
-        double elapsed_our = std::chrono::duration<double>(t1 - t0).count();
+        double      elapsed_our = std::chrono::duration<double>(t1 - t0).count();
         long double flops = 2.0L * N * N * N;
-        double gflops_our = static_cast<double>(flops / 1e9L) / elapsed_our;
+        double      gflops_our = static_cast<double>(flops / 1e9L) / elapsed_our;
 
         std::cout << "[Tensorium GEMM]\n";
         std::cout << "Time      : " << elapsed_our << " s\n";
         std::cout << "GFLOP/s   : " << gflops_our << "\n";
         std::cout << "Sample C(0,0): " << C_our(0, 0) << "\n";
 
+#ifdef TENSORIUM_USE_CBLAS
         auto t2 = std::chrono::high_resolution_clock::now();
         cblas_sgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, (int)N, (int)N, (int)N, 1.0f,
                     A.data.data(), (int)N, B.data.data(), (int)N, 0.0f, C_ref.data.data(), (int)N);
@@ -97,19 +114,17 @@ int matrix_bench() {
         std::cout << "BLAS      : " << gflops_blas << " GFLOP/s\n";
         std::cout << "Speedup   : x" << speedup << "\n";
 
-        csv << N << ","
-            << gflops_our << ","
-            << gflops_blas << ","
-            << elapsed_our << ","
-            << elapsed_blas << ","
-            << speedup << "\n";
+        csv << N << "," << gflops_our << "," << gflops_blas << "," << elapsed_our << ","
+            << elapsed_blas << "," << speedup << "\n";
+#else
+        csv << N << "," << gflops_our << "," << elapsed_our << "\n";
+#endif
     }
 
     csv.close();
     std::cout << "\nResults written to: " << csv_path << "\n";
     return 0;
 }
-
 int matrix_tests() {
     using Mat = Matrix<float>;
     using Vec = Vector<float>;
@@ -279,7 +294,7 @@ int matrix_tests() {
     Cc.scl(2.0f);
     Cc = tensorium::mul_mat(Ac, Bc);
     std::cout << "✅ add_mat on complex<float> passed.\n";
-    matrix_bench();
+    // matrix_bench();
 
     Mat A2(2, 2);
     A2(0, 0) = 1;
