@@ -32,7 +32,7 @@ This library is built with the goal of empowering projects that require both spe
 >  **Recommended:** build and use with **LLVM/Clang** for maximum performance.
 
 ###  Core Dependencies
-- **C++17/20 compiler** with `AVX2` / `FMA` support  
+- **C++17/20 compiler** with `AVX2` / `FMA` or `ARM Neon` support  
   → `AVX512` is automatically detected and enabled if available  
   → Recommended: **Clang ≥ 17** or **LLVM ≥ 20**  
 - **OpenMP** (`fopenmp`)
