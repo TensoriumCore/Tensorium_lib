@@ -12,7 +12,7 @@ The python binding is usable without any other python librairy, but I'm still wo
 
 ## Highlight
 It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:
-- **SIMD acceleration** (SSE, AVX2, AVX512),
+- **SIMD acceleration** (SSE, AVX2, AVX512, Neon and soon Apple AMX),
 - **Multithreading** with OpenMP,
 - And soon, **distributed computing** via MPI.
 
