@@ -6,10 +6,10 @@ int deriv_test_spectral_fft() {
     using Tensor3D = tensorium::Tensor<C, 3>;
 
     const size_t N = 128;
-    const T L = 1.0;
-    const T dx = L / N;
-    const T pi = static_cast<T>(3.14159265358979323846);
-    const T TWO_PI = 2 * pi;
+    const T      L = 1.0;
+    const T      dx = L / N;
+    const T      pi = static_cast<T>(3.14159265358979323846);
+    const T      TWO_PI = 2 * pi;
 
     Tensor3D f({N, N, N});
     Tensor3D df_dx_exact({N, N, N});
@@ -22,7 +22,8 @@ int deriv_test_spectral_fft() {
                 T y = j * dx;
                 T z = k * dx;
                 f(i, j, k) = std::sin(TWO_PI * x) * std::sin(TWO_PI * y) * std::sin(TWO_PI * z);
-                df_dx_exact(i, j, k) = TWO_PI * std::cos(TWO_PI * x) * std::sin(TWO_PI * y) * std::sin(TWO_PI * z);
+                df_dx_exact(i, j, k) =
+                    TWO_PI * std::cos(TWO_PI * x) * std::sin(TWO_PI * y) * std::sin(TWO_PI * z);
             }
         }
     }
@@ -32,10 +33,10 @@ int deriv_test_spectral_fft() {
 
     for (size_t i = 0; i < N; ++i) {
         int ki = (i <= N / 2) ? i : i - N;
-        T kx = TWO_PI * ki / L;
+        T   kx = TWO_PI * ki / L;
         for (size_t j = 0; j < N; ++j) {
             for (size_t k = 0; k < N; ++k) {
-                F(i,j,k) *= C(0, kx); 
+                F(i, j, k) *= C(0, kx);
             }
         }
     }
@@ -47,7 +48,8 @@ int deriv_test_spectral_fft() {
     for (size_t i = 0; i < N; ++i)
         for (size_t j = 0; j < N; ++j)
             for (size_t k = 0; k < N; ++k)
-                max_err = std::max(max_err, std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()));
+                max_err = std::max(
+                    max_err, std::abs(df_dx_exact(i, j, k).real() - df_dx_numeric(i, j, k).real()));
 
     std::cout << "\n=== Spectral Derivative Test (3D FFT) ===\n";
     std::cout << "Erreur max sur d/dx (FFT vs exact): " << max_err << "\n";
@@ -56,22 +58,20 @@ int deriv_test_spectral_fft() {
     for (size_t i = 0; i < 4; ++i) {
         for (size_t j = 0; j < 1; ++j) {
             for (size_t k = 0; k < 1; ++k) {
-                std::cout << "x=" << i * dx << "\tf=" << f(i,j,k).real()
-                          << "\texact=" << df_dx_exact(i,j,k).real()
-                          << "\tnumeric=" << df_dx_numeric(i,j,k).real() << "\n";
-				T err = std::abs(df_dx_numeric(i,j,k).real() - df_dx_exact(i,j,k).real());
-				std::cout << "\terreur=" << err << "\n";
-
+                std::cout << "x=" << i * dx << "\tf=" << f(i, j, k).real()
+                          << "\texact=" << df_dx_exact(i, j, k).real()
+                          << "\tnumeric=" << df_dx_numeric(i, j, k).real() << "\n";
+                T err = std::abs(df_dx_numeric(i, j, k).real() - df_dx_exact(i, j, k).real());
+                std::cout << "\terreur=" << err << "\n";
             }
         }
     }
 
-
-	std::cout << "\n=== Fonction test cos*sin*cos ===\n";
+    std::cout << "\n=== Fonction test cos*sin*cos ===\n";
 
     const T A = 2 * pi;  // freq_x
     const T B = 4 * pi;  // freq_y
-    const T Ce = 6 * pi;  // freq_z
+    const T Ce = 6 * pi; // freq_z
 
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
@@ -85,139 +85,133 @@ int deriv_test_spectral_fft() {
         }
     }
 
-	F = f;
-	tensorium::SpectralFFT<T>::forward_3D(F);
+    F = f;
+    tensorium::SpectralFFT<T>::forward_3D(F);
 
-	for (size_t i = 0; i < N; ++i) {
-		int ki = (i <= N / 2) ? i : i - N;
-		T kx = TWO_PI * ki / L;
-		for (size_t j = 0; j < N; ++j) {
-			for (size_t k = 0; k < N; ++k) {
-				F(i,j,k) *= C(0, kx); 
-			}
-		}
-	}
+    for (size_t i = 0; i < N; ++i) {
+        int ki = (i <= N / 2) ? i : i - N;
+        T   kx = TWO_PI * ki / L;
+        for (size_t j = 0; j < N; ++j) {
+            for (size_t k = 0; k < N; ++k) {
+                F(i, j, k) *= C(0, kx);
+            }
+        }
+    }
 
-	tensorium::SpectralFFT<T>::backward_3D(F);
-	df_dx_numeric = F;
+    tensorium::SpectralFFT<T>::backward_3D(F);
+    df_dx_numeric = F;
 
-	max_err = 0;
-	for (size_t i = 0; i < N; ++i)
-		for (size_t j = 0; j < N; ++j)
-			for (size_t k = 0; k < N; ++k)
-				max_err = std::max(max_err, std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()));
+    max_err = 0;
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j)
+            for (size_t k = 0; k < N; ++k)
+                max_err = std::max(
+                    max_err, std::abs(df_dx_exact(i, j, k).real() - df_dx_numeric(i, j, k).real()));
 
-	std::cout << "Erreur max (cos*sin*cos): " << max_err << "\n";
-	for (size_t i = 0; i < 4; ++i) {
-		size_t j = 1, k = 1;
-		T x = i * dx;
-		std::cout << "x=" << x
-			<< "\tf=" << f(i,j,k).real()
-			<< "\texact=" << df_dx_exact(i,j,k).real()
-			<< "\tnumeric=" << df_dx_numeric(i,j,k).real()
-			<< "\terreur=" << std::abs(df_dx_exact(i,j,k).real() - df_dx_numeric(i,j,k).real()) << "\n";
-	}
+    std::cout << "Erreur max (cos*sin*cos): " << max_err << "\n";
+    for (size_t i = 0; i < 4; ++i) {
+        size_t j = 1, k = 1;
+        T      x = i * dx;
+        std::cout << "x=" << x << "\tf=" << f(i, j, k).real()
+                  << "\texact=" << df_dx_exact(i, j, k).real()
+                  << "\tnumeric=" << df_dx_numeric(i, j, k).real() << "\terreur="
+                  << std::abs(df_dx_exact(i, j, k).real() - df_dx_numeric(i, j, k).real()) << "\n";
+    }
 
-	std::ofstream file("spectral_deriv_output.csv");
-	file << "x,y,z,f,dfdx_exact,dfdx_numeric\n";
-	for (size_t i = 0; i < N; ++i) {
-		for (size_t j = 0; j < N; ++j) {
-			for (size_t k = 0; k < N; ++k) {
-				T x = i * dx;
-				T y = j * dx;
-				T z = k * dx;
-				file << x << "," << y << "," << z << ","
-					<< f(i,j,k).real() << ","
-					<< df_dx_exact(i,j,k).real() << ","
-					<< df_dx_numeric(i,j,k).real() << "\n";
-			}
-		}
-	}
-	file.close();
+    std::ofstream file("spectral_deriv_output.csv");
+    file << "x,y,z,f,dfdx_exact,dfdx_numeric\n";
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            for (size_t k = 0; k < N; ++k) {
+                T x = i * dx;
+                T y = j * dx;
+                T z = k * dx;
+                file << x << "," << y << "," << z << "," << f(i, j, k).real() << ","
+                     << df_dx_exact(i, j, k).real() << "," << df_dx_numeric(i, j, k).real() << "\n";
+            }
+        }
+    }
+    file.close();
 
-	return 0;
+    return 0;
 }
 
 int deriv_test() {
-	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202x) ===\n";
-	tensorium::Derivate<float> f2d(4, 4);
-	tensorium::Derivate<float> dfdx2d(4, 4);
+    std::cout << "\n=== Derivate 2D Test (\u2202/\u2202x) ===\n";
+    tensorium::Derivate<float> f2d(4, 4);
+    tensorium::Derivate<float> dfdx2d(4, 4);
 
-	for (size_t i = 0; i < 4; ++i)
-		for (size_t j = 0; j < 4; ++j)
-			f2d(i, j) = static_cast<float>(i * 10 + j);
+    for (size_t i = 0; i < 4; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            f2d(i, j) = static_cast<float>(i * 10 + j);
 
-	tensorium::centered_derivative(f2d, dfdx2d, 0, 1.0f);
+    tensorium::centered_derivative(f2d, dfdx2d, 0, 1.0f);
 
-	std::cout << "\n=== Derivate 2D Test (\u2202/\u2202y) ===\n";
-	tensorium::Derivate<float> f2d_y(4, 4);
-	tensorium::Derivate<float> dfdx2d_y(4, 4);
-	for (size_t i = 0; i < 4; ++i)
-		for (size_t j = 0; j < 4; ++j)
-			f2d_y(i, j) = static_cast<float>(i * 10 + j);
-	tensorium::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
+    std::cout << "\n=== Derivate 2D Test (\u2202/\u2202y) ===\n";
+    tensorium::Derivate<float> f2d_y(4, 4);
+    tensorium::Derivate<float> dfdx2d_y(4, 4);
+    for (size_t i = 0; i < 4; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            f2d_y(i, j) = static_cast<float>(i * 10 + j);
+    tensorium::centered_derivative(f2d_y, dfdx2d_y, 1, 1.0f);
 
+    std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202x) ===\n";
+    std::array<size_t, 3>           dims = {4, 4, 4};
+    tensorium::DerivateND<float, 3> fnd_x(dims), dfdxnd(dims);
+    for (size_t i = 0; i < 4; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            for (size_t k = 0; k < 4; ++k)
+                fnd_x({i, j, k}) = float(i + j + k);
+    tensorium::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
 
-	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202x) ===\n";
-	std::array<size_t, 3> dims = {4, 4, 4};
-	tensorium::DerivateND<float, 3> fnd_x(dims), dfdxnd(dims);
-	for (size_t i = 0; i < 4; ++i)
-		for (size_t j = 0; j < 4; ++j)
-			for (size_t k = 0; k < 4; ++k)
-				fnd_x({i, j, k}) = float(i + j + k);
-	tensorium::centered_derivative(fnd_x, dfdxnd, 0, 1.0f);
+    std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202z) ===\n";
+    tensorium::DerivateND<float, 3> fnd(dims), dfdznd(dims);
+    for (size_t i = 0; i < 4; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            for (size_t k = 0; k < 4; ++k)
+                fnd({i, j, k}) = float(i + j + k);
+    tensorium::centered_derivative(fnd, dfdznd, 2, 1.0f);
 
+    tensorium::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
+    std::cout << "\u2202f/\u2202z (ordre 4) slice at k=2:\n";
 
-	std::cout << "\n=== DerivateND 3D Test (\u2202/\u2202z) ===\n";
-	tensorium::DerivateND<float, 3> fnd(dims), dfdznd(dims);
-	for (size_t i = 0; i < 4; ++i)
-		for (size_t j = 0; j < 4; ++j)
-			for (size_t k = 0; k < 4; ++k)
-				fnd({i, j, k}) = float(i + j + k);
-	tensorium::centered_derivative(fnd, dfdznd, 2, 1.0f);
+    const size_t N = 16384;
+    const float  dx = 0.01f;
+    const float  pi = 3.14159265358979323846f;
 
+    tensorium::Derivate<float> f(N, 1), df_order2(N, 1), df_order4(N, 1), df_exact(N, 1);
+    for (size_t i = 0; i < N; ++i) {
+        float x = i * dx;
+        f(i, 0) = std::sin(x) + 0.1f * std::sin(10 * x);
+        df_exact(i, 0) = std::cos(x) + 1.0f * std::cos(10 * x);
+    }
+    f.centered_derivative(f, df_order2, 0, dx);
+    f.centered_derivative_order4(f, df_order4, 0, dx);
 
-	tensorium::centered_derivative_order4(fnd, dfdznd, 2, 1.0f);
-	std::cout << "\u2202f/\u2202z (ordre 4) slice at k=2:\n";
+    float  max_err_order2 = 0.0f, max_err_order4 = 0.0f;
+    float  avg_err_order2 = 0.0f, avg_err_order4 = 0.0f;
+    size_t valid = 0;
+    for (size_t i = 2; i < N - 2; ++i) {
+        float exact = df_exact(i, 0);
+        float e2 = std::abs(df_order2(i, 0) - exact);
+        float e4 = std::abs(df_order4(i, 0) - exact);
+        max_err_order2 = std::max(max_err_order2, e2);
+        max_err_order4 = std::max(max_err_order4, e4);
+        avg_err_order2 += e2;
+        avg_err_order4 += e4;
+        ++valid;
+    }
+    avg_err_order2 /= valid;
+    avg_err_order4 /= valid;
 
+    std::cout << "Erreur moyenne (ordre 2): " << avg_err_order2 << "\n";
+    std::cout << "Erreur moyenne (ordre 4): " << avg_err_order4 << "\n";
 
-	const size_t N = 16384;
-	const float dx = 0.01f;
-	const float pi = 3.14159265358979323846f;
+    std::cout << "\nV\u00e9rification des bords:\n";
+    std::cout << "df_order4(0,0) = " << df_order4(0, 0) << ", attendu: 0\n";
+    std::cout << "df_order4(1,0) = " << df_order4(1, 0) << ", attendu: 0\n";
+    std::cout << "df_order4(N-2,0) = " << df_order4(N - 2, 0) << ", attendu: 0\n";
+    std::cout << "df_order4(N-1,0) = " << df_order4(N - 1, 0) << ", attendu: 0\n";
 
-	tensorium::Derivate<float> f(N, 1), df_order2(N, 1), df_order4(N, 1), df_exact(N, 1);
-	for (size_t i = 0; i < N; ++i) {
-		float x = i * dx;
-		f(i, 0) = std::sin(x) + 0.1f * std::sin(10*x);
-		df_exact(i, 0) = std::cos(x) + 1.0f * std::cos(10*x);
-	}
-	f.centered_derivative(f, df_order2, 0, dx);
-	f.centered_derivative_order4(f, df_order4, 0, dx);
-
-	float max_err_order2 = 0.0f, max_err_order4 = 0.0f;
-	float avg_err_order2 = 0.0f, avg_err_order4 = 0.0f;
-	size_t valid = 0;
-	for (size_t i = 2; i < N - 2; ++i) {
-		float exact = df_exact(i, 0);
-		float e2 = std::abs(df_order2(i, 0) - exact);
-		float e4 = std::abs(df_order4(i, 0) - exact);
-		max_err_order2 = std::max(max_err_order2, e2);
-		max_err_order4 = std::max(max_err_order4, e4);
-		avg_err_order2 += e2;
-		avg_err_order4 += e4;
-		++valid;
-	}
-	avg_err_order2 /= valid;
-	avg_err_order4 /= valid;
-
-	std::cout << "Erreur moyenne (ordre 2): " << avg_err_order2 << "\n";
-	std::cout << "Erreur moyenne (ordre 4): " << avg_err_order4 << "\n";
-
-	std::cout << "\nV\u00e9rification des bords:\n";
-	std::cout << "df_order4(0,0) = " << df_order4(0, 0) << ", attendu: 0\n";
-	std::cout << "df_order4(1,0) = " << df_order4(1, 0) << ", attendu: 0\n";
-	std::cout << "df_order4(N-2,0) = " << df_order4(N-2, 0) << ", attendu: 0\n";
-	std::cout << "df_order4(N-1,0) = " << df_order4(N-1, 0) << ", attendu: 0\n";
-
-	return 0;
+    return 0;
 }

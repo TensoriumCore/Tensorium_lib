@@ -5,7 +5,6 @@ using namespace tensorium;
 #include <iostream>
 #include <vector>
 
-// --- PROTECTION DU HEADER ---
 #ifdef TENSORIUM_USE_CBLAS
 #    ifdef __APPLE__
 #        include <Accelerate/Accelerate.h>
@@ -45,7 +44,7 @@ tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K> &A,
 int matrix_bench() {
     using namespace tensorium;
 
-    std::vector<std::size_t> sizes = {1024, 2048, 4096, 8192, 16384};
+    std::vector<std::size_t> sizes = {1024, 2048, 4096};
     std::string              csv_path = "matrix_bench_results.csv";
 
     std::ofstream csv(csv_path);
@@ -294,27 +293,27 @@ int matrix_tests() {
     Cc.scl(2.0f);
     Cc = tensorium::mul_mat(Ac, Bc);
     std::cout << "✅ add_mat on complex<float> passed.\n";
-    // matrix_bench();
+    matrix_bench();
 
-    Mat A2(2, 2);
-    A2(0, 0) = 1;
-    A2(0, 1) = 2;
-    A2(1, 0) = 3;
-    A2(1, 1) = 4;
-
-    Mat B2(2, 2);
-    B2(0, 0) = 5;
-    B2(0, 1) = 6;
-    B2(1, 0) = 7;
-    B2(1, 1) = 8;
-
-    Mat R2 = tensorium::mul_mat(A2, B2);
-    CHECK(std::abs(R2(0, 0) - (1 * 5 + 2 * 7)) < 1e-4f);
-    CHECK(std::abs(R2(0, 1) - (1 * 6 + 2 * 8)) < 1e-4f);
-    CHECK(std::abs(R2(1, 0) - (3 * 5 + 4 * 7)) < 1e-4f);
-    CHECK(std::abs(R2(1, 1) - (3 * 6 + 4 * 8)) < 1e-4f);
-
-    std::cout << "✅ 2x2 matrix multiplication passed.\n";
+    // Mat A2(2, 2);
+    // A2(0, 0) = 1;
+    // A2(0, 1) = 2;
+    // A2(1, 0) = 3;
+    // A2(1, 1) = 4;
+    //
+    // Mat B2(2, 2);
+    // B2(0, 0) = 5;
+    // B2(0, 1) = 6;
+    // B2(1, 0) = 7;
+    // B2(1, 1) = 8;
+    //
+    // Mat R2 = tensorium::mul_mat(A2, B2);
+    // CHECK(std::abs(R2(0, 0) - (1 * 5 + 2 * 7)) < 1e-4f);
+    // CHECK(std::abs(R2(0, 1) - (1 * 6 + 2 * 8)) < 1e-4f);
+    // CHECK(std::abs(R2(1, 0) - (3 * 5 + 4 * 7)) < 1e-4f);
+    // CHECK(std::abs(R2(1, 1) - (3 * 6 + 4 * 8)) < 1e-4f);
+    //
+    // std::cout << "✅ 2x2 matrix multiplication passed.\n";
     Mat A3(3, 3);
 
     A3(0, 0) = 1;

@@ -1,17 +1,17 @@
 #pragma once
 
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <chrono>
-#include "Core/Vector.hpp"
+// --- BACKEND (Moteur) ---
+#include "Backend/SIMD/SIMD.hpp"
+#include "Backend/CPU_Kernels/GemmKernel_Optimized.hpp"
+
+#ifdef TENSORIUM_USE_CUDA
+    #include "Backend/CUDA/Core/MatrixCUDA.hpp"
+#endif
+
 #include "Core/Matrix.hpp"
-#include "Core/Spectral.hpp"
+#include "Core/Vector.hpp"
 #include "Core/Tensor.hpp"
-#include "Functionnal/Functional.hpp"
-#include "SIMD/CPU_id.hpp"
-#include "SIMD/Allocator.hpp"
-#include "SIMD/CacheInfo.hpp"
-#include "IO/MPI_init.hpp"
-#include "Functionnal/FunctionnalRG.hpp"
-#include "DiffGeometry/RiemannTensor.hpp"
+
+#include "Functional/Functional.hpp"
+#include "Functional/FunctionnalRG.hpp"
+#include "Physics/DiffGeometry/Metric.hpp" // Clairement identifié comme Physique

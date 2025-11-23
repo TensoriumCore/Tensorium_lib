@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../MathUtils/MathsUtils.hpp"
-#include "../SIMD/Allocator.hpp"
-#include "../SIMD/CPU_id.hpp"
-#include "../SIMD/SIMD.hpp"
-#include "MatrixKernels/GemmKernel_bigger.hpp"
+#include "../Backend/SIMD/Allocator.hpp"
+#include "../Backend/SIMD/CPU_id.hpp"
+#include "../Backend/SIMD/SIMD.hpp"
+#include "../Utils/MathUtils/MathsUtils.hpp"
 #include "Vector.hpp"
+#include <Tensorium/Backend/CPU_Kernels/GemmKernel_Optimized.hpp>
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -211,45 +211,32 @@ template <typename K, bool RowMajor = false> class Matrix {
 
     inline Matrix _mul_mat(const Matrix<K> &mat) const {
         if (cols != mat.rows)
-            throw std::invalid_argument("Matrix dimensions do not match for multiplication");
+            throw std::invalid_argument("Matrix dimensions do not match");
 
         Matrix<K> result(rows, mat.cols);
 
-        const K *A = data.data();        // column-major (this)
-        const K *B = mat.data.data();    // column-major (rhs)
-        K       *C = result.data.data(); // column-major output
+        // On active le kernel optimisé SEULEMENT pour float et double
+        if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
+            const K *A = data.data();
+            const K *B = mat.data.data();
+            K       *C = result.data.data();
 
-#if defined(TENSORIUM_X86)
-        // SIMD kernel for x86 (AVX2 / AVX512)
-        tensorium::GemmKernelBigger<K> kernel;
-        kernel.matmul(const_cast<K *>(A), const_cast<K *>(B), C,
-                      static_cast<int>(rows),     // M
-                      static_cast<int>(mat.cols), // N
-                      static_cast<int>(cols));    // K
-
-#elif defined(TENSORIUM_ARM)
-        // Temporary fallback (naïve scalar matmul)
-        for (size_t i = 0; i < rows; ++i) {
+            tensorium::GemmKernelBigger<K> kernel;
+            kernel.matmul(const_cast<K *>(A), const_cast<K *>(B), C, static_cast<int>(rows),
+                          static_cast<int>(mat.cols), static_cast<int>(cols));
+        } else {
+// Fallback naïf pour les autres types (complex, int...)
+#pragma omp parallel for collapse(2)
             for (size_t j = 0; j < mat.cols; ++j) {
-                K sum = static_cast<K>(0);
-                for (size_t k = 0; k < cols; ++k)
-                    sum += A[i + k * rows] * B[k + j * mat.rows];
-                C[i + j * rows] = sum;
+                for (size_t i = 0; i < rows; ++i) {
+                    K sum = K(0);
+                    for (size_t k = 0; k < cols; ++k) {
+                        sum += (*this)(i, k) * mat(k, j);
+                    }
+                    result(i, j) = sum;
+                }
             }
         }
-
-#else
-        // Generic scalar fallback
-        for (size_t i = 0; i < rows; ++i) {
-            for (size_t j = 0; j < mat.cols; ++j) {
-                K sum = static_cast<K>(0);
-                for (size_t k = 0; k < cols; ++k)
-                    sum += A[i + k * rows] * B[k + j * mat.rows];
-                C[i + j * rows] = sum;
-            }
-        }
-#endif
-
         return result;
     }
 
