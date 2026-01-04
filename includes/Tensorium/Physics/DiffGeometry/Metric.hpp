@@ -1,6 +1,8 @@
 #pragma once
+#include "../../Core/Matrix.hpp"
 #include "../../Core/Tensor.hpp"
 #include "../../Core/Vector.hpp"
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <functional>
@@ -82,43 +84,37 @@ template <typename T> class Metric {
     inline void BSSN(const tensorium::Vector<T> &X, T &alpha, tensorium::Vector<T> &beta,
                      tensorium::Tensor<T, 2> &gamma) const {
         assert(X.size() == 4);
+        tensorium::Vector<T>    metric_X = convert_to_metric_coordinates(X);
         tensorium::Tensor<T, 2> g({4, 4});
-        (*this)(X, g);
+        (*this)(metric_X, g);
 
-        T                    H = 0.0;
-        tensorium::Vector<T> l(3);
-
-        if (type == "kerr_schild") {
-            T x = X(1), y = X(2), z = X(3);
-            T r = std::sqrt(x * x + y * y + z * z);
-            T denom = r * r + a * a;
-            H = (denom > 1e-14) ? M * r / denom : 0.0;
-
-            l(0) = (r * x + a * y) / denom;
-            l(1) = (r * y - a * x) / denom;
-            l(2) = z / r;
-
-            T norm = std::sqrt(l(0) * l(0) + l(1) * l(1) + l(2) * l(2));
-            if (norm > 1e-14) {
-                l(0) /= norm;
-                l(1) /= norm;
-                l(2) /= norm;
-            }
-        }
-
-        alpha = 1.0 / std::sqrt(1.0 + 2.0 * H);
-
-        for (int i = 0; i < 3; ++i)
-            beta(i) = (2.0 * H / (1.0 + 2.0 * H)) * l(i);
-
-        // beta.resize(3);
-        // for (size_t i = 0; i < 3; ++i)
-        //     beta(i) = g(0, i + 1);
+        auto g_inv = invert_metric_tensor(g);
 
         gamma.resize(3, 3);
         for (size_t i = 0; i < 3; ++i)
             for (size_t j = 0; j < 3; ++j)
                 gamma(i, j) = g(i + 1, j + 1);
+
+        tensorium::Tensor<T, 2> gamma_inv = invert_spatial_metric(gamma);
+
+        tensorium::Vector<T> beta_cov(3);
+        for (size_t i = 0; i < 3; ++i)
+            beta_cov(i) = g(0, i + 1);
+
+        beta.resize(3);
+        for (size_t i = 0; i < 3; ++i) {
+            T sum = 0.0;
+            for (size_t j = 0; j < 3; ++j)
+                sum += gamma_inv(i, j) * beta_cov(j);
+            beta(i) = sum;
+        }
+
+        const T g00_inv = g_inv(0, 0);
+        if (g00_inv >= 0)
+            throw std::runtime_error("Metric::BSSN: g^{00} must be negative for a valid ADM split");
+        alpha = std::sqrt(-1.0 / g00_inv);
+
+        validate_adm_split(g, gamma, beta, alpha);
     }
 
     T compute_conformal_factor(const tensorium::Tensor<T, 2> &gamma) const {
@@ -265,6 +261,94 @@ template <typename T> class Metric {
         for (size_t mu = 0; mu < 4; ++mu)
             for (size_t nu = 0; nu < 4; ++nu)
                 g(mu, nu) += 2.0 * H * l[mu] * l[nu];
+    }
+
+    tensorium::Vector<T> convert_to_metric_coordinates(const tensorium::Vector<T> &X) const {
+        if (X.size() != 4)
+            return X;
+
+        if (type == "schwarzschild" || type == "kerr" || type == "flrw") {
+            tensorium::Vector<T> Xs(4);
+            Xs(0) = X(0);
+            const T x = X(1);
+            const T y = X(2);
+            const T z = X(3);
+            const T r = std::sqrt(x * x + y * y + z * z);
+            const T theta = (r > T(0)) ? std::acos(std::clamp(z / r, T(-1), T(1))) : T(0);
+            T       phi = std::atan2(y, x);
+            if (phi < T(0))
+                phi += T(2) * T(M_PI);
+            Xs(1) = r;
+            Xs(2) = theta;
+            Xs(3) = phi;
+            return Xs;
+        }
+
+        return X;
+    }
+
+    tensorium::Tensor<T, 2> invert_metric_tensor(const tensorium::Tensor<T, 2> &g) const {
+        const size_t         d0 = g.dimensions[0];
+        const size_t         d1 = g.dimensions[1];
+        tensorium::Matrix<T> mat({d0, d1});
+
+        for (size_t i = 0; i < d0; ++i)
+            for (size_t j = 0; j < d1; ++j)
+                mat(i, j) = g(i, j);
+
+        tensorium::Matrix<T> inv = mat.inverse();
+
+        tensorium::Tensor<T, 2> out({d0, d1});
+        for (size_t i = 0; i < d0; ++i)
+            for (size_t j = 0; j < d1; ++j)
+                out(i, j) = inv(i, j);
+
+        return out;
+    }
+
+    tensorium::Tensor<T, 2> invert_spatial_metric(const tensorium::Tensor<T, 2> &gamma) const {
+        tensorium::Matrix<T> mat({3, 3});
+        for (size_t i = 0; i < 3; ++i)
+            for (size_t j = 0; j < 3; ++j)
+                mat(i, j) = gamma(i, j);
+
+        tensorium::Matrix<T> inv = mat.inverse();
+        tensorium::Tensor<T, 2> out({3, 3});
+        for (size_t i = 0; i < 3; ++i)
+            for (size_t j = 0; j < 3; ++j)
+                out(i, j) = inv(i, j);
+        return out;
+    }
+
+    void validate_adm_split(const tensorium::Tensor<T, 2> &g, const tensorium::Tensor<T, 2> &gamma,
+                            const tensorium::Vector<T> &beta, T alpha) const {
+        tensorium::Tensor<T, 2> g_recon({4, 4});
+        g_recon.fill(T(0));
+
+        T g00 = -alpha * alpha;
+        for (size_t i = 0; i < 3; ++i)
+            for (size_t j = 0; j < 3; ++j)
+                g00 += gamma(i, j) * beta(i) * beta(j);
+        g_recon(0, 0) = g00;
+
+        for (size_t i = 0; i < 3; ++i) {
+            T sum = 0.0;
+            for (size_t j = 0; j < 3; ++j)
+                sum += gamma(i, j) * beta(j);
+            g_recon(0, i + 1) = sum;
+            g_recon(i + 1, 0) = sum;
+            for (size_t j = 0; j < 3; ++j)
+                g_recon(i + 1, j + 1) = gamma(i, j);
+        }
+
+        const T tol = T(1e-6);
+        for (size_t mu = 0; mu < 4; ++mu)
+            for (size_t nu = 0; nu < 4; ++nu) {
+                T diff = std::abs(g(mu, nu) - g_recon(mu, nu));
+                T scale = std::max(T(1), std::abs(g(mu, nu)));
+                if (diff > tol * scale)
+                    throw std::runtime_error("Metric::BSSN: ADM split validation failed");
+            }
     }
 };
 } // namespace tensorium_RG

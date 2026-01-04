@@ -146,10 +146,17 @@ namespace tensorium {
 		template<typename T>
 			inline tensorium_RG::BSSN<T> setup_BSSN(const Vector<T>& X,
 					const tensorium_RG::Metric<T>& metric,
-					T dx, T dy, T dz) {
+					T dx, T dy, T dz, T dt) {
 				tensorium_RG::BSSN<T> bssn;
-				bssn.init_BSSN(X, metric, dx, dy, dz);
+				bssn.init_BSSN(X, metric, dx, dy, dz, dt);
 				return bssn;
+			}
+
+		template<typename T>
+			inline tensorium_RG::BSSN<T> setup_BSSN(const Vector<T>& X,
+					const tensorium_RG::Metric<T>& metric,
+					T dx, T dy, T dz) {
+				return setup_BSSN(X, metric, dx, dy, dz, dx);
 			}
 
 }

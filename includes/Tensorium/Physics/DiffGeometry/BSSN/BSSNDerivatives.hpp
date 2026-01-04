@@ -3,7 +3,35 @@
 #include "../../../Core/Spectral.hpp"
 #include "../Metric.hpp"
 #include "BSSNGridSetupUtils.hpp"
+#include <array>
+#include <stdexcept>
 namespace tensorium_RG {
+
+namespace detail {
+template <typename T> inline std::array<size_t, 3> spatial_indices(const tensorium::Vector<T> &X) {
+    const size_t n = X.size();
+    if (n == 3)
+        return {0, 1, 2};
+    if (n >= 3)
+        return {n - 3, n - 2, n - 1};
+    throw std::invalid_argument("Vector must contain at least three spatial components");
+}
+
+template <typename T>
+inline void shift_axis(tensorium::Vector<T> &X, const std::array<size_t, 3> &idx, size_t axis, T delta) {
+    X(idx[axis]) += delta;
+}
+
+template <typename T>
+inline tensorium::Vector<T> shifted_copy(const tensorium::Vector<T> &X,
+                                         const std::array<size_t, 3> &idx, T dx, T dy, T dz) {
+    tensorium::Vector<T> Xs = X;
+    Xs(idx[0]) += dx;
+    Xs(idx[1]) += dy;
+    Xs(idx[2]) += dz;
+    return Xs;
+}
+} // namespace detail
 
 template <typename T>
 void spectral_derivative_1D(tensorium::Vector<T> &field, tensorium::Vector<T> &dfield, T dx) {
@@ -118,48 +146,23 @@ tensorium::Tensor<T, 3> spectral_partial_tensor2(const tensorium::Vector<T> &X, 
 template <typename T, typename ScalarFunc>
 tensorium::Vector<T> partial_scalar(const tensorium::Vector<T> &X, T dx, T dy, T dz,
                                     ScalarFunc &&func) {
-    tensorium::Vector<T> grad(3);
+    tensorium::Vector<T>      grad(3);
+    const auto             idx = detail::spatial_indices(X);
+    const std::array<T, 3> spacings{dx, dy, dz};
 
-    {
-        tensorium::Vector<T> Xs = X;
-        T                    gm2, gm1, gp1, gp2;
-        Xs(1) = X(1) - 2 * dx;
-        gm2 = func(Xs);
-        Xs(1) = X(1) - dx;
-        gm1 = func(Xs);
-        Xs(1) = X(1) + dx;
-        gp1 = func(Xs);
-        Xs(1) = X(1) + 2 * dx;
-        gp2 = func(Xs);
-        grad(0) = (-gp2 + 8 * gp1 - 8 * gm1 + gm2) / (12 * dx);
-    }
-    // dérivée selon x²
-    {
-        tensorium::Vector<T> Xs = X;
-        T                    gm2, gm1, gp1, gp2;
-        Xs(2) = X(2) - 2 * dy;
-        gm2 = func(Xs);
-        Xs(2) = X(2) - dy;
-        gm1 = func(Xs);
-        Xs(2) = X(2) + dy;
-        gp1 = func(Xs);
-        Xs(2) = X(2) + 2 * dy;
-        gp2 = func(Xs);
-        grad(1) = (-gp2 + 8 * gp1 - 8 * gm1 + gm2) / (12 * dy);
-    }
-    // dérivée selon x³
-    {
-        tensorium::Vector<T> Xs = X;
-        T                    gm2, gm1, gp1, gp2;
-        Xs(3) = X(3) - 2 * dz;
-        gm2 = func(Xs);
-        Xs(3) = X(3) - dz;
-        gm1 = func(Xs);
-        Xs(3) = X(3) + dz;
-        gp1 = func(Xs);
-        Xs(3) = X(3) + 2 * dz;
-        gp2 = func(Xs);
-        grad(2) = (-gp2 + 8 * gp1 - 8 * gm1 + gm2) / (12 * dz);
+    for (size_t axis = 0; axis < 3; ++axis) {
+        const T h = spacings[axis];
+        auto sample = [&](int step) {
+            auto Xs = X;
+            detail::shift_axis(Xs, idx, axis, step * h);
+            return func(Xs);
+        };
+
+        T gm2 = sample(-2);
+        T gm1 = sample(-1);
+        T gp1 = sample(1);
+        T gp2 = sample(2);
+        grad(axis) = (-gp2 + 8 * gp1 - 8 * gm1 + gm2) / (12 * h);
     }
 
     return grad;
@@ -169,51 +172,26 @@ template <typename T, typename VectorFunc>
 tensorium::Tensor<T, 2> partial_vector(const tensorium::Vector<T> &X, T dx, T dy, T dz,
                                        VectorFunc &&func) {
     tensorium::Tensor<T, 2> result({3, 3});
-    // dérivée ∂/∂x
-    {
-        tensorium::Vector<T> Xs = X;
-        tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
-        Xs(1) = X(1) - 2 * dx;
-        Vm2 = func(Xs);
-        Xs(1) = X(1) - dx;
-        Vm1 = func(Xs);
-        Xs(1) = X(1) + dx;
-        Vp1 = func(Xs);
-        Xs(1) = X(1) + 2 * dx;
-        Vp2 = func(Xs);
+    const auto              idx = detail::spatial_indices(X);
+    const std::array<T, 3>  spacings{dx, dy, dz};
+
+    for (size_t axis = 0; axis < 3; ++axis) {
+        const T h = spacings[axis];
+        auto sample = [&](int step) {
+            auto Xs = X;
+            detail::shift_axis(Xs, idx, axis, step * h);
+            return func(Xs);
+        };
+
+        tensorium::Vector<T> Vm2 = sample(-2);
+        tensorium::Vector<T> Vm1 = sample(-1);
+        tensorium::Vector<T> Vp1 = sample(1);
+        tensorium::Vector<T> Vp2 = sample(2);
+
         for (int i = 0; i < 3; ++i)
-            result(i, 0) = (-Vp2(i) + 8 * Vp1(i) - 8 * Vm1(i) + Vm2(i)) / (12 * dx);
+            result(i, axis) = (-Vp2(i) + 8 * Vp1(i) - 8 * Vm1(i) + Vm2(i)) / (12 * h);
     }
-    // dérivée ∂/∂y
-    {
-        tensorium::Vector<T> Xs = X;
-        tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
-        Xs(2) = X(2) - 2 * dy;
-        Vm2 = func(Xs);
-        Xs(2) = X(2) - dy;
-        Vm1 = func(Xs);
-        Xs(2) = X(2) + dy;
-        Vp1 = func(Xs);
-        Xs(2) = X(2) + 2 * dy;
-        Vp2 = func(Xs);
-        for (int i = 0; i < 3; ++i)
-            result(i, 1) = (-Vp2(i) + 8 * Vp1(i) - 8 * Vm1(i) + Vm2(i)) / (12 * dy);
-    }
-    // dérivée ∂/∂z
-    {
-        tensorium::Vector<T> Xs = X;
-        tensorium::Vector<T> Vm2(3), Vm1(3), Vp1(3), Vp2(3);
-        Xs(3) = X(3) - 2 * dz;
-        Vm2 = func(Xs);
-        Xs(3) = X(3) - dz;
-        Vm1 = func(Xs);
-        Xs(3) = X(3) + dz;
-        Vp1 = func(Xs);
-        Xs(3) = X(3) + 2 * dz;
-        Vp2 = func(Xs);
-        for (int i = 0; i < 3; ++i)
-            result(i, 2) = (-Vp2(i) + 8 * Vp1(i) - 8 * Vm1(i) + Vm2(i)) / (12 * dz);
-    }
+
     return result;
 }
 
@@ -222,12 +200,11 @@ void compute_partial_derivatives_tensor2D(const tensorium::Vector<T> &X, T dx, T
                                           TensorFunc &&func, tensorium::Tensor<T, 3> &out) {
     out.resize(3, 3, 3);
 
+    const auto idx = detail::spatial_indices(X);
+
     auto shifted = [&](T dx_, T dy_, T dz_) {
-        tensorium::Vector<T> Xs = X;
-        Xs(0) += dx_;
-        Xs(1) += dy_;
-        Xs(2) += dz_;
-        tensorium::Tensor<T, 2> out_tensor({3, 3});
+        auto                       Xs = detail::shifted_copy(X, idx, dx_, dy_, dz_);
+        tensorium::Tensor<T, 2>    out_tensor({3, 3});
         func(Xs, out_tensor);
         return out_tensor;
     };
@@ -263,11 +240,10 @@ void compute_second_derivatives_tensor2D(const tensorium::Vector<T> &X, T dx, T 
                                          TensorFunc &&func, tensorium::Tensor<T, 4> &out) {
     out = tensorium::Tensor<T, 4>({3, 3, 3, 3});
 
+    const auto idx = detail::spatial_indices(X);
+
     auto shifted = [&](T dx_, T dy_, T dz_) {
-        tensorium::Vector<T> Xs = X;
-        Xs(0) += dx_;
-        Xs(1) += dy_;
-        Xs(2) += dz_;
+        auto                    Xs = detail::shifted_copy(X, idx, dx_, dy_, dz_);
         tensorium::Tensor<T, 2> out_tensor({3, 3});
         func(Xs, out_tensor);
         return out_tensor;
@@ -313,11 +289,10 @@ void compute_partial_derivatives_vector(const tensorium::Vector<T> &X, T dx, T d
                                         VectorFunc &&func, tensorium::Tensor<T, 2> &out) {
     out.resize(3, 3);
 
+    const auto idx = detail::spatial_indices(X);
+
     auto shifted = [&](T dx_, T dy_, T dz_) {
-        tensorium::Vector<T> Xs = X;
-        Xs(0) += dx_;
-        Xs(1) += dy_;
-        Xs(2) += dz_;
+        auto                Xs = detail::shifted_copy(X, idx, dx_, dy_, dz_);
         tensorium::Vector<T> Vout(3);
         func(Xs, Vout);
         return Vout;
@@ -350,11 +325,10 @@ void compute_partial_derivatives_scalar(const tensorium::Vector<T> &X, T dx, T d
 
     out.resize(3);
 
+    const auto idx = detail::spatial_indices(X);
+
     auto shifted = [&](T dx_, T dy_, T dz_) {
-        tensorium::Vector<T> Xs = X;
-        Xs(0) += dx_;
-        Xs(1) += dy_;
-        Xs(2) += dz_;
+        auto Xs = detail::shifted_copy(X, idx, dx_, dy_, dz_);
         return func(Xs);
     };
 
@@ -381,18 +355,21 @@ void compute_partial_derivatives_scalar(const tensorium::Vector<T> &X, T dx, T d
 }
 
 template <typename T>
-tensorium::Tensor<T, 2> compute_dt_gamma_from_beta(const tensorium::Tensor<T, 2> &gamma,
-                                                   const tensorium::Vector<T>    &beta,
-                                                   const tensorium::Tensor<T, 2> &partial_beta,
-                                                   const tensorium::Tensor<T, 3> &christoffel) {
+tensorium::Tensor<T, 2>
+compute_dt_gamma_from_beta(const tensorium::Vector<T> &beta_cov,
+                           const tensorium::Tensor<T, 2> &partial_beta_cov,
+                           const tensorium::Tensor<T, 3> &christoffel) {
 
     tensorium::Tensor<T, 2> dtg({3, 3});
     for (size_t i = 0; i < 3; ++i)
         for (size_t j = 0; j < 3; ++j) {
-            T val = partial_beta(i, j) + partial_beta(j, i);
-            for (size_t k = 0; k < 3; ++k)
-                val -= 2.0 * christoffel(i, j, k) * beta(k);
-            dtg(i, j) = val;
+            T Di_bj = partial_beta_cov(i, j);
+            T Dj_bi = partial_beta_cov(j, i);
+            for (size_t k = 0; k < 3; ++k) {
+                Di_bj -= christoffel(k, i, j) * beta_cov(k);
+                Dj_bi -= christoffel(k, j, i) * beta_cov(k);
+            }
+            dtg(i, j) = Di_bj + Dj_bi;
         }
     return dtg;
 }
@@ -443,11 +420,10 @@ inline void compute_second_derivatives_scalar(const tensorium::Vector<T> &X, T d
                                               ScalarFunc &&func, tensorium::Tensor<T, 2> &out) {
     out.resize(3, 3);
 
+    const auto idx = detail::spatial_indices(X);
+
     auto shifted = [&](T dx_, T dy_, T dz_) {
-        tensorium::Vector<T> Xs = X;
-        Xs(0) += dx_;
-        Xs(1) += dy_;
-        Xs(2) += dz_;
+        auto Xs = detail::shifted_copy(X, idx, dx_, dy_, dz_);
         return func(Xs);
     };
 
@@ -663,17 +639,22 @@ template <typename T, typename TensorFunc>
 tensorium::Tensor<T, 3> partial_tensor2(const tensorium::Vector<T> &X, T dx, T dy, T dz,
                                         TensorFunc &&func) {
     tensorium::Tensor<T, 3> result({3, 3, 3});
+    const auto              idx = detail::spatial_indices(X);
+    const std::array<T, 3>  spacings{dx, dy, dz};
 
-    for (int k = 0; k < 3; ++k) {
-        tensorium::Vector<T> dx_vec = {0, 0, 0};
-        dx_vec(k) = (k == 0) ? dx : (k == 1 ? dy : dz);
+    for (int axis = 0; axis < 3; ++axis) {
+        const T h = spacings[axis];
+        auto Xm = X;
+        auto Xp = X;
+        detail::shift_axis(Xm, idx, axis, -h);
+        detail::shift_axis(Xp, idx, axis, h);
 
-        tensorium::Tensor<T, 2> fm = func(X - dx_vec);
-        tensorium::Tensor<T, 2> fp = func(X + dx_vec);
+        tensorium::Tensor<T, 2> fm = func(Xm);
+        tensorium::Tensor<T, 2> fp = func(Xp);
 
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)
-                result(i, j, k) = (fp(i, j) - fm(i, j)) / (2 * dx_vec(k));
+                result(i, j, axis) = (fp(i, j) - fm(i, j)) / (2 * h);
     }
 
     return result;
@@ -687,16 +668,21 @@ tensorium::Tensor<T, 4> covariant_tensor2_second(const tensorium::Vector<T> &X, 
         return covariant_tensor2<T>(Y, dx, dy, dz, func, Gamma);
     };
 
+    const auto             idx = detail::spatial_indices(X);
     tensorium::Tensor<T, 4> result({3, 3, 3, 3}); // ∇_i ∇_j T_{kl}
+
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
             for (int k = 0; k < 3; ++k)
                 for (int l = 0; l < 3; ++l) {
-                    // très simpliste, pas d'optimisation pour la structure de symétrie
-                    T cov_minus = cov1(X - tensorium::Vector<T>::canonical(j, dx, dy, dz))(k, l, i);
-                    T cov_plus = cov1(X + tensorium::Vector<T>::canonical(j, dx, dy, dz))(k, l, i);
-                    T cov0 = cov1(X)(k, l, i);
-                    T h = (j == 0) ? dx : (j == 1 ? dy : dz);
+                    auto X_minus = X;
+                    auto X_plus = X;
+                    const T h = (j == 0) ? dx : (j == 1 ? dy : dz);
+                    detail::shift_axis(X_minus, idx, j, -h);
+                    detail::shift_axis(X_plus, idx, j, h);
+
+                    T cov_minus = cov1(X_minus)(k, l, i);
+                    T cov_plus = cov1(X_plus)(k, l, i);
                     result(i, j, k, l) = (cov_plus - cov_minus) / (2 * h); // ∂_j (∇_i T_kl)
                 }
 

@@ -27,6 +27,7 @@
 #include "BSSNTildeChristoffel.hpp"
 #include "BSSNextrinTensor.hpp"
 #include <iostream>
+#include <stdexcept>
 
 namespace tensorium_RG {
 /**
@@ -70,44 +71,32 @@ struct alignas(64) BSSNGrid {
 };
 template <typename T>
 tensorium::Tensor<T, 2>
-compute_dt_gamma_from_beta(const tensorium::Tensor<T, 2> &gamma,
-                           const tensorium::Vector<T>    &beta_u,         // β^i
-                           const tensorium::Tensor<T, 2> &partial_beta_u, // (i,m)=∂_i β^m
-                           const tensorium::Tensor<T, 3> &christoffel,    // Γ^k_{ij}
-                           const tensorium::Tensor<T, 3> &dgamma_phys)    // (i,j,m)=∂_i γ_{jm}
-{
-    // β_j = γ_{jm} β^m
-    tensorium::Vector<T> beta_d(3);
-    for (int j = 0; j < 3; ++j) {
-        T s = 0;
-        for (int m = 0; m < 3; ++m)
-            s += gamma(j, m) * beta_u(m);
-        beta_d(j) = s;
-    }
+compute_dt_gamma_from_metric(const tensorium::Vector<T> &X, const tensorium_RG::Metric<T> &metric,
+                             T dt) {
+    if (X.size() < 1)
+        throw std::invalid_argument("BSSN::compute_dt_gamma_from_metric requires a time coordinate");
 
-    // ∂_i β_j = (∂_i γ_{j m}) β^m + γ_{j m} (∂_i β^m)
-    tensorium::Tensor<T, 2> d_beta_d({3, 3}); // (i,j)
-    for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j) {
-            T s = 0;
-            for (int m = 0; m < 3; ++m)
-                s += dgamma_phys(i, j, m) * beta_u(m) + gamma(j, m) * partial_beta_u(i, m);
-            d_beta_d(i, j) = s;
-        }
+    auto sample_gamma = [&](T dt_shift) {
+        tensorium::Vector<T> Xt = X;
+        Xt(0) += dt_shift;
+        T                       alpha_tmp;
+        tensorium::Vector<T>    beta_tmp(3);
+        tensorium::Tensor<T, 2> gamma_tmp({3, 3});
+        metric.BSSN(Xt, alpha_tmp, beta_tmp, gamma_tmp);
+        return gamma_tmp;
+    };
 
-    // D_i β_j = ∂_i β_j - Γ^k_{ij} β_k
-    tensorium::Tensor<T, 2> Dt_g({3, 3}); // ∂_t γ_ij = D_i β_j + D_j β_i  (sans -2αK_ij ici)
+    auto gm2 = sample_gamma(-2 * dt);
+    auto gm1 = sample_gamma(-dt);
+    auto gp1 = sample_gamma(dt);
+    auto gp2 = sample_gamma(2 * dt);
+
+    tensorium::Tensor<T, 2> result({3, 3});
     for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j) {
-            T Di_bj = d_beta_d(i, j);
-            for (int k = 0; k < 3; ++k)
-                Di_bj -= christoffel(i, j, k) * beta_d(k);
-            T Dj_bi = d_beta_d(j, i);
-            for (int k = 0; k < 3; ++k)
-                Dj_bi -= christoffel(j, i, k) * beta_d(k);
-            Dt_g(i, j) = Di_bj + Dj_bi;
-        }
-    return Dt_g;
+        for (int j = 0; j < 3; ++j)
+            result(i, j) = (-gp2(i, j) + 8 * gp1(i, j) - 8 * gm1(i, j) + gm2(i, j)) / (12 * dt);
+
+    return result;
 }
 
 /**
@@ -125,17 +114,18 @@ template <typename T> class BSSN {
     BSSNGrid grid;
 
     void init_BSSN(const tensorium::Vector<T> &X, const tensorium_RG::Metric<T> &metric, T dx, T dy,
-                   T dz) {
+                   T dz, T dt) {
         T                       alpha;
         tensorium::Vector<T>    beta(3);
         tensorium::Tensor<T, 2> gamma_ij({3, 3});
         metric.BSSN(X, alpha, beta, gamma_ij);
 
-        tensorium::Tensor<T, 2> dgt({3, 3});
         tensorium::Tensor<T, 2> gamma_ij_inv = inv_mat_tensor(gamma_ij);
         T                       chi = metric.compute_conformal_factor(gamma_ij);
         tensorium::Tensor<T, 2> gamma_tilde = compute_conformal_metric(metric, gamma_ij, chi);
         tensorium::Tensor<T, 2> gamma_tilde_inv = inv_mat_tensor(gamma_tilde);
+
+        auto dt_gamma = compute_dt_gamma_from_metric(X, metric, dt);
 
         auto dgamma_tilde = autodiff(
             X, dx, dy, dz,
@@ -158,7 +148,7 @@ template <typename T> class BSSN {
         auto contracted_Gamma =
             tensorium_RG::BSSNContractedGamma<T>::compute(X, metric, dx, dy, dz, chi);
 
-        auto d_beta = autodiff(
+        auto d_beta_raw = autodiff(
             X, dx, dy, dz,
             [&](const tensorium::Vector<T> &Xs) {
                 T                       a_tmp;
@@ -168,6 +158,11 @@ template <typename T> class BSSN {
                 return b_tmp;
             },
             DiffMode::PARTIAL);
+
+        tensorium::Tensor<T, 2> d_beta({3, 3}); // derivative direction, component
+        for (int comp = 0; comp < 3; ++comp)
+            for (int axis = 0; axis < 3; ++axis)
+                d_beta(axis, comp) = d_beta_raw(comp, axis);
 
         auto dgamma_phys = autodiff(
             X, dx, dy, dz,
@@ -183,12 +178,27 @@ template <typename T> class BSSN {
         tensorium::Tensor<T, 3> christoffel_phys({3, 3, 3});
         compute_christoffel_3D(gamma_ij, dgamma_phys, gamma_ij_inv, christoffel_phys);
 
+        tensorium::Vector<T> beta_cov(3);
+        tensorium::Tensor<T, 2> partial_beta_cov({3, 3});
+        for (int j = 0; j < 3; ++j) {
+            T sum = 0;
+            for (int m = 0; m < 3; ++m)
+                sum += gamma_ij(j, m) * beta(m);
+            beta_cov(j) = sum;
+        }
+
+        for (int axis = 0; axis < 3; ++axis)
+            for (int j = 0; j < 3; ++j) {
+                T s = 0;
+                for (int m = 0; m < 3; ++m)
+                    s += dgamma_phys(axis, j, m) * beta(m) + gamma_ij(j, m) * d_beta(axis, m);
+                partial_beta_cov(axis, j) = s;
+            }
+
         tensorium_RG::ExtrinsicCurvature<T> extr;
-        auto Kij = extr.compute_Kij(dgt, gamma_ij, beta, d_beta, christoffel_phys, alpha);
-        dgt = compute_dt_gamma_from_beta(gamma_ij, beta, d_beta, christoffel_phys, dgamma_phys);
+        auto Kij = extr.compute_Kij(dt_gamma, beta_cov, partial_beta_cov, christoffel_phys, alpha);
         // Lie(γ) = ∇_i β_j + ∇_j β_i
-        auto Lie =
-            compute_dt_gamma_from_beta(gamma_ij, beta, d_beta, christoffel_phys, dgamma_phys);
+        auto Lie = tensorium_RG::compute_dt_gamma_from_beta(beta_cov, partial_beta_cov, christoffel_phys);
         print_tensor2("Lie_beta(gamma_ij)", Lie);
 
         // Test de stationnarité analytique: ∂_t γ = 0  ⇒  2 α K - Lie ≈ 0
@@ -264,7 +274,7 @@ template <typename T> class BSSN {
         print_tensor3("christoffel_tilde", grid.christoffel_tilde[0]);
         print_vector("tilde_Gamma", grid.tilde_Gamma[0]);
 
-        print_tensor2("∂_t gamma_ij (dgt)", dgt);
+        print_tensor2("∂_t gamma_ij (dgt)", dt_gamma);
         print_vector("contracted_Gamma", grid.contracted_Gamma[0]);
 
         print_tensor3("dgamma_phys", dgamma_phys);
@@ -278,6 +288,11 @@ template <typename T> class BSSN {
         print_tensor2("Ricci physical tensor", Ricci);
 
         std::cout << "========================================\n\n";
+    }
+
+    void init_BSSN(const tensorium::Vector<T> &X, const tensorium_RG::Metric<T> &metric, T dx, T dy,
+                   T dz) {
+        init_BSSN(X, metric, dx, dy, dz, dx);
     }
 };
 } // namespace tensorium_RG

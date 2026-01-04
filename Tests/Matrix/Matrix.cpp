@@ -400,7 +400,7 @@ int matrix_tests() {
     tensorium::Vector<double> X(dim);
     X(0) = 0.0;
     X(1) = 10.0;
-    X(2) = M_PI / 2.0;
+    X(2) = 0.0;
     X(3) = 0.0;
 
     tensorium::Tensor<double, 2> g({dim, dim});

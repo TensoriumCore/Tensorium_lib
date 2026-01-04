@@ -53,37 +53,36 @@ template <typename K> class ExtrinsicCurvature {
      *
      * \f[
      * K_{ij} = -\frac{1}{2\alpha} \left(
-     * \partial_t \gamma_{ij}
-     * - (\partial_i \beta_j + \partial_j \beta_i - 2 \Gamma^k_{ij} \beta_k)
-     * \right)
+     * \partial_t \gamma_{ij} - \mathcal{L}_\beta \gamma_{ij}
+     * \right), \qquad \mathcal{L}_\beta \gamma_{ij} = \nabla_i \beta_j + \nabla_j \beta_i
      * \f]
      *
      * The result is symmetrized to ensure \f$ K_{ij} = K_{ji} \f$.
      *
      * @param dgt Time derivative \f$ \partial_t \gamma_{ij} \f$
-     * @param gamma The 3×3 spatial metric \f$ \gamma_{ij} \f$
-     * @param beta The shift vector \f$ \beta^i \f$
-     * @param partial_beta The partial derivatives \f$ \partial_i \beta_j \f$
+     * @param beta_cov Covariant shift components \f$ \beta_j \f$
+     * @param partial_beta Covariant partial derivatives \f$ \partial_i \beta_j \f$
      * @param christoffel The 3D Christoffel symbols \f$ \Gamma^k_{ij} \f$
      * @param alpha The lapse function \f$ \alpha \f$
      * @return The extrinsic curvature tensor \f$ K_{ij} \f$
      */
     template <typename T>
     tensorium::Tensor<T, 2>
-    compute_Kij(const tensorium::Tensor<T, 2> &dgt, const tensorium::Tensor<T, 2> &gamma,
-                const tensorium::Vector<T> &beta, const tensorium::Tensor<T, 2> &partial_beta,
+    compute_Kij(const tensorium::Tensor<T, 2> &dgt, const tensorium::Vector<T> &beta_cov,
+                const tensorium::Tensor<T, 2> &partial_beta,
                 const tensorium::Tensor<T, 3> &christoffel, const T alpha) {
         tensorium::Tensor<T, 2> Kij({3, 3});
 
         for (size_t i = 0; i < 3; ++i) {
             for (size_t j = 0; j < 3; ++j) {
-                T sym_grad_beta = partial_beta(i, j) + partial_beta(j, i);
-                T gamma_beta = T(0.0);
-
-                for (size_t k = 0; k < 3; ++k)
-                    gamma_beta += 2.0 * christoffel(k, i, j) * beta(k);
-
-                Kij(i, j) = -0.5 / alpha * (dgt(i, j) - (sym_grad_beta - gamma_beta));
+                T Di_bj = partial_beta(i, j);
+                T Dj_bi = partial_beta(j, i);
+                for (size_t k = 0; k < 3; ++k) {
+                    Di_bj -= christoffel(k, i, j) * beta_cov(k);
+                    Dj_bi -= christoffel(k, j, i) * beta_cov(k);
+                }
+                T Lie_ij = Di_bj + Dj_bi;
+                Kij(i, j) = -0.5 / alpha * (dgt(i, j) - Lie_ij);
             }
         }
         for (size_t i = 0; i < 3; ++i)
