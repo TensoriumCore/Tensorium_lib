@@ -19,3 +19,4 @@ int matrix_tests();
 int tensor_test();
 int vector_tests();
 int deriv_test_spectral_fft();
+int grid_tests();

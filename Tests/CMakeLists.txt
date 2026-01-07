@@ -6,6 +6,7 @@ file(GLOB TEST_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Derivatives/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/LinearSystems/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Tensor/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Grid/*.cpp
 )
 
 add_executable(TensoriumTests ${TEST_SOURCES})

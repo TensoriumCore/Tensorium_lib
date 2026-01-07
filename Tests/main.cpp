@@ -13,5 +13,6 @@ int main() {
 	tensor_test();
 	vector_tests();
 	deriv_test_spectral_fft();
+	grid_tests();
 	return 0;
 }

@@ -197,11 +197,9 @@ template <typename T> class BSSN {
 
         tensorium_RG::ExtrinsicCurvature<T> extr;
         auto Kij = extr.compute_Kij(dt_gamma, beta_cov, partial_beta_cov, christoffel_phys, alpha);
-        // Lie(γ) = ∇_i β_j + ∇_j β_i
         auto Lie = tensorium_RG::compute_dt_gamma_from_beta(beta_cov, partial_beta_cov, christoffel_phys);
         print_tensor2("Lie_beta(gamma_ij)", Lie);
 
-        // Test de stationnarité analytique: ∂_t γ = 0  ⇒  2 α K - Lie ≈ 0
         tensorium::Tensor<T, 2> resid({3, 3});
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)

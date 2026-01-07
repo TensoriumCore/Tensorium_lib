@@ -30,7 +30,7 @@ template <typename T> class ConstraintSolver {
         const size_t          NY = shp[1];
         const size_t          NZ = shp[2];
 
-		assert(NX >= 3 && NY >= 3 && NZ >= 3 && "Grid size too small for Lichnerowicz solve");
+        assert(NX >= 3 && NY >= 3 && NZ >= 3 && "Grid size too small for Lichnerowicz solve");
         tensorium::Tensor<T, 3> psi({NX, NY, NZ});
         for (size_t i = 0; i < NX; ++i) {
             for (size_t j = 0; j < NY; ++j) {
@@ -77,7 +77,7 @@ template <typename T> class ConstraintSolver {
                         T psi_ijk = std::fmax(psi({i, j, k}), T(1e-8));
                         T rhs = (T(1) / T(8)) * A2 / std::pow(psi_ijk, T(7));
 
-                        T new_psi = psi({i, j, k}) + T(0.5) * (lap - rhs) * factor;
+                        T new_psi = psi({i, j, k}) + T(0.5) * (lap + rhs) * factor;
                         new_psi = std::fmax(new_psi, T(0.1));
 
                         max_diff = std::fmax(max_diff, std::abs(new_psi - psi({i, j, k})));
