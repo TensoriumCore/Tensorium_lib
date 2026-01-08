@@ -263,9 +263,9 @@ static void test_halo_clamp_alpha() {
 }
 int grid_tests() {
     printf("=== Grid basic tests ===\n");
-    const size_t nx = 128;
-    const size_t ny = 128;
-    const size_t nz = 128;
+    const size_t nx = 256;
+    const size_t ny = 256;
+    const size_t nz = 256;
     const size_t ng = 3;
 
     const double dx = 0.05;

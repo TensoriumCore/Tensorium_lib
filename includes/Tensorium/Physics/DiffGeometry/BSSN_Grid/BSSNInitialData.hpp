@@ -1,6 +1,7 @@
 #include "BSSNCHristoffelTilde.hpp"
 #include "BSSNGridDerivatives.hpp"
 #include "BSSNGridSoA.hpp"
+#include "BSSNRicci.hpp"
 #include <algorithm>
 #include <stdio.h>
 
@@ -75,6 +76,45 @@ template <typename T> inline void minkowski(BSSNGridSoA<T> &G) {
             }
 }
 
+template <typename T> void print_ricci_samples(const BSSNGridSoA<T> &G) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t cx = I0 + G.dims.nx / 2;
+    size_t cy = J0 + G.dims.ny / 2;
+    size_t cz = K0 + G.dims.nz / 2;
+
+    struct Sample {
+        const char *name;
+        size_t      i, j, k;
+    };
+    Sample samples[] = {{"Near (r ~ 4*dx)", cx + 4, cy, cz},
+                        {"Mid  (r ~ N/4) ", cx + G.dims.nx / 4, cy, cz},
+                        {"Far  (r ~ N/2) ", I1 - 4, cy, cz}};
+
+    printf("\n=== Ricci Tensor Samples ===\n");
+    for (const auto &s : samples) {
+        size_t id = G.alpha.idx(s.i, s.j, s.k);
+
+        T x, y, z;
+        G.coords(s.i, s.j, s.k, x, y, z);
+        T r = std::sqrt(x * x + y * y + z * z);
+
+        T Rxx = G.Ricci[XX].ptr()[id];
+        T Rxy = G.Ricci[XY].ptr()[id];
+        T Rxz = G.Ricci[XZ].ptr()[id];
+        T Ryy = G.Ricci[YY].ptr()[id];
+        T Ryz = G.Ricci[YZ].ptr()[id];
+        T Rzz = G.Ricci[ZZ].ptr()[id];
+
+        printf("[%s] Index(%zu,%zu,%zu) r=%.4f\n", s.name, s.i, s.j, s.k, double(r));
+        printf("      [[ % .4e  % .4e  % .4e ]\n", double(Rxx), double(Rxy), double(Rxz));
+        printf("       [ % .4e  % .4e  % .4e ]\n", double(Rxy), double(Ryy), double(Ryz));
+        printf("       [ % .4e  % .4e  % .4e ]]\n", double(Rxz), double(Ryz), double(Rzz));
+    }
+    printf("============================\n\n");
+}
+
 template <typename T>
 inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T(0),
                                     T r_floor = T(1e-6)) {
@@ -137,6 +177,60 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
     apply_halos_grid<BoundaryClamp>(G);
     tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
+    tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
+
+    double maxAbsR = 0.0;
+    size_t nSamples = 0;
+    double rMin = 1e300, rMax = 0.0;
+
+    for (size_t i = I0 + 4; i < I1 - 4; ++i)
+        for (size_t j = J0 + 4; j < J1 - 4; ++j)
+            for (size_t k = K0 + 4; k < K1 - 4; ++k) {
+
+                double x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+
+                const double r = std::sqrt(x * x + y * y + z * z);
+                if (r <= 5.0 * double(G.dx))
+                    continue;
+
+                const size_t id = G.alpha.idx(i, j, k);
+
+                const double chi = G.chi.ptr()[id];
+
+                const double ginv_xx = chi * G.gamma_tilde_inv[XX].ptr()[id];
+                const double ginv_xy = chi * G.gamma_tilde_inv[XY].ptr()[id];
+                const double ginv_xz = chi * G.gamma_tilde_inv[XZ].ptr()[id];
+                const double ginv_yy = chi * G.gamma_tilde_inv[YY].ptr()[id];
+                const double ginv_yz = chi * G.gamma_tilde_inv[YZ].ptr()[id];
+                const double ginv_zz = chi * G.gamma_tilde_inv[ZZ].ptr()[id];
+
+                const double Rxx = G.Ricci[XX].ptr()[id];
+                const double Rxy = G.Ricci[XY].ptr()[id];
+                const double Rxz = G.Ricci[XZ].ptr()[id];
+                const double Ryy = G.Ricci[YY].ptr()[id];
+                const double Ryz = G.Ricci[YZ].ptr()[id];
+                const double Rzz = G.Ricci[ZZ].ptr()[id];
+
+                const double R = ginv_xx * Rxx + 2.0 * ginv_xy * Rxy + 2.0 * ginv_xz * Rxz +
+                                 ginv_yy * Ryy + 2.0 * ginv_yz * Ryz + ginv_zz * Rzz;
+
+                maxAbsR = std::max(maxAbsR, std::abs(R));
+                nSamples++;
+
+                if (nSamples == 1) {
+                    printf("[DBG] chi=%g Rxx=%g Ryy=%g Rzz=%g\n", chi, Rxx, Ryy, Rzz);
+                }
+                rMin = std::min(rMin, r);
+                rMax = std::max(rMax, r);
+            }
+
+    printf("[CHECK] samples=%zu, rMin=%g, rMax=%g\n", nSamples, rMin, rMax);
+    printf("[CHECK] max |R| for r > 5 dx = %.3e\n", maxAbsR);
+	print_ricci_samples(G);
 }
 
 } // namespace tensorium_RG::init
