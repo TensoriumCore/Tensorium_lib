@@ -21,7 +21,8 @@ template <typename T> class BSSNGridSoA {
     Field3D<T> gamma_tilde_inv[6];
     Field3D<T> A_tilde[6];
 
-    T dx, dy, dz;
+    Field3D<T> Gamma_tilde[27];
+    T          dx, dy, dz;
 
     BSSNGridSoA(size_t nx, size_t ny, size_t nz, size_t ng, T dx_, T dy_, T dz_)
         : dims{nx, ny, nz, ng},
@@ -61,6 +62,8 @@ template <typename T> class BSSNGridSoA {
             alloc_field(gamma_tilde_inv[s]);
             alloc_field(A_tilde[s]);
         }
+        for (int q = 0; q < 27; ++q)
+            alloc_field(Gamma_tilde[q]);
     }
 
     inline void domain_bounds(size_t &i0, size_t &i1, size_t &j0, size_t &j1, size_t &k0,
@@ -99,6 +102,8 @@ template <typename Boundary, typename T> inline void apply_halos_grid(BSSNGridSo
         Boundary::apply(G.gamma_tilde_inv[s], D);
         Boundary::apply(G.A_tilde[s], D);
     }
+    for (int q = 0; q < 27; ++q)
+        Boundary::apply(G.Gamma_tilde[q], D);
 }
 
 } // namespace tensorium_RG

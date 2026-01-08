@@ -126,7 +126,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
 
 enum Sym6 { XX = 0, XY = 1, XZ = 2, YY = 3, YZ = 4, ZZ = 5 };
 
-
 template <typename T>
 inline void store_sym6(Field3D<T> *f6, size_t idx, T xx, T xy, T xz, T yy, T yz, T zz) {
     f6[XX].ptr()[idx] = xx;
@@ -161,49 +160,80 @@ struct BoundaryPeriodic {
     }
 };
 
+template <typename T> inline void halo_clamp_full(Field3D<T> &f, const GridDims &D) {
+    const size_t nxT = D.nx + 2 * D.ng;
+    const size_t nyT = D.ny + 2 * D.ng;
+    const size_t nzT = D.nz + 2 * D.ng;
+
+    const size_t I0 = D.ng, I1 = D.ng + D.nx;
+    const size_t J0 = D.ng, J1 = D.ng + D.ny;
+    const size_t K0 = D.ng, K1 = D.ng + D.nz;
+
+    auto clamp_i = [&](size_t i) -> size_t {
+        if (i < I0)
+            return I0;
+        if (i >= I1)
+            return I1 - 1;
+        return i;
+    };
+    auto clamp_j = [&](size_t j) -> size_t {
+        if (j < J0)
+            return J0;
+        if (j >= J1)
+            return J1 - 1;
+        return j;
+    };
+    auto clamp_k = [&](size_t k) -> size_t {
+        if (k < K0)
+            return K0;
+        if (k >= K1)
+            return K1 - 1;
+        return k;
+    };
+
+    for (size_t i = 0; i < nxT; ++i)
+        for (size_t j = 0; j < nyT; ++j)
+            for (size_t k = 0; k < nzT; ++k) {
+                const bool inInterior =
+                    (i >= I0 && i < I1) && (j >= J0 && j < J1) && (k >= K0 && k < K1);
+                if (inInterior)
+                    continue;
+
+                const size_t is = clamp_i(i);
+                const size_t js = clamp_j(j);
+                const size_t ks = clamp_k(k);
+
+                f.ptr()[f.idx(i, j, k)] = f.ptr()[f.idx(is, js, ks)];
+            }
+}
 struct BoundaryClamp {
     template <typename T> static inline void apply(Field3D<T> &f, const GridDims &D) {
-        const size_t I0 = D.ng, I1 = D.ng + D.nx;
-        const size_t J0 = D.ng, J1 = D.ng + D.ny;
-        const size_t K0 = D.ng, K1 = D.ng + D.nz;
-
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t idst = I0 - 1 - g, isrc = I0;
-            for (size_t j = J0; j < J1; ++j)
-                for (size_t k = K0; k < K1; ++k)
-                    f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
-        }
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t idst = I1 + g, isrc = I1 - 1;
-            for (size_t j = J0; j < J1; ++j)
-                for (size_t k = K0; k < K1; ++k)
-                    f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
-        }
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t jdst = J0 - 1 - g, jsrc = J0;
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t k = K0; k < K1; ++k)
-                    f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
-        }
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t jdst = J1 + g, jsrc = J1 - 1;
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t k = K0; k < K1; ++k)
-                    f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
-        }
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t kdst = K0 - 1 - g, ksrc = K0;
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t j = J0; j < J1; ++j)
-                    f.ptr()[f.idx(i, j, kdst)] = f.ptr()[f.idx(i, j, ksrc)];
-        }
-        for (size_t g = 0; g < D.ng; ++g) {
-            const size_t kdst = K1 + g, ksrc = K1 - 1;
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t j = J0; j < J1; ++j)
-                    f.ptr()[f.idx(i, j, kdst)] = f.ptr()[f.idx(i, j, ksrc)];
-        }
+        halo_clamp_full(f, D);
     }
 };
+
+template <typename T> inline T sym6_get(const Field3D<T> *f6, size_t idx, int i, int j) noexcept {
+    if (i > j) {
+        int t = i;
+        i = j;
+        j = t;
+    }
+    if (i == 0 && j == 0)
+        return f6[XX].ptr()[idx];
+    if (i == 0 && j == 1)
+        return f6[XY].ptr()[idx];
+    if (i == 0 && j == 2)
+        return f6[XZ].ptr()[idx];
+    if (i == 1 && j == 1)
+        return f6[YY].ptr()[idx];
+    if (i == 1 && j == 2)
+        return f6[YZ].ptr()[idx];
+    return f6[ZZ].ptr()[idx];
+}
+
+template <typename T>
+inline T sym6_inv_get(const Field3D<T> *f6, size_t idx, int i, int j) noexcept {
+    return sym6_get(f6, idx, i, j);
+}
 
 } // namespace tensorium_RG
