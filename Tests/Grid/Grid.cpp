@@ -6,6 +6,9 @@
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
+#include <fstream>
+#include <iomanip>
+#include <string>
 
 using namespace tensorium_RG;
 
@@ -38,6 +41,95 @@ static void fill_interior(Field3D<double> &f, const BSSNGridSoA<double> &G) {
                 f.ptr()[f.idx(i, j, k)] = tag_val(i - I0, j - J0, k - K0);
 }
 
+template <typename T> void export_chi_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t k_mid = K0 + G.dims.nz / 2;
+
+    std::ofstream file(filename);
+    file << "x,y,chi\n";
+
+    for (size_t i = I0; i < I1; ++i) {
+        for (size_t j = J0; j < J1; ++j) {
+            T x, y, z;
+            G.coords(i, j, k_mid, x, y, z);
+
+            size_t id = G.chi.idx(i, j, k_mid);
+            file << x << "," << y << "," << G.chi.ptr()[id] << "\n";
+        }
+    }
+    file.close();
+    printf("Slice exported to %s\n", filename.c_str());
+}
+#include <algorithm>
+#include <cmath>
+
+template <typename T>
+void export_log_chi_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    size_t k_mid = I0 + (G.dims.nz / 2);
+
+    std::ofstream file(filename);
+    file << "i,j,log_chi\n";
+
+    for (size_t i = 0; i < G.st.nx_tot; ++i) {
+        for (size_t j = 0; j < G.st.ny_tot; ++j) {
+            size_t id = G.chi.idx(i, j, k_mid);
+            T      val = G.chi.ptr()[id];
+
+            T log_val = std::log10(std::max(val, T(1e-20)));
+
+            file << i << "," << j << "," << log_val << "\n";
+        }
+    }
+    file.close();
+}
+
+template <typename T>
+void export_alpha_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t k_mid = I0 + (G.dims.nz / 2);
+
+    std::ofstream file(filename);
+    file << std::scientific << std::setprecision(12);
+    file << "i,j,alpha\n";
+
+    for (size_t i = 0; i < G.st.nx_tot; ++i) {
+        for (size_t j = 0; j < G.st.ny_tot; ++j) {
+            size_t id = G.alpha.idx(i, j, k_mid);
+            file << i << "," << j << "," << G.alpha.ptr()[id] << "\n";
+        }
+    }
+    file.close();
+    printf("Lapse slice exported to %s\n", filename.c_str());
+}
+
+template <typename T>
+void export_grid_structure(const BSSNGridSoA<T> &G, const std::string &filename) {
+    const auto &st = G.st;
+    const auto &D = G.dims;
+
+    std::ofstream file(filename);
+    file << "i,j,chi,zone_type\n";
+
+    size_t k_mid = st.nz_tot / 2;
+
+    for (size_t i = 0; i < st.nx_tot; ++i) {
+        for (size_t j = 0; j < st.ny_tot; ++j) {
+            size_t id = i * st.sx + j * st.sy + k_mid;
+
+            int zone = (i >= D.ng && i < D.ng + D.nx && j >= D.ng && j < D.ng + D.ny) ? 1 : 0;
+
+            file << i << "," << j << "," << G.chi.ptr()[id] << "," << zone << "\n";
+        }
+    }
+    file.close();
+    printf("Full grid structure exported to %s\n", filename.c_str());
+}
 static void test_halo_periodic_alpha() {
     printf("=== Halo periodic test (alpha) ===\n");
 
@@ -236,8 +328,15 @@ int grid_tests() {
     test_halo_clamp_alpha();
     printf("=== Grid basic tests PASSED ===\n\n");
     BSSNGridSoA<double> G2(256, 256, 256, 3, 0.05, 0.05, 0.05);
-
+    G2.x0 = -(double(G2.dims.nx) * G2.dx) / 2.0;
+    G2.y0 = -(double(G2.dims.ny) * G2.dy) / 2.0;
+    G2.z0 = -(double(G2.dims.nz) * G2.dz) / 2.0;
     init::schwarzschild_isotropic(G2, /*M=*/1.0, /*center=*/0.0, 0.0, 0.0, /*r_floor=*/1e-6);
-    apply_halos_grid<BoundaryClamp>(G2); 
+    apply_halos_grid<BoundaryClamp>(G2);
+
+    export_chi_slice(G2, "chi_slice.csv");
+    export_grid_structure(G2, "grid_structure.csv");
+    export_alpha_slice(G2, "alpha_slice.csv");
+	export_log_chi_slice(G2, "log_chi_slice.csv");
     return 0;
 }
