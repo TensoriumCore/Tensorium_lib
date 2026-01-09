@@ -25,6 +25,9 @@ template <typename T> class BSSNGridSoA {
     T          dx, dy, dz;
     Field3D<T> Ricci[6];
 
+    Field3D<T> Hc;
+    Field3D<T> Mc[3];
+    Field3D<T> Cc[3];
     BSSNGridSoA(size_t nx, size_t ny, size_t nz, size_t ng, T dx_, T dy_, T dz_)
         : dims{nx, ny, nz, ng},
           dx(dx_),
@@ -65,8 +68,14 @@ template <typename T> class BSSNGridSoA {
         }
         for (int q = 0; q < 27; ++q)
             alloc_field(Gamma_tilde[q]);
-		for (int r = 0; r < 6; ++r)
-			alloc_field(Ricci[r]);
+        for (int r = 0; r < 6; ++r)
+            alloc_field(Ricci[r]);
+
+        alloc_field(Hc);
+        for (int q = 0; q < 3; ++q) {
+            alloc_field(Mc[q]);
+            alloc_field(Cc[q]);
+        }
     }
 
     inline void domain_bounds(size_t &i0, size_t &i1, size_t &j0, size_t &j1, size_t &k0,

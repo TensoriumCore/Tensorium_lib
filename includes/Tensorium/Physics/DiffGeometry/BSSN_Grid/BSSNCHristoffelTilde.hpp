@@ -1,3 +1,4 @@
+#pragma once
 #include "BSSNGridDerivatives.hpp"
 #include "BSSNGridSoA.hpp"
 
@@ -15,7 +16,7 @@ template <typename T> inline void compute_tildeGamma_contracted(BSSNGridSoA<T> &
     const size_t j0 = J0 + 2, j1 = J1 - 2;
     const size_t k0 = K0 + 2, k1 = K1 - 2;
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i)
         for (size_t j = j0; j < j1; ++j)
             for (size_t k = k0; k < k1; ++k) {
@@ -85,7 +86,7 @@ template <typename T> inline void compute_tildeGamma_full(BSSNGridSoA<T> &G, Fie
     const size_t j0 = J0 + 2, j1 = J1 - 2;
     const size_t k0 = K0 + 2, k1 = K1 - 2;
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i)
         for (size_t j = j0; j < j1; ++j)
             for (size_t k = k0; k < k1; ++k) {

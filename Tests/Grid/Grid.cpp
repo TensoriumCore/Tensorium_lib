@@ -261,6 +261,141 @@ static void test_halo_clamp_alpha() {
 
     printf("=== Halo clamp test PASSED ===\n\n");
 }
+#include <vector>
+
+namespace {
+
+template <typename T> struct ConvMetrics {
+    double Einf = 0.0;
+    double EL2 = 0.0;
+    size_t n = 0;
+};
+
+template <typename T>
+static inline double scalar_R_at(const tensorium_RG::BSSNGridSoA<T> &G,
+                                 const tensorium_RG::Field3D<T> *Ricci6, size_t id) {
+    const double chi = (double)G.chi.ptr()[id];
+
+    const double gixx = (double)G.gamma_tilde_inv[tensorium_RG::XX].ptr()[id];
+    const double gixy = (double)G.gamma_tilde_inv[tensorium_RG::XY].ptr()[id];
+    const double gixz = (double)G.gamma_tilde_inv[tensorium_RG::XZ].ptr()[id];
+    const double giyy = (double)G.gamma_tilde_inv[tensorium_RG::YY].ptr()[id];
+    const double giyz = (double)G.gamma_tilde_inv[tensorium_RG::YZ].ptr()[id];
+    const double gizz = (double)G.gamma_tilde_inv[tensorium_RG::ZZ].ptr()[id];
+
+    const double Rxx = (double)Ricci6[tensorium_RG::XX].ptr()[id];
+    const double Rxy = (double)Ricci6[tensorium_RG::XY].ptr()[id];
+    const double Rxz = (double)Ricci6[tensorium_RG::XZ].ptr()[id];
+    const double Ryy = (double)Ricci6[tensorium_RG::YY].ptr()[id];
+    const double Ryz = (double)Ricci6[tensorium_RG::YZ].ptr()[id];
+    const double Rzz = (double)Ricci6[tensorium_RG::ZZ].ptr()[id];
+
+    const double tr_conf =
+        gixx * Rxx + giyy * Ryy + gizz * Rzz + 2.0 * (gixy * Rxy + gixz * Rxz + giyz * Ryz);
+
+    return chi * tr_conf;
+}
+
+template <typename T>
+ConvMetrics<T> measure_R_error(const tensorium_RG::BSSNGridSoA<T> &G,
+                               const tensorium_RG::Field3D<T> *Ricci6, T M, double r_cut_phys) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 2, i1 = I1 - 2;
+    const size_t j0 = J0 + 2, j1 = J1 - 2;
+    const size_t k0 = K0 + 2, k1 = K1 - 2;
+
+    double sum2 = 0.0;
+    double maxa = 0.0;
+    size_t n = 0;
+
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t id = G.gamma_tilde[tensorium_RG::XX].idx(i, j, k);
+
+                T x, y, z;
+                G.coords(i, j, k, x, y, z);
+                const double r = std::sqrt((double)x * (double)x + (double)y * (double)y +
+                                           (double)z * (double)z);
+                if (r <= r_cut_phys)
+                    continue;
+
+                const double R = scalar_R_at(G, Ricci6, id);
+                const double a = std::abs(R);
+
+                if (a > maxa)
+                    maxa = a;
+                sum2 += R * R;
+                ++n;
+            }
+
+    ConvMetrics<T> m;
+    m.Einf = maxa;
+    m.n = n;
+    m.EL2 = (n > 0) ? std::sqrt(sum2 / (double)n) : 0.0;
+    return m;
+}
+
+static inline double order_from(double E1, double E2) {
+    if (E2 <= 0.0 || E1 <= 0.0)
+        return 0.0;
+    return std::log(E1 / E2) / std::log(2.0);
+}
+
+} // namespace
+void test_convergence_schwarzschild_R() {
+    using T = double;
+
+    const T      M = 1.0;
+    const int    ng = 3;  
+    const double L = 5.0 * M; 
+    const double r_cut = 2.0 * M;
+
+    std::vector<int> Ns = {32, 64, 128}; 
+
+    std::vector<double> Einf, EL2, hs;
+
+    for (int N : Ns) {
+        const int    nx = N, ny = N, nz = N;
+        const double dx = (2.0 * L) / (double)(nx - 1);
+        const double dy = dx;
+        const double dz = dx;
+
+        tensorium_RG::BSSNGridSoA<T> G(nx, ny, nz, ng, (T)dx, (T)dy, (T)dz);
+        G.x0 = (T)(-L);
+        G.y0 = (T)(-L);
+        G.z0 = (T)(-L);
+
+        tensorium_RG::Field3D<T> Ricci6[6];
+        for (int s = 0; s < 6; ++s)
+            Ricci6[s] = tensorium_RG::make_field<T>(G.st);
+
+        tensorium_RG::init::schwarzschild_isotropic(G, M, 0.0, 0.0, 0.0, 1e-6);
+
+        tensorium_RG::bssn::compute_ricci_bssn(G, Ricci6);
+        tensorium_RG::apply_halos_grid<tensorium_RG::BoundaryClamp>(G);
+        for (int s = 0; s < 6; ++s)
+            tensorium_RG::BoundaryClamp::apply(Ricci6[s], G.dims);
+
+        auto m = measure_R_error(G, Ricci6, M, r_cut);
+
+        hs.push_back(dx);
+        Einf.push_back(m.Einf);
+        EL2.push_back(m.EL2);
+
+        std::printf("[CONV] N=%d dx=%.6e  Einf=%.6e  EL2=%.6e  samples=%zu\n", N, dx, m.Einf, m.EL2,
+                    m.n);
+    }
+
+    if (Ns.size() >= 2) {
+        const double p_inf = order_from(Einf[0], Einf[1]);
+        const double p_l2 = order_from(EL2[0], EL2[1]);
+        std::printf("[CONV] p_inf=%.3f  p_L2=%.3f (expect ~4 if truly 4th order)\n", p_inf, p_l2);
+    }
+}
+
 int grid_tests() {
     printf("=== Grid basic tests ===\n");
     const size_t nx = 256;
@@ -333,10 +468,13 @@ int grid_tests() {
     G2.z0 = -(double(G2.dims.nz) * G2.dz) / 2.0;
     init::schwarzschild_isotropic(G2, /*M=*/1.0, /*center=*/0.0, 0.0, 0.0, /*r_floor=*/1e-6);
     apply_halos_grid<BoundaryClamp>(G2);
-
+    test_convergence_schwarzschild_R();
     export_chi_slice(G2, "chi_slice.csv");
     export_grid_structure(G2, "grid_structure.csv");
     export_alpha_slice(G2, "alpha_slice.csv");
-	export_log_chi_slice(G2, "log_chi_slice.csv");
+    export_log_chi_slice(G2, "log_chi_slice.csv");
+	init::minkowski(G2, /*M=*/1.0, /*center=*/0.0, 0.0, 0.0, /*r_floor=*/1e-6);
+    apply_halos_grid<BoundaryClamp>(G2);
+
     return 0;
 }
