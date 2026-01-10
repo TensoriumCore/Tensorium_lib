@@ -14,6 +14,10 @@ compile_commands.json
 *.csv
 # python
 .venv/
+.make
+CMakeCache.txt
+Tests/CMakeFiles/
+
 
 # macOS
 *.DS_Store
