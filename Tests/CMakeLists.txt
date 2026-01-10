@@ -47,6 +47,12 @@ set(BSSN_OBJECTS
     $<TARGET_OBJECTS:test_bssn_ricci_objs>
     $<TARGET_OBJECTS:test_bssn_solvers_objs>)
 
+add_executable(TensoriumChiEvolutionDemo
+    bssn/binaries/BSSNChiEvolutionDemo.cpp)
+target_include_directories(TensoriumChiEvolutionDemo PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(TensoriumTests
     main.cpp
     ${TEST_FRAMEWORK_SOURCES}
