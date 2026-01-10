@@ -11,6 +11,14 @@
 #include <iostream>
 #include <vector>
 
+#ifdef TENSORIUM_USE_CBLAS
+#    ifdef __APPLE__
+#        include <Accelerate/Accelerate.h>
+#    else
+#        include <cblas.h>
+#    endif
+#endif
+
 namespace tensorium {
 /**
  * @brief High-performance aligned matrix class with SIMD support
@@ -217,6 +225,21 @@ template <typename K, bool RowMajor = false> class Matrix {
 
         // On active le kernel optimisé SEULEMENT pour float et double
         if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
+#ifdef TENSORIUM_USE_CBLAS
+            const int M = static_cast<int>(rows);
+            const int N = static_cast<int>(mat.cols);
+            const int Kdim = static_cast<int>(cols);
+            const K    alpha = K(1);
+            const K    beta = K(0);
+            if constexpr (std::is_same_v<K, float>) {
+                cblas_sgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, N, Kdim, alpha,
+                            data.data(), M, mat.data.data(), mat.rows, beta, result.data.data(), M);
+            } else {
+                cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, N, Kdim, alpha,
+                            data.data(), M, mat.data.data(), mat.rows, beta, result.data.data(), M);
+            }
+            return result;
+#else
             const K *A = data.data();
             const K *B = mat.data.data();
             K       *C = result.data.data();
@@ -224,6 +247,7 @@ template <typename K, bool RowMajor = false> class Matrix {
             tensorium::GemmKernelBigger<K> kernel;
             kernel.matmul(const_cast<K *>(A), const_cast<K *>(B), C, static_cast<int>(rows),
                           static_cast<int>(mat.cols), static_cast<int>(cols));
+#endif
         } else {
 // Fallback naïf pour les autres types (complex, int...)
 #pragma omp parallel for collapse(2)

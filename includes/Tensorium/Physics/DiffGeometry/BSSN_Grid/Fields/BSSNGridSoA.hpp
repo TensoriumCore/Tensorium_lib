@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Tensorium_Grid/GridSetup.hpp"
+#include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 namespace tensorium_RG {
 
@@ -96,26 +96,5 @@ template <typename T> class BSSNGridSoA {
         z = z0 + (k - dims.ng) * dz;
     }
 };
-
-template <typename Boundary, typename T> inline void apply_halos_grid(BSSNGridSoA<T> &G) {
-    const auto &D = G.dims;
-
-    Boundary::apply(G.alpha, D);
-    Boundary::apply(G.chi, D);
-    Boundary::apply(G.K, D);
-
-    for (int i = 0; i < 3; ++i) {
-        Boundary::apply(G.beta[i], D);
-        Boundary::apply(G.tildeGamma[i], D);
-    }
-
-    for (int s = 0; s < 6; ++s) {
-        Boundary::apply(G.gamma_tilde[s], D);
-        Boundary::apply(G.gamma_tilde_inv[s], D);
-        Boundary::apply(G.A_tilde[s], D);
-    }
-    for (int q = 0; q < 27; ++q)
-        Boundary::apply(G.Gamma_tilde[q], D);
-}
 
 } // namespace tensorium_RG

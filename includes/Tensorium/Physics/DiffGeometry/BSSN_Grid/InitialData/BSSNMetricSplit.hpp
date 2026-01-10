@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Metric.hpp"
-#include "BSSNTypes.hpp"
+#include "../../Metric.hpp"
+#include "../Fields/BSSNTypes.hpp"
 #include <cmath>
 
 namespace tensorium_RG::bssn {

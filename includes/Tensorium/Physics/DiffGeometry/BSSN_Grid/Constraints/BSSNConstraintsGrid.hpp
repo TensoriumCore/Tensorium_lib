@@ -1,33 +1,13 @@
-
 #pragma once
-#include "BSSNGridDerivatives.hpp"
-#include "BSSNGridSoA.hpp"
+#include "../Geometry/BSSNConformal.hpp"
+#include "../Derivatives/BSSNGridDerivatives.hpp"
+#include "../Fields/BSSNGridSoA.hpp"
+#include "Tensorium_Grid/Grid/GridLayout.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
 
 namespace tensorium_RG::bssn {
-
-template <typename T> static inline int sym6_idx(int a, int b) {
-    if (a > b)
-        std::swap(a, b);
-    if (a == 0 && b == 0)
-        return XX;
-    if (a == 0 && b == 1)
-        return XY;
-    if (a == 0 && b == 2)
-        return XZ;
-    if (a == 1 && b == 1)
-        return YY;
-    if (a == 1 && b == 2)
-        return YZ;
-    return ZZ;
-}
-
-template <typename T>
-static inline double sym6_get_local(const Field3D<T> *F6, size_t id, int a, int b) {
-    return (double)F6[sym6_idx<T>(a, b)].ptr()[id];
-}
 
 template <typename T>
 static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> *Ricci6,
@@ -68,8 +48,8 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                                         (double)Dy(G.chi, i, j, k, dy),
                                         (double)Dz(G.chi, i, j, k, dz)};
 
-                const double dphi6[3] = {-1.5 * inv_chi * dchi[0], -1.5 * inv_chi * dchi[1],
-                                         -1.5 * inv_chi * dchi[2]};
+                double d6phi[3];
+                tensorium_RG::bssn::grad_6phi_from_chi(dchi, chi, d6phi);
 
                 const double Ktr = (double)G.K.ptr()[id];
                 const double dK[3] = {(double)Dx(G.K, i, j, k, dx), (double)Dy(G.K, i, j, k, dy),
@@ -78,12 +58,12 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                 double gtI[3][3];
                 for (int a = 0; a < 3; ++a)
                     for (int b = 0; b < 3; ++b)
-                        gtI[a][b] = sym6_get_local<T>(G.gamma_tilde_inv, id, a, b);
+                        gtI[a][b] = (double)tensorium_RG::sym6_get(G.gamma_tilde_inv, id, a, b);
 
                 double Atd[3][3];
                 for (int a = 0; a < 3; ++a)
                     for (int b = 0; b < 3; ++b)
-                        Atd[a][b] = sym6_get_local<T>(G.A_tilde, id, a, b);
+                        Atd[a][b] = (double)tensorium_RG::sym6_get(G.A_tilde, id, a, b);
 
                 double Atu[3][3];
                 for (int a = 0; a < 3; ++a)
@@ -123,7 +103,8 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                 double d_gI[3][3][3];
                 for (int a = 0; a < 3; ++a) {
                     for (int b = 0; b < 3; ++b) {
-                        const int idx = sym6_idx<T>(a, b);
+                        const int idx = tensorium_RG::sym6_index(a, b);
+
                         if (a > b)
                             continue;
                         const Field3D<T> &F = G.gamma_tilde_inv[idx];
@@ -140,7 +121,7 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                     double div = 0.0;
                     for (int jj = 0; jj < 3; ++jj) {
                         for (int kk = 0; kk < 3; ++kk) {
-                            const int         idx_jk = sym6_idx<T>(jj, kk);
+                            const int         idx_jk = tensorium_RG::sym6_index(jj, kk);
                             const Field3D<T> &Fjk = G.A_tilde[idx_jk];
 
                             double dA_jk = 0.0;
@@ -167,7 +148,7 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                         double s = 0.0;
                         for (int j = 0; j < 3; ++j)
                             s += Atu[ii][j] * (j == jdir ? 1.0 : 0.0);
-                        phi_term += s * dphi6[jdir];
+                        phi_term += s * d6phi[jdir];
                     }
 
                     double DK = 0.0;

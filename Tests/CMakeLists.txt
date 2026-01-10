@@ -1,84 +1,158 @@
+enable_testing()
 
-file(GLOB TEST_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Vector/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Derivatives/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/LinearSystems/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tensor/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Grid/*.cpp
-)
+enable_testing()
 
-add_executable(TensoriumTests ${TEST_SOURCES})
+set(TEST_FRAMEWORK_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/framework/TestRegistry.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/framework/TestRunner.cpp)
+
+set(TEST_CORE_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/VectorTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/TensorTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp)
+
+set(TEST_GRID_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/grid/DerivativeTests.cpp)
+
+set(TEST_BSSN_INITIAL_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/initial_data/InitialDataTests.cpp)
+set(TEST_BSSN_CONSTRAINT_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/ConstraintTests.cpp)
+set(TEST_BSSN_RICCI_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ricci/RicciTests.cpp)
+set(TEST_BSSN_SOLVER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/solvers/SolverTests.cpp)
+
+set(BENCHMARK_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)
+
+function(tensorium_add_object_library target)
+    add_library(${target} OBJECT ${ARGN})
+    target_include_directories(${target} PRIVATE
+        ${PROJECT_SOURCE_DIR}/includes
+        ${CMAKE_CURRENT_SOURCE_DIR})
+endfunction()
+
+tensorium_add_object_library(test_core_objs ${TEST_CORE_SOURCES})
+tensorium_add_object_library(test_grid_objs ${TEST_GRID_SOURCES})
+tensorium_add_object_library(test_bssn_initial_objs ${TEST_BSSN_INITIAL_SOURCES})
+tensorium_add_object_library(test_bssn_constraints_objs ${TEST_BSSN_CONSTRAINT_SOURCES})
+tensorium_add_object_library(test_bssn_ricci_objs ${TEST_BSSN_RICCI_SOURCES})
+tensorium_add_object_library(test_bssn_solvers_objs ${TEST_BSSN_SOLVER_SOURCES})
+
+set(BSSN_OBJECTS
+    $<TARGET_OBJECTS:test_bssn_initial_objs>
+    $<TARGET_OBJECTS:test_bssn_constraints_objs>
+    $<TARGET_OBJECTS:test_bssn_ricci_objs>
+    $<TARGET_OBJECTS:test_bssn_solvers_objs>)
+
+add_executable(TensoriumTests
+    main.cpp
+    ${TEST_FRAMEWORK_SOURCES}
+    $<TARGET_OBJECTS:test_core_objs>
+    $<TARGET_OBJECTS:test_grid_objs>
+    ${BSSN_OBJECTS})
+
+target_include_directories(TensoriumTests PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(TensoriumTestCore
+    core_main.cpp
+    ${TEST_FRAMEWORK_SOURCES}
+    $<TARGET_OBJECTS:test_core_objs>)
+
+target_include_directories(TensoriumTestCore PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(TensoriumTestGrid
+    grid_main.cpp
+    ${TEST_FRAMEWORK_SOURCES}
+    $<TARGET_OBJECTS:test_grid_objs>)
+
+target_include_directories(TensoriumTestGrid PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(TensoriumTestBSSN
+    bssn_main.cpp
+    ${TEST_FRAMEWORK_SOURCES}
+    ${BSSN_OBJECTS})
+
+target_include_directories(TensoriumTestBSSN PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(TensoriumBenchmarks ${BENCHMARK_SOURCES})
+target_include_directories(TensoriumBenchmarks PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
+set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks)
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})
   link_directories(${OPENMP_LIB_PATH})
-  target_compile_options(TensoriumTests PRIVATE -Xpreprocessor -fopenmp)
-  target_link_libraries(TensoriumTests PRIVATE ${OPENMP_LIB})
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_compile_options(${target} PRIVATE -Xpreprocessor -fopenmp)
+    target_link_libraries(${target} PRIVATE ${OPENMP_LIB})
+  endforeach()
 elseif(DEFINED OPENMP_LIB)
-  target_link_libraries(TensoriumTests PRIVATE ${OPENMP_LIB})
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_link_libraries(${target} PRIVATE ${OPENMP_LIB})
+  endforeach()
 endif()
 
 if(USE_MPI)
   find_package(MPI REQUIRED)
-  target_link_libraries(TensoriumTests PRIVATE MPI::MPI_CXX)
-  target_compile_definitions(TensoriumTests PRIVATE MORPHEUS_USE_MPI)
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_link_libraries(${target} PRIVATE MPI::MPI_CXX)
+    target_compile_definitions(${target} PRIVATE MORPHEUS_USE_MPI)
+  endforeach()
 endif()
 
 if(USE_KNL)
-  target_compile_options(TensoriumTests PRIVATE -mtune=knl -mfma -mavx512f -mavx512cd)
-  target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
-  target_link_libraries(TensoriumTests PRIVATE memkind)
-endif()
-# ─────────────────────────────── ASM / LLVM dump options ───────────────────────────────
-option(DUMP_ASM "Dump generated assembly (.s files) for inspection" OFF)
-option(DUMP_LLVM "Dump LLVM IR (.ll files) for inspection" OFF)
-
-if(DUMP_ASM)
-  message(STATUS "Assembly dump enabled (-S -masm=intel -fverbose-asm)")
-  add_compile_options(-S -masm=intel -fverbose-asm)
-endif()
-
-if(DUMP_LLVM)
-  message(STATUS "LLVM IR dump enabled (-emit-llvm -S)")
-  add_compile_options(-emit-llvm -S)
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_compile_options(${target} PRIVATE -mtune=knl -mfma -mavx512f -mavx512cd)
+    target_compile_definitions(${target} PRIVATE USE_KNL)
+    target_link_libraries(${target} PRIVATE memkind)
+  endforeach()
 endif()
 
 find_library(OPENBLAS_LIB
     NAMES openblasp openblas
-    PATHS /opt/OpenBLAS/lib /usr/lib64 /usr/lib /usr/local/lib
-)
+    PATHS /opt/OpenBLAS/lib /usr/lib64 /usr/lib /usr/local/lib)
 
 if(OPENBLAS_LIB)
-  message(STATUS "OpenBLAS found: ${OPENBLAS_LIB}")
-  target_link_libraries(TensoriumTests PRIVATE ${OPENBLAS_LIB})
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_link_libraries(${target} PRIVATE ${OPENBLAS_LIB})
+  endforeach()
 
   if(EXISTS "/opt/OpenBLAS/include/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /opt/OpenBLAS/include)
+    include_directories(/opt/OpenBLAS/include)
   elseif(EXISTS "/usr/include/openblas/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /usr/include/openblas)
+    include_directories(/usr/include/openblas)
   elseif(EXISTS "/usr/include/cblas.h")
-    target_include_directories(TensoriumTests PRIVATE /usr/include)
+    include_directories(/usr/include)
   endif()
-
 else()
   find_package(BLAS)
   if(BLAS_FOUND)
-    message(STATUS "CMake BLAS found: ${BLAS_LIBRARIES}")
-    target_link_libraries(TensoriumTests PRIVATE ${BLAS_LIBRARIES})
+    foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+      target_link_libraries(${target} PRIVATE ${BLAS_LIBRARIES})
+    endforeach()
   else()
     message(WARNING " No BLAS/OpenBLAS library found — BLAS tests will be skipped.")
   endif()
 endif()
 
-
-
-# set(DISPATCH_PLUGIN_PATH "${CMAKE_BINARY_DIR}/Plugins/libTensoriumDispatchPlugin.so")
-#
-# add_dependencies(TensoriumTests TensoriumDispatchPlugin)
-#
-# # inject the clang plugin (frontend)
-# set_property(TARGET TensoriumTests APPEND_STRING PROPERTY COMPILE_FLAGS
-#     " -Xclang -load -Xclang ${DISPATCH_PLUGIN_PATH} -Xclang -add-plugin -Xclang tensorium-dispatch"
-# )
+add_test(NAME core COMMAND TensoriumTestCore)
+add_test(NAME grid COMMAND TensoriumTestGrid)
+add_test(NAME bssn COMMAND TensoriumTestBSSN)
+add_test(NAME bssn.initial_data COMMAND TensoriumTests --test bssn.initial_data)
+add_test(NAME bssn.constraints COMMAND TensoriumTests --test bssn.constraints)
+add_test(NAME bssn.ricci COMMAND TensoriumTests --test bssn.ricci)
+add_test(NAME bssn.solvers COMMAND TensoriumTests --test bssn.solvers)

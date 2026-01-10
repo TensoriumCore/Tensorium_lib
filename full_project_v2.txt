@@ -1,0 +1,2051 @@
+================================================================================
+FILE: includes/Tensorium_Grid/GridSetup.hpp
+================================================================================
+#pragma once
+#include <cassert>
+#include <cstddef>
+#include <memory>
+#include <type_traits>
+
+namespace tensorium_RG {
+
+#ifndef TENSORIUM_ALIGN
+#    define TENSORIUM_ALIGN 64
+#endif
+
+#if defined(__AVX512F__)
+#    define TENSORIUM_SIMD_WIDTH_F32 16
+#    define TENSORIUM_SIMD_WIDTH_F64 8
+#elif defined(__AVX2__)
+#    define TENSORIUM_SIMD_WIDTH_F32 8
+#    define TENSORIUM_SIMD_WIDTH_F64 4
+#else
+#    define TENSORIUM_SIMD_WIDTH_F32 4
+#    define TENSORIUM_SIMD_WIDTH_F64 2
+#endif
+
+template <typename T> inline constexpr size_t simd_width_elems() noexcept {
+    if constexpr (std::is_same_v<T, float>)
+        return TENSORIUM_SIMD_WIDTH_F32;
+    if constexpr (std::is_same_v<T, double>)
+        return TENSORIUM_SIMD_WIDTH_F64;
+    return 1;
+}
+
+template <typename T> inline size_t pad_simd(size_t n) noexcept {
+    const size_t w = simd_width_elems<T>();
+    if (w <= 1)
+        return n;
+    return ((n + w - 1) / w) * w;
+}
+
+template <typename T> struct AlignedDeleter {
+    void operator()(T *p) const noexcept {
+        ::operator delete[](p, std::align_val_t(TENSORIUM_ALIGN));
+    }
+};
+
+template <typename T> using aligned_unique_ptr = std::unique_ptr<T[], AlignedDeleter<T>>;
+
+template <typename T> inline aligned_unique_ptr<T> aligned_alloc_n(size_t n) {
+    return aligned_unique_ptr<T>(
+        static_cast<T *>(::operator new[](n * sizeof(T), std::align_val_t(TENSORIUM_ALIGN))));
+}
+
+struct GridDims {
+    size_t nx, ny, nz;
+    size_t ng;
+};
+
+template <typename T> struct Strides {
+    size_t sx, sy, sz;
+    size_t nx_tot, ny_tot, nz_tot;
+};
+
+template <typename T> struct Field3D {
+    aligned_unique_ptr<T> data;
+    Strides<T>            st;
+
+    inline T *ptr() const noexcept { return data.get(); }
+
+    inline size_t idx(size_t i, size_t j, size_t k) const noexcept {
+        return i * st.sx + j * st.sy + k * st.sz;
+    }
+};
+
+template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D) {
+    const size_t I0 = D.ng, I1 = D.ng + D.nx;
+    const size_t J0 = D.ng, J1 = D.ng + D.ny;
+    const size_t K0 = D.ng, K1 = D.ng + D.nz;
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t isrc = I1 - 1 - g;
+        const size_t idst = I0 - 1 - g;
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k)
+                f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
+    }
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t isrc = I0 + g;
+        const size_t idst = I1 + g;
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k)
+                f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
+    }
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t jsrc = J1 - 1 - g;
+        const size_t jdst = J0 - 1 - g;
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t k = K0; k < K1; ++k)
+                f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
+    }
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t jsrc = J0 + g;
+        const size_t jdst = J1 + g;
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t k = K0; k < K1; ++k)
+                f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
+    }
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t ksrc = K1 - 1 - g;
+        const size_t kdst = K0 - 1 - g;
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j)
+                f.ptr()[f.idx(i, j, kdst)] = f.ptr()[f.idx(i, j, ksrc)];
+    }
+
+    for (size_t g = 0; g < D.ng; ++g) {
+        const size_t ksrc = K0 + g;
+        const size_t kdst = K1 + g;
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j)
+                f.ptr()[f.idx(i, j, kdst)] = f.ptr()[f.idx(i, j, ksrc)];
+    }
+}
+
+enum Sym6 { XX = 0, XY = 1, XZ = 2, YY = 3, YZ = 4, ZZ = 5 };
+
+template <typename T>
+inline void store_sym6(Field3D<T> *f6, size_t idx, T xx, T xy, T xz, T yy, T yz, T zz) {
+    f6[XX].ptr()[idx] = xx;
+    f6[XY].ptr()[idx] = xy;
+    f6[XZ].ptr()[idx] = xz;
+    f6[YY].ptr()[idx] = yy;
+    f6[YZ].ptr()[idx] = yz;
+    f6[ZZ].ptr()[idx] = zz;
+}
+
+template <typename T>
+inline void load_sym6(Field3D<T> *f6, size_t idx, T &xx, T &xy, T &xz, T &yy, T &yz, T &zz) {
+    xx = f6[XX].ptr()[idx];
+    xy = f6[XY].ptr()[idx];
+    xz = f6[XZ].ptr()[idx];
+    yy = f6[YY].ptr()[idx];
+    yz = f6[YZ].ptr()[idx];
+    zz = f6[ZZ].ptr()[idx];
+}
+
+template <typename T> inline Field3D<T> make_field(const Strides<T> &st) {
+    Field3D<T> f;
+    f.st = st;
+    const size_t N = st.nx_tot * st.ny_tot * st.nz_tot;
+    f.data = aligned_alloc_n<T>(N);
+    return f;
+}
+
+struct BoundaryPeriodic {
+    template <typename T> static inline void apply(Field3D<T> &f, const GridDims &D) {
+        halo_periodic(f, D);
+    }
+};
+
+template <typename T> inline void halo_clamp_full(Field3D<T> &f, const GridDims &D) {
+    const size_t nxT = D.nx + 2 * D.ng;
+    const size_t nyT = D.ny + 2 * D.ng;
+    const size_t nzT = D.nz + 2 * D.ng;
+
+    const size_t I0 = D.ng, I1 = D.ng + D.nx;
+    const size_t J0 = D.ng, J1 = D.ng + D.ny;
+    const size_t K0 = D.ng, K1 = D.ng + D.nz;
+
+    auto clamp_i = [&](size_t i) -> size_t {
+        if (i < I0)
+            return I0;
+        if (i >= I1)
+            return I1 - 1;
+        return i;
+    };
+    auto clamp_j = [&](size_t j) -> size_t {
+        if (j < J0)
+            return J0;
+        if (j >= J1)
+            return J1 - 1;
+        return j;
+    };
+    auto clamp_k = [&](size_t k) -> size_t {
+        if (k < K0)
+            return K0;
+        if (k >= K1)
+            return K1 - 1;
+        return k;
+    };
+
+    for (size_t i = 0; i < nxT; ++i)
+        for (size_t j = 0; j < nyT; ++j)
+            for (size_t k = 0; k < nzT; ++k) {
+                const bool inInterior =
+                    (i >= I0 && i < I1) && (j >= J0 && j < J1) && (k >= K0 && k < K1);
+                if (inInterior)
+                    continue;
+
+                const size_t is = clamp_i(i);
+                const size_t js = clamp_j(j);
+                const size_t ks = clamp_k(k);
+
+                f.ptr()[f.idx(i, j, k)] = f.ptr()[f.idx(is, js, ks)];
+            }
+}
+struct BoundaryClamp {
+    template <typename T> static inline void apply(Field3D<T> &f, const GridDims &D) {
+        halo_clamp_full(f, D);
+    }
+};
+
+template <typename T> inline T sym6_get(const Field3D<T> *f6, size_t idx, int i, int j) noexcept {
+    if (i > j) {
+        int t = i;
+        i = j;
+        j = t;
+    }
+    if (i == 0 && j == 0)
+        return f6[XX].ptr()[idx];
+    if (i == 0 && j == 1)
+        return f6[XY].ptr()[idx];
+    if (i == 0 && j == 2)
+        return f6[XZ].ptr()[idx];
+    if (i == 1 && j == 1)
+        return f6[YY].ptr()[idx];
+    if (i == 1 && j == 2)
+        return f6[YZ].ptr()[idx];
+    return f6[ZZ].ptr()[idx];
+}
+
+template <typename T>
+inline T sym6_inv_get(const Field3D<T> *f6, size_t idx, int i, int j) noexcept {
+    return sym6_get(f6, idx, i, j);
+}
+
+} // namespace tensorium_RG
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNGridSoA.hpp
+================================================================================
+
+#pragma once
+
+#include "Tensorium_Grid/GridSetup.hpp"
+
+namespace tensorium_RG {
+
+template <typename T> class BSSNGridSoA {
+  public:
+    GridDims   dims;
+    Strides<T> st;
+
+    Field3D<T> alpha;
+    Field3D<T> chi;
+    Field3D<T> K;
+
+    Field3D<T> beta[3];
+    Field3D<T> tildeGamma[3];
+
+    Field3D<T> gamma_tilde[6];
+    Field3D<T> gamma_tilde_inv[6];
+    Field3D<T> A_tilde[6];
+
+    Field3D<T> Gamma_tilde[27];
+    T          dx, dy, dz;
+    Field3D<T> Ricci[6];
+
+    Field3D<T> Hc;
+    Field3D<T> Mc[3];
+    Field3D<T> Cc[3];
+    BSSNGridSoA(size_t nx, size_t ny, size_t nz, size_t ng, T dx_, T dy_, T dz_)
+        : dims{nx, ny, nz, ng},
+          dx(dx_),
+          dy(dy_),
+          dz(dz_) {
+
+        const size_t nx_tot = nx + 2 * ng;
+        const size_t ny_tot = ny + 2 * ng;
+        const size_t nz_tot = pad_simd<T>(nz + 2 * ng);
+
+        st.nx_tot = nx_tot;
+        st.ny_tot = ny_tot;
+        st.nz_tot = nz_tot;
+
+        st.sz = 1;
+        st.sy = nz_tot;
+        st.sx = ny_tot * nz_tot;
+
+        auto alloc_field = [&](Field3D<T> &f) {
+            const size_t N = nx_tot * ny_tot * nz_tot;
+            f.data = aligned_alloc_n<T>(N);
+            f.st = st;
+        };
+
+        alloc_field(alpha);
+        alloc_field(chi);
+        alloc_field(K);
+
+        for (int i = 0; i < 3; ++i) {
+            alloc_field(beta[i]);
+            alloc_field(tildeGamma[i]);
+        }
+
+        for (int s = 0; s < 6; ++s) {
+            alloc_field(gamma_tilde[s]);
+            alloc_field(gamma_tilde_inv[s]);
+            alloc_field(A_tilde[s]);
+        }
+        for (int q = 0; q < 27; ++q)
+            alloc_field(Gamma_tilde[q]);
+        for (int r = 0; r < 6; ++r)
+            alloc_field(Ricci[r]);
+
+        alloc_field(Hc);
+        for (int q = 0; q < 3; ++q) {
+            alloc_field(Mc[q]);
+            alloc_field(Cc[q]);
+        }
+    }
+
+    inline void domain_bounds(size_t &i0, size_t &i1, size_t &j0, size_t &j1, size_t &k0,
+                              size_t &k1) const noexcept {
+        i0 = dims.ng;
+        i1 = dims.ng + dims.nx;
+        j0 = dims.ng;
+        j1 = dims.ng + dims.ny;
+        k0 = dims.ng;
+        k1 = dims.ng + dims.nz;
+    }
+
+    T x0 = 0, y0 = 0, z0 = 0;
+
+    inline void coords(size_t i, size_t j, size_t k, T &x, T &y, T &z) const noexcept {
+        x = x0 + (i - dims.ng) * dx;
+        y = y0 + (j - dims.ng) * dy;
+        z = z0 + (k - dims.ng) * dz;
+    }
+};
+
+template <typename Boundary, typename T> inline void apply_halos_grid(BSSNGridSoA<T> &G) {
+    const auto &D = G.dims;
+
+    Boundary::apply(G.alpha, D);
+    Boundary::apply(G.chi, D);
+    Boundary::apply(G.K, D);
+
+    for (int i = 0; i < 3; ++i) {
+        Boundary::apply(G.beta[i], D);
+        Boundary::apply(G.tildeGamma[i], D);
+    }
+
+    for (int s = 0; s < 6; ++s) {
+        Boundary::apply(G.gamma_tilde[s], D);
+        Boundary::apply(G.gamma_tilde_inv[s], D);
+        Boundary::apply(G.A_tilde[s], D);
+    }
+    for (int q = 0; q < 27; ++q)
+        Boundary::apply(G.Gamma_tilde[q], D);
+}
+
+} // namespace tensorium_RG
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNConstraintsGrid.hpp
+================================================================================
+
+#pragma once
+#include "BSSNGridDerivatives.hpp"
+#include "BSSNGridSoA.hpp"
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+
+namespace tensorium_RG::bssn {
+
+template <typename T> static inline int sym6_idx(int a, int b) {
+    if (a > b)
+        std::swap(a, b);
+    if (a == 0 && b == 0)
+        return XX;
+    if (a == 0 && b == 1)
+        return XY;
+    if (a == 0 && b == 2)
+        return XZ;
+    if (a == 1 && b == 1)
+        return YY;
+    if (a == 1 && b == 2)
+        return YZ;
+    return ZZ;
+}
+
+template <typename T>
+static inline double sym6_get_local(const Field3D<T> *F6, size_t id, int a, int b) {
+    return (double)F6[sym6_idx<T>(a, b)].ptr()[id];
+}
+
+template <typename T>
+static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> *Ricci6,
+                                            Field3D<T> &H_out, Field3D<T> M_out[3],
+                                            Field3D<T> C_out[3], double r_min, double r_max,
+                                            double xc, double yc, double zc) {
+    using namespace tensorium_RG::fd;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 4, i1 = I1 - 4;
+    const size_t j0 = J0 + 4, j1 = J1 - 4;
+    const size_t k0 = K0 + 4, k1 = K1 - 4;
+
+    const double dx = G.dx, dy = G.dy, dz = G.dz;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+
+                double x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+                const double r = std::sqrt(x * x + y * y + z * z);
+                if (r <= r_min || r >= r_max)
+                    continue;
+
+                const size_t id = G.chi.idx(i, j, k);
+
+                const double chi = (double)G.chi.ptr()[id];
+                const double inv_chi = 1.0 / chi;
+
+                const double dchi[3] = {(double)Dx(G.chi, i, j, k, dx),
+                                        (double)Dy(G.chi, i, j, k, dy),
+                                        (double)Dz(G.chi, i, j, k, dz)};
+
+                const double dphi6[3] = {-1.5 * inv_chi * dchi[0], -1.5 * inv_chi * dchi[1],
+                                         -1.5 * inv_chi * dchi[2]};
+
+                const double Ktr = (double)G.K.ptr()[id];
+                const double dK[3] = {(double)Dx(G.K, i, j, k, dx), (double)Dy(G.K, i, j, k, dy),
+                                      (double)Dz(G.K, i, j, k, dz)};
+
+                double gtI[3][3];
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b)
+                        gtI[a][b] = sym6_get_local<T>(G.gamma_tilde_inv, id, a, b);
+
+                double Atd[3][3];
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b)
+                        Atd[a][b] = sym6_get_local<T>(G.A_tilde, id, a, b);
+
+                double Atu[3][3];
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b) {
+                        double s = 0.0;
+                        for (int k1 = 0; k1 < 3; ++k1)
+                            for (int k2 = 0; k2 < 3; ++k2)
+                                s += gtI[a][k1] * gtI[b][k2] * Atd[k1][k2];
+                        Atu[a][b] = s;
+                    }
+
+                double A2 = 0.0;
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b)
+                        A2 += Atd[a][b] * Atu[a][b];
+
+                const double Rxx = (double)Ricci6[XX].ptr()[id];
+                const double Rxy = (double)Ricci6[XY].ptr()[id];
+                const double Rxz = (double)Ricci6[XZ].ptr()[id];
+                const double Ryy = (double)Ricci6[YY].ptr()[id];
+                const double Ryz = (double)Ricci6[YZ].ptr()[id];
+                const double Rzz = (double)Ricci6[ZZ].ptr()[id];
+
+                const double gI_xx = chi * gtI[0][0];
+                const double gI_xy = chi * gtI[0][1];
+                const double gI_xz = chi * gtI[0][2];
+                const double gI_yy = chi * gtI[1][1];
+                const double gI_yz = chi * gtI[1][2];
+                const double gI_zz = chi * gtI[2][2];
+
+                const double Rsc = gI_xx * Rxx + 2.0 * gI_xy * Rxy + 2.0 * gI_xz * Rxz +
+                                   gI_yy * Ryy + 2.0 * gI_yz * Ryz + gI_zz * Rzz;
+
+                const double H = Rsc + (2.0 / 3.0) * Ktr * Ktr - A2;
+                H_out.ptr()[id] = (T)H;
+
+                double d_gI[3][3][3];
+                for (int a = 0; a < 3; ++a) {
+                    for (int b = 0; b < 3; ++b) {
+                        const int idx = sym6_idx<T>(a, b);
+                        if (a > b)
+                            continue;
+                        const Field3D<T> &F = G.gamma_tilde_inv[idx];
+                        d_gI[a][b][0] = (double)Dx(F, i, j, k, dx);
+                        d_gI[a][b][1] = (double)Dy(F, i, j, k, dy);
+                        d_gI[a][b][2] = (double)Dz(F, i, j, k, dz);
+                        d_gI[b][a][0] = d_gI[a][b][0];
+                        d_gI[b][a][1] = d_gI[a][b][1];
+                        d_gI[b][a][2] = d_gI[a][b][2];
+                    }
+                }
+
+                for (int ii = 0; ii < 3; ++ii) {
+                    double div = 0.0;
+                    for (int jj = 0; jj < 3; ++jj) {
+                        for (int kk = 0; kk < 3; ++kk) {
+                            const int         idx_jk = sym6_idx<T>(jj, kk);
+                            const Field3D<T> &Fjk = G.A_tilde[idx_jk];
+
+                            double dA_jk = 0.0;
+                            if (jj == 0)
+                                dA_jk = (double)Dx(Fjk, i, j, k, dx);
+                            else if (jj == 1)
+                                dA_jk = (double)Dy(Fjk, i, j, k, dy);
+                            else
+                                dA_jk = (double)Dz(Fjk, i, j, k, dz);
+
+                            double dAtu = 0.0;
+                            for (int a = 0; a < 3; ++a)
+                                for (int b = 0; b < 3; ++b) {
+                                    dAtu += d_gI[ii][a][jj] * gtI[kk][b] * Atd[a][b];
+                                    dAtu += gtI[ii][a] * d_gI[kk][b][jj] * Atd[a][b];
+                                    dAtu += gtI[ii][a] * gtI[kk][b] * dA_jk;
+                                }
+                            div += dAtu;
+                        }
+                    }
+
+                    double phi_term = 0.0;
+                    for (int jdir = 0; jdir < 3; ++jdir) {
+                        double s = 0.0;
+                        for (int j = 0; j < 3; ++j)
+                            s += Atu[ii][j] * (j == jdir ? 1.0 : 0.0);
+                        phi_term += s * dphi6[jdir];
+                    }
+
+                    double DK = 0.0;
+                    for (int j = 0; j < 3; ++j)
+                        DK += gtI[ii][j] * dK[j];
+
+                    const double Mi = div + phi_term - (2.0 / 3.0) * DK;
+                    M_out[ii].ptr()[id] = (T)Mi;
+                }
+
+                for (int iC = 0; iC < 3; ++iC) {
+                    double div_gI = 0.0;
+                    for (int jC = 0; jC < 3; ++jC)
+                        div_gI += d_gI[iC][jC][jC];
+                    const double Ci = (double)G.tildeGamma[iC].ptr()[id] + div_gI;
+                    C_out[iC].ptr()[id] = (T)Ci;
+                }
+            }
+        }
+    }
+}
+
+static inline void print_constraint_norms(BSSNGridSoA<double> &G, const Field3D<double> &H,
+                                          const Field3D<double> M[3], const Field3D<double> C[3],
+                                          double r_min, double r_max, double xc, double yc,
+                                          double zc) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 4, i1 = I1 - 4;
+    const size_t j0 = J0 + 4, j1 = J1 - 4;
+    const size_t k0 = K0 + 4, k1 = K1 - 4;
+
+    double maxH = 0, maxM = 0, maxC = 0;
+    double l2H = 0, l2M = 0, l2C = 0;
+    size_t n = 0;
+
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+                double x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+                const double r = std::sqrt(x * x + y * y + z * z);
+                if (r <= r_min || r >= r_max)
+                    continue;
+
+                const size_t id = G.chi.idx(i, j, k);
+
+                const double h = std::abs(H.ptr()[id]);
+                const double m =
+                    std::sqrt(M[0].ptr()[id] * M[0].ptr()[id] + M[1].ptr()[id] * M[1].ptr()[id] +
+                              M[2].ptr()[id] * M[2].ptr()[id]);
+                const double c =
+                    std::sqrt(C[0].ptr()[id] * C[0].ptr()[id] + C[1].ptr()[id] * C[1].ptr()[id] +
+                              C[2].ptr()[id] * C[2].ptr()[id]);
+
+                maxH = std::max(maxH, h);
+                maxM = std::max(maxM, m);
+                maxC = std::max(maxC, c);
+
+                l2H += h * h;
+                l2M += m * m;
+                l2C += c * c;
+                n++;
+            }
+
+    l2H = std::sqrt(l2H / std::max<size_t>(1, n));
+    l2M = std::sqrt(l2M / std::max<size_t>(1, n));
+    l2C = std::sqrt(l2C / std::max<size_t>(1, n));
+
+    std::printf("[CONS] r in (%.3f, %.3f) samples=%zu\n", r_min, r_max, n);
+    std::printf("[CONS] H: Linf=%.3e  L2=%.3e\n", maxH, l2H);
+    std::printf("[CONS] M: Linf=%.3e  L2=%.3e\n", maxM, l2M);
+    std::printf("[CONS] C: Linf=%.3e  L2=%.3e\n", maxC, l2C);
+}
+
+} // namespace tensorium_RG::bssn
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNInitialData.hpp
+================================================================================
+#include "BSSNCHristoffelTilde.hpp"
+#include "BSSNConstraintsGrid.hpp"
+#include "BSSNGridDerivatives.hpp"
+#include "BSSNGridSoA.hpp"
+#include "BSSNRicci.hpp"
+#include <algorithm>
+#include <stdio.h>
+
+namespace tensorium_RG::init {
+
+template <typename T> void print_ricci_samples(const BSSNGridSoA<T> &G) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t cx = I0 + G.dims.nx / 2;
+    size_t cy = J0 + G.dims.ny / 2;
+    size_t cz = K0 + G.dims.nz / 2;
+
+    struct Sample {
+        const char *name;
+        size_t      i, j, k;
+    };
+    Sample samples[] = {{"Near (r ~ 4*dx)", cx + 4, cy, cz},
+                        {"Mid  (r ~ N/4) ", cx + G.dims.nx / 4, cy, cz},
+                        {"Far  (r ~ N/2) ", I1 - 4, cy, cz}};
+
+    printf("\n=== Ricci Tensor Samples ===\n");
+    for (const auto &s : samples) {
+        size_t id = G.alpha.idx(s.i, s.j, s.k);
+
+        T x, y, z;
+        G.coords(s.i, s.j, s.k, x, y, z);
+        T r = std::sqrt(x * x + y * y + z * z);
+
+        T Rxx = G.Ricci[XX].ptr()[id];
+        T Rxy = G.Ricci[XY].ptr()[id];
+        T Rxz = G.Ricci[XZ].ptr()[id];
+        T Ryy = G.Ricci[YY].ptr()[id];
+        T Ryz = G.Ricci[YZ].ptr()[id];
+        T Rzz = G.Ricci[ZZ].ptr()[id];
+
+        printf("[%s] Index(%zu,%zu,%zu) r=%.4f\n", s.name, s.i, s.j, s.k, double(r));
+        printf("      [[ % .4e  % .4e  % .4e ]\n", double(Rxx), double(Rxy), double(Rxz));
+        printf("       [ % .4e  % .4e  % .4e ]\n", double(Rxy), double(Ryy), double(Ryz));
+        printf("       [ % .4e  % .4e  % .4e ]]\n", double(Rxz), double(Ryz), double(Rzz));
+    }
+    printf("============================\n\n");
+}
+
+template <typename T>
+inline void invert_gamma_tilde(BSSNGridSoA<T> &G, size_t i, size_t j, size_t k) {
+    const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+
+    const T a = G.gamma_tilde[XX].ptr()[id];
+    const T b = G.gamma_tilde[XY].ptr()[id];
+    const T c = G.gamma_tilde[XZ].ptr()[id];
+    const T d = G.gamma_tilde[YY].ptr()[id];
+    const T e = G.gamma_tilde[YZ].ptr()[id];
+    const T f = G.gamma_tilde[ZZ].ptr()[id];
+
+    const T det = a * (d * f - e * e) - b * (b * f - c * e) + c * (b * e - c * d);
+
+    const T inv_det = T(1) / det;
+
+    G.gamma_tilde_inv[XX].ptr()[id] = (d * f - e * e) * inv_det;
+    G.gamma_tilde_inv[XY].ptr()[id] = (c * e - b * f) * inv_det;
+    G.gamma_tilde_inv[XZ].ptr()[id] = (b * e - c * d) * inv_det;
+    G.gamma_tilde_inv[YY].ptr()[id] = (a * f - c * c) * inv_det;
+    G.gamma_tilde_inv[YZ].ptr()[id] = (b * c - a * e) * inv_det;
+    G.gamma_tilde_inv[ZZ].ptr()[id] = (a * d - b * b) * inv_det;
+}
+
+template <typename T>
+inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T(0),
+                      T r_floor = T(1e-6)) {
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t id = G.alpha.idx(i, j, k);
+
+                G.alpha.ptr()[id] = T(1);
+                G.chi.ptr()[id] = T(1);
+                G.K.ptr()[id] = T(0);
+
+                for (int c = 0; c < 3; ++c) {
+                    G.beta[c].ptr()[id] = T(0);
+                    G.tildeGamma[c].ptr()[id] = T(0);
+                }
+
+                const T one = T(1);
+                const T zero = T(0);
+
+                G.gamma_tilde[XX].ptr()[id] = one;
+                G.gamma_tilde[XY].ptr()[id] = zero;
+                G.gamma_tilde[XZ].ptr()[id] = zero;
+                G.gamma_tilde[YY].ptr()[id] = one;
+                G.gamma_tilde[YZ].ptr()[id] = zero;
+                G.gamma_tilde[ZZ].ptr()[id] = one;
+
+                G.gamma_tilde_inv[XX].ptr()[id] = one;
+                G.gamma_tilde_inv[XY].ptr()[id] = zero;
+                G.gamma_tilde_inv[XZ].ptr()[id] = zero;
+                G.gamma_tilde_inv[YY].ptr()[id] = one;
+                G.gamma_tilde_inv[YZ].ptr()[id] = zero;
+                G.gamma_tilde_inv[ZZ].ptr()[id] = one;
+
+                G.A_tilde[XX].ptr()[id] = zero;
+                G.A_tilde[XY].ptr()[id] = zero;
+                G.A_tilde[XZ].ptr()[id] = zero;
+                G.A_tilde[YY].ptr()[id] = zero;
+                G.A_tilde[YZ].ptr()[id] = zero;
+                G.A_tilde[ZZ].ptr()[id] = zero;
+            }
+    apply_halos_grid<BoundaryClamp>(G);
+    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
+    tensorium_RG::bssn::compute_tildeGamma_contracted(G);
+    tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
+    double maxAbsR = 0.0;
+    size_t nSamples = 0;
+    double rMin = 1e300, rMax = 0.0;
+
+    for (size_t i = I0 + 4; i < I1 - 4; ++i)
+        for (size_t j = J0 + 4; j < J1 - 4; ++j)
+            for (size_t k = K0 + 4; k < K1 - 4; ++k) {
+
+                double x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+
+                const double r = std::sqrt(x * x + y * y + z * z);
+
+                const double r_min = 2.0;
+
+                const double r_max = 0.45 * std::min({(I1 - I0 - 1) * G.dx, (J1 - J0 - 1) * G.dy,
+                                                      (K1 - K0 - 1) * G.dz});
+                if (r <= r_min || r >= r_max)
+                    continue;
+
+                const size_t id = G.alpha.idx(i, j, k);
+
+                const double chi = G.chi.ptr()[id];
+
+                const double ginv_xx = chi * G.gamma_tilde_inv[XX].ptr()[id];
+                const double ginv_xy = chi * G.gamma_tilde_inv[XY].ptr()[id];
+                const double ginv_xz = chi * G.gamma_tilde_inv[XZ].ptr()[id];
+                const double ginv_yy = chi * G.gamma_tilde_inv[YY].ptr()[id];
+                const double ginv_yz = chi * G.gamma_tilde_inv[YZ].ptr()[id];
+                const double ginv_zz = chi * G.gamma_tilde_inv[ZZ].ptr()[id];
+
+                const double Rxx = G.Ricci[XX].ptr()[id];
+                const double Rxy = G.Ricci[XY].ptr()[id];
+                const double Rxz = G.Ricci[XZ].ptr()[id];
+                const double Ryy = G.Ricci[YY].ptr()[id];
+                const double Ryz = G.Ricci[YZ].ptr()[id];
+                const double Rzz = G.Ricci[ZZ].ptr()[id];
+
+                const double R = ginv_xx * Rxx + 2.0 * ginv_xy * Rxy + 2.0 * ginv_xz * Rxz +
+                                 ginv_yy * Ryy + 2.0 * ginv_yz * Ryz + ginv_zz * Rzz;
+                maxAbsR = std::max(maxAbsR, std::abs(R));
+                nSamples++;
+
+                if (nSamples == 1) {
+                    printf("[DBG] chi=%g Rxx=%g Ryy=%g Rzz=%g\n", chi, Rxx, Ryy, Rzz);
+                }
+                rMin = std::min(rMin, r);
+                rMax = std::max(rMax, r);
+            }
+
+    printf("[CHECK] samples=%zu, rMin=%g, rMax=%g\n", nSamples, rMin, rMax);
+    printf("[CHECK] max |R| for r > %.3f = %.3e\n", rMin, maxAbsR);
+    print_ricci_samples(G);
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc,
+                                                 zc);
+
+    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
+
+}
+
+template <typename T>
+inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T(0),
+                                    T r_floor = T(1e-6)) {
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const T one = T(1);
+    const T zero = T(0);
+    const T half = T(0.5);
+
+#pragma omp parallel for collapse(3)
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t id = G.alpha.idx(i, j, k);
+
+                T x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+
+                T r2 = x * x + y * y + z * z;
+                T r = std::sqrt(r2);
+                if (r < r_floor)
+                    r = r_floor;
+
+                const T u = (M * half) / r; // M/(2r)
+                const T psi = one + u;
+
+                const T chi = one / (psi * psi * psi * psi); // psi^-4
+                const T alpha = one / (psi * psi);           // psi^-2 = sqrt(chi)
+
+                G.alpha.ptr()[id] = alpha;
+                G.chi.ptr()[id] = chi;
+                G.K.ptr()[id] = zero;
+
+                for (int c = 0; c < 3; ++c) {
+                    G.beta[c].ptr()[id] = zero;
+                    G.tildeGamma[c].ptr()[id] = zero;
+                }
+
+                G.gamma_tilde[XX].ptr()[id] = one;
+                G.gamma_tilde[XY].ptr()[id] = zero;
+                G.gamma_tilde[XZ].ptr()[id] = zero;
+                G.gamma_tilde[YY].ptr()[id] = one;
+                G.gamma_tilde[YZ].ptr()[id] = zero;
+                G.gamma_tilde[ZZ].ptr()[id] = one;
+
+                invert_gamma_tilde(G, i, j, k);
+
+                G.A_tilde[XX].ptr()[id] = zero;
+                G.A_tilde[XY].ptr()[id] = zero;
+                G.A_tilde[XZ].ptr()[id] = zero;
+                G.A_tilde[YY].ptr()[id] = zero;
+                G.A_tilde[YZ].ptr()[id] = zero;
+                G.A_tilde[ZZ].ptr()[id] = zero;
+            }
+
+    apply_halos_grid<BoundaryClamp>(G);
+    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
+
+    tensorium_RG::bssn::compute_tildeGamma_contracted(G); // Γ̃^i depuis γ̃_ij
+    tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);   // R_ij
+
+    double maxAbsR = 0.0;
+    size_t nSamples = 0;
+    double rMin = 1e300, rMax = 0.0;
+
+    for (size_t i = I0 + 4; i < I1 - 4; ++i)
+        for (size_t j = J0 + 4; j < J1 - 4; ++j)
+            for (size_t k = K0 + 4; k < K1 - 4; ++k) {
+
+                double x, y, z;
+                G.coords(i, j, k, x, y, z);
+                x -= xc;
+                y -= yc;
+                z -= zc;
+
+                const double r = std::sqrt(x * x + y * y + z * z);
+
+                const double r_min = 2.0;
+
+                const double r_max = 0.45 * std::min({(I1 - I0 - 1) * G.dx, (J1 - J0 - 1) * G.dy,
+                                                      (K1 - K0 - 1) * G.dz});
+                if (r <= r_min || r >= r_max)
+                    continue;
+
+                const size_t id = G.alpha.idx(i, j, k);
+
+                const double chi = G.chi.ptr()[id];
+
+                const double ginv_xx = chi * G.gamma_tilde_inv[XX].ptr()[id];
+                const double ginv_xy = chi * G.gamma_tilde_inv[XY].ptr()[id];
+                const double ginv_xz = chi * G.gamma_tilde_inv[XZ].ptr()[id];
+                const double ginv_yy = chi * G.gamma_tilde_inv[YY].ptr()[id];
+                const double ginv_yz = chi * G.gamma_tilde_inv[YZ].ptr()[id];
+                const double ginv_zz = chi * G.gamma_tilde_inv[ZZ].ptr()[id];
+
+                const double Rxx = G.Ricci[XX].ptr()[id];
+                const double Rxy = G.Ricci[XY].ptr()[id];
+                const double Rxz = G.Ricci[XZ].ptr()[id];
+                const double Ryy = G.Ricci[YY].ptr()[id];
+                const double Ryz = G.Ricci[YZ].ptr()[id];
+                const double Rzz = G.Ricci[ZZ].ptr()[id];
+
+                const double R = ginv_xx * Rxx + 2.0 * ginv_xy * Rxy + 2.0 * ginv_xz * Rxz +
+                                 ginv_yy * Ryy + 2.0 * ginv_yz * Ryz + ginv_zz * Rzz;
+                maxAbsR = std::max(maxAbsR, std::abs(R));
+                nSamples++;
+
+                if (nSamples == 1) {
+                    printf("[DBG] chi=%g Rxx=%g Ryy=%g Rzz=%g\n", chi, Rxx, Ryy, Rzz);
+                }
+                rMin = std::min(rMin, r);
+                rMax = std::max(rMax, r);
+            }
+
+    printf("[CHECK] samples=%zu, rMin=%g, rMax=%g\n", nSamples, rMin, rMax);
+    printf("[CHECK] max |R| for r > %.3f = %.3e\n", rMin, maxAbsR);
+    print_ricci_samples(G);
+
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc,
+                                                 zc);
+
+    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
+}
+
+} // namespace tensorium_RG::init
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNRicci.hpp
+================================================================================
+#pragma once
+#include "BSSNCHristoffelTilde.hpp"
+#include "BSSNGridDerivatives.hpp"
+#include "BSSNGridSoA.hpp"
+#include <cmath>
+#include <stdio.h>
+
+namespace tensorium_RG::bssn {
+
+template <typename T> void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6) {
+    using namespace tensorium_RG::fd;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 2, i1 = I1 - 2;
+    const size_t j0 = J0 + 2, j1 = J1 - 2;
+    const size_t k0 = K0 + 2, k1 = K1 - 2;
+
+    const double dx = G.dx;
+    const double dy = G.dy;
+    const double dz = G.dz;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+
+                auto d_g = [&](int m, int a, int b) -> double {
+                    if (a > b)
+                        std::swap(a, b);
+                    const Field3D<T> &F = (a == 0 && b == 0)   ? G.gamma_tilde[XX]
+                                          : (a == 0 && b == 1) ? G.gamma_tilde[XY]
+                                          : (a == 0 && b == 2) ? G.gamma_tilde[XZ]
+                                          : (a == 1 && b == 1) ? G.gamma_tilde[YY]
+                                          : (a == 1 && b == 2) ? G.gamma_tilde[YZ]
+                                                               : G.gamma_tilde[ZZ];
+
+                    if (m == 0)
+                        return Dx(F, i, j, k, dx);
+                    if (m == 1)
+                        return Dy(F, i, j, k, dy);
+                    return Dz(F, i, j, k, dz);
+                };
+
+                auto get_ginv = [&](int a, int b) -> double {
+                    if (a > b)
+                        std::swap(a, b);
+                    const int idx = (a == 0 && b == 0)   ? XX
+                                    : (a == 0 && b == 1) ? XY
+                                    : (a == 0 && b == 2) ? XZ
+                                    : (a == 1 && b == 1) ? YY
+                                    : (a == 1 && b == 2) ? YZ
+                                                         : ZZ;
+                    return G.gamma_tilde_inv[idx].ptr()[id];
+                };
+
+                double Gijk[3][3][3];
+
+                for (int kk = 0; kk < 3; ++kk) {
+                    for (int ii = 0; ii < 3; ++ii) {
+                        for (int jj = ii; jj < 3; ++jj) {
+                            double sum = 0.0;
+                            for (int ll = 0; ll < 3; ++ll) {
+                                const double ginv_kl = get_ginv(kk, ll);
+                                const double term =
+                                    d_g(ii, jj, ll) + d_g(jj, ii, ll) - d_g(ll, ii, jj);
+                                sum += ginv_kl * term;
+                            }
+                            double val = 0.5 * sum;
+                            Gijk[kk][ii][jj] = val;
+                            if (ii != jj)
+                                Gijk[kk][jj][ii] = val;
+                        }
+                    }
+                }
+
+                auto christoffel = [&](int idx_k, int idx_a, int idx_b) -> double {
+                    return Gijk[idx_k][idx_a][idx_b];
+                };
+
+                const double chi = G.chi.ptr()[id];
+                const double inv_chi = 1.0 / chi;
+                const double inv_chi2 = inv_chi * inv_chi;
+
+                const double dchi_x = Dx(G.chi, i, j, k, dx);
+                const double dchi_y = Dy(G.chi, i, j, k, dy);
+                const double dchi_z = Dz(G.chi, i, j, k, dz);
+
+                const double d2chi_xx = Dxx(G.chi, i, j, k, dx);
+                const double d2chi_yy = Dyy(G.chi, i, j, k, dy);
+                const double d2chi_zz = Dzz(G.chi, i, j, k, dz);
+                const double d2chi_xy = Dxy4(G.chi, i, j, k, dx, dy);
+                const double d2chi_xz = Dxz4(G.chi, i, j, k, dx, dz);
+                const double d2chi_yz = Dyz4(G.chi, i, j, k, dy, dz);
+
+                double cov_dchi[3][3];
+                cov_dchi[0][0] =
+                    d2chi_xx - (christoffel(0, 0, 0) * dchi_x + christoffel(1, 0, 0) * dchi_y +
+                                christoffel(2, 0, 0) * dchi_z);
+                cov_dchi[0][1] =
+                    d2chi_xy - (christoffel(0, 0, 1) * dchi_x + christoffel(1, 0, 1) * dchi_y +
+                                christoffel(2, 0, 1) * dchi_z);
+                cov_dchi[0][2] =
+                    d2chi_xz - (christoffel(0, 0, 2) * dchi_x + christoffel(1, 0, 2) * dchi_y +
+                                christoffel(2, 0, 2) * dchi_z);
+                cov_dchi[1][1] =
+                    d2chi_yy - (christoffel(0, 1, 1) * dchi_x + christoffel(1, 1, 1) * dchi_y +
+                                christoffel(2, 1, 1) * dchi_z);
+                cov_dchi[1][2] =
+                    d2chi_yz - (christoffel(0, 1, 2) * dchi_x + christoffel(1, 1, 2) * dchi_y +
+                                christoffel(2, 1, 2) * dchi_z);
+                cov_dchi[2][2] =
+                    d2chi_zz - (christoffel(0, 2, 2) * dchi_x + christoffel(1, 2, 2) * dchi_y +
+                                christoffel(2, 2, 2) * dchi_z);
+
+                cov_dchi[1][0] = cov_dchi[0][1];
+                cov_dchi[2][0] = cov_dchi[0][2];
+                cov_dchi[2][1] = cov_dchi[1][2];
+
+                double lap_chi_conf = 0.0;
+                lap_chi_conf += get_ginv(0, 0) * cov_dchi[0][0] + get_ginv(1, 1) * cov_dchi[1][1] +
+                                get_ginv(2, 2) * cov_dchi[2][2];
+                lap_chi_conf +=
+                    2.0 * (get_ginv(0, 1) * cov_dchi[0][1] + get_ginv(0, 2) * cov_dchi[0][2] +
+                           get_ginv(1, 2) * cov_dchi[1][2]);
+
+                double grad_chi_sq = 0.0;
+                grad_chi_sq += get_ginv(0, 0) * dchi_x * dchi_x + get_ginv(1, 1) * dchi_y * dchi_y +
+                               get_ginv(2, 2) * dchi_z * dchi_z;
+                grad_chi_sq +=
+                    2.0 * (get_ginv(0, 1) * dchi_x * dchi_y + get_ginv(0, 2) * dchi_x * dchi_z +
+                           get_ginv(1, 2) * dchi_y * dchi_z);
+
+                double R_chi[3][3];
+                double coeff1 = 0.5 * inv_chi;
+                double coeff2 = 0.25 * inv_chi2;
+                double coeff3 = 0.75 * inv_chi2 * grad_chi_sq;
+
+                auto get_g = [&](int a, int b) -> double {
+                    if (a > b)
+                        std::swap(a, b);
+                    const int idx = (a == 0 && b == 0)   ? XX
+                                    : (a == 0 && b == 1) ? XY
+                                    : (a == 0 && b == 2) ? XZ
+                                    : (a == 1 && b == 1) ? YY
+                                    : (a == 1 && b == 2) ? YZ
+                                                         : ZZ;
+                    return G.gamma_tilde[idx].ptr()[id];
+                };
+
+                R_chi[0][0] = coeff1 * (cov_dchi[0][0] + get_g(0, 0) * lap_chi_conf) -
+                              coeff2 * dchi_x * dchi_x - get_g(0, 0) * coeff3;
+                R_chi[0][1] = coeff1 * (cov_dchi[0][1] + get_g(0, 1) * lap_chi_conf) -
+                              coeff2 * dchi_x * dchi_y - get_g(0, 1) * coeff3;
+                R_chi[0][2] = coeff1 * (cov_dchi[0][2] + get_g(0, 2) * lap_chi_conf) -
+                              coeff2 * dchi_x * dchi_z - get_g(0, 2) * coeff3;
+                R_chi[1][1] = coeff1 * (cov_dchi[1][1] + get_g(1, 1) * lap_chi_conf) -
+                              coeff2 * dchi_y * dchi_y - get_g(1, 1) * coeff3;
+                R_chi[1][2] = coeff1 * (cov_dchi[1][2] + get_g(1, 2) * lap_chi_conf) -
+                              coeff2 * dchi_y * dchi_z - get_g(1, 2) * coeff3;
+                R_chi[2][2] = coeff1 * (cov_dchi[2][2] + get_g(2, 2) * lap_chi_conf) -
+                              coeff2 * dchi_z * dchi_z - get_g(2, 2) * coeff3;
+
+                double d2g[6][6];
+                d2g[XX][XX] = Dxx(G.gamma_tilde[XX], i, j, k, dx);
+                d2g[XX][YY] = Dyy(G.gamma_tilde[XX], i, j, k, dy);
+                d2g[XX][ZZ] = Dzz(G.gamma_tilde[XX], i, j, k, dz);
+                d2g[XY][XX] = Dxx(G.gamma_tilde[XY], i, j, k, dx);
+                d2g[XY][YY] = Dyy(G.gamma_tilde[XY], i, j, k, dy);
+                d2g[XY][ZZ] = Dzz(G.gamma_tilde[XY], i, j, k, dz);
+                d2g[XZ][XX] = Dxx(G.gamma_tilde[XZ], i, j, k, dx);
+                d2g[XZ][YY] = Dyy(G.gamma_tilde[XZ], i, j, k, dy);
+                d2g[XZ][ZZ] = Dzz(G.gamma_tilde[XZ], i, j, k, dz);
+                d2g[YY][XX] = Dxx(G.gamma_tilde[YY], i, j, k, dx);
+                d2g[YY][YY] = Dyy(G.gamma_tilde[YY], i, j, k, dy);
+                d2g[YY][ZZ] = Dzz(G.gamma_tilde[YY], i, j, k, dz);
+                d2g[YZ][XX] = Dxx(G.gamma_tilde[YZ], i, j, k, dx);
+                d2g[YZ][YY] = Dyy(G.gamma_tilde[YZ], i, j, k, dy);
+                d2g[YZ][ZZ] = Dzz(G.gamma_tilde[YZ], i, j, k, dz);
+                d2g[ZZ][XX] = Dxx(G.gamma_tilde[ZZ], i, j, k, dx);
+                d2g[ZZ][YY] = Dyy(G.gamma_tilde[ZZ], i, j, k, dy);
+                d2g[ZZ][ZZ] = Dzz(G.gamma_tilde[ZZ], i, j, k, dz);
+
+                d2g[XX][XY] = Dxy4(G.gamma_tilde[XX], i, j, k, dx, dy);
+                d2g[XX][XZ] = Dxz4(G.gamma_tilde[XX], i, j, k, dx, dz);
+                d2g[XX][YZ] = Dyz4(G.gamma_tilde[XX], i, j, k, dy, dz);
+                d2g[XY][XY] = Dxy4(G.gamma_tilde[XY], i, j, k, dx, dy);
+                d2g[XY][XZ] = Dxz4(G.gamma_tilde[XY], i, j, k, dx, dz);
+                d2g[XY][YZ] = Dyz4(G.gamma_tilde[XY], i, j, k, dy, dz);
+                d2g[XZ][XY] = Dxy4(G.gamma_tilde[XZ], i, j, k, dx, dy);
+                d2g[XZ][XZ] = Dxz4(G.gamma_tilde[XZ], i, j, k, dx, dz);
+                d2g[XZ][YZ] = Dyz4(G.gamma_tilde[XZ], i, j, k, dy, dz);
+                d2g[YY][XY] = Dxy4(G.gamma_tilde[YY], i, j, k, dx, dy);
+                d2g[YY][XZ] = Dxz4(G.gamma_tilde[YY], i, j, k, dx, dz);
+                d2g[YY][YZ] = Dyz4(G.gamma_tilde[YY], i, j, k, dy, dz);
+                d2g[YZ][XY] = Dxy4(G.gamma_tilde[YZ], i, j, k, dx, dy);
+                d2g[YZ][XZ] = Dxz4(G.gamma_tilde[YZ], i, j, k, dx, dz);
+                d2g[YZ][YZ] = Dyz4(G.gamma_tilde[YZ], i, j, k, dy, dz);
+                d2g[ZZ][XY] = Dxy4(G.gamma_tilde[ZZ], i, j, k, dx, dy);
+                d2g[ZZ][XZ] = Dxz4(G.gamma_tilde[ZZ], i, j, k, dx, dz);
+                d2g[ZZ][YZ] = Dyz4(G.gamma_tilde[ZZ], i, j, k, dy, dz);
+
+                double dGt[3][3];
+                dGt[0][0] = Dx(G.tildeGamma[0], i, j, k, dx);
+                dGt[0][1] = Dy(G.tildeGamma[0], i, j, k, dy);
+                dGt[0][2] = Dz(G.tildeGamma[0], i, j, k, dz);
+                dGt[1][0] = Dx(G.tildeGamma[1], i, j, k, dx);
+                dGt[1][1] = Dy(G.tildeGamma[1], i, j, k, dy);
+                dGt[1][2] = Dz(G.tildeGamma[1], i, j, k, dz);
+                dGt[2][0] = Dx(G.tildeGamma[2], i, j, k, dx);
+                dGt[2][1] = Dy(G.tildeGamma[2], i, j, k, dy);
+                dGt[2][2] = Dz(G.tildeGamma[2], i, j, k, dz);
+
+                const double Gt[3] = {G.tildeGamma[0].ptr()[id], G.tildeGamma[1].ptr()[id],
+                                      G.tildeGamma[2].ptr()[id]};
+
+                double R_tilde[3][3];
+                for (int a = 0; a < 3; ++a) {
+                    for (int b = a; b < 3; ++b) {
+                        int idx_ab = (a == 0 && b == 0)   ? XX
+                                     : (a == 0 && b == 1) ? XY
+                                     : (a == 0 && b == 2) ? XZ
+                                     : (a == 1 && b == 1) ? YY
+                                     : (a == 1 && b == 2) ? YZ
+                                                          : ZZ;
+
+                        double term1 = 0.0;
+                        term1 += get_ginv(0, 0) * d2g[idx_ab][XX] +
+                                 get_ginv(1, 1) * d2g[idx_ab][YY] +
+                                 get_ginv(2, 2) * d2g[idx_ab][ZZ];
+                        term1 += 2.0 * (get_ginv(0, 1) * d2g[idx_ab][XY] +
+                                        get_ginv(0, 2) * d2g[idx_ab][XZ] +
+                                        get_ginv(1, 2) * d2g[idx_ab][YZ]);
+                        term1 *= -0.5;
+
+                        double term2 = 0.0;
+                        for (int k = 0; k < 3; ++k) {
+                            term2 += 0.5 * (get_g(a, k) * dGt[k][b] + get_g(b, k) * dGt[k][a]);
+                        }
+
+                        double term3 =
+                            0.5 * (Gt[0] * christoffel(0, a, b) + Gt[1] * christoffel(1, a, b) +
+                                   Gt[2] * christoffel(2, a, b));
+
+                        double term4 = 0.0;
+                        for (int m = 0; m < 3; ++m) {
+                            for (int n = 0; n < 3; ++n) {
+                                double sum_Gam = 0.0;
+                                for (int k = 0; k < 3; ++k) {
+                                    sum_Gam += 2.0 * christoffel(k, m, a) * christoffel(k, n, b);
+                                    sum_Gam -= christoffel(k, a, b) * christoffel(k, m, n);
+                                }
+                                term4 += get_ginv(m, n) * sum_Gam;
+                            }
+                        }
+
+                        R_tilde[a][b] = term1 + term2 + term3 + term4;
+                    }
+                }
+
+                R_tilde[1][0] = R_tilde[0][1];
+                R_tilde[2][0] = R_tilde[0][2];
+                R_tilde[2][1] = R_tilde[1][2];
+
+                Ricci6[XX].ptr()[id] = R_tilde[0][0] + R_chi[0][0];
+                Ricci6[XY].ptr()[id] = R_tilde[0][1] + R_chi[0][1];
+                Ricci6[XZ].ptr()[id] = R_tilde[0][2] + R_chi[0][2];
+                Ricci6[YY].ptr()[id] = R_tilde[1][1] + R_chi[1][1];
+                Ricci6[YZ].ptr()[id] = R_tilde[1][2] + R_chi[1][2];
+                Ricci6[ZZ].ptr()[id] = R_tilde[2][2] + R_chi[2][2];
+            }
+        }
+    }
+}
+} // namespace tensorium_RG::bssn
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNCHristoffelTilde.hpp
+================================================================================
+#pragma once
+#include "BSSNGridDerivatives.hpp"
+#include "BSSNGridSoA.hpp"
+
+namespace tensorium_RG::bssn {
+
+template <typename T> inline void compute_tildeGamma_contracted(BSSNGridSoA<T> &G) {
+    using tensorium_RG::fd::Dx;
+    using tensorium_RG::fd::Dy;
+    using tensorium_RG::fd::Dz;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 2, i1 = I1 - 2;
+    const size_t j0 = J0 + 2, j1 = J1 - 2;
+    const size_t k0 = K0 + 2, k1 = K1 - 2;
+
+#pragma omp parallel for collapse(3)
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+
+                auto d_g = [&](int m, int a, int b) -> T {
+                    if (a > b) {
+                        int t = a;
+                        a = b;
+                        b = t;
+                    }
+                    const Field3D<T> &F = (a == 0 && b == 0)   ? G.gamma_tilde[XX]
+                                          : (a == 0 && b == 1) ? G.gamma_tilde[XY]
+                                          : (a == 0 && b == 2) ? G.gamma_tilde[XZ]
+                                          : (a == 1 && b == 1) ? G.gamma_tilde[YY]
+                                          : (a == 1 && b == 2) ? G.gamma_tilde[YZ]
+                                                               : G.gamma_tilde[ZZ];
+
+                    if (m == 0)
+                        return Dx(F, i, j, k, G.dx);
+                    if (m == 1)
+                        return Dy(F, i, j, k, G.dy);
+                    return Dz(F, i, j, k, G.dz);
+                };
+
+                T GammaContr[3] = {T(0), T(0), T(0)};
+
+                // Γ̃^i = g̃^{jk} Γ̃^i_{jk}
+                for (int ii = 0; ii < 3; ++ii) {
+                    T acc = T(0);
+
+                    for (int jj = 0; jj < 3; ++jj)
+                        for (int kk = 0; kk < 3; ++kk) {
+                            T sum_l = T(0);
+                            for (int ll = 0; ll < 3; ++ll) {
+                                const T ginv_il = sym6_inv_get(G.gamma_tilde_inv, id, ii, ll);
+
+                                const T term = d_g(jj, kk, ll) + d_g(kk, jj, ll) - d_g(ll, jj, kk);
+
+                                sum_l += ginv_il * term;
+                            }
+                            const T Gamma_i_jk = T(0.5) * sum_l;
+
+                            const T ginv_jk = sym6_inv_get(G.gamma_tilde_inv, id, jj, kk);
+                            acc += ginv_jk * Gamma_i_jk;
+                        }
+
+                    GammaContr[ii] = acc;
+                }
+
+                G.tildeGamma[0].ptr()[id] = GammaContr[0];
+                G.tildeGamma[1].ptr()[id] = GammaContr[1];
+                G.tildeGamma[2].ptr()[id] = GammaContr[2];
+            }
+}
+
+template <typename T> inline void compute_tildeGamma_full(BSSNGridSoA<T> &G, Field3D<T> *Gamma27) {
+    using tensorium_RG::fd::Dx;
+    using tensorium_RG::fd::Dy;
+    using tensorium_RG::fd::Dz;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 2, i1 = I1 - 2;
+    const size_t j0 = J0 + 2, j1 = J1 - 2;
+    const size_t k0 = K0 + 2, k1 = K1 - 2;
+
+#pragma omp parallel for collapse(3)
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+
+                auto d_g = [&](int m, int a, int b) -> T {
+                    if (a > b) {
+                        int t = a;
+                        a = b;
+                        b = t;
+                    }
+                    const Field3D<T> &F = (a == 0 && b == 0)   ? G.gamma_tilde[XX]
+                                          : (a == 0 && b == 1) ? G.gamma_tilde[XY]
+                                          : (a == 0 && b == 2) ? G.gamma_tilde[XZ]
+                                          : (a == 1 && b == 1) ? G.gamma_tilde[YY]
+                                          : (a == 1 && b == 2) ? G.gamma_tilde[YZ]
+                                                               : G.gamma_tilde[ZZ];
+
+                    if (m == 0)
+                        return Dx(F, i, j, k, G.dx);
+                    if (m == 1)
+                        return Dy(F, i, j, k, G.dy);
+                    return Dz(F, i, j, k, G.dz);
+                };
+
+                for (int kk = 0; kk < 3; ++kk)
+                    for (int ii = 0; ii < 3; ++ii)
+                        for (int jj = 0; jj < 3; ++jj) {
+
+                            T sum = T(0);
+                            for (int ll = 0; ll < 3; ++ll) {
+                                const T ginv_kl = sym6_inv_get(G.gamma_tilde_inv, id, kk, ll);
+                                const T term = d_g(ii, jj, ll) + d_g(jj, ii, ll) - d_g(ll, ii, jj);
+                                sum += ginv_kl * term;
+                            }
+                            const T Gkij = T(0.5) * sum;
+                            Gamma27[kk * 9 + ii * 3 + jj].ptr()[id] = Gkij;
+                        }
+            }
+}
+
+} // namespace tensorium_RG::bssn
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNMetricSplit.hpp
+================================================================================
+#pragma once
+
+#include "../Metric.hpp"
+#include "BSSNTypes.hpp"
+#include <cmath>
+
+namespace tensorium_RG::bssn {
+
+template <typename T>
+inline ADMVariables<T> split_3p1(const tensorium::Vector<T> &X, const Metric<T> &metric) {
+    ADMVariables<T> adm;
+    metric.BSSN(X, adm.alpha, adm.beta, adm.gamma_ij);
+    return adm;
+}
+
+template <typename T> inline BSSNVariables<T> adm_to_bssn(const tensorium::Tensor<T, 2> &gamma_ij) {
+    BSSNVariables<T> bssn;
+
+    const T det = det_tensor(gamma_ij);
+    bssn.chi = std::pow(det, T(-1.0 / 3.0));
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            bssn.gamma_tilde(i, j) = bssn.chi * gamma_ij(i, j);
+
+    bssn.gamma_tilde_inv = inv_mat_tensor(bssn.gamma_tilde);
+    return bssn;
+}
+
+} // namespace tensorium_RG::bssn
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNGridDerivatives.hpp
+================================================================================
+
+#pragma once
+
+#include <cstddef>
+
+namespace tensorium_RG::fd {
+
+enum Axis { X = 0, Y = 1, Z = 2 };
+
+template <typename Field> inline double get(const Field &f, size_t i, size_t j, size_t k) {
+    return f.ptr()[f.idx(i, j, k)];
+}
+
+template <typename Field>
+inline double Dx(const Field &f, size_t i, size_t j, size_t k, double dx) {
+    return (-get(f, i + 2, j, k) + 8.0 * get(f, i + 1, j, k) - 8.0 * get(f, i - 1, j, k) +
+            get(f, i - 2, j, k)) /
+           (12.0 * dx);
+}
+
+template <typename Field>
+inline double Dy(const Field &f, size_t i, size_t j, size_t k, double dy) {
+    return (-get(f, i, j + 2, k) + 8.0 * get(f, i, j + 1, k) - 8.0 * get(f, i, j - 1, k) +
+            get(f, i, j - 2, k)) /
+           (12.0 * dy);
+}
+
+template <typename Field>
+inline double Dz(const Field &f, size_t i, size_t j, size_t k, double dz) {
+    return (-get(f, i, j, k + 2) + 8.0 * get(f, i, j, k + 1) - 8.0 * get(f, i, j, k - 1) +
+            get(f, i, j, k - 2)) /
+           (12.0 * dz);
+}
+
+template <typename Field>
+inline double Dxx(const Field &f, size_t i, size_t j, size_t k, double dx) {
+    double inv_dx2 = 1.0 / (dx * dx);
+    return (-get(f, i + 2, j, k) + 16.0 * get(f, i + 1, j, k) - 30.0 * get(f, i, j, k) +
+            16.0 * get(f, i - 1, j, k) - get(f, i - 2, j, k)) *
+           (1.0 / 12.0) * inv_dx2;
+}
+
+template <typename Field>
+inline double Dyy(const Field &f, size_t i, size_t j, size_t k, double dy) {
+    double inv_dy2 = 1.0 / (dy * dy);
+    return (-get(f, i, j + 2, k) + 16.0 * get(f, i, j + 1, k) - 30.0 * get(f, i, j, k) +
+            16.0 * get(f, i, j - 1, k) - get(f, i, j - 2, k)) *
+           (1.0 / 12.0) * inv_dy2;
+}
+
+template <typename Field>
+inline double Dzz(const Field &f, size_t i, size_t j, size_t k, double dz) {
+    double inv_dz2 = 1.0 / (dz * dz);
+    return (-get(f, i, j, k + 2) + 16.0 * get(f, i, j, k + 1) - 30.0 * get(f, i, j, k) +
+            16.0 * get(f, i, j, k - 1) - get(f, i, j, k - 2)) *
+           (1.0 / 12.0) * inv_dz2;
+}
+
+template <typename Field>
+inline double Dxy(const Field &f, size_t i, size_t j, size_t k, double dx, double dy) {
+    return (get(f, i + 1, j + 1, k) - get(f, i + 1, j - 1, k) - get(f, i - 1, j + 1, k) +
+            get(f, i - 1, j - 1, k)) /
+           (4.0 * dx * dy);
+}
+
+template <typename Field>
+inline double Dxz(const Field &f, size_t i, size_t j, size_t k, double dx, double dz) {
+    return (get(f, i + 1, j, k + 1) - get(f, i + 1, j, k - 1) - get(f, i - 1, j, k + 1) +
+            get(f, i - 1, j, k - 1)) /
+           (4.0 * dx * dz);
+}
+
+template <typename Field>
+inline double Dyz(const Field &f, size_t i, size_t j, size_t k, double dy, double dz) {
+    return (get(f, i, j + 1, k + 1) - get(f, i, j + 1, k - 1) - get(f, i, j - 1, k + 1) +
+            get(f, i, j - 1, k - 1)) /
+           (4.0 * dy * dz);
+}
+
+// Ajoute ceci dans tensorium_RG::fd
+
+template <typename Field>
+inline double Dxy4(const Field &f, size_t i, size_t j, size_t k, double dx, double dy) {
+    double sum = 0.0;
+
+    const int    idx[4] = {-2, -1, 1, 2};
+    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
+
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * get(f, i + idx[a], j + idx[b], k);
+        }
+    }
+
+    return sum / (144.0 * dx * dy);
+}
+
+template <typename Field>
+inline double Dxz4(const Field &f, size_t i, size_t j, size_t k, double dx, double dz) {
+    double       sum = 0.0;
+    const int    idx[4] = {-2, -1, 1, 2};
+    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * get(f, i + idx[a], j, k + idx[b]);
+        }
+    }
+    return sum / (144.0 * dx * dz);
+}
+
+template <typename Field>
+inline double Dyz4(const Field &f, size_t i, size_t j, size_t k, double dy, double dz) {
+    double       sum = 0.0;
+    const int    idx[4] = {-2, -1, 1, 2};
+    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * get(f, i, j + idx[a], k + idx[b]);
+        }
+    }
+    return sum / (144.0 * dy * dz);
+}
+
+template <typename Field>
+inline double D(const Field &f, size_t i, size_t j, size_t k, Axis a, double dx, double dy,
+                double dz) {
+    if (a == X)
+        return Dx(f, i, j, k, dx);
+    if (a == Y)
+        return Dy(f, i, j, k, dy);
+    return Dz(f, i, j, k, dz);
+}
+
+} // namespace tensorium_RG::fd
+
+
+================================================================================
+FILE: includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNTypes.hpp
+================================================================================
+
+#pragma once
+#include "../../../Core/Tensor.hpp"
+#include "../../../Core/Vector.hpp"
+
+namespace tensorium_RG::bssn {
+
+template <typename T> struct ADMVariables {
+    T                       alpha;
+    tensorium::Vector<T>    beta;     // size 3
+    tensorium::Tensor<T, 2> gamma_ij; // 3x3
+
+    ADMVariables() : beta(3), gamma_ij({3, 3}) {}
+};
+
+template <typename T> struct BSSNVariables {
+    T                       chi;
+    tensorium::Tensor<T, 2> gamma_tilde; // 3x3
+    tensorium::Tensor<T, 2> gamma_tilde_inv;
+
+    BSSNVariables() : gamma_tilde({3, 3}), gamma_tilde_inv({3, 3}) {}
+};
+
+} // namespace tensorium_RG::bssn
+
+
+================================================================================
+FILE: Tests/Grid/Grid.cpp
+================================================================================
+#include "../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNInitialData.hpp"
+#include "../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/BSSNMetricSplit.hpp"
+#include "../includes/Tensorium_Grid/GridSetup.hpp"
+#include "../test.hpp"
+
+#include <cassert>
+#include <cstdint>
+#include <cstdio>
+#include <fstream>
+#include <iomanip>
+#include <string>
+
+using namespace tensorium_RG;
+
+static void print_strides(const Strides<double> &st) {
+    printf("Strides:\n");
+    printf("  sx = %zu\n", st.sx);
+    printf("  sy = %zu\n", st.sy);
+    printf("  sz = %zu\n", st.sz);
+    printf("  nx_tot = %zu\n", st.nx_tot);
+    printf("  ny_tot = %zu\n", st.ny_tot);
+    printf("  nz_tot = %zu\n", st.nz_tot);
+}
+
+static void print_dims(const GridDims &d) {
+    printf("GridDims:\n");
+    printf("  nx = %zu, ny = %zu, nz = %zu, ng = %zu\n", d.nx, d.ny, d.nz, d.ng);
+}
+
+static inline double tag_val(size_t i, size_t j, size_t k) {
+    return 1000000.0 * double(i) + 1000.0 * double(j) + double(k);
+}
+
+static void fill_interior(Field3D<double> &f, const BSSNGridSoA<double> &G) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k)
+                f.ptr()[f.idx(i, j, k)] = tag_val(i - I0, j - J0, k - K0);
+}
+
+template <typename T> void export_chi_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t k_mid = K0 + G.dims.nz / 2;
+
+    std::ofstream file(filename);
+    file << "x,y,chi\n";
+
+    for (size_t i = I0; i < I1; ++i) {
+        for (size_t j = J0; j < J1; ++j) {
+            T x, y, z;
+            G.coords(i, j, k_mid, x, y, z);
+
+            size_t id = G.chi.idx(i, j, k_mid);
+            file << x << "," << y << "," << G.chi.ptr()[id] << "\n";
+        }
+    }
+    file.close();
+    printf("Slice exported to %s\n", filename.c_str());
+}
+#include <algorithm>
+#include <cmath>
+
+template <typename T>
+void export_log_chi_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    size_t k_mid = I0 + (G.dims.nz / 2);
+
+    std::ofstream file(filename);
+    file << "i,j,log_chi\n";
+
+    for (size_t i = 0; i < G.st.nx_tot; ++i) {
+        for (size_t j = 0; j < G.st.ny_tot; ++j) {
+            size_t id = G.chi.idx(i, j, k_mid);
+            T      val = G.chi.ptr()[id];
+
+            T log_val = std::log10(std::max(val, T(1e-20)));
+
+            file << i << "," << j << "," << log_val << "\n";
+        }
+    }
+    file.close();
+}
+
+template <typename T>
+void export_alpha_slice(const BSSNGridSoA<T> &G, const std::string &filename) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    size_t k_mid = I0 + (G.dims.nz / 2);
+
+    std::ofstream file(filename);
+    file << std::scientific << std::setprecision(12);
+    file << "i,j,alpha\n";
+
+    for (size_t i = 0; i < G.st.nx_tot; ++i) {
+        for (size_t j = 0; j < G.st.ny_tot; ++j) {
+            size_t id = G.alpha.idx(i, j, k_mid);
+            file << i << "," << j << "," << G.alpha.ptr()[id] << "\n";
+        }
+    }
+    file.close();
+    printf("Lapse slice exported to %s\n", filename.c_str());
+}
+
+template <typename T>
+void export_grid_structure(const BSSNGridSoA<T> &G, const std::string &filename) {
+    const auto &st = G.st;
+    const auto &D = G.dims;
+
+    std::ofstream file(filename);
+    file << "i,j,chi,zone_type\n";
+
+    size_t k_mid = st.nz_tot / 2;
+
+    for (size_t i = 0; i < st.nx_tot; ++i) {
+        for (size_t j = 0; j < st.ny_tot; ++j) {
+            size_t id = i * st.sx + j * st.sy + k_mid;
+
+            int zone = (i >= D.ng && i < D.ng + D.nx && j >= D.ng && j < D.ng + D.ny) ? 1 : 0;
+
+            file << i << "," << j << "," << G.chi.ptr()[id] << "," << zone << "\n";
+        }
+    }
+    file.close();
+    printf("Full grid structure exported to %s\n", filename.c_str());
+}
+static void test_halo_periodic_alpha() {
+    printf("=== Halo periodic test (alpha) ===\n");
+
+    constexpr size_t    nx = 8, ny = 6, nz = 10, ng = 2;
+    BSSNGridSoA<double> G(nx, ny, nz, ng, 1.0, 1.0, 1.0);
+
+    fill_interior(G.alpha, G);
+    apply_halos_grid<BoundaryPeriodic>(G);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    printf("[CHECK] X halos...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t iL = I0 - 1 - g;
+        const size_t iR = I1 + g;
+        const size_t isrcL = I1 - 1 - g;
+        const size_t isrcR = I0 + g;
+
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const double aL = G.alpha.ptr()[G.alpha.idx(iL, j, k)];
+                const double eL = G.alpha.ptr()[G.alpha.idx(isrcL, j, k)];
+                const double aR = G.alpha.ptr()[G.alpha.idx(iR, j, k)];
+                const double eR = G.alpha.ptr()[G.alpha.idx(isrcR, j, k)];
+                assert(aL == eL);
+                assert(aR == eR);
+            }
+    }
+    printf("  OK\n");
+
+    printf("[CHECK] Y halos...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t jL = J0 - 1 - g;
+        const size_t jR = J1 + g;
+        const size_t jsrcL = J1 - 1 - g;
+        const size_t jsrcR = J0 + g;
+
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t k = K0; k < K1; ++k) {
+                const double aL = G.alpha.ptr()[G.alpha.idx(i, jL, k)];
+                const double eL = G.alpha.ptr()[G.alpha.idx(i, jsrcL, k)];
+                const double aR = G.alpha.ptr()[G.alpha.idx(i, jR, k)];
+                const double eR = G.alpha.ptr()[G.alpha.idx(i, jsrcR, k)];
+                assert(aL == eL);
+                assert(aR == eR);
+            }
+    }
+    printf("  OK\n");
+
+    printf("[CHECK] Z halos...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t kL = K0 - 1 - g;
+        const size_t kR = K1 + g;
+        const size_t ksrcL = K1 - 1 - g;
+        const size_t ksrcR = K0 + g;
+
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j) {
+                const double aL = G.alpha.ptr()[G.alpha.idx(i, j, kL)];
+                const double eL = G.alpha.ptr()[G.alpha.idx(i, j, ksrcL)];
+                const double aR = G.alpha.ptr()[G.alpha.idx(i, j, kR)];
+                const double eR = G.alpha.ptr()[G.alpha.idx(i, j, ksrcR)];
+                assert(aL == eL);
+                assert(aR == eR);
+            }
+    }
+    printf("  OK\n");
+
+    printf("=== Halo periodic test PASSED ===\n\n");
+}
+
+static void test_halo_clamp_alpha() {
+    printf("=== Halo clamp test (alpha) ===\n");
+
+    constexpr size_t    nx = 8, ny = 6, nz = 10, ng = 2;
+    BSSNGridSoA<double> G(nx, ny, nz, ng, 1.0, 1.0, 1.0);
+
+    fill_interior(G.alpha, G);
+    apply_halos_grid<BoundaryClamp>(G);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    printf("[CHECK] X halos clamp to nearest interior...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t iL = I0 - 1 - g;
+        const size_t iR = I1 + g;
+
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                assert(G.alpha.ptr()[G.alpha.idx(iL, j, k)] ==
+                       G.alpha.ptr()[G.alpha.idx(I0, j, k)]);
+                assert(G.alpha.ptr()[G.alpha.idx(iR, j, k)] ==
+                       G.alpha.ptr()[G.alpha.idx(I1 - 1, j, k)]);
+            }
+    }
+    printf("  OK\n");
+
+    printf("[CHECK] Y halos clamp to nearest interior...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t jL = J0 - 1 - g;
+        const size_t jR = J1 + g;
+
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t k = K0; k < K1; ++k) {
+                assert(G.alpha.ptr()[G.alpha.idx(i, jL, k)] ==
+                       G.alpha.ptr()[G.alpha.idx(i, J0, k)]);
+                assert(G.alpha.ptr()[G.alpha.idx(i, jR, k)] ==
+                       G.alpha.ptr()[G.alpha.idx(i, J1 - 1, k)]);
+            }
+    }
+    printf("  OK\n");
+
+    printf("[CHECK] Z halos clamp to nearest interior...\n");
+    for (size_t g = 0; g < ng; ++g) {
+        const size_t kL = K0 - 1 - g;
+        const size_t kR = K1 + g;
+
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j) {
+                assert(G.alpha.ptr()[G.alpha.idx(i, j, kL)] ==
+                       G.alpha.ptr()[G.alpha.idx(i, j, K0)]);
+                assert(G.alpha.ptr()[G.alpha.idx(i, j, kR)] ==
+                       G.alpha.ptr()[G.alpha.idx(i, j, K1 - 1)]);
+            }
+    }
+    printf("  OK\n");
+
+    printf("=== Halo clamp test PASSED ===\n\n");
+}
+#include <vector>
+
+namespace {
+
+template <typename T> struct ConvMetrics {
+    double Einf = 0.0;
+    double EL2 = 0.0;
+    size_t n = 0;
+};
+
+template <typename T>
+static inline double scalar_R_at(const tensorium_RG::BSSNGridSoA<T> &G,
+                                 const tensorium_RG::Field3D<T> *Ricci6, size_t id) {
+    const double chi = (double)G.chi.ptr()[id];
+
+    const double gixx = (double)G.gamma_tilde_inv[tensorium_RG::XX].ptr()[id];
+    const double gixy = (double)G.gamma_tilde_inv[tensorium_RG::XY].ptr()[id];
+    const double gixz = (double)G.gamma_tilde_inv[tensorium_RG::XZ].ptr()[id];
+    const double giyy = (double)G.gamma_tilde_inv[tensorium_RG::YY].ptr()[id];
+    const double giyz = (double)G.gamma_tilde_inv[tensorium_RG::YZ].ptr()[id];
+    const double gizz = (double)G.gamma_tilde_inv[tensorium_RG::ZZ].ptr()[id];
+
+    const double Rxx = (double)Ricci6[tensorium_RG::XX].ptr()[id];
+    const double Rxy = (double)Ricci6[tensorium_RG::XY].ptr()[id];
+    const double Rxz = (double)Ricci6[tensorium_RG::XZ].ptr()[id];
+    const double Ryy = (double)Ricci6[tensorium_RG::YY].ptr()[id];
+    const double Ryz = (double)Ricci6[tensorium_RG::YZ].ptr()[id];
+    const double Rzz = (double)Ricci6[tensorium_RG::ZZ].ptr()[id];
+
+    const double tr_conf =
+        gixx * Rxx + giyy * Ryy + gizz * Rzz + 2.0 * (gixy * Rxy + gixz * Rxz + giyz * Ryz);
+
+    return chi * tr_conf;
+}
+
+template <typename T>
+ConvMetrics<T> measure_R_error(const tensorium_RG::BSSNGridSoA<T> &G,
+                               const tensorium_RG::Field3D<T> *Ricci6, T M, double r_cut_phys) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t i0 = I0 + 2, i1 = I1 - 2;
+    const size_t j0 = J0 + 2, j1 = J1 - 2;
+    const size_t k0 = K0 + 2, k1 = K1 - 2;
+
+    double sum2 = 0.0;
+    double maxa = 0.0;
+    size_t n = 0;
+
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t id = G.gamma_tilde[tensorium_RG::XX].idx(i, j, k);
+
+                T x, y, z;
+                G.coords(i, j, k, x, y, z);
+                const double r = std::sqrt((double)x * (double)x + (double)y * (double)y +
+                                           (double)z * (double)z);
+                if (r <= r_cut_phys)
+                    continue;
+
+                const double R = scalar_R_at(G, Ricci6, id);
+                const double a = std::abs(R);
+
+                if (a > maxa)
+                    maxa = a;
+                sum2 += R * R;
+                ++n;
+            }
+
+    ConvMetrics<T> m;
+    m.Einf = maxa;
+    m.n = n;
+    m.EL2 = (n > 0) ? std::sqrt(sum2 / (double)n) : 0.0;
+    return m;
+}
+
+static inline double order_from(double E1, double E2) {
+    if (E2 <= 0.0 || E1 <= 0.0)
+        return 0.0;
+    return std::log(E1 / E2) / std::log(2.0);
+}
+
+} // namespace
+void test_convergence_schwarzschild_R() {
+    using T = double;
+
+    const T      M = 1.0;
+    const int    ng = 3;  
+    const double L = 5.0 * M; 
+    const double r_cut = 2.0 * M;
+
+    std::vector<int> Ns = {32, 64, 128}; 
+
+    std::vector<double> Einf, EL2, hs;
+
+    for (int N : Ns) {
+        const int    nx = N, ny = N, nz = N;
+        const double dx = (2.0 * L) / (double)(nx - 1);
+        const double dy = dx;
+        const double dz = dx;
+
+        tensorium_RG::BSSNGridSoA<T> G(nx, ny, nz, ng, (T)dx, (T)dy, (T)dz);
+        G.x0 = (T)(-L);
+        G.y0 = (T)(-L);
+        G.z0 = (T)(-L);
+
+        tensorium_RG::Field3D<T> Ricci6[6];
+        for (int s = 0; s < 6; ++s)
+            Ricci6[s] = tensorium_RG::make_field<T>(G.st);
+
+        tensorium_RG::init::schwarzschild_isotropic(G, M, 0.0, 0.0, 0.0, 1e-6);
+
+        tensorium_RG::bssn::compute_ricci_bssn(G, Ricci6);
+        tensorium_RG::apply_halos_grid<tensorium_RG::BoundaryClamp>(G);
+        for (int s = 0; s < 6; ++s)
+            tensorium_RG::BoundaryClamp::apply(Ricci6[s], G.dims);
+
+        auto m = measure_R_error(G, Ricci6, M, r_cut);
+
+        hs.push_back(dx);
+        Einf.push_back(m.Einf);
+        EL2.push_back(m.EL2);
+
+        std::printf("[CONV] N=%d dx=%.6e  Einf=%.6e  EL2=%.6e  samples=%zu\n", N, dx, m.Einf, m.EL2,
+                    m.n);
+    }
+
+    if (Ns.size() >= 2) {
+        const double p_inf = order_from(Einf[0], Einf[1]);
+        const double p_l2 = order_from(EL2[0], EL2[1]);
+        std::printf("[CONV] p_inf=%.3f  p_L2=%.3f (expect ~4 if truly 4th order)\n", p_inf, p_l2);
+    }
+}
+
+int grid_tests() {
+    printf("=== Grid basic tests ===\n");
+    const size_t nx = 256;
+    const size_t ny = 256;
+    const size_t nz = 256;
+    const size_t ng = 3;
+
+    const double dx = 0.05;
+    const double dy = 0.05;
+    const double dz = 0.05;
+
+    printf("Allocating grid %zux%zux%zu (ng=%zu)\n", nx, ny, nz, ng);
+
+    BSSNGridSoA<double> G(nx, ny, nz, ng, dx, dy, dz);
+    print_dims(G.dims);
+    print_strides(G.st);
+
+    printf("[TEST] Stride invariants...\n");
+    assert(G.st.sz == 1);
+    assert(G.st.sy == G.st.nz_tot);
+    assert(G.st.sx == G.st.ny_tot * G.st.nz_tot);
+    printf("  OK\n");
+
+    printf("[TEST] Alignment...\n");
+    uintptr_t p = reinterpret_cast<uintptr_t>(G.alpha.ptr());
+    printf("  alpha ptr = %p\n", (void *)p);
+    assert(p % TENSORIUM_ALIGN == 0);
+    printf("  OK (alignment = %d bytes)\n", TENSORIUM_ALIGN);
+
+    printf("[TEST] Indexing round-trip...\n");
+    size_t i = G.dims.ng;
+    size_t j = G.dims.ng;
+    size_t k = G.dims.ng;
+
+    size_t idx = G.alpha.idx(i, j, k);
+    printf("  idx(%zu,%zu,%zu) = %zu\n", i, j, k, idx);
+
+    G.alpha.ptr()[idx] = 42.0;
+    assert(G.alpha.ptr()[idx] == 42.0);
+    printf("  OK (value = %.1f)\n", G.alpha.ptr()[idx]);
+
+    printf("[TEST] Linear layout sanity (k contiguous)...\n");
+    size_t idx0 = G.alpha.idx(i, j, k);
+    size_t idx1 = G.alpha.idx(i, j, k + 1);
+    printf("  idx(k)   = %zu\n", idx0);
+    printf("  idx(k+1) = %zu\n", idx1);
+    assert(idx1 == idx0 + 1);
+    printf("  OK\n");
+
+    printf("[TEST] Distinct fields have distinct storage...\n");
+    G.alpha.ptr()[idx] = 1.0;
+    G.chi.ptr()[idx] = 2.0;
+    assert(G.alpha.ptr()[idx] == 1.0);
+    assert(G.chi.ptr()[idx] == 2.0);
+    printf("  OK\n");
+
+    printf("[TEST] Coordinate mapping...\n");
+    double x, y, z;
+    G.coords(i, j, k, x, y, z);
+    printf("  coords = (%g, %g, %g)\n", x, y, z);
+    assert(x == 0.0 && y == 0.0 && z == 0.0);
+    printf("  OK\n");
+
+    test_halo_periodic_alpha();
+    test_halo_clamp_alpha();
+    printf("=== Grid basic tests PASSED ===\n\n");
+    BSSNGridSoA<double> G2(256, 256, 256, 3, 0.05, 0.05, 0.05);
+    G2.x0 = -(double(G2.dims.nx) * G2.dx) / 2.0;
+    G2.y0 = -(double(G2.dims.ny) * G2.dy) / 2.0;
+    G2.z0 = -(double(G2.dims.nz) * G2.dz) / 2.0;
+    init::schwarzschild_isotropic(G2, /*M=*/1.0, /*center=*/0.0, 0.0, 0.0, /*r_floor=*/1e-6);
+    apply_halos_grid<BoundaryClamp>(G2);
+    test_convergence_schwarzschild_R();
+    export_chi_slice(G2, "chi_slice.csv");
+    export_grid_structure(G2, "grid_structure.csv");
+    export_alpha_slice(G2, "alpha_slice.csv");
+    export_log_chi_slice(G2, "log_chi_slice.csv");
+	init::minkowski(G2, /*M=*/1.0, /*center=*/0.0, 0.0, 0.0, /*r_floor=*/1e-6);
+    apply_halos_grid<BoundaryClamp>(G2);
+
+    return 0;
+}
+
+

@@ -1,6 +1,6 @@
 #pragma once
-#include "BSSNGridDerivatives.hpp"
-#include "BSSNGridSoA.hpp"
+#include "../Derivatives/BSSNGridDerivatives.hpp"
+#include "../Fields/BSSNGridSoA.hpp"
 
 namespace tensorium_RG::bssn {
 

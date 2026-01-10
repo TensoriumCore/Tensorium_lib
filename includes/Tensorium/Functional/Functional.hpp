@@ -230,8 +230,7 @@ template <typename T> Matrix<T> mul_mat(const Matrix<T> &A, const Matrix<T> &B) 
     //
     //
 
-    Matrix<T> Acol = A;
-    return Acol._mul_mat(B);
+    return A._mul_mat(B);
 }
 
 /*
