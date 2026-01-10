@@ -1,5 +1,7 @@
 #pragma once
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../Geometry/BSSNCHristoffelTilde.hpp"
+#include "../Geometry/BSSNInvariants.hpp"
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -237,6 +239,9 @@ inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, 
                 G.chi.ptr()[id] = chi;
                 G.alpha.ptr()[id] = alpha;
             }
+
+    tensorium_RG::bssn::compute_tildeGamma_contracted(G);
+    tensorium_RG::bssn::assert_invariants(G, "lichnerowicz");
 }
 
 } // namespace tensorium_RG::init

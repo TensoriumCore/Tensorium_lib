@@ -1,5 +1,6 @@
 #pragma once
 #include "BSSNCHristoffelTilde.hpp"
+#include "BSSNInvariants.hpp"
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
@@ -195,6 +196,8 @@ template <typename T> void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ric
             }
         }
     }
+
+    tensorium_RG::bssn::assert_invariants(G, "ricci");
 }
 
 } // namespace tensorium_RG::bssn

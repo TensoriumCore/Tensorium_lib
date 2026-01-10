@@ -9,9 +9,10 @@ REGISTER_TEST("bssn.constraints.minkowski", "Constraints vanish for Minkowski da
     tensorium_RG::BSSNGridSoA<double> grid(24, 24, 24, 4, 0.5, 0.5, 0.5);
     tensorium_RG::init::minkowski(grid, 0.0);
     auto stats = tensorium::tests::compute_invariants(grid, 4);
-    tensorium::tests::expect_le(stats.max_H, 1e-12, "Hamiltonian constraint");
-    tensorium::tests::expect_le(stats.max_M, 1e-12, "Momentum constraint");
-    tensorium::tests::expect_le(stats.max_C, 1e-12, "Gamma constraint");
+    const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
+    tensorium::tests::expect_le(stats.max_H, 5.0 * tol.metric_tol, "Hamiltonian constraint");
+    tensorium::tests::expect_le(stats.max_M, 5.0 * tol.metric_tol, "Momentum constraint");
+    tensorium::tests::expect_le(stats.max_C, 5.0 * tol.gamma_tol, "Gamma coherence");
 });
 
 REGISTER_TEST("bssn.constraints.schwarzschild",
@@ -20,7 +21,35 @@ REGISTER_TEST("bssn.constraints.schwarzschild",
     tensorium_RG::init::schwarzschild_isotropic(grid, 1.0);
     const double domain_extent = grid.dims.nx * grid.dx;
     auto stats = tensorium::tests::compute_invariants(grid, 4, 2.0, 0.4 * domain_extent);
-    tensorium::tests::expect_le(stats.max_H, 2e-4, "Hamiltonian constraint");
-    tensorium::tests::expect_le(stats.max_M, 2e-4, "Momentum constraint");
-    tensorium::tests::expect_le(stats.max_C, 2e-4, "Gamma constraint");
+    const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
+    tensorium::tests::expect_le(stats.max_H, 80.0 * tol.metric_tol, "Hamiltonian constraint");
+    tensorium::tests::expect_le(stats.max_M, 80.0 * tol.metric_tol, "Momentum constraint");
+    tensorium::tests::expect_le(stats.max_C, 80.0 * tol.gamma_tol, "Gamma coherence");
 });
+
+REGISTER_TEST("bssn.constraints.gamma_coherence", "Gamma constraint fails on inconsistent data",
+              []() {
+                  tensorium_RG::BSSNGridSoA<double> grid(24, 24, 24, 4, 0.5, 0.5, 0.5);
+                  tensorium_RG::init::minkowski(grid, 0.0);
+
+                  size_t I0, I1, J0, J1, K0, K1;
+                  grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+                  const size_t ic = I0 + grid.dims.nx / 2;
+                  const size_t jc = J0 + grid.dims.ny / 2;
+                  const size_t kc = K0 + grid.dims.nz / 2;
+                  const size_t id = grid.tildeGamma[0].idx(ic, jc, kc);
+
+                  grid.tildeGamma[0].ptr()[id] += 1e-2; // violate stored Γ̃^i only
+
+                  auto stats = tensorium::tests::compute_invariants(grid, 4);
+                  const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
+                  TENSORIUM_TEST_ASSERT(stats.max_gamma_constraint > 10.0 * tol.gamma_tol);
+
+                  bool caught = false;
+                  try {
+                      tensorium_RG::bssn::assert_invariants(grid, "gamma_test", 4, tol);
+                  } catch (const std::exception &) {
+                      caught = true;
+                  }
+                  TENSORIUM_TEST_ASSERT(caught);
+              });

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
+#include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNInvariants.hpp"
 #include "../../includes/Tensorium_Grid/Grid/GridLayout.hpp"
 
 #include <algorithm>
@@ -9,39 +10,12 @@
 
 namespace tensorium::tests {
 
-struct BSSNInvariantStats {
-    double max_det_deviation = 0.0;
-    double max_trace_A = 0.0;
+struct BSSNInvariantStats : public tensorium_RG::bssn::InvariantStats {
     double max_ricci = 0.0;
     double max_H = 0.0;
     double max_M = 0.0;
     double max_C = 0.0;
-    size_t samples = 0;
 };
-
-inline void load_sym_matrix(const tensorium_RG::Field3D<double> *fields, size_t idx,
-                             double out[3][3]) {
-    for (int a = 0; a < 3; ++a)
-        for (int b = a; b < 3; ++b) {
-            const double val = tensorium_RG::sym6_get(fields, idx, a, b);
-            out[a][b] = val;
-            out[b][a] = val;
-        }
-}
-
-inline double det3(const double m[3][3]) {
-    return m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[1][2]) -
-           m[0][1] * (m[0][1] * m[2][2] - m[0][2] * m[1][2]) +
-           m[0][2] * (m[0][1] * m[1][2] - m[0][2] * m[1][1]);
-}
-
-inline double trace_weighted(const double ginv[3][3], const double tensor[3][3]) {
-    double trace = 0.0;
-    for (int a = 0; a < 3; ++a)
-        for (int b = 0; b < 3; ++b)
-            trace += ginv[a][b] * tensor[a][b];
-    return trace;
-}
 
 inline double max_tensor_component(const tensorium_RG::Field3D<double> *fields, size_t idx) {
     double vals[6];
@@ -68,20 +42,23 @@ inline BSSNInvariantStats compute_invariants(const tensorium_RG::BSSNGridSoA<dou
                                              double xc = 0.0, double yc = 0.0, double zc = 0.0) {
     BSSNInvariantStats stats;
 
+    const auto inv_stats = tensorium_RG::bssn::compute_invariant_stats(grid, padding, r_min, r_max,
+                                                                      xc, yc, zc);
+    static_cast<tensorium_RG::bssn::InvariantStats &>(stats) = inv_stats;
+
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
 
-    const size_t i0 = std::min(I0 + padding, I1);
-    const size_t j0 = std::min(J0 + padding, J1);
-    const size_t k0 = std::min(K0 + padding, K1);
-    const size_t i1 = (I1 > padding) ? I1 - padding : I1;
-    const size_t j1 = (J1 > padding) ? J1 - padding : J1;
-    const size_t k1 = (K1 > padding) ? K1 - padding : K1;
+    const size_t guard = std::max<size_t>(padding, size_t(2));
+    const size_t i0 = std::min(I0 + guard, I1);
+    const size_t j0 = std::min(J0 + guard, J1);
+    const size_t k0 = std::min(K0 + guard, K1);
+    const size_t i1 = (I1 > guard) ? I1 - guard : I1;
+    const size_t j1 = (J1 > guard) ? J1 - guard : J1;
+    const size_t k1 = (K1 > guard) ? K1 - guard : K1;
 
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return stats;
-
-    double g[3][3], ginv[3][3], A[3][3];
 
     for (size_t i = i0; i < i1; ++i)
         for (size_t j = j0; j < j1; ++j)
@@ -96,19 +73,10 @@ inline BSSNInvariantStats compute_invariants(const tensorium_RG::BSSNGridSoA<dou
                     continue;
 
                 const size_t id = grid.alpha.idx(i, j, k);
-                load_sym_matrix(grid.gamma_tilde, id, g);
-                load_sym_matrix(grid.gamma_tilde_inv, id, ginv);
-                load_sym_matrix(grid.A_tilde, id, A);
-
-                stats.max_det_deviation =
-                    std::max(stats.max_det_deviation, std::abs(det3(g) - 1.0));
-                stats.max_trace_A =
-                    std::max(stats.max_trace_A, std::abs(trace_weighted(ginv, A)));
                 stats.max_ricci = std::max(stats.max_ricci, max_tensor_component(grid.Ricci, id));
                 stats.max_H = std::max(stats.max_H, std::abs(grid.Hc.ptr()[id]));
                 stats.max_M = std::max(stats.max_M, max_vector_component(grid.Mc, id));
                 stats.max_C = std::max(stats.max_C, max_vector_component(grid.Cc, id));
-                ++stats.samples;
             }
 
     return stats;

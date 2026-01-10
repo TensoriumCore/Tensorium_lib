@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/at0m/Desktop/Tensorium_lib/cmake_install.cmake",
+		"/Users/at0m/Desktop/Tensorium_lib/Plugins/cmake_install.cmake",
+		"/Users/at0m/Desktop/Tensorium_lib/Tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
