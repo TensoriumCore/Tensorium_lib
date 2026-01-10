@@ -53,3 +53,5 @@ REGISTER_TEST("bssn.constraints.gamma_coherence", "Gamma constraint fails on inc
                   }
                   TENSORIUM_TEST_ASSERT(caught);
               });
+
+#include "GammaCoherenceNoResyncTests.cpp"

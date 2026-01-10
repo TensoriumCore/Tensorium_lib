@@ -31,3 +31,6 @@ REGISTER_TEST("bssn.initial_data.schwarzschild",
     tensorium::tests::expect_le(stats.max_ricci, 1e-1, "Ricci tensor");
     tensorium::tests::expect_le(stats.max_H, 2e-4, "Hamiltonian constraint");
 });
+
+#include "../invariants/ProjectionTests.cpp"
+#include "BowenYorkExportTest.cpp"

@@ -1,0 +1,122 @@
+#pragma once
+
+#include "BSSNGamma.hpp"
+#include "../Fields/BSSNGridSoA.hpp"
+#include "Tensorium_Grid/Grid/GridLayout.hpp"
+
+#include <algorithm>
+#include <cmath>
+
+namespace tensorium_RG::bssn {
+
+struct ProjectionConfig {
+    size_t padding = 4;                // guard cells before touching interior
+    bool   renormalize_metric = true;  // enforce det(gamma_tilde)=1
+    bool   project_A_tilde = true;     // enforce trace-free A_tilde
+    bool   recompute_inverse = true;   // refresh gamma_tilde_inv from gamma_tilde
+    bool   resync_contracted_gamma = true; // recompute stored Gamma^i from metric
+};
+
+namespace detail {
+
+inline double det3(double gxx, double gxy, double gxz, double gyy, double gyz, double gzz) {
+    return gxx * (gyy * gzz - gyz * gyz) - gxy * (gxy * gzz - gxz * gyz) +
+           gxz * (gxy * gyz - gxz * gyy);
+}
+
+} // namespace detail
+
+template <typename T> inline void project_bssn_state(BSSNGridSoA<T> &G, const ProjectionConfig &cfg = {}) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t guard = std::max<size_t>(cfg.padding, size_t(2));
+    const size_t i0 = std::min(I0 + guard, I1);
+    const size_t j0 = std::min(J0 + guard, J1);
+    const size_t k0 = std::min(K0 + guard, K1);
+    const size_t i1 = (I1 > guard) ? I1 - guard : I1;
+    const size_t j1 = (J1 > guard) ? J1 - guard : J1;
+    const size_t k1 = (K1 > guard) ? K1 - guard : K1;
+
+    if (i0 >= i1 || j0 >= j1 || k0 >= k1)
+        return;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+
+                double gxx, gxy, gxz, gyy, gyz, gzz;
+                tensorium_RG::load_sym6(G.gamma_tilde, id, gxx, gxy, gxz, gyy, gyz, gzz);
+
+                if (cfg.renormalize_metric) {
+                    const double det = detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
+                    if (det > 0.0) {
+                        const double scale = std::pow(det, -1.0 / 3.0);
+                        gxx *= scale;
+                        gxy *= scale;
+                        gxz *= scale;
+                        gyy *= scale;
+                        gyz *= scale;
+                        gzz *= scale;
+                        tensorium_RG::store_sym6(G.gamma_tilde, id, (T)gxx, (T)gxy, (T)gxz, (T)gyy,
+                                                 (T)gyz, (T)gzz);
+                    }
+                }
+
+                double gixx, gixy, gixz, giyy, giyz, gizz;
+                if (cfg.recompute_inverse || cfg.project_A_tilde) {
+                    const double det_new = detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
+                    const double inv_det = (det_new != 0.0) ? (1.0 / det_new) : 0.0;
+                    gixx = (gyy * gzz - gyz * gyz) * inv_det;
+                    gixy = (gxz * gyz - gxy * gzz) * inv_det;
+                    gixz = (gxy * gyz - gxz * gyy) * inv_det;
+                    giyy = (gxx * gzz - gxz * gxz) * inv_det;
+                    giyz = (gxy * gxz - gxx * gyz) * inv_det;
+                    gizz = (gxx * gyy - gxy * gxy) * inv_det;
+
+                    if (cfg.recompute_inverse) {
+                        tensorium_RG::store_sym6(G.gamma_tilde_inv, id, (T)gixx, (T)gixy, (T)gixz,
+                                                 (T)giyy, (T)giyz, (T)gizz);
+                    }
+                }
+
+                if (cfg.project_A_tilde) {
+                    double Axx, Axy, Axz, Ayy, Ayz, Azz;
+                    tensorium_RG::load_sym6(G.A_tilde, id, Axx, Axy, Axz, Ayy, Ayz, Azz);
+                    const double trace = gixx * Axx + giyy * Ayy + gizz * Azz +
+                                         2.0 * (gixy * Axy + gixz * Axz + giyz * Ayz);
+                    const double one_third_trace = (1.0 / 3.0) * trace;
+                    Axx -= gxx * one_third_trace;
+                    Axy -= gxy * one_third_trace;
+                    Axz -= gxz * one_third_trace;
+                    Ayy -= gyy * one_third_trace;
+                    Ayz -= gyz * one_third_trace;
+                    Azz -= gzz * one_third_trace;
+                    tensorium_RG::store_sym6(G.A_tilde, id, (T)Axx, (T)Axy, (T)Axz, (T)Ayy,
+                                             (T)Ayz, (T)Azz);
+                }
+            }
+        }
+    }
+
+    if (cfg.resync_contracted_gamma) {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i) {
+            for (size_t j = j0; j < j1; ++j) {
+                for (size_t k = k0; k < k1; ++k) {
+                    const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+                    T            div[3];
+                    metric_inverse_divergence(G, i, j, k, div);
+                    G.tildeGamma[0].ptr()[id] = -div[0];
+                    G.tildeGamma[1].ptr()[id] = -div[1];
+                    G.tildeGamma[2].ptr()[id] = -div[2];
+                }
+            }
+        }
+    }
+}
+
+} // namespace tensorium_RG::bssn
+

@@ -21,6 +21,13 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
+    const size_t total = G.chi.st.nx_tot * G.chi.st.ny_tot * G.chi.st.nz_tot;
+    std::fill_n(H_out.ptr(), total, T(0));
+    for (int a = 0; a < 3; ++a) {
+        std::fill_n(M_out[a].ptr(), total, T(0));
+        std::fill_n(C_out[a].ptr(), total, T(0));
+    }
+
     const size_t i0 = I0 + 4, i1 = I1 - 4;
     const size_t j0 = J0 + 4, j1 = J1 - 4;
     const size_t k0 = K0 + 4, k1 = K1 - 4;

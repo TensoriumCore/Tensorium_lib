@@ -6,6 +6,7 @@
 #include "../Constraints/BSSNConstraintsGrid.hpp"
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../Geometry/BSSNProjection.hpp"
 #include "../Geometry/BSSNRicci.hpp"
 #include "../Grid/BSSNGridOperations.hpp"
 #include <algorithm>
@@ -187,6 +188,7 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
 
     tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
     tensorium_RG::bssn::assert_invariants(G, "init.minkowski");
+    tensorium_RG::bssn::project_bssn_state(G);
 }
 
 template <typename T>
@@ -316,6 +318,7 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
 
     tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
     tensorium_RG::bssn::assert_invariants(G, "init.schwarzschild");
+    tensorium_RG::bssn::project_bssn_state(G);
 }
 
 template <typename T>
@@ -442,6 +445,7 @@ inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x
                                                  0.0);
     tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, 0.0, 0.0, 0.0);
     tensorium_RG::bssn::assert_invariants(G, "init.binary_schwarzschild");
+    tensorium_RG::bssn::project_bssn_state(G);
 }
 
 template <typename T>
@@ -499,6 +503,7 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
     print_ricci_samples(G);
     tensorium_RG::bssn::assert_invariants(G, "init.bowen_york");
+    tensorium_RG::bssn::project_bssn_state(G);
 }
 
 } // namespace tensorium_RG::init

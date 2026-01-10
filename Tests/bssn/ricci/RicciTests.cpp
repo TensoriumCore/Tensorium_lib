@@ -3,11 +3,13 @@
 #include "../BSSNTestUtils.hpp"
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNProjection.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 
 REGISTER_TEST("bssn.ricci.flat", "Ricci tensor close to zero for flat data", []() {
     tensorium_RG::BSSNGridSoA<double> grid(24, 24, 24, 4, 0.5, 0.5, 0.5);
     tensorium_RG::init::minkowski(grid, 0.0);
+    tensorium_RG::bssn::project_bssn_state(grid);
     auto stats = tensorium::tests::compute_invariants(grid, 4);
     const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
     tensorium::tests::expect_le(stats.max_ricci, 5.0 * tol.metric_tol, "Ricci tensor");
@@ -25,6 +27,7 @@ REGISTER_TEST("bssn.ricci.vacuum",
               "Ricci remains small for Schwarzschild away from puncture", []() {
     tensorium_RG::BSSNGridSoA<double> grid(32, 32, 32, 4, 0.25, 0.25, 0.25);
     tensorium_RG::init::schwarzschild_isotropic(grid, 1.0);
+    tensorium_RG::bssn::project_bssn_state(grid);
     const double domain_extent = grid.dims.nx * grid.dx;
     auto stats = tensorium::tests::compute_invariants(grid, 4, 2.0, 0.35 * domain_extent);
     const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);

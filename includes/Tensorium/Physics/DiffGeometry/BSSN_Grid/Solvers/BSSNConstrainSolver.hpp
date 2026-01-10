@@ -2,6 +2,7 @@
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
+#include "../Geometry/BSSNProjection.hpp"
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -25,7 +26,7 @@ static inline void by_add_momentum_TF(T A[3][3], const T n[3], const T P[3], T r
         for (int j = 0; j < 3; ++j)
             Sij[i][j] = n[i] * P[j] + n[j] * P[i] -
                         (i == j ? (one - n[i] * n[i])
-                                : (-nP * (i == j ? one : T(0)))); // sera corrigé ci-dessous
+                                : (-nP * (i == j ? one : T(0)))); 
 
     // Ã_ij^P = (3/(2 r^2)) [ n_i P_j + n_j P_i - (δ_ij - n_i n_j) (n·P) ]
     for (int i = 0; i < 3; ++i) {
@@ -242,6 +243,7 @@ inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, 
 
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
     tensorium_RG::bssn::assert_invariants(G, "lichnerowicz");
+    tensorium_RG::bssn::project_bssn_state(G);
 }
 
 } // namespace tensorium_RG::init
