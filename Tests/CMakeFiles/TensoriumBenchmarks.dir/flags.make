@@ -6,7 +6,5 @@ CXX_DEFINES = -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS
 
 CXX_INCLUDES = -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
 
-CXX_FLAGSarm64 =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp
-
-CXX_FLAGS =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp
+CXX_FLAGS =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp
 

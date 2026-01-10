@@ -91,6 +91,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "Tests/CMakeFiles/test_bssn_constraints_objs.dir/DependInfo.cmake"
   "Tests/CMakeFiles/test_bssn_ricci_objs.dir/DependInfo.cmake"
   "Tests/CMakeFiles/test_bssn_solvers_objs.dir/DependInfo.cmake"
+  "Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/DependInfo.cmake"
+  "Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/DependInfo.cmake"
   "Tests/CMakeFiles/TensoriumTests.dir/DependInfo.cmake"
   "Tests/CMakeFiles/TensoriumTestCore.dir/DependInfo.cmake"
   "Tests/CMakeFiles/TensoriumTestGrid.dir/DependInfo.cmake"

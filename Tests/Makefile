@@ -201,6 +201,34 @@ test_bssn_solvers_objs/fast:
 .PHONY : test_bssn_solvers_objs/fast
 
 # Convenience name for target.
+Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/rule:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/rule
+.PHONY : Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/rule
+
+# Convenience name for target.
+TensoriumChiEvolutionDemo: Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/rule
+.PHONY : TensoriumChiEvolutionDemo
+
+# fast build rule for target.
+TensoriumChiEvolutionDemo/fast:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/build
+.PHONY : TensoriumChiEvolutionDemo/fast
+
+# Convenience name for target.
+Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/rule:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/rule
+.PHONY : Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/rule
+
+# Convenience name for target.
+TensoriumGammaEvolutionDemo: Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/rule
+.PHONY : TensoriumGammaEvolutionDemo
+
+# fast build rule for target.
+TensoriumGammaEvolutionDemo/fast:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/build
+.PHONY : TensoriumGammaEvolutionDemo/fast
+
+# Convenience name for target.
 Tests/CMakeFiles/TensoriumTests.dir/rule:
 	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Tests/CMakeFiles/TensoriumTests.dir/rule
 .PHONY : Tests/CMakeFiles/TensoriumTests.dir/rule
@@ -269,6 +297,54 @@ TensoriumBenchmarks: Tests/CMakeFiles/TensoriumBenchmarks.dir/rule
 TensoriumBenchmarks/fast:
 	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumBenchmarks.dir/build.make Tests/CMakeFiles/TensoriumBenchmarks.dir/build
 .PHONY : TensoriumBenchmarks/fast
+
+bssn/binaries/BSSNChiEvolutionDemo.o: bssn/binaries/BSSNChiEvolutionDemo.cpp.o
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.o
+
+# target to build an object file
+bssn/binaries/BSSNChiEvolutionDemo.cpp.o:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.o
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.cpp.o
+
+bssn/binaries/BSSNChiEvolutionDemo.i: bssn/binaries/BSSNChiEvolutionDemo.cpp.i
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.i
+
+# target to preprocess a source file
+bssn/binaries/BSSNChiEvolutionDemo.cpp.i:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.i
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.cpp.i
+
+bssn/binaries/BSSNChiEvolutionDemo.s: bssn/binaries/BSSNChiEvolutionDemo.cpp.s
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.s
+
+# target to generate assembly for a file
+bssn/binaries/BSSNChiEvolutionDemo.cpp.s:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.s
+.PHONY : bssn/binaries/BSSNChiEvolutionDemo.cpp.s
+
+bssn/binaries/BSSNGammaEvolutionDemo.o: bssn/binaries/BSSNGammaEvolutionDemo.cpp.o
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.o
+
+# target to build an object file
+bssn/binaries/BSSNGammaEvolutionDemo.cpp.o:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.o
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.cpp.o
+
+bssn/binaries/BSSNGammaEvolutionDemo.i: bssn/binaries/BSSNGammaEvolutionDemo.cpp.i
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.i
+
+# target to preprocess a source file
+bssn/binaries/BSSNGammaEvolutionDemo.cpp.i:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.i
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.cpp.i
+
+bssn/binaries/BSSNGammaEvolutionDemo.s: bssn/binaries/BSSNGammaEvolutionDemo.cpp.s
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.s
+
+# target to generate assembly for a file
+bssn/binaries/BSSNGammaEvolutionDemo.cpp.s:
+	cd /Users/at0m/Desktop/Tensorium_lib && $(MAKE) $(MAKESILENT) -f Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/build.make Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.s
+.PHONY : bssn/binaries/BSSNGammaEvolutionDemo.cpp.s
 
 bssn/constraints/ConstraintTests.o: bssn/constraints/ConstraintTests.cpp.o
 .PHONY : bssn/constraints/ConstraintTests.o
@@ -681,6 +757,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... TensoriumBenchmarks"
+	@echo "... TensoriumChiEvolutionDemo"
+	@echo "... TensoriumGammaEvolutionDemo"
 	@echo "... TensoriumTestBSSN"
 	@echo "... TensoriumTestCore"
 	@echo "... TensoriumTestGrid"
@@ -691,6 +769,12 @@ help:
 	@echo "... test_bssn_solvers_objs"
 	@echo "... test_core_objs"
 	@echo "... test_grid_objs"
+	@echo "... bssn/binaries/BSSNChiEvolutionDemo.o"
+	@echo "... bssn/binaries/BSSNChiEvolutionDemo.i"
+	@echo "... bssn/binaries/BSSNChiEvolutionDemo.s"
+	@echo "... bssn/binaries/BSSNGammaEvolutionDemo.o"
+	@echo "... bssn/binaries/BSSNGammaEvolutionDemo.i"
+	@echo "... bssn/binaries/BSSNGammaEvolutionDemo.s"
 	@echo "... bssn/constraints/ConstraintTests.o"
 	@echo "... bssn/constraints/ConstraintTests.i"
 	@echo "... bssn/constraints/ConstraintTests.s"

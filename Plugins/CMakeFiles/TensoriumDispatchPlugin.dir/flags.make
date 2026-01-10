@@ -6,7 +6,5 @@ CXX_DEFINES = -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -DTensor
 
 CXX_INCLUDES = -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/opt/local/libexec/llvm-20/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/local/include -isystem /opt/homebrew/include
 
-CXX_FLAGSarm64 =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
-
-CXX_FLAGS =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+CXX_FLAGS =  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 

@@ -53,6 +53,12 @@ target_include_directories(TensoriumChiEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(TensoriumGammaEvolutionDemo
+    bssn/binaries/BSSNGammaEvolutionDemo.cpp)
+target_include_directories(TensoriumGammaEvolutionDemo PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(TensoriumTests
     main.cpp
     ${TEST_FRAMEWORK_SOURCES}
