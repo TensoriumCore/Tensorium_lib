@@ -59,6 +59,12 @@ target_include_directories(TensoriumGammaEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(TensoriumATildeEvolutionDemo
+    bssn/binaries/BSSNATildeEvolutionDemo.cpp)
+target_include_directories(TensoriumATildeEvolutionDemo PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(TensoriumTests
     main.cpp
     ${TEST_FRAMEWORK_SOURCES}
@@ -103,7 +109,8 @@ target_include_directories(TensoriumBenchmarks PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
-set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks)
+set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
+    TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo)
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})
