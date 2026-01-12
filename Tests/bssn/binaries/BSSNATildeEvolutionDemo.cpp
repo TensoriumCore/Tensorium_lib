@@ -63,6 +63,52 @@ void export_rhs_slice(const tensorium_RG::BSSNGridSoA<double> &grid,
     }
 }
 
+struct FarStats {
+    double max_far = 0.0;
+    double l2_far = 0.0;
+    size_t samples = 0;
+    double max_global = 0.0;
+};
+
+template <typename FarSelector>
+FarStats far_region_stats(const tensorium_RG::BSSNGridSoA<double> &grid,
+                          const tensorium_RG::Field3D<double> rhs[6], size_t padding,
+                          FarSelector is_far) {
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t i_begin = I0 + padding;
+    const size_t i_end = I1 - padding;
+    const size_t j_begin = J0 + padding;
+    const size_t j_end = J1 - padding;
+    const size_t k_begin = K0 + padding;
+    const size_t k_end = K1 - padding;
+
+    FarStats stats;
+    for (size_t i = i_begin; i < i_end; ++i)
+        for (size_t j = j_begin; j < j_end; ++j)
+            for (size_t k = k_begin; k < k_end; ++k) {
+                double x, y, z;
+                grid.coords(i, j, k, x, y, z);
+                const bool far = is_far(x, y, z);
+                for (int s = 0; s < 6; ++s) {
+                    const double val = rhs[s].ptr()[rhs[s].idx(i, j, k)];
+                    const double abs_val = std::abs(val);
+                    stats.max_global = std::max(stats.max_global, abs_val);
+                    if (!far)
+                        continue;
+                    stats.max_far = std::max(stats.max_far, abs_val);
+                    stats.l2_far += val * val;
+                }
+                if (far)
+                    stats.samples += 1;
+            }
+    if (stats.samples > 0)
+        stats.l2_far = std::sqrt(stats.l2_far / (stats.samples * 6.0));
+    else
+        stats.l2_far = 0.0;
+    return stats;
+}
+
 double metric_inverse_residual(const tensorium_RG::BSSNGridSoA<double> &grid, size_t padding) {
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -102,9 +148,9 @@ double metric_inverse_residual(const tensorium_RG::BSSNGridSoA<double> &grid, si
     return max_err;
 }
 
-template <typename InitFn>
+template <typename InitFn, typename FarSelector>
 void run_case(const char *label, InitFn init, const DemoConfig &cfg, const std::string &csv_path,
-              size_t padding) {
+              size_t padding, FarSelector far_selector) {
     tensorium_RG::BSSNGridSoA<double> grid(cfg.nx, cfg.nx, cfg.nx, cfg.ng, cfg.dx, cfg.dx, cfg.dx);
     const double                      half = 0.5 * cfg.nx * cfg.dx;
     grid.x0 = -half;
@@ -118,10 +164,12 @@ void run_case(const char *label, InitFn init, const DemoConfig &cfg, const std::
 
     tensorium_RG::bssn::compute_rhs_A_tilde(grid, rhs, padding);
 
-    const double max_rhs = interior_max_rhs(grid, rhs, padding);
     const double metric_err = metric_inverse_residual(grid, padding);
-    std::cout << "[atilde demo] " << label << " max_rhs=" << max_rhs
+    const auto   stats = far_region_stats(grid, rhs, padding, far_selector);
+    std::cout << "[atilde demo] " << label << " max_rhs_far=" << stats.max_far
+              << " L2_rhs_far=" << stats.l2_far << " samples=" << stats.samples
               << " metric_residual=" << metric_err << '\n';
+    std::cout << "[atilde demo][debug] " << label << " max_rhs_full=" << stats.max_global << '\n';
 
     export_rhs_slice(grid, rhs, csv_path);
 }
@@ -133,13 +181,17 @@ int main() {
     const size_t padding = 4;
     std::cout << "[atilde demo] grid=" << cfg.nx << "^3 dx=" << cfg.dx << '\n';
 
-    run_case(
-        "Minkowski", [](auto &g) { tensorium_RG::init::minkowski(g, 0.0); }, cfg,
-        "rhs_Axx_slice_minkowski.csv", padding);
+    const double r_cut = 8.0 * cfg.dx;
+    const double r_cut2 = r_cut * r_cut;
+
+    run_case("Minkowski", [](auto &g) { tensorium_RG::init::minkowski(g, 0.0); }, cfg,
+             "rhs_Axx_slice_minkowski.csv", padding,
+             [](double, double, double) { return true; });
 
     run_case(
         "Schwarzschild", [](auto &g) { tensorium_RG::init::schwarzschild_isotropic(g, 1.0); }, cfg,
-        "rhs_Axx_slice_schwarzschild.csv", padding);
+        "rhs_Axx_slice_schwarzschild.csv", padding,
+        [=](double x, double y, double z) { return (x * x + y * y + z * z) > r_cut2; });
 
     run_case(
         "BowenYork",
@@ -155,7 +207,12 @@ int main() {
                 std::cerr << "[atilde demo] BowenYork warning: " << e.what() << '\n';
             }
         },
-        cfg, "rhs_Axx_slice_bowen.csv", padding);
+        cfg, "rhs_Axx_slice_bowen.csv", padding,
+        [=](double x, double y, double z) {
+            const double r1 = (x + 1.5) * (x + 1.5) + y * y + z * z;
+            const double r2 = (x - 1.5) * (x - 1.5) + y * y + z * z;
+            return r1 > r_cut2 && r2 > r_cut2;
+        });
 
     std::cout << "[atilde demo] slices written" << std::endl;
     return 0;

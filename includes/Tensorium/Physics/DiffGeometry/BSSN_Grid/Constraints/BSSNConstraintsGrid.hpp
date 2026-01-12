@@ -1,9 +1,9 @@
 #pragma once
+#include "../Derivatives/BSSNGridDerivatives.hpp"
+#include "../Fields/BSSNGridSoA.hpp"
 #include "../Geometry/BSSNConformal.hpp"
 #include "../Geometry/BSSNGamma.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
-#include "../Derivatives/BSSNGridDerivatives.hpp"
-#include "../Fields/BSSNGridSoA.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 #include <algorithm>
 #include <cmath>
@@ -114,10 +114,9 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                         for (int b = a; b < 3; ++b) {
                             const int         idx = tensorium_RG::sym6_index(a, b);
                             const Field3D<T> &F = G.A_tilde[idx];
-                            const double      deriv =
-                                (dir == 0) ? Dx(F, i, j, k, dx)
-                                : (dir == 1) ? Dy(F, i, j, k, dy)
-                                             : Dz(F, i, j, k, dz);
+                            const double      deriv = (dir == 0)   ? Dx(F, i, j, k, dx)
+                                                      : (dir == 1) ? Dy(F, i, j, k, dy)
+                                                                   : Dz(F, i, j, k, dz);
                             dA[dir][a][b] = deriv;
                             dA[dir][b][a] = deriv;
                         }

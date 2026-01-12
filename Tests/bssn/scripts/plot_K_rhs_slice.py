@@ -14,18 +14,16 @@ def load_slice(path: Path):
     df = pd.read_csv(path)
     xs = np.sort(df["x"].unique())
     ys = np.sort(df["y"].unique())
-    data = df["rhs_Axx"].values.reshape((len(xs), len(ys)))
+    data = df["rhs_K"].values.reshape((len(xs), len(ys)))
     return xs, ys, data
 
 
 def main():
-    default = Path("rhs_Axx_slice_schwarzschild.csv")
+    default = Path("rhs_K_slice_schwarzschild.csv")
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else default
     if not path.exists():
-        print(
-            f"Slice '{path}' not found. Run TensoriumATildeEvolutionDemo to generate the CSV.",
-            file=sys.stderr,
-        )
+        print(f"Slice '{path}' not found. Run TensoriumKEvolutionDemo to generate the CSV.",
+              file=sys.stderr)
         sys.exit(1)
 
     xs, ys, grid = load_slice(path)
@@ -34,8 +32,8 @@ def main():
     mesh = ax.pcolormesh(ys, xs, grid, shading="auto", cmap="coolwarm")
     ax.set_xlabel("y")
     ax.set_ylabel("x")
-    ax.set_title(f"A_tilde RHS slice: {path.name}")
-    fig.colorbar(mesh, ax=ax, label="rhs A_xx")
+    ax.set_title(f"K RHS slice: {path.name}")
+    fig.colorbar(mesh, ax=ax, label="rhs K")
     fig.tight_layout()
 
     out_path = path.with_name(path.stem + "_plot.png")

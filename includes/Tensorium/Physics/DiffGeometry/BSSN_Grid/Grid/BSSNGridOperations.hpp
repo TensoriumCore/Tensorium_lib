@@ -13,6 +13,7 @@ template <typename Boundary, typename T> inline void apply_halos_grid(BSSNGridSo
 
     for (int i = 0; i < 3; ++i) {
         Boundary::apply(G.beta[i], D);
+        Boundary::apply(G.B[i], D);
         Boundary::apply(G.tildeGamma[i], D);
     }
 

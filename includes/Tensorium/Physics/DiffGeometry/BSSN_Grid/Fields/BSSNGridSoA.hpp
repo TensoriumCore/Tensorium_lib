@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 namespace tensorium_RG {
@@ -15,6 +17,7 @@ template <typename T> class BSSNGridSoA {
     Field3D<T> K;
 
     Field3D<T> beta[3];
+    Field3D<T> B[3];
     Field3D<T> tildeGamma[3];
 
     Field3D<T> gamma_tilde[6];
@@ -52,12 +55,18 @@ template <typename T> class BSSNGridSoA {
             f.st = st;
         };
 
+        auto alloc_zero_field = [&](Field3D<T> &f) {
+            alloc_field(f);
+            std::fill_n(f.ptr(), nx_tot * ny_tot * nz_tot, T(0));
+        };
+
         alloc_field(alpha);
         alloc_field(chi);
         alloc_field(K);
 
         for (int i = 0; i < 3; ++i) {
             alloc_field(beta[i]);
+            alloc_zero_field(B[i]);
             alloc_field(tildeGamma[i]);
         }
 

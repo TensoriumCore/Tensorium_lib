@@ -96,6 +96,7 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
 
                 for (int c = 0; c < 3; ++c) {
                     G.beta[c].ptr()[id] = T(0);
+                    G.B[c].ptr()[id] = T(0);
                     G.tildeGamma[c].ptr()[id] = T(0);
                 }
 
@@ -230,6 +231,7 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
 
                 for (int c = 0; c < 3; ++c) {
                     G.beta[c].ptr()[id] = zero;
+                    G.B[c].ptr()[id] = zero;
                     G.tildeGamma[c].ptr()[id] = zero;
                 }
 
@@ -359,6 +361,7 @@ inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x
 
                 for (int c = 0; c < 3; ++c) {
                     G.beta[c].ptr()[id] = zero;
+                    G.B[c].ptr()[id] = zero;
                     G.tildeGamma[c].ptr()[id] = zero;
                 }
 
@@ -467,6 +470,7 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
                 G.K.ptr()[id] = zero;
                 for (int c = 0; c < 3; ++c) {
                     G.beta[c].ptr()[id] = zero;
+                    G.B[c].ptr()[id] = zero;
                     G.tildeGamma[c].ptr()[id] = zero;
                 }
 
@@ -495,7 +499,7 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
     fill_Atilde_bowen_york_binary(G, x1, y1, z1, P1, S1, x2, y2, z2, P2, S2, r_floor);
     bssn::apply_halos_grid<BoundaryClamp>(G);
 
-    solve_lichnerowicz_u_SOR(G, m1, x1, y1, z1, m2, x2, y2, z2, r_floor, 400, T(1e-10), T(1.8));
+    solve_lichnerowicz_u_SOR(G, m1, x1, y1, z1, m2, x2, y2, z2, r_floor, 2000, T(1e-10), T(1.8));
     bssn::apply_halos_grid<BoundaryClamp>(G);
 
     tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);

@@ -118,5 +118,14 @@ template <typename T> inline void project_bssn_state(BSSNGridSoA<T> &G, const Pr
     }
 }
 
-} // namespace tensorium_RG::bssn
+template <typename T> inline void project_bssn_after_update(BSSNGridSoA<T> &G, size_t padding = 4) {
+    ProjectionConfig cfg;
+    cfg.padding = padding;
+    cfg.renormalize_metric = true;
+    cfg.project_A_tilde = true;
+    cfg.recompute_inverse = true;
+    cfg.resync_contracted_gamma = true;
+    project_bssn_state(G, cfg);
+}
 
+} // namespace tensorium_RG::bssn

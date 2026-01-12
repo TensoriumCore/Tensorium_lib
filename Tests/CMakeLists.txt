@@ -23,6 +23,11 @@ set(TEST_BSSN_RICCI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ricci/RicciTests.cpp)
 set(TEST_BSSN_SOLVER_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/solvers/SolverTests.cpp)
+set(TEST_BSSN_EVOLUTION_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp)
 
 set(BENCHMARK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)
@@ -40,12 +45,14 @@ tensorium_add_object_library(test_bssn_initial_objs ${TEST_BSSN_INITIAL_SOURCES}
 tensorium_add_object_library(test_bssn_constraints_objs ${TEST_BSSN_CONSTRAINT_SOURCES})
 tensorium_add_object_library(test_bssn_ricci_objs ${TEST_BSSN_RICCI_SOURCES})
 tensorium_add_object_library(test_bssn_solvers_objs ${TEST_BSSN_SOLVER_SOURCES})
+tensorium_add_object_library(test_bssn_evolution_objs ${TEST_BSSN_EVOLUTION_SOURCES})
 
 set(BSSN_OBJECTS
     $<TARGET_OBJECTS:test_bssn_initial_objs>
     $<TARGET_OBJECTS:test_bssn_constraints_objs>
     $<TARGET_OBJECTS:test_bssn_ricci_objs>
-    $<TARGET_OBJECTS:test_bssn_solvers_objs>)
+    $<TARGET_OBJECTS:test_bssn_solvers_objs>
+    $<TARGET_OBJECTS:test_bssn_evolution_objs>)
 
 add_executable(TensoriumChiEvolutionDemo
     bssn/binaries/BSSNChiEvolutionDemo.cpp)
@@ -59,9 +66,21 @@ target_include_directories(TensoriumGammaEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(TensoriumGaugeEvolutionDemo
+    bssn/binaries/BSSNGaugeEvolutionDemo.cpp)
+target_include_directories(TensoriumGaugeEvolutionDemo PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(TensoriumATildeEvolutionDemo
     bssn/binaries/BSSNATildeEvolutionDemo.cpp)
 target_include_directories(TensoriumATildeEvolutionDemo PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(TensoriumKEvolutionDemo
+    bssn/binaries/BSSNKEvolutionDemo.cpp)
+target_include_directories(TensoriumKEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -110,7 +129,8 @@ target_include_directories(TensoriumBenchmarks PRIVATE
 
 set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
-    TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo)
+    TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
+    TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo)
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})
