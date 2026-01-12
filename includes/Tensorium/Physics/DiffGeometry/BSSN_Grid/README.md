@@ -22,41 +22,41 @@ Each field is stored in a `Field3D` with identical strides (`BSSNGridSoA.hpp`).
 ## 3. Evolution Equations
 The implemented right-hand sides (padding-aware, allocation-free) correspond to the standard BSSN vacuum system:
 - **Conformal factor**
-  $$
+  ```math
   \partial_t \chi = \beta^k \partial_k \chi + \frac{2}{3} \chi \left( \alpha K - \partial_k \beta^k \right).
-  $$
+  ```
 - **Conformal metric**
-  $$
+  ```math
   \partial_t \tilde{\gamma}_{ij} = \beta^k \partial_k \tilde{\gamma}_{ij} + \tilde{\gamma}_{ik} \partial_j \beta^k + \tilde{\gamma}_{jk} \partial_i \beta^k - \frac{2}{3} \tilde{\gamma}_{ij} \partial_k \beta^k - 2 \alpha \tilde{A}_{ij}.
-  $$
+  ```
 - **Trace-free extrinsic curvature**
-  $$
+  ```math
   \partial_t \tilde{A}_{ij} = \beta^k \partial_k \tilde{A}_{ij} + \tilde{A}_{ik} \partial_j \beta^k + \tilde{A}_{jk} \partial_i \beta^k - \frac{2}{3} \tilde{A}_{ij} \partial_k \beta^k - \left(D_i D_j \alpha\right)^{TF} + \alpha \left(R_{ij}^{TF} - 8\pi S_{ij}^{TF}\right),
-  $$
+  ```
   with \(R_{ij}\) built from the conformal metric, \(D_i\) the covariant derivative compatible with the physical metric, and the trace-free projector enforced explicitly; matter terms are zero in the current vacuum implementation.
 - **Mean curvature**
-  $$
+  ```math
   \partial_t K = \beta^k \partial_k K - \gamma^{ij} D_i D_j \alpha + \alpha \left( \tilde{A}_{ij} \tilde{A}^{ij} + \frac{1}{3} K^2 \right).
-  $$
+  ```
 - **Conformal connection functions**
-  $$
+  ```math
   \begin{aligned}
   \partial_t \tilde{\Gamma}^i &= \beta^k \partial_k \tilde{\Gamma}^i - \tilde{\Gamma}^k \partial_k \beta^i + \frac{2}{3} \tilde{\Gamma}^i \partial_k \beta^k \\
   &\quad + \tilde{\gamma}^{jk} \partial_j \partial_k \beta^i + \frac{1}{3} \tilde{\gamma}^{ij} \partial_j \partial_k \beta^k - 2 \tilde{A}^{ij} \partial_j \alpha \\
   &\quad + 2 \alpha \left( \tilde{\Gamma}^i_{\ jk} \tilde{A}^{jk} - \frac{2}{3} \tilde{\gamma}^{ij} \partial_j K \right).
   \end{aligned}
-  $$
+  ```
 - **Gauge system**
   - 1+log slicing:
-    $$
+    ```math
     \partial_t \alpha = \beta^k \partial_k \alpha - 2 \alpha K.
-    $$
+    ```
   - Gamma-driver shift and auxiliary:
-    $$
+    ```math
     \partial_t \beta^i = \beta^k \partial_k \beta^i + \frac{3}{4} B^i,
     \qquad
     \partial_t B^i = \beta^k \partial_k B^i + \partial_t \tilde{\Gamma}^i - \eta B^i.
-    $$
+    ```
   The code evaluates \(\partial_t \tilde{\Gamma}^i\) first and feeds it directly into the driver RHS.
 
 ## 4. Gauge System
