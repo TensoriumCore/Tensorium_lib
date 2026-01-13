@@ -5,7 +5,7 @@
 
 /**
  * @file BSSNEvolutionChi.hpp
- * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi = \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i)\f$.
+ * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi = \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\f$.
  * @details The implementation evaluates
  * \f[
  * \partial_t\chi = \beta^i\partial_i\chi + \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i) + \mathcal{D}_6[\chi]
