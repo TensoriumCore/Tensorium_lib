@@ -1,0 +1,31 @@
+<map id="tensorium::Matrix::size" name="tensorium::Matrix::size">
+<area shape="rect" id="Node000001" title="Return the total number of elements." alt="" coords="394,209,548,235"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#ac6402b6dc16695f48203d2c5fc3e755b" title="In&#45;place matrix addition: this += m." alt="" coords="195,84,346,110"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="433,202,292,113,293,107,438,200"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_matrix.html#a520af5a3e3c982c67dc1bd0611975808" title="Linearly interpolate between two matrices: this = (1 &#45; α) * A + α * B." alt="" coords="195,196,346,222"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="376,217,347,216,346,211,381,215"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1_matrix.html#a4b102c4388cbdb2f517f698b88321a82" title="In&#45;place scalar multiplication: this *= a." alt="" coords="197,263,344,288"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="403,241,323,264,321,260,408,238"/>
+<area shape="rect" id="Node000012" href="$classtensorium_1_1_matrix.html#a3ccf54e141e9901beb7cc19a10dc45eb" title="In&#45;place matrix subtraction: this &#45;= m." alt="" coords="195,411,346,436"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="449,246,286,413,283,408,444,247"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#a9a79e5e316fefceb930f22229ba6e12b" title=" " alt="" coords="8,5,144,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="225,78,146,45,119,34,117,29,148,40,230,76"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#a20362d7ed5838282723290082f36006f" title=" " alt="" coords="5,55,147,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="177,85,148,81,146,76,181,82"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1_matrix.html#aee92533d466bf1d0fa6ab4af3d022a8a" title=" " alt="" coords="11,104,141,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="177,112,143,118,140,113,181,108"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium.html#a1c044714fb59c3eb8cfd714bd25dc6f7" title=" " alt="" coords="8,169,144,195"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="177,198,146,194,143,189,181,195"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium.html#a565beec587982dcd8f579a0a1f304096" title=" " alt="" coords="7,219,145,244"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="193,260,136,247,135,242,198,257"/>
+<area shape="rect" id="Node000010" href="$classtensorium_1_1_matrix.html#ad0a15c14c524e148427e260342b5f554" title=" " alt="" coords="11,268,141,309"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="179,283,143,287,141,282,184,280"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium.html#a2207f906782c6a186c09559e5857fc57" title=" " alt="" coords="10,333,142,359"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="217,296,148,323,116,335,112,331,146,318,221,292"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium.html#a1c916cec307fa6f2fc3f29d81c9a4f7a" title=" " alt="" coords="7,383,145,408"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="177,411,146,408,145,403,182,409"/>
+<area shape="rect" id="Node000014" href="$classtensorium_1_1_matrix.html#a8d48b0188e144be22003df9bca0b5271" title=" " alt="" coords="11,432,141,473"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="177,438,142,446,141,440,182,436"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium.html#a91dac89d785ff89280a4a316e954a7a2" title=" " alt="" coords="8,497,144,523"/>
+<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="234,443,148,487,117,499,116,494,146,482,229,444"/>
+</map>

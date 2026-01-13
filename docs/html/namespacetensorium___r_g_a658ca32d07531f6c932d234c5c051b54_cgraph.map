@@ -1,0 +1,23 @@
+<map id="tensorium_RG::covariant_scalar_second" name="tensorium_RG::covariant_scalar_second">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,136,172,177"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#ad76e96348da7e78444b670a328922244" title=" " alt="" coords="229,128,392,184"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,154,216,155,211,158,173,159"/>
+<area shape="rect" id="Node000005" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="642,175,681,201"/>
+<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="117,133,205,81,263,52,328,27,396,9,465,3,499,5,533,12,565,23,596,39,622,65,641,97,653,130,659,161,654,159,648,131,636,99,618,68,593,44,563,28,531,17,499,10,465,8,397,15,329,32,265,57,207,85,121,137"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g.html#afa0e6cb1b45cdeb5547ff070f85106d1" title=" " alt="" coords="220,233,402,274"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="137,174,251,225,247,228,137,180"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_vector.html#a6cd035b3600152f2ca608cf3bab24a70" title=" " alt="" coords="456,53,588,94"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,125,456,99,451,101,385,130"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1detail.html#ac6c8856dde97a2b2ff409cb08d76a411" title=" " alt="" coords="450,168,594,209"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,166,437,174,432,176,393,171"/>
+<area shape="poly" id="edge7_Node000002_Node000005" title=" " alt="" coords="392,144,490,141,543,145,595,154,631,169,626,169,594,159,542,150,490,147,393,149"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66" title=" " alt="" coords="450,233,594,274"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="373,182,465,226,460,227,373,187"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="594,186,630,188,624,189,595,191"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="567,230,593,218,626,205,631,203,595,223,569,235"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="378,230,442,213,437,215,380,235"/>
+<area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="359,272,411,289,471,301,502,303,534,301,564,295,593,283,612,270,627,252,648,217,653,214,631,255,615,274,596,288,566,300,535,306,502,308,470,306,409,294,359,277"/>
+<area shape="poly" id="edge11_Node000007_Node000006" title=" " alt="" coords="402,251,437,253,432,254,403,256"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="456,348,589,389"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="350,272,451,327,472,341,467,340,449,332,349,277"/>
+</map>

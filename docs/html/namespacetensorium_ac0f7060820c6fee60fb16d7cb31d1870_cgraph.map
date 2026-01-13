@@ -1,0 +1,9 @@
+<map id="tensorium::compute_christoffel_3D" name="tensorium::compute_christoffel_3D">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,142,79"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_christoffel.html#ad9a0ad2299106000688f3caa62639683" title="Compute the conformal Christoffel symbols ." alt="" coords="190,39,400,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,56,177,58,172,60,143,62"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="448,5,581,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="400,40,435,38,430,39,401,46"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1_tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="448,71,581,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="400,72,435,79,430,79,400,77"/>
+</map>

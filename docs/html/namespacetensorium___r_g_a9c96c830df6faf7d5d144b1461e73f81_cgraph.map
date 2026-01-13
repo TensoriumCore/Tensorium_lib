@@ -1,0 +1,7 @@
+<map id="tensorium_RG::compute_partial_derivatives_vector3D" name="tensorium_RG::compute_partial_derivatives_vector3D">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,169,87"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="217,5,350,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,43,204,39,199,40,169,48"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="217,71,350,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,70,204,77,199,78,169,75"/>
+</map>

@@ -1,0 +1,28 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNGamma.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNGamma.hpp">
+<area shape="rect" id="Node000001" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="506,5,772,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="510,109,768,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="640,74,641,110,636,107,637,79"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_invariants_8hpp.html" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="792,116,1069,172"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="726,64,860,116,855,116,725,69"/>
+<area shape="rect" id="Node000008" href="$_b_s_s_n_projection_8hpp.html" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="208,116,486,172"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="550,68,421,118,419,113,554,65"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="435,235,685,291"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="609,191,580,237,577,233,605,194"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="644,346,801,417"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="679,190,700,227,717,289,724,347,719,344,712,290,695,229,677,195"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="228,346,415,417"/>
+<area shape="poly" id="edge8_Node000002_Node000005" title=" " alt="" coords="497,185,459,207,424,230,397,257,373,287,338,348,334,344,368,285,393,253,421,226,456,202,493,187"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="760,228,998,298"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="724,184,810,227,805,227,723,189"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="611,297,677,347,672,346,609,303"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="493,297,393,348,391,343,488,299"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="823,307,770,348,768,343,818,309"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="979,181,998,202,1012,227,1023,264,1021,282,1011,300,998,313,978,324,925,344,863,359,802,371,801,366,862,354,924,338,976,319,995,308,1007,297,1016,280,1018,265,1007,229,994,205,977,186"/>
+<area shape="poly" id="edge11_Node000007_Node000006" title=" " alt="" coords="915,185,896,229,892,225,910,188"/>
+<area shape="poly" id="edge15_Node000008_Node000004" title=" " alt="" coords="358,185,383,244,401,272,424,296,476,329,533,352,591,366,647,376,642,376,590,371,532,357,473,334,421,300,397,275,378,246,356,189"/>
+<area shape="poly" id="edge17_Node000008_Node000005" title=" " alt="" coords="337,185,331,228,325,291,323,348,319,345,320,290,325,227,334,190"/>
+<area shape="poly" id="edge16_Node000008_Node000006" title=" " alt="" coords="481,173,498,177,762,235,757,237,497,182,481,179"/>
+<area shape="rect" id="Node000009" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,228,259,298"/>
+<area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="282,181,197,229,194,225,286,178"/>
+<area shape="poly" id="edge14_Node000009_Node000005" title=" " alt="" coords="202,304,268,345,262,346,200,309"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="tensorium::scl_mat" name="tensorium::scl_mat">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,138,31"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a4b102c4388cbdb2f517f698b88321a82" title="In&#45;place scalar multiplication: this *= a." alt="" coords="186,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,16,173,18,167,18,138,21"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#af195083127f300ae37ce064f9f2164d8" title="Return the total number of elements." alt="" coords="381,5,535,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,16,368,18,363,18,333,21"/>
+</map>

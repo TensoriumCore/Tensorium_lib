@@ -1,0 +1,5 @@
+<map id="TensoriumASTConsumer" name="TensoriumASTConsumer">
+<area shape="rect" id="Node000001" title="AST consumer that matches specific patterns in the AST related to Tensorium usage." alt="" coords="5,120,183,206"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="46,5,143,72"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,84,97,121,92,119,93,89"/>
+</map>

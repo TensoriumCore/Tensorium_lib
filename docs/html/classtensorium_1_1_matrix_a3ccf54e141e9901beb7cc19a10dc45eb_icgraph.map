@@ -1,0 +1,9 @@
+<map id="tensorium::Matrix::sub" name="tensorium::Matrix::sub">
+<area shape="rect" id="Node000001" title="In&#45;place matrix subtraction: this &#45;= m." alt="" coords="191,63,342,88"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a1c916cec307fa6f2fc3f29d81c9a4f7a" title=" " alt="" coords="5,5,143,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,59,119,34,120,29,208,56"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#a8d48b0188e144be22003df9bca0b5271" title=" " alt="" coords="9,55,139,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,76,140,78,139,73,177,75"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#a91dac89d785ff89280a4a316e954a7a2" title=" " alt="" coords="6,120,142,146"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,93,120,122,119,117,203,94"/>
+</map>

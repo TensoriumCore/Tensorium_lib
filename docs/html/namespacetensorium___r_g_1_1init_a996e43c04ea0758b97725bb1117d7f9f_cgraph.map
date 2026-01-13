@@ -1,0 +1,81 @@
+<map id="tensorium_RG::init::schwarzschild_isotropic" name="tensorium_RG::init::schwarzschild_isotropic">
+<area shape="rect" id="Node000001" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,475,174,516"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#afc728a4a48cae76f72521a1dfdcdee11" title="Apply the boundary functor to every scalar, vector, and tensor field in the grid." alt="" coords="244,183,385,224"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,474,109,427,134,365,171,299,194,268,220,240,236,230,233,234,223,244,198,272,175,302,139,368,114,429,99,476"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#a882854a29de4e6552fccc878e016fe8d" title="Compare measured invariants against tolerances and throw/log when drifts exceed bounds." alt="" coords="475,114,616,155"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="95,474,112,434,138,382,174,329,196,305,220,284,245,269,269,261,313,257,357,254,380,247,405,234,421,219,429,204,438,188,453,171,473,160,469,164,457,175,442,191,434,206,425,222,409,238,383,252,358,259,314,263,270,266,248,274,223,289,199,309,178,333,143,385,117,436,100,476"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae" title="Fill the Hamiltonian , momentum , and Gamma &#160;constraint fields." alt="" coords="222,298,407,339"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="115,473,276,346,274,351,119,477"/>
+<area shape="rect" id="Node000017" href="$namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8" title="Populate the Ricci tensor cache &#160;throughout the interior grid." alt="" coords="242,627,387,668"/>
+<area shape="poly" id="edge25_Node000001_Node000017" title=" " alt="" coords="121,514,273,617,268,620,122,519"/>
+<area shape="rect" id="Node000024" href="$namespacetensorium___r_g_1_1bssn.html#a551a841476db3f7665a53043c46349c2" title="Refresh the evolved &#160;from the metric inverse divergence." alt="" coords="692,337,848,393"/>
+<area shape="poly" id="edge45_Node000001_Node000024" title=" " alt="" coords="173,505,271,512,388,513,451,508,514,500,576,487,635,468,662,455,688,439,735,402,731,406,691,443,665,460,637,473,577,492,515,505,451,514,388,518,271,517,175,510"/>
+<area shape="rect" id="Node000025" href="$namespacetensorium___r_g_1_1init.html#a91f07975fc5374de9c043a7327485673" title="Explicit 3x3 inversion of &#160;at a given grid index." alt="" coords="243,693,386,733"/>
+<area shape="poly" id="edge47_Node000001_Node000025" title=" " alt="" coords="100,514,121,550,148,594,182,639,223,678,232,685,227,686,220,682,178,642,143,597,116,553,101,519"/>
+<area shape="rect" id="Node000026" href="$namespacetensorium___r_g_1_1bssn.html#a36cfa7304e618538fab81b79745c3fe7" title="Convenience logger that prints Linf/L2 norms of , , and &#160;to stdout." alt="" coords="234,418,395,459"/>
+<area shape="poly" id="edge48_Node000001_Node000026" title=" " alt="" coords="170,473,220,461,217,465,173,477"/>
+<area shape="rect" id="Node000027" href="$namespacetensorium___r_g_1_1init.html#a9472401ffc78a6088cfc35eb7416b943" title="Print Ricci tensor samples at representative radii for diagnostic purposes." alt="" coords="244,758,385,799"/>
+<area shape="poly" id="edge50_Node000001_Node000027" title=" " alt="" coords="96,514,114,562,139,623,175,687,198,717,223,743,232,751,227,752,220,747,194,720,171,690,134,626,109,564,96,519"/>
+<area shape="rect" id="Node000028" href="$namespacetensorium___r_g_1_1bssn.html#a54708e29d39d8a410304c794b3bab92e" title="Apply determinant renormalization, &#160;trace&#45;free projection, and &#160;resynchronization." alt="" coords="244,823,385,864"/>
+<area shape="poly" id="edge51_Node000001_Node000028" title=" " alt="" coords="94,514,107,574,130,652,147,694,168,735,193,774,224,809,233,817,228,818,220,812,189,777,163,738,142,696,125,654,102,575,94,519"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#a1467fe6bd5dc5bd39c2f06041356faa4" title="Measure det, trace, metric&#45;identity, Gamma&#45;constraint, and minimum&#45; &#160;over the grid." alt="" coords="684,114,856,155"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="615,132,671,133,666,136,618,137"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a2de8a28d1ac63e0734e1622fd2cef468" title=" " alt="" coords="925,63,1066,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="854,113,912,102,908,104,857,118"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="904,297,1088,337"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="797,153,960,286,955,287,797,158"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="911,14,1081,39"/>
+<area shape="poly" id="edge14_Node000004_Node000013" title=" " alt="" coords="822,112,854,94,877,71,887,60,902,50,919,44,915,47,905,54,891,64,881,75,857,98,825,116"/>
+<area shape="rect" id="Node000014" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="977,128,1015,154"/>
+<area shape="poly" id="edge15_Node000004_Node000014" title=" " alt="" coords="855,134,964,139,959,141,857,139"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="1140,504,1288,560"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1019,335,1176,493,1171,493,1018,341"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="1340,711,1490,737"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1245,558,1392,701,1387,700,1244,563"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="1340,610,1490,635"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="1278,558,1373,603,1368,603,1278,563"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="1340,487,1490,513"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="1287,518,1327,513,1322,515,1289,523"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="1342,345,1488,385"/>
+<area shape="poly" id="edge13_Node000007_Node000012" title=" " alt="" coords="1248,501,1375,397,1380,394,1251,506"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="1538,838,1688,863"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1437,735,1581,829,1576,829,1436,740"/>
+<area shape="poly" id="edge10_Node000010_Node000009" title=" " alt="" coords="1430,633,1492,697,1595,826,1590,824,1488,700,1429,638"/>
+<area shape="poly" id="edge12_Node000011_Node000009" title=" " alt="" coords="1428,510,1459,548,1492,596,1527,658,1558,721,1603,824,1598,822,1553,723,1522,660,1487,599,1455,552,1427,516"/>
+<area shape="poly" id="edge17_Node000015_Node000003" title=" " alt="" coords="380,296,405,278,416,265,422,252,428,226,435,199,453,171,469,161,466,165,457,175,440,201,434,227,427,254,420,268,409,282,384,299"/>
+<area shape="poly" id="edge21_Node000015_Node000006" title=" " alt="" coords="407,316,890,315,886,319,408,321"/>
+<area shape="poly" id="edge18_Node000015_Node000008" title=" " alt="" coords="361,337,456,373,507,384,550,387,591,394,613,403,638,418,655,435,663,452,671,469,686,486,764,537,849,580,936,617,1025,646,1111,670,1191,688,1327,713,1322,714,1190,693,1109,675,1023,651,935,622,846,585,761,542,683,490,666,472,658,454,650,438,635,422,611,408,589,399,549,393,507,390,454,378,362,342"/>
+<area shape="poly" id="edge19_Node000015_Node000010" title=" " alt="" coords="407,323,519,340,579,355,637,373,662,387,686,403,808,460,906,500,1006,533,1137,569,1234,592,1327,610,1322,611,1233,597,1135,574,1005,538,904,505,806,465,683,407,659,392,635,378,578,360,518,346,409,328"/>
+<area shape="poly" id="edge20_Node000015_Node000011" title=" " alt="" coords="396,295,532,269,615,257,706,249,801,246,898,249,995,261,1089,283,1136,300,1183,322,1269,375,1341,430,1392,477,1387,476,1337,434,1266,380,1180,327,1134,305,1087,288,994,266,898,254,801,251,706,254,616,263,533,274,399,300"/>
+<area shape="poly" id="edge24_Node000015_Node000012" title=" " alt="" coords="396,296,405,290,420,273,428,256,436,238,453,222,496,200,535,186,570,180,605,179,678,184,769,189,997,189,1053,193,1109,205,1163,222,1215,243,1306,290,1376,335,1370,336,1304,295,1213,248,1161,227,1108,210,1052,199,997,194,769,194,677,190,605,184,571,185,536,192,499,205,457,226,440,241,433,258,425,276,409,294,400,299"/>
+<area shape="poly" id="edge23_Node000015_Node000013" title=" " alt="" coords="343,296,376,268,405,234,415,216,420,198,424,164,430,132,438,116,453,100,503,66,558,40,617,22,677,10,737,4,794,3,899,10,894,13,794,8,737,10,678,15,618,27,560,45,506,70,457,104,443,119,435,134,429,165,425,199,420,218,409,237,379,272,348,299"/>
+<area shape="rect" id="Node000016" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="455,432,636,458"/>
+<area shape="poly" id="edge22_Node000015_Node000016" title=" " alt="" coords="341,336,394,374,456,411,488,426,483,427,454,416,391,378,342,342"/>
+<area shape="poly" id="edge26_Node000017_Node000003" title=" " alt="" coords="325,626,405,469,477,301,530,172,532,167,482,303,409,472,330,628"/>
+<area shape="poly" id="edge27_Node000017_Node000008" title=" " alt="" coords="371,666,450,691,548,717,657,738,713,744,769,746,997,746,1172,741,1327,732,1322,733,1172,746,997,752,769,752,713,750,657,743,547,723,448,696,372,671"/>
+<area shape="poly" id="edge34_Node000017_Node000010" title=" " alt="" coords="387,657,455,664,546,666,636,664,1020,647,1327,629,1322,630,1020,653,636,669,546,672,455,669,388,662"/>
+<area shape="poly" id="edge39_Node000017_Node000011" title=" " alt="" coords="386,641,504,631,636,613,713,598,777,581,885,547,993,515,1058,501,1136,489,1233,484,1327,490,1322,491,1233,489,1136,494,1059,506,994,520,886,552,778,586,714,603,637,618,505,636,388,646"/>
+<area shape="poly" id="edge44_Node000017_Node000012" title=" " alt="" coords="386,629,454,613,545,596,636,576,684,561,1040,461,1330,386,1325,389,1042,466,685,566,637,581,546,601,456,618,389,633"/>
+<area shape="poly" id="edge43_Node000017_Node000013" title=" " alt="" coords="356,625,520,541,596,498,634,469,649,444,658,420,665,373,661,327,651,282,643,237,641,192,644,170,652,147,664,124,682,101,704,80,728,64,783,40,840,26,898,22,893,25,841,32,784,45,731,68,707,84,686,104,669,127,657,149,650,171,646,193,648,237,657,281,666,326,670,373,663,421,653,446,638,472,599,502,523,545,360,629"/>
+<area shape="poly" id="edge42_Node000017_Node000016" title=" " alt="" coords="337,625,519,466,516,471,341,629"/>
+<area shape="rect" id="Node000018" href="$namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070" title="4th&#45;order approximation to ." alt="" coords="1136,1040,1292,1066"/>
+<area shape="poly" id="edge28_Node000017_Node000018" title=" " alt="" coords="387,662,409,679,425,703,435,727,441,750,442,774,437,820,427,865,417,909,414,952,418,972,425,993,438,1013,457,1032,496,1063,539,1088,585,1107,633,1121,682,1130,732,1135,834,1135,932,1125,1023,1108,1101,1088,1159,1072,1165,1071,1102,1093,1024,1113,933,1130,834,1141,732,1140,681,1135,631,1126,583,1112,537,1092,493,1068,453,1036,434,1016,421,995,413,974,409,952,411,908,421,864,432,819,437,773,436,751,430,728,420,706,405,683,388,668"/>
+<area shape="rect" id="Node000019" href="$namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1" title="Tensor&#45;product 4th&#45;order approximation to ." alt="" coords="464,787,627,813"/>
+<area shape="poly" id="edge30_Node000017_Node000019" title=" " alt="" coords="387,665,409,679,426,701,434,724,440,745,457,766,477,780,471,781,453,770,436,748,428,725,422,704,405,683,388,671"/>
+<area shape="rect" id="Node000020" href="$namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e" title=" " alt="" coords="688,838,852,863"/>
+<area shape="poly" id="edge32_Node000017_Node000020" title=" " alt="" coords="387,664,409,679,423,698,429,718,431,755,434,791,442,807,457,823,483,840,511,852,573,866,635,868,694,865,689,867,635,874,572,871,509,857,480,845,453,827,437,810,429,793,426,756,424,719,418,701,405,683,388,669"/>
+<area shape="rect" id="Node000021" href="$namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2" title=" " alt="" coords="1136,888,1292,914"/>
+<area shape="poly" id="edge35_Node000017_Node000021" title=" " alt="" coords="387,663,409,679,426,705,433,732,433,758,430,783,428,808,429,832,438,854,457,875,491,888,554,897,735,906,943,906,1123,904,1118,905,943,911,735,911,553,902,490,893,453,879,433,857,424,833,422,808,425,783,427,757,427,732,421,707,405,683,388,669"/>
+<area shape="rect" id="Node000022" href="$namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e" title=" " alt="" coords="688,939,852,965"/>
+<area shape="poly" id="edge37_Node000017_Node000022" title=" " alt="" coords="387,663,409,679,428,711,436,743,435,774,430,804,426,834,426,863,435,891,457,918,482,936,509,950,539,960,570,966,633,969,693,967,688,968,633,974,569,971,538,965,507,955,479,941,453,922,430,893,421,864,421,834,425,804,429,773,430,743,424,713,405,683,387,668"/>
+<area shape="rect" id="Node000023" href="$namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f" title=" " alt="" coords="1136,990,1292,1015"/>
+<area shape="poly" id="edge40_Node000017_Node000023" title=" " alt="" coords="387,663,409,679,423,699,432,719,439,758,436,797,428,835,421,872,420,908,430,942,441,959,457,975,478,989,505,1001,575,1019,660,1028,756,1031,954,1025,1123,1013,1118,1014,954,1030,756,1037,660,1033,574,1024,503,1006,475,994,453,979,437,962,425,944,415,909,416,872,423,834,430,796,434,758,427,721,418,702,405,683,388,668"/>
+<area shape="poly" id="edge29_Node000018_Node000009" title=" " alt="" coords="1293,1053,1339,1051,1390,1044,1441,1030,1488,1008,1525,980,1555,944,1580,908,1597,879,1601,876,1584,911,1560,947,1529,983,1491,1013,1443,1035,1391,1049,1340,1056,1293,1059"/>
+<area shape="poly" id="edge31_Node000019_Node000009" title=" " alt="" coords="628,797,994,797,1216,797,1300,800,1386,809,1535,834,1529,834,1385,814,1300,806,1215,802,994,802,628,802"/>
+<area shape="poly" id="edge33_Node000020_Node000009" title=" " alt="" coords="852,848,1524,849,1520,852,852,853"/>
+<area shape="poly" id="edge36_Node000021_Node000009" title=" " alt="" coords="1293,890,1489,866,1525,864,1520,865,1490,872,1293,895"/>
+<area shape="poly" id="edge38_Node000022_Node000009" title=" " alt="" coords="852,951,977,951,1136,943,1313,925,1402,910,1489,891,1562,870,1567,868,1490,896,1403,915,1314,930,1137,949,977,956,852,957"/>
+<area shape="poly" id="edge41_Node000023_Node000009" title=" " alt="" coords="1292,1004,1338,1002,1389,997,1440,986,1488,968,1520,948,1549,924,1592,877,1596,875,1553,928,1523,953,1491,973,1442,991,1390,1002,1339,1008,1293,1009"/>
+<area shape="poly" id="edge46_Node000024_Node000006" title=" " alt="" coords="848,346,890,339,886,341,850,351"/>
+<area shape="poly" id="edge49_Node000026_Node000016" title=" " alt="" coords="394,438,442,441,437,443,397,443"/>
+</map>

@@ -1,0 +1,24 @@
+<map id="tensorium_RG::bssn::compute_rhs_alpha" name="tensorium_RG::bssn::compute_rhs_alpha">
+<area shape="rect" id="Node000001" title="Build &#160;including advection and KO6 dissipation." alt="" coords="5,179,148,219"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184" title=" " alt="" coords="216,5,357,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,177,131,118,160,85,194,57,206,52,202,56,197,61,164,89,135,121,93,179"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831" title=" " alt="" coords="216,71,357,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="109,176,194,127,222,116,218,120,197,132,112,180"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591" title="Third&#45;order upwind derivative along x used for shift advection terms." alt="" coords="445,107,594,147"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,184,195,175,431,138,428,143,196,180,149,188"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427" title=" " alt="" coords="445,172,594,213"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="148,195,431,191,429,196,148,201"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041" title=" " alt="" coords="445,237,594,278"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="148,206,431,244,428,248,148,211"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba" title="Dimension&#45;summed Kreiss–Oliger dissipation scaled by ." alt="" coords="207,288,366,313"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="110,217,197,266,231,282,226,282,195,271,109,222"/>
+<area shape="rect" id="Node000010" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="196,337,377,362"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="92,217,136,271,165,300,197,323,207,331,202,330,194,328,161,304,132,275,91,222"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="662,213,813,238"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="584,145,615,158,703,205,698,205,613,163,584,151"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="594,201,650,212,644,212,595,206"/>
+<area shape="poly" id="edge8_Node000007_Node000005" title=" " alt="" coords="594,244,649,238,644,239,595,249"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#a9e557ea7b8cb853cbe0b520161551000" title="One&#45;dimensional slice of the 6th&#45;order Kreiss–Oliger filter." alt="" coords="425,302,614,328"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="366,303,412,308,407,308,366,308"/>
+<area shape="poly" id="edge11_Node000009_Node000005" title=" " alt="" coords="578,299,613,287,659,266,699,247,704,246,662,271,615,292,579,304"/>
+</map>

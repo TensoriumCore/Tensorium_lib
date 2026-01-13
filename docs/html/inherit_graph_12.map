@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classtensorium_1_1_matrix.html" title=" " alt="" coords="5,5,136,46"/>
+<area shape="rect" id="Node000001" href="$classtensorium_1_1_matrix_kernel.html" title="MatrixKernel provides specialized SIMD&#45;accelerated matrix multiplication routines for statically&#45;size..." alt="" coords="184,13,376,38"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="151,23,186,25,181,26,151,28"/>
+</map>

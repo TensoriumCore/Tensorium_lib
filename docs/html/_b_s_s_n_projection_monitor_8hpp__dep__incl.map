@@ -1,0 +1,5 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNProjectionMonitor.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNProjectionMonitor.hpp">
+<area shape="rect" id="Node000001" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,5,259,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="38,124,226,195"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,89,134,125,130,123,130,93"/>
+</map>

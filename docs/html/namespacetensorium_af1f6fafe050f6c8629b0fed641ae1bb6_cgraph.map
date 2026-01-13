@@ -1,0 +1,11 @@
+<map id="tensorium::transpose_mat" name="tensorium::transpose_mat">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,178,38"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a0094ce83c95bf1c861cda44031884bb2" title="Returns the transpose &#160;of the matrix (column&#45;major layout)." alt="" coords="226,5,356,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,23,213,25,207,26,178,28"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title="Construct a matrix of size r × c, initialized with zeros." alt="" coords="404,5,534,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="357,23,391,26,385,26,357,28"/>
+<area shape="rect" id="Node000004" href="$_c_p_u__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb" title=" " alt="" coords="582,13,758,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="535,23,569,26,564,26,535,28"/>
+<area shape="rect" id="Node000005" href="$_c_p_u__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f" title=" " alt="" coords="806,13,912,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="758,23,792,26,787,26,758,28"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="tensorium_RG::partial_vector" name="tensorium_RG::partial_vector">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,154,103"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1detail.html#a2188239e2c37f90fd91ab9566bfb0dfc" title=" " alt="" coords="202,5,346,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,60,190,50,186,52,152,65"/>
+<area shape="rect" id="Node000003" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="394,70,432,96"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="154,80,380,81,377,85,154,86"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66" title=" " alt="" coords="202,120,346,161"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="151,101,191,115,185,115,150,107"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="325,44,383,69,377,70,325,49"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="324,117,377,97,383,96,326,122"/>
+</map>

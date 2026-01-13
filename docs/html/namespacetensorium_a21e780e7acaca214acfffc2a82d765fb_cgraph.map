@@ -1,0 +1,11 @@
+<map id="tensorium::operator*" name="tensorium::operator*">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,144,38"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a156bdb5a8eae1c4e737f17cf1c0b7eea" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="192,5,322,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,23,179,25,173,26,144,28"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title="Construct a matrix of size r × c, initialized with zeros." alt="" coords="370,5,500,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="323,23,357,26,351,26,323,28"/>
+<area shape="rect" id="Node000004" href="$_c_p_u__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb" title=" " alt="" coords="548,13,724,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="501,23,535,26,530,26,501,28"/>
+<area shape="rect" id="Node000005" href="$_c_p_u__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f" title=" " alt="" coords="772,13,878,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="724,23,758,26,753,26,724,28"/>
+</map>

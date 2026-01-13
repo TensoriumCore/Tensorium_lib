@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['reference_0',['reference',['../struct_aligned_allocator.html#aaf24962eb6a94955eeda5e3e5168a193',1,'AlignedAllocator']]],
+  ['reg_1',['reg',['../classtensorium_1_1_gemm_kernel_big.html#a019846c9aae57e951c7cdbcb40821017',1,'tensorium::GemmKernelBig::reg'],['../classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f',1,'tensorium::MatrixKernel::reg'],['../classtensorium_1_1_derivate.html#a00934342d412370825f81b94e8c76226',1,'tensorium::Derivate::reg'],['../classtensorium_1_1_derivate.html#a00934342d412370825f81b94e8c76226',1,'tensorium::Derivate::reg'],['../classtensorium_1_1_derivate_n_d.html#ad892560aa22fa18634ac32dc5964e117',1,'tensorium::DerivateND::reg'],['../classtensorium_1_1_derivate_n_d.html#ad892560aa22fa18634ac32dc5964e117',1,'tensorium::DerivateND::reg'],['../classtensorium_1_1_matrix.html#ab3e80cfb6ead0531ed576bd2f05b31a5',1,'tensorium::Matrix::reg'],['../classtensorium_1_1_tensor.html#a7e40150d6415df921cca8ddd683eb4d0',1,'tensorium::Tensor::reg'],['../classtensorium_1_1_vector.html#a73d995ed03e33d90d5d9c4be9ba17b5d',1,'tensorium::Vector::reg']]],
+  ['regt_2',['regT',['../classtensorium_1_1solver_1_1_gauss.html#a54d8aaf2aff37e3cf5c6042a6caf7866',1,'tensorium::solver::Gauss']]]
+];

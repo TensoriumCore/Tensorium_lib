@@ -1,0 +1,5 @@
+<map id="tensorium_RG::bssn::BSSNRKStepper::log_gauge_diagnostics" name="tensorium_RG::bssn::BSSNRKStepper::log_gauge_diagnostics">
+<area shape="rect" id="Node000001" title="Emit one&#45;line diagnostics on the gauge sector for early steps." alt="" coords="217,5,372,61"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,13,169,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,33,169,36,169,31,204,33"/>
+</map>

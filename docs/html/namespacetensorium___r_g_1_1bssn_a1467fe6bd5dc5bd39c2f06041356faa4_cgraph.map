@@ -1,0 +1,25 @@
+<map id="tensorium_RG::bssn::compute_invariant_stats" name="tensorium_RG::bssn::compute_invariant_stats">
+<area shape="rect" id="Node000001" title="Measure det, trace, metric&#45;identity, Gamma&#45;constraint, and minimum&#45; &#160;over the grid." alt="" coords="5,102,177,142"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a2de8a28d1ac63e0734e1622fd2cef468" title=" " alt="" coords="246,7,388,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,99,224,58,245,53,240,55,226,63,136,104"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="225,72,409,113"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,109,212,106,207,108,177,114"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="232,137,402,163"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="177,130,218,137,213,138,177,135"/>
+<area shape="rect" id="Node000011" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="298,187,336,212"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="141,141,226,173,285,192,280,192,224,178,140,146"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="457,65,604,121"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="409,90,444,92,439,93,410,95"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="652,5,802,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="596,62,651,40,666,37,671,36,653,45,597,67"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="652,55,802,80"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="604,81,639,79,634,80,605,86"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="652,104,802,130"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="605,99,640,106,634,106,605,105"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="654,154,800,194"/>
+<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="600,119,665,148,659,147,599,124"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="850,55,1000,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="782,29,858,50,853,50,782,34"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="802,65,837,67,832,68,802,70"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="781,101,853,85,858,84,782,106"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="tensorium_RG::BoundaryPeriodic::apply" name="tensorium_RG::BoundaryPeriodic::apply">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,221,64"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a8e554fdef3559c64d8401e7026f717ad" title=" " alt="" coords="269,23,406,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,41,255,43,250,44,221,46"/>
+<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="454,5,637,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,32,436,32,441,31,407,38"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="455,55,636,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="407,49,442,55,437,55,406,54"/>
+</map>

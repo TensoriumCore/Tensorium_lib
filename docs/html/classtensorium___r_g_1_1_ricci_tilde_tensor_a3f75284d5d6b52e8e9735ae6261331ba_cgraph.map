@@ -1,0 +1,14 @@
+<map id="tensorium_RG::RicciTildeTensor::compute_dGamma_term" name="tensorium_RG::RicciTildeTensor::compute_dGamma_term">
+<area shape="rect" id="Node000001" title="Compute &#160;." alt="" coords="5,149,217,190"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a7a888ebe96778265c59526da5e73cb57" title=" " alt="" coords="265,92,413,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,146,252,134,247,135,195,151"/>
+<area shape="rect" id="Node000004" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="653,100,692,125"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="210,188,297,199,398,204,450,202,503,196,555,186,604,170,630,155,650,138,655,136,633,159,606,175,556,191,504,201,451,207,398,209,297,205,210,193"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1detail.html#a2188239e2c37f90fd91ab9566bfb0dfc" title=" " alt="" coords="461,5,605,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="386,89,469,54,474,52,388,94"/>
+<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="413,107,605,106,640,110,635,110,605,111,414,112"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66" title=" " alt="" coords="461,120,605,161"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="413,120,449,128,443,128,413,126"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="576,44,607,62,645,90,639,89,604,67,575,49"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="605,123,636,119,641,119,606,128"/>
+</map>

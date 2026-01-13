@@ -1,0 +1,17 @@
+var searchData=
+[
+  ['features_0',['Features',['../dir_b1907119a28684567a00a3054b278180.html#autotoc_md13',1,'Features'],['../dir_6ec45ecc21b5f4caf93e55bbe92e9dfe.html#autotoc_md24',1,'Features'],['../dir_e2142b29a81c61ca614b93a0d2622bbe.html#autotoc_md51',1,'Features']]],
+  ['field3d_1',['Field3D',['../structtensorium___r_g_1_1_field3_d.html',1,'tensorium_RG']]],
+  ['fill_2',['fill',['../classtensorium_1_1_tensor.html#ac8095607d268d35f800adf0fe804a97e',1,'tensorium::Tensor::fill()'],['../classtensorium___r_g_1_1_christoffel_sym.html#adee93825abb26759999a9533517e9608',1,'tensorium_RG::ChristoffelSym::fill()']]],
+  ['fill_5fatilde_5fbowen_5fyork_5fbinary_3',['fill_Atilde_bowen_york_binary',['../namespacetensorium___r_g_1_1init.html#a3f926ef4d9566bcbb27867f057568695',1,'tensorium_RG::init']]],
+  ['finalize_4',['finalize',['../namespacetensorium_1_1mpi.html#a3a653d9d4805bc5d74a7edc29e369934',1,'tensorium::mpi']]],
+  ['flatten_5findex_5',['flatten_index',['../classtensorium_1_1_derivate_n_d.html#a9ff21e4e47c8f6b7d0248ed94036193c',1,'tensorium::DerivateND::flatten_index()'],['../classtensorium_1_1_tensor.html#a8079114e5205c25b6119e080d9bdbfd0',1,'tensorium::Tensor::flatten_index()']]],
+  ['for_6',['for',['../classtensorium_1_1_derivate_n_d.html#aeb04b3fa2d46a8445870a4eb597dc518',1,'tensorium::DerivateND::for(int i=Rank - 2;i &gt;=0;--i) strides[i]'],['../classtensorium_1_1_derivate_n_d.html#ae550f9a032c18c24ed9e5e0bcf418e8a',1,'tensorium::DerivateND::for(size_t flat=0;flat&lt; total;flat+=simd_width)'],['../classtensorium_1_1_derivate_n_d.html#aeb04b3fa2d46a8445870a4eb597dc518',1,'tensorium::DerivateND::for(int i=Rank - 2;i &gt;=0;--i) strides[i]'],['../classtensorium_1_1_derivate_n_d.html#a54da298a2adb7f27d5f54e358faa1638',1,'tensorium::DerivateND::for(size_t flat=0;flat&lt; total;flat+=W)'],['../classtensorium_1_1solver_1_1_gauss.html#a2e9b0155c1b43b9678959ddc3562335e',1,'tensorium::solver::Gauss::for(size_t i=0;i&lt; n;++i)'],['../classtensorium_1_1solver_1_1_gauss.html#ae0fc16a53dd96bce9685ea3eafbdc2f8',1,'tensorium::solver::Gauss::for(size_t ii=n;ii-- &gt; 0;)'],['../classtensorium_1_1_tensor.html#aef3e50dacc7cb77ef7dd38229de6eb88',1,'tensorium::Tensor::for(;i+W - 1&lt; Rank;i+=W)'],['../classtensorium_1_1_tensor.html#aa5b60ec73741b4a2d320c3cc91b50bfb',1,'tensorium::Tensor::for(;i&lt; Rank;++i) acc+'],['../classtensorium_1_1_vector.html#ab12649e445262d8d591c7a439fa6185c',1,'tensorium::Vector::for(;i+7&lt; n;i+=simd_width)'],['../classtensorium_1_1_vector.html#a8bb19e959dd845f0fc070bf107046658',1,'tensorium::Vector::for(;i&lt; n;++i) result.data[i]']]],
+  ['for_20special_20targets_20and_20options_7',['Build C++ only for special targets and options',['../index.html#autotoc_md7',1,'']]],
+  ['forward_8',['forward',['../classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2',1,'tensorium::SpectralFFT']]],
+  ['forward_5f3d_9',['forward_3D',['../classtensorium_1_1_spectral_f_f_t.html#a03191127cc8ef29a212c9bceaa6f10ef',1,'tensorium::SpectralFFT']]],
+  ['forwardfft_10',['forwardFFT',['../namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f',1,'tensorium']]],
+  ['from_20kerr_20metric_11',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../dir_e2142b29a81c61ca614b93a0d2622bbe.html#autotoc_md54',1,'']]],
+  ['functional_2ehpp_12',['Functional.hpp',['../_functional_8hpp.html',1,'']]],
+  ['functionnalrg_2ehpp_13',['FunctionnalRG.hpp',['../_functionnal_r_g_8hpp.html',1,'']]]
+];
