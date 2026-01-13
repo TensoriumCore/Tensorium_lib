@@ -147,78 +147,87 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aa7005abefc0003c31d2448b6d21bc98d" id="r_aa7005abefc0003c31d2448b6d21bc98d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:aa7005abefc0003c31d2448b6d21bc98d template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa7005abefc0003c31d2448b6d21bc98d">compute_constraint_monitor</a> (const BSSNGridSoA&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H, size_t padding=4)</td></tr>
+<tr class="memitem:aa7005abefc0003c31d2448b6d21bc98d template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa7005abefc0003c31d2448b6d21bc98d">compute_constraint_monitor</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H, size_t padding=4)</td></tr>
 <tr class="memdesc:aa7005abefc0003c31d2448b6d21bc98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations.  <br /></td></tr>
 <tr class="memitem:a744b05b385567771e2d4dcf431fc386a" id="r_a744b05b385567771e2d4dcf431fc386a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a744b05b385567771e2d4dcf431fc386a">print_constraint_monitor</a> (const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a> &amp;stats, const char *label=&quot;constraints&quot;)</td></tr>
 <tr class="memdesc:a744b05b385567771e2d4dcf431fc386a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience printf helper for debugging constraint convergence.  <br /></td></tr>
 <tr class="memitem:ab20751cec48f34c566478200a41a74ae" id="r_ab20751cec48f34c566478200a41a74ae"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ab20751cec48f34c566478200a41a74ae template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#ab20751cec48f34c566478200a41a74ae">compute_bssn_constraints</a> (BSSNGridSoA&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H_out, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M_out[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C_out[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
+<tr class="memitem:ab20751cec48f34c566478200a41a74ae template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#ab20751cec48f34c566478200a41a74ae">compute_bssn_constraints</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H_out, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M_out[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C_out[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
 <tr class="memdesc:ab20751cec48f34c566478200a41a74ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the Hamiltonian \(H\), momentum \(M_i\), and Gamma \(C_i\) constraint fields.  <br /></td></tr>
-<tr class="memitem:a36cfa7304e618538fab81b79745c3fe7" id="r_a36cfa7304e618538fab81b79745c3fe7"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#a36cfa7304e618538fab81b79745c3fe7">print_constraint_norms</a> (BSSNGridSoA&lt; double &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; &amp;H, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; M[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; C[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
+<tr class="memitem:a36cfa7304e618538fab81b79745c3fe7" id="r_a36cfa7304e618538fab81b79745c3fe7"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#a36cfa7304e618538fab81b79745c3fe7">print_constraint_norms</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; double &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; &amp;H, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; M[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; C[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
 <tr class="memdesc:a36cfa7304e618538fab81b79745c3fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience logger that prints Linf/L2 norms of \(H\), \(|\vec{M}|\), and \(|\vec{C}|\) to stdout.  <br /></td></tr>
 <tr class="memitem:a8856f16ffa277149897f940d6dd9a184" id="r_a8856f16ffa277149897f940d6dd9a184"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower</a> (size_t lower, size_t guard, size_t upper)</td></tr>
 <tr class="memitem:ab3f0032f87d8ca3cec1e2110b8189831" id="r_ab3f0032f87d8ca3cec1e2110b8189831"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper</a> (size_t upper, size_t guard, size_t lower)</td></tr>
 <tr class="memitem:a50230b731fbf44e0ce3f7d8fa0a66146" id="r_a50230b731fbf44e0ce3f7d8fa0a66146"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a50230b731fbf44e0ce3f7d8fa0a66146 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a50230b731fbf44e0ce3f7d8fa0a66146">compute_rhs_A_tilde</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[6], size_t padding=4)</td></tr>
+<tr class="memitem:a50230b731fbf44e0ce3f7d8fa0a66146 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a50230b731fbf44e0ce3f7d8fa0a66146">compute_rhs_A_tilde</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[6], size_t padding=4)</td></tr>
 <tr class="memdesc:a50230b731fbf44e0ce3f7d8fa0a66146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\tilde{A}_{ij}\) for each symmetric component.  <br /></td></tr>
 <tr class="memitem:a63018070ef162fcb1bc235bd8e212f8f" id="r_a63018070ef162fcb1bc235bd8e212f8f"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a63018070ef162fcb1bc235bd8e212f8f template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a63018070ef162fcb1bc235bd8e212f8f">compute_rhs_chi</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_chi, size_t padding=4)</td></tr>
+<tr class="memitem:a63018070ef162fcb1bc235bd8e212f8f template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a63018070ef162fcb1bc235bd8e212f8f">compute_rhs_chi</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_chi, size_t padding=4)</td></tr>
 <tr class="memdesc:a63018070ef162fcb1bc235bd8e212f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the RHS buffer for \(\chi\) inside the padded interior region.  <br /></td></tr>
 <tr class="memitem:adf6c30f846c2c8c8808a6ee13f84106a" id="r_adf6c30f846c2c8c8808a6ee13f84106a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:adf6c30f846c2c8c8808a6ee13f84106a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#adf6c30f846c2c8c8808a6ee13f84106a">compute_rhs_Gamma</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], size_t padding=4)</td></tr>
+<tr class="memitem:adf6c30f846c2c8c8808a6ee13f84106a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#adf6c30f846c2c8c8808a6ee13f84106a">compute_rhs_Gamma</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], size_t padding=4)</td></tr>
 <tr class="memdesc:adf6c30f846c2c8c8808a6ee13f84106a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\tilde{\Gamma}^i\) inside the interior region.  <br /></td></tr>
 <tr class="memitem:a2021b3f9dc20d94b54647cfa72a5b389" id="r_a2021b3f9dc20d94b54647cfa72a5b389"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a2021b3f9dc20d94b54647cfa72a5b389 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2021b3f9dc20d94b54647cfa72a5b389">compute_rhs_gamma_tilde</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[6], size_t padding=4)</td></tr>
+<tr class="memitem:a2021b3f9dc20d94b54647cfa72a5b389 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2021b3f9dc20d94b54647cfa72a5b389">compute_rhs_gamma_tilde</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[6], size_t padding=4)</td></tr>
 <tr class="memdesc:a2021b3f9dc20d94b54647cfa72a5b389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill \(\partial_t\tilde{\gamma}_{ij}\) for all six symmetric components.  <br /></td></tr>
 <tr class="memitem:a0e98ef8bc1b9faade555cf639acbf8f0" id="r_a0e98ef8bc1b9faade555cf639acbf8f0"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a0e98ef8bc1b9faade555cf639acbf8f0 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0e98ef8bc1b9faade555cf639acbf8f0">compute_rhs_alpha</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_alpha, size_t padding=4)</td></tr>
+<tr class="memitem:a0e98ef8bc1b9faade555cf639acbf8f0 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0e98ef8bc1b9faade555cf639acbf8f0">compute_rhs_alpha</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_alpha, size_t padding=4)</td></tr>
 <tr class="memdesc:a0e98ef8bc1b9faade555cf639acbf8f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build \(\partial_t\alpha\) including advection and KO6 dissipation.  <br /></td></tr>
 <tr class="memitem:a6c35d2ed248f9e9d1b52788040e1023b" id="r_a6c35d2ed248f9e9d1b52788040e1023b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a6c35d2ed248f9e9d1b52788040e1023b template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6c35d2ed248f9e9d1b52788040e1023b">compute_rhs_beta</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
+<tr class="memitem:a6c35d2ed248f9e9d1b52788040e1023b template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6c35d2ed248f9e9d1b52788040e1023b">compute_rhs_beta</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
 <tr class="memdesc:a6c35d2ed248f9e9d1b52788040e1023b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\beta^i = \beta^k\partial_k\beta^i + (3/4)B^i\) plus dissipation.  <br /></td></tr>
 <tr class="memitem:a75dbad82545e00c5b727125fa275a730" id="r_a75dbad82545e00c5b727125fa275a730"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a75dbad82545e00c5b727125fa275a730 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a75dbad82545e00c5b727125fa275a730">compute_rhs_B</a> (const BSSNGridSoA&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_Gamma[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_B[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
+<tr class="memitem:a75dbad82545e00c5b727125fa275a730 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a75dbad82545e00c5b727125fa275a730">compute_rhs_B</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_Gamma[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_B[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
 <tr class="memdesc:a75dbad82545e00c5b727125fa275a730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t B^i\) given the previously computed \(\partial_t\tilde{\Gamma}^i\).  <br /></td></tr>
 <tr class="memitem:a26e0e7a80891485f5ea3a9e1764d519e" id="r_a26e0e7a80891485f5ea3a9e1764d519e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a26e0e7a80891485f5ea3a9e1764d519e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a26e0e7a80891485f5ea3a9e1764d519e">compute_rhs_K</a> (const BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_K, size_t padding=4)</td></tr>
+<tr class="memitem:a26e0e7a80891485f5ea3a9e1764d519e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a26e0e7a80891485f5ea3a9e1764d519e">compute_rhs_K</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_K, size_t padding=4)</td></tr>
 <tr class="memdesc:a26e0e7a80891485f5ea3a9e1764d519e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute \(\partial_t K\) throughout the interior region.  <br /></td></tr>
 <tr class="memitem:a551a841476db3f7665a53043c46349c2" id="r_a551a841476db3f7665a53043c46349c2"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a551a841476db3f7665a53043c46349c2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a551a841476db3f7665a53043c46349c2">compute_tildeGamma_contracted</a> (BSSNGridSoA&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:a551a841476db3f7665a53043c46349c2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a551a841476db3f7665a53043c46349c2">compute_tildeGamma_contracted</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memdesc:a551a841476db3f7665a53043c46349c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the evolved \(\tilde{\Gamma}^i\) from the metric inverse divergence.  <br /></td></tr>
+<tr class="memitem:ac9153162b0e444ecc58bb99e8fe08dbd" id="r_ac9153162b0e444ecc58bb99e8fe08dbd"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ac9153162b0e444ecc58bb99e8fe08dbd template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac9153162b0e444ecc58bb99e8fe08dbd">compute_tildeGamma_full</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Gamma27)</td></tr>
+<tr class="memdesc:ac9153162b0e444ecc58bb99e8fe08dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the full \(\tilde{\Gamma}^i_{\ jk}\) tensor at every interior grid point.  <br /></td></tr>
+<tr class="memitem:a8b465d86ebde16dad2863af429b62eb5" id="r_a8b465d86ebde16dad2863af429b62eb5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a8b465d86ebde16dad2863af429b62eb5 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8b465d86ebde16dad2863af429b62eb5">grad_phi_from_chi</a> (const T dchi[3], T chi, T dphi[3]) noexcept</td></tr>
+<tr class="memdesc:a8b465d86ebde16dad2863af429b62eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert \(\partial_i\chi\) to \(\partial_i\phi\) using \(\phi=-(1/4)\ln\chi\).  <br /></td></tr>
+<tr class="memitem:af8dad2ef3bd2a643716e205f77217f16" id="r_af8dad2ef3bd2a643716e205f77217f16"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:af8dad2ef3bd2a643716e205f77217f16 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af8dad2ef3bd2a643716e205f77217f16">grad_6phi_from_chi</a> (const T dchi[3], T chi, T d6phi[3]) noexcept</td></tr>
+<tr class="memdesc:af8dad2ef3bd2a643716e205f77217f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute \(\partial_i(6\phi) = -\tfrac{3}{2}\chi^{-1}\partial_i\chi\) for the momentum constraint.  <br /></td></tr>
 <tr class="memitem:ac0ff801adfd5fd1985ae3ce40263bf3c" id="r_ac0ff801adfd5fd1985ae3ce40263bf3c"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ac0ff801adfd5fd1985ae3ce40263bf3c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence</a> (const BSSNGridSoA&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, T out[3])</td></tr>
+<tr class="memitem:ac0ff801adfd5fd1985ae3ce40263bf3c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, T out[3])</td></tr>
 <tr class="memdesc:ac0ff801adfd5fd1985ae3ce40263bf3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate \(\partial_j\tilde{\gamma}^{ij}\) using the 4th-order derivative operators.  <br /></td></tr>
 <tr class="memitem:a6f30410d0e983cf74dc0855581c2c39e" id="r_a6f30410d0e983cf74dc0855581c2c39e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a6f30410d0e983cf74dc0855581c2c39e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6f30410d0e983cf74dc0855581c2c39e">compute_contracted_gamma_from_metric</a> (BSSNGridSoA&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, T out[3])</td></tr>
+<tr class="memitem:a6f30410d0e983cf74dc0855581c2c39e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6f30410d0e983cf74dc0855581c2c39e">compute_contracted_gamma_from_metric</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, T out[3])</td></tr>
 <tr class="memdesc:a6f30410d0e983cf74dc0855581c2c39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience wrapper that produces \(\tilde{\Gamma}^i\) from the metric and stores the negative divergence as required by the <a class="el" href="classtensorium___r_g_1_1_b_s_s_n.html" title="Driver class to initialize and store BSSN variables from an input spacetime metric.">BSSN</a> definition.  <br /></td></tr>
 <tr class="memitem:ab4b67c92f3686a50fb7bb562d87656c5" id="r_ab4b67c92f3686a50fb7bb562d87656c5"><td class="memItemLeft">double &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ab4b67c92f3686a50fb7bb562d87656c5">chi_tolerance_override_storage</a> ()</td></tr>
 <tr class="memitem:a43ad06f60a47d04124d19ea98d45195d" id="r_a43ad06f60a47d04124d19ea98d45195d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a43ad06f60a47d04124d19ea98d45195d">set_chi_tolerance_override</a> (double tol)</td></tr>
 <tr class="memitem:ac4afae162c75d02e5d6d90b5ba455d40" id="r_ac4afae162c75d02e5d6d90b5ba455d40"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ac4afae162c75d02e5d6d90b5ba455d40">chi_tolerance_override</a> ()</td></tr>
 <tr class="memitem:a1467fe6bd5dc5bd39c2f06041356faa4" id="r_a1467fe6bd5dc5bd39c2f06041356faa4"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a1467fe6bd5dc5bd39c2f06041356faa4 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html">InvariantStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1467fe6bd5dc5bd39c2f06041356faa4">compute_invariant_stats</a> (const BSSNGridSoA&lt; T &gt; &amp;G, size_t padding=4, double r_min=0.0, double r_max=std::numeric_limits&lt; double &gt;::max(), double xc=0.0, double yc=0.0, double zc=0.0)</td></tr>
+<tr class="memitem:a1467fe6bd5dc5bd39c2f06041356faa4 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html">InvariantStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1467fe6bd5dc5bd39c2f06041356faa4">compute_invariant_stats</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t padding=4, double r_min=0.0, double r_max=std::numeric_limits&lt; double &gt;::max(), double xc=0.0, double yc=0.0, double zc=0.0)</td></tr>
 <tr class="memdesc:a1467fe6bd5dc5bd39c2f06041356faa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure det, trace, metric-identity, Gamma-constraint, and minimum- \(\chi\) over the grid.  <br /></td></tr>
 <tr class="memitem:ac93e4efe18487bdcf23dc50d43a86c9a" id="r_ac93e4efe18487bdcf23dc50d43a86c9a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ac93e4efe18487bdcf23dc50d43a86c9a template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html">InvariantTolerances</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac93e4efe18487bdcf23dc50d43a86c9a">compute_invariant_tolerances</a> (const BSSNGridSoA&lt; T &gt; &amp;G, double scheme_order=4.0, double safety_factor=4.0)</td></tr>
+<tr class="memitem:ac93e4efe18487bdcf23dc50d43a86c9a template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html">InvariantTolerances</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac93e4efe18487bdcf23dc50d43a86c9a">compute_invariant_tolerances</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, double scheme_order=4.0, double safety_factor=4.0)</td></tr>
 <tr class="memdesc:ac93e4efe18487bdcf23dc50d43a86c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build tolerances that reflect the expected truncation error of the chosen stencil order.  <br /></td></tr>
 <tr class="memitem:a882854a29de4e6552fccc878e016fe8d" id="r_a882854a29de4e6552fccc878e016fe8d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a882854a29de4e6552fccc878e016fe8d template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants</a> (const BSSNGridSoA&lt; T &gt; &amp;G, const char *stage, size_t padding, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html">InvariantTolerances</a> &amp;tol, bool throw_on_violation=true)</td></tr>
+<tr class="memitem:a882854a29de4e6552fccc878e016fe8d template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const char *stage, size_t padding, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html">InvariantTolerances</a> &amp;tol, bool throw_on_violation=true)</td></tr>
 <tr class="memdesc:a882854a29de4e6552fccc878e016fe8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare measured invariants against tolerances and throw/log when drifts exceed bounds.  <br /></td></tr>
 <tr class="memitem:ad94d47dae5726904e3444218b3ff8eef" id="r_ad94d47dae5726904e3444218b3ff8eef"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ad94d47dae5726904e3444218b3ff8eef template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad94d47dae5726904e3444218b3ff8eef">assert_invariants</a> (const BSSNGridSoA&lt; T &gt; &amp;G, const char *stage, size_t padding=4, bool throw_on_violation=true)</td></tr>
+<tr class="memitem:ad94d47dae5726904e3444218b3ff8eef template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad94d47dae5726904e3444218b3ff8eef">assert_invariants</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const char *stage, size_t padding=4, bool throw_on_violation=true)</td></tr>
 <tr class="memitem:a54708e29d39d8a410304c794b3bab92e" id="r_a54708e29d39d8a410304c794b3bab92e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a54708e29d39d8a410304c794b3bab92e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a54708e29d39d8a410304c794b3bab92e">project_bssn_state</a> (BSSNGridSoA&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_projection_config.html">ProjectionConfig</a> &amp;cfg={})</td></tr>
+<tr class="memitem:a54708e29d39d8a410304c794b3bab92e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a54708e29d39d8a410304c794b3bab92e">project_bssn_state</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_projection_config.html">ProjectionConfig</a> &amp;cfg={})</td></tr>
 <tr class="memdesc:a54708e29d39d8a410304c794b3bab92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply determinant renormalization, \(\tilde{A}\) trace-free projection, and \(\tilde{\Gamma}^i\) resynchronization.  <br /></td></tr>
 <tr class="memitem:aacf72b389561019db6fa8c990db283b2" id="r_aacf72b389561019db6fa8c990db283b2"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:aacf72b389561019db6fa8c990db283b2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update</a> (BSSNGridSoA&lt; T &gt; &amp;G, size_t padding=4)</td></tr>
+<tr class="memitem:aacf72b389561019db6fa8c990db283b2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t padding=4)</td></tr>
 <tr class="memdesc:aacf72b389561019db6fa8c990db283b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience wrapper that enforces all invariants after every RK stage.  <br /></td></tr>
 <tr class="memitem:a84e52bf3ece58a774be1567a5e14437b" id="r_a84e52bf3ece58a774be1567a5e14437b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a84e52bf3ece58a774be1567a5e14437b template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#a84e52bf3ece58a774be1567a5e14437b">project_and_monitor</a> (BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C[3], double r_min, double r_max, double xc, double yc, double zc, size_t padding=4)</td></tr>
+<tr class="memitem:a84e52bf3ece58a774be1567a5e14437b template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a>&#160;</td><td class="memItemRight"><a class="el" href="#a84e52bf3ece58a774be1567a5e14437b">project_and_monitor</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C[3], double r_min, double r_max, double xc, double yc, double zc, size_t padding=4)</td></tr>
 <tr class="memdesc:a84e52bf3ece58a774be1567a5e14437b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Project the <a class="el" href="classtensorium___r_g_1_1_b_s_s_n.html" title="Driver class to initialize and store BSSN variables from an input spacetime metric.">BSSN</a> state and immediately recompute Hamiltonian, momentum, and Gamma constraints.  <br /></td></tr>
 <tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8" id="r_a00ddfb96cc3a527ad849dfc490893be8"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a00ddfb96cc3a527ad849dfc490893be8">compute_ricci_bssn</a> (BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, bool throw_on_violation=true)</td></tr>
+<tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a00ddfb96cc3a527ad849dfc490893be8">compute_ricci_bssn</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, bool throw_on_violation=true)</td></tr>
 <tr class="memdesc:a00ddfb96cc3a527ad849dfc490893be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate the Ricci tensor cache \(R_{ij}\) throughout the interior grid.  <br /></td></tr>
 <tr class="memitem:afc728a4a48cae76f72521a1dfdcdee11" id="r_afc728a4a48cae76f72521a1dfdcdee11"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
-<tr class="memitem:afc728a4a48cae76f72521a1dfdcdee11 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afc728a4a48cae76f72521a1dfdcdee11">apply_halos_grid</a> (BSSNGridSoA&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:afc728a4a48cae76f72521a1dfdcdee11 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afc728a4a48cae76f72521a1dfdcdee11">apply_halos_grid</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memdesc:afc728a4a48cae76f72521a1dfdcdee11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the boundary functor to every scalar, vector, and tensor field in the grid.  <br /></td></tr>
 <tr class="memitem:a4921d2e8780b77bcb383f8e0e79a9daa" id="r_a4921d2e8780b77bcb383f8e0e79a9daa"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a4921d2e8780b77bcb383f8e0e79a9daa template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_a_d_m_variables.html">ADMVariables</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a4921d2e8780b77bcb383f8e0e79a9daa">split_3p1</a> (const <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; T &gt; &amp;<a class="el" href="_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X</a>, const <a class="el" href="classtensorium___r_g_1_1_metric.html">Metric</a>&lt; T &gt; &amp;metric)</td></tr>
@@ -227,7 +236,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a61102f5f78dc88bbb376ddf84e23a043 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_b_s_s_n_variables.html">BSSNVariables</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a61102f5f78dc88bbb376ddf84e23a043">adm_to_bssn</a> (const <a class="el" href="classtensorium_1_1_tensor.html">tensorium::Tensor</a>&lt; T, 2 &gt; &amp;gamma_ij)</td></tr>
 <tr class="memdesc:a61102f5f78dc88bbb376ddf84e23a043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert ADM spatial metric \(\gamma_{ij}\) into conformal variables \(\chi,\tilde{\gamma}_{ij}\).  <br /></td></tr>
 <tr class="memitem:a437e52f04dbbda7748f36804c79c3705" id="r_a437e52f04dbbda7748f36804c79c3705"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a437e52f04dbbda7748f36804c79c3705 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a437e52f04dbbda7748f36804c79c3705">compute_dt_cfl</a> (const BSSNGridSoA&lt; T &gt; &amp;grid, T cfl_factor, size_t padding=4)</td></tr>
+<tr class="memitem:a437e52f04dbbda7748f36804c79c3705 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a437e52f04dbbda7748f36804c79c3705">compute_dt_cfl</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, T cfl_factor, size_t padding=4)</td></tr>
 <tr class="memdesc:a437e52f04dbbda7748f36804c79c3705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a timestep satisfying \(dt = \,\text{CFL}\times \min(\Delta x)/(|\vec{\beta}|+\alpha_{max})\).  <br /></td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
@@ -274,7 +283,7 @@ template&lt;typename Boundary, typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::apply_halos_grid </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -300,6 +309,8 @@ template&lt;typename Boundary, typename T&gt; </div>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>Guard updates must precede any derivative or KO6 evaluation because the latter access up to three off-domain samples. Refer to <a class="el" href="group___b_s_s_n___grid.html" title="BSSN Grid Module">BSSN Grid Module</a> for halo width requirements. </dd></dl>
 
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aee7b2bb7fdb637bf108789c95c6bbab7">tensorium_RG::BSSNGridSoA&lt; T &gt;::B</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aeb474ecea72e4b530b42ec168ca4096e">tensorium_RG::BSSNGridSoA&lt; T &gt;::dims</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a94c1d4cbb50bb5402929704146651f37">tensorium_RG::BSSNGridSoA&lt; T &gt;::Gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, and <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>, and <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::step()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -323,7 +334,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::assert_invariants </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -370,7 +381,7 @@ template&lt;typename T&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a882854a29de4e6552fccc878e016fe8d_cgraph.svg" width="1195" height="218"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a882854a29de4e6552fccc878e016fe8d_cgraph.svg" width="1202" height="347"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -394,7 +405,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::assert_invariants </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -423,7 +434,7 @@ template&lt;typename T&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ad94d47dae5726904e3444218b3ff8eef_cgraph.svg" width="1384" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ad94d47dae5726904e3444218b3ff8eef_cgraph.svg" width="1391" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -595,7 +606,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_bssn_constraints </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -661,17 +672,17 @@ template&lt;typename T&gt; </div>
 </dl>
 <ul>
 <li>Hamiltonian block maps <span class="tt">gI_*</span> multiplications to \(R=\gamma^{ij}R_{ij}\).</li>
-<li>Momentum block forms \(M_i = \tilde{\gamma}^{jk}\tilde{D}_j\tilde{A}_{ki} + 6\tilde{A}_{ij}\partial^j\phi - \tfrac{2}{3}\partial_i K\) using the helper <span class="tt">grad_6phi_from_chi</span>.</li>
+<li>Momentum block forms \(M_i = \tilde{\gamma}^{jk}\tilde{D}_j\tilde{A}_{ki} + 6\tilde{A}_{ij}\partial^j\phi - \tfrac{2}{3}\partial_i K\) using the helper <span class="tt"><a class="el" href="#af8dad2ef3bd2a643716e205f77217f16" title="Compute  for the momentum constraint.">grad_6phi_from_chi</a></span>.</li>
 <li>Gamma constraint reuses <span class="tt"><a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate  using the 4th-order derivative operators.">metric_inverse_divergence</a></span> to compare the evolved \(\tilde{\Gamma}^i\) against \(-\partial_j\tilde{\gamma}^{ij}\). </li>
 </ul>
 
-<p class="reference">References <a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355">tensorium_RG::BSSNGridSoA&lt; T &gt;::coords()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a94c1d4cbb50bb5402929704146651f37">tensorium_RG::BSSNGridSoA&lt; T &gt;::Gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="#af8dad2ef3bd2a643716e205f77217f16">grad_6phi_from_chi()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="#a84e52bf3ece58a774be1567a5e14437b">project_and_monitor()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>, and <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::step()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ab20751cec48f34c566478200a41a74ae_cgraph.svg" width="1468" height="456"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ab20751cec48f34c566478200a41a74ae_cgraph.svg" width="1475" height="679"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -695,7 +706,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a> tensorium_RG::bssn::compute_constraint_monitor </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -723,13 +734,13 @@ template&lt;typename T&gt; </div>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1constraint__monitor__detail.html#a6f95a20ab5b32033e58aebfa0f02d10d">tensorium_RG::bssn::constraint_monitor_detail::det3()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77">tensorium_RG::Field3D&lt; T &gt;::idx()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aa3994a408ee224ba6bfc80950a13593d">tensorium_RG::bssn::ConstraintMonitorStats::l2_H</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aaead7bbabf87fb8aef07d2aa02a0a177">tensorium_RG::bssn::ConstraintMonitorStats::max_det_drift</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae13c15eabbf1a679170ea9d711841dfc">tensorium_RG::bssn::ConstraintMonitorStats::max_H</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae874b8370bdd0ddf69a01e5858c7340c">tensorium_RG::bssn::ConstraintMonitorStats::max_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#acfd54236fb72baf9f1f0137dbe94a56c">tensorium_RG::bssn::ConstraintMonitorStats::samples</a>, and <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1constraint__monitor__detail.html#a6f95a20ab5b32033e58aebfa0f02d10d">tensorium_RG::bssn::constraint_monitor_detail::det3()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77">tensorium_RG::Field3D&lt; T &gt;::idx()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aa3994a408ee224ba6bfc80950a13593d">tensorium_RG::bssn::ConstraintMonitorStats::l2_H</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aaead7bbabf87fb8aef07d2aa02a0a177">tensorium_RG::bssn::ConstraintMonitorStats::max_det_drift</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae13c15eabbf1a679170ea9d711841dfc">tensorium_RG::bssn::ConstraintMonitorStats::max_H</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae874b8370bdd0ddf69a01e5858c7340c">tensorium_RG::bssn::ConstraintMonitorStats::max_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#acfd54236fb72baf9f1f0137dbe94a56c">tensorium_RG::bssn::ConstraintMonitorStats::samples</a>, and <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a84e52bf3ece58a774be1567a5e14437b">project_and_monitor()</a>, and <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::step()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_aa7005abefc0003c31d2448b6d21bc98d_cgraph.svg" width="386" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_aa7005abefc0003c31d2448b6d21bc98d_cgraph.svg" width="392" height="280"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -753,7 +764,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_contracted_gamma_from_metric </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -809,7 +820,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">T tensorium_RG::bssn::compute_dt_cfl </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>grid</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>grid</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -831,6 +842,13 @@ template&lt;typename T&gt; </div>
 
 <p>Compute a timestep satisfying \(dt = \,\text{CFL}\times \min(\Delta x)/(|\vec{\beta}|+\alpha_{max})\). </p>
 
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, and <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a437e52f04dbbda7748f36804c79c3705_cgraph.svg" width="391" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a1467fe6bd5dc5bd39c2f06041356faa4" name="a1467fe6bd5dc5bd39c2f06041356faa4"></a>
@@ -847,7 +865,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html">InvariantStats</a> tensorium_RG::bssn::compute_invariant_stats </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -903,13 +921,13 @@ template&lt;typename T&gt; </div>
 <li>Minimum \(\chi\): used to detect slice stretching approaching the excision floor. </li>
 </ul>
 
-<p class="reference">References <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a9759ab94eb19efcde74dbaa647272eea">tensorium_RG::bssn::InvariantStats::chi_location</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a2de8a28d1ac63e0734e1622fd2cef468">tensorium_RG::bssn::detail::det3()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#ae7d8fcf7f0dff3e5761b5c00b3106806">tensorium_RG::bssn::InvariantStats::det_location</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a1e4033942388ae6dd2a1f7146c5f3f85">tensorium_RG::bssn::InvariantStats::gamma_location</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a50b27778e1f73c047eb787677d687c19">tensorium_RG::bssn::InvariantStats::l2_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a546480644414ef51962411594ccaa1">tensorium_RG::bssn::InvariantStats::l2_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abff89e7ea44fa45625683540b6c11d17">tensorium_RG::bssn::InvariantStats::l2_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a24bdf59de3aca70e0f14ae08f67df433">tensorium_RG::bssn::InvariantStats::l2_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a27f37cc51ec5c1f3a5b3f3d8641f8371">tensorium_RG::bssn::InvariantStats::max_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a090c182966e7a970f8c966822c9db86e">tensorium_RG::bssn::InvariantStats::max_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a351e4c125fff1a1cea0b9696132a019d">tensorium_RG::bssn::InvariantStats::max_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aaa6ebf6e1d31fe36d61670c8fd888e7f">tensorium_RG::bssn::InvariantStats::max_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a0bdef2a2af0216fc956ddf3a815989">tensorium_RG::bssn::InvariantStats::mean_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abb8524c386af80dc51a2c5b3b8bac907">tensorium_RG::bssn::InvariantStats::mean_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a31ed63b0e13ba81852834bbf67f11870">tensorium_RG::bssn::InvariantStats::mean_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aef1e0390e8f387eeb83fa0116435a7b5">tensorium_RG::bssn::InvariantStats::mean_trace_A</a>, <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a010585159142425f3d7d48009c990fd3">tensorium_RG::bssn::InvariantStats::metric_location</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a95aaf9325af3ee94045216c091bc2b24">tensorium_RG::bssn::InvariantStats::min_chi</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#ac1e902fb2f0dc89d8745d8e2ad31f87a">tensorium_RG::bssn::InvariantStats::samples</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a7b8a2985d445162171316ad99cb00017">tensorium_RG::bssn::InvariantStats::trace_location</a>, <a class="el" href="_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a9759ab94eb19efcde74dbaa647272eea">tensorium_RG::bssn::InvariantStats::chi_location</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355">tensorium_RG::BSSNGridSoA&lt; T &gt;::coords()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a2de8a28d1ac63e0734e1622fd2cef468">tensorium_RG::bssn::detail::det3()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#ae7d8fcf7f0dff3e5761b5c00b3106806">tensorium_RG::bssn::InvariantStats::det_location</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a1e4033942388ae6dd2a1f7146c5f3f85">tensorium_RG::bssn::InvariantStats::gamma_location</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a50b27778e1f73c047eb787677d687c19">tensorium_RG::bssn::InvariantStats::l2_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a546480644414ef51962411594ccaa1">tensorium_RG::bssn::InvariantStats::l2_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abff89e7ea44fa45625683540b6c11d17">tensorium_RG::bssn::InvariantStats::l2_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a24bdf59de3aca70e0f14ae08f67df433">tensorium_RG::bssn::InvariantStats::l2_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a27f37cc51ec5c1f3a5b3f3d8641f8371">tensorium_RG::bssn::InvariantStats::max_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a090c182966e7a970f8c966822c9db86e">tensorium_RG::bssn::InvariantStats::max_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a351e4c125fff1a1cea0b9696132a019d">tensorium_RG::bssn::InvariantStats::max_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aaa6ebf6e1d31fe36d61670c8fd888e7f">tensorium_RG::bssn::InvariantStats::max_trace_A</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a0bdef2a2af0216fc956ddf3a815989">tensorium_RG::bssn::InvariantStats::mean_det_deviation</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abb8524c386af80dc51a2c5b3b8bac907">tensorium_RG::bssn::InvariantStats::mean_gamma_constraint</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a31ed63b0e13ba81852834bbf67f11870">tensorium_RG::bssn::InvariantStats::mean_metric_identity</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aef1e0390e8f387eeb83fa0116435a7b5">tensorium_RG::bssn::InvariantStats::mean_trace_A</a>, <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a010585159142425f3d7d48009c990fd3">tensorium_RG::bssn::InvariantStats::metric_location</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a95aaf9325af3ee94045216c091bc2b24">tensorium_RG::bssn::InvariantStats::min_chi</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#ac1e902fb2f0dc89d8745d8e2ad31f87a">tensorium_RG::bssn::InvariantStats::samples</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a7b8a2985d445162171316ad99cb00017">tensorium_RG::bssn::InvariantStats::trace_location</a>, <a class="el" href="_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087">X()</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a1467fe6bd5dc5bd39c2f06041356faa4_cgraph.svg" width="1006" height="218"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a1467fe6bd5dc5bd39c2f06041356faa4_cgraph.svg" width="1012" height="347"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -933,7 +951,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html">InvariantTolerances</a> tensorium_RG::bssn::compute_invariant_tolerances </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -956,7 +974,7 @@ template&lt;typename T&gt; </div>
 <p>Build tolerances that reflect the expected truncation error of the chosen stencil order. </p>
 <p>The leading truncation error of a \(p\)th-order scheme scales like \((h/L)^p\). This routine uses \(h=\max(\Delta x,\Delta y,\Delta z)\) and \(L\) as the largest domain extent to produce resolution-aware tolerances, blended with \f\sqrt{\epsilon_{\text{machine}}}\f to respect floating-point limits. </p>
 
-<p class="reference">References <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#abc9682593d7c04076670366341c3d418">tensorium_RG::bssn::InvariantTolerances::chi_tol</a>, <a class="el" href="#ac4afae162c75d02e5d6d90b5ba455d40">chi_tolerance_override()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#aa94fe72fce03128fa071ce7034694e98">tensorium_RG::bssn::InvariantTolerances::det_tol</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#ad5ff7845c1f170528e6b6219a68685ad">tensorium_RG::bssn::InvariantTolerances::gamma_tol</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#a3de3920eb1fe2578380ab51975f40f6a">tensorium_RG::bssn::InvariantTolerances::metric_tol</a>, and <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#a1ab4630d432a267f0cab62f46f5e0da2">tensorium_RG::bssn::InvariantTolerances::trace_tol</a>.</p>
+<p class="reference">References <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#abc9682593d7c04076670366341c3d418">tensorium_RG::bssn::InvariantTolerances::chi_tol</a>, <a class="el" href="#ac4afae162c75d02e5d6d90b5ba455d40">chi_tolerance_override()</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#aa94fe72fce03128fa071ce7034694e98">tensorium_RG::bssn::InvariantTolerances::det_tol</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aeb474ecea72e4b530b42ec168ca4096e">tensorium_RG::BSSNGridSoA&lt; T &gt;::dims</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#ad5ff7845c1f170528e6b6219a68685ad">tensorium_RG::bssn::InvariantTolerances::gamma_tol</a>, <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#a3de3920eb1fe2578380ab51975f40f6a">tensorium_RG::bssn::InvariantTolerances::metric_tol</a>, <a class="el" href="structtensorium___r_g_1_1_grid_dims.html#ae2438dc29c3bb3cadf6bee60ad80bbec">tensorium_RG::GridDims::nx</a>, <a class="el" href="structtensorium___r_g_1_1_grid_dims.html#a43de9f9838489fc76d4d191c73b71986">tensorium_RG::GridDims::ny</a>, <a class="el" href="structtensorium___r_g_1_1_grid_dims.html#a28a0aa992f3e069d304c603f4bb9bb31">tensorium_RG::GridDims::nz</a>, and <a class="el" href="structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#a1ab4630d432a267f0cab62f46f5e0da2">tensorium_RG::bssn::InvariantTolerances::trace_tol</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#ad94d47dae5726904e3444218b3ff8eef">assert_invariants()</a>.</p>
 <div class="dynheader">
@@ -986,7 +1004,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_A_tilde </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1013,13 +1031,13 @@ template&lt;typename T&gt; </div>
 <li><span class="tt">term_quad</span> implements \(\alpha(K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})\). </li>
 </ul>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a0924c9e6dbe067b7df165a32802a2f97">tensorium_RG::BSSNGridSoA&lt; T &gt;::Ricci</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a50230b731fbf44e0ce3f7d8fa0a66146_cgraph.svg" width="827" height="951"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a50230b731fbf44e0ce3f7d8fa0a66146_cgraph.svg" width="836" height="1016"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1043,7 +1061,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_alpha </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1065,13 +1083,13 @@ template&lt;typename T&gt; </div>
 
 <p>Build \(\partial_t\alpha\) including advection and KO6 dissipation. </p>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, and <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, and <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a0e98ef8bc1b9faade555cf639acbf8f0_cgraph.svg" width="819" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a0e98ef8bc1b9faade555cf639acbf8f0_cgraph.svg" width="827" height="434"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1095,7 +1113,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_B </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1150,7 +1168,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_beta </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1200,7 +1218,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_chi </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1234,13 +1252,13 @@ template&lt;typename T&gt; </div>
 <li>KO6 call adds dissipation with \(\sigma=0.1\). </li>
 </ul>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, and <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, and <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a63018070ef162fcb1bc235bd8e212f8f_cgraph.svg" width="818" height="534"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a63018070ef162fcb1bc235bd8e212f8f_cgraph.svg" width="827" height="599"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1264,7 +1282,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_Gamma </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1298,13 +1316,13 @@ template&lt;typename T&gt; </div>
 <li><span class="tt">A_grad_alpha</span> and <span class="tt">source</span> encode \(-2\tilde{A}^{ij}\partial_j\alpha\) and the Ricci coupling. </li>
 </ul>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a94c1d4cbb50bb5402929704146651f37">tensorium_RG::BSSNGridSoA&lt; T &gt;::Gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>, and <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_adf6c30f846c2c8c8808a6ee13f84106a_cgraph.svg" width="834" height="951"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_adf6c30f846c2c8c8808a6ee13f84106a_cgraph.svg" width="843" height="1016"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1328,7 +1346,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_gamma_tilde </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1350,13 +1368,13 @@ template&lt;typename T&gt; </div>
 
 <p>Fill \(\partial_t\tilde{\gamma}_{ij}\) for all six symmetric components. </p>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a2021b3f9dc20d94b54647cfa72a5b389_cgraph.svg" width="862" height="599"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a2021b3f9dc20d94b54647cfa72a5b389_cgraph.svg" width="871" height="651"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1380,7 +1398,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_rhs_K </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1402,13 +1420,13 @@ template&lt;typename T&gt; </div>
 
 <p>Compute \(\partial_t K\) throughout the interior region. </p>
 
-<p class="reference">References <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285">tensorium_RG::BSSNGridSoA&lt; T &gt;::beta</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="#a8856f16ffa277149897f940d6dd9a184">clamped_lower()</a>, <a class="el" href="#ab3f0032f87d8ca3cec1e2110b8189831">clamped_upper()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591">tensorium_RG::fd::Dx_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427">tensorium_RG::fd::Dy_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041">tensorium_RG::fd::Dz_upwind()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa">tensorium_RG::BSSNGridSoA&lt; T &gt;::K</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba">tensorium_RG::fd::KO6()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, and <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::evaluate_rhs()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a26e0e7a80891485f5ea3a9e1764d519e_cgraph.svg" width="818" height="951"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a26e0e7a80891485f5ea3a9e1764d519e_cgraph.svg" width="827" height="1016"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1429,7 +1447,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_ricci_bssn </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1462,13 +1480,13 @@ template&lt;typename T&gt; </div>
 </ul>
 <dl class="section warning"><dt>Warning</dt><dd>Ricci evaluation assumes halos contain valid data for ±2 offsets. Call <span class="tt"><a class="el" href="#afc728a4a48cae76f72521a1dfdcdee11" title="Apply the boundary functor to every scalar, vector, and tensor field in the grid.">apply_halos_grid</a></span> before invoking this routine. </dd></dl>
 
-<p class="reference">References <a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
+<p class="reference">References <a class="el" href="#a882854a29de4e6552fccc878e016fe8d">assert_invariants()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070">tensorium_RG::fd::Dxx()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1">tensorium_RG::fd::Dxy4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e">tensorium_RG::fd::Dxz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2">tensorium_RG::fd::Dyy()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e">tensorium_RG::fd::Dyz4()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f">tensorium_RG::fd::Dzz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55">tensorium_RG::sym6_get()</a>, <a class="el" href="namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4">tensorium_RG::sym6_index()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::ensure_geometry()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a00ddfb96cc3a527ad849dfc490893be8_cgraph.svg" width="1444" height="819"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a00ddfb96cc3a527ad849dfc490893be8_cgraph.svg" width="1451" height="891"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1492,7 +1510,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::compute_tildeGamma_contracted </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1510,19 +1528,165 @@ template&lt;typename T&gt; </div>
 </li>
 </ol>
 
-<p class="reference">References <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a">tensorium_RG::init::solve_lichnerowicz_u_SOR()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a551a841476db3f7665a53043c46349c2_cgraph.svg" width="991" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a551a841476db3f7665a53043c46349c2_cgraph.svg" width="996" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a551a841476db3f7665a53043c46349c2_icgraph.svg" width="594" height="296"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ac9153162b0e444ecc58bb99e8fe08dbd" name="ac9153162b0e444ecc58bb99e8fe08dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9153162b0e444ecc58bb99e8fe08dbd">&#9670;&#160;</a></span>compute_tildeGamma_full()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::bssn::compute_tildeGamma_full </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *</td>          <td class="paramname"><span class="paramname"><em>Gamma27</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the full \(\tilde{\Gamma}^i_{\ jk}\) tensor at every interior grid point. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">G</td><td>Source grid holding \(\tilde{\gamma}_{ij}\) and \(\tilde{\gamma}^{ij}\). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">Gamma27</td><td>Array of 27 <span class="tt"><a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a></span> components stored as <span class="tt">i*9 + j*3 + k</span>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The derivative lambda <span class="tt">d_g</span> enforces symmetry \(\tilde{\gamma}_{ij}=\tilde{\gamma}_{ji}\) by choosing the packed component once before applying <span class="tt">Dx/Dy/Dz</span>. Each Christoffel element is assembled by contracting with \(\tilde{\gamma}^{i\ell}\) using the precomputed inverse metric cache. The resulting tensor feeds <span class="tt"><a class="el" href="_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split .">BSSNRicci.hpp</a></span> and the constraint monitor's covariant derivatives. Halo padding of at least two cells is assumed. </p>
+
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58">tensorium_RG::fd::Dx()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94">tensorium_RG::BSSNGridSoA&lt; T &gt;::dx</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050">tensorium_RG::fd::Dy()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01">tensorium_RG::BSSNGridSoA&lt; T &gt;::dy</a>, <a class="el" href="namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310">tensorium_RG::fd::Dz()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf">tensorium_RG::BSSNGridSoA&lt; T &gt;::dz</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde_inv</a>, <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>, <a class="el" href="namespacetensorium___r_g.html#ae32295001be69b5c631f6969e1e313d5">tensorium_RG::sym6_inv_get()</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::ensure_geometry()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ac9153162b0e444ecc58bb99e8fe08dbd_cgraph.svg" width="648" height="315"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ac9153162b0e444ecc58bb99e8fe08dbd_icgraph.svg" width="628" height="356"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="af8dad2ef3bd2a643716e205f77217f16" name="af8dad2ef3bd2a643716e205f77217f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8dad2ef3bd2a643716e205f77217f16">&#9670;&#160;</a></span>grad_6phi_from_chi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::bssn::grad_6phi_from_chi </td>
+          <td>(</td>
+          <td class="paramtype">const T</td>          <td class="paramname"><span class="paramname"><em>dchi</em></span>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>chi</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>d6phi</em></span>[3]&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute \(\partial_i(6\phi) = -\tfrac{3}{2}\chi^{-1}\partial_i\chi\) for the momentum constraint. </p>
+
+<p class="reference">Referenced by <a class="el" href="#ab20751cec48f34c566478200a41a74ae">compute_bssn_constraints()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_af8dad2ef3bd2a643716e205f77217f16_icgraph.svg" width="603" height="327"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8b465d86ebde16dad2863af429b62eb5" name="a8b465d86ebde16dad2863af429b62eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b465d86ebde16dad2863af429b62eb5">&#9670;&#160;</a></span>grad_phi_from_chi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::bssn::grad_phi_from_chi </td>
+          <td>(</td>
+          <td class="paramtype">const T</td>          <td class="paramname"><span class="paramname"><em>dchi</em></span>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>chi</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>dphi</em></span>[3]&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert \(\partial_i\chi\) to \(\partial_i\phi\) using \(\phi=-(1/4)\ln\chi\). </p>
+<p>The relation is \(\partial_i\phi = -(1/4)\chi^{-1}\partial_i\chi\). </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">dchi</td><td>Cartesian gradient of \(\chi\). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">chi</td><td>Scalar conformal factor. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dphi</td><td>Populated with \(\partial_i\phi\). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1540,7 +1704,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::metric_inverse_divergence </td>
           <td>(</td>
-          <td class="paramtype">const BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1634,7 +1798,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::print_constraint_norms </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; double &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1686,13 +1850,13 @@ Here is the caller graph for this function:</div>
 
 <p>Convenience logger that prints Linf/L2 norms of \(H\), \(|\vec{M}|\), and \(|\vec{C}|\) to stdout. </p>
 
-<p class="reference">References <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355">tensorium_RG::BSSNGridSoA&lt; T &gt;::coords()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, and <a class="el" href="structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921">tensorium_RG::Field3D&lt; T &gt;::ptr()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a36cfa7304e618538fab81b79745c3fe7_cgraph.svg" width="402" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a36cfa7304e618538fab81b79745c3fe7_cgraph.svg" width="411" height="167"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1716,7 +1880,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html">ConstraintMonitorStats</a> tensorium_RG::bssn::project_and_monitor </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1781,11 +1945,11 @@ template&lt;typename T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Aggregated statistics of \(H\) gathered by <span class="tt"><a class="el" href="#aa7005abefc0003c31d2448b6d21bc98d" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations.">compute_constraint_monitor</a></span>. </dd></dl>
 
-<p class="reference">References <a class="el" href="#ab20751cec48f34c566478200a41a74ae">compute_bssn_constraints()</a>, <a class="el" href="#aa7005abefc0003c31d2448b6d21bc98d">compute_constraint_monitor()</a>, and <a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update()</a>.</p>
+<p class="reference">References <a class="el" href="#ab20751cec48f34c566478200a41a74ae">compute_bssn_constraints()</a>, <a class="el" href="#aa7005abefc0003c31d2448b6d21bc98d">compute_constraint_monitor()</a>, <a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update()</a>, and <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a0924c9e6dbe067b7df165a32802a2f97">tensorium_RG::BSSNGridSoA&lt; T &gt;::Ricci</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a84e52bf3ece58a774be1567a5e14437b_cgraph.svg" width="1664" height="683"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a84e52bf3ece58a774be1567a5e14437b_cgraph.svg" width="1671" height="867"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1804,7 +1968,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::project_bssn_after_update </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1851,7 +2015,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">void tensorium_RG::bssn::project_bssn_state </td>
           <td>(</td>
-          <td class="paramtype">BSSNGridSoA&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -1,28 +1,34 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNGamma.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNGamma.hpp">
-<area shape="rect" id="Node000001" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="506,5,772,61"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="510,109,768,180"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="640,74,641,110,636,107,637,79"/>
-<area shape="rect" id="Node000007" href="$_b_s_s_n_invariants_8hpp.html" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="792,116,1069,172"/>
-<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="726,64,860,116,855,116,725,69"/>
-<area shape="rect" id="Node000008" href="$_b_s_s_n_projection_8hpp.html" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="208,116,486,172"/>
-<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="550,68,421,118,419,113,554,65"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="435,235,685,291"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="609,191,580,237,577,233,605,194"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="644,346,801,417"/>
-<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="679,190,700,227,717,289,724,347,719,344,712,290,695,229,677,195"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="228,346,415,417"/>
-<area shape="poly" id="edge8_Node000002_Node000005" title=" " alt="" coords="497,185,459,207,424,230,397,257,373,287,338,348,334,344,368,285,393,253,421,226,456,202,493,187"/>
-<area shape="rect" id="Node000006" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="760,228,998,298"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="724,184,810,227,805,227,723,189"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="611,297,677,347,672,346,609,303"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="493,297,393,348,391,343,488,299"/>
-<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="823,307,770,348,768,343,818,309"/>
-<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="979,181,998,202,1012,227,1023,264,1021,282,1011,300,998,313,978,324,925,344,863,359,802,371,801,366,862,354,924,338,976,319,995,308,1007,297,1016,280,1018,265,1007,229,994,205,977,186"/>
-<area shape="poly" id="edge11_Node000007_Node000006" title=" " alt="" coords="915,185,896,229,892,225,910,188"/>
-<area shape="poly" id="edge15_Node000008_Node000004" title=" " alt="" coords="358,185,383,244,401,272,424,296,476,329,533,352,591,366,647,376,642,376,590,371,532,357,473,334,421,300,397,275,378,246,356,189"/>
-<area shape="poly" id="edge17_Node000008_Node000005" title=" " alt="" coords="337,185,331,228,325,291,323,348,319,345,320,290,325,227,334,190"/>
-<area shape="poly" id="edge16_Node000008_Node000006" title=" " alt="" coords="481,173,498,177,762,235,757,237,497,182,481,179"/>
-<area shape="rect" id="Node000009" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,228,259,298"/>
-<area shape="poly" id="edge13_Node000008_Node000009" title=" " alt="" coords="282,181,197,229,194,225,286,178"/>
-<area shape="poly" id="edge14_Node000009_Node000005" title=" " alt="" coords="202,304,268,345,262,346,200,309"/>
+<area shape="rect" id="Node000001" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="536,5,803,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="668,228,847,298"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="709,70,735,108,746,138,753,170,759,229,755,226,748,171,741,140,730,110,708,75"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="160,109,419,180"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="558,67,412,111,410,106,563,64"/>
+<area shape="rect" id="Node000009" href="$_b_s_s_n_invariants_8hpp.html" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="443,116,720,172"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="640,71,605,118,601,114,636,75"/>
+<area shape="rect" id="Node000010" href="$_b_s_s_n_projection_8hpp.html" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="794,116,1073,172"/>
+<area shape="poly" id="edge18_Node000001_Node000010" title=" " alt="" coords="750,65,870,115,865,116,750,70"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="631,346,884,417"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="759,311,760,348,755,344,756,316"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="423,346,580,417"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="670,304,579,348,577,343,665,306"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="477,465,665,536"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="692,425,627,467,625,462,687,426"/>
+<area shape="poly" id="edge12_Node000006_Node000004" title=" " alt="" coords="143,175,68,200,39,214,21,229,11,247,8,263,12,279,21,297,64,348,116,390,174,424,237,449,302,468,365,481,480,497,474,497,364,486,301,473,236,454,172,428,113,395,60,352,17,300,7,281,3,263,6,245,17,226,36,210,66,195,146,171"/>
+<area shape="poly" id="edge9_Node000006_Node000005" title=" " alt="" coords="298,192,317,247,330,273,346,297,382,328,426,353,420,353,379,332,342,300,325,276,312,249,297,197"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="31,235,281,291"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="237,192,189,237,185,233,240,188"/>
+<area shape="rect" id="Node000008" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="356,228,594,298"/>
+<area shape="poly" id="edge10_Node000006_Node000008" title=" " alt="" coords="357,185,422,227,417,228,357,191"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="213,297,412,415,504,464,498,464,410,419,211,302"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="251,294,426,353,421,355,251,299"/>
+<area shape="poly" id="edge11_Node000008_Node000005" title=" " alt="" coords="487,311,496,347,491,345,485,315"/>
+<area shape="poly" id="edge14_Node000009_Node000002" title=" " alt="" coords="635,178,708,227,703,227,635,184"/>
+<area shape="poly" id="edge16_Node000009_Node000005" title=" " alt="" coords="602,184,611,212,617,241,616,271,608,299,589,326,565,348,562,344,585,323,603,297,611,270,611,241,606,213,599,189"/>
+<area shape="poly" id="edge15_Node000009_Node000007" title=" " alt="" coords="466,179,257,237,254,232,469,175"/>
+<area shape="poly" id="edge17_Node000009_Node000008" title=" " alt="" coords="549,182,508,229,505,225,545,185"/>
+<area shape="poly" id="edge19_Node000010_Node000003" title=" " alt="" coords="936,186,929,244,920,273,905,300,879,327,848,348,846,343,876,323,901,297,915,271,924,243,933,190"/>
+<area shape="poly" id="edge22_Node000010_Node000004" title=" " alt="" coords="944,185,950,240,949,303,943,335,934,366,919,394,898,419,859,441,800,460,665,488,665,483,799,455,857,436,894,415,914,391,929,364,938,334,944,303,945,241,941,190"/>
+<area shape="poly" id="edge20_Node000010_Node000005" title=" " alt="" coords="920,185,892,253,876,282,861,300,829,321,801,333,773,339,746,340,689,340,656,342,619,349,581,359,579,354,618,344,656,337,689,335,746,335,773,333,799,328,827,316,857,296,872,279,887,251,916,188"/>
+<area shape="poly" id="edge21_Node000010_Node000008" title=" " alt="" coords="810,177,595,234,594,229,814,175"/>
 </map>

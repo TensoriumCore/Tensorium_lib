@@ -9,5 +9,7 @@ var searchData=
   ['getcachelinesize_6',['getCacheLineSize',['../classtensorium_1_1_cache_info.html#a5f6d99cb2347f92263c129d606134044',1,'tensorium::CacheInfo']]],
   ['getl1cachesize_7',['getL1CacheSize',['../classtensorium_1_1_cache_info.html#a830d0c7e66f7700062ebae521d45902a',1,'tensorium::CacheInfo']]],
   ['getl2cachesize_8',['getL2CacheSize',['../classtensorium_1_1_cache_info.html#aae3c70ea0290d0a343a04d7eff5b7e28',1,'tensorium::CacheInfo']]],
-  ['getl3cachesize_9',['getL3CacheSize',['../classtensorium_1_1_cache_info.html#a64a015f6539b948814373af8f24cc457',1,'tensorium::CacheInfo']]]
+  ['getl3cachesize_9',['getL3CacheSize',['../classtensorium_1_1_cache_info.html#a64a015f6539b948814373af8f24cc457',1,'tensorium::CacheInfo']]],
+  ['grad_5f6phi_5ffrom_5fchi_10',['grad_6phi_from_chi',['../namespacetensorium___r_g_1_1bssn.html#af8dad2ef3bd2a643716e205f77217f16',1,'tensorium_RG::bssn']]],
+  ['grad_5fphi_5ffrom_5fchi_11',['grad_phi_from_chi',['../namespacetensorium___r_g_1_1bssn.html#a8b465d86ebde16dad2863af429b62eb5',1,'tensorium_RG::bssn']]]
 ];

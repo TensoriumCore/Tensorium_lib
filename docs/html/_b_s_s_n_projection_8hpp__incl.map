@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="288,5,567,61"/>
 <area shape="rect" id="Node000002" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="131,109,260,135"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,63,243,106,241,101,357,60"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="336,183,519,208"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="336,183,519,208"/>
 <area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="429,59,430,168,425,166,426,64"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="462,264,537,290"/>
 <area shape="poly" id="edge13_Node000001_Node000006" title=" " alt="" coords="455,59,499,113,519,146,534,182,537,201,534,219,519,253,515,249,529,218,531,200,529,183,514,149,495,116,453,64"/>

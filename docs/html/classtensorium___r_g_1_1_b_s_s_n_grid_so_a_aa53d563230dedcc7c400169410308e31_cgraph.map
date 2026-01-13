@@ -1,0 +1,9 @@
+<map id="tensorium_RG::BSSNGridSoA::BSSNGridSoA" name="tensorium_RG::BSSNGridSoA::BSSNGridSoA">
+<area shape="rect" id="Node000001" title="Construct a grid with halo&#45;aware allocation." alt="" coords="5,35,196,75"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a3826ece6c7a0bcbf83e8f75f2ce3af18" title=" " alt="" coords="251,5,406,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,40,238,37,233,38,197,45"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g.html#a265e7eed2f9c66df0040562e10516739" title=" " alt="" coords="244,70,413,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,64,231,71,226,71,196,69"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g.html#ac321f44318e4576a71c03df6dcd43d71" title=" " alt="" coords="461,63,602,103"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="414,80,448,83,443,83,414,86"/>
+</map>

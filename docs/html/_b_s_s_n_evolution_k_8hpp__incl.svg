@@ -40,7 +40,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="_b_s_s_n_grid_so_a_8hpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="_b_s_s_n_grid_so_a_8hpp.html" target="_top" xlink:title="Structure&#45;of&#45;arrays storage for all BSSN state variables.">
 <polygon fill="white" stroke="#666666" points="385.5,-141 248,-141 248,-121.75 385.5,-121.75 385.5,-141"/>
 <text xml:space="preserve" text-anchor="middle" x="316.75" y="-127.5" font-family="Helvetica,sans-Serif" font-size="10.00">../Fields/BSSNGridSoA.hpp</text>
 </a>

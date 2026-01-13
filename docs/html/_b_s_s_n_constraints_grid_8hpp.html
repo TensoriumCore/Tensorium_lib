@@ -121,10 +121,16 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_conformal_8hpp_source.html">../Geometry/BSSNConformal.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_gamma_8hpp_source.html">../Geometry/BSSNGamma.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_invariants_8hpp_source.html">../Geometry/BSSNInvariants.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNConstraintsGrid.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_constraints_grid_8hpp__incl.svg" width="736" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_constraints_grid_8hpp__incl.svg" width="1528" height="466"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -142,9 +148,9 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab20751cec48f34c566478200a41a74ae" id="r_ab20751cec48f34c566478200a41a74ae"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ab20751cec48f34c566478200a41a74ae template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae">tensorium_RG::bssn::compute_bssn_constraints</a> (BSSNGridSoA&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H_out, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M_out[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C_out[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
+<tr class="memitem:ab20751cec48f34c566478200a41a74ae template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae">tensorium_RG::bssn::compute_bssn_constraints</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;H_out, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; M_out[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; C_out[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
 <tr class="memdesc:ab20751cec48f34c566478200a41a74ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the Hamiltonian \(H\), momentum \(M_i\), and Gamma \(C_i\) constraint fields.  <br /></td></tr>
-<tr class="memitem:a36cfa7304e618538fab81b79745c3fe7" id="r_a36cfa7304e618538fab81b79745c3fe7"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a36cfa7304e618538fab81b79745c3fe7">tensorium_RG::bssn::print_constraint_norms</a> (BSSNGridSoA&lt; double &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; &amp;H, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; M[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; C[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
+<tr class="memitem:a36cfa7304e618538fab81b79745c3fe7" id="r_a36cfa7304e618538fab81b79745c3fe7"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a36cfa7304e618538fab81b79745c3fe7">tensorium_RG::bssn::print_constraint_norms</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; double &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; &amp;H, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; M[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; double &gt; C[3], double r_min, double r_max, double xc, double yc, double zc)</td></tr>
 <tr class="memdesc:a36cfa7304e618538fab81b79745c3fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience logger that prints Linf/L2 norms of \(H\), \(|\vec{M}|\), and \(|\vec{C}|\) to stdout.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>

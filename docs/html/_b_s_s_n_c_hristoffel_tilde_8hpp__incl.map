@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,74,266,109,261,107,263,79"/>
 <area shape="rect" id="Node000003" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="5,198,261,223"/>
 <area shape="poly" id="edge11_Node000001_Node000003" title=" " alt="" coords="228,78,190,126,150,186,145,183,186,122,231,74"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="285,198,469,223"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="285,198,469,223"/>
 <area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="302,74,343,123,360,153,371,184,366,183,355,155,339,125,301,79"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="240,152,170,192,167,188,243,148"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="283,148,347,189,342,189,283,153"/>

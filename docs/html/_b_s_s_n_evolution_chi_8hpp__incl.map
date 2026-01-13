@@ -1,6 +1,6 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionChi.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionChi.hpp">
 <area shape="rect" id="Node000001" title="RHS for the conformal factor equation ." alt="" coords="38,5,284,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="5,124,189,150"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="5,124,189,150"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,79,116,112,112,109,139,74"/>
 <area shape="rect" id="Node000004" href="$_grid_layout_8hpp.html" title=" " alt="" coords="156,198,296,238"/>
 <area shape="poly" id="edge8_Node000001_Node000004" title=" " alt="" coords="180,74,203,123,221,183,216,182,199,125,179,79"/>

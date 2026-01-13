@@ -1,6 +1,6 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/BSSNGridOperations.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/BSSNGridOperations.hpp">
 <area shape="rect" id="Node000001" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="5,5,280,61"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="51,109,234,135"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="51,109,234,135"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,59,145,94,140,93,142,64"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="40,190,114,216"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,137,99,180,95,177,134,133"/>

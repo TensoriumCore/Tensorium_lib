@@ -1,5 +1,5 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,253,61"/>
+<area shape="rect" id="Node000001" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="5,5,253,61"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="26,116,101,142"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,64,83,105,78,102,112,59"/>
 <area shape="rect" id="Node000003" href="$_grid_layout_8hpp.html" title=" " alt="" coords="126,109,266,150"/>

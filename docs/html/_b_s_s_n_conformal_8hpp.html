@@ -136,6 +136,15 @@ This graph shows which files directly or indirectly include this file:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Abssn" id="r_tensorium_5FRG_3A_3Abssn"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html">tensorium_RG::bssn</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8b465d86ebde16dad2863af429b62eb5" id="r_a8b465d86ebde16dad2863af429b62eb5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a8b465d86ebde16dad2863af429b62eb5 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a8b465d86ebde16dad2863af429b62eb5">tensorium_RG::bssn::grad_phi_from_chi</a> (const T dchi[3], T chi, T dphi[3]) noexcept</td></tr>
+<tr class="memdesc:a8b465d86ebde16dad2863af429b62eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert \(\partial_i\chi\) to \(\partial_i\phi\) using \(\phi=-(1/4)\ln\chi\).  <br /></td></tr>
+<tr class="memitem:af8dad2ef3bd2a643716e205f77217f16" id="r_af8dad2ef3bd2a643716e205f77217f16"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:af8dad2ef3bd2a643716e205f77217f16 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#af8dad2ef3bd2a643716e205f77217f16">tensorium_RG::bssn::grad_6phi_from_chi</a> (const T dchi[3], T chi, T d6phi[3]) noexcept</td></tr>
+<tr class="memdesc:af8dad2ef3bd2a643716e205f77217f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute \(\partial_i(6\phi) = -\tfrac{3}{2}\chi^{-1}\partial_i\chi\) for the momentum constraint.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helpers that convert conformal-factor gradients between \(\chi\) and \(\phi\). </p>

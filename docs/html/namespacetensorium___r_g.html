@@ -146,6 +146,8 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Driver class to initialize and store <a class="el" href="classtensorium___r_g_1_1_b_s_s_n.html" title="Driver class to initialize and store BSSN variables from an input spacetime metric.">BSSN</a> variables from an input spacetime metric.  <a href="classtensorium___r_g_1_1_b_s_s_n.html#details">More...</a><br /></td></tr>
 <tr class="memitem:TildeGamma" id="r_TildeGamma"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classtensorium___r_g_1_1_tilde_gamma.html">TildeGamma</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the contracted conformal Christoffel vector \( \tilde{\Gamma}^i \).  <a href="classtensorium___r_g_1_1_tilde_gamma.html#details">More...</a><br /></td></tr>
+<tr class="memitem:BSSNGridSoA" id="r_BSSNGridSoA"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure-of-arrays grid that holds all evolved, cache, and diagnostic fields.  <a href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ChristoffelSym" id="r_ChristoffelSym"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classtensorium___r_g_1_1_christoffel_sym.html">ChristoffelSym</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores and computes Christoffel symbols \( \Gamma^\lambda_{\mu\nu} \).  <a href="classtensorium___r_g_1_1_christoffel_sym.html#details">More...</a><br /></td></tr>
 <tr class="memitem:Metric" id="r_Metric"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classtensorium___r_g_1_1_metric.html">Metric</a></td></tr>
@@ -436,11 +438,11 @@ template&lt;typename T&gt; </div>
 
 <p class="reference">References <a class="el" href="_grid_layout_8hpp.html#ae9f8e5738c41217d2e1436e372ae0db7">TENSORIUM_ALIGN</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ad13d939f6661bd1f1b7d5399f2c80ed9">tensorium_RG::bssn::detail::allocate_like()</a>, and <a class="el" href="#adec8747b34cbb818f714a049f9623ec5">make_field()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ad13d939f6661bd1f1b7d5399f2c80ed9">tensorium_RG::bssn::detail::allocate_like()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aa53d563230dedcc7c400169410308e31">tensorium_RG::BSSNGridSoA&lt; T &gt;::BSSNGridSoA()</a>, and <a class="el" href="#adec8747b34cbb818f714a049f9623ec5">make_field()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a3826ece6c7a0bcbf83e8f75f2ce3af18_icgraph.svg" width="575" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a3826ece6c7a0bcbf83e8f75f2ce3af18_icgraph.svg" width="620" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1893,10 +1895,17 @@ template&lt;typename T&gt; </div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="#ac321f44318e4576a71c03df6dcd43d71">simd_width_elems()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aa53d563230dedcc7c400169410308e31">tensorium_RG::BSSNGridSoA&lt; T &gt;::BSSNGridSoA()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a265e7eed2f9c66df0040562e10516739_cgraph.svg" width="370" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a265e7eed2f9c66df0040562e10516739_icgraph.svg" width="419" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2281,7 +2290,7 @@ template&lt;typename T&gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_ac321f44318e4576a71c03df6dcd43d71_icgraph.svg" width="370" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_ac321f44318e4576a71c03df6dcd43d71_icgraph.svg" width="608" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2553,7 +2562,7 @@ template&lt;typename T&gt; </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a6e4da58decb324906a6eaa5fa81e8f55_icgraph.svg" width="1335" height="638"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_a6e4da58decb324906a6eaa5fa81e8f55_icgraph.svg" width="1335" height="659"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2636,10 +2645,17 @@ template&lt;typename T&gt; </div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="#a6e4da58decb324906a6eaa5fa81e8f55">sym6_get()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ac9153162b0e444ecc58bb99e8fe08dbd">tensorium_RG::bssn::compute_tildeGamma_full()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_ae32295001be69b5c631f6969e1e313d5_cgraph.svg" width="375" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_ae32295001be69b5c631f6969e1e313d5_icgraph.svg" width="822" height="356"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

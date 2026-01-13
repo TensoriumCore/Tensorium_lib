@@ -1,11 +1,13 @@
 <map id="tensorium_RG::bssn::compute_constraint_monitor" name="tensorium_RG::bssn::compute_constraint_monitor">
-<area shape="rect" id="Node000001" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="5,96,149,152"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1constraint__monitor__detail.html#a6f95a20ab5b32033e58aebfa0f02d10d" title=" " alt="" coords="218,5,359,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,93,210,66,206,69,145,98"/>
-<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="197,86,380,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,113,184,110,179,112,150,118"/>
-<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="198,135,379,161"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,129,185,135,179,136,149,135"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="203,184,374,210"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="143,150,198,171,220,180,215,180,196,176,142,155"/>
+<area shape="rect" id="Node000001" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="5,135,149,190"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1constraint__monitor__detail.html#a6f95a20ab5b32033e58aebfa0f02d10d" title=" " alt="" coords="221,5,362,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,132,149,101,195,71,209,66,205,69,198,75,152,106,113,136"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="197,85,387,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,141,201,129,196,132,150,146"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="200,150,384,175"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="148,160,187,161,182,164,150,165"/>
+<area shape="rect" id="Node000005" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="201,199,382,225"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="149,176,221,194,216,196,149,182"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="207,248,377,274"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="117,188,156,213,198,235,215,243,210,243,196,240,153,218,116,194"/>
 </map>

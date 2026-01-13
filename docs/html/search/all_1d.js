@@ -46,7 +46,7 @@ var searchData=
   ['tensortraits_3c_20vector_3c_20t_20_3e_20_3e_43',['TensorTraits&lt; Vector&lt; T &gt; &gt;',['../structtensorium_1_1_tensor_traits_3_01_vector_3_01_t_01_4_01_4.html',1,'tensorium']]],
   ['tilde_5fgamma_44',['tilde_Gamma',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#a8f154e15d8526dc0875d1be893083202',1,'tensorium_RG::BSSNGrid']]],
   ['tildegamma_45',['TildeGamma',['../classtensorium___r_g_1_1_tilde_gamma.html',1,'tensorium_RG']]],
-  ['tildegamma_46',['tildeGamma',['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ad5e49ce7745f753beb613d87cf0485c8',1,'tensorium_RG::bssn::BSSNRHSWorkspace']]],
+  ['tildegamma_46',['tildeGamma',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5',1,'tensorium_RG::BSSNGridSoA::tildeGamma'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ad5e49ce7745f753beb613d87cf0485c8',1,'tensorium_RG::bssn::BSSNRHSWorkspace::tildeGamma']]],
   ['todo_47',['TODO',['../index.html#autotoc_md3',1,'']]],
   ['total_48',['total',['../classtensorium_1_1_derivate_n_d.html#a4d95a7fd7be0c0ee806ef307131bbd0b',1,'tensorium::DerivateND']]],
   ['total_5fsize_49',['total_size',['../classtensorium_1_1_tensor.html#a1aa54408cbd7408aef542275dfacf2e2',1,'tensorium::Tensor']]],

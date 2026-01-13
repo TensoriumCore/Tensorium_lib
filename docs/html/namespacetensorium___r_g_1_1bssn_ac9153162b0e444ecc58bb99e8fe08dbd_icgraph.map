@@ -1,0 +1,15 @@
+<map id="tensorium_RG::bssn::compute_tildeGamma_full" name="tensorium_RG::bssn::compute_tildeGamma_full">
+<area shape="rect" id="Node000001" title="Compute the full &#160;tensor at every interior grid point." alt="" coords="442,173,622,214"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="235,5,376,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="498,161,450,119,393,75,374,64,374,59,395,71,454,115,503,162"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="228,85,382,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="456,168,383,143,383,138,461,167"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="217,165,394,221"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="424,194,395,196,394,191,429,193"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="240,245,370,286"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="454,218,372,247,370,242,449,219"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="221,310,390,351"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="499,222,451,263,395,299,369,312,367,307,393,295,448,259,494,225"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,173,169,214"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="199,194,170,196,168,191,204,192"/>
+</map>

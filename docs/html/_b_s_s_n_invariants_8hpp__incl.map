@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="524,5,801,61"/>
 <area shape="rect" id="Node000002" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="131,109,260,135"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="522,62,276,108,275,103,525,58"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="336,183,519,208"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="336,183,519,208"/>
 <area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="617,60,540,111,455,175,453,170,537,107,612,63"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="462,264,537,290"/>
 <area shape="poly" id="edge13_Node000001_Node000006" title=" " alt="" coords="631,60,586,111,514,252,510,248,581,107,627,63"/>

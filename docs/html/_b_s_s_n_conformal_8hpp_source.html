@@ -113,24 +113,30 @@ $(function() {
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacetensorium___r_g_1_1bssn.html">tensorium_RG::bssn</a> {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> grad_phi_from_chi(<span class="keyword">const</span> T dchi[3], T chi, T dphi[3]) <span class="keyword">noexcept</span> {</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacetensorium___r_g_1_1bssn.html#a8b465d86ebde16dad2863af429b62eb5">   23</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacetensorium___r_g_1_1bssn.html#a8b465d86ebde16dad2863af429b62eb5">grad_phi_from_chi</a>(<span class="keyword">const</span> T dchi[3], T chi, T dphi[3]) <span class="keyword">noexcept</span> {</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">const</span> T inv_chi = T(1) / chi;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">const</span> T c = T(-0.25) * inv_chi;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    dphi[0] = c * dchi[0];</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    dphi[1] = c * dchi[1];</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    dphi[2] = c * dchi[2];</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> grad_6phi_from_chi(<span class="keyword">const</span> T dchi[3], T chi, T d6phi[3]) <span class="keyword">noexcept</span> {</div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacetensorium___r_g_1_1bssn.html#af8dad2ef3bd2a643716e205f77217f16">   34</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacetensorium___r_g_1_1bssn.html#af8dad2ef3bd2a643716e205f77217f16">grad_6phi_from_chi</a>(<span class="keyword">const</span> T dchi[3], T chi, T d6phi[3]) <span class="keyword">noexcept</span> {</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> T inv_chi = T(1) / chi;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">const</span> T c = T(-1.5) * inv_chi;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    d6phi[0] = c * dchi[0];</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    d6phi[1] = c * dchi[1];</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    d6phi[2] = c * dchi[2];</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>} <span class="comment">// namespace tensorium_RG::bssn</span></div>
 <div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html">tensorium_RG::bssn</a></div><div class="ttdef"><b>Definition</b> BSSNConstraintMonitoring.hpp:14</div></div>
+<div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html_a8b465d86ebde16dad2863af429b62eb5"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html#a8b465d86ebde16dad2863af429b62eb5">tensorium_RG::bssn::grad_phi_from_chi</a></div><div class="ttdeci">void grad_phi_from_chi(const T dchi[3], T chi, T dphi[3]) noexcept</div><div class="ttdoc">Convert  to  using .</div><div class="ttdef"><b>Definition</b> BSSNConformal.hpp:23</div></div>
+<div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html_af8dad2ef3bd2a643716e205f77217f16"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html#af8dad2ef3bd2a643716e205f77217f16">tensorium_RG::bssn::grad_6phi_from_chi</a></div><div class="ttdeci">void grad_6phi_from_chi(const T dchi[3], T chi, T d6phi[3]) noexcept</div><div class="ttdoc">Compute  for the momentum constraint.</div><div class="ttdef"><b>Definition</b> BSSNConformal.hpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

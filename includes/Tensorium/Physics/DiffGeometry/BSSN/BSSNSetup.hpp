@@ -66,7 +66,7 @@ struct alignas(64) BSSNGrid {
     std::vector<tensorium::Vector<double>>
         tilde_Gamma; ///< Conformal contracted symbols \f$\tilde{\Gamma}^i\f$
     std::vector<tensorium::Vector<double>>
-        contracted_Gamma; ///< Contracted symbols \f$\Gamma^i_{ij} = -\frac{3}{2} \partial_j \ln
+        contracted_Gamma; ///< Contracted symbols \f$\Gamma^i{}_{ij}\f$ stored as vectors.
     std::vector<tensorium::Tensor<double, 5>> ricci_tilde; // [NX, NY, NZ, 3, 3]
 };
 template <typename T>

@@ -17,7 +17,7 @@
  * constraints) are colocated with the primary state to avoid repeated allocations.
  *
  * @note Units and sign conventions follow the module overview in @ref BSSN_Grid.  Physical metrics
- * and tensors are obtained from the conformal data through \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f.
+ * and tensors are obtained from the conformal data through \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$.
  */
 
 namespace tensorium_RG {

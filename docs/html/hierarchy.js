@@ -14,6 +14,7 @@ var hierarchy =
     [ "BSSNConstraints&lt; T &gt;", "class_b_s_s_n_constraints.html", null ],
     [ "tensorium_RG::BSSNContractedGamma&lt; T &gt;", "classtensorium___r_g_1_1_b_s_s_n_contracted_gamma.html", null ],
     [ "tensorium_RG::BSSNGrid", "structtensorium___r_g_1_1_b_s_s_n_grid.html", null ],
+    [ "tensorium_RG::BSSNGridSoA&lt; T &gt;", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html", null ],
     [ "tensorium_RG::bssn::BSSNRHSWorkspace&lt; T &gt;", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html", null ],
     [ "tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html", null ],
     [ "tensorium_RG::bssn::BSSNVariables&lt; T &gt;", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_variables.html", null ],

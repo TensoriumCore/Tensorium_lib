@@ -53,7 +53,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
@@ -75,10 +75,10 @@ var NAVTREEINDEX =
 "_allocator_8hpp.html",
 "classtensorium_1_1_derivate.html#adbf0aa8ef44649422a3134796d5a4e36",
 "classtensorium_1_1_tensor.html#aaa22549a588a313c5fff0666d8a94c92",
-"classtensorium___r_g_1_1_metric.html#a03dd227862693af5d4d4514e50462d92",
-"namespacemembers_c.html",
-"struct_aligned_allocator.html#a92426dd1369a5d968a1a8f65dc655b58",
-"structtensorium___r_g_1_1bssn_1_1_projection_config.html#ad6882f9d47df9185e9f97333c5e90d11"
+"classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aa53d563230dedcc7c400169410308e31",
+"functions_func_m.html",
+"namespacetensorium___r_g_1_1bssn.html#a6f30410d0e983cf74dc0855581c2c39e",
+"structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

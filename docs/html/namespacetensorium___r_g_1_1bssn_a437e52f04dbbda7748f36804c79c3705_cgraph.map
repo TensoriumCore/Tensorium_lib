@@ -1,0 +1,5 @@
+<map id="tensorium_RG::bssn::compute_dt_cfl" name="tensorium_RG::bssn::compute_dt_cfl">
+<area shape="rect" id="Node000001" title="Compute a timestep satisfying ." alt="" coords="5,5,147,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="195,5,385,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,23,182,25,176,26,147,28"/>
+</map>

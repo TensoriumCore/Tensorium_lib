@@ -121,10 +121,15 @@ $(function() {
 <div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_invariants_8hpp_source.html">BSSNInvariants.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNRicci.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_ricci_8hpp__incl.svg" width="475" height="450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_ricci_8hpp__incl.svg" width="1140" height="450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -142,7 +147,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8" id="r_a00ddfb96cc3a527ad849dfc490893be8"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn</a> (BSSNGridSoA&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, bool throw_on_violation=true)</td></tr>
+<tr class="memitem:a00ddfb96cc3a527ad849dfc490893be8 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *Ricci6, bool throw_on_violation=true)</td></tr>
 <tr class="memdesc:a00ddfb96cc3a527ad849dfc490893be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate the Ricci tensor cache \(R_{ij}\) throughout the interior grid.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>

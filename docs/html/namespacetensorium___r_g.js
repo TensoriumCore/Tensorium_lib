@@ -57,6 +57,7 @@ var namespacetensorium___r_g =
     [ "BSSNGrid", "structtensorium___r_g_1_1_b_s_s_n_grid.html", "structtensorium___r_g_1_1_b_s_s_n_grid" ],
     [ "BSSN", "classtensorium___r_g_1_1_b_s_s_n.html", "classtensorium___r_g_1_1_b_s_s_n" ],
     [ "TildeGamma", "classtensorium___r_g_1_1_tilde_gamma.html", "classtensorium___r_g_1_1_tilde_gamma" ],
+    [ "BSSNGridSoA", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a" ],
     [ "ChristoffelSym", "classtensorium___r_g_1_1_christoffel_sym.html", "classtensorium___r_g_1_1_christoffel_sym" ],
     [ "Metric", "classtensorium___r_g_1_1_metric.html", "classtensorium___r_g_1_1_metric" ],
     [ "RicciTensor", "classtensorium___r_g_1_1_ricci_tensor.html", "classtensorium___r_g_1_1_ricci_tensor" ],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['a_0',['a',['../classtensorium___r_g_1_1_metric.html#a1290e85cb6b1e1c77bfbe4d5ec16f8fe',1,'tensorium_RG::Metric']]],
-  ['a_5ftilde_1',['A_tilde',['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ac74aa24f4d9b51d93e6d72dbae46708e',1,'tensorium_RG::bssn::BSSNRHSWorkspace']]],
+  ['a_5ftilde_1',['A_tilde',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba',1,'tensorium_RG::BSSNGridSoA::A_tilde'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ac74aa24f4d9b51d93e6d72dbae46708e',1,'tensorium_RG::bssn::BSSNRHSWorkspace::A_tilde']]],
   ['a_5ftildetensor_2',['A_tildeTensor',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#ab788f37750d445c9b2ee3faad9fcc6ec',1,'tensorium_RG::BSSNGrid']]],
   ['acc_3',['acc',['../classtensorium_1_1_tensor.html#a547c64b422668942ba802304bf731617',1,'tensorium::Tensor::acc'],['../classtensorium_1_1_tensor.html#add64bf94badae158473e573e0b4b2b1f',1,'tensorium::Tensor::acc']]],
   ['accumulate_5fscalar_4',['accumulate_scalar',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ab5fc71cd8253f6f3af6814fcbc278212',1,'tensorium_RG::bssn::BSSNRKStepper']]],
@@ -23,7 +23,7 @@ var searchData=
   ['allocator_20hpp_20',['Allocator.hpp',['../dir_b1907119a28684567a00a3054b278180.html#autotoc_md15',1,'']]],
   ['allocator_2ehpp_21',['Allocator.hpp',['../_allocator_8hpp.html',1,'']]],
   ['allreduce_22',['allreduce',['../namespacetensorium_1_1mpi.html#a3459cf4797a20672b894072ac6eac9b9',1,'tensorium::mpi']]],
-  ['alpha_23',['alpha',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#a4d8ffd13157208559d3adc490500b95d',1,'tensorium_RG::BSSNGrid::alpha'],['../structtensorium___r_g_1_1bssn_1_1_a_d_m_variables.html#a85768e9ce4675227c9e6ea92e35b865e',1,'tensorium_RG::bssn::ADMVariables::alpha'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a76152b77c8edcf58f12ffee6ad4a94f9',1,'tensorium_RG::bssn::BSSNRHSWorkspace::alpha']]],
+  ['alpha_23',['alpha',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#a4d8ffd13157208559d3adc490500b95d',1,'tensorium_RG::BSSNGrid::alpha'],['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8',1,'tensorium_RG::BSSNGridSoA::alpha'],['../structtensorium___r_g_1_1bssn_1_1_a_d_m_variables.html#a85768e9ce4675227c9e6ea92e35b865e',1,'tensorium_RG::bssn::ADMVariables::alpha'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a76152b77c8edcf58f12ffee6ad4a94f9',1,'tensorium_RG::bssn::BSSNRHSWorkspace::alpha']]],
   ['and_20options_24',['Build C++ only for special targets and options',['../index.html#autotoc_md7',1,'']]],
   ['and_20padding_25',['8. Ghost Zones and Padding',['../dir_a4152974139b03ed9bd506c3ce4c45cc.html#autotoc_md46',1,'']]],
   ['and_20python_20module_26',['Build C++ Library and Python Module',['../index.html#autotoc_md6',1,'']]],

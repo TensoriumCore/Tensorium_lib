@@ -9,8 +9,11 @@
  * @details
  * Both helpers restrict loops to interior points so that the 4th-order derivative operators have
  * valid data.  `compute_tildeGamma_full` implements the textbook formula
- * \f$\tilde{\Gamma}^i_{\ jk} = \tfrac{1}{2}\tilde{\gamma}^{i\ell}(\partial_j\tilde{\gamma}_{\ell k} +
- * \partial_k\tilde{\gamma}_{\ell j} - \partial_\ell \tilde{\gamma}_{jk})\f$ and stores the result in the
+ * \f[
+ * \tilde{\Gamma}^i_{\ jk} = \tfrac{1}{2}\tilde{\gamma}^{i\ell}(\partial_j\tilde{\gamma}_{\ell k} +
+ * \partial_k\tilde{\gamma}_{\ell j} - \partial_\ell \tilde{\gamma}_{jk})
+ * \f]
+ * and stores the result in the
  * 27-component cache (flattened as `[i][j][k]`).  `compute_tildeGamma_contracted` recomputes the
  * evolved \f$\tilde{\Gamma}^i\f$ from the metric divergence to enforce the algebraic definition after
  * projection steps.
@@ -53,7 +56,7 @@ template <typename T> inline void compute_tildeGamma_contracted(BSSNGridSoA<T> &
  * @details
  * The derivative lambda `d_g` enforces symmetry \f$\tilde{\gamma}_{ij}=\tilde{\gamma}_{ji}\f$ by choosing the
  * packed component once before applying `Dx/Dy/Dz`.  Each Christoffel element is assembled by
- * contracting with \f$\tilde{\gamma}^{i\ell}\f` using the precomputed inverse metric cache.  The
+ * contracting with \f$\tilde{\gamma}^{i\ell}\f$ using the precomputed inverse metric cache.  The
  * resulting tensor feeds `BSSNRicci.hpp` and the constraint monitor's covariant derivatives.  Halo
  * padding of at least two cells is assumed.
  */

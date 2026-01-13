@@ -1,5 +1,9 @@
 <map id="tensorium_RG::bssn::print_constraint_norms" name="tensorium_RG::bssn::print_constraint_norms">
-<area shape="rect" id="Node000001" title="Convenience logger that prints Linf/L2 norms of , , and &#160;to stdout." alt="" coords="5,5,167,46"/>
-<area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="215,13,396,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,23,202,25,196,26,167,28"/>
+<area shape="rect" id="Node000001" title="Convenience logger that prints Linf/L2 norms of , , and &#160;to stdout." alt="" coords="5,71,167,111"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355" title="Map an index triple to physical coordinates." alt="" coords="215,5,405,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,68,225,50,220,52,159,73"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="215,71,405,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,88,202,90,196,92,168,94"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="219,136,400,161"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,109,245,131,240,132,167,114"/>
 </map>

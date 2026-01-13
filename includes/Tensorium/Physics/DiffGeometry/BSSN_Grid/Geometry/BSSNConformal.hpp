@@ -15,7 +15,7 @@ namespace tensorium_RG::bssn {
 
 /**
  * @brief Convert \f$\partial_i\chi\f$ to \f$\partial_i\phi\f$ using \f$\phi=-(1/4)\ln\chi\f$.
- * @details The relation is \f$\partial_i\phi = -(1/4)\chi^{-1}\partial_i\chi\f.
+ * @details The relation is \f$\partial_i\phi = -(1/4)\chi^{-1}\partial_i\chi\f$.
  * @param dchi Cartesian gradient of \f$\chi\f$.
  * @param chi Scalar conformal factor.
  * @param[out] dphi Populated with \f$\partial_i\phi\f$.

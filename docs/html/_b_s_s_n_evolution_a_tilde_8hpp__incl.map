@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="RHS for the trace&#45;free extrinsic curvature ." alt="" coords="239,5,486,76"/>
 <area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="5,124,261,150"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="276,78,178,120,175,115,280,75"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="336,124,519,150"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="336,124,519,150"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="387,74,413,111,408,110,386,79"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="261,205,336,231"/>
 <area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="346,75,326,125,306,192,302,189,321,123,343,78"/>

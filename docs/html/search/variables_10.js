@@ -5,7 +5,7 @@ var searchData=
   ['simd_5fwidth_2',['simd_width',['../classtensorium_1_1_derivate.html#a17c9d892dd6e273873cbb56770a3beb1',1,'tensorium::Derivate::simd_width'],['../classtensorium_1_1_derivate_n_d.html#a618a7e8223e1db2747fe285b6ec3e895',1,'tensorium::DerivateND::simd_width'],['../classtensorium_1_1_matrix.html#a6d09e0e9927a369cb4d88f4ac062602d',1,'tensorium::Matrix::simd_width'],['../classtensorium_1_1_vector.html#a2ce9e8bf8b223874ed8bf6dbb3b94be4',1,'tensorium::Vector::simd_width']]],
   ['simdwidth_3',['SimdWidth',['../classtensorium_1_1_gemm_kernel_big.html#a0a8aa0f957c1dfe11b17f6b5d56b4a40',1,'tensorium::GemmKernelBig']]],
   ['snapshot_5fcallback_5f_4',['snapshot_callback_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a29f9aa16159f20aab83801476e7b8c0b',1,'tensorium_RG::bssn::BSSNRKStepper']]],
-  ['st_5',['st',['../structtensorium___r_g_1_1_field3_d.html#acb0e47f8f2c1a2aa5a158d94aa552059',1,'tensorium_RG::Field3D']]],
+  ['st_5',['st',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#ac32ccf5b0ced76b0523cc48206c98fc9',1,'tensorium_RG::BSSNGridSoA::st'],['../structtensorium___r_g_1_1_field3_d.html#acb0e47f8f2c1a2aa5a158d94aa552059',1,'tensorium_RG::Field3D::st']]],
   ['stage_5fgrid_5f_6',['stage_grid_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9afb1376eb3e2e79b4ee1bc420c68489',1,'tensorium_RG::bssn::BSSNRKStepper']]],
   ['stages_5f_7',['stages_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#abdf0fbb37f32ce2351c50e719e165b36',1,'tensorium_RG::bssn::BSSNRKStepper']]],
   ['stride_5faxis_8',['stride_axis',['../classtensorium_1_1_derivate_n_d.html#a539eba3b254919f609a4506749ef6317',1,'tensorium::DerivateND']]],

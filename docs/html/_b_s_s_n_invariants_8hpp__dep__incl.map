@@ -1,8 +1,19 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNInvariants.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNInvariants.hpp">
-<area shape="rect" id="Node000001" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="5,5,283,61"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="66,228,222,298"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,76,95,110,88,144,95,179,105,203,119,227,113,227,100,206,89,180,83,144,89,108,111,72"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="104,109,342,180"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,71,200,109,195,109,172,76"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="193,191,169,229,165,225,189,194"/>
+<area shape="rect" id="Node000001" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="171,5,448,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="16,109,194,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,71,172,111,169,106,247,67"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="296,228,453,298"/>
+<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="277,72,260,110,251,145,252,160,260,178,279,204,305,227,300,227,275,208,255,181,247,162,246,145,255,108,274,76"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="531,116,781,172"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="410,64,572,115,567,117,411,69"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="269,109,507,180"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="338,71,366,109,360,109,337,76"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,228,259,298"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,192,127,228,121,227,116,197"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="200,184,298,227,294,229,199,189"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="210,346,398,417"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="196,305,255,345,250,346,195,310"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="617,181,548,242,467,301,381,348,379,343,464,296,545,237,613,184"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="574,179,454,232,452,227,579,177"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="384,193,381,229,376,226,381,197"/>
 </map>

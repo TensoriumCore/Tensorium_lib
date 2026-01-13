@@ -1,17 +1,22 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintMonitoring.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintMonitoring.hpp">
-<area shape="rect" id="Node000001" title="Reduce constraint fields to scalar diagnostics used by the RK driver." alt="" coords="5,5,213,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="17,124,201,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,74,112,109,106,108,108,79"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="6,205,81,231"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="98,152,65,195,61,192,100,148"/>
-<area shape="rect" id="Node000004" href="$_grid_layout_8hpp.html" title=" " alt="" coords="106,198,246,238"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="120,147,152,185,147,186,119,153"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="10,286,74,312"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="145,239,77,280,75,276,140,238"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="98,286,162,312"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="167,237,147,274,143,271,162,240"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="187,286,255,312"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="188,236,209,273,204,272,186,241"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="280,286,362,312"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="213,236,288,279,283,279,211,242"/>
+<area shape="rect" id="Node000001" title="Reduce constraint fields to scalar diagnostics used by the RK driver." alt="" coords="255,5,462,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="104,124,288,150"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="297,78,232,118,229,114,301,75"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="293,286,358,312"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="357,75,331,272,327,270,352,78"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="364,124,421,150"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="372,74,385,110,380,108,370,79"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="445,124,502,150"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="401,74,450,114,444,114,400,79"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="38,205,112,231"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="176,152,107,199,104,194,179,148"/>
+<area shape="rect" id="Node000004" href="$_grid_layout_8hpp.html" title=" " alt="" coords="137,198,277,238"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="199,148,205,183,200,181,197,152"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,286,70,312"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="166,241,78,282,76,277,163,237"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="237,236,297,277,292,277,235,241"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="94,286,162,312"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="190,238,152,277,149,273,185,240"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="187,286,269,312"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="214,237,223,272,218,270,211,241"/>
 </map>

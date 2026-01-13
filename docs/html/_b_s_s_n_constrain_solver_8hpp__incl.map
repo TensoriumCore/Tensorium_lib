@@ -1,6 +1,6 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Solvers/BSSNConstrainSolver.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Solvers/BSSNConstrainSolver.hpp">
 <area shape="rect" id="Node000001" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="377,5,615,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="302,286,485,312"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="302,286,485,312"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="425,78,391,103,353,134,320,171,296,214,292,226,296,237,316,260,344,279,338,280,312,264,291,240,287,226,291,212,315,168,349,130,388,99,429,75"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="380,368,454,393"/>
 <area shape="poly" id="edge32_Node000001_Node000003" title=" " alt="" coords="374,50,281,60,182,75,96,97,64,110,42,126,26,144,17,162,10,197,12,237,12,287,9,300,11,311,35,328,71,342,116,353,167,362,273,372,367,378,362,379,273,377,166,367,115,358,69,347,32,332,7,313,3,300,7,286,7,237,5,197,12,160,22,141,38,122,62,106,95,92,181,70,280,55,379,47"/>

@@ -1,19 +1,21 @@
 <map id="tensorium_RG::bssn::compute_tildeGamma_contracted" name="tensorium_RG::bssn::compute_tildeGamma_contracted">
-<area shape="rect" id="Node000001" title="Refresh the evolved &#160;from the metric inverse divergence." alt="" coords="5,65,162,121"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="210,72,394,113"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,90,196,92,191,94,163,95"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="442,65,589,121"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,90,429,92,424,93,395,95"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="637,5,787,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="581,62,636,40,651,37,656,36,638,45,582,67"/>
-<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="637,55,787,80"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="589,81,624,79,619,80,590,86"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="637,104,787,130"/>
-<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="590,99,625,106,619,106,590,105"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="639,154,785,194"/>
-<area shape="poly" id="edge9_Node000003_Node000008" title=" " alt="" coords="585,119,650,148,644,147,584,124"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="835,55,985,80"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="767,29,843,50,838,50,767,34"/>
-<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="787,65,822,67,817,68,787,70"/>
-<area shape="poly" id="edge8_Node000007_Node000005" title=" " alt="" coords="766,101,838,85,843,84,767,106"/>
+<area shape="rect" id="Node000001" title="Refresh the evolved &#160;from the metric inverse divergence." alt="" coords="5,33,162,89"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="210,7,400,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,47,197,43,192,45,163,52"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="213,72,397,113"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,69,200,76,195,78,162,75"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="448,65,595,121"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="397,90,436,92,430,93,398,95"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="643,5,793,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="587,62,642,40,657,37,662,36,644,45,588,67"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="643,55,793,80"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="595,81,630,79,625,80,596,86"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="643,104,793,130"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="596,99,631,106,625,106,596,105"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="645,154,791,194"/>
+<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="591,119,656,148,650,147,590,124"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="841,55,991,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="773,29,849,50,844,50,773,34"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="793,65,828,67,823,68,793,70"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="772,101,844,85,849,84,773,106"/>
 </map>

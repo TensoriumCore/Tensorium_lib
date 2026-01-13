@@ -46,7 +46,7 @@ var searchData=
   ['spectral_5fpartial_5ftensor2_43',['spectral_partial_tensor2',['../namespacetensorium___r_g.html#a1acfbb966721cbe68fd2d4fdec07d28d',1,'tensorium_RG']]],
   ['spectralfft_44',['SpectralFFT',['../classtensorium_1_1_spectral_f_f_t.html',1,'tensorium']]],
   ['split_5f3p1_45',['split_3p1',['../namespacetensorium___r_g_1_1bssn.html#a4921d2e8780b77bcb383f8e0e79a9daa',1,'tensorium_RG::bssn']]],
-  ['st_46',['st',['../structtensorium___r_g_1_1_field3_d.html#acb0e47f8f2c1a2aa5a158d94aa552059',1,'tensorium_RG::Field3D']]],
+  ['st_46',['st',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#ac32ccf5b0ced76b0523cc48206c98fc9',1,'tensorium_RG::BSSNGridSoA::st'],['../structtensorium___r_g_1_1_field3_d.html#acb0e47f8f2c1a2aa5a158d94aa552059',1,'tensorium_RG::Field3D::st']]],
   ['stage_5fgrid_5f_47',['stage_grid_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9afb1376eb3e2e79b4ee1bc420c68489',1,'tensorium_RG::bssn::BSSNRKStepper']]],
   ['stages_5f_48',['stages_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#abdf0fbb37f32ce2351c50e719e165b36',1,'tensorium_RG::bssn::BSSNRKStepper']]],
   ['state_20variables_49',['2. State Variables',['../dir_a4152974139b03ed9bd506c3ce4c45cc.html#autotoc_md40',1,'']]],
