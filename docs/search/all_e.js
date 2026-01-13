@@ -1,15 +1,19 @@
 var searchData=
 [
-  ['n_0',['n',['../classtensorium_1_1solver_1_1Gauss.html#afb672d77f5cd5254f91432139dff80c1',1,'tensorium::solver::Gauss::n'],['../classtensorium_1_1Vector.html#a771d490d80c2f03d43f97d36ed2173c6',1,'tensorium::Vector::n']]],
-  ['nc_1',['NC',['../GemmKernel__bigger_8hpp.html#a1fa2460e32327ade49189c95740bc1b5',1,'GemmKernel_bigger.hpp']]],
-  ['norm1_5fvec_2',['norm1_vec',['../namespacetensorium.html#a9cf7aa7b7f22ee35b6aebe14418d3550',1,'tensorium']]],
-  ['norm2_5fvec_3',['norm2_vec',['../namespacetensorium.html#a753cb1eae7b151852b91836f536c0790',1,'tensorium']]],
-  ['norm_5fu_4',['norm_u',['../classtensorium_1_1Vector.html#ad6634e310e872b717f71cd7e485a0d5d',1,'tensorium::Vector']]],
-  ['norm_5fv_5',['norm_v',['../classtensorium_1_1Vector.html#a3119d489b48d21e7defed799df2aec7d',1,'tensorium::Vector']]],
-  ['norminf_5fvec_6',['normInf_vec',['../namespacetensorium.html#add383e7be1f7ffe468f45cc5d35ce67e',1,'tensorium']]],
-  ['notes_7',['Notes',['../md_includes_2Tensorium_2Core_2README.html#autotoc_md22',1,'']]],
-  ['nthreads_8',['NThreads',['../classtensorium_1_1GemmKernelBigger.html#adc6450745633e9cd1417bdf36d82c089',1,'tensorium::GemmKernelBigger']]],
-  ['nu_9',['nu',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea0288bde0c2d593f2b5766f61b826a650',1,'Latex.hpp']]],
-  ['nu_10',['Nu',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fead9b7d9073e68e39cc86b834810845d62',1,'Latex.hpp']]],
-  ['number_11',['Number',['../namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4ab2ee912b91d69b435159c7c3f6df7f5f',1,'tensorium']]]
+  ['eight_0',['eight',['../classtensorium_1_1_derivate.html#aad6159b2d2ad345d39f5e04f47d05fdf',1,'tensorium::Derivate']]],
+  ['else_1',['else',['../classtensorium_1_1_derivate.html#a3d70f69f340d6123fd2d71fefca01406',1,'tensorium::Derivate']]],
+  ['end_2',['end',['../classtensorium_1_1_vector.html#a40f78072083b341b4710740de4363e15',1,'tensorium::Vector::end()'],['../classtensorium_1_1_vector.html#a5c70e4cedf7a8c751feae3a670497bf3',1,'tensorium::Vector::end() const']]],
+  ['ensure_5fgeometry_3',['ensure_geometry',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2',1,'tensorium_RG::bssn::BSSNRKStepper']]],
+  ['equations_4',['3. Evolution Equations',['../dir_a4152974139b03ed9bd506c3ce4c45cc.html#autotoc_md41',1,'']]],
+  ['eta_5',['eta',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#aaa34acebc05bbd091b358abe2acb436f',1,'tensorium_RG::bssn::GaugeParameters']]],
+  ['evaluate_5frhs_6',['evaluate_rhs',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82',1,'tensorium_RG::bssn::BSSNRKStepper']]],
+  ['evolution_20equations_7',['3. Evolution Equations',['../dir_a4152974139b03ed9bd506c3ce4c45cc.html#autotoc_md41',1,'']]],
+  ['example_20usage_8',['Example Usage',['../dir_b1907119a28684567a00a3054b278180.html#autotoc_md18',1,'Example Usage'],['../dir_6ec45ecc21b5f4caf93e55bbe92e9dfe.html#autotoc_md31',1,'Example Usage']]],
+  ['example_20using_20in_20python_9',['Example using in Python',['../index.html#autotoc_md9',1,'']]],
+  ['example_3a_20compute_20riemann_20and_20ricci_20tensors_20from_20kerr_20metric_10',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../dir_e2142b29a81c61ca614b93a0d2622bbe.html#autotoc_md54',1,'']]],
+  ['exemple_20using_20in_20c_11',['Exemple using in C++',['../index.html#autotoc_md8',1,'']]],
+  ['export_2ehpp_12',['export.hpp',['../export_8hpp.html',1,'']]],
+  ['extractfunctiontomlir_13',['extractFunctionToMLIR',['../_l_l_v_m___handler_8cpp.html#a2762941ea379e00fb4236fff0c41dff1',1,'LLVM_Handler.cpp']]],
+  ['extrinsiccurvature_14',['ExtrinsicCurvature',['../classtensorium___r_g_1_1_extrinsic_curvature.html',1,'tensorium_RG']]],
+  ['extrinsictensor_15',['ExtrinsicTensor',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#a7b83f39833ddee88b4be7cfde8571adf',1,'tensorium_RG::BSSNGrid']]]
 ];

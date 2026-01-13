@@ -35,55 +35,14 @@ var NAVTREE =
       [ "Exemple using in C++", "index.html#autotoc_md8", null ],
       [ "Example using in Python", "index.html#autotoc_md9", null ]
     ] ],
-    [ "Tensorium — Core Module", "md_includes_2Tensorium_2Core_2README.html", [
-      [ "Purpose", "md_includes_2Tensorium_2Core_2README.html#autotoc_md11", null ],
-      [ "Structure", "md_includes_2Tensorium_2Core_2README.html#autotoc_md12", null ],
-      [ "Features", "md_includes_2Tensorium_2Core_2README.html#autotoc_md13", [
-        [ "Vector", "md_includes_2Tensorium_2Core_2README.html#autotoc_md14", null ],
-        [ "Matrix", "md_includes_2Tensorium_2Core_2README.html#autotoc_md15", null ],
-        [ "Tensor", "md_includes_2Tensorium_2Core_2README.html#autotoc_md16", null ],
-        [ "Derivative", "md_includes_2Tensorium_2Core_2README.html#autotoc_md17", null ],
-        [ "Linear Solvers", "md_includes_2Tensorium_2Core_2README.html#autotoc_md18", null ]
-      ] ],
-      [ "Internal Dependencies", "md_includes_2Tensorium_2Core_2README.html#autotoc_md19", null ],
-      [ "Example Usage", "md_includes_2Tensorium_2Core_2README.html#autotoc_md20", null ],
-      [ "Status", "md_includes_2Tensorium_2Core_2README.html#autotoc_md21", null ],
-      [ "Notes", "md_includes_2Tensorium_2Core_2README.html#autotoc_md22", null ]
-    ] ],
-    [ "Tensorium — BSSN Module", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html", [
-      [ "Header Overview", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md24", null ],
-      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md25", null ],
-      [ "Usage", "md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html#autotoc_md26", null ]
-    ] ],
-    [ "Tensorium — DiffGeometry Module", "md_includes_2Tensorium_2DiffGeometry_2README.html", [
-      [ "Purpose", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md28", null ],
-      [ "Structure", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md29", null ],
-      [ "Features", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md30", null ],
-      [ "Internal Dependencies", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md31", null ],
-      [ "Current Supported Metrics", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md32", null ],
-      [ "Example: Compute Riemann and Ricci Tensors from Kerr Metric", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md33", null ],
-      [ "Status", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md34", null ],
-      [ "References", "md_includes_2Tensorium_2DiffGeometry_2README.html#autotoc_md35", null ]
-    ] ],
-    [ "Tensorium — SIMD Module", "md_includes_2Tensorium_2SIMD_2README.html", [
-      [ "Purpose", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md37", null ],
-      [ "Structure", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md38", null ],
-      [ "Features", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md39", [
-        [ "SIMD.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md40", null ],
-        [ "Allocator.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md41", null ],
-        [ "CPU_id.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md42", null ],
-        [ "CacheInfo.hpp", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md43", null ]
-      ] ],
-      [ "Example Usage", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md44", null ],
-      [ "Status", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md45", null ],
-      [ "Supported Architectures", "md_includes_2Tensorium_2SIMD_2README.html#autotoc_md46", null ]
-    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
+        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ]
+        [ "Typedefs", "namespacemembers_type.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
@@ -104,7 +63,6 @@ var NAVTREE =
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -113,16 +71,15 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AST_8hpp.html",
-"MPI__init_8hpp.html",
-"classtensorium_1_1GemmKernelBigger.html#a5dd51f05cda9f734a5b472cc071d837e",
-"classtensorium_1_1Tensor.html#a71e52428f5ef16ee37aa67876643b076",
-"classtensorium__RG_1_1ConstraintSolver.html",
-"namespacetensorium.html#a21158d87bb9dbf16b2b9d142ace4f7eb",
-"structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html#af0952e2f290d4d32ca3a3f5701fa9555",
-"structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html#acdfc066e5f3955fed7dc9b435db67c65",
-"tensorium-opt_8cpp.html#a042d3140e9db663382ef88f85d6cf615"
+"_allocator_8hpp.html",
+"classtensorium_1_1_derivate.html#adbf0aa8ef44649422a3134796d5a4e36",
+"classtensorium_1_1_tensor.html#aaed4ba1bd853eedbe0e9f8dd3c942abd",
+"classtensorium___r_g_1_1_metric.html#a03dd227862693af5d4d4514e50462d92",
+"namespacemembers_enum.html",
+"struct_aligned_allocator.html#aaf24962eb6a94955eeda5e3e5168a193",
+"structtensorium___r_g_1_1bssn_1_1_projection_config.html#aef7700129dd6e61d39d90be239589e6d"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

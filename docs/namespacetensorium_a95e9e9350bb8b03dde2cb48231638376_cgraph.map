@@ -1,9 +1,7 @@
 <map id="tensorium::compute_conformal_metric" name="tensorium::compute_conformal_metric">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,158,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1Metric.html#a0e0baebd20831f8e546f3c7a4beaa887" title=" " alt="" coords="206,5,414,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,25,190,25,190,30,158,30"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="462,5,607,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="414,25,446,25,446,30,414,30"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1Tensor.html#a1692653b53c6959ae6e1ec213dafdda9" title=" " alt="" coords="655,5,801,50"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="608,25,640,25,640,30,608,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,142,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_metric.html#a0e0baebd20831f8e546f3c7a4beaa887" title=" " alt="" coords="190,5,376,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,23,177,25,171,26,142,28"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="424,5,557,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,23,411,26,406,26,377,28"/>
 </map>

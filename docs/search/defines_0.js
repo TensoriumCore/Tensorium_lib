@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_5fmin_0',['_min',['../GemmKernel__bigger_8hpp.html#a23242303a9f9b5f71f07e8c03a42e7d2',1,'GemmKernel_bigger.hpp']]]
+  ['_5fmm_5fhint_5ft0_0',['_MM_HINT_T0',['../_s_i_m_d_8hpp.html#a8e1209a1c84216097ede241485d96ae4',1,'SIMD.hpp']]],
+  ['_5fmm_5fprefetch_1',['_mm_prefetch',['../_s_i_m_d_8hpp.html#a7bb691be3b1de9e8affef6e7b2faf135',1,'SIMD.hpp']]]
 ];

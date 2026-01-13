@@ -1,10 +1,9 @@
 var dir_6ec45ecc21b5f4caf93e55bbe92e9dfe =
 [
-    [ "MatrixKernels", "dir_480cc53665fcda6e5e6ed3d41b6214eb.html", "dir_480cc53665fcda6e5e6ed3d41b6214eb" ],
-    [ "Derivate.hpp", "Derivate_8hpp.html", "Derivate_8hpp" ],
-    [ "LinearSolver.hpp", "LinearSolver_8hpp.html", "LinearSolver_8hpp" ],
-    [ "Matrix.hpp", "Matrix_8hpp.html", "Matrix_8hpp" ],
-    [ "Spectral.hpp", "Spectral_8hpp.html", "Spectral_8hpp" ],
-    [ "Tensor.hpp", "Tensor_8hpp.html", "Tensor_8hpp" ],
-    [ "Vector.hpp", "Vector_8hpp.html", "Vector_8hpp" ]
+    [ "Derivate.hpp", "_derivate_8hpp.html", "_derivate_8hpp" ],
+    [ "LinearSolver.hpp", "_linear_solver_8hpp.html", "_linear_solver_8hpp" ],
+    [ "Matrix.hpp", "_matrix_8hpp.html", "_matrix_8hpp" ],
+    [ "Spectral.hpp", "_spectral_8hpp.html", "_spectral_8hpp" ],
+    [ "Tensor.hpp", "_tensor_8hpp.html", "_tensor_8hpp" ],
+    [ "Vector.hpp", "_vector_8hpp.html", "_vector_8hpp" ]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['m_0',['M',['../classtensorium_1_1solver_1_1Gauss.html#a7d013c6886e00c34f7d0ba22bcd616b6',1,'tensorium::solver::Gauss::M'],['../classtensorium__RG_1_1Metric.html#ac68e0a40729e0473d19321eee932a8f0',1,'tensorium_RG::Metric::M']]],
-  ['metric_1',['metric',['../structtensorium__RG_1_1ChiContext.html#ac792fdf27d8ac7fa74a26386c8e9c03d',1,'tensorium_RG::ChiContext']]]
+  ['k_0',['K',['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a33a6cc93db8a52549dad312d627b1d90',1,'tensorium_RG::bssn::BSSNRHSWorkspace']]],
+  ['k_1',['k',['../structtensorium___r_g_1_1bssn_1_1_sample_location.html#adcba2e4825c843de05165ba0dee4b8ae',1,'tensorium_RG::bssn::SampleLocation']]]
 ];

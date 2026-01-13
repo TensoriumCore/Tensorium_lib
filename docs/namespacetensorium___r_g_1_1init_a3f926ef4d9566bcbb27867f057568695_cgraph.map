@@ -1,0 +1,7 @@
+<map id="tensorium_RG::init::fill_Atilde_bowen_york_binary" name="tensorium_RG::init::fill_Atilde_bowen_york_binary">
+<area shape="rect" id="Node000001" title="Populate &#160;with the superposition of two Bowen–York punctures." alt="" coords="5,31,136,87"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#adb38d3d746a76e0a4014b08d223d01ad" title="Add the trace&#45;free momentum component &#160;to ." alt="" coords="184,5,350,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,45,170,42,165,43,137,50"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a346a0af705b21aebe41638f777e2afae" title="Add the spin component &#160;derived from ." alt="" coords="202,71,332,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="136,67,189,77,184,78,136,72"/>
+</map>

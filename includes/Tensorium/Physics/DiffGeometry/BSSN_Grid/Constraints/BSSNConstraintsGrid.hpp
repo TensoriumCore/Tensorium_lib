@@ -9,8 +9,37 @@
 #include <cmath>
 #include <cstdio>
 
+/**
+ * @file BSSNConstraintsGrid.hpp
+ * @brief Hamiltonian, momentum, and Gamma-constraint evaluation on the structured grid.
+ * @details
+ * The constraints follow the vacuum ADM definitions expressed in terms of the conformal variables:
+ * \f[
+ * \begin{aligned}
+ * H &= R + K^2 - K_{ij}K^{ij},\\
+ * M_i &= D_j K^j_{\ i} - D_i K,\\
+ * C_i &= \tilde{\Gamma}^i + \partial_j\tilde{\gamma}^{ij}.
+ * \end{aligned}
+ * \f]
+ * `compute_bssn_constraints` first reconstructs physical-metric quantities
+ * (\f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$, \f$K_{ij}=\chi^{-1}(\tilde{A}_{ij}+\tfrac{1}{3}\gamma_{ij}K)\f$) and then
+ * uses the derivative operators to evaluate the above expressions on every interior grid point.
+ */
+
 namespace tensorium_RG::bssn {
 
+/**
+ * @brief Fill the Hamiltonian \f$H\f$, momentum \f$M_i\f$, and Gamma \f$C_i\f$ constraint fields.
+ * @param Ricci6 Packed \f$R_{ij}\f$ produced by `compute_ricci_bssn`.
+ * @param H_out,M_out,C_out Destinations that must be allocated like the grid.
+ * @param r_min,r_max Optional radial filter to skip interior/exterior regions (useful around punctures).
+ * @details
+ * - Hamiltonian block maps `gI_*` multiplications to \f$R=\gamma^{ij}R_{ij}\f$.
+ * - Momentum block forms \f$M_i = \tilde{\gamma}^{jk}\tilde{D}_j\tilde{A}_{ki} + 6\tilde{A}_{ij}\partial^j\phi - \tfrac{2}{3}\partial_i K\f$
+ *   using the helper `grad_6phi_from_chi`.
+ * - Gamma constraint reuses `metric_inverse_divergence` to compare the evolved \f$\tilde{\Gamma}^i\f$ against
+ *   \f$-\partial_j\tilde{\gamma}^{ij}\f$.
+ */
 template <typename T>
 static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> *Ricci6,
                                             Field3D<T> &H_out, Field3D<T> M_out[3],
@@ -169,6 +198,9 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
     tensorium_RG::bssn::assert_invariants(G, "constraints");
 }
 
+/**
+ * @brief Convenience logger that prints Linf/L2 norms of \f$H\f$, \f$|\vec{M}|\f$, and \f$|\vec{C}|\f$ to stdout.
+ */
 static inline void print_constraint_norms(BSSNGridSoA<double> &G, const Field3D<double> &H,
                                           const Field3D<double> M[3], const Field3D<double> C[3],
                                           double r_min, double r_max, double xc, double yc,

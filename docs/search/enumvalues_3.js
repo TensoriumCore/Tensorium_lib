@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['delta_0',['delta',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea63bcabf86a9a991864777c631c5b7617',1,'Latex.hpp']]],
-  ['delta_1',['Delta',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33feadb1f4ab5845def61a83d5df13e0c2397',1,'Latex.hpp']]],
-  ['derivative_2',['Derivative',['../namespacetensorium.html#aca4359c937a7df5ea1c07312e69c18a4a70ae6e285cc14c8486e3cf5bec39d1fd',1,'tensorium']]],
-  ['derivative_3',['derivative',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921a98081e91c3bdc7c16c0f26719caf3abe',1,'Latex.hpp']]],
-  ['div_4',['div',['../Latex_8hpp.html#aa520fbf142ba1e7e659590c07da31921a38696558dc98494c08d951c052900a2a',1,'Latex.hpp']]]
+  ['x_0',['X',['../namespacetensorium___r_g_1_1fd.html#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255',1,'tensorium_RG::fd']]],
+  ['xx_1',['XX',['../namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1',1,'tensorium_RG']]],
+  ['xy_2',['XY',['../namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770',1,'tensorium_RG']]],
+  ['xz_3',['XZ',['../namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad',1,'tensorium_RG']]]
 ];

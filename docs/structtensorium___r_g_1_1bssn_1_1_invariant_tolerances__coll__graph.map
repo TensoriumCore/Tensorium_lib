@@ -1,0 +1,3 @@
+<map id="tensorium_RG::bssn::InvariantTolerances" name="tensorium_RG::bssn::InvariantTolerances">
+<area shape="rect" id="Node000001" title="Thresholds against which assert_invariants compares the measured drifts." alt="" coords="5,5,137,168"/>
+</map>

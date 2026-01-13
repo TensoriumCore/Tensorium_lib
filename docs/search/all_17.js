@@ -1,8 +1,17 @@
 var searchData=
 [
-  ['x_0',['X',['../structtensorium__RG_1_1ChiContext.html#ad649da243df74fcceb50b1225380abf2',1,'tensorium_RG::ChiContext']]],
-  ['x_1',['x',['../classtensorium_1_1solver_1_1Gauss.html#aba0a246d4cd9e16d403ff21dae437c10',1,'tensorium::solver::Gauss::x'],['../classtensorium_1_1solver_1_1Gauss.html#a61e23afd6a653cf81d749ecd300a0371',1,'tensorium::solver::Gauss::x(n)']]],
-  ['x_2',['X',['../TensoriumDispatchPlugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087',1,'TensoriumDispatchPlugin.cpp']]],
-  ['xi_3',['Xi',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea5c24affd3aba4a2851c3b1bf42b9d3fd',1,'Latex.hpp']]],
-  ['xi_4',['xi',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ead88468fb83a6d5675fcd2bdcb8fa57bf',1,'Latex.hpp']]]
+  ['n_0',['n',['../classtensorium_1_1solver_1_1_gauss.html#afb672d77f5cd5254f91432139dff80c1',1,'tensorium::solver::Gauss::n'],['../classtensorium_1_1_vector.html#a771d490d80c2f03d43f97d36ed2173c6',1,'tensorium::Vector::n']]],
+  ['ng_1',['ng',['../structtensorium___r_g_1_1_grid_dims.html#a72f54a7d79d3b4869fbddea12ba2087e',1,'tensorium_RG::GridDims']]],
+  ['norm1_5fvec_2',['norm1_vec',['../namespacetensorium.html#a9cf7aa7b7f22ee35b6aebe14418d3550',1,'tensorium']]],
+  ['norm2_5fvec_3',['norm2_vec',['../namespacetensorium.html#a753cb1eae7b151852b91836f536c0790',1,'tensorium']]],
+  ['norm_5fu_4',['norm_u',['../classtensorium_1_1_vector.html#ad6634e310e872b717f71cd7e485a0d5d',1,'tensorium::Vector']]],
+  ['norm_5fv_5',['norm_v',['../classtensorium_1_1_vector.html#a3119d489b48d21e7defed799df2aec7d',1,'tensorium::Vector']]],
+  ['norminf_5fvec_6',['normInf_vec',['../namespacetensorium.html#add383e7be1f7ffe468f45cc5d35ce67e',1,'tensorium']]],
+  ['notes_7',['Notes',['../dir_6ec45ecc21b5f4caf93e55bbe92e9dfe.html#autotoc_md33',1,'']]],
+  ['nx_8',['nx',['../structtensorium___r_g_1_1_grid_dims.html#ae2438dc29c3bb3cadf6bee60ad80bbec',1,'tensorium_RG::GridDims']]],
+  ['nx_5ftot_9',['nx_tot',['../structtensorium___r_g_1_1_strides.html#a3d49a4f289e3de33a8bb7f1f2fb62184',1,'tensorium_RG::Strides']]],
+  ['ny_10',['ny',['../structtensorium___r_g_1_1_grid_dims.html#a43de9f9838489fc76d4d191c73b71986',1,'tensorium_RG::GridDims']]],
+  ['ny_5ftot_11',['ny_tot',['../structtensorium___r_g_1_1_strides.html#ab0d7bd234d0fb9f83796092dad33db0e',1,'tensorium_RG::Strides']]],
+  ['nz_12',['nz',['../structtensorium___r_g_1_1_grid_dims.html#a28a0aa992f3e069d304c603f4bb9bb31',1,'tensorium_RG::GridDims']]],
+  ['nz_5ftot_13',['nz_tot',['../structtensorium___r_g_1_1_strides.html#a348eb88fd05957bd09196b74df9d0d14',1,'tensorium_RG::Strides']]]
 ];

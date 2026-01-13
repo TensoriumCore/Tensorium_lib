@@ -6,8 +6,20 @@
 
 #include <algorithm>
 
+/**
+ * @file BSSNEvolutionK.hpp
+ * @brief RHS for the mean curvature \f$K\f$.
+ * @details Combines advection, the covariant Laplacian of the lapse, and quadratic extrinsic
+ * curvature terms:
+ * \f[
+ * \partial_t K = \beta^i\partial_i K - \gamma^{ij}D_i D_j \alpha + \alpha(\tilde{A}_{ij}\tilde{A}^{ij} + \tfrac{1}{3}K^2).
+ * \f]
+ */
+
 namespace tensorium_RG::bssn {
 
+#ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
+#define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
 inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
     return std::min(lower + guard, upper);
 }
@@ -15,10 +27,15 @@ inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
 inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
     return (upper > guard) ? upper - guard : lower;
 }
+#endif
 
+/**
+ * @brief Compute \f$\partial_t K\f$ throughout the interior region.
+ */
 template <typename T>
 inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t padding = 4) {
     using namespace tensorium_RG::fd;
+    const T ko_sigma = T(0.1);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -80,9 +97,9 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T beta_y = G.beta[1].ptr()[id];
                 const T beta_z = G.beta[2].ptr()[id];
 
-                const T adv = beta_x * T(Dx(G.K, i, j, k, G.dx)) +
-                              beta_y * T(Dy(G.K, i, j, k, G.dy)) +
-                              beta_z * T(Dz(G.K, i, j, k, G.dz));
+                const T adv = beta_x * T(Dx_upwind(G.K, i, j, k, G.dx, beta_x)) +
+                              beta_y * T(Dy_upwind(G.K, i, j, k, G.dy, beta_y)) +
+                              beta_z * T(Dz_upwind(G.K, i, j, k, G.dz, beta_z));
 
                 const T d_alpha[3] = {T(Dx(G.alpha, i, j, k, G.dx)), T(Dy(G.alpha, i, j, k, G.dy)),
                                       T(Dz(G.alpha, i, j, k, G.dz))};
@@ -182,7 +199,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
 
                 const T quad = alpha * (A_contract + third * K_val * K_val);
 
-                rhs_K.ptr()[id] = adv - laplacian + quad;
+                rhs_K.ptr()[id] = adv - laplacian + quad + T(KO6(G.K, i, j, k, ko_sigma));
             }
         }
     }

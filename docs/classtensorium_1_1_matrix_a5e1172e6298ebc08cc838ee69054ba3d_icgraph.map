@@ -1,0 +1,5 @@
+<map id="tensorium::Matrix::mul_vec" name="tensorium::Matrix::mul_vec">
+<area shape="rect" id="Node000001" title="Multiply matrix by a vector using SIMD." alt="" coords="189,5,319,46"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a1b1e17cf1fd8903d8dca89dea2703af0" title=" " alt="" coords="5,13,141,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,26,141,28,141,23,176,25"/>
+</map>

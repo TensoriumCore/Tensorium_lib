@@ -3,6 +3,16 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 
+/**
+ * @file BSSNGamma.hpp
+ * @brief Contracted conformal connection diagnostics and construction utilities.
+ * @details
+ * \f$\tilde{\Gamma}^i = -\partial_j \tilde{\gamma}^{ij}\f$ in the BSSN formalism.  The code maintains
+ * both an evolved \f$\tilde{\Gamma}^i\f$ and a diagnostic divergence of \f$\tilde{\gamma}^{ij}\f$ to track the
+ * algebraic Gamma constraint \f$C^i\f$.  These helpers evaluate the divergence without mutating the
+ * stored field so `compute_bssn_constraints` can compare the two and quantify violations.
+ */
+
 namespace tensorium_RG::bssn {
 
 namespace detail {
@@ -25,6 +35,11 @@ inline T diff_gamma_tilde_inv_component(const BSSNGridSoA<T> &G, size_t i, size_
 // this diagnostic derivative against the stateful vector field stored in the
 // grid, so that violations remain observable even if Γ̃^i is evolved
 // independently.
+/**
+ * @brief Evaluate \f$\partial_j\tilde{\gamma}^{ij}\f$ using the 4th-order derivative operators.
+ * @details Called during Gamma-constraint monitoring as well as projection steps to re-synchronize
+ * the evolved \f$\tilde{\Gamma}^i\f$ with the metric after renormalization.
+ */
 template <typename T>
 inline void metric_inverse_divergence(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
                                       T out[3]) {
@@ -37,9 +52,11 @@ inline void metric_inverse_divergence(const BSSNGridSoA<T> &G, size_t i, size_t 
     }
 }
 
-// Convenience helper for initial-data construction.  Do not call this function
-// just prior to evaluating the Γ̃ constraint, otherwise the check becomes
-// tautological.
+/**
+ * @brief Convenience wrapper that produces \f$\tilde{\Gamma}^i\f$ from the metric and stores the
+ *        negative divergence as required by the BSSN definition.
+ * @note Avoid calling right before constraint evaluation, otherwise \f$C^i\f$ will trivially vanish.
+ */
 template <typename T>
 inline void compute_contracted_gamma_from_metric(BSSNGridSoA<T> &G, size_t i, size_t j,
                                                  size_t k, T out[3]) {

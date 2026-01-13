@@ -1,0 +1,7 @@
+<map id="tensorium_RG::fd::KO6" name="tensorium_RG::fd::KO6">
+<area shape="rect" id="Node000001" title="Dimension&#45;summed Kreiss–Oliger dissipation scaled by ." alt="" coords="5,5,164,31"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#a9e557ea7b8cb853cbe0b520161551000" title="One&#45;dimensional slice of the 6th&#45;order Kreiss–Oliger filter." alt="" coords="212,5,401,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,16,199,18,193,18,164,21"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="449,5,599,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,16,436,18,431,18,401,21"/>
+</map>

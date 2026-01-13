@@ -1,17 +1,9 @@
 var searchData=
 [
-  ['simdtraits_0',['SimdTraits',['../structsimd_1_1SimdTraits.html',1,'simd']]],
-  ['simdtraits_3c_20double_2c_20avx2_5ft_20_3e_1',['SimdTraits&lt; double, avx2_t &gt;',['../structsimd_1_1SimdTraits_3_01double_00_01avx2__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20double_2c_20sse_5ft_20_3e_2',['SimdTraits&lt; double, sse_t &gt;',['../structsimd_1_1SimdTraits_3_01double_00_01sse__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20float_2c_20avx2_5ft_20_3e_3',['SimdTraits&lt; float, avx2_t &gt;',['../structsimd_1_1SimdTraits_3_01float_00_01avx2__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20float_2c_20sse_5ft_20_3e_4',['SimdTraits&lt; float, sse_t &gt;',['../structsimd_1_1SimdTraits_3_01float_00_01sse__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20size_5ft_2c_20avx2_5ft_20_3e_5',['SimdTraits&lt; size_t, avx2_t &gt;',['../structsimd_1_1SimdTraits_3_01size__t_00_01avx2__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20size_5ft_2c_20sse_5ft_20_3e_6',['SimdTraits&lt; size_t, sse_t &gt;',['../structsimd_1_1SimdTraits_3_01size__t_00_01sse__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20std_3a_3acomplex_3c_20double_20_3e_2c_20avx2_5ft_20_3e_7',['SimdTraits&lt; std::complex&lt; double &gt;, avx2_t &gt;',['../structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01avx2__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20std_3a_3acomplex_3c_20double_20_3e_2c_20sse_5ft_20_3e_8',['SimdTraits&lt; std::complex&lt; double &gt;, sse_t &gt;',['../structsimd_1_1SimdTraits_3_01std_1_1complex_3_01double_01_4_00_01sse__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20std_3a_3acomplex_3c_20float_20_3e_2c_20avx2_5ft_20_3e_9',['SimdTraits&lt; std::complex&lt; float &gt;, avx2_t &gt;',['../structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01avx2__t_01_4.html',1,'simd']]],
-  ['simdtraits_3c_20std_3a_3acomplex_3c_20float_20_3e_2c_20sse_5ft_20_3e_10',['SimdTraits&lt; std::complex&lt; float &gt;, sse_t &gt;',['../structsimd_1_1SimdTraits_3_01std_1_1complex_3_01float_01_4_00_01sse__t_01_4.html',1,'simd']]],
-  ['spectalchebyshev_11',['SpectalChebyshev',['../classtensorium_1_1SpectalChebyshev.html',1,'tensorium']]],
-  ['spectralfft_12',['SpectralFFT',['../classtensorium_1_1SpectralFFT.html',1,'tensorium']]],
-  ['sse_5ft_13',['sse_t',['../structsse__t.html',1,'']]]
+  ['rebind_0',['rebind',['../struct_aligned_allocator_1_1rebind.html',1,'AlignedAllocator']]],
+  ['ricciconformaltensor_1',['RicciConformalTensor',['../classtensorium___r_g_1_1_ricci_conformal_tensor.html',1,'tensorium_RG']]],
+  ['ricciphysicaltensor_2',['RicciPhysicalTensor',['../classtensorium___r_g_1_1_ricci_physical_tensor.html',1,'tensorium_RG']]],
+  ['riccitensor_3',['RicciTensor',['../classtensorium___r_g_1_1_ricci_tensor.html',1,'tensorium_RG']]],
+  ['riccitildetensor_4',['RicciTildeTensor',['../classtensorium___r_g_1_1_ricci_tilde_tensor.html',1,'tensorium_RG']]],
+  ['riemanntensor_5',['RiemannTensor',['../classtensorium___r_g_1_1_riemann_tensor.html',1,'tensorium_RG']]]
 ];

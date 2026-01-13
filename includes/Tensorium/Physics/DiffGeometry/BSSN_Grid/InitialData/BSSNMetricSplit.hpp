@@ -4,8 +4,16 @@
 #include "../Fields/BSSNTypes.hpp"
 #include <cmath>
 
+/**
+ * @file BSSNMetricSplit.hpp
+ * @brief Convert analytic spacetime metrics into ADM/BSSN variables sampled at grid points.
+ */
+
 namespace tensorium_RG::bssn {
 
+/**
+ * @brief Evaluate the ADM 3+1 split of `metric` at spatial point `X`.
+ */
 template <typename T>
 inline ADMVariables<T> split_3p1(const tensorium::Vector<T> &X, const Metric<T> &metric) {
     ADMVariables<T> adm;
@@ -13,6 +21,9 @@ inline ADMVariables<T> split_3p1(const tensorium::Vector<T> &X, const Metric<T> 
     return adm;
 }
 
+/**
+ * @brief Convert ADM spatial metric \f$\gamma_{ij}\f$ into conformal variables \f$\chi,\tilde{\gamma}_{ij}\f$.
+ */
 template <typename T> inline BSSNVariables<T> adm_to_bssn(const tensorium::Tensor<T, 2> &gamma_ij) {
     BSSNVariables<T> bssn;
 

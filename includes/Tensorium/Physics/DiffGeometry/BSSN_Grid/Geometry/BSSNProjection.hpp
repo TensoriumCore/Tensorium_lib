@@ -7,8 +7,20 @@
 #include <algorithm>
 #include <cmath>
 
+/**
+ * @file BSSNProjection.hpp
+ * @brief Enforce the algebraic BSSN constraints \f$\det\tilde{\gamma}=1\f$ and \f$\mathrm{tr}\,\tilde{A}=0\f$.
+ * @details
+ * RK stages drift away from the conformal manifold because `compute_rhs_gamma_tilde` and
+ * `compute_rhs_A_tilde` treat \f$\tilde{\gamma}_{ij}\f$ and \f$\tilde{A}_{ij}\f$ as unconstrained tensors.
+ * `project_bssn_state` rescales the metric and subtracts traces so the invariants monitored in
+ * `BSSNInvariants.hpp` remain within tolerance.  Optional knobs let callers skip expensive steps when
+ * experimenting with alternative stabilization techniques.
+ */
+
 namespace tensorium_RG::bssn {
 
+/// @brief Fine-grained control over which invariants get enforced during projection.
 struct ProjectionConfig {
     size_t padding = 4;                // guard cells before touching interior
     bool   renormalize_metric = true;  // enforce det(gamma_tilde)=1
@@ -26,6 +38,20 @@ inline double det3(double gxx, double gxy, double gxz, double gyy, double gyz, d
 
 } // namespace detail
 
+/**
+ * @brief Apply determinant renormalization, \f$\tilde{A}\f$ trace-free projection, and \f$\tilde{\Gamma}^i\f$
+ *        resynchronization.
+ * @param cfg Controls which projections are executed; defaults enforce all invariants inside the
+ *            interior `padding` region.
+ *
+ * @details
+ * - Metric renormalization rescales \f$\tilde{\gamma}_{ij}\f$ by \f$\det(\tilde{\gamma})^{-1/3}\f$ so the new
+ *   determinant equals 1.
+ * - Trace-free projection subtracts \f$\tfrac{1}{3}\tilde{\gamma}_{ij}\tilde{\gamma}^{mn}\tilde{A}_{mn}\f$ from
+ *   \f$\tilde{A}_{ij}\f$.
+ * - Optionally recompute \f$\tilde{\gamma}^{ij}\f$ from the renormalized metric and resynchronize
+ *   \f$\tilde{\Gamma}^i\f$ via `metric_inverse_divergence`.
+ */
 template <typename T> inline void project_bssn_state(BSSNGridSoA<T> &G, const ProjectionConfig &cfg = {}) {
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -118,6 +144,7 @@ template <typename T> inline void project_bssn_state(BSSNGridSoA<T> &G, const Pr
     }
 }
 
+/// @brief Convenience wrapper that enforces all invariants after every RK stage.
 template <typename T> inline void project_bssn_after_update(BSSNGridSoA<T> &G, size_t padding = 4) {
     ProjectionConfig cfg;
     cfg.padding = padding;

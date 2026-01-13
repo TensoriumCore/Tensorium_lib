@@ -1,0 +1,12 @@
+<map id="tensorium::SpectralFFT::forward_3D" name="tensorium::SpectralFFT::forward_3D">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,164,75"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2" title="Perform forward FFT (in&#45;place)." alt="" coords="212,35,370,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,52,199,55,193,55,164,58"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)." alt="" coords="418,35,576,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,52,405,55,400,55,370,58"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca" title="Bit&#45;reversal permutation step." alt="" coords="624,5,783,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="576,41,606,39,611,39,577,46"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="831,42,987,68"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="577,54,624,55,783,55,818,57,812,57,783,60,624,60,577,60"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="783,34,818,42,812,42,783,40"/>
+</map>

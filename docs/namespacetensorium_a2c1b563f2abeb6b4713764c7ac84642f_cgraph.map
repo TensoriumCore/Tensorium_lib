@@ -1,7 +1,7 @@
 <map id="tensorium::print_ricci_scalar" name="tensorium::print_ricci_scalar">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,165,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciTensor.html#a7116dde0bbf4c93ce8906bdebb7f6d85" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="213,5,407,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,25,197,25,197,30,165,30"/>
-<area shape="rect" id="Node000003" href="$classtensorium__RG_1_1RicciTensor.html#adaa6bd90a6c51c4c7a2f381e620f9ff6" title="Computes the Ricci scalar curvature." alt="" coords="455,5,649,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="408,25,440,25,440,30,408,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,148,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_ricci_tensor.html#a7116dde0bbf4c93ce8906bdebb7f6d85" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="196,5,378,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,23,183,25,177,26,148,28"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_ricci_tensor.html#adaa6bd90a6c51c4c7a2f381e620f9ff6" title="Computes the Ricci scalar curvature." alt="" coords="426,5,608,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,23,413,26,408,26,378,28"/>
 </map>

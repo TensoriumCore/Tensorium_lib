@@ -1,7 +1,7 @@
 <map id="tensorium::contract_riemann_to_ricci" name="tensorium::contract_riemann_to_ricci">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,154,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium__RG_1_1RicciTensor.html#af7d73c6b75348940389d9192c5666f62" title="Contracts a 4D Riemann tensor into the 2D Ricci tensor." alt="" coords="202,5,396,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,25,186,25,186,30,154,30"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="444,14,605,42"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,25,429,25,429,30,396,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,139,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_ricci_tensor.html#af7d73c6b75348940389d9192c5666f62" title="Contracts a 4D Riemann tensor into the 2D Ricci tensor." alt="" coords="187,5,369,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,23,174,25,168,26,139,28"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="417,13,563,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="369,23,404,26,399,26,369,28"/>
 </map>

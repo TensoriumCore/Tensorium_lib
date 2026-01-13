@@ -6,17 +6,44 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
+/**
+ * @file BSSNInvariants.hpp
+ * @brief Det(\f$\tilde{\gamma}\f$), trace-free, Gamma-constraint, and \f$\chi\f$ monitors.
+ * @details
+ * Projection routines guarantee \f$\det\tilde{\gamma}=1\f$ and \f$\mathrm{tr}\,\tilde{A}=0\f$ up to machine
+ * precision, but floating-point round-off and explicit RHS updates can reintroduce violations.  This
+ * header provides statistics over the physical domain to quantify how close the numerical solution
+ * remains to the algebraic manifold.  The tolerances scale with the stencil order (default 4th) and
+ * machine precision to avoid excessive false positives.
+ */
+
 namespace tensorium_RG::bssn {
 
+inline double &chi_tolerance_override_storage() {
+    static double value = std::numeric_limits<double>::quiet_NaN();
+    return value;
+}
+
+inline void set_chi_tolerance_override(double tol) {
+    chi_tolerance_override_storage() = tol;
+}
+
+inline double chi_tolerance_override() {
+    return chi_tolerance_override_storage();
+}
+
+/// @brief Index-space and physical coordinates where the worst invariant violation occurred.
 struct SampleLocation {
     size_t i = 0, j = 0, k = 0;
     double x = 0.0, y = 0.0, z = 0.0;
 };
 
+/// @brief Aggregated statistics computed over the interior domain.
 struct InvariantStats {
     double         max_det_deviation = 0.0;
     double         l2_det_deviation = 0.0;
@@ -43,6 +70,7 @@ struct InvariantStats {
     size_t samples = 0;
 };
 
+/// @brief Thresholds against which `assert_invariants` compares the measured drifts.
 struct InvariantTolerances {
     double det_tol = 0.0;
     double trace_tol = 0.0;
@@ -61,6 +89,18 @@ inline double det3(const double m[3][3]) {
 
 } // namespace detail
 
+/**
+ * @brief Measure det, trace, metric-identity, Gamma-constraint, and minimum-\f$\chi\f$ over the grid.
+ * @param padding Number of cells excluded near physical boundaries to avoid halo contamination.
+ * @param r_min,r_max Optional spherical mask to focus on physically relevant regions.
+ *
+ * @details
+ * - Determinant deviation: \f$|\det\tilde{\gamma}-1|\f$.
+ * - Trace of \f$\tilde{A}\f$: \f$|\tilde{\gamma}^{ij}\tilde{A}_{ij}|\f$.
+ * - Metric identity: maximum norm of \f$\tilde{\gamma}_{ik}\tilde{\gamma}^{kj}-\delta_i^{\ j}\f$.
+ * - Gamma constraint: \f$|\tilde{\Gamma}^i + \partial_j\tilde{\gamma}^{ij}|\f$.
+ * - Minimum \f$\chi\f$: used to detect slice stretching approaching the excision floor.
+ */
 template <typename T>
 inline InvariantStats compute_invariant_stats(const BSSNGridSoA<T> &G, size_t padding = 4,
                                              double r_min = 0.0,
@@ -197,10 +237,14 @@ inline InvariantStats compute_invariant_stats(const BSSNGridSoA<T> &G, size_t pa
     return stats;
 }
 
-// Resolution-aware tolerance model: the leading truncation error of the 4th
-// order stencils scales like (h / L)^p with p=4, where h is the largest grid
-// spacing and L the characteristic domain size.  We blend that error estimate
-// with sqrt(epsilon) to avoid demanding more than double precision can offer.
+/**
+ * @brief Build tolerances that reflect the expected truncation error of the chosen stencil order.
+ * @details
+ * The leading truncation error of a \f$p\f$th-order scheme scales like \f$(h/L)^p\f$.  This routine uses
+ * \f$h=\max(\Delta x,\Delta y,\Delta z)\f$ and \f$L\f$ as the largest domain extent to produce
+ * resolution-aware tolerances, blended with \f\sqrt{\epsilon_{\text{machine}}}\f to respect floating-point
+ * limits.
+ */
 template <typename T>
 inline InvariantTolerances compute_invariant_tolerances(const BSSNGridSoA<T> &G,
                                                         double scheme_order = 4.0,
@@ -228,12 +272,22 @@ inline InvariantTolerances compute_invariant_tolerances(const BSSNGridSoA<T> &G,
     tol.metric_tol = make_tol(1.5);
     tol.gamma_tol = make_tol(2.0);
     tol.chi_tol = machine;
+    const double chi_override = chi_tolerance_override();
+    if (!std::isnan(chi_override))
+        tol.chi_tol = chi_override;
     return tol;
 }
 
+/**
+ * @brief Compare measured invariants against tolerances and throw/log when drifts exceed bounds.
+ * @param stage Text label identifying the caller (used in exception messages).
+ * @param padding Same meaning as in `compute_invariant_stats`.
+ * @param tol Tunable tolerances; use `compute_invariant_tolerances` for defaults.
+ * @param throw_on_violation Toggle between exceptions and stderr warnings.
+ */
 template <typename T>
 inline void assert_invariants(const BSSNGridSoA<T> &G, const char *stage, size_t padding,
-                              const InvariantTolerances &tol) {
+                              const InvariantTolerances &tol, bool throw_on_violation = true) {
     const auto stats = compute_invariant_stats(G, padding);
     if (stats.samples == 0)
         return;
@@ -245,35 +299,38 @@ inline void assert_invariants(const BSSNGridSoA<T> &G, const char *stage, size_t
         return oss.str();
     };
 
-    auto raise = [&](const std::string &quantity, double value, double bound, double l2,
-                     double mean, const SampleLocation &loc) {
+    auto handle_violation = [&](const std::string &quantity, double value, double bound, double l2,
+                                double mean, const SampleLocation &loc) {
         std::ostringstream oss;
         oss << "[BSSN::" << (stage ? stage : "unknown") << "] " << quantity
             << " violation: max=" << value << " (tol=" << bound << ")"
             << " L2=" << l2 << " mean=" << mean << " at " << describe(loc);
-        throw std::runtime_error(oss.str());
+        if (throw_on_violation)
+            throw std::runtime_error(oss.str());
+        std::cerr << "[WARN] " << oss.str() << '\n';
     };
 
     if (stats.max_det_deviation > tol.det_tol)
-        raise("det(gamma_tilde)", stats.max_det_deviation, tol.det_tol,
-              stats.l2_det_deviation, stats.mean_det_deviation, stats.det_location);
+        handle_violation("det(gamma_tilde)", stats.max_det_deviation, tol.det_tol,
+                         stats.l2_det_deviation, stats.mean_det_deviation, stats.det_location);
     if (stats.max_trace_A > tol.trace_tol)
-        raise("tr(A_tilde)", stats.max_trace_A, tol.trace_tol, stats.l2_trace_A,
-              stats.mean_trace_A, stats.trace_location);
+        handle_violation("tr(A_tilde)", stats.max_trace_A, tol.trace_tol, stats.l2_trace_A,
+                         stats.mean_trace_A, stats.trace_location);
     if (stats.max_metric_identity > tol.metric_tol)
-        raise("gamma * gamma^{-1}", stats.max_metric_identity, tol.metric_tol,
-              stats.l2_metric_identity, stats.mean_metric_identity, stats.metric_location);
+        handle_violation("gamma * gamma^{-1}", stats.max_metric_identity, tol.metric_tol,
+                         stats.l2_metric_identity, stats.mean_metric_identity, stats.metric_location);
     if (stats.max_gamma_constraint > tol.gamma_tol)
-        raise("Gamma coherence (tildeGamma + ∂_j g^{ij})", stats.max_gamma_constraint,
-              tol.gamma_tol, stats.l2_gamma_constraint, stats.mean_gamma_constraint,
-              stats.gamma_location);
+        handle_violation("Gamma coherence (tildeGamma + ∂_j g^{ij})", stats.max_gamma_constraint,
+                         tol.gamma_tol, stats.l2_gamma_constraint, stats.mean_gamma_constraint,
+                         stats.gamma_location);
     if (!(stats.min_chi > tol.chi_tol))
-        raise("chi", stats.min_chi, tol.chi_tol, 0.0, stats.min_chi, stats.chi_location);
+        handle_violation("chi", stats.min_chi, tol.chi_tol, 0.0, stats.min_chi, stats.chi_location);
 }
 
 template <typename T>
-inline void assert_invariants(const BSSNGridSoA<T> &G, const char *stage, size_t padding = 4) {
-    assert_invariants(G, stage, padding, compute_invariant_tolerances(G));
+inline void assert_invariants(const BSSNGridSoA<T> &G, const char *stage, size_t padding = 4,
+                              bool throw_on_violation = true) {
+    assert_invariants(G, stage, padding, compute_invariant_tolerances(G), throw_on_violation);
 }
 
 } // namespace tensorium_RG::bssn

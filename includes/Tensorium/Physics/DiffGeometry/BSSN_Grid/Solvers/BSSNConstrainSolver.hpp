@@ -7,8 +7,27 @@
 #include <cmath>
 #include <vector>
 
+/**
+ * @file BSSNConstrainSolver.hpp
+ * @brief Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver.
+ * @details
+ * Binary puncture initial data require solving the Hamiltonian constraint in the conformally flat
+ * ansatz \f$\gamma_{ij}=\psi^4\delta_{ij}\f$ with analytic \f$\tilde{A}_{ij}\f$ constructed from prescribed
+ * linear momenta and spins (Bowen–York).  This header provides routines to (1) add the momentum and
+ * spin pieces
+ * \f[
+ * \tilde{A}_{ij}^P = \frac{3}{2 r^2}(n_i P_j + n_j P_i - (\delta_{ij}-n_i n_j) n^k P_k),\qquad
+ * \tilde{A}_{ij}^S = \frac{3}{r^3}\epsilon_{k \ell(i} S^k n^{\ell} n_{j)}
+ * \f]
+ * and (2) solve \f$\nabla^2 u + \frac{1}{8}\psi^{-7}\tilde{A}_{ij}\tilde{A}^{ij} = 0\f$ for the correction \f$u\f$ to
+ * the conformal factor \f$\psi = 1 + \sum_a m_a/(2 r_a) + u\f$ via red-black successive over-relaxation.
+ */
+
 namespace tensorium_RG::init {
 
+/**
+ * @brief Add the trace-free momentum component \f$\tilde{A}_{ij}^P\f$ to \f$\tilde{A}_{ij}\f$.
+ */
 template <typename T>
 static inline void by_add_momentum_TF(T A[3][3], const T n[3], const T P[3], T r) {
     const T one = T(1);
@@ -38,6 +57,9 @@ static inline void by_add_momentum_TF(T A[3][3], const T n[3], const T P[3], T r
     }
 }
 
+/**
+ * @brief Add the spin component \f$\tilde{A}_{ij}^S\f$ derived from \f$S^i\f$.
+ */
 template <typename T>
 static inline void by_add_spin_TF(T A[3][3], const T n[3], const T S[3], T r) {
     const T one = T(1);
@@ -59,6 +81,12 @@ static inline void by_add_spin_TF(T A[3][3], const T n[3], const T S[3], T r) {
     }
 }
 
+/**
+ * @brief Populate \f$\tilde{A}_{ij}\f$ with the superposition of two Bowen–York punctures.
+ * @param x1,y1,z1,x2,y2,z2 Centers of punctures 1 and 2.
+ * @param P1,S1 Linear momentum and spin of puncture 1; analogous for puncture 2.
+ * @param r_floor Minimum radius enforced when normalizing \f$n_i\f$.
+ */
 template <typename T>
 inline void fill_Atilde_bowen_york_binary(BSSNGridSoA<T> &G, T x1, T y1, T z1, const T P1[3],
                                           const T S1[3], T x2, T y2, T z2, const T P2[3],
@@ -112,6 +140,9 @@ inline void fill_Atilde_bowen_york_binary(BSSNGridSoA<T> &G, T x1, T y1, T z1, c
             }
 }
 
+/**
+ * @brief Compute \f$\tilde{A}_{ij}\tilde{A}^{ij}\f$ assuming \f$\tilde{\gamma}_{ij}=\delta_{ij}\f$.
+ */
 template <typename T> static inline T Atilde_sq_flat_from_soa(const BSSNGridSoA<T> &G, size_t id) {
     const T Axx = G.A_tilde[XX].ptr()[id];
     const T Axy = G.A_tilde[XY].ptr()[id];
@@ -122,6 +153,14 @@ template <typename T> static inline T Atilde_sq_flat_from_soa(const BSSNGridSoA<
     return Axx * Axx + Ayy * Ayy + Azz * Azz + T(2) * (Axy * Axy + Axz * Axz + Ayz * Ayz);
 }
 
+/**
+ * @brief Solve the Lichnerowicz equation \f$\Delta u = -\frac{1}{8}\psi^{-7}\tilde{A}_{ij}\tilde{A}^{ij}\f$ via red-black SOR.
+ * @param m1,m2,x1,... Coordinates and bare masses entering the Brill–Lindquist conformal factor.
+ * @param maxIter,tol,omega Solver controls (iterations, residual tolerance, relaxation factor).
+ * @details
+ * The discrete Laplacian uses standard 2nd-order stencils to balance efficiency with robustness.
+ * After convergence the routine updates \f$\chi=\psi^{-4}\f$ and \f$\alpha=\psi^{-2}\f$ and reprojects the grid.
+ */
 template <typename T>
 inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, T m2, T x2, T y2,
                                      T z2, T r_floor = T(1e-6), int maxIter = 4000,

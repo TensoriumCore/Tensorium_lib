@@ -1,0 +1,51 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN/BSSNDerivatives.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN/BSSNDerivatives.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="568,5,762,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_auto_diff_8hpp.html" title=" " alt="" coords="368,109,544,165"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="593,70,514,110,510,106,597,66"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_ricci_conformal_tensor_8hpp.html" title="Computes the conformal Ricci tensor contributions from the conformal factor &#160;in the BSSN formalism." alt="" coords="412,213,668,268"/>
+<area shape="poly" id="edge32_Node000001_Node000003" title=" " alt="" coords="550,48,493,60,435,73,387,90,370,100,358,111,350,124,348,136,350,149,358,163,384,190,418,211,413,213,380,194,354,166,345,151,342,136,345,122,354,107,367,96,385,85,433,68,492,54,555,45"/>
+<area shape="rect" id="Node000014" href="$_b_s_s_n_ricci_tilde_tensor_8hpp.html" title="Computes the conformal part &#160;of the Ricci tensor in the BSSN formalism." alt="" coords="692,213,916,268"/>
+<area shape="poly" id="edge33_Node000001_Node000014" title=" " alt="" coords="734,67,758,86,777,108,790,133,799,161,806,213,801,212,794,163,785,135,772,110,754,89,734,72"/>
+<area shape="rect" id="Node000015" href="$_b_s_s_n_chi_context_8hpp.html" title=" " alt="" coords="568,109,762,165"/>
+<area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="666,74,668,109,663,107,664,79"/>
+<area shape="rect" id="Node000016" href="$_b_s_s_n_contracted_christoffel_8hpp.html" title=" " alt="" coords="838,109,1090,165"/>
+<area shape="poly" id="edge28_Node000001_Node000016" title=" " alt="" coords="759,64,886,108,881,109,760,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,174,520,212,515,212,488,180"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_setup_8hpp.html" title=" " alt="" coords="591,420,753,476"/>
+<area shape="poly" id="edge24_Node000002_Node000005" title=" " alt="" coords="421,175,402,214,396,241,402,267,418,294,438,319,486,361,539,393,593,419,588,420,537,398,483,365,434,322,414,297,397,269,390,241,397,212,418,179"/>
+<area shape="poly" id="edge21_Node000002_Node000014" title=" " alt="" coords="559,166,713,211,708,213,560,171"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_ricci_complete_8hpp.html" title=" " alt="" coords="565,316,779,372"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="587,275,639,315,634,316,587,281"/>
+<area shape="poly" id="edge20_Node000003_Node000005" title=" " alt="" coords="536,282,540,328,546,350,555,371,579,397,609,419,604,420,575,401,551,373,541,352,535,329,534,287"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="673,385,674,421,669,418,670,390"/>
+<area shape="rect" id="Node000006" href="$_functionnal_r_g_8hpp.html" title=" " alt="" coords="127,531,328,572"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="574,472,340,526,312,533,309,528,339,521,578,469"/>
+<area shape="rect" id="Node000011" href="$_b_s_s_n_atilde_tensor_8hpp.html" title=" " alt="" coords="352,524,552,579"/>
+<area shape="poly" id="edge14_Node000005_Node000011" title=" " alt="" coords="589,484,504,525,502,521,593,481"/>
+<area shape="rect" id="Node000012" href="$_b_s_s_n_print_debug_8hpp.html" title=" " alt="" coords="575,524,768,579"/>
+<area shape="poly" id="edge16_Node000005_Node000012" title=" " alt="" coords="664,489,666,524,661,522,661,494"/>
+<area shape="rect" id="Node000013" href="$_b_s_s_nextrin_tensor_8hpp.html" title=" " alt="" coords="793,524,991,579"/>
+<area shape="poly" id="edge18_Node000005_Node000013" title=" " alt="" coords="737,480,827,523,822,523,736,485"/>
+<area shape="rect" id="Node000007" href="$_christoffel_symbol_8hpp.html" title=" " alt="" coords="88,627,242,683"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="202,583,176,628,172,625,198,587"/>
+<area shape="rect" id="Node000009" href="$_riemann_tensor_8hpp.html" title=" " alt="" coords="215,731,369,787"/>
+<area shape="poly" id="edge12_Node000006_Node000009" title=" " alt="" coords="230,585,245,627,278,731,273,730,240,628,228,590"/>
+<area shape="rect" id="Node000010" href="$_tensorium_8hpp.html" title=" " alt="" coords="341,635,474,676"/>
+<area shape="poly" id="edge13_Node000006_Node000010" title=" " alt="" coords="276,577,376,634,371,635,275,582"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="197,612,221,574,225,570,201,616"/>
+<area shape="rect" id="Node000008" href="$_ricci_tensor_8hpp.html" title=" " alt="" coords="5,731,160,787"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="136,694,107,732,103,728,131,697"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="212,691,260,730,255,730,210,696"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="66,716,61,671,64,648,74,626,88,607,107,592,151,570,148,574,110,596,92,611,78,629,70,649,66,671,72,717"/>
+<area shape="poly" id="edge11_Node000009_Node000006" title=" " alt="" coords="288,715,264,628,244,575,246,570,269,626,294,716"/>
+<area shape="poly" id="edge15_Node000011_Node000005" title=" " alt="" coords="532,515,623,475,619,477,534,519"/>
+<area shape="poly" id="edge17_Node000012_Node000005" title=" " alt="" coords="678,507,678,478,681,474,683,509"/>
+<area shape="poly" id="edge19_Node000013_Node000005" title=" " alt="" coords="824,517,739,479,739,474,830,516"/>
+<area shape="poly" id="edge22_Node000014_Node000004" title=" " alt="" coords="759,277,709,318,706,314,754,280"/>
+<area shape="poly" id="edge23_Node000014_Node000005" title=" " alt="" coords="810,282,809,329,803,352,793,373,769,401,739,422,736,417,765,397,788,371,798,350,803,328,807,286"/>
+<area shape="poly" id="edge26_Node000015_Node000003" title=" " alt="" coords="618,177,575,214,572,210,622,173"/>
+<area shape="poly" id="edge27_Node000015_Node000014" title=" " alt="" coords="714,171,769,212,764,212,714,177"/>
+<area shape="poly" id="edge29_Node000016_Node000003" title=" " alt="" coords="833,170,655,214,653,210,838,167"/>
+<area shape="poly" id="edge31_Node000016_Node000005" title=" " alt="" coords="960,178,950,225,930,270,890,320,841,363,788,396,739,422,737,417,785,392,837,358,886,317,926,267,945,223,957,183"/>
+<area shape="poly" id="edge30_Node000016_Node000014" title=" " alt="" coords="906,175,848,214,845,210,910,172"/>
+</map>

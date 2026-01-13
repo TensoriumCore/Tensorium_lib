@@ -1,0 +1,25 @@
+var _b_s_s_n_derivatives_8hpp =
+[
+    [ "tensorium_RG::compute_dt_gamma_from_beta", "namespacetensorium___r_g.html#a59166c5fb3edaa4ef668c81fe41bf075", null ],
+    [ "tensorium_RG::compute_partial_derivatives_scalar", "namespacetensorium___r_g.html#ad76e96348da7e78444b670a328922244", null ],
+    [ "tensorium_RG::compute_partial_derivatives_tensor2D", "namespacetensorium___r_g.html#adeed4f720e5567e4c715a013d7ed787e", null ],
+    [ "tensorium_RG::compute_partial_derivatives_vector", "namespacetensorium___r_g.html#a67e26edcecca2502f504021269c12ada", null ],
+    [ "tensorium_RG::compute_partial_derivatives_vector3D", "namespacetensorium___r_g.html#a9c96c830df6faf7d5d144b1461e73f81", null ],
+    [ "tensorium_RG::compute_second_derivatives_scalar", "namespacetensorium___r_g.html#afa0e6cb1b45cdeb5547ff070f85106d1", null ],
+    [ "tensorium_RG::compute_second_derivatives_scalar3D", "namespacetensorium___r_g.html#a216f35bcfec1c39f5c0adff53c58b7b8", null ],
+    [ "tensorium_RG::compute_second_derivatives_tensor2D", "namespacetensorium___r_g.html#af8c67740682d958a321ab72d17b0ecda", null ],
+    [ "tensorium_RG::covariant_scalar_second", "namespacetensorium___r_g.html#a658ca32d07531f6c932d234c5c051b54", null ],
+    [ "tensorium_RG::covariant_scalar_second_3D", "namespacetensorium___r_g.html#aa8b5ab2441cbf4db047fe92d71b6ea1c", null ],
+    [ "tensorium_RG::covariant_tensor2", "namespacetensorium___r_g.html#aa5271ed005ac94c281ae077b428b6d85", null ],
+    [ "tensorium_RG::covariant_tensor2_second", "namespacetensorium___r_g.html#ac05b2387fa6e6358026a53e0b3468bba", null ],
+    [ "tensorium_RG::covariant_vector", "namespacetensorium___r_g.html#a4e1949feb0bbcbb574d73f816e048d26", null ],
+    [ "tensorium_RG::partial_scalar", "namespacetensorium___r_g.html#a7a888ebe96778265c59526da5e73cb57", null ],
+    [ "tensorium_RG::partial_tensor2", "namespacetensorium___r_g.html#a77ec31ba0fe314dbb821107831bdadc3", null ],
+    [ "tensorium_RG::partial_vector", "namespacetensorium___r_g.html#a21f973abe049559631ae70dfa8975da0", null ],
+    [ "tensorium_RG::detail::shift_axis", "namespacetensorium___r_g_1_1detail.html#a2188239e2c37f90fd91ab9566bfb0dfc", null ],
+    [ "tensorium_RG::detail::shifted_copy", "namespacetensorium___r_g_1_1detail.html#ac6c8856dde97a2b2ff409cb08d76a411", null ],
+    [ "tensorium_RG::detail::spatial_indices", "namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66", null ],
+    [ "tensorium_RG::spectral_derivative_1D", "namespacetensorium___r_g.html#a853ee85109fd3cf65db0d92889c5dd1a", null ],
+    [ "tensorium_RG::spectral_partial_scalar_3D", "namespacetensorium___r_g.html#a531e5cd0c6e3d677c9aa29de35864d8a", null ],
+    [ "tensorium_RG::spectral_partial_tensor2", "namespacetensorium___r_g.html#a1acfbb966721cbe68fd2d4fdec07d28d", null ]
+];

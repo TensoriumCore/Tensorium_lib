@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['shape_0',['shape',['../classtensorium_1_1DerivateND.html#aa4cbe8a37b0699839be11acaefe08506',1,'tensorium::DerivateND::shape'],['../classtensorium_1_1DerivateND.html#a220b0687a2bb97eb1f40be859a6998f0',1,'tensorium::DerivateND::shape']]],
-  ['simd_5fwidth_1',['simd_width',['../classtensorium_1_1Derivate.html#a17c9d892dd6e273873cbb56770a3beb1',1,'tensorium::Derivate::simd_width'],['../classtensorium_1_1DerivateND.html#a618a7e8223e1db2747fe285b6ec3e895',1,'tensorium::DerivateND::simd_width'],['../classtensorium_1_1Matrix.html#a6d09e0e9927a369cb4d88f4ac062602d',1,'tensorium::Matrix::simd_width'],['../classtensorium_1_1Vector.html#a2ce9e8bf8b223874ed8bf6dbb3b94be4',1,'tensorium::Vector::simd_width']]],
-  ['simdwidth_2',['SimdWidth',['../classtensorium_1_1GemmKernelBig.html#a0a8aa0f957c1dfe11b17f6b5d56b4a40',1,'tensorium::GemmKernelBig::SimdWidth'],['../classtensorium_1_1GemmKernelBigger.html#a12eb30b8cbc386f1326c237afb936986',1,'tensorium::GemmKernelBigger::SimdWidth']]],
-  ['stride_5faxis_3',['stride_axis',['../classtensorium_1_1DerivateND.html#a539eba3b254919f609a4506749ef6317',1,'tensorium::DerivateND']]],
-  ['strides_4',['strides',['../classtensorium_1_1DerivateND.html#a29a576e604991dca296fd63a88128dd6',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1DerivateND.html#a106254e6b11d233bf1009da8bc2a4474',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1Tensor.html#a824056bd4f9ee568473e899766673413',1,'tensorium::Tensor::strides']]],
-  ['syntaxtable_5',['SyntaxTable',['../classLexer.html#a9641adf7ffe4bf8fb64a87fefcb73769',1,'Lexer']]]
+  ['padding_0',['padding',['../structtensorium___r_g_1_1bssn_1_1_projection_config.html#a6210744d86880823e94ba01b2162b7cc',1,'tensorium_RG::bssn::ProjectionConfig']]],
+  ['padding_5f_1',['padding_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#afcf0308fb6ae2f2b13b1adf291ca9fdc',1,'tensorium_RG::bssn::BSSNRKStepper']]],
+  ['platform_2',['platform',['../struct_tensorium_target.html#a530ac3ed59a387a2b5240f420b350160',1,'TensoriumTarget']]],
+  ['project_5fa_5ftilde_3',['project_A_tilde',['../structtensorium___r_g_1_1bssn_1_1_projection_config.html#a84e9605b101092685ca06a2720e07fb8',1,'tensorium_RG::bssn::ProjectionConfig']]]
 ];

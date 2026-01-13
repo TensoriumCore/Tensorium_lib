@@ -1,16 +1,57 @@
 #pragma once
-#include "BSSNCHristoffelTilde.hpp"
-#include "BSSNInvariants.hpp"
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "BSSNCHristoffelTilde.hpp"
+#include "BSSNInvariants.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
 
+/**
+ * @file BSSNRicci.hpp
+ * @brief Assembly of the Ricci tensor split \f$R_{ij}=\tilde{R}_{ij}+R^{\chi}_{ij}\f$.
+ * @details
+ * The implementation follows the standard BSSN decomposition:
+ * \f[
+ * \begin{aligned}
+ * \tilde{R}_{ij} &= -\tfrac{1}{2}\tilde{\gamma}^{mn}\partial_m\partial_n\tilde{\gamma}_{ij}
+ *  + \tilde{\gamma}_{k(i}\partial_{j)}\tilde{\Gamma}^k + \tilde{\Gamma}^k\tilde{\Gamma}_{kij}
+ *  + \tilde{\gamma}^{mn}\left(2\tilde{\Gamma}^k_{m(i}\tilde{\Gamma}_{j)kn} - \tilde{\Gamma}^k_{ij}\tilde{\Gamma}_{kmn}\right),\\
+ * R^{\chi}_{ij} &= \tfrac{1}{2}\chi^{-1}\left(\tilde{D}_i\tilde{D}_j\chi + \tilde{\gamma}_{ij}\tilde{D}^k\tilde{D}_k\chi\right)
+ *   - \tfrac{1}{4}\chi^{-2}\tilde{D}_i\chi\,\tilde{D}_j\chi
+ *   - \tfrac{3}{4}\chi^{-2}\tilde{\gamma}_{ij}\tilde{D}^k\chi\,\tilde{D}_k\chi.
+ * \end{aligned}
+ * \f]
+ * `compute_ricci_bssn` evaluates these expressions with the derivative operators documented in
+ * `BSSNGridDerivatives.hpp`, caches \f$\tilde{\Gamma}^i_{\ jk}\f$ locally to avoid repeated array
+ * lookups, and finally stores the packed symmetric tensor into `Ricci6`.
+ */
+
 namespace tensorium_RG::bssn {
 
-template <typename T> void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6) {
+/**
+ * @brief Populate the Ricci tensor cache \f$R_{ij}\f$ throughout the interior grid.
+ * @param G Grid supplying \f$\chi\f$, \f$\tilde{\gamma}_{ij}\f$, \f$\tilde{\gamma}^{ij}\f$, and cached
+ *          \f$\tilde{\Gamma}^i\f$.
+ * @param[out] Ricci6 Packed symmetric destination fields.
+ * @param throw_on_violation If true, `assert_invariants` raises when the projector detects
+ *                           determinant or trace drifts beyond tolerance.
+ *
+ * @details
+ * **Mapping to code.**
+ * - `dg` lambda → \f$\partial_m\tilde{\gamma}_{ab}\f$ samples.
+ * - `Gijk` array → \f$\tilde{\Gamma}^i_{\ jk}\f$ assembled from inverse metric contractions.
+ * - `cov_dchi` block → \f$\tilde{D}_i\tilde{D}_j\chi\f$ computed via subtracting connection terms from
+ *   second derivatives.
+ * - `R_chi` / `R_tilde` blocks implement the formulas quoted above and store the sum.
+ * - `dGt` corresponds to \f$\partial_i\tilde{\Gamma}^k\f$ entering the \f$\tilde{R}_{ij}\f$ expression.
+ *
+ * @warning Ricci evaluation assumes halos contain valid data for ±2 offsets.  Call
+ * `apply_halos_grid` before invoking this routine.
+ */
+template <typename T>
+void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_violation = true) {
     using namespace tensorium_RG::fd;
 
     size_t I0, I1, J0, J1, K0, K1;
@@ -159,11 +200,22 @@ template <typename T> void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ric
                 for (int a = 0; a < 3; ++a)
                     for (int b = a; b < 3; ++b) {
 
-                        const double term1 =
-                            -0.5 * (a == 0 ? dGt[b][0] : (a == 1 ? dGt[b][1] : dGt[b][2])) -
-                            0.5 * (b == 0 ? dGt[a][0] : (b == 1 ? dGt[a][1] : dGt[a][2]));
+                        const int         s_ab = tensorium_RG::sym6_index(a, b);
+                        const Field3D<T> &Gab = G.gamma_tilde[s_ab];
 
-                        double term2 = 0.0;
+                        const double d2xx = Dxx(Gab, i, j, k, dx);
+                        const double d2yy = Dyy(Gab, i, j, k, dy);
+                        const double d2zz = Dzz(Gab, i, j, k, dz);
+                        const double d2xy = Dxy4(Gab, i, j, k, dx, dy);
+                        const double d2xz = Dxz4(Gab, i, j, k, dx, dz);
+                        const double d2yz = Dyz4(Gab, i, j, k, dy, dz);
+
+                        const double lap_gab = gI[0][0] * d2xx + gI[1][1] * d2yy + gI[2][2] * d2zz +
+                                               2.0 * gI[0][1] * d2xy + 2.0 * gI[0][2] * d2xz +
+                                               2.0 * gI[1][2] * d2yz;
+
+                        const double term1 = -0.5 * lap_gab;
+                        double       term2 = 0.0;
                         for (int kk = 0; kk < 3; ++kk)
                             term2 += 0.5 * (g[a][kk] * dGt[kk][b] + g[b][kk] * dGt[kk][a]);
 
@@ -197,7 +249,7 @@ template <typename T> void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ric
         }
     }
 
-    tensorium_RG::bssn::assert_invariants(G, "ricci");
+    tensorium_RG::bssn::assert_invariants(G, "ricci", 4, throw_on_violation);
 }
 
 } // namespace tensorium_RG::bssn

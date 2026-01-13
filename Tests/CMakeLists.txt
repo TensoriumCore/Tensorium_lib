@@ -27,7 +27,8 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RK4TimeEvolutionTests.cpp)
 
 set(BENCHMARK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)

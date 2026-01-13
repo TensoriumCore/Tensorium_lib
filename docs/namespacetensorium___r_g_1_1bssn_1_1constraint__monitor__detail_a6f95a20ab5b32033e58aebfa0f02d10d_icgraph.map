@@ -1,0 +1,9 @@
+<map id="tensorium_RG::bssn::constraint_monitor_detail::det3" name="tensorium_RG::bssn::constraint_monitor_detail::det3">
+<area shape="rect" id="Node000001" title=" " alt="" coords="408,31,549,87"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#aa7005abefc0003c31d2448b6d21bc98d" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="217,31,360,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="390,59,360,62,360,56,395,59"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="14,5,160,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="199,45,161,40,161,35,204,44"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,71,169,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="199,73,170,81,169,75,204,72"/>
+</map>

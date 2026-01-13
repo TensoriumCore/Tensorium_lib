@@ -6,8 +6,21 @@
 
 #include <algorithm>
 
+/**
+ * @file BSSNEvolutionATilde.hpp
+ * @brief RHS for the trace-free extrinsic curvature \f$\tilde{A}_{ij}\f$.
+ * @details Implements the trace-free part of
+ * \f[
+ * (\partial_t-\mathcal{L}_\beta)\tilde{A}_{ij} = \chi\left[-D_iD_j\alpha + \alpha R_{ij}\right]^{TF} + \alpha (K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})
+ * \f]
+ * where \f$D_i\f$ is the physical covariant derivative.  The code reconstructs the physical metric
+ * \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$ and Christoffels to evaluate the covariant Hessian of \f$\alpha\f$.
+ */
+
 namespace tensorium_RG::bssn {
 
+#ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
+#define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
 inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
     return std::min(lower + guard, upper);
 }
@@ -15,10 +28,19 @@ inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
 inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
     return (upper > guard) ? upper - guard : lower;
 }
+#endif
 
+/**
+ * @brief Assemble \f$\partial_t\tilde{A}_{ij}\f$ for each symmetric component.
+ * @details
+ * - `lie` implements the \f$\mathcal{L}_\beta\tilde{A}_{ij}\f$ term.
+ * - `term_geom` corresponds to \f$\chi[-D_iD_j\alpha + \alpha R_{ij}]^{TF}\f$.
+ * - `term_quad` implements \f$\alpha(K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})\f$.
+ */
 template <typename T>
 inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4) {
     using namespace tensorium_RG::fd;
+    const T ko_sigma = T(0.1);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -208,9 +230,9 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                     for (int b = a; b < 3; ++b) {
                         const int s = tensorium_RG::sym6_index(a, b);
 
-                        const T adv = beta[0] * T(Dx(G.A_tilde[s], i, j, k, G.dx)) +
-                                      beta[1] * T(Dy(G.A_tilde[s], i, j, k, G.dy)) +
-                                      beta[2] * T(Dz(G.A_tilde[s], i, j, k, G.dz));
+                        const T adv = beta[0] * T(Dx_upwind(G.A_tilde[s], i, j, k, G.dx, beta[0])) +
+                                      beta[1] * T(Dy_upwind(G.A_tilde[s], i, j, k, G.dy, beta[1])) +
+                                      beta[2] * T(Dz_upwind(G.A_tilde[s], i, j, k, G.dz, beta[2]));
 
                         T lie = T(0);
                         for (int m = 0; m < 3; ++m) {
@@ -222,7 +244,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                         const T term_geom = chi * S_tf[a][b];
                         const T term_quad = alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
 
-                        rhs[s].ptr()[id] = adv + lie + term_geom + term_quad;
+                        rhs[s].ptr()[id] = adv + lie + term_geom + term_quad +
+                                           T(KO6(G.A_tilde[s], i, j, k, ko_sigma));
                     }
                 }
             }

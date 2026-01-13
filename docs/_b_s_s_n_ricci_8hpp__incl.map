@@ -1,0 +1,28 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNRicci.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNRicci.hpp">
+<area shape="rect" id="Node000001" title="Assembly of the Ricci tensor split ." alt="" coords="94,5,345,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="213,256,469,282"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,59,299,81,321,108,335,141,343,177,346,242,341,240,338,178,330,143,316,110,295,84,270,64"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title=" " alt="" coords="5,256,189,282"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="168,64,145,84,123,110,109,143,101,178,98,242,93,241,96,178,104,142,119,108,141,81,171,59"/>
+<area shape="rect" id="Node000010" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="132,109,307,135"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="220,59,222,94,217,93,219,64"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="309,419,373,444"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="343,281,343,404,339,402,339,284"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="17,338,92,363"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="89,285,70,325,66,323,92,280"/>
+<area shape="rect" id="Node000006" href="$_grid_layout_8hpp.html" title=" " alt="" coords="116,330,256,371"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="111,280,156,319,150,320,110,285"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="226,369,306,411,301,412,224,374"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="21,419,85,444"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="156,371,88,413,85,408,150,372"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="110,419,178,444"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="178,370,159,406,156,403,174,372"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="202,419,285,444"/>
+<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="202,369,228,406,223,405,199,373"/>
+<area shape="poly" id="edge14_Node000010_Node000002" title=" " alt="" coords="240,133,270,154,299,181,319,211,334,242,329,241,314,214,295,184,267,158,240,138"/>
+<area shape="poly" id="edge15_Node000010_Node000004" title=" " alt="" coords="199,137,174,158,146,184,125,214,110,243,105,241,121,211,142,181,170,154,202,133"/>
+<area shape="rect" id="Node000011" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="155,183,284,208"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="221,132,222,168,217,166,219,137"/>
+<area shape="poly" id="edge12_Node000011_Node000002" title=" " alt="" coords="240,206,310,247,305,249,240,212"/>
+<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="197,211,132,250,129,246,201,207"/>
+</map>

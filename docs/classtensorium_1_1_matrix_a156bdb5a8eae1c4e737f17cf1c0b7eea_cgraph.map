@@ -1,0 +1,9 @@
+<map id="tensorium::Matrix::_mul_mat" name="tensorium::Matrix::_mul_mat">
+<area shape="rect" id="Node000001" title="Multiply matrix by another matrix using optimized SIMD path." alt="" coords="5,5,136,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title="Construct a matrix of size r × c, initialized with zeros." alt="" coords="184,5,314,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,23,170,25,165,26,136,28"/>
+<area shape="rect" id="Node000003" href="$_c_p_u__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb" title=" " alt="" coords="362,13,537,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,23,349,26,344,26,315,28"/>
+<area shape="rect" id="Node000004" href="$_c_p_u__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f" title=" " alt="" coords="585,13,692,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="537,23,572,26,567,26,538,28"/>
+</map>

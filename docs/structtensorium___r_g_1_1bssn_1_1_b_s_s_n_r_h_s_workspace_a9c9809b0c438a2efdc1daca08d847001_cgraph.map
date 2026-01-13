@@ -1,0 +1,10 @@
+<map id="tensorium_RG::bssn::BSSNRHSWorkspace::zero" name="tensorium_RG::bssn::BSSNRHSWorkspace::zero">
+<area shape="rect" id="Node000001" title="Reset all RHS accumulators to zero before reuse." alt="" coords="5,5,199,46"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#abe73e32dfab0287b911bc1240aeb6644" title=" " alt="" coords="436,5,577,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,20,247,19,388,19,423,22,418,23,388,24,247,24,200,25"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a96e3dce63cdf301a149a60e4cc273d71" title=" " alt="" coords="247,33,388,74"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="199,36,234,42,228,43,199,41"/>
+<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="625,13,807,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="578,23,612,26,607,26,578,28"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="388,41,418,39,423,38,388,46"/>
+</map>

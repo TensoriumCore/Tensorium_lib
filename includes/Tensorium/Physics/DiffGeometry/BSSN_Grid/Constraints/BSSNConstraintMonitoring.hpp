@@ -6,8 +6,14 @@
 #include <cstddef>
 #include <cstdio>
 
+/**
+ * @file BSSNConstraintMonitoring.hpp
+ * @brief Reduce constraint fields to scalar diagnostics used by the RK driver.
+ */
+
 namespace tensorium_RG::bssn {
 
+/// @brief Snapshot of max/L2 Hamiltonian error plus algebraic drifts.
 struct ConstraintMonitorStats {
     double max_H = 0.0;
     double l2_H = 0.0;
@@ -23,6 +29,10 @@ inline double det3(double gxx, double gxy, double gxz, double gyy, double gyz, d
 }
 }
 
+/**
+ * @brief Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations.
+ * @param padding Guard cells excluded from the reduction to avoid halo artifacts.
+ */
 template <typename T>
 inline ConstraintMonitorStats compute_constraint_monitor(const BSSNGridSoA<T> &G,
                                                          const Field3D<T> &H, size_t padding = 4) {
@@ -88,6 +98,7 @@ inline ConstraintMonitorStats compute_constraint_monitor(const BSSNGridSoA<T> &G
     return stats;
 }
 
+/// @brief Convenience printf helper for debugging constraint convergence.
 inline void print_constraint_monitor(const ConstraintMonitorStats &stats,
                                      const char *label = "constraints") {
     std::printf("[%s] maxH=%.3e L2H=%.3e max|TrA|=%.3e max|det-1|=%.3e samples=%zu\n", label,

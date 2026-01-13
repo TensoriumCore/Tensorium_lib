@@ -180,55 +180,69 @@ struct BoundaryPeriodic {
     }
 };
 
-template <typename T> inline void halo_clamp_full(Field3D<T> &f, const GridDims &D) {
-    const size_t nxT = D.nx + 2 * D.ng;
-    const size_t nyT = D.ny + 2 * D.ng;
-    const size_t nzT = D.nz + 2 * D.ng;
+template <typename T> inline void halo_linear_extrapolate_full(Field3D<T> &f, const GridDims &D) {
+    const size_t nxTot = D.nx + 2 * D.ng;
+    const size_t nyTot = D.ny + 2 * D.ng;
+    const size_t nzTot = D.nz + 2 * D.ng;
 
-    const size_t I0 = D.ng, I1 = D.ng + D.nx;
-    const size_t J0 = D.ng, J1 = D.ng + D.ny;
-    const size_t K0 = D.ng, K1 = D.ng + D.nz;
+    const size_t I0 = D.ng;
+    const size_t I1 = D.ng + D.nx;
+    const size_t J0 = D.ng;
+    const size_t J1 = D.ng + D.ny;
+    const size_t K0 = D.ng;
+    const size_t K1 = D.ng + D.nz;
 
-    auto clamp_i = [&](size_t i) -> size_t {
-        if (i < I0)
-            return I0;
-        if (i >= I1)
-            return I1 - 1;
-        return i;
-    };
-    auto clamp_j = [&](size_t j) -> size_t {
-        if (j < J0)
-            return J0;
-        if (j >= J1)
-            return J1 - 1;
-        return j;
-    };
-    auto clamp_k = [&](size_t k) -> size_t {
-        if (k < K0)
-            return K0;
-        if (k >= K1)
-            return K1 - 1;
-        return k;
-    };
+    auto get = [&](size_t i, size_t j, size_t k) -> T { return f.ptr()[f.idx(i, j, k)]; };
+    auto set = [&](size_t i, size_t j, size_t k, T val) { f.ptr()[f.idx(i, j, k)] = val; };
 
-    for (size_t i = 0; i < nxT; ++i)
-        for (size_t j = 0; j < nyT; ++j)
-            for (size_t k = 0; k < nzT; ++k) {
-                const bool inInterior =
-                    (i >= I0 && i < I1) && (j >= J0 && j < J1) && (k >= K0 && k < K1);
-                if (inInterior)
-                    continue;
+    for (size_t j = 0; j < nyTot; ++j)
+        for (size_t k = 0; k < nzTot; ++k) {
+            const T v_in = get(I0, j, k);
+            const T v_next = get(I0 + 1, j, k);
+            const T slope_low = v_in - v_next;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(I0 - s, j, k, v_in + slope_low * static_cast<T>(s));
 
-                const size_t is = clamp_i(i);
-                const size_t js = clamp_j(j);
-                const size_t ks = clamp_k(k);
+            const T v_hi = get(I1 - 1, j, k);
+            const T v_prev = get(I1 - 2, j, k);
+            const T slope_high = v_hi - v_prev;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(I1 - 1 + s, j, k, v_hi + slope_high * static_cast<T>(s));
+        }
 
-                f.ptr()[f.idx(i, j, k)] = f.ptr()[f.idx(is, js, ks)];
-            }
+    for (size_t i = 0; i < nxTot; ++i)
+        for (size_t k = 0; k < nzTot; ++k) {
+            const T v_in = get(i, J0, k);
+            const T v_next = get(i, J0 + 1, k);
+            const T slope_low = v_in - v_next;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(i, J0 - s, k, v_in + slope_low * static_cast<T>(s));
+
+            const T v_hi = get(i, J1 - 1, k);
+            const T v_prev = get(i, J1 - 2, k);
+            const T slope_high = v_hi - v_prev;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(i, J1 - 1 + s, k, v_hi + slope_high * static_cast<T>(s));
+        }
+
+    for (size_t i = 0; i < nxTot; ++i)
+        for (size_t j = 0; j < nyTot; ++j) {
+            const T v_in = get(i, j, K0);
+            const T v_next = get(i, j, K0 + 1);
+            const T slope_low = v_in - v_next;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(i, j, K0 - s, v_in + slope_low * static_cast<T>(s));
+
+            const T v_hi = get(i, j, K1 - 1);
+            const T v_prev = get(i, j, K1 - 2);
+            const T slope_high = v_hi - v_prev;
+            for (size_t s = 1; s <= D.ng; ++s)
+                set(i, j, K1 - 1 + s, v_hi + slope_high * static_cast<T>(s));
+        }
 }
 struct BoundaryClamp {
     template <typename T> static inline void apply(Field3D<T> &f, const GridDims &D) {
-        halo_clamp_full(f, D);
+        halo_linear_extrapolate_full(f, D);
     }
 };
 

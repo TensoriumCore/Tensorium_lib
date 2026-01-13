@@ -1,6 +1,6 @@
 var namespacetensorium_1_1solver =
 [
-    [ "Gauss", "classtensorium_1_1solver_1_1Gauss.html", "classtensorium_1_1solver_1_1Gauss" ],
-    [ "GaussSeidel", "classtensorium_1_1solver_1_1GaussSeidel.html", "classtensorium_1_1solver_1_1GaussSeidel" ],
-    [ "Jacobi", "classtensorium_1_1solver_1_1Jacobi.html", "classtensorium_1_1solver_1_1Jacobi" ]
+    [ "Jacobi", "classtensorium_1_1solver_1_1_jacobi.html", "classtensorium_1_1solver_1_1_jacobi" ],
+    [ "Gauss", "classtensorium_1_1solver_1_1_gauss.html", "classtensorium_1_1solver_1_1_gauss" ],
+    [ "GaussSeidel", "classtensorium_1_1solver_1_1_gauss_seidel.html", "classtensorium_1_1solver_1_1_gauss_seidel" ]
 ];

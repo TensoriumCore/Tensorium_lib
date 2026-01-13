@@ -7,11 +7,38 @@
 #include "BSSNEvolutionCommon.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
+/**
+ * @file BSSNEvolutionGamma.hpp
+ * @brief RHS for the contracted connection \f$\tilde{\Gamma}^i\f$.
+ * @details Implements the standard BSSN equation with advection, metric-Laplacian of the shift, lapse
+ * coupling, and Ricci-driven source terms:
+ * \f[
+ * \begin{aligned}
+ * \partial_t \tilde{\Gamma}^i &= \beta^k\partial_k\tilde{\Gamma}^i - \tilde{\Gamma}^k\partial_k\beta^i
+ *   + \tfrac{2}{3}\tilde{\Gamma}^i\partial_k\beta^k
+ *   + \tilde{\gamma}^{jk}\partial_j\partial_k\beta^i + \tfrac{1}{3}\tilde{\gamma}^{ij}\partial_j\partial_k\beta^k \\
+ *   &\quad - 2\tilde{A}^{ij}\partial_j\alpha + 2\alpha\left(\tilde{\Gamma}^i_{\ jk}\tilde{A}^{jk} - \tfrac{2}{3}\tilde{\gamma}^{ij}\partial_j K\right)
+ *   + \mathcal{D}_6[\tilde{\Gamma}^i].
+ * \end{aligned}
+ * \f]
+ */
+
 namespace tensorium_RG::bssn {
 
+/**
+ * @brief Assemble \f$\partial_t\tilde{\Gamma}^i\f$ inside the interior region.
+ * @param rhs Array of 3 fields that will store the RHS.
+ * @details
+ * - `adv` = \f$\beta^k\partial_k\tilde{\Gamma}^i\f$ uses upwind stencils.
+ * - `gamma_beta` and `stretch` implement the Lie derivative terms \f$-\tilde{\Gamma}^k\partial_k\beta^i\f$ and
+ *   \f$\tfrac{2}{3}\tilde{\Gamma}^i\partial_k\beta^k\f$.
+ * - `hess_term` and `grad_div_term` build the shift Laplacian pieces.
+ * - `A_grad_alpha` and `source` encode \f$-2\tilde{A}^{ij}\partial_j\alpha\f$ and the Ricci coupling.
+ */
 template <typename T>
 inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], size_t padding = 4) {
     using namespace tensorium_RG::fd;
+    const T ko_sigma = T(0.1);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -128,9 +155,9 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], size_t
                 const T alpha = G.alpha.ptr()[id];
 
                 for (int comp = 0; comp < 3; ++comp) {
-                    const T adv = beta_vec[0] * T(Dx(G.tildeGamma[comp], i, j, k, G.dx)) +
-                                  beta_vec[1] * T(Dy(G.tildeGamma[comp], i, j, k, G.dy)) +
-                                  beta_vec[2] * T(Dz(G.tildeGamma[comp], i, j, k, G.dz));
+                    const T adv = beta_vec[0] * T(Dx_upwind(G.tildeGamma[comp], i, j, k, G.dx, beta_vec[0])) +
+                                  beta_vec[1] * T(Dy_upwind(G.tildeGamma[comp], i, j, k, G.dy, beta_vec[1])) +
+                                  beta_vec[2] * T(Dz_upwind(G.tildeGamma[comp], i, j, k, G.dz, beta_vec[2]));
 
                     T gamma_beta = T(0);
                     for (int axis = 0; axis < 3; ++axis)
@@ -160,7 +187,8 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], size_t
                     const T source = T(2) * alpha * (GammaA - two_thirds * grad_K_up);
 
                     rhs[comp].ptr()[id] = adv - gamma_beta + stretch + hess_term + grad_div_term -
-                                          T(2) * A_grad_alpha + source;
+                                          T(2) * A_grad_alpha + source +
+                                          T(KO6(G.tildeGamma[comp], i, j, k, ko_sigma));
                 }
             }
         }

@@ -1,7 +1,5 @@
 <map id="tensorium::transpose_tensor" name="tensorium::transpose_tensor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,165,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1Tensor.html#a52ed80b0e3dc3862c5ab81d345374d31" title=" " alt="" coords="213,5,358,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,25,198,25,198,30,165,30"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1Tensor.html#a5bc07bda8bddb37a554a4a1723c6fad9" title="Default constructor." alt="" coords="406,5,551,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="358,25,390,25,390,30,358,30"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,149,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_tensor.html#a52ed80b0e3dc3862c5ab81d345374d31" title=" " alt="" coords="197,5,330,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,23,184,25,179,26,149,28"/>
 </map>

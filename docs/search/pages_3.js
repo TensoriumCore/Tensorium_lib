@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['module_0',['Module',['../md_includes_2Tensorium_2DiffGeometry_2BSSN_2README.html',1,'Tensorium — BSSN Module'],['../md_includes_2Tensorium_2Core_2README.html',1,'Tensorium — Core Module'],['../md_includes_2Tensorium_2DiffGeometry_2README.html',1,'Tensorium — DiffGeometry Module'],['../md_includes_2Tensorium_2SIMD_2README.html',1,'Tensorium — SIMD Module']]]
+  ['4_20gauge_20system_0',['4. Gauge System',['../dir_a4152974139b03ed9bd506c3ce4c45cc.html#autotoc_md42',1,'']]]
 ];

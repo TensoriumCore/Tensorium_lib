@@ -1,14 +1,22 @@
 var searchData=
 [
-  ['v_0',['v',['../classtensorium_1_1Vector.html#a9f6e6354fe88791fae5173b8f81b2dc0',1,'tensorium::Vector']]],
-  ['value_1',['value',['../structaligned__reg.html#ac2f06be4ed5c38ff6e671e287639d4b1',1,'aligned_reg::value'],['../structtensorium_1_1ASTNode.html#a037cd03e909d6b448ef66c64b5c68d36',1,'tensorium::ASTNode::value'],['../structToken.html#a4b7142147b8598f8e24c404928d9263b',1,'Token::value']]],
-  ['value_5ftype_2',['value_type',['../classtensorium_1_1Tensor.html#a275da807c8c6fb128944185fb51afb10',1,'tensorium::Tensor::value_type'],['../structtensorium_1_1TensorTraits_3_01Tensor_3_01T_00_01Rank_01_4_01_4.html#a7ee80419ed73f09cae8da6ed81da9fc9',1,'tensorium::TensorTraits&lt; Tensor&lt; T, Rank &gt; &gt;::value_type'],['../structtensorium_1_1TensorTraits.html#a17c65696986830cfb11ed652237c04e4',1,'tensorium::TensorTraits::value_type'],['../structtensorium_1_1TensorTraits_3_01Vector_3_01T_01_4_01_4.html#a43cb6a819a69e67124f0400ee4857ccc',1,'tensorium::TensorTraits&lt; Vector&lt; T &gt; &gt;::value_type'],['../structAlignedAllocator.html#a0a7efdc5df37396703b9a7008b744f59',1,'AlignedAllocator::value_type']]],
-  ['vec_3',['Vec',['../classtensorium__RG_1_1BSSNAtildeTensor.html#a69462a4a5214a2700b014798a2cef215',1,'tensorium_RG::BSSNAtildeTensor::Vec'],['../classtensorium__RG_1_1ExtrinsicCurvature.html#abc8bd704dc17d2b6a7011d217b654b02',1,'tensorium_RG::ExtrinsicCurvature::Vec']]],
-  ['vector_4',['Vector',['../classtensorium_1_1Vector.html',1,'tensorium::Vector&lt; K &gt;'],['../classtensorium_1_1Vector.html#a75717cdda9abba028ee84beb59900e0a',1,'tensorium::Vector::Vector(const std::vector&lt; K &gt; &amp;vec)'],['../classtensorium_1_1Vector.html#a83b597a2807c003bd83fc7829149b28d',1,'tensorium::Vector::Vector(size_t n)'],['../classtensorium_1_1Vector.html#a40be320874b00ba3bcc60b5b2ccafab9',1,'tensorium::Vector::Vector(std::initializer_list&lt; K &gt; init)'],['../classtensorium_1_1Vector.html#a09728538007a32bf8160717486924f17',1,'tensorium::Vector::Vector(size_t n, K value)'],['../md_includes_2Tensorium_2Core_2README.html#autotoc_md14',1,'Vector']]],
-  ['vector_2ehpp_5',['Vector.hpp',['../Vector_8hpp.html',1,'']]],
-  ['vector_3c_20t_20_3e_6',['Vector&lt; T &gt;',['../classtensorium_1_1Vector.html',1,'tensorium']]],
-  ['vectort_7',['VectorT',['../classtensorium_1_1SpectralFFT.html#abac336fb18ee3eb6d32f0c86426c1cde',1,'tensorium::SpectralFFT::VectorT'],['../classtensorium_1_1SpectalChebyshev.html#af42cb097c8f09d537cde1d3e813d2770',1,'tensorium::SpectalChebyshev::VectorT'],['../classtensorium__RG_1_1RicciTensor.html#aabb1649c33975002001225e7b5511ce2',1,'tensorium_RG::RicciTensor::VectorT'],['../classtensorium__RG_1_1RiemannTensor.html#acb60f9fccbe3e893569cfc89229ad4c8',1,'tensorium_RG::RiemannTensor::VectorT']]],
-  ['vt_8',['vt',['../classtensorium_1_1Vector.html#a4ee32b6260be6bd443fb54763c873904',1,'tensorium::Vector']]],
-  ['vt1_9',['vt1',['../classtensorium_1_1Vector.html#acfce8daf9c52adeec1a0fa559c460e17',1,'tensorium::Vector']]],
-  ['vxy_10',['vxy',['../classtensorium_1_1Vector.html#ad4140220356add4f1bb8cca6cb9eac5e',1,'tensorium::Vector']]]
+  ['l2_5fdet_5fdeviation_0',['l2_det_deviation',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a50b27778e1f73c047eb787677d687c19',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5fgamma_5fconstraint_1',['l2_gamma_constraint',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a546480644414ef51962411594ccaa1',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5fh_2',['l2_H',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aa3994a408ee224ba6bfc80950a13593d',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
+  ['l2_5fmetric_5fidentity_3',['l2_metric_identity',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abff89e7ea44fa45625683540b6c11d17',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5ftrace_5fa_4',['l2_trace_A',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a24bdf59de3aca70e0f14ae08f67df433',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['lerp_5',['lerp',['../classtensorium_1_1_matrix.html#a520af5a3e3c982c67dc1bd0611975808',1,'tensorium::Matrix']]],
+  ['lerp_5fmat_6',['lerp_mat',['../namespacetensorium.html#a1c044714fb59c3eb8cfd714bd25dc6f7',1,'tensorium']]],
+  ['lerp_5fvec_7',['lerp_vec',['../namespacetensorium.html#a114772d8e80ade39d0e576643a9ccbd3',1,'tensorium']]],
+  ['library_20and_20python_20module_8',['Build C++ Library and Python Module',['../index.html#autotoc_md6',1,'']]],
+  ['linear_20solvers_9',['Linear Solvers',['../dir_6ec45ecc21b5f4caf93e55bbe92e9dfe.html#autotoc_md29',1,'']]],
+  ['linear_5fcombination_5fvec_10',['linear_combination_vec',['../namespacetensorium.html#a4ed9708decc508fd84d4c6c89288b04d',1,'tensorium']]],
+  ['linearsolver_2ehpp_11',['LinearSolver.hpp',['../_linear_solver_8hpp.html',1,'']]],
+  ['linearsolvercuda_2ehpp_12',['LinearSolverCUDA.hpp',['../_linear_solver_c_u_d_a_8hpp.html',1,'']]],
+  ['llvm_5fhandler_2ecpp_13',['LLVM_Handler.cpp',['../_l_l_v_m___handler_8cpp.html',1,'']]],
+  ['llvm_5fhandler_2ehpp_14',['LLVM_Handler.hpp',['../_l_l_v_m___handler_8hpp.html',1,'']]],
+  ['llvmgetpassplugininfo_15',['llvmGetPassPluginInfo',['../_tensorium_l_l_v_m___i_r_check_8cpp.html#a6a38583d4b9115cf1b28be6f952eed6f',1,'llvmGetPassPluginInfo():&#160;TensoriumLLVM_IRCheck.cpp'],['../_tensorium_l_l_v_m___m_l___i_r___g_p_u_8cpp.html#a6a38583d4b9115cf1b28be6f952eed6f',1,'llvmGetPassPluginInfo():&#160;TensoriumLLVM_ML_IR_GPU.cpp']]],
+  ['load_5fsym6_16',['load_sym6',['../namespacetensorium___r_g.html#af2f556e67f46e7ab301fa2c32d35e69f',1,'tensorium_RG']]],
+  ['loc_17',['loc',['../struct_tensorium_target.html#ab275d76424d0b83530cab9e9c902fb73',1,'TensoriumTarget']]],
+  ['log_5fgauge_5fdiagnostics_18',['log_gauge_diagnostics',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ae2b06d917afb6213054785d8e7c46f9e',1,'tensorium_RG::bssn::BSSNRKStepper']]]
 ];

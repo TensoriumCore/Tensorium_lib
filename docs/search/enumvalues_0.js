@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['alpha_0',['Alpha',['../Latex_8hpp.html#ae889c9cb6df99ebcf5bb1cbe576f33fea6132295fcf5570fb8b0a944ef322a598',1,'Latex.hpp']]],
-  ['alpha_1',['alpha',['../Latex_8hpp.html#ab2b55d236dab36032d2c7314998ad15ea2c1743a391305fbf367df8e4f069f9f9',1,'Latex.hpp']]]
+  ['cov_0',['COV',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53a18448d7ac6e52fa9f9bb5861b0397b6e',1,'tensorium_RG']]],
+  ['cov2_1',['COV2',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53a62045c7cc6e725c2e627406241191c01',1,'tensorium_RG']]]
 ];

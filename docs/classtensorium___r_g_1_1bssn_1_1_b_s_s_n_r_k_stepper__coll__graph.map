@@ -1,0 +1,3 @@
+<map id="tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;" name="tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;">
+<area shape="rect" id="Node000001" title="Classical RK4 stepper that manages halo exchanges, geometry refresh, and diagnostics." alt="" coords="5,5,174,427"/>
+</map>

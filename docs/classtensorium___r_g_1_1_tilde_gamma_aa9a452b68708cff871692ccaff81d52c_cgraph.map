@@ -1,0 +1,7 @@
+<map id="tensorium_RG::TildeGamma::compute" name="tensorium_RG::TildeGamma::compute">
+<area shape="rect" id="Node000001" title="Computes ." alt="" coords="5,39,193,79"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_vector.html#a6cd035b3600152f2ca608cf3bab24a70" title=" " alt="" coords="241,5,374,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,41,229,38,223,39,194,47"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="241,71,374,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,71,228,78,223,79,193,76"/>
+</map>

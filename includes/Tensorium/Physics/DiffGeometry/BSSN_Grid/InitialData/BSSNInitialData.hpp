@@ -13,8 +13,26 @@
 #include <cmath>
 #include <cstdio>
 
+/**
+ * @file BSSNInitialData.hpp
+ * @brief Analytic and Bowen–York puncture initial data generators for the BSSN grid.
+ * @details
+ * Provides ready-to-use setups for:
+ * - Minkowski space (all fields equal to flat-space values).
+ * - Single and binary isotropic Schwarzschild punctures with conformal factor \f$\psi = 1 + \sum M_a/(2 r_a)\f$.
+ * - Bowen–York extrinsic curvature contributions driven by specified momenta/spins.
+ * - Lichnerowicz equation solver for binary data via successive over-relaxation.
+ * Each initializer fills \f$\alpha,\chi,\tilde{\gamma}_{ij},\tilde{A}_{ij},K,\beta^i,B^i,\tilde{\Gamma}^i\f$ and recomputes
+ * geometric caches (Christoffels, Ricci) before asserting invariants.
+ */
+
 namespace tensorium_RG::init {
 
+/**
+ * @brief Print Ricci tensor samples at representative radii for diagnostic purposes.
+ * @details Evaluates \f$R_{ij}\f$ at three locations (near, mid, far) along the x-axis to verify that
+ * the initial data satisfy \f$R_{ij}=0\f$ away from punctures.  Used after Minkowski/Schwarzschild set-up.
+ */
 template <typename T> void print_ricci_samples(const BSSNGridSoA<T> &G) {
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -54,6 +72,11 @@ template <typename T> void print_ricci_samples(const BSSNGridSoA<T> &G) {
     printf("============================\n\n");
 }
 
+/**
+ * @brief Explicit 3x3 inversion of \f$\tilde{\gamma}_{ij}\f$ at a given grid index.
+ * @details Used by initial-data routines after writing the conformal metric to keep the inverse
+ * cache synchronized without invoking the global projector.
+ */
 template <typename T>
 inline void invert_gamma_tilde(BSSNGridSoA<T> &G, size_t i, size_t j, size_t k) {
     const size_t id = G.gamma_tilde[XX].idx(i, j, k);
@@ -77,6 +100,15 @@ inline void invert_gamma_tilde(BSSNGridSoA<T> &G, size_t i, size_t j, size_t k) 
     G.gamma_tilde_inv[ZZ].ptr()[id] = (a * d - b * b) * inv_det;
 }
 
+/**
+ * @brief Populate the grid with Minkowski (flat) initial data.
+ * @param M Unused placeholder (kept for interface compatibility with Schwarzschild builders).
+ * @param xc,yc,zc Center of the coordinate system used for diagnostics.
+ * @param r_floor Minimum radius when sampling Ricci/constraint monitors.
+ *
+ * @details Sets \f$\alpha=1,\chi=1,\tilde{\gamma}_{ij}=\delta_{ij},\tilde{A}_{ij}=0,K=0,\beta^i=B^i=0,\tilde{\Gamma}^i=0\f$.
+ * After filling halos it recomputes Christoffels, Ricci, constraints, and enforces invariants.
+ */
 template <typename T>
 inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T(0),
                       T r_floor = T(1e-6)) {
@@ -192,6 +224,16 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
     tensorium_RG::bssn::project_bssn_state(G);
 }
 
+/**
+ * @brief Construct an isotropic Schwarzschild puncture with conformal factor \f$\psi=1+M/(2r)\f$.
+ * @param M Puncture mass parameter.
+ * @param xc,yc,zc Puncture center.
+ * @param r_floor Regularization radius to avoid division by zero at the puncture.
+ *
+ * @details Sets \f$\alpha=\psi^{-2}\f$, \f$\chi=\psi^{-4}\f$, \f$\tilde{\gamma}_{ij}=\delta_{ij}\f$, and
+ * \f$\tilde{A}_{ij}=K=0\f$.  The routine clamps \f$r\ge r_{\text{floor}}\f$, applies halo BCs, recomputes
+ * \f$\tilde{\Gamma}^i\f$ and \f$R_{ij}\f$, then prints Ricci and constraint diagnostics.
+ */
 template <typename T>
 inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T(0),
                                     T r_floor = T(1e-6)) {
@@ -323,6 +365,11 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
     tensorium_RG::bssn::project_bssn_state(G);
 }
 
+/**
+ * @brief Superpose two isotropic Schwarzschild conformal factors for binary puncture data.
+ * @details Uses \f$\psi = 1 + m_1/(2 r_1) + m_2/(2 r_2)\f$ with centers at \f$(x_a,y_a,z_a)\f$ and enforces the
+ * algebraic constraints afterwards.  Generates conformally flat, time-symmetric data (\f$K=0\f$).
+ */
 template <typename T>
 inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, T m2,
                                                     T x2, T y2, T z2, T r_floor = T(1e-6)) {

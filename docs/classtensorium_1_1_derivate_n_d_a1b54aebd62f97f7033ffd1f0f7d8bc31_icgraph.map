@@ -1,0 +1,5 @@
+<map id="tensorium::DerivateND::DerivateND" name="tensorium::DerivateND::DerivateND">
+<area shape="rect" id="Node000001" title="Construct a tensor with a given shape." alt="" coords="209,5,364,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_derivate_n_d.html#a3c2fbbb686e5e207dd59ea6186dde4a2" title="Compute fourth&#45;order centered derivative along an axis." alt="" coords="5,5,161,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,26,161,28,161,23,196,25"/>
+</map>

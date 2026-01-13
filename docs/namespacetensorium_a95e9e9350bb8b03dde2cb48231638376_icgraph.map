@@ -1,5 +1,18 @@
 <map id="tensorium::compute_conformal_metric" name="tensorium::compute_conformal_metric">
-<area shape="rect" id="Node000001" title=" " alt="" coords="255,5,407,50"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1BSSN.html#a91070f9dd9f8cd38bccbe6d8c95e9046" title=" " alt="" coords="5,14,207,42"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,30,207,30,207,25,239,25"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1342,35,1479,75"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_ricci_tilde_tensor.html#a897a50d0b88519ab33b11369ed47b6cf" title="Compute &#160;&#160;using scalar autodiff." alt="" coords="1085,35,1294,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1324,55,1295,58,1295,52,1330,55"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_ricci_tilde_tensor.html#a6378f16a0a94a50f0d969583fef94ddb" title="Combine all four contributions to compute the conformal Ricci tensor:" alt="" coords="866,27,1037,83"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1067,55,1037,58,1037,52,1072,55"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1_ricci_physical_tensor.html#acd197d723568eaead792e516a55c7e7e" title="Compute the full Ricci tensor &#160;as the sum of &#160;and ." alt="" coords="624,5,818,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="848,42,818,41,818,35,853,42"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1_b_s_s_n.html#a4d6a4978559683a9e176a1fa38c50abd" title=" " alt="" coords="426,35,576,75"/>
+<area shape="poly" id="edge8_Node000003_Node000005" title=" " alt="" coords="847,57,818,60,624,60,577,60,577,54,624,55,818,55,853,57"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="611,40,577,48,577,42,606,41"/>
+<area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1_b_s_s_n.html#ac8d886a72d7d53ed7a7f2085932de8b8" title=" " alt="" coords="222,5,372,46"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="408,42,372,39,372,34,414,42"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium.html#a324a3d1ee242e7d8d82528be584333a7" title=" " alt="" coords="216,70,378,96"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="414,67,379,74,378,69,408,68"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium.html#a21158d87bb9dbf16b2b9d142ace4f7eb" title=" " alt="" coords="5,70,168,96"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="198,83,168,86,168,80,203,83"/>
 </map>
