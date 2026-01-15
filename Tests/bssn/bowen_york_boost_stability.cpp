@@ -54,8 +54,8 @@ void initialize_single_boost(Grid &grid) {
     const double m1 = 1.0;
     const double m2 = 1.0;
 
-    const double x1 = -3.0, y1 = 0.0, z1 = 0.0;
-    const double x2 = 3.0, y2 = 0.0, z2 = 0.0;
+    const double x1 = -4.0, y1 = 0.0, z1 = 0.0;
+    const double x2 = 4.0, y2 = 0.0, z2 = 0.0;
 
     const double Py = 0.095;
     const double P1[3] = {0.0, Py, 0.0};
@@ -73,10 +73,10 @@ void initialize_single_boost(Grid &grid) {
 REGISTER_TEST(
     "bssn.viz.moving_puncture", "Export CSV slices of a moving spinning black hole", []() {
         tensorium::tests::StabilityRunConfig cfg;
-        cfg.nx = 64;
-        cfg.ny = 64;
-        cfg.nz = 64;
-        cfg.spacing = 0.1;
+        cfg.nx = 128;
+        cfg.ny = 128;
+        cfg.nz = 128;
+        cfg.spacing = 0.4;
         cfg.ng = 4;
         cfg.padding = 4;
         cfg.steps = 600;
@@ -102,8 +102,8 @@ REGISTER_TEST(
         proj_cfg.recompute_inverse = true;
 
         tensorium_RG::bssn::GaugeParameters<double> params;
-        params.eta = 3.0;
-        params.beta_B_coeff = 0.5;
+        params.eta = 2.0;
+        params.beta_B_coeff = 0.75;
 
         tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
 
@@ -134,10 +134,10 @@ REGISTER_TEST(
 REGISTER_TEST(
     "bssn.init.kerr_schild", "Print formatted BSSN fields after Kerr–Schild initialization", []() {
         tensorium::tests::StabilityRunConfig cfg;
-        cfg.nx = 64;
-        cfg.ny = 64;
-        cfg.nz = 64;
-        cfg.spacing = 0.1;
+        cfg.nx = 96;
+        cfg.ny = 96;
+        cfg.nz = 96;
+        cfg.spacing = 0.3;
         cfg.ng = 4;
         cfg.steps = 60;
         cfg.cfl = 0.15;
@@ -152,7 +152,7 @@ REGISTER_TEST(
         grid.y0 = -0.5 * cfg.spacing * cfg.ny + 0.5 * cfg.spacing;
         grid.z0 = -0.5 * cfg.spacing * cfg.nz + 0.5 * cfg.spacing;
 
-        tensorium_RG::init::kerr_schild_single(grid, 1.0, 0.0);
+        tensorium_RG::init::kerr_schild_single(grid, 1.0, 0.9);
 
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -161,8 +161,8 @@ REGISTER_TEST(
         const size_t                                jc = J0 + grid.dims.ny / 2;
         const size_t                                kc = K0 + grid.dims.nz / 2;
         tensorium_RG::bssn::GaugeParameters<double> params;
-        params.eta = 3.0;
-        params.beta_B_coeff = 0.5;
+        params.eta = 2.0;
+        params.beta_B_coeff = 0.75;
 
         tensorium_RG::init::print_bssn_state_at(grid, ic, jc, kc, "Kerr–Schild single BH");
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
