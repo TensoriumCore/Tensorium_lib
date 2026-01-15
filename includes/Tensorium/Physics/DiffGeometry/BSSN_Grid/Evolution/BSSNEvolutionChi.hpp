@@ -3,6 +3,7 @@
 #include "../Fields/BSSNGridSoA.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
+#include "../Derivatives/BSSNGridDerivatives.hpp"
 /**
  * @file BSSNEvolutionChi.hpp
  * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi = \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\f$.
@@ -39,7 +40,7 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  */
 template <typename T>
 inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t padding = 4) {
-    const T ko_sigma = T(0.1);
+    const T ko_sigma = T(0.6);
     size_t  I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
@@ -56,7 +57,7 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i) {
         for (size_t j = j0; j < j1; ++j) {
             for (size_t k = k0; k < k1; ++k) {

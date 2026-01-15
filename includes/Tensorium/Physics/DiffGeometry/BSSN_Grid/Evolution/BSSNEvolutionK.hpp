@@ -35,7 +35,7 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 template <typename T>
 inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t padding = 4) {
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.1);
+    const T ko_sigma = T(0.6);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -199,7 +199,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
 
                 const T quad = alpha * (A_contract + third * K_val * K_val);
 
-                rhs_K.ptr()[id] = adv - laplacian + quad + T(KO6(G.K, i, j, k, ko_sigma));
+                rhs_K.ptr()[id] = adv - laplacian + quad + T(tensorium_RG::fd::KO6(G.K, i, j, k, ko_sigma));
             }
         }
     }

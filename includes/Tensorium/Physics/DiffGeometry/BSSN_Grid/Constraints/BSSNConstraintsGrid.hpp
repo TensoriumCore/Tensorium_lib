@@ -44,7 +44,8 @@ template <typename T>
 static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> *Ricci6,
                                             Field3D<T> &H_out, Field3D<T> M_out[3],
                                             Field3D<T> C_out[3], double r_min, double r_max,
-                                            double xc, double yc, double zc) {
+                                            double xc, double yc, double zc,
+                                            bool throw_on_violation = true) {
     using namespace tensorium_RG::fd;
 
     size_t I0, I1, J0, J1, K0, K1;
@@ -195,7 +196,9 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
         }
     }
 
-    tensorium_RG::bssn::assert_invariants(G, "constraints");
+    tensorium_RG::bssn::assert_invariants(G, "constraints", 4,
+                                          tensorium_RG::bssn::compute_invariant_tolerances(G),
+                                          throw_on_violation);
 }
 
 /**

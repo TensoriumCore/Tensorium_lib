@@ -1,6 +1,6 @@
-
 #pragma once
 
+#include "../Grid/BSSNGridOperations.hpp"
 #include <cstddef>
 
 /**
@@ -15,11 +15,11 @@
  * \partial_x f_{i,j,k} = \frac{-f_{i+2,j,k} + 8 f_{i+1,j,k} - 8 f_{i-1,j,k} + f_{i-2,j,k}}
  *                             {12\,\Delta x}.
  * \f]
- * Second derivatives follow the standard \f$(-1,16,-30,16,-1)/12\f$ stencil, and mixed derivatives use
- * either the classical 2nd-order cross operator (`Dxy`, `Dxz`, `Dyz`) or the 4th-order tensor-product
- * version (`Dxy4`, `Dxz4`, `Dyz4`) when Ricci evaluations demand higher accuracy.  Upwinded
- * advection relies on biased 3-point formulas activated according to the sign of the local shift.
- * Kreiss–Oliger dissipation implements the 6th-order filter used to stabilize high-frequency
+ * Second derivatives follow the standard \f$(-1,16,-30,16,-1)/12\f$ stencil, and mixed derivatives
+ * use either the classical 2nd-order cross operator (`Dxy`, `Dxz`, `Dyz`) or the 4th-order
+ * tensor-product version (`Dxy4`, `Dxz4`, `Dyz4`) when Ricci evaluations demand higher accuracy.
+ * Upwinded advection relies on biased 3-point formulas activated according to the sign of the local
+ * shift. Kreiss–Oliger dissipation implements the 6th-order filter used to stabilize high-frequency
  * numerical noise in hyperbolic systems.
  *
  * @note These operators assume uniform spacing along each axis and share the units and conventions
@@ -29,6 +29,7 @@
 
 namespace tensorium_RG::fd {
 
+enum Variance { Up, Down };
 enum Axis { X = 0, Y = 1, Z = 2 };
 
 /// @brief Utility accessor that forwards to `Field3D::idx` / raw pointer storage.
@@ -121,7 +122,8 @@ inline double Dyz(const Field &f, size_t i, size_t j, size_t k, double dy, doubl
 /**
  * @brief Tensor-product 4th-order approximation to \f$\partial_{xy} f\f$.
  * @details Expands the 1D \f$(-1,8,-8,1)/12\f$ derivative in both axes and rescales by
- *          \f$144\,\Delta x\,\Delta y\f$ so Ricci builders can reuse it for the \f$\tilde{R}_{ij}\f$ terms.
+ *          \f$144\,\Delta x\,\Delta y\f$ so Ricci builders can reuse it for the
+ * \f$\tilde{R}_{ij}\f$ terms.
  */
 template <typename Field>
 inline double Dxy4(const Field &f, size_t i, size_t j, size_t k, double dx, double dy) {
@@ -179,7 +181,8 @@ inline double D(const Field &f, size_t i, size_t j, size_t k, Axis a, double dx,
 /**
  * @brief One-dimensional slice of the 6th-order Kreiss–Oliger filter.
  * @details Implements
- * \f$\mathcal{D}_6[f]_j = (f_{j-3} - 6f_{j-2} + 15 f_{j-1} - 20 f_j + 15 f_{j+1} - 6 f_{j+2} + f_{j+3})/64\f$.
+ * \f$\mathcal{D}_6[f]_j = (f_{j-3} - 6f_{j-2} + 15 f_{j-1} - 20 f_j + 15 f_{j+1} - 6 f_{j+2} +
+ * f_{j+3})/64\f$.
  */
 template <typename Field>
 inline double KO6_axis(const Field &f, size_t i, size_t j, size_t k, Axis axis) {
@@ -200,15 +203,29 @@ inline double KO6_axis(const Field &f, size_t i, size_t j, size_t k, Axis axis) 
  * @brief Dimension-summed Kreiss–Oliger dissipation scaled by \f$\sigma\f$.
  * @note RHS kernels typically set \f$\sigma=0.1\f$ following the module conventions.
  */
+
+inline double &fd_dx() {
+    static double v = 1.0;
+    return v;
+}
+
+inline void set_fd_dx(double dx) { fd_dx() = dx; }
+
+template <typename Field>
+inline double KO6(const Field &f, size_t i, size_t j, size_t k, double sigma, double dx) {
+    const double sum = KO6_axis(f, i, j, k, X) + KO6_axis(f, i, j, k, Y) + KO6_axis(f, i, j, k, Z);
+    return (sigma / dx) * sum;
+}
+
 template <typename Field>
 inline double KO6(const Field &f, size_t i, size_t j, size_t k, double sigma) {
-    const double sum = KO6_axis(f, i, j, k, X) + KO6_axis(f, i, j, k, Y) + KO6_axis(f, i, j, k, Z);
-    return sigma * sum;
+    return KO6(f, i, j, k, sigma, fd_dx());
 }
 
 /**
  * @brief Third-order upwind derivative along x used for shift advection terms.
- * @param beta Sign of the advecting velocity (typically \f$\beta^x\f$) determines the biased stencil.
+ * @param beta Sign of the advecting velocity (typically \f$\beta^x\f$) determines the biased
+ * stencil.
  */
 template <typename Field>
 inline double Dx_upwind(const Field &f, size_t i, size_t j, size_t k, double dx, double beta) {
@@ -232,6 +249,163 @@ inline double Dz_upwind(const Field &f, size_t i, size_t j, size_t k, double dz,
         return (3.0 * get(f, i, j, k) - 4.0 * get(f, i, j, k - 1) + get(f, i, j, k - 2)) /
                (2.0 * dz);
     return (-3.0 * get(f, i, j, k) + 4.0 * get(f, i, j, k + 1) - get(f, i, j, k + 2)) / (2.0 * dz);
+}
+
+inline int sym6(int a, int b) {
+    if (a == 0 && b == 0)
+        return XX;
+    if ((a == 0 && b == 1) || (a == 1 && b == 0))
+        return XY;
+    if ((a == 0 && b == 2) || (a == 2 && b == 0))
+        return XZ;
+    if (a == 1 && b == 1)
+        return YY;
+    if ((a == 1 && b == 2) || (a == 2 && b == 1))
+        return YZ;
+    return ZZ;
+}
+
+inline int g27(int up, int lo1, int lo2) { return up * 9 + lo1 * 3 + lo2; }
+
+template <typename Grid, typename Field3>
+inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, size_t j, size_t k,
+                            double DV[3][3], Variance in_var, Variance out_var) {
+    const size_t id = G.alpha.idx(i, j, k);
+
+    const double chi = G.chi.ptr()[id];
+    const double inv_chi = 1.0 / chi;
+
+    double tgamma[3][3], tginv[3][3];
+    for (int a = 0; a < 3; ++a)
+        for (int b = 0; b < 3; ++b) {
+            tgamma[a][b] = G.gamma_tilde[sym6(a, b)].ptr()[id];
+            tginv[a][b] = G.gamma_tilde_inv[sym6(a, b)].ptr()[id];
+        }
+
+    const double dchi[3] = {Dx(G.chi, i, j, k, G.dx), Dy(G.chi, i, j, k, G.dy),
+                            Dz(G.chi, i, j, k, G.dz)};
+
+    double V_up[3], V_dn[3];
+    if (in_var == Variance::Up) {
+        V_up[0] = Vfield[0].ptr()[id];
+        V_up[1] = Vfield[1].ptr()[id];
+        V_up[2] = Vfield[2].ptr()[id];
+        for (int a = 0; a < 3; ++a)
+            V_dn[a] = inv_chi *
+                      (tgamma[a][0] * V_up[0] + tgamma[a][1] * V_up[1] + tgamma[a][2] * V_up[2]);
+    } else {
+        V_dn[0] = Vfield[0].ptr()[id];
+        V_dn[1] = Vfield[1].ptr()[id];
+        V_dn[2] = Vfield[2].ptr()[id];
+        for (int a = 0; a < 3; ++a)
+            V_up[a] = chi * (tginv[a][0] * V_dn[0] + tginv[a][1] * V_dn[1] + tginv[a][2] * V_dn[2]);
+    }
+
+    double dV_in[3][3];
+    for (int m = 0; m < 3; ++m)
+        for (int a = 0; a < 3; ++a) {
+            const auto  &f = Vfield[a];
+            const double dv = (m == 0)   ? Dx(f, i, j, k, G.dx)
+                              : (m == 1) ? Dy(f, i, j, k, G.dy)
+                                         : Dz(f, i, j, k, G.dz);
+            dV_in[m][a] = dv;
+        }
+
+    double Gamma_phys[3][3][3];
+    for (int up = 0; up < 3; ++up)
+        for (int lo1 = 0; lo1 < 3; ++lo1)
+            for (int lo2 = 0; lo2 < 3; ++lo2) {
+
+                const double Gt = G.Gamma_tilde[g27(up, lo1, lo2)].ptr()[id];
+
+                const double term1 = (up == lo1) ? dchi[lo2] : 0.0;
+                const double term2 = (up == lo2) ? dchi[lo1] : 0.0;
+
+                double contracted = 0.0;
+                for (int ell = 0; ell < 3; ++ell)
+                    contracted += tginv[up][ell] * dchi[ell];
+
+                const double term3 = tgamma[lo1][lo2] * contracted;
+
+                const double C = -(0.5 / chi) * (term1 + term2 - term3);
+
+                Gamma_phys[up][lo1][lo2] = Gt + C;
+            }
+
+    for (int m = 0; m < 3; ++m)
+        for (int a = 0; a < 3; ++a)
+            DV[m][a] = 0.0;
+
+    if (in_var == Variance::Up && out_var == Variance::Up) {
+        for (int m = 0; m < 3; ++m)
+            for (int jidx = 0; jidx < 3; ++jidx) {
+                double val = dV_in[m][jidx];
+                for (int kidx = 0; kidx < 3; ++kidx)
+                    val += Gamma_phys[jidx][m][kidx] * V_up[kidx];
+                DV[m][jidx] = val;
+            }
+        return;
+    }
+
+    if (in_var == Variance::Down && out_var == Variance::Down) {
+        for (int m = 0; m < 3; ++m)
+            for (int jidx = 0; jidx < 3; ++jidx) {
+                double val = dV_in[m][jidx];
+                for (int kidx = 0; kidx < 3; ++kidx)
+                    val -= Gamma_phys[kidx][m][jidx] * V_dn[kidx];
+                DV[m][jidx] = val;
+            }
+        return;
+    }
+
+    if (in_var == Variance::Up && out_var == Variance::Down) {
+        const double inv_chi2 = inv_chi * inv_chi;
+
+        auto dgamma_phys = [&](int m, int a, int b) -> double {
+            const auto  &F = G.gamma_tilde[sym6(a, b)];
+            const double dgt = (m == 0)   ? Dx(F, i, j, k, G.dx)
+                               : (m == 1) ? Dy(F, i, j, k, G.dy)
+                                          : Dz(F, i, j, k, G.dz);
+            const double gt = F.ptr()[id];
+            return inv_chi * dgt - inv_chi2 * dchi[m] * gt;
+        };
+
+        for (int m = 0; m < 3; ++m)
+            for (int jidx = 0; jidx < 3; ++jidx) {
+
+                double partial = 0.0;
+                for (int kidx = 0; kidx < 3; ++kidx) {
+                    partial += dgamma_phys(m, jidx, kidx) * V_up[kidx];
+                    partial += (inv_chi * tgamma[jidx][kidx]) * dV_in[m][kidx];
+                }
+
+                double corr = 0.0;
+                for (int kidx = 0; kidx < 3; ++kidx)
+                    corr += Gamma_phys[kidx][m][jidx] * V_dn[kidx];
+
+                DV[m][jidx] = partial - corr;
+            }
+        return;
+    }
+
+    if (in_var == Variance::Down && out_var == Variance::Up) {
+        double D_dn[3];
+        for (int m = 0; m < 3; ++m) {
+            for (int jidx = 0; jidx < 3; ++jidx) {
+                double val = dV_in[m][jidx];
+                for (int kidx = 0; kidx < 3; ++kidx)
+                    val -= Gamma_phys[kidx][m][jidx] * V_dn[kidx];
+                D_dn[jidx] = val;
+            }
+            for (int jidx = 0; jidx < 3; ++jidx) {
+                const double gij = chi * tginv[jidx][0];
+                (void)gij;
+                DV[m][jidx] = chi * (tginv[jidx][0] * D_dn[0] + tginv[jidx][1] * D_dn[1] +
+                                     tginv[jidx][2] * D_dn[2]);
+            }
+        }
+        return;
+    }
 }
 
 } // namespace tensorium_RG::fd

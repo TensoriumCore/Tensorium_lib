@@ -50,9 +50,9 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    const T ko_sigma = T(0.1);
+    const T ko_sigma = T(5.0);
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i)
         for (size_t j = j0; j < j1; ++j)
             for (size_t k = k0; k < k1; ++k) {

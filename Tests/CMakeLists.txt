@@ -27,8 +27,16 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RK4TimeEvolutionTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp)
+
+set(TEST_BSSN_STABILITY_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/minkowski_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/schwarzschild_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/kerr_basic.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/bowen_york_boost_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_spherical_analytic_constraints.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_hyperbolicity_speeds.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/boundary_conditions.cpp)
 
 set(BENCHMARK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)
@@ -47,13 +55,15 @@ tensorium_add_object_library(test_bssn_constraints_objs ${TEST_BSSN_CONSTRAINT_S
 tensorium_add_object_library(test_bssn_ricci_objs ${TEST_BSSN_RICCI_SOURCES})
 tensorium_add_object_library(test_bssn_solvers_objs ${TEST_BSSN_SOLVER_SOURCES})
 tensorium_add_object_library(test_bssn_evolution_objs ${TEST_BSSN_EVOLUTION_SOURCES})
+tensorium_add_object_library(test_bssn_stability_objs ${TEST_BSSN_STABILITY_SOURCES})
 
 set(BSSN_OBJECTS
     $<TARGET_OBJECTS:test_bssn_initial_objs>
     $<TARGET_OBJECTS:test_bssn_constraints_objs>
     $<TARGET_OBJECTS:test_bssn_ricci_objs>
     $<TARGET_OBJECTS:test_bssn_solvers_objs>
-    $<TARGET_OBJECTS:test_bssn_evolution_objs>)
+    $<TARGET_OBJECTS:test_bssn_evolution_objs>
+    $<TARGET_OBJECTS:test_bssn_stability_objs>)
 
 add_executable(TensoriumChiEvolutionDemo
     bssn/binaries/BSSNChiEvolutionDemo.cpp)

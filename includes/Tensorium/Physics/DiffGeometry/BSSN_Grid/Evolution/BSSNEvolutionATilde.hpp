@@ -40,7 +40,7 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 template <typename T>
 inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4) {
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.1);
+    const T ko_sigma = T(0.6);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -62,7 +62,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     const T third = T(1) / T(3);
     const T two_thirds = T(2) * third;
 
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i) {
         for (size_t j = j0; j < j1; ++j) {
             for (size_t k = k0; k < k1; ++k) {
