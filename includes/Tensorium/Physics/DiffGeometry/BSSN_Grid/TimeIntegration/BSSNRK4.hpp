@@ -122,7 +122,7 @@ inline T compute_dt_cfl(const BSSNGridSoA<T> &grid, const CFLControl<T> &control
 
     T max_beta = T(0);
     T min_alpha = std::numeric_limits<T>::infinity();
-
+#pragma omp parallel for collapse(3) reduction(max : max_beta) reduction(min : min_alpha)
     for (size_t i = i_begin; i < i_end; ++i)
         for (size_t j = j_begin; j < j_end; ++j)
             for (size_t k = k_begin; k < k_end; ++k) {
@@ -138,7 +138,7 @@ inline T compute_dt_cfl(const BSSNGridSoA<T> &grid, const CFLControl<T> &control
                 min_alpha = std::min(min_alpha, alpha);
             }
 
-    const T alpha_floor = T(0.1); 
+    const T alpha_floor = T(0.1);
     const T a = std::max(min_alpha, alpha_floor);
 
     const T gauge_term = control.gauge_speed * std::sqrt(T(1) / a);

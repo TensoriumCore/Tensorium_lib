@@ -11,16 +11,18 @@
  * @brief RHS for the trace-free extrinsic curvature \f$\tilde{A}_{ij}\f$.
  * @details Implements the trace-free part of
  * \f[
- * (\partial_t-\mathcal{L}_\beta)\tilde{A}_{ij} = \chi\left[-D_iD_j\alpha + \alpha R_{ij}\right]^{TF} + \alpha (K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})
+ * (\partial_t-\mathcal{L}_\beta)\tilde{A}_{ij} = \chi\left[-D_iD_j\alpha + \alpha
+ * R_{ij}\right]^{TF} + \alpha (K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})
  * \f]
  * where \f$D_i\f$ is the physical covariant derivative.  The code reconstructs the physical metric
- * \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$ and Christoffels to evaluate the covariant Hessian of \f$\alpha\f$.
+ * \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$ and Christoffels to evaluate the covariant Hessian
+ * of \f$\alpha\f$.
  */
 
 namespace tensorium_RG::bssn {
 
 #ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-#define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
+#    define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
 inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
     return std::min(lower + guard, upper);
 }
@@ -62,106 +64,179 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     const T third = T(1) / T(3);
     const T two_thirds = T(2) * third;
 
-#pragma omp parallel for collapse(3)
+    // Pre-compute optimization constants
+    const double inv_12dx = 1.0 / (12.0 * G.dx);
+    const double inv_12dy = 1.0 / (12.0 * G.dy);
+    const double inv_12dz = 1.0 / (12.0 * G.dz);
+    const double inv_2dx = 1.0 / (2.0 * G.dx);
+    const double inv_2dy = 1.0 / (2.0 * G.dy);
+    const double inv_2dz = 1.0 / (2.0 * G.dz);
+
+    const double inv_12dx2 = 1.0 / (12.0 * G.dx * G.dx);
+    const double inv_12dy2 = 1.0 / (12.0 * G.dy * G.dy);
+    const double inv_12dz2 = 1.0 / (12.0 * G.dz * G.dz);
+    const double inv_144dxdy = 1.0 / (144.0 * G.dx * G.dy);
+    const double inv_144dxdz = 1.0 / (144.0 * G.dx * G.dz);
+    const double inv_144dydz = 1.0 / (144.0 * G.dy * G.dz);
+
+    const ptrdiff_t sx = G.A_tilde[0].st.sx;
+    const ptrdiff_t sy = G.A_tilde[0].st.sy;
+
+    // Map (row, col) -> symmetric index 0..5
+    const int map_s[3][3] = {{0, 1, 2}, {1, 3, 4}, {2, 4, 5}};
+
+#pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
         for (size_t j = j0; j < j1; ++j) {
+
+            size_t idx_start = G.A_tilde[0].idx(i, j, k0);
+
+            // Pointers setup
+            const T *p_alpha = G.alpha.ptr() + idx_start;
+            const T *p_chi = G.chi.ptr() + idx_start;
+            const T *p_K = G.K.ptr() + idx_start;
+
+            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                                  G.beta[2].ptr() + idx_start};
+
+            const T *p_gam[6];
+            const T *p_gam_inv[6];
+            const T *p_A[6];
+            const T *p_Ricci[6];
+            T       *p_rhs[6];
+
+            for (int s = 0; s < 6; ++s) {
+                p_gam[s] = G.gamma_tilde[s].ptr() + idx_start;
+                p_gam_inv[s] = G.gamma_tilde_inv[s].ptr() + idx_start;
+                p_A[s] = G.A_tilde[s].ptr() + idx_start;
+                p_Ricci[s] = G.Ricci[s].ptr() + idx_start;
+                p_rhs[s] = rhs[s].ptr() + idx_start;
+            }
+
             for (size_t k = k0; k < k1; ++k) {
-                const size_t id = G.A_tilde[0].idx(i, j, k);
-
-                const T alpha = G.alpha.ptr()[id];
-                const T chi = G.chi.ptr()[id];
+                const T alpha = *p_alpha;
+                const T chi = *p_chi;
                 const T inv_chi = T(1) / chi;
-                const T K = G.K.ptr()[id];
+                const T K = *p_K;
 
+                // --- 1. Load Local Tensors ---
                 T gamma_tilde_inv[3][3];
                 T gamma_phys[3][3];
                 T gamma_phys_inv[3][3];
                 T A_mat[3][3];
                 T Ricci_mat[3][3];
 
-                for (int a = 0; a < 3; ++a) {
-                    for (int b = a; b < 3; ++b) {
-                        const int s = tensorium_RG::sym6_index(a, b);
-                        const T   gt = tensorium_RG::sym6_get(G.gamma_tilde, id, a, b);
-                        const T   gt_inv = tensorium_RG::sym6_get(G.gamma_tilde_inv, id, a, b);
-                        const T   Aval = tensorium_RG::sym6_get(G.A_tilde, id, a, b);
-                        const T   Ricci_val = tensorium_RG::sym6_get(G.Ricci, id, a, b);
-
-                        gamma_tilde_inv[a][b] = gt_inv;
-                        gamma_tilde_inv[b][a] = gt_inv;
-
-                        const T g_phys = gt * inv_chi;
-                        const T g_phys_inv = gt_inv * chi;
-                        gamma_phys[a][b] = g_phys;
-                        gamma_phys[b][a] = g_phys;
-                        gamma_phys_inv[a][b] = g_phys_inv;
-                        gamma_phys_inv[b][a] = g_phys_inv;
-
-                        A_mat[a][b] = Aval;
-                        A_mat[b][a] = Aval;
-
-                        Ricci_mat[a][b] = Ricci_val;
-                        Ricci_mat[b][a] = Ricci_val;
+                for (int s = 0; s < 6; ++s) {
+                    int a, b;
+                    if (s == 0) {
+                        a = 0;
+                        b = 0;
+                    } else if (s == 1) {
+                        a = 0;
+                        b = 1;
+                    } else if (s == 2) {
+                        a = 0;
+                        b = 2;
+                    } else if (s == 3) {
+                        a = 1;
+                        b = 1;
+                    } else if (s == 4) {
+                        a = 1;
+                        b = 2;
+                    } else {
+                        a = 2;
+                        b = 2;
                     }
+
+                    const T gt = *p_gam[s];
+                    const T gt_inv = *p_gam_inv[s];
+                    const T Aval = *p_A[s];
+                    const T Rval = *p_Ricci[s];
+
+                    gamma_tilde_inv[a][b] = gt_inv;
+                    gamma_tilde_inv[b][a] = gt_inv;
+
+                    const T g_phys = gt * inv_chi;
+                    const T g_phys_inv = gt_inv * chi;
+
+                    gamma_phys[a][b] = g_phys;
+                    gamma_phys[b][a] = g_phys;
+                    gamma_phys_inv[a][b] = g_phys_inv;
+                    gamma_phys_inv[b][a] = g_phys_inv;
+
+                    A_mat[a][b] = Aval;
+                    A_mat[b][a] = Aval;
+                    Ricci_mat[a][b] = Rval;
+                    Ricci_mat[b][a] = Rval;
                 }
 
-                const T d_alpha[3] = {T(Dx(G.alpha, i, j, k, G.dx)), T(Dy(G.alpha, i, j, k, G.dy)),
-                                      T(Dz(G.alpha, i, j, k, G.dz))};
+                const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
+                                      Dz_ptr(p_alpha, inv_12dz)};
 
-                const T d_beta[3][3] = {
-                    {T(Dx(G.beta[0], i, j, k, G.dx)), T(Dy(G.beta[0], i, j, k, G.dy)),
-                     T(Dz(G.beta[0], i, j, k, G.dz))},
-                    {T(Dx(G.beta[1], i, j, k, G.dx)), T(Dy(G.beta[1], i, j, k, G.dy)),
-                     T(Dz(G.beta[1], i, j, k, G.dz))},
-                    {T(Dx(G.beta[2], i, j, k, G.dx)), T(Dy(G.beta[2], i, j, k, G.dy)),
-                     T(Dz(G.beta[2], i, j, k, G.dz))}};
-
+                T d_beta[3][3];
+                for (int c = 0; c < 3; ++c) {
+                    d_beta[c][0] = Dx_ptr(p_beta[c], sx, inv_12dx);
+                    d_beta[c][1] = Dy_ptr(p_beta[c], sy, inv_12dy);
+                    d_beta[c][2] = Dz_ptr(p_beta[c], inv_12dz);
+                }
                 const T div_beta = d_beta[0][0] + d_beta[1][1] + d_beta[2][2];
-                const T beta[3] = {G.beta[0].ptr()[id], G.beta[1].ptr()[id], G.beta[2].ptr()[id]};
+                const T beta[3] = {*p_beta[0], *p_beta[1], *p_beta[2]};
 
-                const T d_chi[3] = {T(Dx(G.chi, i, j, k, G.dx)), T(Dy(G.chi, i, j, k, G.dy)),
-                                    T(Dz(G.chi, i, j, k, G.dz))};
+                const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
+                                    Dz_ptr(p_chi, inv_12dz)};
 
-                T d_g_phys[3][3][3];
-                for (int dir = 0; dir < 3; ++dir)
-                    for (int row = 0; row < 3; ++row)
-                        for (int col = 0; col < 3; ++col)
-                            d_g_phys[dir][row][col] = T(0);
+                T d_g_phys[3][3][3]; // dir, row, col
 
-                for (int dir = 0; dir < 3; ++dir) {
-                    for (int row = 0; row < 3; ++row) {
-                        for (int col = row; col < 3; ++col) {
-                            const int s = tensorium_RG::sym6_index(row, col);
-                            T         d_gt = T(0);
-                            if (dir == 0)
-                                d_gt = T(Dx(G.gamma_tilde[s], i, j, k, G.dx));
-                            else if (dir == 1)
-                                d_gt = T(Dy(G.gamma_tilde[s], i, j, k, G.dy));
-                            else
-                                d_gt = T(Dz(G.gamma_tilde[s], i, j, k, G.dz));
-
-                            const T val =
-                                d_gt * inv_chi - gamma_phys[row][col] * inv_chi * d_chi[dir];
-                            d_g_phys[dir][row][col] = val;
-                            d_g_phys[dir][col][row] = val;
-                        }
+                for (int s = 0; s < 6; ++s) {
+                    int row, col;
+                    if (s == 0) {
+                        row = 0;
+                        col = 0;
+                    } else if (s == 1) {
+                        row = 0;
+                        col = 1;
+                    } else if (s == 2) {
+                        row = 0;
+                        col = 2;
+                    } else if (s == 3) {
+                        row = 1;
+                        col = 1;
+                    } else if (s == 4) {
+                        row = 1;
+                        col = 2;
+                    } else {
+                        row = 2;
+                        col = 2;
                     }
+
+                    const T *p_g = p_gam[s];
+                    const T  d_gt_x = Dx_ptr(p_g, sx, inv_12dx);
+                    const T  d_gt_y = Dy_ptr(p_g, sy, inv_12dy);
+                    const T  d_gt_z = Dz_ptr(p_g, inv_12dz);
+
+                    const T g_p = gamma_phys[row][col];
+
+                    const T val_x = (d_gt_x - g_p * d_chi[0]) * inv_chi;
+                    const T val_y = (d_gt_y - g_p * d_chi[1]) * inv_chi;
+                    const T val_z = (d_gt_z - g_p * d_chi[2]) * inv_chi;
+
+                    d_g_phys[0][row][col] = val_x;
+                    d_g_phys[0][col][row] = val_x;
+                    d_g_phys[1][row][col] = val_y;
+                    d_g_phys[1][col][row] = val_y;
+                    d_g_phys[2][row][col] = val_z;
+                    d_g_phys[2][col][row] = val_z;
                 }
 
                 T Gamma_conn[3][3][3];
-                for (int kidx = 0; kidx < 3; ++kidx)
-                    for (int a = 0; a < 3; ++a)
-                        for (int b = 0; b < 3; ++b)
-                            Gamma_conn[kidx][a][b] = T(0);
-
                 for (int kidx = 0; kidx < 3; ++kidx) {
                     for (int row = 0; row < 3; ++row) {
                         for (int col = row; col < 3; ++col) {
                             T sum = T(0);
                             for (int l = 0; l < 3; ++l) {
-                                const T term = d_g_phys[row][col][l] + d_g_phys[col][row][l] -
-                                               d_g_phys[l][row][col];
-                                sum += gamma_phys_inv[kidx][l] * term;
+                                sum += gamma_phys_inv[kidx][l] *
+                                       (d_g_phys[row][col][l] + d_g_phys[col][row][l] -
+                                        d_g_phys[l][row][col]);
                             }
                             const T val = T(0.5) * sum;
                             Gamma_conn[kidx][row][col] = val;
@@ -171,12 +246,12 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 }
 
                 T hess[3][3];
-                hess[0][0] = T(Dxx(G.alpha, i, j, k, G.dx));
-                hess[1][1] = T(Dyy(G.alpha, i, j, k, G.dy));
-                hess[2][2] = T(Dzz(G.alpha, i, j, k, G.dz));
-                hess[0][1] = T(Dxy4(G.alpha, i, j, k, G.dx, G.dy));
-                hess[0][2] = T(Dxz4(G.alpha, i, j, k, G.dx, G.dz));
-                hess[1][2] = T(Dyz4(G.alpha, i, j, k, G.dy, G.dz));
+                hess[0][0] = Dxx_ptr(p_alpha, sx, inv_12dx2);
+                hess[1][1] = Dyy_ptr(p_alpha, sy, inv_12dy2);
+                hess[2][2] = Dzz_ptr(p_alpha, inv_12dz2);
+                hess[0][1] = Dxy4_ptr(p_alpha, sx, sy, inv_144dxdy);
+                hess[0][2] = Dxz4_ptr(p_alpha, sx, inv_144dxdz);
+                hess[1][2] = Dyz4_ptr(p_alpha, sy, inv_144dydz);
                 hess[1][0] = hess[0][1];
                 hess[2][0] = hess[0][2];
                 hess[2][1] = hess[1][2];
@@ -187,6 +262,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                         T conn_grad = T(0);
                         for (int l = 0; l < 3; ++l)
                             conn_grad += Gamma_conn[l][a][b] * d_alpha[l];
+
                         const T val = hess[a][b] - conn_grad;
                         cov_dd[a][b] = val;
                         cov_dd[b][a] = val;
@@ -228,11 +304,16 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
 
                 for (int a = 0; a < 3; ++a) {
                     for (int b = a; b < 3; ++b) {
-                        const int s = tensorium_RG::sym6_index(a, b);
+                        const int s = map_s[a][b];
+                        const T  *p_field = p_A[s];
 
-                        const T adv = beta[0] * T(Dx_upwind(G.A_tilde[s], i, j, k, G.dx, beta[0])) +
-                                      beta[1] * T(Dy_upwind(G.A_tilde[s], i, j, k, G.dy, beta[1])) +
-                                      beta[2] * T(Dz_upwind(G.A_tilde[s], i, j, k, G.dz, beta[2]));
+                        const T bx = beta[0];
+                        const T by = beta[1];
+                        const T bz = beta[2];
+
+                        const T adv = bx * Dx_upwind_ptr(p_field, sx, inv_2dx, bx) +
+                                      by * Dy_upwind_ptr(p_field, sy, inv_2dy, by) +
+                                      bz * Dz_upwind_ptr(p_field, inv_2dz, bz);
 
                         T lie = T(0);
                         for (int m = 0; m < 3; ++m) {
@@ -244,13 +325,28 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                         const T term_geom = chi * S_tf[a][b];
                         const T term_quad = alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
 
-                        rhs[s].ptr()[id] = adv + lie + term_geom + term_quad +
-                                           T(KO6(G.A_tilde[s], i, j, k, ko_sigma));
+                        const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
+                                       KO6_axis_ptr(p_field, 1);
+                        const T diss_scaled = (ko_sigma / G.dx) * diss;
+
+                        *p_rhs[s] = adv + lie + term_geom + term_quad + diss_scaled;
                     }
+                }
+
+                ++p_alpha;
+                ++p_chi;
+                ++p_K;
+                for (int c = 0; c < 3; ++c)
+                    ++p_beta[c];
+                for (int s = 0; s < 6; ++s) {
+                    ++p_gam[s];
+                    ++p_gam_inv[s];
+                    ++p_A[s];
+                    ++p_Ricci[s];
+                    ++p_rhs[s];
                 }
             }
         }
     }
 }
-
 } // namespace tensorium_RG::bssn

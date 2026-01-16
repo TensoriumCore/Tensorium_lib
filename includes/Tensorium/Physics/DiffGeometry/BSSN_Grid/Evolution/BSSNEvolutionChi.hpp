@@ -6,12 +6,15 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 /**
  * @file BSSNEvolutionChi.hpp
- * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi = \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\f$.
+ * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi =
+ * \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\f$.
  * @details The implementation evaluates
  * \f[
- * \partial_t\chi = \beta^i\partial_i\chi + \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i) + \mathcal{D}_6[\chi]
+ * \partial_t\chi = \beta^i\partial_i\chi + \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i) +
+ * \mathcal{D}_6[\chi]
  * \f]
- * where advection uses third-order upwind stencils tied to the sign of each \f$\beta^i\f$ component and
+ * where advection uses third-order upwind stencils tied to the sign of each \f$\beta^i\f$ component
+ * and
  * \f$\mathcal{D}_6\f$ is the KO6 dissipation.
  */
 
@@ -40,8 +43,10 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  */
 template <typename T>
 inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t padding = 4) {
+    using namespace tensorium_RG::fd;
     const T ko_sigma = T(0.6);
-    size_t  I0, I1, J0, J1, K0, K1;
+
+    size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
     std::fill(rhs_chi.ptr(), rhs_chi.ptr() + G.chi.st.nx_tot * G.chi.st.ny_tot * G.chi.st.nz_tot,
@@ -57,25 +62,57 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-#pragma omp parallel for collapse(3)
+    const double    inv_12dx = 1.0 / (12.0 * G.dx);
+    const double    inv_12dy = 1.0 / (12.0 * G.dy);
+    const double    inv_12dz = 1.0 / (12.0 * G.dz);
+    const double    inv_2dx = 1.0 / (2.0 * G.dx);
+    const double    inv_2dy = 1.0 / (2.0 * G.dy);
+    const double    inv_2dz = 1.0 / (2.0 * G.dz);
+    const ptrdiff_t sx = G.chi.st.sx;
+    const ptrdiff_t sy = G.chi.st.sy;
+
+#pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
         for (size_t j = j0; j < j1; ++j) {
+
+            size_t idx_start = G.chi.idx(i, j, k0);
+
+            const T *p_chi = G.chi.ptr() + idx_start;
+            const T *p_alpha = G.alpha.ptr() + idx_start;
+            const T *p_K = G.K.ptr() + idx_start;
+            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                                  G.beta[2].ptr() + idx_start};
+            T       *p_rhs = rhs_chi.ptr() + idx_start;
+
             for (size_t k = k0; k < k1; ++k) {
-                const size_t id = G.chi.idx(i, j, k);
-                const T      chi = G.chi.ptr()[id];
-                const T      alpha = G.alpha.ptr()[id];
-                const T      K = G.K.ptr()[id];
-                const T      beta_x = G.beta[0].ptr()[id];
-                const T      beta_y = G.beta[1].ptr()[id];
-                const T      beta_z = G.beta[2].ptr()[id];
-                const T d_chi = beta_x * tensorium_RG::fd::Dx_upwind(G.chi, i, j, k, G.dx, beta_x) +
-                                beta_y * tensorium_RG::fd::Dy_upwind(G.chi, i, j, k, G.dy, beta_y) +
-                                beta_z * tensorium_RG::fd::Dz_upwind(G.chi, i, j, k, G.dz, beta_z);
-                const T div_beta = tensorium_RG::fd::Dx(G.beta[0], i, j, k, G.dx) +
-                                   tensorium_RG::fd::Dy(G.beta[1], i, j, k, G.dy) +
-                                   tensorium_RG::fd::Dz(G.beta[2], i, j, k, G.dz);
-                rhs_chi.ptr()[id] = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
-                                    T(tensorium_RG::fd::KO6(G.chi, i, j, k, ko_sigma));
+                const T chi = *p_chi;
+                const T alpha = *p_alpha;
+                const T K = *p_K;
+                const T bx = *p_beta[0];
+                const T by = *p_beta[1];
+                const T bz = *p_beta[2];
+
+                const T d_chi = bx * Dx_upwind_ptr(p_chi, sx, inv_2dx, bx) +
+                                by * Dy_upwind_ptr(p_chi, sy, inv_2dy, by) +
+                                bz * Dz_upwind_ptr(p_chi, inv_2dz, bz);
+
+                const T div_beta = Dx_ptr(p_beta[0], sx, inv_12dx) +
+                                   Dy_ptr(p_beta[1], sy, inv_12dy) + Dz_ptr(p_beta[2], inv_12dz);
+
+                const T diss =
+                    KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
+
+                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
+                         (ko_sigma / G.dx) * diss;
+
+                // Increment pointers
+                ++p_chi;
+                ++p_alpha;
+                ++p_K;
+                ++p_rhs;
+                ++p_beta[0];
+                ++p_beta[1];
+                ++p_beta[2];
             }
         }
     }

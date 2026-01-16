@@ -32,142 +32,186 @@ namespace tensorium_RG::fd {
 enum Variance { Up, Down };
 enum Axis { X = 0, Y = 1, Z = 2 };
 
+inline double get_offset(const double *ptr, ptrdiff_t offset) { return ptr[offset]; }
+
+// First Derivatives (Order 4)
+template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_12dx) {
+    return (-p[2 * sx] + 8.0 * p[sx] - 8.0 * p[-sx] + p[-2 * sx]) * inv_12dx;
+}
+
+template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_12dy) {
+    return (-p[2 * sy] + 8.0 * p[sy] - 8.0 * p[-sy] + p[-2 * sy]) * inv_12dy;
+}
+
+template <typename T> inline double Dz_ptr(const T *p, double inv_12dz) {
+    // Stride Z is always 1 in this layout
+    return (-p[2] + 8.0 * p[1] - 8.0 * p[-1] + p[-2]) * inv_12dz;
+}
+
+// Second Derivatives (Order 4)
+template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_12dx2) {
+    return (-p[2 * sx] + 16.0 * p[sx] - 30.0 * p[0] + 16.0 * p[-sx] - p[-2 * sx]) * inv_12dx2;
+}
+
+template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_12dy2) {
+    return (-p[2 * sy] + 16.0 * p[sy] - 30.0 * p[0] + 16.0 * p[-sy] - p[-2 * sy]) * inv_12dy2;
+}
+
+template <typename T> inline double Dzz_ptr(const T *p, double inv_12dz2) {
+    return (-p[2] + 16.0 * p[1] - 30.0 * p[0] + 16.0 * p[-1] - p[-2]) * inv_12dz2;
+}
+
+// Mixed Derivatives (Order 2 - Compact)
+template <typename T>
+inline double Dxy_ptr(const T *p, ptrdiff_t sx, ptrdiff_t sy, double inv_4dxdy) {
+    return (p[sx + sy] - p[sx - sy] - p[-sx + sy] + p[-sx - sy]) * inv_4dxdy;
+}
+
+template <typename T> inline double Dxz_ptr(const T *p, ptrdiff_t sx, double inv_4dxdz) {
+    return (p[sx + 1] - p[sx - 1] - p[-sx + 1] + p[-sx - 1]) * inv_4dxdz;
+}
+
+template <typename T> inline double Dyz_ptr(const T *p, ptrdiff_t sy, double inv_4dydz) {
+    return (p[sy + 1] - p[sy - 1] - p[-sy + 1] + p[-sy - 1]) * inv_4dydz;
+}
+
+// Mixed Derivatives (Order 4)
+template <typename T>
+inline double Dxy4_ptr(const T *p, ptrdiff_t sx, ptrdiff_t sy, double inv_144dxdy) {
+    double          sum = 0.0;
+    const ptrdiff_t idx_x[4] = {-2 * sx, -sx, sx, 2 * sx};
+    const ptrdiff_t idx_y[4] = {-2 * sy, -sy, sy, 2 * sy};
+    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
+
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * p[idx_x[a] + idx_y[b]];
+        }
+    }
+    return sum * inv_144dxdy;
+}
+
+template <typename T> inline double Dxz4_ptr(const T *p, ptrdiff_t sx, double inv_144dxdz) {
+    double          sum = 0.0;
+    const ptrdiff_t idx_x[4] = {-2 * sx, -sx, sx, 2 * sx};
+    const ptrdiff_t idx_z[4] = {-2, -1, 1, 2};
+    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
+
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * p[idx_x[a] + idx_z[b]];
+        }
+    }
+    return sum * inv_144dxdz;
+}
+
+template <typename T> inline double Dyz4_ptr(const T *p, ptrdiff_t sy, double inv_144dydz) {
+    double          sum = 0.0;
+    const ptrdiff_t idx_y[4] = {-2 * sy, -sy, sy, 2 * sy};
+    const ptrdiff_t idx_z[4] = {-2, -1, 1, 2};
+    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
+
+    for (int a = 0; a < 4; ++a) {
+        for (int b = 0; b < 4; ++b) {
+            sum += w[a] * w[b] * p[idx_y[a] + idx_z[b]];
+        }
+    }
+    return sum * inv_144dydz;
+}
+
+// Upwind Derivatives
+template <typename T>
+inline double Dx_upwind_ptr(const T *p, ptrdiff_t sx, double inv_2dx, double beta) {
+    if (beta >= 0.0)
+        return (3.0 * p[0] - 4.0 * p[-sx] + p[-2 * sx]) * inv_2dx;
+    return (-3.0 * p[0] + 4.0 * p[sx] - p[2 * sx]) * inv_2dx;
+}
+
+template <typename T>
+inline double Dy_upwind_ptr(const T *p, ptrdiff_t sy, double inv_2dy, double beta) {
+    if (beta >= 0.0)
+        return (3.0 * p[0] - 4.0 * p[-sy] + p[-2 * sy]) * inv_2dy;
+    return (-3.0 * p[0] + 4.0 * p[sy] - p[2 * sy]) * inv_2dy;
+}
+
+template <typename T> inline double Dz_upwind_ptr(const T *p, double inv_2dz, double beta) {
+    if (beta >= 0.0)
+        return (3.0 * p[0] - 4.0 * p[-1] + p[-2]) * inv_2dz;
+    return (-3.0 * p[0] + 4.0 * p[1] - p[2]) * inv_2dz;
+}
+
+// KO6 Dissipation
+template <typename T> inline double KO6_axis_ptr(const T *p, ptrdiff_t stride) {
+    return (p[-3 * stride] - 6.0 * p[-2 * stride] + 15.0 * p[-stride] - 20.0 * p[0] +
+            15.0 * p[stride] - 6.0 * p[2 * stride] + p[3 * stride]) *
+           (1.0 / 64.0);
+}
+
 /// @brief Utility accessor that forwards to `Field3D::idx` / raw pointer storage.
 template <typename Field> inline double get(const Field &f, size_t i, size_t j, size_t k) {
     return f.ptr()[f.idx(i, j, k)];
 }
 
-/**
- * @brief 4th-order centered derivative along x.
- * @details Implements the stencil shown in the file-level documentation.
- * @param f Field to differentiate.
- * @param dx Grid spacing \f$\Delta x\f$.
- */
 template <typename Field>
 inline double Dx(const Field &f, size_t i, size_t j, size_t k, double dx) {
-    return (-get(f, i + 2, j, k) + 8.0 * get(f, i + 1, j, k) - 8.0 * get(f, i - 1, j, k) +
-            get(f, i - 2, j, k)) /
-           (12.0 * dx);
+    return Dx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (12.0 * dx));
 }
 
-/// @brief 4th-order centered derivative along y.
 template <typename Field>
 inline double Dy(const Field &f, size_t i, size_t j, size_t k, double dy) {
-    return (-get(f, i, j + 2, k) + 8.0 * get(f, i, j + 1, k) - 8.0 * get(f, i, j - 1, k) +
-            get(f, i, j - 2, k)) /
-           (12.0 * dy);
+    return Dy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (12.0 * dy));
 }
 
-/// @brief 4th-order centered derivative along z.
 template <typename Field>
 inline double Dz(const Field &f, size_t i, size_t j, size_t k, double dz) {
-    return (-get(f, i, j, k + 2) + 8.0 * get(f, i, j, k + 1) - 8.0 * get(f, i, j, k - 1) +
-            get(f, i, j, k - 2)) /
-           (12.0 * dz);
+    return Dz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (12.0 * dz));
 }
 
-/**
- * @brief 4th-order approximation to \f$\partial_{xx} f\f$.
- * @note Uses the classic \f$(-1,16,-30,16,-1)/12\f$ stencil scaled by \f$1/\Delta x^2\f$.
- */
 template <typename Field>
 inline double Dxx(const Field &f, size_t i, size_t j, size_t k, double dx) {
-    double inv_dx2 = 1.0 / (dx * dx);
-    return (-get(f, i + 2, j, k) + 16.0 * get(f, i + 1, j, k) - 30.0 * get(f, i, j, k) +
-            16.0 * get(f, i - 1, j, k) - get(f, i - 2, j, k)) *
-           (1.0 / 12.0) * inv_dx2;
+    return Dxx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (12.0 * dx * dx));
 }
 
 template <typename Field>
 inline double Dyy(const Field &f, size_t i, size_t j, size_t k, double dy) {
-    double inv_dy2 = 1.0 / (dy * dy);
-    return (-get(f, i, j + 2, k) + 16.0 * get(f, i, j + 1, k) - 30.0 * get(f, i, j, k) +
-            16.0 * get(f, i, j - 1, k) - get(f, i, j - 2, k)) *
-           (1.0 / 12.0) * inv_dy2;
+    return Dyy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (12.0 * dy * dy));
 }
 
 template <typename Field>
 inline double Dzz(const Field &f, size_t i, size_t j, size_t k, double dz) {
-    double inv_dz2 = 1.0 / (dz * dz);
-    return (-get(f, i, j, k + 2) + 16.0 * get(f, i, j, k + 1) - 30.0 * get(f, i, j, k) +
-            16.0 * get(f, i, j, k - 1) - get(f, i, j, k - 2)) *
-           (1.0 / 12.0) * inv_dz2;
+    return Dzz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (12.0 * dz * dz));
 }
 
-/**
- * @brief Mixed second derivative using the compact second-order stencil.
- * @details Useful near where 4th-order cross derivatives would require larger halos.
- */
 template <typename Field>
 inline double Dxy(const Field &f, size_t i, size_t j, size_t k, double dx, double dy) {
-    return (get(f, i + 1, j + 1, k) - get(f, i + 1, j - 1, k) - get(f, i - 1, j + 1, k) +
-            get(f, i - 1, j - 1, k)) /
-           (4.0 * dx * dy);
+    return Dxy_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, f.st.sy, 1.0 / (4.0 * dx * dy));
 }
 
 template <typename Field>
 inline double Dxz(const Field &f, size_t i, size_t j, size_t k, double dx, double dz) {
-    return (get(f, i + 1, j, k + 1) - get(f, i + 1, j, k - 1) - get(f, i - 1, j, k + 1) +
-            get(f, i - 1, j, k - 1)) /
-           (4.0 * dx * dz);
+    return Dxz_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (4.0 * dx * dz));
 }
 
 template <typename Field>
 inline double Dyz(const Field &f, size_t i, size_t j, size_t k, double dy, double dz) {
-    return (get(f, i, j + 1, k + 1) - get(f, i, j + 1, k - 1) - get(f, i, j - 1, k + 1) +
-            get(f, i, j - 1, k - 1)) /
-           (4.0 * dy * dz);
+    return Dyz_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (4.0 * dy * dz));
 }
 
-/**
- * @brief Tensor-product 4th-order approximation to \f$\partial_{xy} f\f$.
- * @details Expands the 1D \f$(-1,8,-8,1)/12\f$ derivative in both axes and rescales by
- *          \f$144\,\Delta x\,\Delta y\f$ so Ricci builders can reuse it for the
- * \f$\tilde{R}_{ij}\f$ terms.
- */
 template <typename Field>
 inline double Dxy4(const Field &f, size_t i, size_t j, size_t k, double dx, double dy) {
-    double sum = 0.0;
-
-    const int    idx[4] = {-2, -1, 1, 2};
-    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
-
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * get(f, i + idx[a], j + idx[b], k);
-        }
-    }
-
-    return sum / (144.0 * dx * dy);
+    return Dxy4_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, f.st.sy, 1.0 / (144.0 * dx * dy));
 }
 
 template <typename Field>
 inline double Dxz4(const Field &f, size_t i, size_t j, size_t k, double dx, double dz) {
-    double       sum = 0.0;
-    const int    idx[4] = {-2, -1, 1, 2};
-    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * get(f, i + idx[a], j, k + idx[b]);
-        }
-    }
-    return sum / (144.0 * dx * dz);
+    return Dxz4_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (144.0 * dx * dz));
 }
 
 template <typename Field>
 inline double Dyz4(const Field &f, size_t i, size_t j, size_t k, double dy, double dz) {
-    double       sum = 0.0;
-    const int    idx[4] = {-2, -1, 1, 2};
-    const double w[4] = {-1.0, 8.0, -8.0, 1.0};
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * get(f, i, j + idx[a], k + idx[b]);
-        }
-    }
-    return sum / (144.0 * dy * dz);
+    return Dyz4_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (144.0 * dy * dz));
 }
 
-/// @brief Axis selector that forwards to `Dx/Dy/Dz` for compile-time loops.
 template <typename Field>
 inline double D(const Field &f, size_t i, size_t j, size_t k, Axis a, double dx, double dy,
                 double dz) {
@@ -178,31 +222,15 @@ inline double D(const Field &f, size_t i, size_t j, size_t k, Axis a, double dx,
     return Dz(f, i, j, k, dz);
 }
 
-/**
- * @brief One-dimensional slice of the 6th-order Kreiss–Oliger filter.
- * @details Implements
- * \f$\mathcal{D}_6[f]_j = (f_{j-3} - 6f_{j-2} + 15 f_{j-1} - 20 f_j + 15 f_{j+1} - 6 f_{j+2} +
- * f_{j+3})/64\f$.
- */
 template <typename Field>
 inline double KO6_axis(const Field &f, size_t i, size_t j, size_t k, Axis axis) {
-    auto sample = [&](int offset) {
-        if (axis == X)
-            return get(f, i + offset, j, k);
-        if (axis == Y)
-            return get(f, i, j + offset, k);
-        return get(f, i, j, k + offset);
-    };
-    const double s = (sample(-3) - 6.0 * sample(-2) + 15.0 * sample(-1) - 20.0 * sample(0) +
-                      15.0 * sample(1) - 6.0 * sample(2) + sample(3)) /
-                     64.0;
-    return s;
+    const auto *p = f.ptr() + f.idx(i, j, k);
+    if (axis == X)
+        return KO6_axis_ptr(p, f.st.sx);
+    if (axis == Y)
+        return KO6_axis_ptr(p, f.st.sy);
+    return KO6_axis_ptr(p, ptrdiff_t(1));
 }
-
-/**
- * @brief Dimension-summed Kreiss–Oliger dissipation scaled by \f$\sigma\f$.
- * @note RHS kernels typically set \f$\sigma=0.1\f$ following the module conventions.
- */
 
 inline double &fd_dx() {
     static double v = 1.0;
@@ -213,7 +241,9 @@ inline void set_fd_dx(double dx) { fd_dx() = dx; }
 
 template <typename Field>
 inline double KO6(const Field &f, size_t i, size_t j, size_t k, double sigma, double dx) {
-    const double sum = KO6_axis(f, i, j, k, X) + KO6_axis(f, i, j, k, Y) + KO6_axis(f, i, j, k, Z);
+    const auto  *p = f.ptr() + f.idx(i, j, k);
+    const double sum =
+        KO6_axis_ptr(p, f.st.sx) + KO6_axis_ptr(p, f.st.sy) + KO6_axis_ptr(p, ptrdiff_t(1));
     return (sigma / dx) * sum;
 }
 
@@ -222,33 +252,19 @@ inline double KO6(const Field &f, size_t i, size_t j, size_t k, double sigma) {
     return KO6(f, i, j, k, sigma, fd_dx());
 }
 
-/**
- * @brief Third-order upwind derivative along x used for shift advection terms.
- * @param beta Sign of the advecting velocity (typically \f$\beta^x\f$) determines the biased
- * stencil.
- */
 template <typename Field>
 inline double Dx_upwind(const Field &f, size_t i, size_t j, size_t k, double dx, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * get(f, i, j, k) - 4.0 * get(f, i - 1, j, k) + get(f, i - 2, j, k)) /
-               (2.0 * dx);
-    return (-3.0 * get(f, i, j, k) + 4.0 * get(f, i + 1, j, k) - get(f, i + 2, j, k)) / (2.0 * dx);
+    return Dx_upwind_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (2.0 * dx), beta);
 }
 
 template <typename Field>
 inline double Dy_upwind(const Field &f, size_t i, size_t j, size_t k, double dy, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * get(f, i, j, k) - 4.0 * get(f, i, j - 1, k) + get(f, i, j - 2, k)) /
-               (2.0 * dy);
-    return (-3.0 * get(f, i, j, k) + 4.0 * get(f, i, j + 1, k) - get(f, i, j + 2, k)) / (2.0 * dy);
+    return Dy_upwind_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (2.0 * dy), beta);
 }
 
 template <typename Field>
 inline double Dz_upwind(const Field &f, size_t i, size_t j, size_t k, double dz, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * get(f, i, j, k) - 4.0 * get(f, i, j, k - 1) + get(f, i, j, k - 2)) /
-               (2.0 * dz);
-    return (-3.0 * get(f, i, j, k) + 4.0 * get(f, i, j, k + 1) - get(f, i, j, k + 2)) / (2.0 * dz);
+    return Dz_upwind_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (2.0 * dz), beta);
 }
 
 inline int sym6(int a, int b) {
@@ -267,10 +283,21 @@ inline int sym6(int a, int b) {
 
 inline int g27(int up, int lo1, int lo2) { return up * 9 + lo1 * 3 + lo2; }
 
+// =========================================================
+// Complex Kernels (Optimized to reuse pointers)
+// =========================================================
+
 template <typename Grid, typename Field3>
 inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, size_t j, size_t k,
                             double DV[3][3], Variance in_var, Variance out_var) {
     const size_t id = G.alpha.idx(i, j, k);
+
+    // Optimization: Pre-calculate inverses
+    const double    inv_12dx = 1.0 / (12.0 * G.dx);
+    const double    inv_12dy = 1.0 / (12.0 * G.dy);
+    const double    inv_12dz = 1.0 / (12.0 * G.dz);
+    const ptrdiff_t sx = G.alpha.st.sx;
+    const ptrdiff_t sy = G.alpha.st.sy;
 
     const double chi = G.chi.ptr()[id];
     const double inv_chi = 1.0 / chi;
@@ -282,8 +309,9 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
             tginv[a][b] = G.gamma_tilde_inv[sym6(a, b)].ptr()[id];
         }
 
-    const double dchi[3] = {Dx(G.chi, i, j, k, G.dx), Dy(G.chi, i, j, k, G.dy),
-                            Dz(G.chi, i, j, k, G.dz)};
+    const double *p_chi = G.chi.ptr() + id;
+    const double  dchi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
+                             Dz_ptr(p_chi, inv_12dz)};
 
     double V_up[3], V_dn[3];
     if (in_var == Variance::Up) {
@@ -304,10 +332,10 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
     double dV_in[3][3];
     for (int m = 0; m < 3; ++m)
         for (int a = 0; a < 3; ++a) {
-            const auto  &f = Vfield[a];
-            const double dv = (m == 0)   ? Dx(f, i, j, k, G.dx)
-                              : (m == 1) ? Dy(f, i, j, k, G.dy)
-                                         : Dz(f, i, j, k, G.dz);
+            const auto  *p_v = Vfield[a].ptr() + id;
+            const double dv = (m == 0)   ? Dx_ptr(p_v, sx, inv_12dx)
+                              : (m == 1) ? Dy_ptr(p_v, sy, inv_12dy)
+                                         : Dz_ptr(p_v, inv_12dz);
             dV_in[m][a] = dv;
         }
 
@@ -317,7 +345,6 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
             for (int lo2 = 0; lo2 < 3; ++lo2) {
 
                 const double Gt = G.Gamma_tilde[g27(up, lo1, lo2)].ptr()[id];
-
                 const double term1 = (up == lo1) ? dchi[lo2] : 0.0;
                 const double term2 = (up == lo2) ? dchi[lo1] : 0.0;
 
@@ -326,7 +353,6 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
                     contracted += tginv[up][ell] * dchi[ell];
 
                 const double term3 = tgamma[lo1][lo2] * contracted;
-
                 const double C = -(0.5 / chi) * (term1 + term2 - term3);
 
                 Gamma_phys[up][lo1][lo2] = Gt + C;
@@ -361,21 +387,20 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
     if (in_var == Variance::Up && out_var == Variance::Down) {
         const double inv_chi2 = inv_chi * inv_chi;
 
-        auto dgamma_phys = [&](int m, int a, int b) -> double {
-            const auto  &F = G.gamma_tilde[sym6(a, b)];
-            const double dgt = (m == 0)   ? Dx(F, i, j, k, G.dx)
-                               : (m == 1) ? Dy(F, i, j, k, G.dy)
-                                          : Dz(F, i, j, k, G.dz);
-            const double gt = F.ptr()[id];
-            return inv_chi * dgt - inv_chi2 * dchi[m] * gt;
-        };
-
         for (int m = 0; m < 3; ++m)
             for (int jidx = 0; jidx < 3; ++jidx) {
-
                 double partial = 0.0;
                 for (int kidx = 0; kidx < 3; ++kidx) {
-                    partial += dgamma_phys(m, jidx, kidx) * V_up[kidx];
+                    // Inline dgamma_phys logic using pointers
+                    const auto  *p_gam = G.gamma_tilde[sym6(jidx, kidx)].ptr() + id;
+                    const double gt = *p_gam;
+                    const double dgt = (m == 0)   ? Dx_ptr(p_gam, sx, inv_12dx)
+                                       : (m == 1) ? Dy_ptr(p_gam, sy, inv_12dy)
+                                                  : Dz_ptr(p_gam, inv_12dz);
+
+                    const double dgamma_val = inv_chi * dgt - inv_chi2 * dchi[m] * gt;
+
+                    partial += dgamma_val * V_up[kidx];
                     partial += (inv_chi * tgamma[jidx][kidx]) * dV_in[m][kidx];
                 }
 
@@ -398,8 +423,6 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
                 D_dn[jidx] = val;
             }
             for (int jidx = 0; jidx < 3; ++jidx) {
-                const double gij = chi * tginv[jidx][0];
-                (void)gij;
                 DV[m][jidx] = chi * (tginv[jidx][0] * D_dn[0] + tginv[jidx][1] * D_dn[1] +
                                      tginv[jidx][2] * D_dn[2]);
             }

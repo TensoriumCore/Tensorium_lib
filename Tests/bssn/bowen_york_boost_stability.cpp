@@ -54,15 +54,15 @@ void initialize_single_boost(Grid &grid) {
     const double m1 = 1.0;
     const double m2 = 1.0;
 
-    const double x1 = -4.0, y1 = 0.0, z1 = 0.0;
-    const double x2 = 4.0, y2 = 0.0, z2 = 0.0;
+    const double x1 = -5, y1 = 0.0, z1 = 0.0;
+    const double x2 = 5, y2 = 0.0, z2 = 0.0;
 
-    const double Py = 0.095;
+    const double Py = 0.65;
     const double P1[3] = {0.0, Py, 0.0};
     const double P2[3] = {0.0, -Py, 0.0};
 
-    const double S1[3] = {0.0, 0.0, 0.1};
-    const double S2[3] = {0.0, 0.0, 0.1};
+    const double S1[3] = {0.0, 0.0, 0.0};
+    const double S2[3] = {0.0, 0.0, 0.0};
 
     tensorium_RG::init::binary_bowen_york_puncture_init(grid, m1, x1, y1, z1, P1, S1, m2, x2, y2,
                                                         z2, P2, S2, 1e-10);
@@ -76,7 +76,7 @@ REGISTER_TEST(
         cfg.nx = 128;
         cfg.ny = 128;
         cfg.nz = 128;
-        cfg.spacing = 0.4;
+        cfg.spacing = 0.5;
         cfg.ng = 4;
         cfg.padding = 4;
         cfg.steps = 600;
@@ -134,9 +134,9 @@ REGISTER_TEST(
 REGISTER_TEST(
     "bssn.init.kerr_schild", "Print formatted BSSN fields after Kerr–Schild initialization", []() {
         tensorium::tests::StabilityRunConfig cfg;
-        cfg.nx = 96;
-        cfg.ny = 96;
-        cfg.nz = 96;
+        cfg.nx = 128;
+        cfg.ny = 128;
+        cfg.nz = 128;
         cfg.spacing = 0.3;
         cfg.ng = 4;
         cfg.steps = 60;
