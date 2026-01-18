@@ -1,0 +1,5 @@
+<map id="tensorium_RG::RicciTensor::print_ricci_scalar" name="tensorium_RG::RicciTensor::print_ricci_scalar">
+<area shape="rect" id="Node000001" title="Computes and prints the Ricci scalar from the tensor and metric." alt="" coords="196,5,378,46"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a2c1b563f2abeb6b4713764c7ac84642f" title=" " alt="" coords="5,5,148,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,26,148,28,148,23,182,25"/>
+</map>

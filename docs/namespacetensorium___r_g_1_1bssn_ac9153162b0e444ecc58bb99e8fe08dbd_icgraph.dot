@@ -1,0 +1,21 @@
+digraph "tensorium_RG::bssn::compute_tildeGamma_full"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="tensorium_RG::bssn\l::compute_tildeGamma_full",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="tensorium_RG::init\l::binary_bowen_york\l_puncture_init",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703",tooltip=" "];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="tensorium_RG::init\l::binary_schwarzschild\l_isotropic_2centers",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6",tooltip=" "];
+  Node1 -> Node4 [id="edge3_Node000001_Node000004",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node4 [id="Node000004",label="tensorium_RG::bssn\l::BSSNRKStepper::ensure\l_geometry",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2",tooltip=" "];
+  Node4 -> Node5 [id="edge4_Node000004_Node000005",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node5 [id="Node000005",label="tensorium_RG::bssn\l::BSSNRKStepper::step",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23",tooltip=" "];
+  Node1 -> Node6 [id="edge5_Node000001_Node000006",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node6 [id="Node000006",label="tensorium_RG::init\l::minkowski",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564",tooltip=" "];
+  Node1 -> Node7 [id="edge6_Node000001_Node000007",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node7 [id="Node000007",label="tensorium_RG::init\l::schwarzschild_isotropic",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f",tooltip=" "];
+}

@@ -1,0 +1,9 @@
+<map id="tensorium::Matrix::add" name="tensorium::Matrix::add">
+<area shape="rect" id="Node000001" title="In&#45;place matrix addition: this += m." alt="" coords="195,55,346,80"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a9a79e5e316fefceb930f22229ba6e12b" title=" " alt="" coords="8,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,51,130,34,130,29,204,49"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#a20362d7ed5838282723290082f36006f" title=" " alt="" coords="5,55,147,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,68,148,70,147,65,182,67"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1_matrix.html#aee92533d466bf1d0fa6ab4af3d022a8a" title=" " alt="" coords="11,104,141,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,85,142,108,141,103,207,86"/>
+</map>

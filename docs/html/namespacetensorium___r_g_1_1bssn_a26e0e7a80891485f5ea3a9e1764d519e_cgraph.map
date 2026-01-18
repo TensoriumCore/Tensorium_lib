@@ -1,0 +1,57 @@
+<map id="tensorium_RG::bssn::compute_rhs_K" name="tensorium_RG::bssn::compute_rhs_K">
+<area shape="rect" id="Node000001" title="Compute &#160;throughout the interior region." alt="" coords="5,497,147,538"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184" title=" " alt="" coords="219,5,360,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,497,91,404,116,272,150,143,170,92,193,57,207,47,204,52,197,61,175,95,155,145,121,273,97,404,83,497"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831" title=" " alt="" coords="219,71,360,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,497,79,427,95,327,109,273,130,219,157,168,193,122,207,112,205,117,197,126,162,171,135,221,115,274,100,328,84,427,80,497"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="195,136,385,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="77,497,85,438,104,358,120,314,139,271,163,230,193,193,207,183,205,188,197,197,168,233,144,273,125,316,110,359,90,439,82,497"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="453,189,602,214"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="79,496,92,452,114,395,147,336,168,308,193,285,221,266,250,249,314,225,378,210,439,203,435,206,379,215,316,230,253,254,223,270,196,289,172,312,151,338,119,397,97,454,84,497"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a08fab718996dbb317c3266bdbc3a1591" title="Third&#45;order upwind derivative along x used for shift advection terms." alt="" coords="453,239,602,279"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="82,496,98,461,122,418,153,375,193,338,252,306,315,283,379,269,439,262,435,265,380,274,317,288,254,310,196,342,157,378,126,421,103,464,88,498"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#abf5cde8a509521b837c07e9e4bc58070" title="4th&#45;order approximation to ." alt="" coords="450,304,606,329"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="88,496,130,441,160,412,193,387,252,360,315,340,377,327,436,320,432,323,378,332,317,345,254,365,196,392,163,416,134,444,93,498"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1" title="Tensor&#45;product 4th&#45;order approximation to ." alt="" coords="446,353,609,378"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="98,495,141,462,194,431,253,409,315,392,432,373,428,376,316,398,255,414,196,436,144,466,102,498"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#af2989bbd2ef1ac60351fcd8a6f7c174e" title=" " alt="" coords="446,402,609,428"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="122,495,194,468,316,441,432,424,428,427,317,446,195,474,125,499"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="453,452,602,477"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="145,505,194,498,439,471,436,475,195,503,148,509"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1fd.html#ae2026a7afa7947e4f5e285def87c7427" title=" " alt="" coords="453,501,602,542"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="146,516,439,519,436,523,148,521"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1fd.html#a84127e355536ffe0a4b586aa024a00d2" title=" " alt="" coords="450,566,606,592"/>
+<area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="146,525,436,564,432,568,147,530"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium___r_g_1_1fd.html#a8c662afe5d7dc6e08ff887daf0d0970e" title=" " alt="" coords="446,616,609,641"/>
+<area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="123,536,195,562,318,592,433,614,428,616,316,597,194,567,125,541"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="215,657,364,682"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="92,536,137,586,165,612,196,635,223,650,218,652,193,640,162,617,133,590,93,541"/>
+<area shape="rect" id="Node000016" href="$namespacetensorium___r_g_1_1fd.html#aa9b1ec23b60f9fd26345c4e285da1041" title=" " alt="" coords="215,707,364,747"/>
+<area shape="poly" id="edge24_Node000001_Node000016" title=" " alt="" coords="85,536,104,571,127,613,158,656,196,693,204,699,199,701,193,697,154,659,123,616,99,574,86,541"/>
+<area shape="rect" id="Node000017" href="$namespacetensorium___r_g_1_1fd.html#aa34e1bab95331559e7b7a4aca92b0a4f" title=" " alt="" coords="212,772,368,797"/>
+<area shape="poly" id="edge26_Node000001_Node000017" title=" " alt="" coords="81,536,96,583,117,643,150,705,172,733,196,757,204,763,198,764,193,761,168,736,146,707,112,645,91,585,81,541"/>
+<area shape="rect" id="Node000018" href="$namespacetensorium___r_g_1_1fd.html#a8478ac5c64b8238d30c54c29840b92ba" title="Dimension&#45;summed Kreiss–Oliger dissipation scaled by ." alt="" coords="211,821,369,846"/>
+<area shape="poly" id="edge28_Node000001_Node000018" title=" " alt="" coords="79,536,91,593,110,666,125,704,144,742,168,777,196,808,201,812,195,813,193,812,164,781,140,745,120,707,105,667,86,594,79,541"/>
+<area shape="rect" id="Node000020" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="199,870,380,896"/>
+<area shape="poly" id="edge31_Node000001_Node000020" title=" " alt="" coords="78,536,87,601,104,687,119,733,139,779,164,821,197,857,200,861,195,861,193,861,160,824,134,781,114,735,99,688,81,602,78,541"/>
+<area shape="rect" id="Node000021" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="205,920,375,945"/>
+<area shape="poly" id="edge32_Node000001_Node000021" title=" " alt="" coords="77,536,83,609,98,708,112,762,133,815,161,864,197,906,199,911,194,910,193,910,156,867,128,817,107,764,92,709,77,609,77,541"/>
+<area shape="rect" id="Node000022" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="217,969,362,1010"/>
+<area shape="poly" id="edge33_Node000001_Node000022" title=" " alt="" coords="77,536,81,615,85,668,94,727,108,788,129,848,158,905,197,956,207,966,201,965,193,959,154,908,125,851,103,789,89,728,80,669,75,616,76,541"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="670,509,821,534"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="602,212,624,225,653,255,677,290,696,327,712,365,733,437,743,495,738,493,728,438,707,366,691,329,672,292,649,258,621,229,603,217"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="602,276,624,289,647,312,668,338,701,394,725,449,739,494,734,493,720,451,696,396,663,341,643,315,621,293,603,281"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="602,327,624,338,663,374,695,416,719,458,736,495,731,494,714,460,690,419,659,377,621,343,603,332"/>
+<area shape="poly" id="edge11_Node000009_Node000006" title=" " alt="" coords="599,376,624,387,657,411,686,440,730,496,725,496,682,443,653,415,621,392,600,382"/>
+<area shape="poly" id="edge13_Node000010_Node000006" title=" " alt="" coords="593,426,623,437,675,466,719,499,714,499,672,470,621,441,594,431"/>
+<area shape="poly" id="edge15_Node000011_Node000006" title=" " alt="" coords="579,475,682,504,676,505,580,480"/>
+<area shape="poly" id="edge17_Node000012_Node000006" title=" " alt="" coords="602,519,657,521,652,523,603,524"/>
+<area shape="poly" id="edge19_Node000013_Node000006" title=" " alt="" coords="578,563,681,538,677,540,581,568"/>
+<area shape="poly" id="edge21_Node000014_Node000006" title=" " alt="" coords="592,613,621,602,672,573,714,546,719,543,675,578,623,607,594,617"/>
+<area shape="poly" id="edge23_Node000015_Node000006" title=" " alt="" coords="364,679,423,683,489,682,557,673,621,651,655,630,684,602,727,550,731,546,688,606,658,634,623,656,558,678,489,687,423,688,366,684"/>
+<area shape="poly" id="edge25_Node000016_Node000006" title=" " alt="" coords="364,733,424,734,490,730,558,715,590,704,621,689,659,658,690,621,714,581,731,551,735,547,719,584,695,624,663,662,624,693,593,709,559,721,491,735,424,740,366,738"/>
+<area shape="poly" id="edge27_Node000017_Node000006" title=" " alt="" coords="368,790,428,791,494,785,560,769,592,756,621,739,644,720,665,697,698,645,721,592,736,552,739,548,726,594,703,648,669,701,648,724,624,744,594,761,562,774,495,791,428,797,369,796"/>
+<area shape="rect" id="Node000019" href="$namespacetensorium___r_g_1_1fd.html#a9e557ea7b8cb853cbe0b520161551000" title="One&#45;dimensional slice of the 6th&#45;order Kreiss–Oliger filter." alt="" coords="433,820,622,845"/>
+<area shape="poly" id="edge29_Node000018_Node000019" title=" " alt="" coords="369,831,420,832,415,834,370,836"/>
+<area shape="poly" id="edge30_Node000019_Node000006" title=" " alt="" coords="588,816,621,797,646,769,668,737,703,668,725,601,738,552,741,548,730,603,707,670,673,740,651,772,624,801,590,821"/>
+</map>

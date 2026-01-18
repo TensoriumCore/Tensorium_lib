@@ -1,0 +1,9 @@
+<map id="tensorium::Matrix::scl" name="tensorium::Matrix::scl">
+<area shape="rect" id="Node000001" title="In&#45;place scalar multiplication: this *= a." alt="" coords="192,63,339,88"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a565beec587982dcd8f579a0a1f304096" title=" " alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,59,120,34,120,29,208,56"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#ad0a15c14c524e148427e260342b5f554" title=" " alt="" coords="9,55,140,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,76,140,78,139,73,178,75"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium.html#a2207f906782c6a186c09559e5857fc57" title=" " alt="" coords="8,120,141,146"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="208,93,120,122,119,117,203,94"/>
+</map>

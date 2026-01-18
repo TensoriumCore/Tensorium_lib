@@ -1,0 +1,28 @@
+var classtensorium___r_g_1_1_b_s_s_n_grid_so_a =
+[
+    [ "BSSNGridSoA", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aa53d563230dedcc7c400169410308e31", null ],
+    [ "coords", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355", null ],
+    [ "domain_bounds", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256", null ],
+    [ "A_tilde", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba", null ],
+    [ "alpha", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8", null ],
+    [ "B", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aee7b2bb7fdb637bf108789c95c6bbab7", null ],
+    [ "beta", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285", null ],
+    [ "Cc", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a914834bea6594afbd371e662d4b26982", null ],
+    [ "chi", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951", null ],
+    [ "dims", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aeb474ecea72e4b530b42ec168ca4096e", null ],
+    [ "dx", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a037b73774fa23850dc0480bc2009db94", null ],
+    [ "dy", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a86548fff88031778fe93db8ed5bccf01", null ],
+    [ "dz", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a70969daca47e991859c7afd63fa997cf", null ],
+    [ "Gamma_tilde", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a94c1d4cbb50bb5402929704146651f37", null ],
+    [ "gamma_tilde", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c", null ],
+    [ "gamma_tilde_inv", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6fec094197aa13e9d36656fd16a9ac77", null ],
+    [ "Hc", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9a7b06ffd6eb221d4741594273fb9ffd", null ],
+    [ "K", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a8a55cb9d8710a7e706a34ae519593ffa", null ],
+    [ "Mc", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#ad99357236491fcaf690dab07c2be1b1a", null ],
+    [ "Ricci", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a0924c9e6dbe067b7df165a32802a2f97", null ],
+    [ "st", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#ac32ccf5b0ced76b0523cc48206c98fc9", null ],
+    [ "tildeGamma", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5", null ],
+    [ "x0", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a955d86306f2edc2e77dc4564f0a61220", null ],
+    [ "y0", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a3bee387f459cc09600f0fed8a81bfa1c", null ],
+    [ "z0", "classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af806ebcf16c9b1e910d3c50154d6d3f7", null ]
+];

@@ -1,0 +1,13 @@
+<map id="tensorium_RG::compute_partial_derivatives_vector" name="tensorium_RG::compute_partial_derivatives_vector">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,169,148"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="222,5,356,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,90,216,57,232,52,227,54,218,61,149,94"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1detail.html#ac6c8856dde97a2b2ff409cb08d76a411" title=" " alt="" coords="217,71,361,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,106,204,103,199,105,170,111"/>
+<area shape="rect" id="Node000004" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="409,136,447,161"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="169,124,395,143,392,148,169,130"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66" title=" " alt="" coords="217,185,361,226"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,146,228,178,223,180,154,151"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="340,109,398,135,392,135,340,115"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="339,182,392,162,398,161,341,187"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="tensorium::MatrixKernel::mul_mat3x3" name="tensorium::MatrixKernel::mul_mat3x3">
+<area shape="rect" id="Node000001" title="Multiply two 3×3 matrices using SIMD." alt="" coords="5,5,165,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title=" " alt="" coords="420,5,550,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,20,213,19,372,19,407,22,402,23,372,24,213,24,165,25"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix_kernel.html#ad1af71b5c4c9c3a4784710aa1fd02776" title="Construct a MatrixKernel from a column&#45;major matrix." alt="" coords="213,33,372,74"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,34,200,41,195,41,165,39"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="372,39,402,38,408,37,373,45"/>
+</map>

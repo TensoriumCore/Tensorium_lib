@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../MathUtils/MathsUtils.hpp"
-#include "../SIMD/Allocator.hpp"
-#include "../SIMD/CPU_id.hpp"
-#include "../SIMD/SIMD.hpp"
+#include "../Utils/MathUtils/MathsUtils.hpp"
+#include "../Backend/SIMD/Allocator.hpp"
+#include "../Backend/SIMD/CPU_id.hpp"
+#include "../Backend/SIMD/SIMD.hpp"
 #include "Matrix.hpp"
 #include "Tensor.hpp"
 #include "Vector.hpp"

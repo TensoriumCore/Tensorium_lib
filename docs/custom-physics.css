@@ -1,0 +1,9 @@
+body {
+  font-family: "Latin Modern Roman", "Times New Roman", serif;
+}
+.math {
+  font-size: 1.05em;
+}
+div.contents {
+  max-width: 1200px;
+}

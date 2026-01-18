@@ -1,0 +1,23 @@
+<map id="tensorium::MatrixKernel::MatrixKernel" name="tensorium::MatrixKernel::MatrixKernel">
+<area shape="rect" id="Node000001" title="Construct a MatrixKernel from a column&#45;major matrix." alt="" coords="397,201,556,242"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix_kernel.html#a01941cf360a83a43d95fe2764bbe4635" title="Multiply two 16×16 matrices using SIMD with FMADD accumulation. This function splits each row into tw..." alt="" coords="190,5,349,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,188,410,125,380,91,347,61,329,49,329,44,351,57,384,87,414,122,459,188"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1_matrix_kernel.html#a53fe24fdaba78f1a65ad304d5e55c7ba" title="Multiply two 2×2 matrices using SIMD." alt="" coords="190,71,349,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="438,191,396,159,348,127,325,114,324,109,350,122,399,155,443,191"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1_matrix_kernel.html#afa050418445d6cf833ca294627e07ec3" title="Multiply two 32×32 matrices using SIMD. Each row is split into two registers (16 elements each)." alt="" coords="190,136,349,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="393,197,337,180,336,175,399,196"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_matrix_kernel.html#a8882c602fb9c4443413497e2bb88e8e9" title="Multiply two 3×3 matrices using SIMD." alt="" coords="190,201,349,242"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="379,222,350,224,349,219,384,221"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1_matrix_kernel.html#a2b8dbfc256fef493bc24727f032fdbee" title="Multiply two 4×4 matrices using SIMD." alt="" coords="190,267,349,307"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="393,248,337,268,335,264,398,246"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1_matrix_kernel.html#ac3f3626fc446be18328143e90088b5d3" title="Multiply two 64×64 matrices using SIMD. Each row is split into 4 SIMD registers (4×16 elements)...." alt="" coords="190,332,349,373"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="443,251,399,288,350,321,326,334,324,329,348,317,396,284,438,254"/>
+<area shape="rect" id="Node000009" href="$classtensorium_1_1_matrix_kernel.html#a005681e34d39804bec4ef85b73ea6b52" title="Multiply two 8×8 matrices using SIMD." alt="" coords="190,397,349,438"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="458,254,414,322,384,356,351,386,330,399,328,394,347,382,380,352,410,318,454,257"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium.html#ab317cc43203309cc34bf719934edbc7e" title=" " alt="" coords="5,209,142,234"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="194,56,191,61,154,98,123,140,83,210,79,207,118,137,150,95,188,57,198,52"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="190,184,116,210,113,206,194,180"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="172,223,143,224,141,219,176,220"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="190,263,115,238,114,232,194,260"/>
+<area shape="poly" id="edge12_Node000009_Node000003" title=" " alt="" coords="193,388,188,386,150,349,118,306,80,237,82,232,123,303,154,345,191,382,198,389"/>
+</map>

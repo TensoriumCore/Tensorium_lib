@@ -1,0 +1,7 @@
+<map id="tensorium_RG::init::Atilde_sq_flat_from_soa" name="tensorium_RG::init::Atilde_sq_flat_from_soa">
+<area shape="rect" id="Node000001" title="Compute &#160;assuming ." alt="" coords="432,13,601,54"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a" title="Solve the Lichnerowicz equation &#160;via red&#45;black SOR." alt="" coords="195,13,384,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="414,33,385,36,385,31,419,33"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="5,5,147,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="176,33,147,36,147,31,182,33"/>
+</map>

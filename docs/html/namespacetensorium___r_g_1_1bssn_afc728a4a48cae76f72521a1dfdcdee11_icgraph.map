@@ -1,0 +1,13 @@
+<map id="tensorium_RG::bssn::apply_halos_grid" name="tensorium_RG::bssn::apply_halos_grid">
+<area shape="rect" id="Node000001" title="Apply the boundary functor to every scalar, vector, and tensor field in the grid." alt="" coords="222,165,363,206"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="19,5,160,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="260,154,221,115,172,75,155,64,154,59,175,71,224,111,266,153"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="12,85,167,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,160,167,143,167,138,221,158"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="24,165,155,206"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="204,186,156,188,154,183,209,184"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,230,174,271"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="210,212,156,232,154,227,215,209"/>
+<area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="8,296,171,336"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="262,215,221,252,175,285,150,297,148,292,172,280,218,248,257,218"/>
+</map>

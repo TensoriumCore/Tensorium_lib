@@ -1,0 +1,5 @@
+<map id="tensorium_RG::fd::Dx" name="tensorium_RG::fd::Dx">
+<area shape="rect" id="Node000001" title="4th&#45;order centered derivative along x." alt="" coords="5,5,155,31"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="203,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,16,190,18,185,18,155,21"/>
+</map>

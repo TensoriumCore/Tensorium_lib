@@ -1,0 +1,7 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintMonitoring.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintMonitoring.hpp">
+<area shape="rect" id="Node000001" title="Reduce constraint fields to scalar diagnostics used by the RK driver." alt="" coords="28,5,236,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,124,259,195"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,89,135,124,129,123,131,94"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="38,243,226,313"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="134,208,134,243,130,241,130,212"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="tensorium_RG::bssn::print_constraint_norms" name="tensorium_RG::bssn::print_constraint_norms">
+<area shape="rect" id="Node000001" title="Convenience logger that prints Linf/L2 norms of , , and &#160;to stdout." alt="" coords="222,85,383,126"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="12,5,167,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,80,167,62,167,57,228,79"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="24,85,155,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,106,155,108,154,103,209,104"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,150,174,191"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="222,130,159,152,158,147,217,131"/>
+</map>

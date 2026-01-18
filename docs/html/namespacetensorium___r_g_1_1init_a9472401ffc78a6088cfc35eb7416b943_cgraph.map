@@ -1,0 +1,7 @@
+<map id="tensorium_RG::init::print_ricci_samples" name="tensorium_RG::init::print_ricci_samples">
+<area shape="rect" id="Node000001" title="Print Ricci tensor samples at representative radii for diagnostic purposes." alt="" coords="5,39,147,79"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355" title="Map an index triple to physical coordinates." alt="" coords="195,5,385,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,45,182,42,177,44,148,51"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="195,71,385,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,67,182,74,177,75,147,72"/>
+</map>

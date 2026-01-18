@@ -1,0 +1,14 @@
+<map id="tensorium_RG::spectral_partial_tensor2" name="tensorium_RG::spectral_partial_tensor2">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,165,103"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a0e1749fc204cabc1a390f87b857ee283" title=" " alt="" coords="213,5,375,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,60,205,49,200,52,163,65"/>
+<area shape="rect" id="Node000003" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="470,28,509,53"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="164,75,375,55,458,45,453,47,375,60,165,80"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g.html#a531e5cd0c6e3d677c9aa29de35864d8a" title=" " alt="" coords="214,120,374,161"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,101,205,115,200,116,161,107"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,29,457,37,452,38,376,34"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="423,105,556,146"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="373,132,410,131,405,132,374,137"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_tensor.html#a88473f4be812e18000336bece2e184b9" title=" " alt="" coords="423,171,556,211"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="374,158,411,170,405,170,373,164"/>
+</map>

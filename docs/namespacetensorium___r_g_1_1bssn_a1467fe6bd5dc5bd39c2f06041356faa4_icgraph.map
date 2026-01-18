@@ -1,0 +1,36 @@
+<map id="tensorium_RG::bssn::compute_invariant_stats" name="tensorium_RG::bssn::compute_invariant_stats">
+<area shape="rect" id="Node000001" title="Measure det, trace, metric&#45;identity, Gamma&#45;constraint, and minimum&#45; &#160;over the grid." alt="" coords="869,207,1040,247"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a882854a29de4e6552fccc878e016fe8d" title="Compare measured invariants against tolerances and throw/log when drifts exceed bounds." alt="" coords="679,207,821,247"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="850,227,821,230,820,224,855,227"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ad94d47dae5726904e3444218b3ff8eef" title=" " alt="" coords="466,5,607,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="729,192,689,130,661,96,630,66,602,49,602,44,633,62,665,92,693,127,734,193"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="235,67,376,123"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="725,194,685,149,659,128,630,111,566,91,499,82,434,82,378,86,375,81,433,76,499,77,567,86,632,106,662,123,689,146,730,195"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="228,147,382,203"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="662,219,383,187,383,181,666,216"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae" title="Fill the Hamiltonian , momentum , and Gamma &#160;constraint fields." alt="" coords="444,400,629,441"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="732,259,691,323,664,355,633,384,602,402,600,397,630,380,660,352,687,320,728,262"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="240,307,370,347"/>
+<area shape="poly" id="edge18_Node000002_Node000007" title=" " alt="" coords="705,254,669,275,632,290,564,307,493,318,371,328,370,323,493,313,562,301,631,284,667,270,700,256"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="221,372,390,413"/>
+<area shape="poly" id="edge19_Node000002_Node000009" title=" " alt="" coords="722,257,681,296,633,328,572,352,508,370,446,382,391,389,389,384,445,377,507,365,570,347,630,323,678,292,717,260"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8" title="Populate the Ricci tensor cache &#160;throughout the interior grid." alt="" coords="464,235,609,275"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="662,239,610,248,609,243,667,237"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a" title="Solve the Lichnerowicz equation &#160;via red&#45;black SOR." alt="" coords="442,120,631,161"/>
+<area shape="poly" id="edge20_Node000002_Node000013" title=" " alt="" coords="681,201,589,164,589,159,686,200"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="509,387,440,288,419,250,409,234,392,217,378,206,378,201,396,213,413,231,423,247,444,286,514,387"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="470,394,393,363,362,351,362,345,395,358,476,393"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="232,487,378,527"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="468,446,363,489,361,484,463,447"/>
+<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="426,408,390,405,390,400,431,407"/>
+<area shape="rect" id="Node000010" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,332,169,373"/>
+<area shape="poly" id="edge10_Node000006_Node000010" title=" " alt="" coords="426,436,325,442,270,437,216,427,160,404,115,376,116,370,162,399,217,422,270,432,325,436,431,435"/>
+<area shape="poly" id="edge12_Node000011_Node000004" title=" " alt="" coords="498,224,441,175,393,137,374,126,373,121,395,133,445,171,504,224"/>
+<area shape="poly" id="edge13_Node000011_Node000005" title=" " alt="" coords="459,230,383,204,383,199,464,228"/>
+<area shape="poly" id="edge16_Node000011_Node000007" title=" " alt="" coords="452,282,372,309,370,304,457,279"/>
+<area shape="poly" id="edge17_Node000011_Node000009" title=" " alt="" coords="502,284,452,325,395,361,369,374,367,369,393,357,449,321,497,287"/>
+<area shape="rect" id="Node000012" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="217,227,394,283"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="446,256,395,258,394,252,451,254"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="225,292,136,334,133,329,229,288"/>
+<area shape="poly" id="edge21_Node000013_Node000004" title=" " alt="" coords="424,120,377,111,376,106,429,118"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="tensorium_RG::bssn::InvariantStats" name="tensorium_RG::bssn::InvariantStats">
+<area shape="rect" id="Node000001" title="Aggregated statistics computed over the interior domain." alt="" coords="5,341,175,686"/>
+<area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1bssn_1_1_sample_location.html" title="Index&#45;space and physical coordinates where the worst invariant violation occurred." alt="" coords="25,5,156,188"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,185,93,324,88,323,90,191"/>
+</map>

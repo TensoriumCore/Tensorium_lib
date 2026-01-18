@@ -1,0 +1,61 @@
+<map id="tensorium_RG::RicciTildeTensor::compute_laplacian_term" name="tensorium_RG::RicciTildeTensor::compute_laplacian_term">
+<area shape="rect" id="Node000001" title="Compute &#160;&#160;using scalar autodiff." alt="" coords="5,360,215,400"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_metric.html#a941a7ffac963957af3f7b650adbd8b04" title="Extract BSSN 3+1 variables (lapse, shift, and spatial metric)." alt="" coords="279,453,428,494"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,398,287,446,282,448,166,404"/>
+<area shape="rect" id="Node000004" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="802,104,841,130"/>
+<area shape="poly" id="edge33_Node000001_Node000004" title=" " alt="" coords="115,358,134,310,164,245,206,176,232,144,261,115,317,73,368,49,422,35,492,21,551,10,598,3,644,6,701,21,731,35,758,53,801,93,796,93,755,57,728,40,699,26,643,11,598,9,552,15,494,27,424,40,369,54,320,77,264,119,236,147,211,179,169,247,139,312,121,360"/>
+<area shape="rect" id="Node000020" href="$namespacetensorium.html#a6b62911850464ab7b786a6356b41ed19" title=" " alt="" coords="286,641,422,682"/>
+<area shape="poly" id="edge21_Node000001_Node000020" title=" " alt="" coords="130,398,327,628,323,630,128,403"/>
+<area shape="rect" id="Node000022" href="$namespacetensorium.html#a95e9e9350bb8b03dde2cb48231638376" title=" " alt="" coords="286,360,422,400"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="214,378,272,378,268,381,216,382"/>
+<area shape="rect" id="Node000024" href="$namespacetensorium___r_g.html#afa0e6cb1b45cdeb5547ff070f85106d1" title=" " alt="" coords="263,129,445,170"/>
+<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="131,357,321,178,319,183,135,361"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_metric.html#ab89101e3f4aff5a90b464c471b4ab914" title=" " alt="" coords="493,294,700,335"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="390,450,443,410,457,393,465,377,475,362,491,346,504,341,499,344,495,350,479,365,470,380,461,396,447,414,393,455"/>
+<area shape="poly" id="edge20_Node000002_Node000004" title=" " alt="" coords="395,450,421,432,443,410,454,393,460,377,465,346,471,314,478,298,491,281,516,256,540,239,587,218,638,204,699,179,791,133,787,136,701,184,640,209,589,223,543,244,520,260,495,284,483,301,476,316,470,347,465,378,459,396,447,414,424,437,398,455"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1_metric.html#ab09c1e2d9dbae041ecb29802286c6d1a" title=" " alt="" coords="522,670,671,711"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="366,492,387,528,415,572,452,617,495,655,511,667,505,666,491,659,448,620,411,575,382,531,365,497"/>
+<area shape="rect" id="Node000015" href="$classtensorium___r_g_1_1_metric.html#a22d1aceafbadc6d3ea64a84fd204aba0" title=" " alt="" coords="522,605,671,646"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="375,492,427,541,459,567,494,590,511,600,505,599,492,594,456,571,423,545,374,497"/>
+<area shape="rect" id="Node000016" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="755,360,888,400"/>
+<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="429,486,489,493,558,496,630,491,699,475,726,462,750,446,791,413,795,410,754,450,728,467,701,480,631,497,558,502,489,499,429,491"/>
+<area shape="rect" id="Node000017" href="$classtensorium_1_1_vector.html#a6cd035b3600152f2ca608cf3bab24a70" title=" " alt="" coords="530,425,663,466"/>
+<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="428,462,517,454,513,456,429,467"/>
+<area shape="rect" id="Node000018" href="$classtensorium___r_g_1_1_metric.html#a3ce9890fc28d986adf4bf11610e6075d" title=" " alt="" coords="522,540,671,580"/>
+<area shape="poly" id="edge18_Node000002_Node000018" title=" " alt="" coords="413,492,526,533,521,535,413,497"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="668,292,699,274,733,243,762,208,805,145,808,142,767,211,737,247,702,278,670,296"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_matrix.html#ad6d209506a9e826719ff66ccc0abb188" title="Compute the inverse of the matrix using Gauss–Jordan elimination." alt="" coords="756,637,887,678"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="672,677,738,670,743,669,672,682"/>
+<area shape="rect" id="Node000007" href="$class_maths_utils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="948,554,1068,579"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="858,634,942,590,954,587,959,585,944,594,859,639"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title="Construct a matrix of size r × c, initialized with zeros." alt="" coords="943,604,1073,644"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="887,643,925,639,930,638,888,648"/>
+<area shape="rect" id="Node000011" href="$classtensorium_1_1_matrix.html#a8575fce507038abe42bbbdb89af638d8" title="Element access (mutable)." alt="" coords="943,669,1073,710"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="887,666,930,676,925,675,887,671"/>
+<area shape="rect" id="Node000013" href="$classtensorium_1_1_matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832" title="Swap two rows of the matrix." alt="" coords="943,734,1073,775"/>
+<area shape="poly" id="edge12_Node000006_Node000013" title=" " alt="" coords="862,676,944,719,956,727,950,726,941,724,861,681"/>
+<area shape="rect" id="Node000009" href="$_c_p_u__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb" title=" " alt="" coords="1121,611,1296,637"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1073,621,1108,624,1103,624,1074,627"/>
+<area shape="rect" id="Node000010" href="$_c_p_u__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f" title=" " alt="" coords="1344,611,1451,637"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1296,621,1331,624,1326,624,1297,627"/>
+<area shape="rect" id="Node000012" href="$classtensorium_1_1_matrix.html#a9d7afa564c31722e01fb9447da0da9d9" title=" " alt="" coords="1144,669,1274,710"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1073,687,1131,689,1125,689,1074,692"/>
+<area shape="rect" id="Node000014" href="$class_maths_utils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="1144,742,1274,767"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="1073,752,1131,755,1125,755,1074,757"/>
+<area shape="poly" id="edge15_Node000015_Node000006" title=" " alt="" coords="672,633,743,646,738,646,672,639"/>
+<area shape="rect" id="Node000019" href="$classtensorium_1_1_tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="748,547,895,573"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="672,557,736,559,730,560,672,563"/>
+<area shape="rect" id="Node000021" href="$classtensorium___r_g_1_1_metric.html#a4c07e5ceadb53d242687c73a039b7c48" title=" " alt="" coords="505,736,688,776"/>
+<area shape="poly" id="edge22_Node000020_Node000021" title=" " alt="" coords="399,679,494,720,516,730,511,730,492,725,398,685"/>
+<area shape="rect" id="Node000023" href="$classtensorium___r_g_1_1_metric.html#a0e0baebd20831f8e546f3c7a4beaa887" title=" " alt="" coords="504,360,690,400"/>
+<area shape="poly" id="edge24_Node000022_Node000023" title=" " alt="" coords="421,377,491,379,486,381,423,382"/>
+<area shape="poly" id="edge25_Node000023_Node000016" title=" " alt="" coords="690,377,742,379,737,381,691,383"/>
+<area shape="poly" id="edge32_Node000024_Node000004" title=" " alt="" coords="374,127,425,85,457,64,492,49,549,34,596,30,643,36,701,49,750,69,793,95,788,96,748,73,700,54,642,41,596,36,550,40,494,54,460,69,428,89,378,130"/>
+<area shape="poly" id="edge27_Node000024_Node000016" title=" " alt="" coords="428,168,559,213,632,244,702,280,749,313,790,349,785,349,746,317,699,285,630,249,557,218,429,173"/>
+<area shape="rect" id="Node000025" href="$namespacetensorium___r_g_1_1detail.html#ac6c8856dde97a2b2ff409cb08d76a411" title=" " alt="" coords="524,64,669,104"/>
+<area shape="poly" id="edge28_Node000024_Node000025" title=" " alt="" coords="430,126,511,106,507,109,433,131"/>
+<area shape="rect" id="Node000026" href="$namespacetensorium___r_g_1_1detail.html#a936d89e03e32325566ef57b78dfeef66" title=" " alt="" coords="524,129,669,170"/>
+<area shape="poly" id="edge30_Node000024_Node000026" title=" " alt="" coords="445,147,512,148,507,151,447,152"/>
+<area shape="poly" id="edge29_Node000025_Node000004" title=" " alt="" coords="668,92,790,111,785,113,670,97"/>
+<area shape="poly" id="edge31_Node000026_Node000004" title=" " alt="" coords="668,137,789,121,785,123,670,142"/>
+</map>

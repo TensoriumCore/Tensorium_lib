@@ -10,9 +10,12 @@ The python binding is usable without any other python librairy, but I'm still wo
 
 > Here is the full documentation : https://tensoriumcore.github.io/Tensorium_lib/
 
+### BSSN Grid
+The `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid` module contains the structured-array storage, evolution kernels, and constraint monitoring for the vacuum BSSN formulation equipped with the 1+log + Gamma-driver gauge.  A detailed description of the state variables, evolution equations, gauge system, projections, and diagnostics is provided in [`includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md`](includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md).
+
 ## Highlight
 It provides a modern, extensible infrastructure for efficient vector, matrix, and tensor computations by leveraging:
-- **SIMD acceleration** (SSE, AVX2, AVX512),
+- **SIMD acceleration** (SSE, AVX2, AVX512, Neon and soon Apple AMX),
 - **Multithreading** with OpenMP,
 - And soon, **distributed computing** via MPI.
 
@@ -32,7 +35,7 @@ This library is built with the goal of empowering projects that require both spe
 >  **Recommended:** build and use with **LLVM/Clang** for maximum performance.
 
 ###  Core Dependencies
-- **C++17/20 compiler** with `AVX2` / `FMA` support  
+- **C++17/20 compiler** with `AVX2` / `FMA` or `ARM Neon` support  
   → `AVX512` is automatically detected and enabled if available  
   → Recommended: **Clang ≥ 17** or **LLVM ≥ 20**  
 - **OpenMP** (`fopenmp`)
@@ -187,7 +190,6 @@ print("norm_inf(v) =", tns.norm_inf(v))
 print("cosine(v, v2) =", tns.cosine(v, v2))
 print("lerp(v, v2, 0.5) =", tns.lerp(v, v2, 0.5))
 ```
-
 
 
 

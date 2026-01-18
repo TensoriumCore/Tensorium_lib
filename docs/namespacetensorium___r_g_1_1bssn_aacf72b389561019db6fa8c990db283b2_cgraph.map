@@ -1,0 +1,5 @@
+<map id="tensorium_RG::bssn::project_bssn_after_update" name="tensorium_RG::bssn::project_bssn_after_update">
+<area shape="rect" id="Node000001" title="Convenience wrapper that enforces all invariants after every RK stage." alt="" coords="5,5,147,61"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a54708e29d39d8a410304c794b3bab92e" title="Apply determinant renormalization, &#160;trace&#45;free projection, and &#160;resynchronization." alt="" coords="195,13,336,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,31,182,33,177,33,147,36"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="tensorium_RG::RiemannTensor::compute" name="tensorium_RG::RiemannTensor::compute">
+<area shape="rect" id="Node000001" title="Computes the 4D Riemann curvature tensor ." alt="" coords="5,35,210,75"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium.html#a980225dc83e1b7b63cfff3cd83459af6" title="Richardson extrapolation for scalar values." alt="" coords="258,5,404,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,39,245,37,239,38,211,44"/>
+<area shape="rect" id="Node000003" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="312,70,350,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,65,299,79,293,79,210,71"/>
+</map>

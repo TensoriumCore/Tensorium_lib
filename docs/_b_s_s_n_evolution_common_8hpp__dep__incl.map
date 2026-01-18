@@ -1,0 +1,10 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp">
+<area shape="rect" id="Node000001" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="140,5,386,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="5,124,252,195"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,88,170,125,167,122,214,84"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="276,124,522,195"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="315,84,361,123,356,124,314,89"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="170,243,357,313"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="181,202,226,242,220,242,179,207"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="350,204,305,244,302,240,345,206"/>
+</map>

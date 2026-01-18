@@ -1,0 +1,28 @@
+<map id="tensorium_RG::fd::Dxz4" name="tensorium_RG::fd::Dxz4">
+<area shape="rect" id="Node000001" title=" " alt="" coords="682,112,846,137"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146" title="Assemble &#160;for each symmetric component." alt="" coords="480,5,631,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="722,104,633,61,607,49,607,44,635,57,727,104"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a" title="Assemble &#160;inside the interior region." alt="" coords="477,71,634,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="664,109,635,106,634,101,670,108"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e" title="Compute &#160;throughout the interior region." alt="" coords="485,136,626,177"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="664,140,628,148,626,143,669,138"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8" title="Populate the Ricci tensor cache &#160;throughout the interior grid." alt="" coords="483,219,628,259"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="728,144,596,221,593,216,723,146"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82" title="Invoke every RHS kernel using the provided grid snapshot." alt="" coords="217,36,429,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="462,39,431,45,428,40,467,36"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,152,169,193"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="228,85,218,91,163,122,117,153,113,150,160,117,215,86,232,81"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="459,78,430,75,429,70,464,76"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="485,129,476,125,452,107,428,91,403,80,402,74,430,86,455,103,478,121,491,129"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="252,100,394,156"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="505,211,428,171,394,156,394,151,430,166,510,210"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="246,180,400,236"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="465,228,401,221,400,216,470,227"/>
+<area shape="rect" id="Node000010" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="234,260,412,316"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="466,258,413,272,411,267,471,257"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="258,340,388,381"/>
+<area shape="poly" id="edge13_Node000007_Node000011" title=" " alt="" coords="521,268,478,302,430,331,389,347,388,342,428,326,476,298,516,270"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="239,405,407,446"/>
+<area shape="poly" id="edge14_Node000007_Node000012" title=" " alt="" coords="538,271,494,335,464,367,430,395,407,407,405,402,428,390,460,363,489,332,533,274"/>
+<area shape="poly" id="edge12_Node000010_Node000004" title=" " alt="" coords="226,254,215,251,120,196,120,191,218,246,231,253"/>
+</map>

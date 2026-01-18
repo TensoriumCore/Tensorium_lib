@@ -1,0 +1,9 @@
+<map id="tensorium_RG::init::invert_gamma_tilde" name="tensorium_RG::init::invert_gamma_tilde">
+<area shape="rect" id="Node000001" title="Explicit 3x3 inversion of &#160;at a given grid index." alt="" coords="222,93,364,134"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="19,5,160,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,88,160,64,161,58,228,86"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="12,85,167,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,114,168,116,167,111,209,112"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,165,174,206"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="222,138,150,167,148,162,217,140"/>
+</map>

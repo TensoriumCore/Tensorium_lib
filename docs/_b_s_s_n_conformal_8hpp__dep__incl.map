@@ -1,0 +1,11 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNConformal.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNConformal.hpp">
+<area shape="rect" id="Node000001" title="Helpers that convert conformal&#45;factor gradients between &#160;and ." alt="" coords="106,5,387,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="158,109,336,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,74,249,109,244,108,246,79"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="5,228,259,298"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="200,193,168,229,164,226,204,189"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="283,228,440,298"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="292,188,330,227,325,227,291,193"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="38,346,226,417"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="134,311,134,347,130,345,130,316"/>
+</map>

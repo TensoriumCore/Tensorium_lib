@@ -1,0 +1,7 @@
+<map id="tensorium_RG::bssn::BSSNRHSWorkspace::zero" name="tensorium_RG::bssn::BSSNRHSWorkspace::zero">
+<area shape="rect" id="Node000001" title="Reset all RHS accumulators to zero before reuse." alt="" coords="477,5,670,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82" title="Invoke every RHS kernel using the provided grid snapshot." alt="" coords="217,5,429,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="458,26,429,28,429,23,464,26"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,5,169,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="198,26,169,28,169,23,204,25"/>
+</map>

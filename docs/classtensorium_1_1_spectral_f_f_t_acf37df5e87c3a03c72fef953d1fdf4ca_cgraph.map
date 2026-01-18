@@ -1,0 +1,5 @@
+<map id="tensorium::SpectralFFT::bit_reverse" name="tensorium::SpectralFFT::bit_reverse">
+<area shape="rect" id="Node000001" title="Bit&#45;reversal permutation step." alt="" coords="5,5,164,46"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="212,13,368,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,198,25,193,26,164,28"/>
+</map>

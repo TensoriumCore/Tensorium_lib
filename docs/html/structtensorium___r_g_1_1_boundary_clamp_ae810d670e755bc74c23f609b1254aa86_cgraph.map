@@ -1,0 +1,9 @@
+<map id="tensorium_RG::BoundaryClamp::apply" name="tensorium_RG::BoundaryClamp::apply">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,212,64"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a45fcd4de7be61cb0c5a3b8042077166f" title=" " alt="" coords="260,23,414,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,41,247,43,241,44,212,46"/>
+<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="462,5,645,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="414,32,444,31,449,30,415,37"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="463,55,644,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="414,49,450,56,445,56,414,55"/>
+</map>

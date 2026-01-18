@@ -1,0 +1,9 @@
+<map id="tensorium::SpectalChebyshev::compute" name="tensorium::SpectalChebyshev::compute">
+<area shape="rect" id="Node000001" title="Dummy computation using Chebyshev&#45;like cosine weights." alt="" coords="5,55,202,96"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_tensor.html#ac8095607d268d35f800adf0fe804a97e" title="Fill tensor with a constant value." alt="" coords="250,5,396,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,52,259,34,254,37,185,57"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_tensor.html#a06a4e5ac39fcbbe14fca3d05924befbe" title="Resize 2D tensor." alt="" coords="256,55,390,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,73,243,75,238,76,202,78"/>
+<area shape="rect" id="Node000004" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="304,120,342,146"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,94,291,123,286,125,183,99"/>
+</map>

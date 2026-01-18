@@ -1,0 +1,27 @@
+<map id="Plugins/MLIR/tensorium&#45;opt.cpp" name="Plugins/MLIR/tensorium&#45;opt.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="938,5,1099,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,102,144,127"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="935,29,791,38,597,50,377,69,156,97,136,100,135,95,155,91,377,63,596,44,791,33,940,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="167,102,302,127"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="935,31,660,54,487,72,314,97,295,100,294,95,313,91,487,67,660,48,940,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="325,102,496,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="940,36,742,63,508,97,485,101,484,95,507,91,741,58,935,36"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="520,102,691,127"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="940,44,679,100,678,95,935,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="715,94,839,135"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="966,46,847,91,846,86,961,47"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="863,94,987,135"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1000,46,958,86,956,81,995,48"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="1012,94,1214,135"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1041,44,1083,84,1078,83,1039,49"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="1239,94,1441,135"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1092,44,1255,90,1250,89,1091,49"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1466,94,1646,135"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1100,36,1453,93,1447,94,1099,41"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1670,94,1812,135"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1100,30,1345,51,1498,68,1658,94,1652,94,1497,74,1344,56,1100,35"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1836,102,1972,127"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1100,27,1418,46,1621,64,1824,91,1846,98,1840,97,1823,97,1620,70,1418,51,1100,32"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1996,102,2230,127"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1099,28,1481,49,1731,68,1984,91,2025,99,2020,99,1984,97,1731,73,1481,55,1099,33"/>
+</map>

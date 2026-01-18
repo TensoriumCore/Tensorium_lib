@@ -12,8 +12,15 @@ compile_commands.json
 *.so
 *.a
 *.csv
+*.png
+*.jpeg
+*.jpg
 # python
 .venv/
+.make
+CMakeCache.txt
+Tests/CMakeFiles/
+
 
 # macOS
 *.DS_Store

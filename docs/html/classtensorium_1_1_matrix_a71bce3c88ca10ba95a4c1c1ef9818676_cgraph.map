@@ -1,0 +1,20 @@
+<map id="tensorium::Matrix::det" name="tensorium::Matrix::det">
+<area shape="rect" id="Node000001" title="Compute the determinant using Gaussian elimination." alt="" coords="5,96,154,122"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="48,96,42,87,46,78,58,72,80,69,102,72,115,80,110,82,101,77,79,75,60,77,49,81,47,87,53,95"/>
+<area shape="rect" id="Node000002" href="$class_maths_utils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="207,5,327,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,93,200,41,218,36,213,39,203,46,105,98"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d" title="Construct a matrix of size r × c, initialized with zeros." alt="" coords="202,55,332,96"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="153,93,189,89,184,91,155,98"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_matrix.html#a8575fce507038abe42bbbdb89af638d8" title="Element access (mutable)." alt="" coords="202,120,332,161"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="153,119,189,126,184,128,154,124"/>
+<area shape="rect" id="Node000008" href="$classtensorium_1_1_matrix.html#aebfe9b597b8683e7695a8ebd6c5b1832" title="Swap two rows of the matrix." alt="" coords="202,186,332,226"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="106,120,203,170,215,178,209,178,200,175,105,125"/>
+<area shape="rect" id="Node000004" href="$_c_p_u__id_8hpp.html#aa4ee32a70b7b807ab5596c40e14c51eb" title=" " alt="" coords="380,63,555,88"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="332,73,367,75,362,76,333,78"/>
+<area shape="rect" id="Node000005" href="$_c_p_u__id_8hpp.html#abb1b21dba3d12fe99fa6daa898d6b43f" title=" " alt="" coords="603,63,710,88"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="555,73,590,75,585,76,556,78"/>
+<area shape="rect" id="Node000007" href="$classtensorium_1_1_matrix.html#a9d7afa564c31722e01fb9447da0da9d9" title=" " alt="" coords="402,120,533,161"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="332,138,390,140,384,141,333,143"/>
+<area shape="rect" id="Node000009" href="$class_maths_utils.html#aa093fbcf1ecdba98b77fcf259a269d70" title=" " alt="" coords="402,193,533,219"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="332,204,390,206,384,206,333,209"/>
+</map>
