@@ -10,5 +10,6 @@ var searchData=
   ['tensorium_5frg_3a_3abssn_3a_3adetail_7',['detail',['../namespacetensorium___r_g_1_1bssn_1_1detail.html',1,'tensorium_RG::bssn']]],
   ['tensorium_5frg_3a_3adetail_8',['detail',['../namespacetensorium___r_g_1_1detail.html',1,'tensorium_RG']]],
   ['tensorium_5frg_3a_3afd_9',['fd',['../namespacetensorium___r_g_1_1fd.html',1,'tensorium_RG']]],
-  ['tensorium_5frg_3a_3ainit_10',['init',['../namespacetensorium___r_g_1_1init.html',1,'tensorium_RG']]]
+  ['tensorium_5frg_3a_3ainit_10',['init',['../namespacetensorium___r_g_1_1init.html',1,'tensorium_RG']]],
+  ['tensorium_5frg_3a_3ainit_3a_3adetail_11',['detail',['../namespacetensorium___r_g_1_1init_1_1detail.html',1,'tensorium_RG::init']]]
 ];

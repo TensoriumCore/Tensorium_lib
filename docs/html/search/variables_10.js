@@ -1,21 +1,13 @@
 var searchData=
 [
-  ['samples_0',['samples',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#acfd54236fb72baf9f1f0137dbe94a56c',1,'tensorium_RG::bssn::ConstraintMonitorStats::samples'],['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#ac1e902fb2f0dc89d8745d8e2ad31f87a',1,'tensorium_RG::bssn::InvariantStats::samples']]],
-  ['scale_1',['scale',['../structtensorium___r_g_1_1bssn_1_1_k_o_state.html#ab17d87d92ca4a0eae0941f639fd282d5',1,'tensorium_RG::bssn::KOState']]],
-  ['shape_2',['shape',['../classtensorium_1_1_derivate_n_d.html#aa4cbe8a37b0699839be11acaefe08506',1,'tensorium::DerivateND::shape'],['../classtensorium_1_1_derivate_n_d.html#a220b0687a2bb97eb1f40be859a6998f0',1,'tensorium::DerivateND::shape']]],
-  ['simd_5fwidth_3',['simd_width',['../classtensorium_1_1_derivate.html#a17c9d892dd6e273873cbb56770a3beb1',1,'tensorium::Derivate::simd_width'],['../classtensorium_1_1_derivate_n_d.html#a618a7e8223e1db2747fe285b6ec3e895',1,'tensorium::DerivateND::simd_width'],['../classtensorium_1_1_matrix.html#a6d09e0e9927a369cb4d88f4ac062602d',1,'tensorium::Matrix::simd_width'],['../classtensorium_1_1_vector.html#a2ce9e8bf8b223874ed8bf6dbb3b94be4',1,'tensorium::Vector::simd_width']]],
-  ['simdwidth_4',['SimdWidth',['../classtensorium_1_1_gemm_kernel_big.html#a0a8aa0f957c1dfe11b17f6b5d56b4a40',1,'tensorium::GemmKernelBig']]],
-  ['snapshot_5fcallback_5f_5',['snapshot_callback_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a29f9aa16159f20aab83801476e7b8c0b',1,'tensorium_RG::bssn::BSSNRKStepper']]],
-  ['st_6',['st',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#ac32ccf5b0ced76b0523cc48206c98fc9',1,'tensorium_RG::BSSNGridSoA::st'],['../structtensorium___r_g_1_1_field3_d.html#acb0e47f8f2c1a2aa5a158d94aa552059',1,'tensorium_RG::Field3D::st']]],
-  ['stage_5fgrid_5f_7',['stage_grid_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9afb1376eb3e2e79b4ee1bc420c68489',1,'tensorium_RG::bssn::BSSNRKStepper']]],
-  ['stages_5f_8',['stages_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#abdf0fbb37f32ce2351c50e719e165b36',1,'tensorium_RG::bssn::BSSNRKStepper']]],
-  ['stride_5faxis_9',['stride_axis',['../classtensorium_1_1_derivate_n_d.html#a539eba3b254919f609a4506749ef6317',1,'tensorium::DerivateND']]],
-  ['strides_10',['strides',['../classtensorium_1_1_derivate_n_d.html#a29a576e604991dca296fd63a88128dd6',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1_derivate_n_d.html#a106254e6b11d233bf1009da8bc2a4474',1,'tensorium::DerivateND::strides'],['../classtensorium_1_1_tensor.html#a824056bd4f9ee568473e899766673413',1,'tensorium::Tensor::strides']]],
-  ['sx_11',['sx',['../structtensorium___r_g_1_1_strides.html#aeb24e227764571ffa9df27af170f3d4a',1,'tensorium_RG::Strides']]],
-  ['sy_12',['sy',['../structtensorium___r_g_1_1_strides.html#aae0d24f12974c5e2b941272b98acd8b4',1,'tensorium_RG::Strides']]],
-  ['sym_5fcol_5ffrom_5findex_13',['sym_col_from_index',['../namespacetensorium___r_g_1_1bssn_1_1detail.html#a573cade5e13648371e99f206059ea031',1,'tensorium_RG::bssn::detail']]],
-  ['sym_5fcol_5findex_14',['sym_col_index',['../namespacetensorium___r_g_1_1bssn_1_1detail.html#a4274a515b0bb7f41bdf8e1824bccbfc1',1,'tensorium_RG::bssn::detail']]],
-  ['sym_5frow_5ffrom_5findex_15',['sym_row_from_index',['../namespacetensorium___r_g_1_1bssn_1_1detail.html#afaf522b7c9a86f6eda43f86bf406c863',1,'tensorium_RG::bssn::detail']]],
-  ['sym_5frow_5findex_16',['sym_row_index',['../namespacetensorium___r_g_1_1bssn_1_1detail.html#a1e8e96950dfb11a8e2c2d357e03fc548',1,'tensorium_RG::bssn::detail']]],
-  ['sz_17',['sz',['../structtensorium___r_g_1_1_strides.html#a3d41d105f8577bf6f50a2516116f7159',1,'tensorium_RG::Strides']]]
+  ['r_0',['r',['../classtensorium_1_1_vector.html#a6f547b8ccc00e5ec4c251826b24a0437',1,'tensorium::Vector']]],
+  ['rank_1',['rank',['../structtensorium_1_1_tensor_traits_3_01_tensor_3_01_t_00_01_rank_01_4_01_4.html#abb2cb02b0978ce300f21cc3e22759a7f',1,'tensorium::TensorTraits&lt; Tensor&lt; T, Rank &gt; &gt;::rank'],['../structtensorium_1_1_tensor_traits.html#acddd82d3e0b6f3b8f46612b9449b724e',1,'tensorium::TensorTraits::rank'],['../structtensorium_1_1_tensor_traits_3_01_vector_3_01_t_01_4_01_4.html#aa72e3119b607b397d051f703f4c53fd7',1,'tensorium::TensorTraits&lt; Vector&lt; T &gt; &gt;::rank'],['../classtensorium___r_g_1_1_christoffel_sym.html#af9edf7dcb0b5e66a471f4524db354b0b',1,'tensorium_RG::ChristoffelSym::rank']]],
+  ['recompute_5finverse_2',['recompute_inverse',['../structtensorium___r_g_1_1bssn_1_1_projection_config.html#aef7700129dd6e61d39d90be239589e6d',1,'tensorium_RG::bssn::ProjectionConfig']]],
+  ['renormalize_5fmetric_3',['renormalize_metric',['../structtensorium___r_g_1_1bssn_1_1_projection_config.html#a42644b3adf7d998a4aef8f7094fdb8dc',1,'tensorium_RG::bssn::ProjectionConfig']]],
+  ['result_4',['result',['../classtensorium_1_1_vector.html#aaa97841112b3af8af6dcceb618348fbf',1,'tensorium::Vector']]],
+  ['resync_5fcontracted_5fgamma_5',['resync_contracted_gamma',['../structtensorium___r_g_1_1bssn_1_1_projection_config.html#ad6882f9d47df9185e9f97333c5e90d11',1,'tensorium_RG::bssn::ProjectionConfig']]],
+  ['rhs_5fprep_5fcallback_5f_6',['rhs_prep_callback_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac98a34f36d8066b8d87a5af2cee014c3',1,'tensorium_RG::bssn::BSSNRKStepper']]],
+  ['ricci_7',['Ricci',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a0924c9e6dbe067b7df165a32802a2f97',1,'tensorium_RG::BSSNGridSoA']]],
+  ['ricci_5ftilde_8',['ricci_tilde',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#af7a52863212e80789ac4a909151c799d',1,'tensorium_RG::BSSNGrid']]],
+  ['rows_9',['rows',['../classtensorium_1_1_derivate.html#a624a0c2a6a3af9ff217292582cd44677',1,'tensorium::Derivate::rows'],['../classtensorium_1_1_matrix.html#a247523f65bacfbda84f956c32bc02a2f',1,'tensorium::Matrix::rows']]]
 ];

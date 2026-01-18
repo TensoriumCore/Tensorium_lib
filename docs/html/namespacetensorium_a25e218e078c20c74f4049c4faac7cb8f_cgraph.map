@@ -1,12 +1,14 @@
 <map id="tensorium::forwardFFT" name="tensorium::forwardFFT">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,159,68"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2" title="Perform forward FFT (in&#45;place)." alt="" coords="207,35,365,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,52,194,55,188,55,159,58"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)." alt="" coords="413,35,571,75"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,52,400,55,395,55,365,58"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,70,159,96"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2" title="Perform forward FFT (in&#45;place)." alt="" coords="207,63,365,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,80,194,82,189,84,159,86"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)." alt="" coords="413,63,571,103"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,80,400,83,395,83,366,86"/>
 <area shape="rect" id="Node000004" href="$classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca" title="Bit&#45;reversal permutation step." alt="" coords="619,5,778,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="571,41,601,39,606,39,572,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="567,60,606,51,611,50,568,65"/>
 <area shape="rect" id="Node000005" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="826,42,982,68"/>
-<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="572,54,619,55,778,55,813,57,807,57,778,60,619,60,572,60"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="572,75,813,61,808,62,572,80"/>
+<area shape="rect" id="Node000006" href="$classtensorium_1_1_spectral_f_f_t.html#a25b4967933a03fad8b23fbb300933df0" title=" " alt="" coords="619,120,778,161"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="568,101,611,115,606,115,567,107"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="778,34,813,42,807,42,778,40"/>
 </map>

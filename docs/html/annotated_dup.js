@@ -46,6 +46,10 @@ var annotated_dup =
         [ "BSSNRKStepper", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper" ]
       ] ],
       [ "init", "namespacetensorium___r_g_1_1init.html", [
+        [ "detail", "namespacetensorium___r_g_1_1init_1_1detail.html", [
+          [ "HaloFinalizer", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer" ],
+          [ "HaloFinalizer&lt; Grid, std::void_t&lt; decltype(std::declval&lt; Grid &amp; &gt;().apply_halos())&gt; &gt;", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c.html", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c" ]
+        ] ],
         [ "ConstraintScratch", "structtensorium___r_g_1_1init_1_1_constraint_scratch.html", "structtensorium___r_g_1_1init_1_1_constraint_scratch" ]
       ] ],
       [ "BSSNAtildeTensor", "classtensorium___r_g_1_1_b_s_s_n_atilde_tensor.html", "classtensorium___r_g_1_1_b_s_s_n_atilde_tensor" ],

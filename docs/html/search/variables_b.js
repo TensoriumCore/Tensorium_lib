@@ -1,22 +1,12 @@
 var searchData=
 [
-  ['m_0',['M',['../classtensorium_1_1solver_1_1_gauss.html#a7d013c6886e00c34f7d0ba22bcd616b6',1,'tensorium::solver::Gauss::M'],['../structtensorium___r_g_1_1init_1_1_constraint_scratch.html#aa5e513706fa0f3e1a136e432ea5dae02',1,'tensorium_RG::init::ConstraintScratch::M'],['../classtensorium___r_g_1_1_metric.html#ac68e0a40729e0473d19321eee932a8f0',1,'tensorium_RG::Metric::M']]],
-  ['mass_5fscale_1',['mass_scale',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#a81cf74e3f793e9fcb62a55f8f1ed57bf',1,'tensorium_RG::bssn::GaugeParameters']]],
-  ['max_5fdet_5fdeviation_2',['max_det_deviation',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a27f37cc51ec5c1f3a5b3f3d8641f8371',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['max_5fdet_5fdrift_3',['max_det_drift',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aaead7bbabf87fb8aef07d2aa02a0a177',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
-  ['max_5fgamma_5fconstraint_4',['max_gamma_constraint',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a090c182966e7a970f8c966822c9db86e',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['max_5fh_5',['max_H',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae13c15eabbf1a679170ea9d711841dfc',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
-  ['max_5fk_5fsquared_6',['max_K_squared',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#ac88e0e19e059dc1b14d928ac30034d7d',1,'tensorium_RG::bssn::GaugeParameters']]],
-  ['max_5fmetric_5fidentity_7',['max_metric_identity',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a351e4c125fff1a1cea0b9696132a019d',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['max_5ftrace_5fa_8',['max_trace_A',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ae874b8370bdd0ddf69a01e5858c7340c',1,'tensorium_RG::bssn::ConstraintMonitorStats::max_trace_A'],['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aaa6ebf6e1d31fe36d61670c8fd888e7f',1,'tensorium_RG::bssn::InvariantStats::max_trace_A']]],
-  ['mean_5fdet_5fdeviation_9',['mean_det_deviation',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a0bdef2a2af0216fc956ddf3a815989',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['mean_5fgamma_5fconstraint_10',['mean_gamma_constraint',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abb8524c386af80dc51a2c5b3b8bac907',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['mean_5fmetric_5fidentity_11',['mean_metric_identity',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a31ed63b0e13ba81852834bbf67f11870',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['mean_5ftrace_5fa_12',['mean_trace_A',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#aef1e0390e8f387eeb83fa0116435a7b5',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['metric_13',['metric',['../structtensorium___r_g_1_1_chi_context.html#ac792fdf27d8ac7fa74a26386c8e9c03d',1,'tensorium_RG::ChiContext']]],
-  ['metric_5flocation_14',['metric_location',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a010585159142425f3d7d48009c990fd3',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['metric_5ftol_15',['metric_tol',['../structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html#a3de3920eb1fe2578380ab51975f40f6a',1,'tensorium_RG::bssn::InvariantTolerances']]],
-  ['min_5fchi_16',['min_chi',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a95aaf9325af3ee94045216c091bc2b24',1,'tensorium_RG::bssn::InvariantStats']]],
-  ['min_5flapse_5ffor_5fk_17',['min_lapse_for_K',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#ae28548ca0be96b71e4f83d16ce46ad34',1,'tensorium_RG::bssn::GaugeParameters']]],
-  ['monitor_5fcallback_5f_18',['monitor_callback_',['../classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a7402855694947ae48cdf11f19073b194',1,'tensorium_RG::bssn::BSSNRKStepper']]]
+  ['l2_5fdet_5fdeviation_0',['l2_det_deviation',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a50b27778e1f73c047eb787677d687c19',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5fgamma_5fconstraint_1',['l2_gamma_constraint',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a546480644414ef51962411594ccaa1',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5fh_2',['l2_H',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#aa3994a408ee224ba6bfc80950a13593d',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
+  ['l2_5fm_3',['l2_M',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#ab69a3587316c149a34df12242f535e5d',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
+  ['l2_5fmetric_5fidentity_4',['l2_metric_identity',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#abff89e7ea44fa45625683540b6c11d17',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5ftheta_5',['l2_theta',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#a6b6bdfbb28a3df43fe819c34ad3b82bb',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
+  ['l2_5ftrace_5fa_6',['l2_trace_A',['../structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a24bdf59de3aca70e0f14ae08f67df433',1,'tensorium_RG::bssn::InvariantStats']]],
+  ['l2_5fz_7',['l2_Z',['../structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html#a420a882520a4265f666157b08cca946d',1,'tensorium_RG::bssn::ConstraintMonitorStats']]],
+  ['loc_8',['loc',['../struct_tensorium_target.html#ab275d76424d0b83530cab9e9c902fb73',1,'TensoriumTarget']]]
 ];

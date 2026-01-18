@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <type_traits>
 #include <vector>
 
 namespace tensorium {
@@ -86,8 +87,8 @@ template <typename K> class Vector {
 
     void print() const {
         std::cout << "Vector size: " << size() << "\n";
-        for (float f : data)
-            std::cout << "[" << f << "]\n";
+        for (K value : data)
+            std::cout << "[" << value << "]\n";
     }
     /** @name Basic Operations */
     ///@{
@@ -182,7 +183,7 @@ template <typename K> class Vector {
      * @brief Scale this vector by a scalar (in-place).
      * @param a The scalar value.
      */
-    __attribute__((always_inline, hot, flatten)) inline void scl(float a) {
+    __attribute__((always_inline, hot, flatten)) inline void scl(K a) {
         size_t n = size();
         size_t i = 0;
         using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -190,7 +191,7 @@ template <typename K> class Vector {
         const size_t simd_width = Simd::width;
         _mm_prefetch((const char *)&data[0], _MM_HINT_T0);
         reg scalar = Simd::set1(a);
-        float *__restrict out = &data[0];
+        K *__restrict out = &data[0];
 
         for (; i + 15 < n; i += 16) {
             reg v0 = Simd::load(out + i);
@@ -213,8 +214,8 @@ template <typename K> class Vector {
      * @param coefs List of coefficients.
      * @return A vector representing the linear combination: sum(c_i * u_i).
      */
-    __attribute__((always_inline, hot, flatten)) static inline Vector<float>
-    linear_combination(const std::vector<Vector<float>> &u, const std::vector<float> &coefs) {
+    __attribute__((always_inline, hot, flatten)) static inline Vector<K>
+    linear_combination(const std::vector<Vector<K>> &u, const std::vector<K> &coefs) {
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         const size_t simd_width = Simd::width;
@@ -222,14 +223,14 @@ template <typename K> class Vector {
         if (u.size() != coefs.size())
             throw std::invalid_argument("Mismatched number of vectors and coefficients");
         if (u.empty())
-            return Vector<float>(0);
+            return Vector<K>(0);
 
         const size_t n = u[0].size();
         for (const auto &v : u)
             if (v.size() != n)
                 throw std::invalid_argument("Vector sizes do not match");
 
-        Vector<float> result(n);
+        Vector<K> result(n);
 
         size_t           i = 0;
         constexpr size_t W = simd_width;
@@ -244,7 +245,7 @@ template <typename K> class Vector {
         }
 
         for (; i < n; ++i) {
-            float acc = 0.f;
+            K acc = K(0);
             for (size_t j = 0; j < u.size(); ++j)
                 acc += coefs[j] * u[j].data[i];
             result.data[i] = acc;
@@ -260,8 +261,8 @@ template <typename K> class Vector {
      * @param t Interpolation factor (0 = a, 1 = b).
      * @return Interpolated vector.
      */
-    __attribute__((always_inline, hot, flatten)) static inline Vector<float>
-    lerp(const Vector<float> &a, const Vector<float> &b, float t) {
+    __attribute__((always_inline, hot, flatten)) static inline Vector<K>
+    lerp(const Vector<K> &a, const Vector<K> &b, K t) {
         if (a.size() != b.size())
             throw std::invalid_argument("Vector sizes do not match");
         using Simd = simd::SimdTraits<K, DefaultISA>;
@@ -269,10 +270,10 @@ template <typename K> class Vector {
         const size_t simd_width = Simd::width;
 
         const size_t  n = a.size();
-        Vector<float> result(n);
+        Vector<K> result(n);
 
         const reg vt = Simd::set1(t);
-        const reg vt1 = Simd::sub(Simd::set1(1.0f), vt);
+        const reg vt1 = Simd::sub(Simd::set1(K(1)), vt);
 
         size_t i = 0;
         _mm_prefetch((const char *)&a.data[0], _MM_HINT_T0);
@@ -286,7 +287,7 @@ template <typename K> class Vector {
         }
 
         for (; i < n; ++i)
-            result.data[i] = (1.0f - t) * a.data[i] + t * b.data[i];
+            result.data[i] = (K(1) - t) * a.data[i] + t * b.data[i];
 
         return result;
     }
@@ -300,7 +301,7 @@ template <typename K> class Vector {
      * @param v The other vector.
      * @return The scalar dot product.
      */
-    __attribute__((always_inline, hot, flatten)) inline float dot(const Vector<float> &v) const {
+    __attribute__((always_inline, hot, flatten)) inline K dot(const Vector<K> &v) const {
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         const size_t simd_width = Simd::width;
@@ -310,8 +311,8 @@ template <typename K> class Vector {
         size_t       i = 0;
         reg          acc = Simd::zero();
 
-        const float *__restrict a_ptr = &data[0];
-        const float *__restrict b_ptr = &v.data[0];
+        const K *__restrict a_ptr = &data[0];
+        const K *__restrict b_ptr = &v.data[0];
         _mm_prefetch((const char *)&v.data[0], _MM_HINT_T0);
         for (; i + 7 < n; i += simd_width) {
             reg a = Simd::load(a_ptr + i);
@@ -319,7 +320,7 @@ template <typename K> class Vector {
             acc = Simd::fmadd(a, b, acc);
         }
 
-        float result = detail::reduce_sum(acc);
+        K result = detail::reduce_sum(acc);
 
         for (; i < n; ++i)
             result += a_ptr[i] * b_ptr[i];
@@ -331,15 +332,15 @@ template <typename K> class Vector {
      * @brief Compute the 1-norm (sum of absolute values).
      * @return The L1 norm.
      */
-    __attribute__((always_inline, hot, flatten)) inline float norm_1() const {
+    __attribute__((always_inline, hot, flatten)) inline K norm_1() const {
         size_t n = size();
         size_t i = 0;
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         const size_t simd_width = Simd::width;
         reg          acc = Simd::zero();
-        reg          sign_mask = Simd::set1(-0.0f);
-        const float *__restrict v_ptr = &data[0];
+        reg          sign_mask = Simd::set1(K(-0.0));
+        const K *__restrict v_ptr = &data[0];
         _mm_prefetch((const char *)&data[0], _MM_HINT_T0);
         for (; i + 7 < n; i += simd_width) {
             reg v = Simd::load(v_ptr + i);
@@ -347,10 +348,10 @@ template <typename K> class Vector {
             acc = Simd::add(acc, abs_v);
         }
 
-        float result = detail::reduce_sum(acc);
+        K result = detail::reduce_sum(acc);
 
         for (; i < n; ++i)
-            result += MathsUtils::_fabs(v_ptr[i]);
+            result += std::abs(v_ptr[i]);
 
         return result;
     }
@@ -358,40 +359,40 @@ template <typename K> class Vector {
      * @brief Compute the 2-norm (Euclidean norm).
      * @return The L2 norm.
      */
-    __attribute__((always_inline, hot, flatten)) inline float norm_2() const {
+    __attribute__((always_inline, hot, flatten)) inline K norm_2() const {
         size_t n = size();
         size_t i = 0;
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         const size_t simd_width = Simd::width;
         reg          acc = Simd::zero();
-        const float *__restrict v_ptr = &data[0];
+        const K *__restrict v_ptr = &data[0];
         _mm_prefetch((const char *)&data[0], _MM_HINT_T0);
         for (; i + 7 < n; i += simd_width) {
             reg v = Simd::load(v_ptr + i);
             acc = Simd::fmadd(v, v, acc);
         }
 
-        float result = detail::reduce_sum(acc);
+        K result = detail::reduce_sum(acc);
 
         for (; i < n; ++i)
             result += v_ptr[i] * v_ptr[i];
 
-        return std::pow(result, 0.5f);
+        return std::sqrt(result);
     }
     /**
      * @brief Compute the infinity norm (maximum absolute value).
      * @return The L∞ norm.
      */
-    __attribute__((always_inline, hot, flatten)) inline float norm_inf() const {
+    __attribute__((always_inline, hot, flatten)) inline K norm_inf() const {
         size_t n = size();
         size_t i = 0;
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         const size_t simd_width = Simd::width;
         reg          max_v = Simd::zero();
-        reg          sign_mask = Simd::set1(-0.0f);
-        const float *__restrict v_ptr = &data[0];
+        reg          sign_mask = Simd::set1(K(-0.0));
+        const K *__restrict v_ptr = &data[0];
         _mm_prefetch((const char *)&data[0], _MM_HINT_T0);
         for (; i + 7 < n; i += simd_width) {
             reg v = Simd::load(v_ptr + i);
@@ -399,10 +400,10 @@ template <typename K> class Vector {
             max_v = Simd::max(max_v, abs_v);
         }
 
-        float result = detail::reduce_sum(max_v);
+        K result = detail::reduce_sum(max_v);
 
         for (; i < n; ++i)
-            result = MathsUtils::_max(result, MathsUtils::_fabs(v_ptr[i]));
+            result = MathsUtils::_max(result, std::abs(v_ptr[i]));
 
         return result;
     }
@@ -413,14 +414,14 @@ template <typename K> class Vector {
      * @return Cosine of the angle between u and v.
      */
 
-    __attribute__((always_inline, hot, flatten)) static inline float
-    angle_cos(const Vector<float> &u, const Vector<float> &v) {
+    __attribute__((always_inline, hot, flatten)) static inline K angle_cos(const Vector<K> &u,
+                                                                          const Vector<K> &v) {
         if (u.size() != v.size())
             throw std::invalid_argument("Vector sizes do not match");
 
-        const float dot = u.dot(v);
-        const float norm_u = u.norm_2();
-        const float norm_v = v.norm_2();
+        const K dot = u.dot(v);
+        const K norm_u = u.norm_2();
+        const K norm_v = v.norm_2();
 
         return dot / (norm_u * norm_v);
     }
@@ -432,34 +433,21 @@ template <typename K> class Vector {
      * @return Resulting 3D vector.
      */
 
-    __attribute__((always_inline, hot, flatten)) static inline Vector<float>
-    cross_product(const Vector<float> &u, const Vector<float> &v) {
+    __attribute__((always_inline, hot, flatten)) static inline Vector<K>
+    cross_product(const Vector<K> &u, const Vector<K> &v) {
         if (u.size() != 3 || v.size() != 3)
             throw std::invalid_argument("Cross product is only defined for 3D vectors.");
 
-        Vector<float> r(3);
-
-#if defined(TENSORIUM_X86)
-        __m128 uxy = _mm_set_ps(0.0f, u.data[0], u.data[2], u.data[1]);
-        __m128 vxy = _mm_set_ps(0.0f, v.data[0], v.data[2], v.data[1]);
-#elif defined(TENSORIUM_ARM)
-        float32x4_t uxy = {0.0f, u.data[0], u.data[2], u.data[1]};
-        float32x4_t vxy = {0.0f, v.data[0], v.data[2], v.data[1]};
-#else
-        (void)0; 
-#endif
-
-        // Produit vectoriel (portable et optimisé)
-#if defined(__FMA__) || defined(TENSORIUM_X86) || defined(TENSORIUM_ARM)
-        r.data[0] = std::fma(u.data[1], v.data[2], -u.data[2] * v.data[1]);
-        r.data[1] = std::fma(u.data[2], v.data[0], -u.data[0] * v.data[2]);
-        r.data[2] = std::fma(u.data[0], v.data[1], -u.data[1] * v.data[0]);
-#else
-        r.data[0] = u.data[1] * v.data[2] - u.data[2] * v.data[1];
-        r.data[1] = u.data[2] * v.data[0] - u.data[0] * v.data[2];
-        r.data[2] = u.data[0] * v.data[1] - u.data[1] * v.data[0];
-#endif
-
+        Vector<K> r(3);
+        if constexpr (std::is_floating_point_v<K>) {
+            r.data[0] = std::fma(u.data[1], v.data[2], -u.data[2] * v.data[1]);
+            r.data[1] = std::fma(u.data[2], v.data[0], -u.data[0] * v.data[2]);
+            r.data[2] = std::fma(u.data[0], v.data[1], -u.data[1] * v.data[0]);
+        } else {
+            r.data[0] = u.data[1] * v.data[2] - u.data[2] * v.data[1];
+            r.data[1] = u.data[2] * v.data[0] - u.data[0] * v.data[2];
+            r.data[2] = u.data[0] * v.data[1] - u.data[1] * v.data[0];
+        }
         return r;
     }
 

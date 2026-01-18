@@ -1,81 +1,82 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/BSSNGridOperations.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/BSSNGridOperations.hpp">
-<area shape="rect" id="Node000001" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="2510,5,2785,61"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="1204,109,1381,180"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2493,48,1382,139,1381,133,2497,45"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="1006,702,1193,773"/>
-<area shape="poly" id="edge59_Node000001_Node000005" title=" " alt="" coords="2664,73,2688,160,2697,211,2701,262,2701,502,2698,533,2691,559,2680,580,2665,599,2623,629,2568,657,2536,668,2486,678,2344,695,2159,708,1949,719,1519,732,1194,738,1193,733,1519,727,1949,713,2159,703,2344,689,2485,672,2534,663,2566,652,2620,624,2661,595,2676,577,2686,557,2693,532,2695,502,2695,262,2692,211,2683,161,2661,78"/>
-<area shape="rect" id="Node000006" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="2089,584,2246,654"/>
-<area shape="poly" id="edge58_Node000001_Node000006" title=" " alt="" coords="2649,74,2650,262,2650,383,2648,417,2641,446,2630,470,2615,490,2596,507,2575,520,2523,538,2464,550,2398,559,2329,570,2259,586,2246,590,2245,585,2257,581,2328,564,2397,554,2463,544,2522,533,2572,515,2593,502,2611,487,2625,468,2636,444,2642,416,2645,383,2645,262,2646,78"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="2205,465,2383,536"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1397,147,1599,158,1836,174,2044,196,2117,210,2159,225,2189,250,2213,278,2234,310,2251,344,2276,410,2290,466,2286,463,2271,411,2247,346,2230,313,2209,282,2185,253,2157,230,2116,215,2043,202,1835,179,1599,163,1398,153"/>
-<area shape="poly" id="edge57_Node000002_Node000006" title=" " alt="" coords="1397,147,1610,157,1862,174,2086,196,2164,210,2210,225,2236,246,2254,268,2265,291,2273,315,2289,364,2302,389,2323,415,2342,429,2362,436,2381,445,2398,464,2407,483,2411,501,2408,519,2398,537,2383,554,2368,565,2336,574,2300,577,2259,586,2247,591,2245,585,2257,581,2299,572,2335,569,2366,560,2379,550,2393,534,2403,517,2405,501,2402,485,2393,466,2378,449,2360,441,2340,434,2319,419,2298,392,2284,366,2268,316,2260,293,2249,271,2233,250,2207,230,2163,215,2085,202,1862,179,1609,163,1397,152"/>
-<area shape="rect" id="Node000007" href="$_b_s_s_n_evolution_a_tilde_8hpp.html" title="RHS for the trace&#45;free extrinsic curvature ." alt="" coords="30,465,276,536"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1186,151,985,163,745,180,534,202,460,215,418,230,394,250,378,271,369,294,362,318,348,368,335,393,313,419,280,445,244,466,240,462,277,441,310,415,330,390,343,366,357,316,364,292,374,269,390,246,415,225,458,210,533,197,744,174,984,158,1191,149"/>
-<area shape="rect" id="Node000008" href="$_b_s_s_n_evolution_chi_8hpp.html" title="RHS for the conformal factor equation &#160;." alt="" coords="300,465,547,536"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="1186,150,994,160,767,175,660,186,569,198,501,213,479,221,465,230,445,255,430,283,420,315,415,348,414,411,419,465,414,463,408,412,410,347,415,314,425,281,440,252,462,226,477,216,500,208,568,193,660,180,766,170,994,155,1191,148"/>
-<area shape="rect" id="Node000009" href="$_b_s_s_n_evolution_common_8hpp.html" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="475,228,721,298"/>
-<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="1187,165,723,244,721,238,1191,161"/>
-<area shape="rect" id="Node000010" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="976,465,1223,536"/>
-<area shape="poly" id="edge27_Node000002_Node000010" title=" " alt="" coords="1269,192,1120,466,1116,462,1264,195"/>
-<area shape="rect" id="Node000011" href="$_b_s_s_n_evolution_gamma_tilde_8hpp.html" title="RHS for the conformal metric ." alt="" coords="54,346,300,417"/>
-<area shape="poly" id="edge28_Node000002_Node000011" title=" " alt="" coords="1186,146,981,150,728,161,602,172,487,186,390,206,319,230,282,254,248,285,221,318,200,347,195,345,217,314,245,281,278,250,317,225,389,200,486,181,602,167,727,156,981,145,1191,144"/>
-<area shape="rect" id="Node000012" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="655,346,901,417"/>
-<area shape="poly" id="edge29_Node000002_Node000012" title=" " alt="" coords="1186,162,1083,189,1027,207,974,230,928,256,885,287,814,348,811,344,881,283,925,252,972,225,1025,202,1081,184,1191,160"/>
-<area shape="rect" id="Node000013" href="$_b_s_s_n_evolution_k_8hpp.html" title="RHS for the mean curvature ." alt="" coords="671,472,952,528"/>
-<area shape="poly" id="edge30_Node000002_Node000013" title=" " alt="" coords="1236,188,849,475,846,470,1231,190"/>
-<area shape="rect" id="Node000014" href="$_b_s_s_n_evolution_z4_c_8hpp.html" title=" " alt="" coords="1247,465,1493,536"/>
-<area shape="poly" id="edge31_Node000002_Node000014" title=" " alt="" coords="1305,193,1365,465,1360,463,1302,197"/>
-<area shape="rect" id="Node000015" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="1564,346,1822,417"/>
-<area shape="poly" id="edge32_Node000002_Node000015" title=" " alt="" coords="1386,184,1467,225,1565,286,1648,346,1643,345,1562,291,1465,230,1385,189"/>
-<area shape="rect" id="Node000016" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="1568,472,1818,528"/>
-<area shape="poly" id="edge56_Node000002_Node000016" title=" " alt="" coords="1330,189,1427,298,1488,359,1553,415,1596,445,1641,472,1635,472,1593,449,1550,419,1484,362,1423,302,1329,194"/>
-<area shape="rect" id="Node000018" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="1880,235,2146,291"/>
-<area shape="poly" id="edge43_Node000002_Node000018" title=" " alt="" coords="1397,160,1882,240,1877,241,1397,165"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="2270,584,2523,654"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="2335,545,2369,584,2364,582,2333,550"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="2248,545,2206,586,2204,581,2243,547"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="2257,654,2103,678,1948,695,1647,719,1386,732,1194,738,1193,732,1385,727,1647,714,1947,690,2102,673,2252,655"/>
-<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="225,541,343,600,410,628,479,652,620,686,764,709,897,723,1008,733,1003,733,896,728,763,714,619,691,477,657,408,633,340,605,225,546"/>
-<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="454,546,503,603,533,630,566,652,600,666,647,679,764,700,891,716,1008,729,1003,729,891,721,763,705,646,684,599,671,563,657,530,634,499,607,453,551"/>
-<area shape="poly" id="edge26_Node000009_Node000005" title=" " alt="" coords="595,311,595,391,598,437,606,484,618,532,637,577,662,618,696,652,718,665,749,678,829,698,920,714,1008,727,1003,727,919,719,828,703,747,683,715,670,692,656,658,621,632,579,613,534,601,485,593,437,590,391,592,316"/>
-<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="534,309,453,364,357,419,250,467,247,462,354,415,451,360,539,306"/>
-<area shape="poly" id="edge12_Node000009_Node000008" title=" " alt="" coords="565,309,451,466,447,463,561,313"/>
-<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="736,284,826,308,914,344,959,371,1001,402,1069,465,1064,464,998,406,956,375,912,349,825,314,737,290"/>
-<area shape="poly" id="edge15_Node000009_Node000011" title=" " alt="" coords="458,304,302,349,299,344,462,300"/>
-<area shape="poly" id="edge17_Node000009_Node000012" title=" " alt="" coords="664,304,727,346,722,346,664,310"/>
-<area shape="poly" id="edge14_Node000010_Node000005" title=" " alt="" coords="1101,550,1102,704,1097,700,1097,553"/>
-<area shape="poly" id="edge16_Node000011_Node000005" title=" " alt="" coords="56,428,37,445,20,466,11,485,8,501,11,516,20,534,46,563,83,589,130,612,185,633,315,667,462,692,615,710,764,722,1008,735,1002,735,764,727,615,716,461,697,314,672,183,638,128,617,80,593,43,567,16,537,6,518,3,501,6,483,16,464,34,441,59,423"/>
-<area shape="poly" id="edge25_Node000012_Node000005" title=" " alt="" coords="695,425,676,446,662,466,653,485,650,501,653,517,662,534,693,575,732,610,775,640,822,665,870,684,918,700,1008,724,1003,724,917,705,868,689,820,669,773,645,729,615,690,579,657,537,648,518,645,501,648,483,657,464,672,442,691,428"/>
-<area shape="poly" id="edge18_Node000012_Node000007" title=" " alt="" coords="637,404,472,433,289,468,278,470,275,465,288,462,471,428,642,402"/>
-<area shape="poly" id="edge19_Node000012_Node000008" title=" " alt="" coords="655,424,530,467,528,462,660,421"/>
-<area shape="poly" id="edge20_Node000012_Node000010" title=" " alt="" coords="888,420,1007,464,1001,465,888,425"/>
-<area shape="poly" id="edge21_Node000012_Node000013" title=" " alt="" coords="793,429,806,473,801,471,791,434"/>
-<area shape="poly" id="edge23_Node000012_Node000014" title=" " alt="" coords="917,403,1070,430,1235,462,1249,468,1244,468,1233,468,1069,435,917,408"/>
-<area shape="poly" id="edge22_Node000013_Node000005" title=" " alt="" coords="857,536,1060,702,1054,702,855,541"/>
-<area shape="poly" id="edge24_Node000014_Node000005" title=" " alt="" coords="1321,545,1140,704,1138,700,1316,547"/>
-<area shape="poly" id="edge33_Node000015_Node000003" title=" " alt="" coords="1838,410,1863,414,2003,438,2143,462,2207,478,2202,478,2142,468,2002,443,1862,420,1838,415"/>
-<area shape="poly" id="edge42_Node000015_Node000005" title=" " alt="" coords="1612,424,1557,467,1542,485,1533,502,1523,519,1506,538,1430,593,1348,640,1267,678,1194,707,1193,702,1265,673,1346,635,1427,589,1503,534,1519,516,1528,499,1537,482,1554,463,1607,426"/>
-<area shape="poly" id="edge39_Node000015_Node000006" title=" " alt="" coords="1777,423,1832,463,1848,483,1857,501,1866,517,1882,534,1932,562,1986,583,2040,597,2092,610,2086,609,2039,603,1984,588,1930,567,1879,538,1861,521,1852,503,1843,485,1828,467,1775,428"/>
-<area shape="poly" id="edge34_Node000015_Node000010" title=" " alt="" coords="1546,407,1398,436,1236,468,1224,470,1222,465,1235,462,1397,430,1551,406"/>
-<area shape="poly" id="edge35_Node000015_Node000014" title=" " alt="" coords="1585,422,1467,467,1465,462,1580,423"/>
-<area shape="poly" id="edge36_Node000015_Node000016" title=" " alt="" coords="1694,430,1695,474,1691,470,1691,434"/>
-<area shape="rect" id="Node000017" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="1892,465,2131,536"/>
-<area shape="poly" id="edge40_Node000015_Node000017" title=" " alt="" coords="1802,420,1919,465,1914,464,1802,425"/>
-<area shape="poly" id="edge38_Node000016_Node000005" title=" " alt="" coords="1669,540,1619,603,1586,632,1550,657,1506,678,1460,695,1365,719,1274,733,1194,739,1193,733,1273,727,1364,714,1459,690,1504,673,1547,652,1583,628,1615,599,1664,542"/>
-<area shape="poly" id="edge37_Node000016_Node000006" title=" " alt="" coords="1818,530,2091,599,2086,598,1818,535"/>
-<area shape="poly" id="edge41_Node000017_Node000006" title=" " alt="" coords="2071,543,2123,584,2118,582,2069,548"/>
-<area shape="poly" id="edge44_Node000018_Node000003" title=" " alt="" coords="2088,296,2128,318,2165,344,2267,465,2262,464,2162,348,2125,323,2087,301"/>
-<area shape="poly" id="edge45_Node000018_Node000015" title=" " alt="" coords="1927,296,1789,348,1787,343,1922,297"/>
-<area shape="rect" id="Node000019" href="$_b_s_s_n_invariants_8hpp.html" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="1874,354,2151,410"/>
-<area shape="poly" id="edge46_Node000018_Node000019" title=" " alt="" coords="2014,304,2015,355,2011,352,2011,308"/>
-<area shape="rect" id="Node000020" href="$_b_s_s_n_projection_8hpp.html" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="2332,354,2611,410"/>
-<area shape="poly" id="edge51_Node000018_Node000020" title=" " alt="" coords="2134,292,2367,353,2362,353,2134,298"/>
-<area shape="poly" id="edge47_Node000019_Node000003" title=" " alt="" coords="2092,413,2213,465,2207,464,2092,418"/>
-<area shape="poly" id="edge49_Node000019_Node000006" title=" " alt="" coords="2091,415,2121,437,2144,464,2159,493,2167,525,2171,585,2167,582,2162,525,2154,495,2140,466,2117,441,2090,420"/>
-<area shape="poly" id="edge48_Node000019_Node000016" title=" " alt="" coords="1926,415,1768,474,1767,469,1921,416"/>
-<area shape="poly" id="edge50_Node000019_Node000017" title=" " alt="" coords="2014,423,2014,466,2010,463,2010,427"/>
-<area shape="poly" id="edge52_Node000020_Node000004" title=" " alt="" coords="2489,422,2501,478,2500,508,2492,537,2475,563,2452,586,2450,581,2471,560,2488,535,2495,507,2496,479,2486,426"/>
-<area shape="poly" id="edge55_Node000020_Node000005" title=" " alt="" coords="2501,420,2533,473,2557,536,2563,568,2563,600,2555,630,2537,656,2517,666,2478,674,2350,689,2173,702,1964,713,1528,729,1194,737,1193,732,1528,723,1964,708,2173,697,2350,684,2477,669,2515,661,2534,652,2550,627,2558,599,2558,569,2552,537,2528,476,2499,425"/>
-<area shape="poly" id="edge53_Node000020_Node000006" title=" " alt="" coords="2476,423,2475,453,2469,483,2459,512,2441,537,2420,556,2399,568,2378,573,2357,576,2312,577,2287,579,2259,586,2246,590,2245,585,2257,581,2286,574,2312,571,2357,570,2377,568,2397,563,2417,552,2437,534,2454,510,2464,482,2470,452,2472,427"/>
-<area shape="poly" id="edge54_Node000020_Node000017" title=" " alt="" coords="2352,413,2132,471,2130,466,2347,414"/>
+<area shape="rect" id="Node000001" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="2562,5,2836,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="1281,109,1458,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2545,48,1459,138,1458,133,2549,46"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="1142,702,1329,773"/>
+<area shape="poly" id="edge60_Node000001_Node000005" title=" " alt="" coords="2715,73,2740,160,2749,211,2752,262,2752,502,2747,544,2731,575,2707,597,2676,613,2599,634,2510,657,2407,681,2269,700,2108,714,1933,724,1591,736,1329,739,1329,734,1591,730,1933,719,2107,709,2269,695,2406,676,2509,652,2597,629,2674,608,2704,593,2727,572,2742,542,2747,501,2747,262,2744,211,2735,161,2713,78"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="2317,584,2473,654"/>
+<area shape="poly" id="edge59_Node000001_Node000006" title=" " alt="" coords="2701,74,2702,262,2702,383,2696,424,2679,461,2654,494,2622,522,2586,546,2548,567,2474,597,2473,592,2546,562,2583,542,2619,518,2650,490,2674,458,2691,423,2697,383,2696,262,2697,78"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="1918,465,2096,536"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1464,184,1559,225,1692,279,1749,304,1819,344,1863,378,1905,415,1966,465,1960,464,1901,419,1860,382,1816,349,1747,309,1690,284,1557,230,1464,189"/>
+<area shape="poly" id="edge58_Node000002_Node000006" title=" " alt="" coords="1474,143,1736,152,1896,163,2062,180,2221,205,2295,221,2363,240,2423,262,2475,286,2517,314,2547,345,2553,364,2554,390,2545,453,2531,510,2521,537,2497,564,2468,586,2466,581,2494,560,2517,534,2526,508,2540,452,2549,390,2548,365,2542,348,2513,318,2472,291,2421,267,2361,245,2294,227,2220,211,2061,185,1896,168,1735,157,1475,149"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_evolution_a_tilde_8hpp.html" title="RHS for the trace&#45;free extrinsic curvature ." alt="" coords="5,465,252,536"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1263,151,1090,162,880,177,681,200,601,214,540,230,483,253,427,281,323,346,234,412,168,466,164,463,230,408,320,342,425,277,481,249,538,225,600,209,681,194,879,172,1089,156,1268,149"/>
+<area shape="rect" id="Node000008" href="$_b_s_s_n_evolution_chi_8hpp.html" title="RHS for the conformal factor equation &#160;." alt="" coords="581,465,828,536"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="1263,153,1133,166,983,182,844,203,789,216,747,230,698,252,661,274,632,303,606,347,598,366,596,382,598,397,606,416,623,441,647,465,642,464,619,445,601,418,593,399,590,382,593,365,601,345,627,299,658,269,695,247,745,225,787,211,843,198,982,177,1133,160,1268,152"/>
+<area shape="rect" id="Node000009" href="$_b_s_s_n_evolution_common_8hpp.html" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="792,228,1038,298"/>
+<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="1264,173,1040,233,1038,228,1268,171"/>
+<area shape="rect" id="Node000010" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="952,465,1198,536"/>
+<area shape="poly" id="edge27_Node000002_Node000010" title=" " alt="" coords="1285,186,1236,219,1187,255,1141,298,1103,348,1090,376,1082,407,1076,467,1072,463,1076,407,1085,375,1098,345,1137,295,1183,251,1233,215,1281,189"/>
+<area shape="rect" id="Node000011" href="$_b_s_s_n_evolution_gamma_tilde_8hpp.html" title="RHS for the conformal metric ." alt="" coords="1112,346,1358,417"/>
+<area shape="poly" id="edge28_Node000002_Node000011" title=" " alt="" coords="1344,192,1257,348,1253,344,1340,195"/>
+<area shape="rect" id="Node000012" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="632,346,878,417"/>
+<area shape="poly" id="edge29_Node000002_Node000012" title=" " alt="" coords="1263,147,1136,153,992,166,924,176,864,190,816,208,782,230,765,255,755,286,752,317,753,347,748,345,747,317,750,285,760,253,779,226,813,203,863,185,923,171,991,161,1136,148,1268,145"/>
+<area shape="rect" id="Node000013" href="$_b_s_s_n_evolution_k_8hpp.html" title="RHS for the mean curvature ." alt="" coords="276,472,557,528"/>
+<area shape="poly" id="edge30_Node000002_Node000013" title=" " alt="" coords="1263,148,1106,156,920,169,830,180,748,193,679,210,628,230,592,254,558,284,528,317,501,352,458,419,430,474,426,470,454,417,497,349,524,314,555,280,589,250,626,225,677,205,747,188,829,174,920,164,1106,151,1268,146"/>
+<area shape="rect" id="Node000014" href="$_b_s_s_n_evolution_z4_c_8hpp.html" title=" " alt="" coords="1272,465,1518,536"/>
+<area shape="poly" id="edge31_Node000002_Node000014" title=" " alt="" coords="1375,193,1395,466,1390,463,1372,197"/>
+<area shape="rect" id="Node000015" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="1547,346,1806,417"/>
+<area shape="poly" id="edge32_Node000002_Node000015" title=" " alt="" coords="1440,186,1498,226,1575,287,1641,346,1636,345,1572,291,1495,230,1439,191"/>
+<area shape="rect" id="Node000016" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="1593,472,1843,528"/>
+<area shape="poly" id="edge57_Node000002_Node000016" title=" " alt="" coords="1390,192,1415,244,1447,303,1488,362,1537,415,1582,446,1632,472,1627,472,1579,451,1533,419,1484,366,1442,306,1410,246,1388,196"/>
+<area shape="rect" id="Node000018" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="1909,235,2175,291"/>
+<area shape="poly" id="edge43_Node000002_Node000018" title=" " alt="" coords="1474,160,1862,225,1911,236,1906,236,1861,230,1474,165"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="1880,584,2134,654"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="2009,549,2009,585,2005,582,2005,553"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="2111,534,2319,596,2314,596,2111,539"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1868,641,1330,725,1329,720,1863,642"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="226,539,388,598,480,627,573,652,728,682,884,704,1026,719,1144,731,1139,731,1026,724,883,709,727,687,572,657,479,632,386,603,226,544"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="736,546,785,603,815,630,847,652,920,685,998,708,1073,722,1144,733,1138,732,1073,727,996,713,918,690,845,657,811,634,781,606,734,551"/>
+<area shape="poly" id="edge26_Node000009_Node000005" title=" " alt="" coords="909,312,907,363,909,420,920,480,930,508,943,534,962,563,985,589,1037,634,1094,671,1150,702,1145,701,1091,676,1034,638,981,592,958,566,938,537,925,510,915,481,904,421,902,363,906,316"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="774,300,604,349,405,410,232,467,229,462,403,405,602,344,779,298"/>
+<area shape="poly" id="edge12_Node000009_Node000008" title=" " alt="" coords="774,288,682,314,645,330,623,348,613,365,611,380,623,416,638,441,659,465,654,464,634,444,618,418,606,380,608,363,618,345,643,326,680,309,779,285"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="948,309,1054,465,1049,464,946,314"/>
+<area shape="poly" id="edge15_Node000009_Node000011" title=" " alt="" coords="1025,301,1143,346,1137,346,1025,307"/>
+<area shape="poly" id="edge17_Node000009_Node000012" title=" " alt="" coords="858,306,804,348,801,344,853,309"/>
+<area shape="poly" id="edge14_Node000010_Node000005" title=" " alt="" coords="1108,546,1214,703,1209,701,1106,551"/>
+<area shape="poly" id="edge16_Node000011_Node000005" title=" " alt="" coords="1237,431,1237,703,1233,700,1233,434"/>
+<area shape="poly" id="edge25_Node000012_Node000005" title=" " alt="" coords="810,426,841,464,855,491,861,517,864,565,865,587,870,609,880,630,898,652,915,664,938,675,1000,694,1071,710,1144,724,1139,724,1070,715,998,699,936,680,912,669,895,656,875,633,864,611,860,588,858,565,856,518,850,493,837,466,809,431"/>
+<area shape="poly" id="edge18_Node000012_Node000007" title=" " alt="" coords="614,404,448,433,265,468,254,470,251,465,264,462,448,428,619,402"/>
+<area shape="poly" id="edge19_Node000012_Node000008" title=" " alt="" coords="736,429,721,466,718,463,732,433"/>
+<area shape="poly" id="edge20_Node000012_Node000010" title=" " alt="" coords="865,420,983,464,977,465,865,425"/>
+<area shape="poly" id="edge21_Node000012_Node000013" title=" " alt="" coords="637,424,497,474,495,469,642,421"/>
+<area shape="poly" id="edge23_Node000012_Node000014" title=" " alt="" coords="893,405,1210,462,1274,476,1269,476,1209,468,893,410"/>
+<area shape="poly" id="edge22_Node000013_Node000005" title=" " alt="" coords="480,533,608,594,683,625,760,652,860,678,963,699,1144,727,1138,727,962,704,859,683,758,657,681,630,606,599,480,538"/>
+<area shape="poly" id="edge24_Node000014_Node000005" title=" " alt="" coords="1366,547,1260,704,1257,700,1361,550"/>
+<area shape="poly" id="edge33_Node000015_Node000003" title=" " alt="" coords="1790,420,1920,468,1915,467,1789,425"/>
+<area shape="poly" id="edge42_Node000015_Node000005" title=" " alt="" coords="1622,426,1582,467,1568,486,1558,502,1548,519,1532,538,1475,588,1413,633,1300,704,1298,699,1410,629,1471,584,1528,534,1544,516,1553,500,1563,483,1579,463,1617,429"/>
+<area shape="poly" id="edge39_Node000015_Node000006" title=" " alt="" coords="1790,421,1825,440,1857,463,1873,482,1882,501,1890,518,1907,533,1959,546,2068,565,2319,606,2314,606,2067,570,1958,551,1905,538,1886,521,1877,503,1869,485,1853,467,1822,445,1789,426"/>
+<area shape="poly" id="edge34_Node000015_Node000010" title=" " alt="" coords="1529,411,1199,478,1198,473,1535,410"/>
+<area shape="poly" id="edge35_Node000015_Node000014" title=" " alt="" coords="1581,423,1480,467,1478,462,1576,424"/>
+<area shape="poly" id="edge36_Node000015_Node000016" title=" " alt="" coords="1695,429,1711,473,1706,471,1692,434"/>
+<area shape="rect" id="Node000017" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="2120,465,2358,536"/>
+<area shape="poly" id="edge40_Node000015_Node000017" title=" " alt="" coords="1821,405,2109,462,2122,468,2117,467,2108,468,1821,411"/>
+<area shape="poly" id="edge38_Node000016_Node000005" title=" " alt="" coords="1693,540,1643,602,1611,632,1575,657,1515,685,1451,707,1387,721,1330,731,1329,725,1386,716,1449,702,1513,681,1572,652,1607,628,1639,598,1689,542"/>
+<area shape="poly" id="edge37_Node000016_Node000006" title=" " alt="" coords="1844,529,1862,533,2111,576,2319,608,2314,608,2110,581,1861,538,1843,535"/>
+<area shape="poly" id="edge41_Node000017_Node000006" title=" " alt="" coords="2298,543,2351,584,2346,582,2297,548"/>
+<area shape="poly" id="edge44_Node000018_Node000003" title=" " alt="" coords="1968,298,1941,322,1921,348,1914,366,1912,381,1922,416,1937,441,1959,465,1954,464,1933,444,1917,418,1906,381,1909,364,1917,345,1937,318,1963,300"/>
+<area shape="poly" id="edge56_Node000018_Node000006" title=" " alt="" coords="2190,267,2289,275,2388,290,2471,312,2502,327,2524,345,2533,365,2533,392,2520,455,2501,511,2489,537,2469,563,2445,586,2443,581,2465,559,2485,534,2496,509,2515,453,2528,392,2527,366,2520,348,2499,331,2469,317,2387,295,2289,280,2190,272"/>
+<area shape="poly" id="edge45_Node000018_Node000015" title=" " alt="" coords="1945,295,1786,348,1785,343,1940,297"/>
+<area shape="rect" id="Node000019" href="$_b_s_s_n_invariants_8hpp.html" title="Det( ), trace&#45;free, Gamma&#45;constraint, and &#160;monitors." alt="" coords="1931,354,2208,410"/>
+<area shape="poly" id="edge46_Node000018_Node000019" title=" " alt="" coords="2053,304,2066,355,2061,352,2050,308"/>
+<area shape="rect" id="Node000020" href="$_b_s_s_n_projection_8hpp.html" title="Enforce the algebraic BSSN constraints &#160;and ." alt="" coords="2232,354,2510,410"/>
+<area shape="poly" id="edge51_Node000018_Node000020" title=" " alt="" coords="2133,294,2297,353,2292,353,2132,299"/>
+<area shape="poly" id="edge47_Node000019_Node000003" title=" " alt="" coords="2050,422,2027,467,2024,463,2046,425"/>
+<area shape="poly" id="edge49_Node000019_Node000006" title=" " alt="" coords="2195,411,2310,442,2371,463,2389,491,2399,523,2402,555,2401,585,2397,582,2397,555,2394,524,2385,493,2368,467,2309,447,2194,416"/>
+<area shape="poly" id="edge48_Node000019_Node000016" title=" " alt="" coords="1976,414,1801,474,1799,469,1971,415"/>
+<area shape="poly" id="edge50_Node000019_Node000017" title=" " alt="" coords="2122,416,2192,465,2187,464,2121,421"/>
+<area shape="poly" id="edge52_Node000020_Node000004" title=" " alt="" coords="2385,423,2391,452,2391,482,2386,511,2372,537,2357,551,2335,563,2276,583,2206,597,2134,608,2134,603,2205,592,2275,577,2332,558,2353,547,2368,534,2381,509,2386,481,2385,452,2382,427"/>
+<area shape="poly" id="edge55_Node000020_Node000005" title=" " alt="" coords="2444,416,2470,437,2490,464,2497,501,2500,561,2498,620,2494,643,2488,656,2470,665,2437,672,2329,686,1999,709,1624,726,1329,736,1329,731,1624,721,1999,704,2328,681,2436,667,2469,660,2484,652,2489,641,2493,620,2495,561,2492,502,2485,466,2466,441,2442,421"/>
+<area shape="poly" id="edge53_Node000020_Node000006" title=" " alt="" coords="2429,417,2451,439,2467,464,2474,483,2476,500,2467,537,2453,563,2435,586,2432,581,2449,560,2462,535,2471,500,2469,485,2462,466,2447,442,2427,422"/>
+<area shape="poly" id="edge54_Node000020_Node000017" title=" " alt="" coords="2332,419,2279,467,2277,462,2327,421"/>
 </map>

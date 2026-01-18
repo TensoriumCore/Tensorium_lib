@@ -116,6 +116,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:detail" id="r_detail"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init_1_1detail.html">detail</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:ConstraintScratch" id="r_ConstraintScratch"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">ConstraintScratch</a></td></tr>
@@ -126,6 +130,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a59eecc4dc9f4245dd6d61c1cbfae2443 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">ConstraintScratch</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a59eecc4dc9f4245dd6d61c1cbfae2443">make_constraint_scratch</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memitem:ad3a3e8226526149764c24b82b7d535be" id="r_ad3a3e8226526149764c24b82b7d535be"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:ad3a3e8226526149764c24b82b7d535be template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad3a3e8226526149764c24b82b7d535be">zero_z4c_fields</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7" id="r_a3d572ae1c03a2766a4887642259476a7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3d572ae1c03a2766a4887642259476a7">sanitize_bssn_initial_state</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memitem:adf69de1168c89259f3dfc845e1e58c16" id="r_adf69de1168c89259f3dfc845e1e58c16"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:adf69de1168c89259f3dfc845e1e58c16 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#adf69de1168c89259f3dfc845e1e58c16">print_bssn_state_at</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, const char *label=&quot;BSSN state&quot;)</td></tr>
 <tr class="memitem:a9472401ffc78a6088cfc35eb7416b943" id="r_a9472401ffc78a6088cfc35eb7416b943"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
@@ -1070,6 +1076,32 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a3d572ae1c03a2766a4887642259476a7" name="a3d572ae1c03a2766a4887642259476a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d572ae1c03a2766a4887642259476a7">&#9670;&#160;</a></span>sanitize_bssn_initial_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::init::sanitize_bssn_initial_state </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba">tensorium_RG::BSSNGridSoA&lt; T &gt;::A_tilde</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#abce0a86108faeebd723011dbe497b3e8">tensorium_RG::BSSNGridSoA&lt; T &gt;::alpha</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a6f865d956911413f5b57eda8dc3ee951">tensorium_RG::BSSNGridSoA&lt; T &gt;::chi</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a6f30410d0e983cf74dc0855581c2c39e">tensorium_RG::bssn::compute_contracted_gamma_from_metric()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256">tensorium_RG::BSSNGridSoA&lt; T &gt;::domain_bounds()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a77dad53ce9793b6a351ab4168161a28c">tensorium_RG::BSSNGridSoA&lt; T &gt;::gamma_tilde</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a54708e29d39d8a410304c794b3bab92e">tensorium_RG::bssn::project_bssn_state()</a>, <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a95c75b8fb39474e88bdc5175ab2c87b5">tensorium_RG::BSSNGridSoA&lt; T &gt;::tildeGamma</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, and <a class="el" href="#ad3a3e8226526149764c24b82b7d535be">zero_z4c_fields()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1init_a3d572ae1c03a2766a4887642259476a7_cgraph.svg" width="1276" height="322"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a996e43c04ea0758b97725bb1117d7f9f" name="a996e43c04ea0758b97725bb1117d7f9f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a996e43c04ea0758b97725bb1117d7f9f">&#9670;&#160;</a></span>schwarzschild_isotropic()</h2>
 
@@ -1276,11 +1308,11 @@ template&lt;typename T&gt; </div>
 
 <p class="reference">References <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a92561433e5418756bbbb0d879f8b3c7b">tensorium_RG::BSSNGridSoA&lt; T &gt;::Theta</a>, and <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a2a13d6ba2463607438efd9f67a41a011">tensorium_RG::BSSNGridSoA&lt; T &gt;::Z</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="#ac5dbe8c0753adf8b1d8b68c2f5b78703">binary_bowen_york_puncture_init()</a>, <a class="el" href="#a7ac89baed6b1550bce5f67c78c287bd6">binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="#a8da49dd5bfbdbe2043286c2d323cc95f">kerr_schild_single()</a>, and <a class="el" href="#a996e43c04ea0758b97725bb1117d7f9f">schwarzschild_isotropic()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#ac5dbe8c0753adf8b1d8b68c2f5b78703">binary_bowen_york_puncture_init()</a>, <a class="el" href="#a7ac89baed6b1550bce5f67c78c287bd6">binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="#a8da49dd5bfbdbe2043286c2d323cc95f">kerr_schild_single()</a>, <a class="el" href="#a3d572ae1c03a2766a4887642259476a7">sanitize_bssn_initial_state()</a>, and <a class="el" href="#a996e43c04ea0758b97725bb1117d7f9f">schwarzschild_isotropic()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1init_ad3a3e8226526149764c24b82b7d535be_icgraph.svg" width="358" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1init_ad3a3e8226526149764c24b82b7d535be_icgraph.svg" width="372" height="342"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

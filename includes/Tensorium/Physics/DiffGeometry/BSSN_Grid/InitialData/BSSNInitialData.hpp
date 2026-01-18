@@ -4,6 +4,7 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
+#include "../Geometry/BSSNGamma.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
 #include "../Geometry/BSSNProjection.hpp"
 #include "../Geometry/BSSNRicci.hpp"
@@ -12,6 +13,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <type_traits>
+#include <utility>
 
 /**
  * @file BSSNInitialData.hpp
@@ -52,6 +55,63 @@ template <typename T> inline void zero_z4c_fields(BSSNGridSoA<T> &G) {
     std::fill_n(G.Theta.ptr(), total, T(0));
     for (int c = 0; c < 3; ++c)
         std::fill_n(G.Z[c].ptr(), total, T(0));
+}
+
+namespace detail {
+
+template <typename Grid, typename = void> struct HaloFinalizer {
+    static inline void run(Grid &G) {
+        tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(G);
+    }
+};
+
+template <typename Grid> struct HaloFinalizer<Grid, std::void_t<decltype(std::declval<Grid &>().apply_halos())>> {
+    static inline void run(Grid &G) { G.apply_halos(); }
+};
+
+} // namespace detail
+
+template <typename T> void sanitize_bssn_initial_state(BSSNGridSoA<T> &G) {
+    const size_t nx_tot = G.alpha.st.nx_tot;
+    const size_t ny_tot = G.alpha.st.ny_tot;
+    const size_t nz_tot = G.alpha.st.nz_tot;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = 0; i < nx_tot; ++i) {
+        for (size_t j = 0; j < ny_tot; ++j) {
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t id = G.chi.idx(i, j, k);
+                const T       chi = G.chi.ptr()[id];
+                // Fix import error: convert physical A_ij to conformal A_tilde_ij by multiplying by chi
+                for (int s = 0; s < 6; ++s)
+                    G.A_tilde[s].ptr()[id] *= chi;
+            }
+        }
+    }
+
+    // Ensure Z4c constraint damping variables start at zero
+    zero_z4c_fields(G);
+
+    tensorium_RG::bssn::project_bssn_state(G);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = I0; i < I1; ++i) {
+        for (size_t j = J0; j < J1; ++j) {
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+                T            gamma_conn[3];
+                tensorium_RG::bssn::compute_contracted_gamma_from_metric(G, i, j, k, gamma_conn);
+                G.tildeGamma[0].ptr()[id] = gamma_conn[0];
+                G.tildeGamma[1].ptr()[id] = gamma_conn[1];
+                G.tildeGamma[2].ptr()[id] = gamma_conn[2];
+            }
+        }
+    }
+
+    detail::HaloFinalizer<BSSNGridSoA<T>>::run(G);
 }
 
 template <typename T>

@@ -10,7 +10,10 @@ set(TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/VectorTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/TensorTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/DerivateTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/SpectralTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/AllocatorTests.cpp)
 
 set(TEST_GRID_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/grid/DerivativeTests.cpp)
@@ -146,6 +149,29 @@ add_executable(TensoriumBenchmarks ${BENCHMARK_SOURCES})
 target_include_directories(TensoriumBenchmarks PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
+
+find_package(PkgConfig QUIET)
+if(PkgConfig_FOUND)
+  pkg_check_modules(FFTW3 QUIET fftw3)
+endif()
+
+if(NOT FFTW3_FOUND)
+  find_path(FFTW3_INCLUDE_DIR fftw3.h
+            PATHS /opt/homebrew/include /usr/local/include /opt/local/include)
+  find_library(FFTW3_LIBRARY NAMES fftw3
+               PATHS /opt/homebrew/lib /usr/local/lib /opt/local/lib)
+  if(FFTW3_INCLUDE_DIR AND FFTW3_LIBRARY)
+    set(FFTW3_FOUND TRUE)
+    set(FFTW3_INCLUDE_DIRS ${FFTW3_INCLUDE_DIR})
+    set(FFTW3_LIBRARIES ${FFTW3_LIBRARY})
+  endif()
+endif()
+
+if(FFTW3_FOUND)
+  target_include_directories(TensoriumBenchmarks PRIVATE ${FFTW3_INCLUDE_DIRS})
+  target_link_libraries(TensoriumBenchmarks PRIVATE ${FFTW3_LIBRARIES})
+  target_compile_definitions(TensoriumBenchmarks PRIVATE TENSORIUM_USE_FFTW)
+endif()
 
 set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks

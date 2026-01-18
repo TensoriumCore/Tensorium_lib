@@ -6,11 +6,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <thread>
 #ifdef _OPENMP
 #    include <omp.h>
-#endif
-#if defined(__linux__)
-#    include <sched.h>
 #endif
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
@@ -34,6 +32,11 @@ template <typename T> class GemmKernelBigger {
 
     static thread_local T blockA_packed[MC * KC] __attribute__((aligned(64)));
     static thread_local T blockB_packed[NC * KC] __attribute__((aligned(64)));
+
+    static int thread_count() {
+        unsigned int count = std::thread::hardware_concurrency();
+        return count == 0 ? 1 : static_cast<int>(count);
+    }
 
     static inline int8_t mask[32] __attribute__((aligned(64))) = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -779,16 +782,10 @@ template <typename T> class GemmKernelBigger {
         }
     }
 
-#        ifndef NTHREADS
-#            define NTHREADS 36
-#        endif
-
 #        ifndef OMP_SCHEDULE
 #            define OMP_SCHEDULE dynamic
 #        endif
 #        define _min(x, y) ((x) < (y) ? (x) : (y))
-#        define PRAGMA_OMP_PARALLEL_FOR                                                            \
-            _Pragma("omp parallel for schedule(OMP_SCHEDULE) num_threads(NTHREADS)")
 
     inline void pack_panelB(T *B, T *blockB_packed, int nr, int kc, int K) {
         for (int p = 0; p < kc; p++) {
@@ -802,7 +799,10 @@ template <typename T> class GemmKernelBigger {
     }
 
     void pack_blockB(T *B, T *blockB_packed, int nc, int kc, int K) {
-#        pragma omp for schedule(dynamic)
+        const int threads = thread_count();
+#        ifdef _OPENMP
+#            pragma omp parallel for schedule(dynamic) num_threads(threads)
+#        endif
         for (int j = 0; j < nc; j += 6) {
             int nr = _min(6, nc - j);
             pack_panelB(&B[j * K], &blockB_packed[j * kc], nr, kc, K);
@@ -821,7 +821,10 @@ template <typename T> class GemmKernelBigger {
     }
 
     inline void pack_blockA(T *A, T *blockA_packed, int mc, int kc, int M) {
-        PRAGMA_OMP_PARALLEL_FOR
+        const int threads = thread_count();
+#        ifdef _OPENMP
+#            pragma omp parallel for schedule(OMP_SCHEDULE) num_threads(threads)
+#        endif
         for (int i = 0; i < mc; i += 16) {
             int mr = _min(16, mc - i);
             pack_panelA(&A[i], &blockA_packed[i * kc], mr, kc, M);
@@ -829,14 +832,7 @@ template <typename T> class GemmKernelBigger {
     }
     inline void matmul(T *A, T *B, T *C, int M, int N, int K) {
         __asm volatile("# LLVM-MCA-BEGIN foo" ::: "memory");
-#        pragma omp parallel
-        {
-            int       tid = omp_get_thread_num();
-            cpu_set_t cpuset;
-            CPU_ZERO(&cpuset);
-            CPU_SET(tid % 36, &cpuset);
-            sched_setaffinity(0, sizeof(cpuset), &cpuset);
-        }
+        const int threads = thread_count();
         for (int j = 0; j < N; j += NC) {
             int nc = _min(NC, N - j);
             int kc = _min(KC, K);
@@ -848,7 +844,9 @@ template <typename T> class GemmKernelBigger {
 
                 pack_blockA(&A[i], blockA_packed, mc, kc, M);
 
-                PRAGMA_OMP_PARALLEL_FOR
+#                ifdef _OPENMP
+#                    pragma omp parallel for schedule(OMP_SCHEDULE) num_threads(threads)
+#                endif
                 for (int jr = 0; jr < nc; jr += 6) {
                     int nr = _min(6, nc - jr);
                     for (int ir = 0; ir < mc; ir += 16) {
@@ -868,7 +866,9 @@ template <typename T> class GemmKernelBigger {
 
                     pack_blockA(&A[i + p * M], blockA_packed, mc, cur_kc, M);
 
-                    PRAGMA_OMP_PARALLEL_FOR
+#                    ifdef _OPENMP
+#                        pragma omp parallel for schedule(OMP_SCHEDULE) num_threads(threads)
+#                    endif
                     for (int jr = 0; jr < nc; jr += 6) {
                         int nr = _min(6, nc - jr);
                         for (int ir = 0; ir < mc; ir += 16) {

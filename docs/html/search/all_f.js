@@ -12,8 +12,9 @@ var searchData=
   ['for_5feach_5finterior_5findex_9',['for_each_interior_index',['../namespacetensorium___r_g_1_1bssn.html#a1a3822d1c282c0b0c62d43bae150ac21',1,'tensorium_RG::bssn']]],
   ['forward_10',['forward',['../classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2',1,'tensorium::SpectralFFT']]],
   ['forward_5f3d_11',['forward_3D',['../classtensorium_1_1_spectral_f_f_t.html#a03191127cc8ef29a212c9bceaa6f10ef',1,'tensorium::SpectralFFT']]],
-  ['forwardfft_12',['forwardFFT',['../namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f',1,'tensorium']]],
-  ['from_20kerr_20metric_13',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../dir_e2142b29a81c61ca614b93a0d2622bbe.html#autotoc_md54',1,'']]],
-  ['functional_2ehpp_14',['Functional.hpp',['../_functional_8hpp.html',1,'']]],
-  ['functionnalrg_2ehpp_15',['FunctionnalRG.hpp',['../_functionnal_r_g_8hpp.html',1,'']]]
+  ['forward_5fvalues_12',['forward_values',['../structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache.html#a7ce23dc132807ba3244c9afbc433c420',1,'tensorium::SpectralFFT::TwiddleCache']]],
+  ['forwardfft_13',['forwardFFT',['../namespacetensorium.html#a25e218e078c20c74f4049c4faac7cb8f',1,'tensorium']]],
+  ['from_20kerr_20metric_14',['Example: Compute Riemann and Ricci Tensors from Kerr Metric',['../dir_e2142b29a81c61ca614b93a0d2622bbe.html#autotoc_md54',1,'']]],
+  ['functional_2ehpp_15',['Functional.hpp',['../_functional_8hpp.html',1,'']]],
+  ['functionnalrg_2ehpp_16',['FunctionnalRG.hpp',['../_functionnal_r_g_8hpp.html',1,'']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['b_0',['B',['../classtensorium_1_1solver_1_1_gauss.html#ab9da31ac3194eadd39f1e04eec74811b',1,'tensorium::solver::Gauss::B'],['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aee7b2bb7fdb637bf108789c95c6bbab7',1,'tensorium_RG::BSSNGridSoA::B'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a2f0f47a6733b1a5a4ee069943fc279a0',1,'tensorium_RG::bssn::BSSNRHSWorkspace::B'],['../namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571',1,'tensorium_RG::bssn::B'],['../namespacetensorium___r_g_1_1bssn.html#ae13a10a7510411ca4c501f4a697076a5a9d5ed678fe57bcca610140957afab571',1,'tensorium_RG::bssn::B']]],
-  ['b_1',['b',['../classtensorium_1_1_vector.html#a9ddd62f235cc16cd1342c2fa0bbad68e',1,'tensorium::Vector']]],
+  ['b_1',['b',['../classtensorium_1_1_vector.html#af86335e816cad2c6ff5a401146c5724f',1,'tensorium::Vector']]],
   ['b_5fin_2',['b_in',['../classtensorium_1_1solver_1_1_gauss.html#af78bfbce88c608009f31b5073677d6f2',1,'tensorium::solver::Gauss']]],
   ['backward_3',['backward',['../classtensorium_1_1_spectral_f_f_t.html#ac615fe5b4689900c9e54f6662372597a',1,'tensorium::SpectralFFT']]],
   ['backward_5f3d_4',['backward_3D',['../classtensorium_1_1_spectral_f_f_t.html#a7be9f0a678eee96f7b7d62bd94b4e1c5',1,'tensorium::SpectralFFT']]],

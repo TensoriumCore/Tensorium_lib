@@ -1,10 +1,12 @@
 <map id="tensorium::SpectralFFT::backward" name="tensorium::SpectralFFT::backward">
-<area shape="rect" id="Node000001" title="Perform inverse FFT (in&#45;place)." alt="" coords="5,35,164,75"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)." alt="" coords="212,35,370,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,52,199,55,193,55,164,58"/>
+<area shape="rect" id="Node000001" title="Perform inverse FFT (in&#45;place)." alt="" coords="5,63,164,103"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721" title="Internal FFT implementation (shared by forward/backward)." alt="" coords="212,63,370,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,80,199,82,194,84,164,86"/>
 <area shape="rect" id="Node000003" href="$classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca" title="Bit&#45;reversal permutation step." alt="" coords="418,5,576,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,41,400,39,405,39,371,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,60,404,51,409,50,367,65"/>
 <area shape="rect" id="Node000004" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="624,42,781,68"/>
-<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="370,54,418,55,576,55,611,57,606,57,576,60,418,60,370,60"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="370,75,611,61,606,62,371,80"/>
+<area shape="rect" id="Node000005" href="$classtensorium_1_1_spectral_f_f_t.html#a25b4967933a03fad8b23fbb300933df0" title=" " alt="" coords="418,120,576,161"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="367,101,410,115,404,115,366,107"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="577,34,611,42,606,42,577,40"/>
 </map>

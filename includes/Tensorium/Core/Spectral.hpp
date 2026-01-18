@@ -7,6 +7,7 @@
 #include "Matrix.hpp"
 #include "Tensor.hpp"
 #include "Vector.hpp"
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -48,9 +49,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceZ(NZ);
                 for (size_t k = 0; k < NZ; ++k)
                     sliceZ(k) = a(i, j, k);
-
                 forward(sliceZ);
-
                 for (size_t k = 0; k < NZ; ++k)
                     a(i, j, k) = sliceZ(k);
             }
@@ -62,9 +61,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceY(NY);
                 for (size_t j = 0; j < NY; ++j)
                     sliceY(j) = a(i, j, k);
-
                 forward(sliceY);
-
                 for (size_t j = 0; j < NY; ++j)
                     a(i, j, k) = sliceY(j);
             }
@@ -76,9 +73,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceX(NX);
                 for (size_t i = 0; i < NX; ++i)
                     sliceX(i) = a(i, j, k);
-
                 forward(sliceX);
-
                 for (size_t i = 0; i < NX; ++i)
                     a(i, j, k) = sliceX(i);
             }
@@ -103,9 +98,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceX(NX);
                 for (size_t i = 0; i < NX; ++i)
                     sliceX(i) = a(i, j, k);
-
                 backward(sliceX);
-
                 for (size_t i = 0; i < NX; ++i)
                     a(i, j, k) = sliceX(i);
             }
@@ -117,9 +110,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceY(NY);
                 for (size_t j = 0; j < NY; ++j)
                     sliceY(j) = a(i, j, k);
-
                 backward(sliceY);
-
                 for (size_t j = 0; j < NY; ++j)
                     a(i, j, k) = sliceY(j);
             }
@@ -131,9 +122,7 @@ template <typename T> class SpectralFFT {
                 CVector sliceZ(NZ);
                 for (size_t k = 0; k < NZ; ++k)
                     sliceZ(k) = a(i, j, k);
-
                 backward(sliceZ);
-
                 for (size_t k = 0; k < NZ; ++k)
                     a(i, j, k) = sliceZ(k);
             }
@@ -147,6 +136,32 @@ template <typename T> class SpectralFFT {
     }
 
   private:
+    struct TwiddleCache {
+        size_t size = 0;
+        bool   initialized = false;
+        std::vector<C> forward_values;
+        std::vector<C> inverse_values;
+    };
+
+    static inline thread_local TwiddleCache twiddle_cache;
+
+    static const std::vector<C> &get_twiddles(size_t N, bool inverse) {
+        auto &cache = twiddle_cache;
+        if (!cache.initialized || cache.size != N) {
+            cache.size = N;
+            cache.forward_values.resize(N / 2);
+            cache.inverse_values.resize(N / 2);
+            constexpr T pi = T(3.141592653589793238462643383279502884L);
+            for (std::size_t k = 0; k < N / 2; ++k) {
+                T angle = 2 * pi * k / N;
+                cache.forward_values[k] = {std::cos(-angle), std::sin(-angle)};
+                cache.inverse_values[k] = {std::cos(angle), std::sin(angle)};
+            }
+            cache.initialized = true;
+        }
+        return inverse ? cache.inverse_values : cache.forward_values;
+    }
+
     /**
      * @brief Internal FFT implementation (shared by forward/backward)
      * @param a Vector to transform
@@ -159,11 +174,7 @@ template <typename T> class SpectralFFT {
 
         bit_reverse(a);
 
-        std::vector<C> twiddles(N / 2);
-        const T        sign = inverse ? T(+1) : T(-1);
-        constexpr T    pi = T(3.141592653589793238462643383279502884L);
-        for (std::size_t k = 0; k < N / 2; ++k)
-            twiddles[k] = {std::cos(sign * 2 * pi * k / N), std::sin(sign * 2 * pi * k / N)};
+        const auto &twiddles = get_twiddles(N, inverse);
 
         for (std::size_t len = 2; len <= N; len <<= 1) {
             const std::size_t half = len >> 1;

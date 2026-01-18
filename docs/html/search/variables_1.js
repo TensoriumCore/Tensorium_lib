@@ -1,7 +1,7 @@
 var searchData=
 [
   ['b_0',['B',['../classtensorium_1_1solver_1_1_gauss.html#ab9da31ac3194eadd39f1e04eec74811b',1,'tensorium::solver::Gauss::B'],['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aee7b2bb7fdb637bf108789c95c6bbab7',1,'tensorium_RG::BSSNGridSoA::B'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a2f0f47a6733b1a5a4ee069943fc279a0',1,'tensorium_RG::bssn::BSSNRHSWorkspace::B']]],
-  ['b_1',['b',['../classtensorium_1_1_vector.html#a9ddd62f235cc16cd1342c2fa0bbad68e',1,'tensorium::Vector']]],
+  ['b_1',['b',['../classtensorium_1_1_vector.html#af86335e816cad2c6ff5a401146c5724f',1,'tensorium::Vector']]],
   ['b_5fin_2',['b_in',['../classtensorium_1_1solver_1_1_gauss.html#af78bfbce88c608009f31b5073677d6f2',1,'tensorium::solver::Gauss']]],
   ['beta_3',['beta',['../structtensorium___r_g_1_1_b_s_s_n_grid.html#a13bd0329ff16db33e7982c4374dc3597',1,'tensorium_RG::BSSNGrid::beta'],['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#af246f3339fa6a0f951725e2681b8e285',1,'tensorium_RG::BSSNGridSoA::beta'],['../structtensorium___r_g_1_1bssn_1_1_a_d_m_variables.html#a5d2decec1b20ad5e60a9dfd2240eae7a',1,'tensorium_RG::bssn::ADMVariables::beta'],['../structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#adb11931ec9e7b5a3df0f629545c5f974',1,'tensorium_RG::bssn::BSSNRHSWorkspace::beta']]],
   ['beta_5fb_5fcoeff_4',['beta_B_coeff',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#a03a3ac51c7fedc0f69c40cb46ca51df2',1,'tensorium_RG::bssn::GaugeParameters']]],

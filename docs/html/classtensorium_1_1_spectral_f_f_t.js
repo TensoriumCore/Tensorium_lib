@@ -1,5 +1,6 @@
 var classtensorium_1_1_spectral_f_f_t =
 [
+    [ "TwiddleCache", "structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache.html", "structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache" ],
     [ "C", "classtensorium_1_1_spectral_f_f_t.html#a92e704f5a70044a12d13fd7838739534", null ],
     [ "CVectorT", "classtensorium_1_1_spectral_f_f_t.html#a6fab8d2ec139727bfffbfd07413259c1", null ],
     [ "Tensor2D", "classtensorium_1_1_spectral_f_f_t.html#ac7d6e4a53854598c39fcd9227fa83f73", null ],
@@ -9,5 +10,7 @@ var classtensorium_1_1_spectral_f_f_t =
     [ "bit_reverse", "classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca", null ],
     [ "forward", "classtensorium_1_1_spectral_f_f_t.html#ae7bcd4382d411ef6450b15c088f0bdf2", null ],
     [ "forward_3D", "classtensorium_1_1_spectral_f_f_t.html#a03191127cc8ef29a212c9bceaa6f10ef", null ],
-    [ "transform_impl", "classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721", null ]
+    [ "get_twiddles", "classtensorium_1_1_spectral_f_f_t.html#a25b4967933a03fad8b23fbb300933df0", null ],
+    [ "transform_impl", "classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721", null ],
+    [ "twiddle_cache", "classtensorium_1_1_spectral_f_f_t.html#a66aea91cf0242d8b2be774e356c25bf0", null ]
 ];

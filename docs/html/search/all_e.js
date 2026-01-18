@@ -2,7 +2,7 @@ var searchData=
 [
   ['effective_5feta_0',['effective_eta',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#a56933af5dea47528ca3dfef80230dd86',1,'tensorium_RG::bssn::GaugeParameters']]],
   ['eight_1',['eight',['../classtensorium_1_1_derivate.html#aad6159b2d2ad345d39f5e04f47d05fdf',1,'tensorium::Derivate']]],
-  ['else_2',['else',['../classtensorium_1_1_derivate.html#a3d70f69f340d6123fd2d71fefca01406',1,'tensorium::Derivate']]],
+  ['else_2',['else',['../classtensorium_1_1_derivate.html#a3d70f69f340d6123fd2d71fefca01406',1,'tensorium::Derivate::else'],['../classtensorium_1_1_vector.html#a1213f625fb390ff4145d431228d6d549',1,'tensorium::Vector::else']]],
   ['empty_3',['empty',['../structtensorium___r_g_1_1bssn_1_1_interior_region.html#a3f9dc3e2b55d5d47ec82e9c4d1c4f8a8',1,'tensorium_RG::bssn::InteriorRegion']]],
   ['end_4',['end',['../classtensorium_1_1_vector.html#a40f78072083b341b4710740de4363e15',1,'tensorium::Vector::end()'],['../classtensorium_1_1_vector.html#a5c70e4cedf7a8c751feae3a670497bf3',1,'tensorium::Vector::end() const']]],
   ['enforce_5falgebraic_5fconstraints_5',['enforce_algebraic_constraints',['../namespacetensorium___r_g_1_1bssn.html#a9e18922ef7a25735939fefe3685605df',1,'tensorium_RG::bssn']]],

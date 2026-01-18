@@ -1,0 +1,29 @@
+<map id="tensorium_RG::init::sanitize_bssn_initial_state" name="tensorium_RG::init::sanitize_bssn_initial_state">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,178,188,218"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a6f30410d0e983cf74dc0855581c2c39e" title="Convenience wrapper that produces &#160;from the metric and stores the negative divergence as required by ..." alt="" coords="257,65,404,121"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,175,235,130,251,126,246,129,237,135,142,180"/>
+<area shape="rect" id="Node000012" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="236,144,426,185"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="187,183,223,179,218,182,189,188"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1bssn.html#a54708e29d39d8a410304c794b3bab92e" title="Apply determinant renormalization, &#160;trace&#45;free projection, and &#160;resynchronization." alt="" coords="260,210,402,250"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="188,208,247,218,242,219,188,213"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium___r_g_1_1init.html#ad3a3e8226526149764c24b82b7d535be" title=" " alt="" coords="266,275,396,316"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="141,216,237,260,256,269,251,269,235,265,140,222"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="474,72,658,113"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="405,90,461,92,456,94,406,95"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="706,65,854,121"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="658,90,694,92,688,93,659,95"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title=" " alt="" coords="902,5,1051,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="845,62,901,40,915,37,920,36,903,45,847,67"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title=" " alt="" coords="902,55,1051,80"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="853,81,889,79,884,80,855,86"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title=" " alt="" coords="902,104,1051,130"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="854,99,889,106,884,106,854,105"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="904,154,1049,194"/>
+<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="849,119,914,148,909,147,849,124"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#ae41c19beb4fbed35a65c5b6bf40fca6e" title=" " alt="" coords="1099,5,1270,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1051,16,1086,18,1081,19,1052,21"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#a07c6f54f50c56a1c736b6321b5f5384d" title=" " alt="" coords="1099,55,1270,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1051,65,1086,67,1081,68,1052,70"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#a9a6d00f8df14b450c0da7183a3edc301" title=" " alt="" coords="1099,104,1270,130"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1051,114,1086,117,1081,117,1052,119"/>
+</map>

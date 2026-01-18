@@ -60,3 +60,21 @@ REGISTER_TEST("core.vector.basic", "Vector utility operations", []() {
     }
 });
 
+REGISTER_TEST("core.vector.double_precision", "Vector<double> preserves tiny scalars", []() {
+    Vector<double> v(1, 1.0);
+    const double scale = 1e-15;
+    v.scl(scale);
+    tensorium::tests::expect_near(v[0], scale, 1e-20, "vector double precision");
+});
+
+REGISTER_TEST("core.vector.double_ops", "Double precision dot, norm, lerp", []() {
+    Vector<double> a = {1e-12, -2e-12, 3e-12, -4e-12};
+    double dot = a.dot(a);
+    tensorium::tests::expect_near(dot, 30e-24, 1e-30, "dot double");
+    double norm = a.norm_2();
+    tensorium::tests::expect_near(norm, std::sqrt(dot), 1e-30, "norm double");
+    Vector<double> b = {-1.0, 2.0, -3.0, 4.0};
+    Vector<double> c = Vector<double>::lerp(a, b, 0.25);
+    tensorium::tests::expect_near(c[0], 0.25 * b[0] + 0.75 * a[0], 1e-15, "lerp double 0");
+    tensorium::tests::expect_near(c[3], 0.25 * b[3] + 0.75 * a[3], 1e-15, "lerp double 3");
+});

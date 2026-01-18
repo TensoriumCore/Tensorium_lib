@@ -1,20 +1,22 @@
 <map id="tensorium_RG::bssn::apply_halos_grid" name="tensorium_RG::bssn::apply_halos_grid">
-<area shape="rect" id="Node000001" title=" " alt="" coords="649,198,791,239"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="649,230,791,271"/>
 <area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="440,5,581,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="696,184,655,130,629,101,600,75,582,63,582,58,603,71,633,97,659,127,701,185"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="701,215,661,146,632,109,600,75,582,62,582,57,603,71,637,105,665,143,706,217"/>
 <area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="434,85,588,141"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="667,190,600,156,577,144,577,139,603,151,673,190"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="684,219,645,188,600,155,581,144,581,139,603,151,648,184,689,220"/>
 <area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="444,165,577,206"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="631,205,578,198,578,193,637,204"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="636,225,578,209,578,203,641,225"/>
 <area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="446,230,576,271"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="631,232,577,243,576,238,636,231"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="631,251,577,253,576,248,636,250"/>
 <area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="420,295,601,350"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="672,246,603,285,578,297,576,292,600,280,667,248"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="426,374,595,415"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="701,251,660,310,633,339,603,365,583,376,581,371,600,360,630,335,656,307,697,253"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="647,275,594,297,593,292,642,277"/>
+<area shape="rect" id="Node000009" href="$structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html#a3801ddc0baaa38f4b4bdf929dac9bf53" title=" " alt="" coords="426,374,596,415"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="694,281,653,326,603,365,581,376,579,371,600,360,650,322,689,284"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="426,440,595,480"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="706,284,666,358,637,396,603,429,583,441,581,436,600,424,633,392,661,355,701,287"/>
 <area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,302,372,343"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="402,323,373,325,372,320,407,322"/>
 <area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,295,161,350"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="190,332,162,334,161,329,195,331"/>
-<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="176,311,211,313,206,314,177,316"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="190,333,162,334,161,329,195,330"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="176,311,211,313,206,315,177,316"/>
 </map>

@@ -122,6 +122,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_gamma_8hpp_source.html">../Geometry/BSSNGamma.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_invariants_8hpp_source.html">../Geometry/BSSNInvariants.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_projection_8hpp_source.html">../Geometry/BSSNProjection.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_ricci_8hpp_source.html">../Geometry/BSSNRicci.hpp</a>&quot;</code><br />
@@ -130,10 +131,12 @@ $(function() {
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNInitialData.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_initial_data_8hpp__incl.svg" width="2215" height="716"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_initial_data_8hpp__incl.svg" width="2356" height="716"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_initial_data_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -141,11 +144,14 @@ Include dependency graph for BSSNInitialData.hpp:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3AConstraintScratch_3C_20T_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3AConstraintScratch_3C_20T_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">tensorium_RG::init::ConstraintScratch&lt; T &gt;</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20typename_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20typename_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html">tensorium_RG::init::detail::HaloFinalizer&lt; Grid, typename &gt;</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28std_3A_3Adeclval_3C_20Grid_20_26_20_3E_28_29_2Eapply_5Fhalos_28_29_29_3E_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28std_3A_3Adeclval_3C_20Grid_20_26_20_3E_28_29_2Eapply_5Fhalos_28_29_29_3E_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c.html">tensorium_RG::init::detail::HaloFinalizer&lt; Grid, std::void_t&lt; decltype(std::declval&lt; Grid &amp; &gt;().apply_halos())&gt; &gt;</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Ainit" id="r_tensorium_5FRG_3A_3Ainit"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html">tensorium_RG::init</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init_1_1detail.html">tensorium_RG::init::detail</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -153,6 +159,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a59eecc4dc9f4245dd6d61c1cbfae2443 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">ConstraintScratch</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a59eecc4dc9f4245dd6d61c1cbfae2443">tensorium_RG::init::make_constraint_scratch</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memitem:ad3a3e8226526149764c24b82b7d535be" id="r_ad3a3e8226526149764c24b82b7d535be"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:ad3a3e8226526149764c24b82b7d535be template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#ad3a3e8226526149764c24b82b7d535be">tensorium_RG::init::zero_z4c_fields</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7" id="r_a3d572ae1c03a2766a4887642259476a7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a3d572ae1c03a2766a4887642259476a7">tensorium_RG::init::sanitize_bssn_initial_state</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memitem:adf69de1168c89259f3dfc845e1e58c16" id="r_adf69de1168c89259f3dfc845e1e58c16"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:adf69de1168c89259f3dfc845e1e58c16 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#adf69de1168c89259f3dfc845e1e58c16">tensorium_RG::init::print_bssn_state_at</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, const char *label=&quot;BSSN state&quot;)</td></tr>
 <tr class="memitem:a9472401ffc78a6088cfc35eb7416b943" id="r_a9472401ffc78a6088cfc35eb7416b943"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>

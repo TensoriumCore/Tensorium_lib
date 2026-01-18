@@ -74,13 +74,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_allocator_8hpp.html",
-"classtensorium_1_1_derivate.html#ac07d764b878d441266222c9ce9bbf96b",
-"classtensorium_1_1_tensor.html#a9b630e527a4677ae26dd4043095550a1",
-"classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba",
-"functions_b.html",
-"namespacetensorium___r_g.html#a77ec31ba0fe314dbb821107831bdadc3",
-"structtensorium___r_g_1_1_b_s_s_n_grid.html#a4d8ffd13157208559d3adc490500b95d",
-"structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a0bdef2a2af0216fc956ddf3a815989"
+"classtensorium_1_1_derivate.html#ad6550b645178d5105f4b08761a1ecdbe",
+"classtensorium_1_1_tensor.html#a9778a8d5c0dc406b21ffc9db9cd81bf8",
+"classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a92561433e5418756bbbb0d879f8b3c7b",
+"export_8hpp.html",
+"namespacetensorium___r_g.html#a531e5cd0c6e3d677c9aa29de35864d8a",
+"structtensorium_1_1_tensor_traits_3_01_tensor_3_01_t_00_01_rank_01_4_01_4.html#abb2cb02b0978ce300f21cc3e22759a7f",
+"structtensorium___r_g_1_1bssn_1_1_invariant_stats.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

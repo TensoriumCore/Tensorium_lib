@@ -1,11 +1,13 @@
 <map id="tensorium_RG::init::zero_z4c_fields" name="tensorium_RG::init::zero_z4c_fields">
-<area shape="rect" id="Node000001" title=" " alt="" coords="222,129,352,170"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="19,5,160,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,120,172,75,153,64,152,59,175,71,248,119"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="12,85,167,141"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,135,168,130,167,125,209,134"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="23,165,156,206"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="204,165,158,176,156,170,209,163"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,230,174,271"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="244,177,175,220,148,232,146,227,172,215,239,179"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="236,165,366,206"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="26,5,167,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,153,233,114,186,75,168,64,167,58,189,71,237,111,276,153"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="19,85,174,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,160,174,143,174,138,230,158"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="30,165,163,206"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="217,186,164,188,163,183,222,184"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#a3d572ae1c03a2766a4887642259476a7" title=" " alt="" coords="5,230,188,271"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="218,212,164,232,162,227,223,209"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="12,296,181,336"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="272,215,234,252,189,285,164,297,162,292,186,280,231,248,268,218"/>
 </map>

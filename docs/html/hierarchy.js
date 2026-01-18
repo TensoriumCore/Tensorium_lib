@@ -39,6 +39,8 @@ var hierarchy =
     [ "tensorium::solver::GaussSeidel&lt; K &gt;", "classtensorium_1_1solver_1_1_gauss_seidel.html", null ],
     [ "tensorium::GemmKernelBig&lt; T &gt;", "classtensorium_1_1_gemm_kernel_big.html", null ],
     [ "tensorium_RG::GridDims", "structtensorium___r_g_1_1_grid_dims.html", null ],
+    [ "tensorium_RG::init::detail::HaloFinalizer&lt; Grid, typename &gt;", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html", null ],
+    [ "tensorium_RG::init::detail::HaloFinalizer&lt; Grid, std::void_t&lt; decltype(std::declval&lt; Grid &amp; &gt;().apply_halos())&gt; &gt;", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c.html", null ],
     [ "tensorium_RG::bssn::InteriorRegion", "structtensorium___r_g_1_1bssn_1_1_interior_region.html", null ],
     [ "tensorium_RG::bssn::InvariantStats", "structtensorium___r_g_1_1bssn_1_1_invariant_stats.html", null ],
     [ "tensorium_RG::bssn::InvariantTolerances", "structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html", null ],
@@ -72,5 +74,6 @@ var hierarchy =
     [ "tensorium::TensorTraits&lt; Tensor&lt; T, Rank &gt; &gt;", "structtensorium_1_1_tensor_traits_3_01_tensor_3_01_t_00_01_rank_01_4_01_4.html", null ],
     [ "tensorium::TensorTraits&lt; Vector&lt; T &gt; &gt;", "structtensorium_1_1_tensor_traits_3_01_vector_3_01_t_01_4_01_4.html", null ],
     [ "tensorium_RG::TildeGamma&lt; T &gt;", "classtensorium___r_g_1_1_tilde_gamma.html", null ],
+    [ "tensorium::SpectralFFT&lt; T &gt;::TwiddleCache", "structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache.html", null ],
     [ "tensorium::Vector&lt; K &gt;", "classtensorium_1_1_vector.html", null ]
 ];

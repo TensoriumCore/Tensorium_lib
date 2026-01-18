@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['x_0',['X',['../structtensorium___r_g_1_1_chi_context.html#ad649da243df74fcceb50b1225380abf2',1,'tensorium_RG::ChiContext']]],
-  ['x_1',['x',['../classtensorium_1_1solver_1_1_gauss.html#aba0a246d4cd9e16d403ff21dae437c10',1,'tensorium::solver::Gauss::x'],['../structtensorium___r_g_1_1bssn_1_1_sample_location.html#acf87eadb140242ec65b60db30976523d',1,'tensorium_RG::bssn::SampleLocation::x']]],
-  ['x0_2',['x0',['../classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a955d86306f2edc2e77dc4564f0a61220',1,'tensorium_RG::BSSNGridSoA']]]
+  ['w_0',['W',['../classtensorium_1_1_derivate.html#a29d6b22483c2149009605110f046ac6c',1,'tensorium::Derivate::W'],['../classtensorium_1_1_derivate_n_d.html#ab4b04d5473523b26695029deb38c9fc4',1,'tensorium::DerivateND::W'],['../classtensorium_1_1solver_1_1_gauss.html#a9d2f2d251ea809a11550139a6e73863c',1,'tensorium::solver::Gauss::W'],['../classtensorium_1_1_tensor.html#a37e0477c8f49fcb0b010ca57dacc0503',1,'tensorium::Tensor::W']]]
 ];

@@ -1,3 +1,5 @@
 <map id="tensorium::SpectralFFT&lt; T &gt;" name="tensorium::SpectralFFT&lt; T &gt;">
-<area shape="rect" id="Node000001" title="Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm." alt="" coords="5,5,185,173"/>
+<area shape="rect" id="Node000001" title="Fast Fourier Transform (FFT) implementation using Cooley–Tukey algorithm." alt="" coords="5,219,185,407"/>
+<area shape="rect" id="Node000002" href="$structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache.html" title=" " alt="" coords="21,5,169,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,145,98,202,93,202,94,150"/>
 </map>

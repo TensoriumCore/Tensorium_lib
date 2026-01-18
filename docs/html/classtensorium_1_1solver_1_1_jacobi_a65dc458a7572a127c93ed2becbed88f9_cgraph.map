@@ -1,7 +1,8 @@
 <map id="tensorium::solver::Jacobi::solve" name="tensorium::solver::Jacobi::solve">
-<area shape="rect" id="Node000001" title="Solve the system using the Jacobi method." alt="" coords="5,23,135,64"/>
-<area shape="rect" id="Node000002" href="$class_maths_utils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="201,5,321,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,32,188,27,183,29,136,38"/>
-<area shape="rect" id="Node000003" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="183,55,339,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,49,170,55,164,56,135,54"/>
+<area shape="rect" id="Node000001" title="Solve the system using the Jacobi method." alt="" coords="5,35,135,75"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1_matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" title="Multiply matrix by a vector using SIMD." alt="" coords="183,5,313,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,42,170,38,165,39,136,47"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="361,42,517,68"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="135,54,183,55,313,55,348,57,343,57,313,60,183,60,135,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,33,349,41,343,41,313,38"/>
 </map>

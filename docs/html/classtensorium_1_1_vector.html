@@ -158,56 +158,58 @@ Public Member Functions</h2></td></tr>
 Basic Operations</h2></td></tr>
 <tr class="memitem:af075f9f34073c67fb764ad4436f920f1" id="r_af075f9f34073c67fb764ad4436f920f1"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#af075f9f34073c67fb764ad4436f920f1">Simd</a> = <a class="el" href="structsimd_1_1_simd_traits.html">simd::SimdTraits</a>&lt;K, DefaultISA&gt;</td></tr>
 <tr class="memitem:a73d995ed03e33d90d5d9c4be9ba17b5d" id="r_a73d995ed03e33d90d5d9c4be9ba17b5d"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a> = typename Simd::reg</td></tr>
-<tr class="memitem:a9ddd62f235cc16cd1342c2fa0bbad68e" id="r_a9ddd62f235cc16cd1342c2fa0bbad68e"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a9ddd62f235cc16cd1342c2fa0bbad68e">b</a></td></tr>
-<tr class="memitem:ae3f9d19299a6f51d09a24fba1218512a" id="r_ae3f9d19299a6f51d09a24fba1218512a"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; float&#160;</td><td class="memItemRight"><a class="el" href="#ae3f9d19299a6f51d09a24fba1218512a">t</a></td></tr>
+<tr class="memitem:af86335e816cad2c6ff5a401146c5724f" id="r_af86335e816cad2c6ff5a401146c5724f"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#af86335e816cad2c6ff5a401146c5724f">b</a></td></tr>
+<tr class="memitem:ac3e1b9c402c7932dc36c148b71eac797" id="r_ac3e1b9c402c7932dc36c148b71eac797"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; K&#160;</td><td class="memItemRight"><a class="el" href="#ac3e1b9c402c7932dc36c148b71eac797">t</a></td></tr>
 <tr class="memitem:a2ce9e8bf8b223874ed8bf6dbb3b94be4" id="r_a2ce9e8bf8b223874ed8bf6dbb3b94be4"><td class="memItemLeft">const size_t&#160;</td><td class="memItemRight"><a class="el" href="#a2ce9e8bf8b223874ed8bf6dbb3b94be4">simd_width</a> = Simd::width</td></tr>
 <tr class="memitem:a771d490d80c2f03d43f97d36ed2173c6" id="r_a771d490d80c2f03d43f97d36ed2173c6"><td class="memItemLeft">const size_t&#160;</td><td class="memItemRight"><a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a> = a.size()</td></tr>
-<tr class="memitem:a4ee32b6260be6bd443fb54763c873904" id="r_a4ee32b6260be6bd443fb54763c873904"><td class="memItemLeft">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a> = Simd::set1(<a class="el" href="#ae3f9d19299a6f51d09a24fba1218512a">t</a>)</td></tr>
-<tr class="memitem:acfce8daf9c52adeec1a0fa559c460e17" id="r_acfce8daf9c52adeec1a0fa559c460e17"><td class="memItemLeft">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a>&#160;</td><td class="memItemRight"><a class="el" href="#acfce8daf9c52adeec1a0fa559c460e17">vt1</a> = Simd::sub(Simd::set1(1.0f), <a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a>)</td></tr>
+<tr class="memitem:a4ee32b6260be6bd443fb54763c873904" id="r_a4ee32b6260be6bd443fb54763c873904"><td class="memItemLeft">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a> = Simd::set1(<a class="el" href="#ac3e1b9c402c7932dc36c148b71eac797">t</a>)</td></tr>
+<tr class="memitem:acfce8daf9c52adeec1a0fa559c460e17" id="r_acfce8daf9c52adeec1a0fa559c460e17"><td class="memItemLeft">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a>&#160;</td><td class="memItemRight"><a class="el" href="#acfce8daf9c52adeec1a0fa559c460e17">vt1</a> = Simd::sub(Simd::set1(K(1)), <a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a>)</td></tr>
 <tr class="memitem:a0e8209aab10ba3c6e8b394b21480fc63" id="r_a0e8209aab10ba3c6e8b394b21480fc63"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a> = 0</td></tr>
 <tr class="memitem:a0cc64e44d55471370dd1825ef84040ed" id="r_a0cc64e44d55471370dd1825ef84040ed"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a></td></tr>
 <tr class="memitem:aaa97841112b3af8af6dcceb618348fbf" id="r_aaa97841112b3af8af6dcceb618348fbf"><td class="memItemLeft">return&#160;</td><td class="memItemRight"><a class="el" href="#aaa97841112b3af8af6dcceb618348fbf">result</a></td></tr>
 <tr class="memitem:a22931c84b7c714220212e30769244123" id="r_a22931c84b7c714220212e30769244123"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a22931c84b7c714220212e30769244123">__attribute__</a> ((always_inline, hot, flatten)) <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; operator-(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;other) const</td></tr>
 <tr class="memdesc:a22931c84b7c714220212e30769244123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract two vectors.  <br /></td></tr>
-<tr class="memitem:ae11f51801aec6c18790445573282f961" id="r_ae11f51801aec6c18790445573282f961"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae11f51801aec6c18790445573282f961">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> add(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a> &amp;<a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>)</td></tr>
+<tr class="memitem:ae11f51801aec6c18790445573282f961" id="r_ae11f51801aec6c18790445573282f961"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae11f51801aec6c18790445573282f961">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> add(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a> &amp;<a class="el" href="#a66ae36f534f25d43df996903815db379">v</a>)</td></tr>
 <tr class="memdesc:ae11f51801aec6c18790445573282f961"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add another vector to this one (in-place).  <br /></td></tr>
-<tr class="memitem:a6c018f69ce29f44fc88fe19a331f7947" id="r_a6c018f69ce29f44fc88fe19a331f7947"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a6c018f69ce29f44fc88fe19a331f7947">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> sub(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a> &amp;<a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>)</td></tr>
+<tr class="memitem:a6c018f69ce29f44fc88fe19a331f7947" id="r_a6c018f69ce29f44fc88fe19a331f7947"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a6c018f69ce29f44fc88fe19a331f7947">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> sub(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a> &amp;<a class="el" href="#a66ae36f534f25d43df996903815db379">v</a>)</td></tr>
 <tr class="memdesc:a6c018f69ce29f44fc88fe19a331f7947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract another vector from this one (in-place).  <br /></td></tr>
-<tr class="memitem:a511c36ff3cf8590dbd88e3c9ac37584c" id="r_a511c36ff3cf8590dbd88e3c9ac37584c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a511c36ff3cf8590dbd88e3c9ac37584c">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> scl(float a)</td></tr>
-<tr class="memdesc:a511c36ff3cf8590dbd88e3c9ac37584c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale this vector by a scalar (in-place).  <br /></td></tr>
-<tr class="memitem:ada8fa7645ba355d2f838caf9a992f620" id="r_ada8fa7645ba355d2f838caf9a992f620"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ada8fa7645ba355d2f838caf9a992f620">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; linear_combination(const std</td></tr>
-<tr class="memdesc:ada8fa7645ba355d2f838caf9a992f620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the linear combination of vectors with coefficients.  <br /></td></tr>
-<tr class="memitem:a5ce8ed3e9b526273b98a117c33d85c04" id="r_a5ce8ed3e9b526273b98a117c33d85c04"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a5ce8ed3e9b526273b98a117c33d85c04">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; lerp(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;a</td></tr>
-<tr class="memdesc:a5ce8ed3e9b526273b98a117c33d85c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate between two vectors.  <br /></td></tr>
-<tr class="memitem:a2e7da8cbf0c7128a570f490d365b80a4" id="r_a2e7da8cbf0c7128a570f490d365b80a4"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2e7da8cbf0c7128a570f490d365b80a4">result</a> (<a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a>)</td></tr>
+<tr class="memitem:a09594adda7a11bc9f6d37f4fe7644939" id="r_a09594adda7a11bc9f6d37f4fe7644939"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a09594adda7a11bc9f6d37f4fe7644939">__attribute__</a> ((always_inline, hot, flatten)) inline <a class="el" href="#a0cc64e44d55471370dd1825ef84040ed">void</a> scl(K a)</td></tr>
+<tr class="memdesc:a09594adda7a11bc9f6d37f4fe7644939"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale this vector by a scalar (in-place).  <br /></td></tr>
+<tr class="memitem:a34d8d1a19ad6af34b34bafc9cba02161" id="r_a34d8d1a19ad6af34b34bafc9cba02161"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a34d8d1a19ad6af34b34bafc9cba02161">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; linear_combination(const std</td></tr>
+<tr class="memdesc:a34d8d1a19ad6af34b34bafc9cba02161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the linear combination of vectors with coefficients.  <br /></td></tr>
+<tr class="memitem:ae05975d7a076f732d3a6790368bed111" id="r_ae05975d7a076f732d3a6790368bed111"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae05975d7a076f732d3a6790368bed111">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; lerp(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;a</td></tr>
+<tr class="memdesc:ae05975d7a076f732d3a6790368bed111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate between two vectors.  <br /></td></tr>
+<tr class="memitem:a949db57c195969699b86eb6507deaaf5" id="r_a949db57c195969699b86eb6507deaaf5"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a949db57c195969699b86eb6507deaaf5">result</a> (<a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a>)</td></tr>
 <tr class="memitem:ab12649e445262d8d591c7a439fa6185c" id="r_ab12649e445262d8d591c7a439fa6185c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ab12649e445262d8d591c7a439fa6185c">for</a> (;<a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a>+7&lt; <a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a>;<a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a>+=<a class="el" href="#a2ce9e8bf8b223874ed8bf6dbb3b94be4">simd_width</a>)</td></tr>
 <tr class="memitem:a8bb19e959dd845f0fc070bf107046658" id="r_a8bb19e959dd845f0fc070bf107046658"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a8bb19e959dd845f0fc070bf107046658">for</a> (;<a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a>&lt; <a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a>;++<a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a>) result.data[<a class="el" href="#a0e8209aab10ba3c6e8b394b21480fc63">i</a>]</td></tr>
 <tr class="memitem:ad6ca55c5fd2635cecda3e005dc001727" id="r_ad6ca55c5fd2635cecda3e005dc001727"><td class="memItemLeft">static <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ad6ca55c5fd2635cecda3e005dc001727">canonical</a> (int index, K dx, K dy, K dz)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
 Advanced Operations</h2></td></tr>
-<tr class="memitem:aa7ca37c9030d43112b243f39555b4c2d" id="r_aa7ca37c9030d43112b243f39555b4c2d"><td class="memItemLeft"><a class="el" href="_allocator_8hpp.html#a6e5808b7535c27dd576a6f559bc9ca83">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aa7ca37c9030d43112b243f39555b4c2d">data</a> = u.data[2] * v.data[0] - u.data[0] * v.data[2]</td></tr>
+<tr class="memitem:aa7ca37c9030d43112b243f39555b4c2d" id="r_aa7ca37c9030d43112b243f39555b4c2d"><td class="memItemLeft"><a class="el" href="_allocator_8hpp.html#a6e5808b7535c27dd576a6f559bc9ca83">aligned_vector</a>&lt; K &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aa7ca37c9030d43112b243f39555b4c2d">data</a> = u.data[0] * v.data[1] - u.data[1] * v.data[0]</td></tr>
 <tr class="memdesc:aa7ca37c9030d43112b243f39555b4c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Underlying aligned data storage (SIMD-friendly).  <br /></td></tr>
-<tr class="memitem:a9f6e6354fe88791fae5173b8f81b2dc0" id="r_a9f6e6354fe88791fae5173b8f81b2dc0"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td></tr>
-<tr class="memitem:a7b07d715b12708149ec45ea5a16b9641" id="r_a7b07d715b12708149ec45ea5a16b9641"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#a7b07d715b12708149ec45ea5a16b9641">dot</a> = u.dot(<a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>)</td></tr>
-<tr class="memitem:ad6634e310e872b717f71cd7e485a0d5d" id="r_ad6634e310e872b717f71cd7e485a0d5d"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#ad6634e310e872b717f71cd7e485a0d5d">norm_u</a> = u.norm_2()</td></tr>
-<tr class="memitem:a3119d489b48d21e7defed799df2aec7d" id="r_a3119d489b48d21e7defed799df2aec7d"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#a3119d489b48d21e7defed799df2aec7d">norm_v</a> = v.norm_2()</td></tr>
-<tr class="memitem:a477ebd1e85c9b6b39e1b1f6ff4fa6c3f" id="r_a477ebd1e85c9b6b39e1b1f6ff4fa6c3f"><td class="memItemLeft"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a>&#160;</td><td class="memItemRight"><a class="el" href="#a477ebd1e85c9b6b39e1b1f6ff4fa6c3f">data</a> [0] = u.data[1] * v.data[2] - u.data[2] * v.data[1]</td></tr>
+<tr class="memitem:a66ae36f534f25d43df996903815db379" id="r_a66ae36f534f25d43df996903815db379"><td class="memItemLeft">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td></tr>
+<tr class="memitem:a8708e43fbaa534dbf3455def91e71a1b" id="r_a8708e43fbaa534dbf3455def91e71a1b"><td class="memItemLeft">const K&#160;</td><td class="memItemRight"><a class="el" href="#a8708e43fbaa534dbf3455def91e71a1b">dot</a> = u.dot(<a class="el" href="#a66ae36f534f25d43df996903815db379">v</a>)</td></tr>
+<tr class="memitem:a7e5dc37798df97465f88697c2b370c26" id="r_a7e5dc37798df97465f88697c2b370c26"><td class="memItemLeft">const K&#160;</td><td class="memItemRight"><a class="el" href="#a7e5dc37798df97465f88697c2b370c26">norm_u</a> = u.norm_2()</td></tr>
+<tr class="memitem:a4c780b74e5dd42123e6cd32bb1c3d991" id="r_a4c780b74e5dd42123e6cd32bb1c3d991"><td class="memItemLeft">const K&#160;</td><td class="memItemRight"><a class="el" href="#a4c780b74e5dd42123e6cd32bb1c3d991">norm_v</a> = v.norm_2()</td></tr>
+<tr class="memitem:a1213f625fb390ff4145d431228d6d549" id="r_a1213f625fb390ff4145d431228d6d549"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a1213f625fb390ff4145d431228d6d549">else</a></td></tr>
+<tr class="memitem:a0c7f8759f694c77f39c45809ab3dff65" id="r_a0c7f8759f694c77f39c45809ab3dff65"><td class="memItemLeft"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a>&#160;</td><td class="memItemRight"><a class="el" href="#a0c7f8759f694c77f39c45809ab3dff65">data</a> [1] = u.data[2] * v.data[0] - u.data[0] * v.data[2]</td></tr>
 <tr class="memitem:a6f547b8ccc00e5ec4c251826b24a0437" id="r_a6f547b8ccc00e5ec4c251826b24a0437"><td class="memItemLeft">return&#160;</td><td class="memItemRight"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a></td></tr>
-<tr class="memitem:a085749718917c7ed561da2f8ffb1d18e" id="r_a085749718917c7ed561da2f8ffb1d18e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a085749718917c7ed561da2f8ffb1d18e">__attribute__</a> ((always_inline, hot, flatten)) inline float <a class="el" href="#a7b07d715b12708149ec45ea5a16b9641">dot</a>(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;<a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>) const</td></tr>
-<tr class="memdesc:a085749718917c7ed561da2f8ffb1d18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product with another vector.  <br /></td></tr>
-<tr class="memitem:afc88d535751f7d581aa1ade5cb9a3735" id="r_afc88d535751f7d581aa1ade5cb9a3735"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#afc88d535751f7d581aa1ade5cb9a3735">__attribute__</a> ((always_inline, hot, flatten)) inline float norm_1() const</td></tr>
-<tr class="memdesc:afc88d535751f7d581aa1ade5cb9a3735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 1-norm (sum of absolute values).  <br /></td></tr>
-<tr class="memitem:a90d41542c9ddcf015a7552236403ddda" id="r_a90d41542c9ddcf015a7552236403ddda"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a90d41542c9ddcf015a7552236403ddda">__attribute__</a> ((always_inline, hot, flatten)) inline float norm_2() const</td></tr>
-<tr class="memdesc:a90d41542c9ddcf015a7552236403ddda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 2-norm (Euclidean norm).  <br /></td></tr>
-<tr class="memitem:aadb39a013b27f2349a129cd8f9fe244a" id="r_aadb39a013b27f2349a129cd8f9fe244a"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aadb39a013b27f2349a129cd8f9fe244a">__attribute__</a> ((always_inline, hot, flatten)) inline float norm_inf() const</td></tr>
-<tr class="memdesc:aadb39a013b27f2349a129cd8f9fe244a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the infinity norm (maximum absolute value).  <br /></td></tr>
-<tr class="memitem:aa9ed23008b08e331dc111bb839a672c1" id="r_aa9ed23008b08e331dc111bb839a672c1"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aa9ed23008b08e331dc111bb839a672c1">__attribute__</a> ((always_inline, hot, flatten)) static inline float angle_cos(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;u</td></tr>
-<tr class="memdesc:aa9ed23008b08e331dc111bb839a672c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the cosine of the angle between two vectors.  <br /></td></tr>
-<tr class="memitem:a7325fe27dfa1aeda3788b5640bc43b73" id="r_a7325fe27dfa1aeda3788b5640bc43b73"><td class="memItemLeft">return&#160;</td><td class="memItemRight"><a class="el" href="#a7325fe27dfa1aeda3788b5640bc43b73">dot</a> (<a class="el" href="#ad6634e310e872b717f71cd7e485a0d5d">norm_u</a> *<a class="el" href="#a3119d489b48d21e7defed799df2aec7d">norm_v</a>)</td></tr>
-<tr class="memitem:a14ef6c45fbddb249a51b69c1ace25303" id="r_a14ef6c45fbddb249a51b69c1ace25303"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a14ef6c45fbddb249a51b69c1ace25303">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; cross_product(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp;u</td></tr>
-<tr class="memdesc:a14ef6c45fbddb249a51b69c1ace25303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the cross product between two 3D vectors.  <br /></td></tr>
-<tr class="memitem:a10a0006757965a12ff20965259c15573" id="r_a10a0006757965a12ff20965259c15573"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a10a0006757965a12ff20965259c15573">r</a> (3)</td></tr>
+<tr class="memitem:a98ab1b5d446b788ecf033598a4f75bc5" id="r_a98ab1b5d446b788ecf033598a4f75bc5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a98ab1b5d446b788ecf033598a4f75bc5">__attribute__</a> ((always_inline, hot, flatten)) inline K <a class="el" href="#a8708e43fbaa534dbf3455def91e71a1b">dot</a>(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;<a class="el" href="#a66ae36f534f25d43df996903815db379">v</a>) const</td></tr>
+<tr class="memdesc:a98ab1b5d446b788ecf033598a4f75bc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dot product with another vector.  <br /></td></tr>
+<tr class="memitem:abd84c10e9dfafe96e5e8a2635fdb861e" id="r_abd84c10e9dfafe96e5e8a2635fdb861e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#abd84c10e9dfafe96e5e8a2635fdb861e">__attribute__</a> ((always_inline, hot, flatten)) inline K norm_1() const</td></tr>
+<tr class="memdesc:abd84c10e9dfafe96e5e8a2635fdb861e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 1-norm (sum of absolute values).  <br /></td></tr>
+<tr class="memitem:afd8a65295b00080fa062d2199fa49ee4" id="r_afd8a65295b00080fa062d2199fa49ee4"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#afd8a65295b00080fa062d2199fa49ee4">__attribute__</a> ((always_inline, hot, flatten)) inline K norm_2() const</td></tr>
+<tr class="memdesc:afd8a65295b00080fa062d2199fa49ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the 2-norm (Euclidean norm).  <br /></td></tr>
+<tr class="memitem:a51278ee3276239a8e54450aac2b7f6e1" id="r_a51278ee3276239a8e54450aac2b7f6e1"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a51278ee3276239a8e54450aac2b7f6e1">__attribute__</a> ((always_inline, hot, flatten)) inline K norm_inf() const</td></tr>
+<tr class="memdesc:a51278ee3276239a8e54450aac2b7f6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the infinity norm (maximum absolute value).  <br /></td></tr>
+<tr class="memitem:a4aed36ff1ce586dca9b19c93cf4da40d" id="r_a4aed36ff1ce586dca9b19c93cf4da40d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a4aed36ff1ce586dca9b19c93cf4da40d">__attribute__</a> ((always_inline, hot, flatten)) static inline K angle_cos(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;u</td></tr>
+<tr class="memdesc:a4aed36ff1ce586dca9b19c93cf4da40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the cosine of the angle between two vectors.  <br /></td></tr>
+<tr class="memitem:a7325fe27dfa1aeda3788b5640bc43b73" id="r_a7325fe27dfa1aeda3788b5640bc43b73"><td class="memItemLeft">return&#160;</td><td class="memItemRight"><a class="el" href="#a7325fe27dfa1aeda3788b5640bc43b73">dot</a> (<a class="el" href="#a7e5dc37798df97465f88697c2b370c26">norm_u</a> *<a class="el" href="#a4c780b74e5dd42123e6cd32bb1c3d991">norm_v</a>)</td></tr>
+<tr class="memitem:ad1df661d2ea8d6e4739985ae1c8f31da" id="r_ad1df661d2ea8d6e4739985ae1c8f31da"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ad1df661d2ea8d6e4739985ae1c8f31da">__attribute__</a> ((always_inline, hot, flatten)) static inline <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; cross_product(const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;u</td></tr>
+<tr class="memdesc:ad1df661d2ea8d6e4739985ae1c8f31da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the cross product between two 3D vectors.  <br /></td></tr>
+<tr class="memitem:a42caf6370894c7d0f8f603eebb559f4e" id="r_a42caf6370894c7d0f8f603eebb559f4e"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a42caf6370894c7d0f8f603eebb559f4e">r</a> (3)</td></tr>
+<tr class="memitem:add1fb0991d3438e37056328f3bd39dd6" id="r_add1fb0991d3438e37056328f3bd39dd6"><td class="memItemLeft">if&#160;</td><td class="memItemRight"><a class="el" href="#add1fb0991d3438e37056328f3bd39dd6">constexpr</a> (std::is_floating_point_v&lt; K &gt;)</td></tr>
 <tr class="memitem:acf089bf9920569f184f82fa03ae725f5" id="r_acf089bf9920569f184f82fa03ae725f5"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#acf089bf9920569f184f82fa03ae725f5">operator+=</a> (const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;m)</td></tr>
 <tr class="memitem:a3dc849af6554e23cd2a5ca2a2eab8bee" id="r_a3dc849af6554e23cd2a5ca2a2eab8bee"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a3dc849af6554e23cd2a5ca2a2eab8bee">operator-=</a> (const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;m)</td></tr>
 <tr class="memitem:a6ebe9c73d1f23ed5937ed6750e2efd4c" id="r_a6ebe9c73d1f23ed5937ed6750e2efd4c"><td class="memItemLeft"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a6ebe9c73d1f23ed5937ed6750e2efd4c">operator*=</a> (K alpha)</td></tr>
@@ -290,7 +292,7 @@ template&lt;typename K&gt; </div>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="#ada8fa7645ba355d2f838caf9a992f620">tensorium::Vector&lt; T &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a34d8d1a19ad6af34b34bafc9cba02161">tensorium::Vector&lt; T &gt;::__attribute__()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -410,8 +412,8 @@ template&lt;typename K&gt; </div>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a085749718917c7ed561da2f8ffb1d18e" name="a085749718917c7ed561da2f8ffb1d18e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a085749718917c7ed561da2f8ffb1d18e">&#9670;&#160;</a></span>__attribute__() <span class="overload">[1/12]</span></h2>
+<a id="a98ab1b5d446b788ecf033598a4f75bc5" name="a98ab1b5d446b788ecf033598a4f75bc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ab1b5d446b788ecf033598a4f75bc5">&#9670;&#160;</a></span>__attribute__() <span class="overload">[1/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -438,7 +440,7 @@ template&lt;typename K&gt; </div>
 <p>Compute the dot product with another vector. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td><td>The other vector. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td><td>The other vector. </td></tr>
   </table>
   </dd>
 </dl>
@@ -446,8 +448,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="afc88d535751f7d581aa1ade5cb9a3735" name="afc88d535751f7d581aa1ade5cb9a3735"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc88d535751f7d581aa1ade5cb9a3735">&#9670;&#160;</a></span>__attribute__() <span class="overload">[2/12]</span></h2>
+<a id="abd84c10e9dfafe96e5e8a2635fdb861e" name="abd84c10e9dfafe96e5e8a2635fdb861e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd84c10e9dfafe96e5e8a2635fdb861e">&#9670;&#160;</a></span>__attribute__() <span class="overload">[2/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -476,8 +478,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="a90d41542c9ddcf015a7552236403ddda" name="a90d41542c9ddcf015a7552236403ddda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90d41542c9ddcf015a7552236403ddda">&#9670;&#160;</a></span>__attribute__() <span class="overload">[3/12]</span></h2>
+<a id="afd8a65295b00080fa062d2199fa49ee4" name="afd8a65295b00080fa062d2199fa49ee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd8a65295b00080fa062d2199fa49ee4">&#9670;&#160;</a></span>__attribute__() <span class="overload">[3/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,8 +508,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="aadb39a013b27f2349a129cd8f9fe244a" name="aadb39a013b27f2349a129cd8f9fe244a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadb39a013b27f2349a129cd8f9fe244a">&#9670;&#160;</a></span>__attribute__() <span class="overload">[4/12]</span></h2>
+<a id="a51278ee3276239a8e54450aac2b7f6e1" name="a51278ee3276239a8e54450aac2b7f6e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51278ee3276239a8e54450aac2b7f6e1">&#9670;&#160;</a></span>__attribute__() <span class="overload">[4/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -564,15 +566,15 @@ template&lt;typename K&gt; </div>
 <p>Add another vector to this one (in-place). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td><td>The vector to add. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td><td>The vector to add. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a511c36ff3cf8590dbd88e3c9ac37584c" name="a511c36ff3cf8590dbd88e3c9ac37584c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a511c36ff3cf8590dbd88e3c9ac37584c">&#9670;&#160;</a></span>__attribute__() <span class="overload">[6/12]</span></h2>
+<a id="a09594adda7a11bc9f6d37f4fe7644939" name="a09594adda7a11bc9f6d37f4fe7644939"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09594adda7a11bc9f6d37f4fe7644939">&#9670;&#160;</a></span>__attribute__() <span class="overload">[6/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -634,15 +636,15 @@ template&lt;typename K&gt; </div>
 <p>Subtract another vector from this one (in-place). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td><td>The vector to subtract. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td><td>The vector to subtract. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aa9ed23008b08e331dc111bb839a672c1" name="aa9ed23008b08e331dc111bb839a672c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9ed23008b08e331dc111bb839a672c1">&#9670;&#160;</a></span>__attribute__() <span class="overload">[8/12]</span></h2>
+<a id="a4aed36ff1ce586dca9b19c93cf4da40d" name="a4aed36ff1ce586dca9b19c93cf4da40d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aed36ff1ce586dca9b19c93cf4da40d">&#9670;&#160;</a></span>__attribute__() <span class="overload">[8/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -662,7 +664,7 @@ template&lt;typename K&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>First vector. </td></tr>
-    <tr><td class="paramname"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td><td>Second vector. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td><td>Second vector. </td></tr>
   </table>
   </dd>
 </dl>
@@ -670,8 +672,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="a14ef6c45fbddb249a51b69c1ace25303" name="a14ef6c45fbddb249a51b69c1ace25303"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14ef6c45fbddb249a51b69c1ace25303">&#9670;&#160;</a></span>__attribute__() <span class="overload">[9/12]</span></h2>
+<a id="ad1df661d2ea8d6e4739985ae1c8f31da" name="ad1df661d2ea8d6e4739985ae1c8f31da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1df661d2ea8d6e4739985ae1c8f31da">&#9670;&#160;</a></span>__attribute__() <span class="overload">[9/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -691,7 +693,7 @@ template&lt;typename K&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>First 3D vector. </td></tr>
-    <tr><td class="paramname"><a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a></td><td>Second 3D vector. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#a66ae36f534f25d43df996903815db379">v</a></td><td>Second 3D vector. </td></tr>
   </table>
   </dd>
 </dl>
@@ -699,8 +701,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="a5ce8ed3e9b526273b98a117c33d85c04" name="a5ce8ed3e9b526273b98a117c33d85c04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ce8ed3e9b526273b98a117c33d85c04">&#9670;&#160;</a></span>__attribute__() <span class="overload">[10/12]</span></h2>
+<a id="ae05975d7a076f732d3a6790368bed111" name="ae05975d7a076f732d3a6790368bed111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae05975d7a076f732d3a6790368bed111">&#9670;&#160;</a></span>__attribute__() <span class="overload">[10/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -720,8 +722,8 @@ template&lt;typename K&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">a</td><td>First vector. </td></tr>
-    <tr><td class="paramname"><a class="el" href="#a9ddd62f235cc16cd1342c2fa0bbad68e">b</a></td><td>Second vector. </td></tr>
-    <tr><td class="paramname"><a class="el" href="#ae3f9d19299a6f51d09a24fba1218512a">t</a></td><td>Interpolation factor (0 = a, 1 = b). </td></tr>
+    <tr><td class="paramname"><a class="el" href="#af86335e816cad2c6ff5a401146c5724f">b</a></td><td>Second vector. </td></tr>
+    <tr><td class="paramname"><a class="el" href="#ac3e1b9c402c7932dc36c148b71eac797">t</a></td><td>Interpolation factor (0 = a, 1 = b). </td></tr>
   </table>
   </dd>
 </dl>
@@ -729,8 +731,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="ada8fa7645ba355d2f838caf9a992f620" name="ada8fa7645ba355d2f838caf9a992f620"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada8fa7645ba355d2f838caf9a992f620">&#9670;&#160;</a></span>__attribute__() <span class="overload">[11/12]</span></h2>
+<a id="a34d8d1a19ad6af34b34bafc9cba02161" name="a34d8d1a19ad6af34b34bafc9cba02161"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d8d1a19ad6af34b34bafc9cba02161">&#9670;&#160;</a></span>__attribute__() <span class="overload">[11/12]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -897,6 +899,33 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
+<a id="add1fb0991d3438e37056328f3bd39dd6" name="add1fb0991d3438e37056328f3bd39dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add1fb0991d3438e37056328f3bd39dd6">&#9670;&#160;</a></span>constexpr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">if <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::constexpr </td>
+          <td>(</td>
+          <td class="paramtype">std::is_floating_point_v&lt; K &gt;</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7325fe27dfa1aeda3788b5640bc43b73" name="a7325fe27dfa1aeda3788b5640bc43b73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7325fe27dfa1aeda3788b5640bc43b73">&#9670;&#160;</a></span>dot()</h2>
 
@@ -908,7 +937,7 @@ template&lt;typename K&gt; </div>
         <tr>
           <td class="memname">return <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::dot </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#ad6634e310e872b717f71cd7e485a0d5d">norm_u</a> *</td>          <td class="paramname"><span class="paramname"><em>norm_v</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a7e5dc37798df97465f88697c2b370c26">norm_u</a> *</td>          <td class="paramname"><span class="paramname"><em>norm_v</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1234,8 +1263,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="a10a0006757965a12ff20965259c15573" name="a10a0006757965a12ff20965259c15573"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10a0006757965a12ff20965259c15573">&#9670;&#160;</a></span>r()</h2>
+<a id="a42caf6370894c7d0f8f603eebb559f4e" name="a42caf6370894c7d0f8f603eebb559f4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42caf6370894c7d0f8f603eebb559f4e">&#9670;&#160;</a></span>r()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1243,7 +1272,7 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::r </td>
+          <td class="memname"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::r </td>
           <td>(</td>
           <td class="paramtype">3</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1287,8 +1316,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a2e7da8cbf0c7128a570f490d365b80a4" name="a2e7da8cbf0c7128a570f490d365b80a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e7da8cbf0c7128a570f490d365b80a4">&#9670;&#160;</a></span>result()</h2>
+<a id="a949db57c195969699b86eb6507deaaf5" name="a949db57c195969699b86eb6507deaaf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949db57c195969699b86eb6507deaaf5">&#9670;&#160;</a></span>result()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1296,7 +1325,7 @@ Here is the caller graph for this function:</div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::result </td>
+          <td class="memname"><a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::result </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="#a771d490d80c2f03d43f97d36ed2173c6">n</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1331,18 +1360,18 @@ template&lt;typename K&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#a085749718917c7ed561da2f8ffb1d18e">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#afc88d535751f7d581aa1ade5cb9a3735">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a90d41542c9ddcf015a7552236403ddda">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#aadb39a013b27f2349a129cd8f9fe244a">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#ae11f51801aec6c18790445573282f961">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a511c36ff3cf8590dbd88e3c9ac37584c">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a6c018f69ce29f44fc88fe19a331f7947">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a14ef6c45fbddb249a51b69c1ace25303">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca">tensorium::SpectralFFT&lt; T &gt;::bit_reverse()</a>, <a class="el" href="classtensorium_1_1_matrix.html#a5e1172e6298ebc08cc838ee69054ba3d">tensorium::Matrix&lt; K, RowMajor &gt;::mul_vec()</a>, <a class="el" href="classtensorium_1_1_matrix.html#a469003c35c507e7556d9a85209d1f21a">tensorium::Matrix&lt; K, RowMajor &gt;::operator*()</a>, <a class="el" href="namespacetensorium.html#ab6dec74f805a025ac10b68839dd7ccd5">tensorium::operator+()</a>, <a class="el" href="namespacetensorium.html#a4e9cf94b9190cc49d7471f5be4c2ffbe">tensorium::operator-()</a>, <a class="el" href="#a7db6c6af21eb17c4721af3472bc81fd6">tensorium::Vector&lt; T &gt;::print()</a>, <a class="el" href="namespacetensorium___r_g.html#a30a2035fb187aab3b1a86d5c5c8317cd">tensorium_RG::print_vector()</a>, <a class="el" href="classtensorium_1_1solver_1_1_jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="namespacetensorium___r_g.html#a853ee85109fd3cf65db0d92889c5dd1a">tensorium_RG::spectral_derivative_1D()</a>, and <a class="el" href="classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721">tensorium::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a98ab1b5d446b788ecf033598a4f75bc5">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#abd84c10e9dfafe96e5e8a2635fdb861e">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#afd8a65295b00080fa062d2199fa49ee4">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a51278ee3276239a8e54450aac2b7f6e1">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#ae11f51801aec6c18790445573282f961">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a09594adda7a11bc9f6d37f4fe7644939">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#a6c018f69ce29f44fc88fe19a331f7947">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#ad1df661d2ea8d6e4739985ae1c8f31da">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="classtensorium_1_1_spectral_f_f_t.html#acf37df5e87c3a03c72fef953d1fdf4ca">tensorium::SpectralFFT&lt; T &gt;::bit_reverse()</a>, <a class="el" href="classtensorium_1_1_matrix.html#a5e1172e6298ebc08cc838ee69054ba3d">tensorium::Matrix&lt; K, RowMajor &gt;::mul_vec()</a>, <a class="el" href="classtensorium_1_1_matrix.html#a469003c35c507e7556d9a85209d1f21a">tensorium::Matrix&lt; K, RowMajor &gt;::operator*()</a>, <a class="el" href="namespacetensorium.html#ab6dec74f805a025ac10b68839dd7ccd5">tensorium::operator+()</a>, <a class="el" href="namespacetensorium.html#a4e9cf94b9190cc49d7471f5be4c2ffbe">tensorium::operator-()</a>, <a class="el" href="#a7db6c6af21eb17c4721af3472bc81fd6">tensorium::Vector&lt; T &gt;::print()</a>, <a class="el" href="namespacetensorium___r_g.html#a30a2035fb187aab3b1a86d5c5c8317cd">tensorium_RG::print_vector()</a>, <a class="el" href="classtensorium_1_1solver_1_1_jacobi.html#a65dc458a7572a127c93ed2becbed88f9">tensorium::solver::Jacobi&lt; K &gt;::solve()</a>, <a class="el" href="namespacetensorium___r_g.html#a853ee85109fd3cf65db0d92889c5dd1a">tensorium_RG::spectral_derivative_1D()</a>, and <a class="el" href="classtensorium_1_1_spectral_f_f_t.html#a591d1552749338f32258372d9bb98721">tensorium::SpectralFFT&lt; T &gt;::transform_impl()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtensorium_1_1_vector_aa89231755fb9476201cc1b4167b7a3ab_icgraph.svg" width="1007" height="1115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="classtensorium_1_1_vector_aa89231755fb9476201cc1b4167b7a3ab_icgraph.svg" width="1007" height="1099"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a9ddd62f235cc16cd1342c2fa0bbad68e" name="a9ddd62f235cc16cd1342c2fa0bbad68e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ddd62f235cc16cd1342c2fa0bbad68e">&#9670;&#160;</a></span>b</h2>
+<a id="af86335e816cad2c6ff5a401146c5724f" name="af86335e816cad2c6ff5a401146c5724f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af86335e816cad2c6ff5a401146c5724f">&#9670;&#160;</a></span>b</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1350,15 +1379,15 @@ Here is the caller graph for this function:</div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt;float&gt;&amp; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::b</td>
+          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt;K&gt;&amp; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::b</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a477ebd1e85c9b6b39e1b1f6ff4fa6c3f" name="a477ebd1e85c9b6b39e1b1f6ff4fa6c3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a477ebd1e85c9b6b39e1b1f6ff4fa6c3f">&#9670;&#160;</a></span>data <span class="overload">[1/2]</span></h2>
+<a id="a0c7f8759f694c77f39c45809ab3dff65" name="a0c7f8759f694c77f39c45809ab3dff65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c7f8759f694c77f39c45809ab3dff65">&#9670;&#160;</a></span>data <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1366,7 +1395,7 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::data[2] = u.data[1] * v.data[2] - u.data[2] * v.data[1]</td>
+          <td class="memname"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::data[2] = u.data[2] * v.data[0] - u.data[0] * v.data[2]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1382,19 +1411,19 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::data = u.data[2] * v.data[0] - u.data[0] * v.data[2]</td>
+          <td class="memname"><a class="el" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::data = u.data[0] * v.data[1] - u.data[1] * v.data[0]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Underlying aligned data storage (SIMD-friendly). </p>
 
-<p class="reference">Referenced by <a class="el" href="#a22931c84b7c714220212e30769244123">tensorium::Vector&lt; T &gt;::__attribute__()</a>, and <a class="el" href="#ab12649e445262d8d591c7a439fa6185c">tensorium::Vector&lt; T &gt;::for()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a22931c84b7c714220212e30769244123">tensorium::Vector&lt; T &gt;::__attribute__()</a>, <a class="el" href="#add1fb0991d3438e37056328f3bd39dd6">tensorium::Vector&lt; T &gt;::constexpr()</a>, and <a class="el" href="#ab12649e445262d8d591c7a439fa6185c">tensorium::Vector&lt; T &gt;::for()</a>.</p>
 
 </div>
 </div>
-<a id="a7b07d715b12708149ec45ea5a16b9641" name="a7b07d715b12708149ec45ea5a16b9641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b07d715b12708149ec45ea5a16b9641">&#9670;&#160;</a></span>dot</h2>
+<a id="a8708e43fbaa534dbf3455def91e71a1b" name="a8708e43fbaa534dbf3455def91e71a1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8708e43fbaa534dbf3455def91e71a1b">&#9670;&#160;</a></span>dot</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1402,13 +1431,33 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const float <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::dot = u.dot(<a class="el" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>)</td>
+          <td class="memname">const K <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::dot = u.dot(<a class="el" href="#a66ae36f534f25d43df996903815db379">v</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="reference">Referenced by <a class="el" href="namespacetensorium.html#a7f72b6870061e535b18aebdfaef56c44">tensorium::dot_vec()</a>.</p>
 
+</div>
+</div>
+<a id="a1213f625fb390ff4145d431228d6d549" name="a1213f625fb390ff4145d431228d6d549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1213f625fb390ff4145d431228d6d549">&#9670;&#160;</a></span>else</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename K&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::else</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">            <a class="code hl_variable" href="#a6f547b8ccc00e5ec4c251826b24a0437">r</a>.data[0] = u.data[1] * <a class="code hl_variable" href="#a66ae36f534f25d43df996903815db379">v</a>.data[2] - u.data[2] * <a class="code hl_variable" href="#a66ae36f534f25d43df996903815db379">v</a>.data[1]</div>
+<div class="ttc" id="aclasstensorium_1_1_vector_html_a66ae36f534f25d43df996903815db379"><div class="ttname"><a href="#a66ae36f534f25d43df996903815db379">tensorium::Vector::v</a></div><div class="ttdeci">const Vector&lt; K &gt; &amp; v</div><div class="ttdef"><b>Definition</b> Vector.hpp:418</div></div>
+<div class="ttc" id="aclasstensorium_1_1_vector_html_a6f547b8ccc00e5ec4c251826b24a0437"><div class="ttname"><a href="#a6f547b8ccc00e5ec4c251826b24a0437">tensorium::Vector::r</a></div><div class="ttdeci">return r</div><div class="ttdef"><b>Definition</b> Vector.hpp:451</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a0e8209aab10ba3c6e8b394b21480fc63" name="a0e8209aab10ba3c6e8b394b21480fc63"></a>
@@ -1443,8 +1492,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="ad6634e310e872b717f71cd7e485a0d5d" name="ad6634e310e872b717f71cd7e485a0d5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6634e310e872b717f71cd7e485a0d5d">&#9670;&#160;</a></span>norm_u</h2>
+<a id="a7e5dc37798df97465f88697c2b370c26" name="a7e5dc37798df97465f88697c2b370c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e5dc37798df97465f88697c2b370c26">&#9670;&#160;</a></span>norm_u</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1452,15 +1501,15 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const float <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::norm_u = u.norm_2()</td>
+          <td class="memname">const K <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::norm_u = u.norm_2()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3119d489b48d21e7defed799df2aec7d" name="a3119d489b48d21e7defed799df2aec7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3119d489b48d21e7defed799df2aec7d">&#9670;&#160;</a></span>norm_v</h2>
+<a id="a4c780b74e5dd42123e6cd32bb1c3d991" name="a4c780b74e5dd42123e6cd32bb1c3d991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c780b74e5dd42123e6cd32bb1c3d991">&#9670;&#160;</a></span>norm_v</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1468,7 +1517,7 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const float <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::norm_v = v.norm_2()</td>
+          <td class="memname">const K <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::norm_v = v.norm_2()</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1505,7 +1554,7 @@ template&lt;typename K&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="#ada8fa7645ba355d2f838caf9a992f620">tensorium::Vector&lt; T &gt;::__attribute__()</a>, and <a class="el" href="#a22931c84b7c714220212e30769244123">tensorium::Vector&lt; T &gt;::__attribute__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="#a34d8d1a19ad6af34b34bafc9cba02161">tensorium::Vector&lt; T &gt;::__attribute__()</a>, and <a class="el" href="#a22931c84b7c714220212e30769244123">tensorium::Vector&lt; T &gt;::__attribute__()</a>.</p>
 
 </div>
 </div>
@@ -1525,8 +1574,8 @@ template&lt;typename K&gt; </div>
 
 </div>
 </div>
-<a id="ae3f9d19299a6f51d09a24fba1218512a" name="ae3f9d19299a6f51d09a24fba1218512a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3f9d19299a6f51d09a24fba1218512a">&#9670;&#160;</a></span>t</h2>
+<a id="ac3e1b9c402c7932dc36c148b71eac797" name="ac3e1b9c402c7932dc36c148b71eac797"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3e1b9c402c7932dc36c148b71eac797">&#9670;&#160;</a></span>t</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1534,19 +1583,19 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt;float&gt; float <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::t</td>
+          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt;K&gt; K <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::t</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">        <span class="keywordflow">if</span> (a.size() != <a class="code hl_variable" href="#a9ddd62f235cc16cd1342c2fa0bbad68e">b</a>.size())</div>
+<div class="line">        <span class="keywordflow">if</span> (a.size() != <a class="code hl_variable" href="#af86335e816cad2c6ff5a401146c5724f">b</a>.size())</div>
 <div class="line">            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Vector sizes do not match&quot;</span>)</div>
-<div class="ttc" id="aclasstensorium_1_1_vector_html_a9ddd62f235cc16cd1342c2fa0bbad68e"><div class="ttname"><a href="#a9ddd62f235cc16cd1342c2fa0bbad68e">tensorium::Vector::b</a></div><div class="ttdeci">const Vector&lt; float &gt; &amp; b</div><div class="ttdef"><b>Definition</b> Vector.hpp:264</div></div>
+<div class="ttc" id="aclasstensorium_1_1_vector_html_af86335e816cad2c6ff5a401146c5724f"><div class="ttname"><a href="#af86335e816cad2c6ff5a401146c5724f">tensorium::Vector::b</a></div><div class="ttdeci">const Vector&lt; K &gt; &amp; b</div><div class="ttdef"><b>Definition</b> Vector.hpp:265</div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a9f6e6354fe88791fae5173b8f81b2dc0" name="a9f6e6354fe88791fae5173b8f81b2dc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f6e6354fe88791fae5173b8f81b2dc0">&#9670;&#160;</a></span>v</h2>
+<a id="a66ae36f534f25d43df996903815db379" name="a66ae36f534f25d43df996903815db379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ae36f534f25d43df996903815db379">&#9670;&#160;</a></span>v</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1554,14 +1603,13 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; float &gt; &amp; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::v</td>
+          <td class="memname">const <a class="el" href="#a75717cdda9abba028ee84beb59900e0a">Vector</a>&lt; K &gt; &amp; <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::v</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
-<div class="line">        <span class="keywordflow">if</span> (u.size() != <a class="code hl_variable" href="#a9f6e6354fe88791fae5173b8f81b2dc0">v</a>.size())</div>
+<div class="line">        <span class="keywordflow">if</span> (u.size() != <a class="code hl_variable" href="#a66ae36f534f25d43df996903815db379">v</a>.size())</div>
 <div class="line">            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Vector sizes do not match&quot;</span>)</div>
-<div class="ttc" id="aclasstensorium_1_1_vector_html_a9f6e6354fe88791fae5173b8f81b2dc0"><div class="ttname"><a href="#a9f6e6354fe88791fae5173b8f81b2dc0">tensorium::Vector::v</a></div><div class="ttdeci">const Vector&lt; float &gt; &amp; v</div><div class="ttdef"><b>Definition</b> Vector.hpp:417</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1590,7 +1638,7 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::vt = Simd::set1(<a class="el" href="#ae3f9d19299a6f51d09a24fba1218512a">t</a>)</td>
+          <td class="memname">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::vt = Simd::set1(<a class="el" href="#ac3e1b9c402c7932dc36c148b71eac797">t</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1606,7 +1654,7 @@ template&lt;typename K&gt; </div>
 template&lt;typename K&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::vt1 = Simd::sub(Simd::set1(1.0f), <a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a>)</td>
+          <td class="memname">const <a class="el" href="#a73d995ed03e33d90d5d9c4be9ba17b5d">reg</a> <a class="el" href="classtensorium_1_1_vector.html">tensorium::Vector</a>&lt; K &gt;::vt1 = Simd::sub(Simd::set1(K(1)), <a class="el" href="#a4ee32b6260be6bd443fb54763c873904">vt</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">

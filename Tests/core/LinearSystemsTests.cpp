@@ -41,3 +41,15 @@ REGISTER_TEST("core.linear.jacobi", "Jacobi solver and row-echelon rank", []() {
     TENSORIUM_TEST_ASSERT(rank == 1);
 });
 
+REGISTER_TEST("core.linear.jacobi_double", "Jacobi solver with double precision", []() {
+    Matrix<double> A(2, 2);
+    A(0, 0) = 5.0;
+    A(1, 0) = 1.0;
+    A(0, 1) = 2.0;
+    A(1, 1) = 4.0;
+    Vector<double> b = {7.0, 6.0};
+    auto x = solver::Jacobi<double>::solve(A, b, 1e-12, 500);
+    auto Ax = A.mul_vec(x);
+    tensorium::tests::expect_near(Ax[0], b[0], 1e-9, "jacobi double b0");
+    tensorium::tests::expect_near(Ax[1], b[1], 1e-9, "jacobi double b1");
+});

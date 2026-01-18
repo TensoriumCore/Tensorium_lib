@@ -442,7 +442,7 @@ template&lt;typename Boundary, typename T&gt; </div>
 
 <p class="reference">References <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#aa9ca0d198ac81f20587032b819968cba">tensorium_RG::bssn::detail::apply_batch_halo()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#aae2c416922a6f9b6ecfba6c3cde0f98c">tensorium_RG::bssn::detail::apply_batch_physical()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::prepare_state_for_rhs()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::prepare_state_for_rhs()</a>, <a class="el" href="structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html#a3801ddc0baaa38f4b4bdf929dac9bf53">tensorium_RG::init::detail::HaloFinalizer&lt; Grid, typename &gt;::run()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -451,7 +451,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_afc728a4a48cae76f72521a1dfdcdee11_icgraph.svg" width="796" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_afc728a4a48cae76f72521a1dfdcdee11_icgraph.svg" width="796" height="486"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -979,10 +979,17 @@ template&lt;typename T&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Avoid calling right before constraint evaluation, otherwise \(C^i\) will trivially vanish. </dd></dl>
 
 <p class="reference">References <a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c">metric_inverse_divergence()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#a3d572ae1c03a2766a4887642259476a7">tensorium_RG::init::sanitize_bssn_initial_state()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a6f30410d0e983cf74dc0855581c2c39e_cgraph.svg" width="1003" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a6f30410d0e983cf74dc0855581c2c39e_icgraph.svg" width="388" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2422,7 +2429,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ac0ff801adfd5fd1985ae3ce40263bf3c_icgraph.svg" width="1724" height="738"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_ac0ff801adfd5fd1985ae3ce40263bf3c_icgraph.svg" width="1751" height="742"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -2772,11 +2779,11 @@ template&lt;typename T&gt; </div>
 <li>Optionally recompute \(\tilde{\gamma}^{ij}\) from the renormalized metric and resynchronize \(\tilde{\Gamma}^i\) via <span class="tt"><a class="el" href="#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate  using the 4th-order derivative operators.">metric_inverse_divergence</a></span>. </li>
 </ul>
 
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac27e7cdecedf55c2129cab6cdb9080cf">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::rebuild_geometry()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a">tensorium_RG::init::solve_lichnerowicz_u_SOR()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6">tensorium_RG::init::binary_schwarzschild_isotropic_2centers()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564">tensorium_RG::init::minkowski()</a>, <a class="el" href="#aacf72b389561019db6fa8c990db283b2">project_bssn_after_update()</a>, <a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac27e7cdecedf55c2129cab6cdb9080cf">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;::rebuild_geometry()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a3d572ae1c03a2766a4887642259476a7">tensorium_RG::init::sanitize_bssn_initial_state()</a>, <a class="el" href="namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f">tensorium_RG::init::schwarzschild_isotropic()</a>, and <a class="el" href="namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a">tensorium_RG::init::solve_lichnerowicz_u_SOR()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a54708e29d39d8a410304c794b3bab92e_icgraph.svg" width="1034" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1bssn_a54708e29d39d8a410304c794b3bab92e_icgraph.svg" width="1034" height="602"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

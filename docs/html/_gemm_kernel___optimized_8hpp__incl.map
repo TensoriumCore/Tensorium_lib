@@ -1,17 +1,19 @@
 <map id="includes/Tensorium/Backend/CPU_Kernels/GemmKernel_Optimized.hpp" name="includes/Tensorium/Backend/CPU_Kernels/GemmKernel_Optimized.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="437,5,629,61"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="511,5,704,61"/>
 <area shape="rect" id="Node000002" href="$_s_i_m_d_8hpp.html" title=" " alt="" coords="175,109,349,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="452,62,334,106,332,101,457,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="508,62,350,107,348,102,513,60"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="5,198,66,223"/>
-<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="434,43,374,53,304,66,233,85,165,111,134,128,105,149,59,189,56,185,102,144,131,124,162,107,231,80,303,61,373,48,439,41"/>
+<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="508,38,434,46,345,59,253,80,165,111,134,128,105,148,58,189,55,185,101,144,131,124,162,107,252,75,344,54,433,41,513,36"/>
 <area shape="rect" id="Node000010" href="$_maths_utils_8hpp.html" title=" " alt="" coords="373,109,546,150"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="514,60,485,99,482,95,509,63"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="567,61,504,103,502,98,562,63"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="570,116,645,142"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="555,59,591,105,586,104,553,64"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="609,60,610,103,605,100,606,64"/>
 <area shape="rect" id="Node000012" title=" " alt="" coords="669,116,730,142"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="582,59,668,109,662,108,580,64"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="635,59,680,106,675,105,633,64"/>
 <area shape="rect" id="Node000013" title=" " alt="" coords="754,116,813,142"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="614,59,743,107,747,110,742,110,741,111,614,64"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="659,59,750,109,745,109,658,64"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="838,116,895,142"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="693,59,826,107,830,110,825,110,824,111,692,64"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="90,198,160,223"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="230,150,160,192,158,187,225,151"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="185,198,249,223"/>
