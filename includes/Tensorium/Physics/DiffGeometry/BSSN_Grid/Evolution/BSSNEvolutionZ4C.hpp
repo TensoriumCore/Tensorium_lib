@@ -166,7 +166,8 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                     A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
                     T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
 
-                const T geom = T(0.5) * alpha * (R_scalar + two_thirds * K_val * K_val - A_contract);
+                const T geom_source = R_scalar + two_thirds * K_val * K_val - A_contract;
+                const T geom = T(0.5) * alpha * std::clamp(geom_source, T(-1e3), T(1e3));
                 const T damping = -alpha * params.kappa1 * two_plus_kappa2 * theta;
                 const T diss = KO6_axis_ptr(p_theta, sx) + KO6_axis_ptr(p_theta, sy) +
                                KO6_axis_ptr(p_theta, 1);

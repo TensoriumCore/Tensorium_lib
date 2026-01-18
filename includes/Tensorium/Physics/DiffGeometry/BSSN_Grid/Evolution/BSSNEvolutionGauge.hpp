@@ -23,12 +23,12 @@ namespace tensorium_RG::bssn {
 
 /// @brief Tunable coefficients for the Gamma-driver system.
 template <typename T> struct GaugeParameters {
-    T beta_B_coeff = T(3.0 / 4.0);
-    T eta = T(1);
+    T beta_B_coeff = T(0.25);
+    T eta = T(6);
     T mass_scale = T(1);
     T kappa1 = T(0.02);
     T kappa2 = T(0.0);
-    T ko_sigma = T(0.3);              ///< KO6 filter strength (scaled by dx).
+    T ko_sigma = T(0.35);             ///< KO6 filter strength (scaled by dx).
     T min_lapse_for_K = T(5e-3);      ///< Floor applied when sourcing the K quadratic term.
     T max_K_squared = T(1e4);         ///< Safety cap for K^2 when alpha collapses.
 

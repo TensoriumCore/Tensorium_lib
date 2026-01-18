@@ -294,7 +294,8 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T alpha_source = std::max(alpha, gauge_params.min_lapse_for_K);
                 // Limiter prevents K^2 from sourcing runaway growth when alpha collapses.
                 const T K_sq_limited = std::min(K_val * K_val, gauge_params.max_K_squared);
-                const T quad = alpha_source * (A_contract + third * K_sq_limited);
+                const T quad_terms = A_contract + third * K_sq_limited;
+                const T quad = alpha_source * std::clamp(quad_terms, T(-1e3), T(1e3));
                 const T z4c_term = alpha * kappa_mix * (*p_theta);
 
                 *p_rhs = adv - laplacian + quad + z4c_term;

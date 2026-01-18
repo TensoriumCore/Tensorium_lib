@@ -25,7 +25,7 @@ RunSummary run_schwarzschild(const StabilityRunConfig &cfg, bool allow_failure =
 REGISTER_TEST("bssn.stability.schwarzschild",
                "Gauge-aware CFL preserves Schwarzschild isotropic data", []() {
                    StabilityRunConfig legacy;
-                   legacy.steps = 180;
+                   legacy.steps = 380;
                    legacy.cfl = 0.25;
                    legacy.gauge_factor = 1.0;
                    legacy.log_path = "Output/tests/schwarzschild_cfl_legacy.csv";
