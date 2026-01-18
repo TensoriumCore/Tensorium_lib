@@ -119,19 +119,21 @@ $(function() {
 <p>Gauge drivers for \(\alpha\), \(\beta^i\), and \(B^i\) (1+log + Gamma-driver).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_perf_timers_8hpp_source.html">../TimeIntegration/BSSNPerfTimers.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_common_8hpp_source.html">BSSNEvolutionCommon.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNEvolutionGauge.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gauge_8hpp__incl.svg" width="674" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gauge_8hpp__incl.svg" width="820" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gauge_8hpp__dep__incl.svg" width="258" height="200"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gauge_8hpp__dep__incl.svg" width="1424" height="319"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_evolution_gauge_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -148,19 +150,20 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0e98ef8bc1b9faade555cf639acbf8f0" id="r_a0e98ef8bc1b9faade555cf639acbf8f0"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a0e98ef8bc1b9faade555cf639acbf8f0 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0">tensorium_RG::bssn::compute_rhs_alpha</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_alpha, size_t padding=4)</td></tr>
-<tr class="memdesc:a0e98ef8bc1b9faade555cf639acbf8f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build \(\partial_t\alpha\) including advection and KO6 dissipation.  <br /></td></tr>
+<tr class="memitem:a8d4f3d7f6f7ed10162191acdef732c3a" id="r_a8d4f3d7f6f7ed10162191acdef732c3a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a8d4f3d7f6f7ed10162191acdef732c3a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a8d4f3d7f6f7ed10162191acdef732c3a">tensorium_RG::bssn::compute_rhs_alpha</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_alpha, size_t padding=4, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={})</td></tr>
+<tr class="memdesc:a8d4f3d7f6f7ed10162191acdef732c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build \(\partial_t\alpha\) including advection.  <br /></td></tr>
 <tr class="memitem:a6c35d2ed248f9e9d1b52788040e1023b" id="r_a6c35d2ed248f9e9d1b52788040e1023b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a6c35d2ed248f9e9d1b52788040e1023b template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a6c35d2ed248f9e9d1b52788040e1023b">tensorium_RG::bssn::compute_rhs_beta</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
-<tr class="memdesc:a6c35d2ed248f9e9d1b52788040e1023b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\beta^i = \beta^k\partial_k\beta^i + (3/4)B^i\) plus dissipation.  <br /></td></tr>
+<tr class="memdesc:a6c35d2ed248f9e9d1b52788040e1023b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\beta^i = \beta^k\partial_k\beta^i + (3/4)B^i\).  <br /></td></tr>
 <tr class="memitem:a75dbad82545e00c5b727125fa275a730" id="r_a75dbad82545e00c5b727125fa275a730"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a75dbad82545e00c5b727125fa275a730 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a75dbad82545e00c5b727125fa275a730">tensorium_RG::bssn::compute_rhs_B</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_Gamma[3], <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs_B[3], const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={}, size_t padding=4)</td></tr>
 <tr class="memdesc:a75dbad82545e00c5b727125fa275a730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t B^i\) given the previously computed \(\partial_t\tilde{\Gamma}^i\).  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Gauge drivers for \(\alpha\), \(\beta^i\), and \(B^i\) (1+log + Gamma-driver). </p>
-<p>Documents Eq. (5.43) of Baumgarte–Shapiro: \((\partial_t-\mathcal{L}_\beta)\alpha=-2\alpha K\), and the hyperbolic shift driver \((\partial_t-\mathcal{L}_\beta)\beta^i = (3/4)B^i\), \((\partial_t-\mathcal{L}_\beta)B^i = (\partial_t\tilde{\Gamma}^i-\mathcal{L}_\beta\tilde{\Gamma}^i) - \eta B^i\). </p>
+<p>Documents Eq. (5.43) of Baumgarte–Shapiro: \((\partial_t-\mathcal{L}_\beta)\alpha=-2\alpha K\), and the hyperbolic shift driver \((\partial_t-\mathcal{L}_\beta)\beta^i = (3/4)B^i\),  \((\partial_t-\mathcal{L}_\beta)B^i =
+(\partial_t\tilde{\Gamma}^i-\mathcal{L}_\beta\tilde{\Gamma}^i) - \eta B^i\). </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

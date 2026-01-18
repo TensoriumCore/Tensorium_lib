@@ -1,5 +1,9 @@
 <map id="tensorium_RG::halo_linear_extrapolate_full" name="tensorium_RG::halo_linear_extrapolate_full">
-<area shape="rect" id="Node000001" title=" " alt="" coords="260,5,414,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="260,71,414,111"/>
 <area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1_boundary_clamp.html#ae810d670e755bc74c23f609b1254aa86" title=" " alt="" coords="5,5,212,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="241,26,212,28,212,23,247,26"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,67,182,49,182,44,252,65"/>
+<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1bssn_1_1_boundary_clamp.html#a7723edbb5a1fc20f9cc4e488012146ef" title=" " alt="" coords="12,71,205,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,92,205,94,205,88,247,90"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1bssn_1_1_boundary_sponge.html#a8e6dc47705f3b68b445e841ce8d47f37" title=" " alt="" coords="9,136,208,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="252,115,183,138,182,133,247,117"/>
 </map>

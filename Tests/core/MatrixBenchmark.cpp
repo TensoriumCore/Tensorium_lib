@@ -16,6 +16,9 @@ using namespace tensorium;
 #        include <cblas.h>
 #    endif
 #endif
+#ifdef TENSORIUM_USE_FFTW
+#    include <fftw3.h>
+#endif
 
 #define CHECK(expr)                                                                                \
     do {                                                                                           \
@@ -150,6 +153,101 @@ int run_matrix_benchmark() {
     return 0;
 }
 
+#ifdef TENSORIUM_USE_FFTW
+std::vector<std::complex<double>> make_signal(size_t N) {
+    std::mt19937_64 rng(1337);
+    std::uniform_real_distribution<double> dist(-1.0, 1.0);
+    std::vector<std::complex<double>> data(N);
+    for (size_t i = 0; i < N; ++i)
+        data[i] = {dist(rng), dist(rng)};
+    return data;
+}
+
+struct FFTBenchmarkResult {
+    double tensorium_time;
+    double fftw_time;
+    double max_error;
+};
+
+FFTBenchmarkResult benchmark_fft_size(size_t N, size_t iters) {
+    FFTBenchmarkResult result{0.0, 0.0, 0.0};
+    Vector<std::complex<double>> tensorium_data(N);
+    auto base = make_signal(N);
+    for (size_t i = 0; i < N; ++i)
+        tensorium_data[i] = base[i];
+    double total_tensorium = 0.0;
+    for (size_t iter = 0; iter < iters; ++iter) {
+        for (size_t i = 0; i < N; ++i)
+            tensorium_data[i] = base[i];
+        auto start = std::chrono::high_resolution_clock::now();
+        SpectralFFT<double>::forward(tensorium_data);
+        SpectralFFT<double>::backward(tensorium_data);
+        auto end = std::chrono::high_resolution_clock::now();
+        total_tensorium += std::chrono::duration<double>(end - start).count();
+    }
+    result.tensorium_time = total_tensorium / iters;
+
+    std::vector<std::complex<double>> fftw_in = base;
+    std::vector<std::complex<double>> fftw_out(N);
+    fftw_plan plan_fwd =
+        fftw_plan_dft_1d(static_cast<int>(N), reinterpret_cast<fftw_complex *>(fftw_in.data()),
+                         reinterpret_cast<fftw_complex *>(fftw_out.data()), FFTW_FORWARD,
+                         FFTW_MEASURE);
+    fftw_plan plan_bwd =
+        fftw_plan_dft_1d(static_cast<int>(N), reinterpret_cast<fftw_complex *>(fftw_out.data()),
+                         reinterpret_cast<fftw_complex *>(fftw_in.data()), FFTW_BACKWARD,
+                         FFTW_MEASURE);
+    double total_fftw = 0.0;
+    for (size_t iter = 0; iter < iters; ++iter) {
+        fftw_in = base;
+        auto start = std::chrono::high_resolution_clock::now();
+        fftw_execute(plan_fwd);
+        fftw_execute(plan_bwd);
+        auto end = std::chrono::high_resolution_clock::now();
+        total_fftw += std::chrono::duration<double>(end - start).count();
+    }
+    result.fftw_time = total_fftw / iters;
+
+    const double scale = 1.0 / static_cast<double>(N);
+    for (size_t i = 0; i < N; ++i) {
+        std::complex<double> fftw_val = fftw_in[i] * scale;
+        std::complex<double> tensorium_val = tensorium_data[i];
+        result.max_error = std::max(result.max_error,
+                                    std::abs(fftw_val.real() - tensorium_val.real()));
+        result.max_error = std::max(result.max_error,
+                                    std::abs(fftw_val.imag() - tensorium_val.imag()));
+    }
+
+    fftw_destroy_plan(plan_fwd);
+    fftw_destroy_plan(plan_bwd);
+
+    return result;
+}
+#endif
+
+void run_fft_benchmark() {
+#ifdef TENSORIUM_USE_FFTW
+    std::vector<size_t> sizes = {1024, 4096, 16384};
+    const size_t        iterations = 5;
+    std::cout << "\nBenchmarking Tensorium FFT vs FFTW\n";
+    for (size_t N : sizes) {
+        auto res = benchmark_fft_size(N, iterations);
+        std::cout << "\nSize N = " << N << "\n";
+        std::cout << "Tensorium avg time : " << res.tensorium_time << " s\n";
+        std::cout << "FFTW avg time      : " << res.fftw_time << " s\n";
+        std::cout << "Speedup (Tensorium/FFTW): " << (res.tensorium_time / res.fftw_time)
+                  << "\n";
+        std::cout << "Max |difference|   : " << res.max_error << "\n";
+    }
+#else
+    std::cout << "\n[FFT Benchmark] FFTW not available. Configure with FFTW to enable." << std::endl;
+#endif
+}
+
 } // namespace
 
-int main() { return run_matrix_benchmark(); }
+int main() {
+    int status = run_matrix_benchmark();
+    run_fft_benchmark();
+    return status;
+}

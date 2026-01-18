@@ -17,6 +17,9 @@ namespace tensorium_RG::bssn {
 struct ConstraintMonitorStats {
     double max_H = 0.0;
     double l2_H = 0.0;
+    double l2_theta = 0.0;
+    double l2_Z = 0.0;
+    double l2_M = 0.0;
     double max_trace_A = 0.0;
     double max_det_drift = 0.0;
     size_t samples = 0;
@@ -98,11 +101,69 @@ inline ConstraintMonitorStats compute_constraint_monitor(const BSSNGridSoA<T> &G
     return stats;
 }
 
+template <typename T>
+inline void populate_constraint_norms(const BSSNGridSoA<T> &G, const Field3D<T> M[3],
+                                      ConstraintMonitorStats &stats, size_t padding = 4) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t guard = std::max<size_t>(padding, size_t(2));
+    const size_t i0 = std::min(I0 + guard, I1);
+    const size_t j0 = std::min(J0 + guard, J1);
+    const size_t k0 = std::min(K0 + guard, K1);
+    const size_t i1 = (I1 > guard) ? I1 - guard : I1;
+    const size_t j1 = (J1 > guard) ? J1 - guard : J1;
+    const size_t k1 = (K1 > guard) ? K1 - guard : K1;
+
+    if (i0 >= i1 || j0 >= j1 || k0 >= k1) {
+        stats.l2_theta = 0.0;
+        stats.l2_Z = 0.0;
+        stats.l2_M = 0.0;
+        return;
+    }
+
+    double accum_theta = 0.0;
+    double accum_Z = 0.0;
+    double accum_M = 0.0;
+    size_t count = 0;
+
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t idx = G.alpha.idx(i, j, k);
+                const double theta = static_cast<double>(G.Theta.ptr()[idx]);
+                accum_theta += theta * theta;
+
+                const double zx = static_cast<double>(G.Z[0].ptr()[idx]);
+                const double zy = static_cast<double>(G.Z[1].ptr()[idx]);
+                const double zz = static_cast<double>(G.Z[2].ptr()[idx]);
+                accum_Z += zx * zx + zy * zy + zz * zz;
+
+                const size_t midx = M[0].idx(i, j, k);
+                const double mx = static_cast<double>(M[0].ptr()[midx]);
+                const double my = static_cast<double>(M[1].ptr()[midx]);
+                const double mz = static_cast<double>(M[2].ptr()[midx]);
+                accum_M += mx * mx + my * my + mz * mz;
+                ++count;
+            }
+
+    if (count > 0) {
+        const double inv = 1.0 / static_cast<double>(count);
+        stats.l2_theta = std::sqrt(accum_theta * inv);
+        stats.l2_Z = std::sqrt(accum_Z * inv);
+        stats.l2_M = std::sqrt(accum_M * inv);
+    } else {
+        stats.l2_theta = stats.l2_Z = stats.l2_M = 0.0;
+    }
+}
+
 /// @brief Convenience printf helper for debugging constraint convergence.
 inline void print_constraint_monitor(const ConstraintMonitorStats &stats,
                                      const char *label = "constraints") {
-    std::printf("[%s] maxH=%.3e L2H=%.3e max|TrA|=%.3e max|det-1|=%.3e samples=%zu\n", label,
-                stats.max_H, stats.l2_H, stats.max_trace_A, stats.max_det_drift, stats.samples);
+    std::printf(
+        "[%s] ||Theta||_2=%.3e ||Z||_2=%.3e ||H||_2=%.3e ||M||_2=%.3e maxH=%.3e max|TrA|=%.3e max|det-1|=%.3e samples=%zu\n",
+        label, stats.l2_theta, stats.l2_Z, stats.l2_H, stats.l2_M, stats.max_H, stats.max_trace_A,
+        stats.max_det_drift, stats.samples);
 }
 
 } // namespace tensorium_RG::bssn

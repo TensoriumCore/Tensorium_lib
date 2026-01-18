@@ -1,5 +1,5 @@
 <map id="tensorium_RG::bssn::detail::allocate_like" name="tensorium_RG::bssn::detail::allocate_like">
 <area shape="rect" id="Node000001" title=" " alt="" coords="222,13,363,54"/>
-<area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#adbd4a0a872649a18694fa7770a00caa1" title="Allocate RHS buffers with the same strides as the prototype grid." alt="" coords="5,5,174,61"/>
+<area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#adbd4a0a872649a18694fa7770a00caa1" title=" " alt="" coords="5,5,174,61"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,33,174,36,174,31,209,33"/>
 </map>

@@ -4,6 +4,7 @@
 #include "../../includes/Tensorium/Tensorium.hpp"
 
 #include <array>
+#include <cmath>
 
 using namespace tensorium;
 
@@ -40,5 +41,49 @@ REGISTER_TEST("core.tensor.product", "Tensor products and contractions", []() {
         float expected = T3({i, 0, 0}) + T3({i, 1, 1});
         tensorium::tests::expect_near(contracted({i}), expected, 1e-5, "tensor contract");
     }
+});
+
+REGISTER_TEST("core.tensor.default_init", "Default-constructed tensors have zero size", []() {
+    Tensor<double, 2> tensor_default;
+    auto dims = tensor_default.shape();
+    TENSORIUM_TEST_ASSERT(dims[0] == 0 && dims[1] == 0);
+    TENSORIUM_TEST_ASSERT(tensor_default.total_size == 0);
+    TENSORIUM_TEST_ASSERT(tensor_default.data.empty());
+});
+
+REGISTER_TEST("core.tensor.derivate_order4", "Centered order-4 derivative runs without recursion", []() {
+    Derivate<double> input(8, 8);
+    Derivate<double> output(8, 8);
+    for (size_t i = 0; i < 8; ++i)
+        for (size_t j = 0; j < 8; ++j)
+            input(i, j) = std::pow(static_cast<double>(j), 4) + static_cast<double>(i);
+    centered_derivative_order4(input, output, 1, 1.0);
+    double expected = 4.0 * std::pow(3.0, 3);
+    tensorium::tests::expect_near(output(3, 3), expected, 1e-6, "derivate order4");
+});
+
+REGISTER_TEST("core.tensor.tensor_product_shape", "Tensor product shape correctness", []() {
+    Tensor<float, 1> v({3});
+    Tensor<float, 2> m({2, 2});
+    for (size_t i = 0; i < 3; ++i)
+        v({i}) = static_cast<float>(i + 1);
+    for (size_t i = 0; i < 2; ++i)
+        for (size_t j = 0; j < 2; ++j)
+            m({i, j}) = static_cast<float>(i + j);
+    auto prod = mul_tensor(v, m);
+    tensorium::tests::expect_near(prod({0, 0, 0}), v({0}) * m({0, 0}), 1e-6, "tensor product value");
+    tensorium::tests::expect_near(prod({2, 1, 1}), v({2}) * m({1, 1}), 1e-6, "tensor product value2");
+});
+
+REGISTER_TEST("core.tensor.transpose", "Tensor transpose for rank-2 tensor", []() {
+    Tensor<double, 2> T({3, 4});
+    for (size_t i = 0; i < 3; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            T({i, j}) = static_cast<double>(i * 10 + j);
+    auto transposed = T.transpose_simd();
+    TENSORIUM_TEST_ASSERT(transposed.dimensions[0] == 4 && transposed.dimensions[1] == 3);
+    for (size_t i = 0; i < 3; ++i)
+        for (size_t j = 0; j < 4; ++j)
+            tensorium::tests::expect_near(transposed({j, i}), T({i, j}), 1e-12, "tensor transpose");
 });
 

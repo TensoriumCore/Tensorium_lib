@@ -34,3 +34,4 @@ REGISTER_TEST("bssn.initial_data.schwarzschild",
 
 #include "../invariants/ProjectionTests.cpp"
 #include "BowenYorkExportTest.cpp"
+#include "SchwarzschildConstraintExportTest.cpp"

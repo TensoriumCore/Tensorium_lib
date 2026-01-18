@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['cov_0',['COV',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53a18448d7ac6e52fa9f9bb5861b0397b6e',1,'tensorium_RG']]],
-  ['cov2_1',['COV2',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53a62045c7cc6e725c2e627406241191c01',1,'tensorium_RG']]]
+  ['alpha_0',['Alpha',['../namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a6132295fcf5570fb8b0a944ef322a598',1,'tensorium_RG::bssn::Alpha'],['../namespacetensorium___r_g_1_1bssn.html#ae13a10a7510411ca4c501f4a697076a5a6132295fcf5570fb8b0a944ef322a598',1,'tensorium_RG::bssn::Alpha']]],
+  ['atilde_1',['ATilde',['../namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a70765081ce1b41a26d6d37101633e21f',1,'tensorium_RG::bssn::ATilde'],['../namespacetensorium___r_g_1_1bssn.html#ae13a10a7510411ca4c501f4a697076a5a70765081ce1b41a26d6d37101633e21f',1,'tensorium_RG::bssn::ATilde']]]
 ];

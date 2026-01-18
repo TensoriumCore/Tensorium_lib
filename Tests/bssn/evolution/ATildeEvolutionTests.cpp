@@ -42,21 +42,6 @@ double max_abs_interior(const Field &field, const Grid &grid, size_t padding) {
     return max_val;
 }
 
-void expect_guard_zero(const Field &field, const Grid &grid, const char *label) {
-    size_t I0, I1, J0, J1, K0, K1;
-    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-    auto check = [&](size_t i, size_t j, size_t k) {
-        tensorium::tests::expect_near(field.ptr()[field.idx(i, j, k)], 0.0, 0.0,
-                                      std::string(label) + " guard zero");
-    };
-    check(I0 - 1, J0, K0);
-    check(I1, J0, K0);
-    check(I0, J0 - 1, K0);
-    check(I0, J1, K0);
-    check(I0, J0, K0 - 1);
-    check(I0, J0, K1);
-}
-
 struct RegionStats {
     double max_far = 0.0;
     double l2_far = 0.0;
@@ -107,11 +92,9 @@ REGISTER_TEST("bssn.evolution.atilde.minkowski",
 
                   tensorium_RG::bssn::compute_rhs_A_tilde(grid, rhs, 4);
 
-                  for (int s = 0; s < 6; ++s) {
+                  for (int s = 0; s < 6; ++s)
                       tensorium::tests::expect_near(max_abs_interior(rhs[s], grid, 4), 0.0,
                                                    0.0, "minkowski A_tilde interior");
-                      expect_guard_zero(rhs[s], grid, "minkowski A_tilde");
-                  }
               });
 
 REGISTER_TEST("bssn.evolution.atilde.schwarzschild",

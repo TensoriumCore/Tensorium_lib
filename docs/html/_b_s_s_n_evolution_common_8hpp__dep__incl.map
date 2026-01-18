@@ -1,10 +1,29 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp">
-<area shape="rect" id="Node000001" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="140,5,386,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="5,124,252,195"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,88,170,125,167,122,214,84"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="276,124,522,195"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="315,84,361,123,356,124,314,89"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="170,243,357,313"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="181,202,226,242,220,242,179,207"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="350,204,305,244,302,240,345,206"/>
+<area shape="rect" id="Node000001" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="382,5,629,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_evolution_a_tilde_8hpp.html" title="RHS for the trace&#45;free extrinsic curvature ." alt="" coords="44,243,290,313"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="442,88,218,244,215,240,444,83"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="694,361,882,432"/>
+<area shape="poly" id="edge18_Node000001_Node000003" title=" " alt="" coords="365,70,225,107,155,132,93,160,44,193,27,210,15,229,9,248,10,268,18,289,34,311,46,320,66,328,127,342,210,355,307,365,515,381,696,392,691,392,515,386,307,371,209,360,126,348,64,333,43,324,30,315,13,292,4,269,4,247,10,226,22,207,41,189,90,156,153,127,224,102,369,66"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_evolution_chi_8hpp.html" title="RHS for the conformal factor equation &#160;." alt="" coords="314,243,561,313"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="493,89,450,244,445,241,489,93"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="585,243,831,313"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="520,88,543,142,558,169,575,193,603,219,636,242,631,242,600,223,571,196,553,172,538,145,518,93"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_evolution_gamma_tilde_8hpp.html" title="RHS for the conformal metric ." alt="" coords="1113,124,1359,195"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="644,61,1115,137,1110,140,644,67"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="585,124,831,195"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="579,81,650,123,645,124,579,87"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="305,311,518,351,697,381,692,382,517,356,305,316"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="557,316,697,364,691,364,556,321"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="741,323,767,362,762,360,739,328"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="1375,177,1428,202,1451,219,1470,241,1481,260,1485,279,1482,297,1470,315,1440,331,1386,345,1228,367,1044,383,883,393,882,388,1043,378,1227,362,1385,340,1438,326,1466,311,1477,295,1480,279,1476,262,1466,244,1447,223,1425,206,1374,182"/>
+<area shape="poly" id="edge10_Node000007_Node000002" title=" " alt="" coords="568,189,303,245,292,248,290,243,302,240,572,185"/>
+<area shape="poly" id="edge17_Node000007_Node000003" title=" " alt="" coords="807,201,829,220,845,241,851,257,854,273,849,305,836,336,818,363,815,359,831,333,844,304,848,273,846,258,840,244,825,223,806,206"/>
+<area shape="poly" id="edge11_Node000007_Node000004" title=" " alt="" coords="616,200,519,245,517,240,611,202"/>
+<area shape="poly" id="edge12_Node000007_Node000005" title=" " alt="" coords="710,208,710,244,706,241,706,212"/>
+<area shape="rect" id="Node000008" href="$_b_s_s_n_evolution_k_8hpp.html" title="RHS for the mean curvature ." alt="" coords="905,250,1186,306"/>
+<area shape="poly" id="edge13_Node000007_Node000008" title=" " alt="" coords="824,198,969,249,964,250,823,203"/>
+<area shape="rect" id="Node000009" href="$_b_s_s_n_evolution_z4_c_8hpp.html" title=" " alt="" coords="1210,243,1457,313"/>
+<area shape="poly" id="edge15_Node000007_Node000009" title=" " alt="" coords="847,178,1015,206,1198,240,1212,245,1207,245,1197,245,1014,211,847,184"/>
+<area shape="poly" id="edge14_Node000008_Node000003" title=" " alt="" coords="974,312,865,363,864,358,969,313"/>
+<area shape="poly" id="edge16_Node000009_Node000003" title=" " alt="" coords="1198,314,883,380,882,375,1192,314"/>
 </map>

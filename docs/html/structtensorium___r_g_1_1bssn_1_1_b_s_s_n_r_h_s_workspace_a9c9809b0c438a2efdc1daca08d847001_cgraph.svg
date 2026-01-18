@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Reset all RHS accumulators to zero before reuse.">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="145,-51.5 0,-51.5 0,-21 145,-21 145,-51.5"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-38" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::bssn</text>
 <text xml:space="preserve" text-anchor="middle" x="72.5" y="-26.75" font-family="Helvetica,sans-Serif" font-size="10.00">::BSSNRHSWorkspace::zero</text>

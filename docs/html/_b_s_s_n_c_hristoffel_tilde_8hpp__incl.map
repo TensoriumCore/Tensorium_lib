@@ -1,24 +1,39 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNCHristoffelTilde.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNCHristoffelTilde.hpp">
-<area shape="rect" id="Node000001" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="134,5,393,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="199,124,328,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,74,266,109,261,107,263,79"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="5,198,261,223"/>
-<area shape="poly" id="edge11_Node000001_Node000003" title=" " alt="" coords="228,78,190,126,150,186,145,183,186,122,231,74"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="285,198,469,223"/>
-<area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="302,74,343,123,360,153,371,184,366,183,355,155,339,125,301,79"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="240,152,170,192,167,188,243,148"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="283,148,347,189,342,189,283,153"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="153,360,217,386"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="139,222,179,345,174,345,135,226"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="208,279,282,304"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="359,223,280,273,277,268,355,225"/>
-<area shape="rect" id="Node000007" href="$_grid_layout_8hpp.html" title=" " alt="" coords="307,271,447,312"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="379,222,379,257,375,255,375,226"/>
-<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="332,312,229,356,227,351,326,313"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="254,360,318,386"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="357,311,313,352,310,347,352,313"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="343,360,411,386"/>
-<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="379,310,379,346,375,343,375,314"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="436,360,518,386"/>
-<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="403,310,453,351,447,350,401,315"/>
+<area shape="rect" id="Node000001" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="384,5,643,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="346,124,476,150"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="474,78,437,115,433,111,478,74"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="126,198,381,223"/>
+<area shape="poly" id="edge17_Node000001_Node000003" title=" " alt="" coords="419,78,378,100,336,126,302,156,274,188,270,184,298,153,333,122,376,96,423,75"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="82,345,265,371"/>
+<area shape="poly" id="edge18_Node000001_Node000005" title=" " alt="" coords="382,56,312,74,238,102,202,120,170,143,141,169,116,199,108,215,106,232,114,268,132,303,154,333,149,333,128,306,109,270,101,233,103,214,111,196,137,165,166,138,200,116,236,97,310,69,386,53"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="394,426,468,452"/>
+<area shape="poly" id="edge19_Node000001_Node000006" title=" " alt="" coords="531,74,555,137,564,173,567,209,567,286,563,332,555,351,541,372,511,401,477,421,475,417,508,396,537,369,551,348,558,331,562,285,562,209,558,173,550,138,529,79"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="469,345,526,371"/>
+<area shape="poly" id="edge20_Node000001_Node000012" title=" " alt="" coords="514,75,501,330,496,328,510,78"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="601,124,658,150"/>
+<area shape="poly" id="edge21_Node000001_Node000014" title=" " alt="" coords="556,74,605,114,600,114,556,79"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="681,124,740,150"/>
+<area shape="poly" id="edge22_Node000001_Node000015" title=" " alt="" coords="586,74,674,116,669,117,586,79"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="382,152,296,193,293,189,386,148"/>
+<area shape="poly" id="edge16_Node000002_Node000005" title=" " alt="" coords="413,148,412,186,407,207,396,225,379,240,362,249,328,255,293,258,275,264,255,274,220,303,192,335,188,331,216,299,252,269,273,259,292,253,328,250,360,244,376,236,391,222,402,205,407,185,411,153"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_operations_8hpp.html" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="266,271,476,297"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="273,221,341,262,336,264,273,227"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="5,507,70,533"/>
+<area shape="poly" id="edge15_Node000003_Node000009" title=" " alt="" coords="223,226,190,245,148,271,106,305,72,346,55,383,45,422,39,492,34,491,40,421,50,381,67,344,102,301,145,267,187,240,227,222"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="335,299,222,342,220,337,339,296"/>
+<area shape="poly" id="edge12_Node000004_Node000006" title=" " alt="" coords="380,295,408,344,428,412,423,411,403,346,378,300"/>
+<area shape="rect" id="Node000007" href="$_grid_layout_8hpp.html" title=" " alt="" coords="125,419,265,459"/>
+<area shape="poly" id="edge11_Node000004_Node000007" title=" " alt="" coords="361,296,279,373,233,411,230,407,276,369,356,299"/>
+<area shape="poly" id="edge13_Node000004_Node000012" title=" " alt="" coords="393,295,465,337,460,337,392,300"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="341,345,393,371"/>
+<area shape="poly" id="edge14_Node000004_Node000013" title=" " alt="" coords="372,295,371,331,366,328,369,299"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="213,369,381,420,377,423,213,374"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="178,369,188,404,183,403,176,374"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="93,507,158,533"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="180,459,148,498,144,493,175,461"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="157,462,77,502,74,498,154,458"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="182,507,250,533"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="202,458,211,493,206,491,199,462"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="275,507,357,533"/>
+<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="226,457,288,499,282,499,224,462"/>
 </map>

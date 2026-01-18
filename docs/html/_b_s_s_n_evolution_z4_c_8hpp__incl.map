@@ -1,0 +1,64 @@
+<map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionZ4C.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionZ4C.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="744,5,990,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="770,301,1025,327"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="926,74,951,96,969,123,976,146,977,169,973,193,966,216,944,258,920,291,916,287,939,255,961,214,968,191,972,169,971,147,964,125,947,100,925,79"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="432,449,616,474"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="741,50,565,68,465,81,365,99,271,120,189,146,124,178,101,195,84,214,71,238,65,261,67,281,76,301,90,319,109,336,160,367,223,393,292,414,427,444,422,447,291,419,221,398,158,372,106,341,86,323,71,304,62,283,60,260,66,236,79,211,97,191,121,173,187,141,269,115,364,93,464,76,565,63,745,48"/>
+<area shape="rect" id="Node000006" href="$_grid_layout_8hpp.html" title=" " alt="" coords="454,522,594,563"/>
+<area shape="poly" id="edge42_Node000001_Node000006" title=" " alt="" coords="741,45,528,58,405,69,285,87,177,111,129,126,88,143,55,162,29,183,13,206,8,232,8,389,11,404,20,419,54,445,104,468,167,487,309,515,441,533,436,535,308,520,166,492,103,473,51,450,16,422,6,406,3,389,3,231,9,204,25,179,52,157,86,138,128,121,175,106,285,82,405,64,527,52,746,42"/>
+<area shape="rect" id="Node000013" href="$_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="326,124,520,165"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="741,72,525,122,523,118,745,69"/>
+<area shape="rect" id="Node000017" href="$_b_s_s_n_conformal_8hpp.html" title="Helpers that convert conformal&#45;factor gradients between &#160;and ." alt="" coords="1224,301,1440,327"/>
+<area shape="poly" id="edge26_Node000001_Node000017" title=" " alt="" coords="990,53,1074,71,1162,102,1205,123,1246,147,1284,177,1317,211,1327,229,1333,248,1336,287,1332,284,1328,249,1322,231,1313,214,1280,181,1243,152,1203,127,1160,107,1072,77,990,58"/>
+<area shape="rect" id="Node000018" href="$_b_s_s_n_perf_timers_8hpp.html" title=" " alt="" coords="1151,213,1302,253"/>
+<area shape="poly" id="edge28_Node000001_Node000018" title=" " alt="" coords="933,74,1179,205,1174,206,932,79"/>
+<area shape="rect" id="Node000019" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="779,132,954,157"/>
+<area shape="poly" id="edge30_Node000001_Node000019" title=" " alt="" coords="868,74,869,117,864,115,865,78"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_grid_operations_8hpp.html" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="714,375,924,401"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="886,326,845,367,842,362,882,329"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="1100,611,1164,637"/>
+<area shape="poly" id="edge14_Node000002_Node000008" title=" " alt="" coords="912,325,961,373,1009,434,1054,496,1119,599,1114,597,1049,499,1005,437,957,377,910,330"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="766,402,589,447,588,442,771,401"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="782,530,856,556"/>
+<area shape="poly" id="edge11_Node000003_Node000005" title=" " alt="" coords="821,399,821,516,816,513,817,403"/>
+<area shape="poly" id="edge10_Node000003_Node000006" title=" " alt="" coords="810,400,771,439,719,477,665,502,610,522,608,517,663,497,716,472,768,435,805,402"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="647,449,705,474"/>
+<area shape="poly" id="edge12_Node000003_Node000011" title=" " alt="" coords="797,400,715,444,713,439,792,402"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="864,449,917,474"/>
+<area shape="poly" id="edge13_Node000003_Node000012" title=" " alt="" coords="831,398,870,438,865,437,830,403"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="570,472,769,527,764,528,569,478"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="526,473,526,509,522,505,522,477"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="492,611,556,637"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="526,562,526,597,522,594,522,565"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="595,550,1086,615,1082,617,594,556"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="580,611,649,637"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="547,561,592,601,587,600,545,566"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="386,611,468,637"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="502,563,455,603,452,599,497,564"/>
+<area shape="poly" id="edge20_Node000013_Node000002" title=" " alt="" coords="520,146,616,152,717,164,807,183,842,195,867,211,881,227,890,246,899,287,894,284,885,248,876,230,864,215,840,200,805,188,716,169,615,158,521,151"/>
+<area shape="poly" id="edge21_Node000013_Node000004" title=" " alt="" coords="323,162,275,177,233,196,218,208,210,221,209,235,217,252,229,266,242,275,271,282,303,285,321,290,340,299,389,332,435,369,505,437,500,437,431,373,386,337,337,304,319,295,302,291,270,287,240,280,226,270,212,255,204,236,205,219,214,204,230,192,273,172,327,159"/>
+<area shape="poly" id="edge22_Node000013_Node000005" title=" " alt="" coords="415,163,400,213,389,282,386,354,388,389,394,421,405,449,422,472,438,481,470,490,564,508,769,536,764,536,563,513,469,496,436,486,418,476,401,452,389,422,383,389,380,354,384,281,395,212,412,167"/>
+<area shape="poly" id="edge23_Node000013_Node000011" title=" " alt="" coords="477,163,517,183,553,211,597,267,631,329,656,387,671,435,666,433,651,389,626,331,592,270,549,215,514,188,478,168"/>
+<area shape="rect" id="Node000014" href="$_b_s_s_n_gamma_8hpp.html" title="Contracted conformal connection diagnostics and construction utilities." alt="" coords="409,220,538,246"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="435,163,461,207,456,207,434,168"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="226,220,283,246"/>
+<area shape="poly" id="edge24_Node000013_Node000015" title=" " alt="" coords="383,167,293,215,290,211,386,163"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="93,220,152,246"/>
+<area shape="poly" id="edge25_Node000013_Node000016" title=" " alt="" coords="337,167,171,215,167,216,163,213,170,210,341,163"/>
+<area shape="poly" id="edge18_Node000014_Node000002" title=" " alt="" coords="539,244,819,297,814,299,539,249"/>
+<area shape="poly" id="edge19_Node000014_Node000004" title=" " alt="" coords="476,244,489,312,508,400,518,435,513,433,503,401,484,313,474,249"/>
+<area shape="poly" id="edge27_Node000017_Node000008" title=" " alt="" coords="1329,326,1278,429,1238,498,1193,565,1158,603,1156,598,1189,561,1234,495,1274,427,1324,329"/>
+<area shape="poly" id="edge29_Node000018_Node000008" title=" " alt="" coords="1217,252,1190,313,1179,349,1175,387,1175,463,1172,500,1164,537,1145,598,1141,594,1159,535,1166,499,1169,463,1169,386,1174,348,1185,311,1213,255"/>
+<area shape="poly" id="edge33_Node000019_Node000002" title=" " alt="" coords="878,155,897,180,912,212,915,251,908,288,904,285,910,251,907,213,893,183,877,160"/>
+<area shape="poly" id="edge34_Node000019_Node000004" title=" " alt="" coords="776,158,714,180,682,195,654,215,629,239,607,267,572,328,548,387,532,435,528,432,543,385,567,326,602,264,625,236,650,211,680,190,712,175,781,156"/>
+<area shape="poly" id="edge31_Node000019_Node000005" title=" " alt="" coords="907,155,958,177,985,192,1008,211,1036,237,1055,262,1064,291,1061,327,1047,378,1027,414,997,445,955,477,909,504,864,526,863,521,907,499,952,472,993,441,1023,411,1042,376,1056,327,1058,292,1050,265,1032,241,1005,215,982,197,956,182,907,160"/>
+<area shape="poly" id="edge41_Node000019_Node000006" title=" " alt="" coords="776,150,678,159,567,171,467,189,427,201,399,215,362,242,330,270,304,301,285,333,275,366,273,401,282,436,303,473,331,499,365,518,402,530,441,539,436,539,400,535,362,523,328,504,299,476,278,438,268,401,269,366,281,331,300,298,327,267,359,238,396,210,425,196,465,184,566,165,677,153,781,148"/>
+<area shape="poly" id="edge32_Node000019_Node000012" title=" " alt="" coords="890,155,926,178,968,210,1009,251,1026,275,1040,300,1045,324,1042,346,1032,367,1016,386,975,419,932,444,930,439,972,415,1012,383,1027,364,1037,344,1040,324,1035,302,1022,278,1005,255,965,214,923,182,889,160"/>
+<area shape="poly" id="edge35_Node000019_Node000018" title=" " alt="" coords="917,155,1138,209,1133,210,918,160"/>
+<area shape="rect" id="Node000020" href="$_b_s_s_n_evolution_common_8hpp.html" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="664,220,854,246"/>
+<area shape="poly" id="edge36_Node000019_Node000020" title=" " alt="" coords="854,156,787,212,784,208,849,159"/>
+<area shape="poly" id="edge39_Node000020_Node000002" title=" " alt="" coords="780,244,866,293,860,293,779,249"/>
+<area shape="poly" id="edge40_Node000020_Node000004" title=" " alt="" coords="749,245,549,440,545,436,744,247"/>
+<area shape="poly" id="edge37_Node000020_Node000005" title=" " alt="" coords="756,244,749,285,751,306,759,325,779,343,800,350,823,351,846,348,871,346,895,347,917,355,938,373,946,391,949,416,945,445,932,476,904,505,870,526,868,521,901,501,927,473,940,444,944,416,941,392,934,377,915,359,894,352,871,351,847,354,823,356,799,355,776,347,755,329,746,308,744,285,753,248"/>
+<area shape="poly" id="edge38_Node000020_Node000011" title=" " alt="" coords="751,245,733,272,716,302,693,372,681,435,677,431,688,371,711,300,728,269,746,248"/>
+</map>

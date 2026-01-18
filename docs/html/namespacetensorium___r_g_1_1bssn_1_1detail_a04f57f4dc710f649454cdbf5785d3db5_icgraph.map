@@ -1,0 +1,15 @@
+<map id="tensorium_RG::bssn::detail::smooth_floor" name="tensorium_RG::bssn::detail::smooth_floor">
+<area shape="rect" id="Node000001" title=" " alt="" coords="867,53,1010,94"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a113dac293338bb8aab21283d33273455" title="Smoothly limit alpha using Hyperbola smoothing to preserve C1 continuity." alt="" coords="649,5,819,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="849,56,819,52,819,47,854,56"/>
+<area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ada33c14519122bc2205d9609954545b4" title="Smoothly limit chi to keep metric well conditioned." alt="" coords="649,85,819,141"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="854,90,819,99,819,94,849,90"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="420,45,601,101"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="637,51,602,60,601,54,632,51"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,53,372,94"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="402,73,373,76,372,71,407,73"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,45,161,101"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="190,83,162,85,161,79,195,82"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="176,62,211,64,206,65,177,67"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="631,95,602,92,602,87,637,95"/>
+</map>

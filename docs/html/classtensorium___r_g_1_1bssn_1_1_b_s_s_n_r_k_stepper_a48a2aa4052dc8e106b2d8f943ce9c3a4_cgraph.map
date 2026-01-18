@@ -1,7 +1,21 @@
 <map id="tensorium_RG::bssn::BSSNRKStepper::apply_rk_update" name="tensorium_RG::bssn::BSSNRKStepper::apply_rk_update">
-<area shape="rect" id="Node000001" title="Combine the four RK stages with weights (1,2,2,1)/6." alt="" coords="5,5,175,61"/>
-<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ab5fc71cd8253f6f3af6814fcbc278212" title=" " alt="" coords="223,5,428,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,31,210,33,204,33,175,36"/>
-<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="476,20,657,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="428,31,463,33,458,33,429,36"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,148,175,204"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad8eb468e809d08c2e54d28eb0a57e126" title=" " alt="" coords="223,108,428,164"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,159,210,155,205,157,176,164"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1bssn.html#a9e18922ef7a25735939fefe3685605df" title=" " alt="" coords="255,188,396,244"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="175,188,242,201,237,202,175,193"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#a1a3822d1c282c0b0c62d43bae150ac21" title=" " alt="" coords="485,71,648,111"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="428,114,472,109,467,110,429,120"/>
+<area shape="rect" id="Node000008" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="476,136,657,161"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="428,139,463,143,458,143,429,144"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#a962ad7602f817114d68dc50df7eaf5a3" title=" " alt="" coords="705,71,847,111"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="648,88,692,91,687,91,649,94"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184" title=" " alt="" coords="919,5,1060,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="844,68,904,52,909,51,845,73"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831" title=" " alt="" coords="919,71,1060,111"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="847,88,907,91,901,91,847,94"/>
+<area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="895,136,1085,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="845,109,909,131,903,131,844,115"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1bssn_1_1algebraic__detail.html#a33a96991e42e1c98c26935ea3a2dc17d" title=" " alt="" coords="490,196,643,237"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="396,214,478,216,472,216,396,219"/>
 </map>

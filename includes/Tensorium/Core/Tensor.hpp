@@ -33,7 +33,10 @@ template <typename K, std::size_t Rank> class Tensor {
     size_t                   block_size;
     std::array<size_t, Rank> strides;
     /** @brief Default constructor */
-    Tensor() : total_size(0), block_size(128) {}
+    Tensor() : total_size(0), data(), block_size(128) {
+        dimensions.fill(0);
+        strides.fill(0);
+    }
 
     /**
      * @brief Construct tensor with given dimensions

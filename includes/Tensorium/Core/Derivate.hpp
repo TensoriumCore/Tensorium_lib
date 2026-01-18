@@ -156,7 +156,7 @@ template <typename K> class Derivate {
      * @param dx Grid spacing.
      */
     __attribute__((always_inline, hot, flatten)) inline void
-    centered_derivative_order4(const Derivate<K> &input, Derivate<K> &output, size_t axis, K dx) {
+    centered_derivative_order4(const Derivate<K> &input, Derivate<K> &output, size_t axis, K dx) const {
         using Simd = simd::SimdTraits<K, DefaultISA>;
         using reg = typename Simd::reg;
         constexpr size_t W = Simd::width;

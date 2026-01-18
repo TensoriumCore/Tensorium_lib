@@ -117,7 +117,8 @@ void run_case(const char *label, InitFn init, const DemoConfig &cfg, const char 
     tensorium_RG::Field3D<double> rhs[3];
     alloc_rhs(grid, rhs);
 
-    tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs, cfg.padding);
+    tensorium_RG::bssn::GaugeParameters<double> params;
+    tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs, grid.Z, grid.Theta, params, cfg.padding);
 
     const auto stats = far_region_stats(grid, rhs, cfg.padding, far_selector);
     std::cout << "[Gamma demo] " << label << " max_rhs_far=" << stats.max_far

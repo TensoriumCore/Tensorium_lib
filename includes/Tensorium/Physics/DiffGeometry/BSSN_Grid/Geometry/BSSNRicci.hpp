@@ -51,7 +51,7 @@ namespace tensorium_RG::bssn {
  * - `dGt` corresponds to \f$\partial_i\tilde{\Gamma}^k\f$ entering the \f$\tilde{R}_{ij}\f$
  * expression.
  *
- * @warning Ricci evaluation assumes halos contain valid data for ±2 offsets.  Call
+ * @warning Ricci evaluation assumes halos contain valid data for ±3 offsets.  Call
  * `apply_halos_grid` before invoking this routine.
  */
 template <typename T>
@@ -60,16 +60,16 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
-    const size_t i0 = I0 + 2, i1 = I1 - 2;
-    const size_t j0 = J0 + 2, j1 = J1 - 2;
-    const size_t k0 = K0 + 2, k1 = K1 - 2;
+    const size_t i0 = I0 + 3, i1 = I1 - 3;
+    const size_t j0 = J0 + 3, j1 = J1 - 3;
+    const size_t k0 = K0 + 3, k1 = K1 - 3;
 
-    const double inv_12dx = 1.0 / (12.0 * G.dx);
-    const double inv_12dy = 1.0 / (12.0 * G.dy);
-    const double inv_12dz = 1.0 / (12.0 * G.dz);
-    const double inv_12dx2 = 1.0 / (12.0 * G.dx * G.dx);
-    const double inv_12dy2 = 1.0 / (12.0 * G.dy * G.dy);
-    const double inv_12dz2 = 1.0 / (12.0 * G.dz * G.dz);
+    const double inv_12dx = 1.0 / (60.0 * G.dx);
+    const double inv_12dy = 1.0 / (60.0 * G.dy);
+    const double inv_12dz = 1.0 / (60.0 * G.dz);
+    const double inv_12dx2 = 1.0 / (180.0 * G.dx * G.dx);
+    const double inv_12dy2 = 1.0 / (180.0 * G.dy * G.dy);
+    const double inv_12dz2 = 1.0 / (180.0 * G.dz * G.dz);
     const double inv_144dxdy = 1.0 / (144.0 * G.dx * G.dy);
     const double inv_144dxdz = 1.0 / (144.0 * G.dx * G.dz);
     const double inv_144dydz = 1.0 / (144.0 * G.dy * G.dz);

@@ -118,6 +118,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:aa7ed4e8aab54345220386891c7163ba1" id="r_aa7ed4e8aab54345220386891c7163ba1"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">Variance</a> { <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1aa0ca7a1cc7ff6f3e7a475d9db7c21c56">Up</a>
+, <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1ae680bcffae87490a5c396599ccb59f00">Down</a>
+ }</td></tr>
 <tr class="memitem:aecd4aa0ffd4856f657bb5030114aa036" id="r_aecd4aa0ffd4856f657bb5030114aa036"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036">Axis</a> { <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255">X</a> = 0
 , <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a4334df597e2eff6d22e9b1f26faf6cd7">Y</a> = 1
 , <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a3d157744ef6777b208de27c5f2c31500">Z</a> = 2
@@ -125,55 +128,85 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a76900d833c006e35e7cc15349667d246" id="r_a76900d833c006e35e7cc15349667d246"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a76900d833c006e35e7cc15349667d246">get_offset</a> (const double *ptr, ptrdiff_t offset)</td></tr>
+<tr class="memitem:ae41c19beb4fbed35a65c5b6bf40fca6e" id="r_ae41c19beb4fbed35a65c5b6bf40fca6e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ae41c19beb4fbed35a65c5b6bf40fca6e template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ae41c19beb4fbed35a65c5b6bf40fca6e">Dx_ptr</a> (const T *p, ptrdiff_t sx, double inv_60dx)</td></tr>
+<tr class="memitem:a07c6f54f50c56a1c736b6321b5f5384d" id="r_a07c6f54f50c56a1c736b6321b5f5384d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a07c6f54f50c56a1c736b6321b5f5384d template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a07c6f54f50c56a1c736b6321b5f5384d">Dy_ptr</a> (const T *p, ptrdiff_t sy, double inv_60dy)</td></tr>
+<tr class="memitem:a9a6d00f8df14b450c0da7183a3edc301" id="r_a9a6d00f8df14b450c0da7183a3edc301"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a9a6d00f8df14b450c0da7183a3edc301 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a9a6d00f8df14b450c0da7183a3edc301">Dz_ptr</a> (const T *p, double inv_60dz)</td></tr>
+<tr class="memitem:a719dd706b3a3cacff98986fd0f6ab661" id="r_a719dd706b3a3cacff98986fd0f6ab661"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a719dd706b3a3cacff98986fd0f6ab661 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a719dd706b3a3cacff98986fd0f6ab661">Dxx_ptr</a> (const T *p, ptrdiff_t sx, double inv_180dx2)</td></tr>
+<tr class="memitem:a4f01123749058b855c843326f467929f" id="r_a4f01123749058b855c843326f467929f"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a4f01123749058b855c843326f467929f template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a4f01123749058b855c843326f467929f">Dyy_ptr</a> (const T *p, ptrdiff_t sy, double inv_180dy2)</td></tr>
+<tr class="memitem:aef7e21eff7d68cea7179f0ebf14ea169" id="r_aef7e21eff7d68cea7179f0ebf14ea169"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:aef7e21eff7d68cea7179f0ebf14ea169 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aef7e21eff7d68cea7179f0ebf14ea169">Dzz_ptr</a> (const T *p, double inv_180dz2)</td></tr>
+<tr class="memitem:aeeb6f5f98b4fa19fe6e268befe356edf" id="r_aeeb6f5f98b4fa19fe6e268befe356edf"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:aeeb6f5f98b4fa19fe6e268befe356edf template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aeeb6f5f98b4fa19fe6e268befe356edf">Dxy_ptr</a> (const T *p, ptrdiff_t sx, ptrdiff_t sy, double inv_4dxdy)</td></tr>
+<tr class="memitem:a18432ce02072384583589122f74ac133" id="r_a18432ce02072384583589122f74ac133"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a18432ce02072384583589122f74ac133 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a18432ce02072384583589122f74ac133">Dxz_ptr</a> (const T *p, ptrdiff_t sx, double inv_4dxdz)</td></tr>
+<tr class="memitem:adf7c54b91cb90d21fa76a335446827df" id="r_adf7c54b91cb90d21fa76a335446827df"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:adf7c54b91cb90d21fa76a335446827df template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#adf7c54b91cb90d21fa76a335446827df">Dyz_ptr</a> (const T *p, ptrdiff_t sy, double inv_4dydz)</td></tr>
+<tr class="memitem:ac3589ff2120d97d4fd781cababf9392e" id="r_ac3589ff2120d97d4fd781cababf9392e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ac3589ff2120d97d4fd781cababf9392e template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ac3589ff2120d97d4fd781cababf9392e">Dxy4_ptr</a> (const T *p, ptrdiff_t sx, ptrdiff_t sy, double inv_144dxdy)</td></tr>
+<tr class="memitem:a6bdff9232f94f521c9e7e6c8610076da" id="r_a6bdff9232f94f521c9e7e6c8610076da"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a6bdff9232f94f521c9e7e6c8610076da template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a6bdff9232f94f521c9e7e6c8610076da">Dxz4_ptr</a> (const T *p, ptrdiff_t sx, double inv_144dxdz)</td></tr>
+<tr class="memitem:a9172fe518574739fb6bd5ebd00076a80" id="r_a9172fe518574739fb6bd5ebd00076a80"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a9172fe518574739fb6bd5ebd00076a80 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a9172fe518574739fb6bd5ebd00076a80">Dyz4_ptr</a> (const T *p, ptrdiff_t sy, double inv_144dydz)</td></tr>
+<tr class="memitem:a6fca899556586c21050b067bd909c1e5" id="r_a6fca899556586c21050b067bd909c1e5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a6fca899556586c21050b067bd909c1e5 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a6fca899556586c21050b067bd909c1e5">Dx_upwind_ptr</a> (const T *p, ptrdiff_t sx, double inv_2dx, double beta)</td></tr>
+<tr class="memitem:a378abc37eb89a0a0ec893ab6299791af" id="r_a378abc37eb89a0a0ec893ab6299791af"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a378abc37eb89a0a0ec893ab6299791af template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a378abc37eb89a0a0ec893ab6299791af">Dy_upwind_ptr</a> (const T *p, ptrdiff_t sy, double inv_2dy, double beta)</td></tr>
+<tr class="memitem:acaf0dda7dab85101c6bb1b3418366ced" id="r_acaf0dda7dab85101c6bb1b3418366ced"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:acaf0dda7dab85101c6bb1b3418366ced template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#acaf0dda7dab85101c6bb1b3418366ced">Dz_upwind_ptr</a> (const T *p, double inv_2dz, double beta)</td></tr>
+<tr class="memitem:ae0c037f6db2a07f34ceb4a7f4f8bb018" id="r_ae0c037f6db2a07f34ceb4a7f4f8bb018"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ae0c037f6db2a07f34ceb4a7f4f8bb018 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ae0c037f6db2a07f34ceb4a7f4f8bb018">KO6_axis_ptr</a> (const T *p, ptrdiff_t stride)</td></tr>
 <tr class="memitem:a374c0723eefc82665114440219884598" id="r_a374c0723eefc82665114440219884598"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a374c0723eefc82665114440219884598 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a374c0723eefc82665114440219884598">get</a> (const Field &amp;f, size_t i, size_t j, size_t k)</td></tr>
 <tr class="memdesc:a374c0723eefc82665114440219884598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility accessor that forwards to <span class="tt"><a class="el" href="structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77">Field3D::idx</a></span> / raw pointer storage.  <br /></td></tr>
 <tr class="memitem:aece616f0079907fd036af81c285c1d58" id="r_aece616f0079907fd036af81c285c1d58"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:aece616f0079907fd036af81c285c1d58 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aece616f0079907fd036af81c285c1d58">Dx</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx)</td></tr>
-<tr class="memdesc:aece616f0079907fd036af81c285c1d58"><td class="mdescLeft">&#160;</td><td class="mdescRight">4th-order centered derivative along x.  <br /></td></tr>
 <tr class="memitem:a4194bbf40e8164c3918733b1c8ebc050" id="r_a4194bbf40e8164c3918733b1c8ebc050"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a4194bbf40e8164c3918733b1c8ebc050 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a4194bbf40e8164c3918733b1c8ebc050">Dy</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dy)</td></tr>
-<tr class="memdesc:a4194bbf40e8164c3918733b1c8ebc050"><td class="mdescLeft">&#160;</td><td class="mdescRight">4th-order centered derivative along y.  <br /></td></tr>
 <tr class="memitem:ad27b4dab1db07f9ad4126754fc44b310" id="r_ad27b4dab1db07f9ad4126754fc44b310"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:ad27b4dab1db07f9ad4126754fc44b310 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ad27b4dab1db07f9ad4126754fc44b310">Dz</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dz)</td></tr>
-<tr class="memdesc:ad27b4dab1db07f9ad4126754fc44b310"><td class="mdescLeft">&#160;</td><td class="mdescRight">4th-order centered derivative along z.  <br /></td></tr>
 <tr class="memitem:abf5cde8a509521b837c07e9e4bc58070" id="r_abf5cde8a509521b837c07e9e4bc58070"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:abf5cde8a509521b837c07e9e4bc58070 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#abf5cde8a509521b837c07e9e4bc58070">Dxx</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx)</td></tr>
-<tr class="memdesc:abf5cde8a509521b837c07e9e4bc58070"><td class="mdescLeft">&#160;</td><td class="mdescRight">4th-order approximation to \(\partial_{xx} f\).  <br /></td></tr>
 <tr class="memitem:a84127e355536ffe0a4b586aa024a00d2" id="r_a84127e355536ffe0a4b586aa024a00d2"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a84127e355536ffe0a4b586aa024a00d2 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a84127e355536ffe0a4b586aa024a00d2">Dyy</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dy)</td></tr>
 <tr class="memitem:aa34e1bab95331559e7b7a4aca92b0a4f" id="r_aa34e1bab95331559e7b7a4aca92b0a4f"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:aa34e1bab95331559e7b7a4aca92b0a4f template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aa34e1bab95331559e7b7a4aca92b0a4f">Dzz</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dz)</td></tr>
 <tr class="memitem:a0e14527004ab51140c79622d51055767" id="r_a0e14527004ab51140c79622d51055767"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a0e14527004ab51140c79622d51055767 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a0e14527004ab51140c79622d51055767">Dxy</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx, double dy)</td></tr>
-<tr class="memdesc:a0e14527004ab51140c79622d51055767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mixed second derivative using the compact second-order stencil.  <br /></td></tr>
 <tr class="memitem:a12a088911cf549078ea09deaa20d7824" id="r_a12a088911cf549078ea09deaa20d7824"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a12a088911cf549078ea09deaa20d7824 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a12a088911cf549078ea09deaa20d7824">Dxz</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx, double dz)</td></tr>
 <tr class="memitem:accb19120f871fb5db9cdbe7fbe7427b2" id="r_accb19120f871fb5db9cdbe7fbe7427b2"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:accb19120f871fb5db9cdbe7fbe7427b2 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#accb19120f871fb5db9cdbe7fbe7427b2">Dyz</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dy, double dz)</td></tr>
 <tr class="memitem:a02ca6cf55ceebf8307c04c9d32a884a1" id="r_a02ca6cf55ceebf8307c04c9d32a884a1"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a02ca6cf55ceebf8307c04c9d32a884a1 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a02ca6cf55ceebf8307c04c9d32a884a1">Dxy4</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx, double dy)</td></tr>
-<tr class="memdesc:a02ca6cf55ceebf8307c04c9d32a884a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensor-product 4th-order approximation to \(\partial_{xy} f\).  <br /></td></tr>
 <tr class="memitem:af2989bbd2ef1ac60351fcd8a6f7c174e" id="r_af2989bbd2ef1ac60351fcd8a6f7c174e"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:af2989bbd2ef1ac60351fcd8a6f7c174e template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#af2989bbd2ef1ac60351fcd8a6f7c174e">Dxz4</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx, double dz)</td></tr>
 <tr class="memitem:a8c662afe5d7dc6e08ff887daf0d0970e" id="r_a8c662afe5d7dc6e08ff887daf0d0970e"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a8c662afe5d7dc6e08ff887daf0d0970e template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a8c662afe5d7dc6e08ff887daf0d0970e">Dyz4</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dy, double dz)</td></tr>
 <tr class="memitem:a659a58ed413811bedff65e3922dbc585" id="r_a659a58ed413811bedff65e3922dbc585"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a659a58ed413811bedff65e3922dbc585 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a659a58ed413811bedff65e3922dbc585">D</a> (const Field &amp;f, size_t i, size_t j, size_t k, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036">Axis</a> a, double dx, double dy, double dz)</td></tr>
-<tr class="memdesc:a659a58ed413811bedff65e3922dbc585"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036">Axis</a> selector that forwards to <span class="tt">Dx/Dy/Dz</span> for compile-time loops.  <br /></td></tr>
 <tr class="memitem:a9e557ea7b8cb853cbe0b520161551000" id="r_a9e557ea7b8cb853cbe0b520161551000"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a9e557ea7b8cb853cbe0b520161551000 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a9e557ea7b8cb853cbe0b520161551000">KO6_axis</a> (const Field &amp;f, size_t i, size_t j, size_t k, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036">Axis</a> axis)</td></tr>
-<tr class="memdesc:a9e557ea7b8cb853cbe0b520161551000"><td class="mdescLeft">&#160;</td><td class="mdescRight">One-dimensional slice of the 6th-order Kreiss–Oliger filter.  <br /></td></tr>
+<tr class="memitem:a2e104edeeb1f8693eef62e09014ce8f9" id="r_a2e104edeeb1f8693eef62e09014ce8f9"><td class="memItemLeft">double &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a2e104edeeb1f8693eef62e09014ce8f9">fd_dx</a> ()</td></tr>
+<tr class="memitem:a3cdef70cd0a06fcb7b89c09231ebeebc" id="r_a3cdef70cd0a06fcb7b89c09231ebeebc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3cdef70cd0a06fcb7b89c09231ebeebc">set_fd_dx</a> (double dx)</td></tr>
+<tr class="memitem:a2863fc24393090039ee1833c8ae87737" id="r_a2863fc24393090039ee1833c8ae87737"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
+<tr class="memitem:a2863fc24393090039ee1833c8ae87737 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a2863fc24393090039ee1833c8ae87737">KO6</a> (const Field &amp;f, size_t i, size_t j, size_t k, double sigma, double dx)</td></tr>
 <tr class="memitem:a8478ac5c64b8238d30c54c29840b92ba" id="r_a8478ac5c64b8238d30c54c29840b92ba"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a8478ac5c64b8238d30c54c29840b92ba template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a8478ac5c64b8238d30c54c29840b92ba">KO6</a> (const Field &amp;f, size_t i, size_t j, size_t k, double sigma)</td></tr>
-<tr class="memdesc:a8478ac5c64b8238d30c54c29840b92ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dimension-summed Kreiss–Oliger dissipation scaled by \(\sigma\).  <br /></td></tr>
 <tr class="memitem:a08fab718996dbb317c3266bdbc3a1591" id="r_a08fab718996dbb317c3266bdbc3a1591"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:a08fab718996dbb317c3266bdbc3a1591 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#a08fab718996dbb317c3266bdbc3a1591">Dx_upwind</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dx, double beta)</td></tr>
-<tr class="memdesc:a08fab718996dbb317c3266bdbc3a1591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Third-order upwind derivative along x used for shift advection terms.  <br /></td></tr>
 <tr class="memitem:ae2026a7afa7947e4f5e285def87c7427" id="r_ae2026a7afa7947e4f5e285def87c7427"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:ae2026a7afa7947e4f5e285def87c7427 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#ae2026a7afa7947e4f5e285def87c7427">Dy_upwind</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dy, double beta)</td></tr>
 <tr class="memitem:aa9b1ec23b60f9fd26345c4e285da1041" id="r_aa9b1ec23b60f9fd26345c4e285da1041"><td class="memTemplParams" colspan="2">template&lt;typename Field&gt; </td></tr>
 <tr class="memitem:aa9b1ec23b60f9fd26345c4e285da1041 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="#aa9b1ec23b60f9fd26345c4e285da1041">Dz_upwind</a> (const Field &amp;f, size_t i, size_t j, size_t k, double dz, double beta)</td></tr>
+<tr class="memitem:aa6eace6803c9324b60889098af40527c" id="r_aa6eace6803c9324b60889098af40527c"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aa6eace6803c9324b60889098af40527c">sym6</a> (int a, int b)</td></tr>
+<tr class="memitem:af879f7ee0e5e4a40039d26a11abc2c0c" id="r_af879f7ee0e5e4a40039d26a11abc2c0c"><td class="memTemplParams" colspan="2">template&lt;typename Grid, typename Field3&gt; </td></tr>
+<tr class="memitem:af879f7ee0e5e4a40039d26a11abc2c0c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af879f7ee0e5e4a40039d26a11abc2c0c">covariant_D_vec</a> (const Grid &amp;G, const Field3 Vfield[3], size_t i, size_t j, size_t k, double DV[3][3], <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">Variance</a> in_var, <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">Variance</a> out_var)</td></tr>
 </table>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
 <a id="aecd4aa0ffd4856f657bb5030114aa036" name="aecd4aa0ffd4856f657bb5030114aa036"></a>
@@ -195,7 +228,100 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aa7ed4e8aab54345220386891c7163ba1" name="aa7ed4e8aab54345220386891c7163ba1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ed4e8aab54345220386891c7163ba1">&#9670;&#160;</a></span>Variance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">tensorium_RG::fd::Variance</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa7ed4e8aab54345220386891c7163ba1aa0ca7a1cc7ff6f3e7a475d9db7c21c56" name="aa7ed4e8aab54345220386891c7163ba1aa0ca7a1cc7ff6f3e7a475d9db7c21c56"></a>Up&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa7ed4e8aab54345220386891c7163ba1ae680bcffae87490a5c396599ccb59f00" name="aa7ed4e8aab54345220386891c7163ba1ae680bcffae87490a5c396599ccb59f00"></a>Down&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="af879f7ee0e5e4a40039d26a11abc2c0c" name="af879f7ee0e5e4a40039d26a11abc2c0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af879f7ee0e5e4a40039d26a11abc2c0c">&#9670;&#160;</a></span>covariant_D_vec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Grid, typename Field3&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::fd::covariant_D_vec </td>
+          <td>(</td>
+          <td class="paramtype">const Grid &amp;</td>          <td class="paramname"><span class="paramname"><em>G</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Field3</td>          <td class="paramname"><span class="paramname"><em>Vfield</em></span>[3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>k</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>DV</em></span>[3][3], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">Variance</a></td>          <td class="paramname"><span class="paramname"><em>in_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa7ed4e8aab54345220386891c7163ba1">Variance</a></td>          <td class="paramname"><span class="paramname"><em>out_var</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a4da7b7bef5a1793a45a99f45e590cab4">tensorium_RG::bssn::compute_tildeGamma_symbols()</a>, <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1ae680bcffae87490a5c396599ccb59f00">Down</a>, <a class="el" href="#ae41c19beb4fbed35a65c5b6bf40fca6e">Dx_ptr()</a>, <a class="el" href="#a07c6f54f50c56a1c736b6321b5f5384d">Dy_ptr()</a>, <a class="el" href="#a9a6d00f8df14b450c0da7183a3edc301">Dz_ptr()</a>, <a class="el" href="#aa6eace6803c9324b60889098af40527c">sym6()</a>, and <a class="el" href="#aa7ed4e8aab54345220386891c7163ba1aa0ca7a1cc7ff6f3e7a475d9db7c21c56">Up</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_af879f7ee0e5e4a40039d26a11abc2c0c_cgraph.svg" width="847" height="362"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_af879f7ee0e5e4a40039d26a11abc2c0c_icgraph.svg" width="378" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a659a58ed413811bedff65e3922dbc585" name="a659a58ed413811bedff65e3922dbc585"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a659a58ed413811bedff65e3922dbc585">&#9670;&#160;</a></span>D()</h2>
 
@@ -255,13 +381,11 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036">Axis</a> selector that forwards to <span class="tt">Dx/Dy/Dz</span> for compile-time loops. </p>
-
 <p class="reference">References <a class="el" href="#aece616f0079907fd036af81c285c1d58">Dx()</a>, <a class="el" href="#a4194bbf40e8164c3918733b1c8ebc050">Dy()</a>, <a class="el" href="#ad27b4dab1db07f9ad4126754fc44b310">Dz()</a>, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255">X</a>, and <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a4334df597e2eff6d22e9b1f26faf6cd7">Y</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a659a58ed413811bedff65e3922dbc585_cgraph.svg" width="550" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a659a58ed413811bedff65e3922dbc585_cgraph.svg" width="570" height="135"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -310,27 +434,61 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>4th-order centered derivative along x. </p>
-<p>Implements the stencil shown in the file-level documentation. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">f</td><td>Field to differentiate. </td></tr>
-    <tr><td class="paramname">dx</td><td>Grid spacing \(\Delta x\). </td></tr>
-  </table>
-  </dd>
-</dl>
+<p class="reference">References <a class="el" href="#ae41c19beb4fbed35a65c5b6bf40fca6e">Dx_ptr()</a>.</p>
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae">tensorium_RG::bssn::compute_bssn_constraints()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ac9153162b0e444ecc58bb99e8fe08dbd">tensorium_RG::bssn::compute_tildeGamma_full()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ae50539f34a5756edd9a1d251c90c0b96">tensorium_RG::bssn::compute_momentum_constraint_Mi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a4da7b7bef5a1793a45a99f45e590cab4">tensorium_RG::bssn::compute_tildeGamma_symbols()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aece616f0079907fd036af81c285c1d58_cgraph.svg" width="359" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aece616f0079907fd036af81c285c1d58_cgraph.svg" width="380" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aece616f0079907fd036af81c285c1d58_icgraph.svg" width="1752" height="890"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aece616f0079907fd036af81c285c1d58_icgraph.svg" width="2219" height="819"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae41c19beb4fbed35a65c5b6bf40fca6e" name="ae41c19beb4fbed35a65c5b6bf40fca6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41c19beb4fbed35a65c5b6bf40fca6e">&#9670;&#160;</a></span>Dx_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dx_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_60dx</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad199ca87c040a036dd2d3e4b99d7bcb1">tensorium_RG::bssn::compute_RicciZ4()</a>, <a class="el" href="#af879f7ee0e5e4a40039d26a11abc2c0c">covariant_D_vec()</a>, and <a class="el" href="#aece616f0079907fd036af81c285c1d58">Dx()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ae41c19beb4fbed35a65c5b6bf40fca6e_icgraph.svg" width="2491" height="844"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -384,26 +542,59 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Third-order upwind derivative along x used for shift advection terms. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">beta</td><td>Sign of the advecting velocity (typically \(\beta^x\)) determines the biased stencil. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0">tensorium_RG::bssn::compute_rhs_alpha()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>.</p>
+<p class="reference">References <a class="el" href="#a6fca899556586c21050b067bd909c1e5">Dx_upwind_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a08fab718996dbb317c3266bdbc3a1591_cgraph.svg" width="359" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a08fab718996dbb317c3266bdbc3a1591_cgraph.svg" width="358" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a6fca899556586c21050b067bd909c1e5" name="a6fca899556586c21050b067bd909c1e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fca899556586c21050b067bd909c1e5">&#9670;&#160;</a></span>Dx_upwind_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dx_upwind_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_2dx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>beta</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="#a08fab718996dbb317c3266bdbc3a1591">Dx_upwind()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a08fab718996dbb317c3266bdbc3a1591_icgraph.svg" width="866" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a6fca899556586c21050b067bd909c1e5_icgraph.svg" width="1068" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -452,21 +643,54 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>4th-order approximation to \(\partial_{xx} f\). </p>
-<dl class="section note"><dt>Note</dt><dd>Uses the classic \((-1,16,-30,16,-1)/12\) stencil scaled by \(1/\Delta x^2\). </dd></dl>
-
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#a719dd706b3a3cacff98986fd0f6ab661">Dxx_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_abf5cde8a509521b837c07e9e4bc58070_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_abf5cde8a509521b837c07e9e4bc58070_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a719dd706b3a3cacff98986fd0f6ab661" name="a719dd706b3a3cacff98986fd0f6ab661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a719dd706b3a3cacff98986fd0f6ab661">&#9670;&#160;</a></span>Dxx_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dxx_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_180dx2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#abf5cde8a509521b837c07e9e4bc58070">Dxx()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_abf5cde8a509521b837c07e9e4bc58070_icgraph.svg" width="844" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a719dd706b3a3cacff98986fd0f6ab661_icgraph.svg" width="1262" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -520,14 +744,11 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Mixed second derivative using the compact second-order stencil. </p>
-<p>Useful near where 4th-order cross derivatives would require larger halos. </p>
-
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
+<p class="reference">References <a class="el" href="#aeeb6f5f98b4fa19fe6e268befe356edf">Dxy_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a0e14527004ab51140c79622d51055767_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a0e14527004ab51140c79622d51055767_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -581,21 +802,107 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Tensor-product 4th-order approximation to \(\partial_{xy} f\). </p>
-<p>Expands the 1D \((-1,8,-8,1)/12\) derivative in both axes and rescales by \(144\,\Delta x\,\Delta y\) so Ricci builders can reuse it for the \(\tilde{R}_{ij}\) terms. </p>
-
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#ac3589ff2120d97d4fd781cababf9392e">Dxy4_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a02ca6cf55ceebf8307c04c9d32a884a1_cgraph.svg" width="372" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a02ca6cf55ceebf8307c04c9d32a884a1_cgraph.svg" width="408" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ac3589ff2120d97d4fd781cababf9392e" name="ac3589ff2120d97d4fd781cababf9392e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3589ff2120d97d4fd781cababf9392e">&#9670;&#160;</a></span>Dxy4_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dxy4_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_144dxdy</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#a02ca6cf55ceebf8307c04c9d32a884a1">Dxy4()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a02ca6cf55ceebf8307c04c9d32a884a1_icgraph.svg" width="851" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ac3589ff2120d97d4fd781cababf9392e_icgraph.svg" width="1276" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aeeb6f5f98b4fa19fe6e268befe356edf" name="aeeb6f5f98b4fa19fe6e268befe356edf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeb6f5f98b4fa19fe6e268befe356edf">&#9670;&#160;</a></span>Dxy_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dxy_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_4dxdy</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="#a0e14527004ab51140c79622d51055767">Dxy()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aeeb6f5f98b4fa19fe6e268befe356edf_icgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -649,11 +956,11 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
+<p class="reference">References <a class="el" href="#a18432ce02072384583589122f74ac133">Dxz_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a12a088911cf549078ea09deaa20d7824_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a12a088911cf549078ea09deaa20d7824_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -707,18 +1014,97 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#a6bdff9232f94f521c9e7e6c8610076da">Dxz4_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_af2989bbd2ef1ac60351fcd8a6f7c174e_cgraph.svg" width="372" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_af2989bbd2ef1ac60351fcd8a6f7c174e_cgraph.svg" width="408" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a6bdff9232f94f521c9e7e6c8610076da" name="a6bdff9232f94f521c9e7e6c8610076da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bdff9232f94f521c9e7e6c8610076da">&#9670;&#160;</a></span>Dxz4_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dxz4_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_144dxdz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#af2989bbd2ef1ac60351fcd8a6f7c174e">Dxz4()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_af2989bbd2ef1ac60351fcd8a6f7c174e_icgraph.svg" width="851" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a6bdff9232f94f521c9e7e6c8610076da_icgraph.svg" width="1276" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a18432ce02072384583589122f74ac133" name="a18432ce02072384583589122f74ac133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18432ce02072384583589122f74ac133">&#9670;&#160;</a></span>Dxz_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dxz_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_4dxdz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="#a12a088911cf549078ea09deaa20d7824">Dxz()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a18432ce02072384583589122f74ac133_icgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -767,20 +1153,61 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>4th-order centered derivative along y. </p>
+<p class="reference">References <a class="el" href="#a07c6f54f50c56a1c736b6321b5f5384d">Dy_ptr()</a>.</p>
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae">tensorium_RG::bssn::compute_bssn_constraints()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ac9153162b0e444ecc58bb99e8fe08dbd">tensorium_RG::bssn::compute_tildeGamma_full()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ae50539f34a5756edd9a1d251c90c0b96">tensorium_RG::bssn::compute_momentum_constraint_Mi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a4da7b7bef5a1793a45a99f45e590cab4">tensorium_RG::bssn::compute_tildeGamma_symbols()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a4194bbf40e8164c3918733b1c8ebc050_cgraph.svg" width="359" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a4194bbf40e8164c3918733b1c8ebc050_cgraph.svg" width="380" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a4194bbf40e8164c3918733b1c8ebc050_icgraph.svg" width="1752" height="890"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a4194bbf40e8164c3918733b1c8ebc050_icgraph.svg" width="2219" height="819"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a07c6f54f50c56a1c736b6321b5f5384d" name="a07c6f54f50c56a1c736b6321b5f5384d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07c6f54f50c56a1c736b6321b5f5384d">&#9670;&#160;</a></span>Dy_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dy_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_60dy</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad199ca87c040a036dd2d3e4b99d7bcb1">tensorium_RG::bssn::compute_RicciZ4()</a>, <a class="el" href="#af879f7ee0e5e4a40039d26a11abc2c0c">covariant_D_vec()</a>, and <a class="el" href="#a4194bbf40e8164c3918733b1c8ebc050">Dy()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a07c6f54f50c56a1c736b6321b5f5384d_icgraph.svg" width="2491" height="844"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -834,18 +1261,59 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0">tensorium_RG::bssn::compute_rhs_alpha()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>.</p>
+<p class="reference">References <a class="el" href="#a378abc37eb89a0a0ec893ab6299791af">Dy_upwind_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ae2026a7afa7947e4f5e285def87c7427_cgraph.svg" width="359" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ae2026a7afa7947e4f5e285def87c7427_cgraph.svg" width="358" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a378abc37eb89a0a0ec893ab6299791af" name="a378abc37eb89a0a0ec893ab6299791af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a378abc37eb89a0a0ec893ab6299791af">&#9670;&#160;</a></span>Dy_upwind_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dy_upwind_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_2dy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>beta</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="#ae2026a7afa7947e4f5e285def87c7427">Dy_upwind()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ae2026a7afa7947e4f5e285def87c7427_icgraph.svg" width="866" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a378abc37eb89a0a0ec893ab6299791af_icgraph.svg" width="1068" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -894,18 +1362,54 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#a4f01123749058b855c843326f467929f">Dyy_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a84127e355536ffe0a4b586aa024a00d2_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a84127e355536ffe0a4b586aa024a00d2_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a4f01123749058b855c843326f467929f" name="a4f01123749058b855c843326f467929f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f01123749058b855c843326f467929f">&#9670;&#160;</a></span>Dyy_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dyy_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_180dy2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#a84127e355536ffe0a4b586aa024a00d2">Dyy()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a84127e355536ffe0a4b586aa024a00d2_icgraph.svg" width="844" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a4f01123749058b855c843326f467929f_icgraph.svg" width="1262" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -959,11 +1463,11 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
+<p class="reference">References <a class="el" href="#adf7c54b91cb90d21fa76a335446827df">Dyz_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_accb19120f871fb5db9cdbe7fbe7427b2_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_accb19120f871fb5db9cdbe7fbe7427b2_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1017,18 +1521,97 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#a9172fe518574739fb6bd5ebd00076a80">Dyz4_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8c662afe5d7dc6e08ff887daf0d0970e_cgraph.svg" width="372" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8c662afe5d7dc6e08ff887daf0d0970e_cgraph.svg" width="408" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a9172fe518574739fb6bd5ebd00076a80" name="a9172fe518574739fb6bd5ebd00076a80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9172fe518574739fb6bd5ebd00076a80">&#9670;&#160;</a></span>Dyz4_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dyz4_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_144dydz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#a8c662afe5d7dc6e08ff887daf0d0970e">Dyz4()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8c662afe5d7dc6e08ff887daf0d0970e_icgraph.svg" width="851" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a9172fe518574739fb6bd5ebd00076a80_icgraph.svg" width="1276" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="adf7c54b91cb90d21fa76a335446827df" name="adf7c54b91cb90d21fa76a335446827df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf7c54b91cb90d21fa76a335446827df">&#9670;&#160;</a></span>Dyz_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dyz_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>sy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_4dydz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="#accb19120f871fb5db9cdbe7fbe7427b2">Dyz()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_adf7c54b91cb90d21fa76a335446827df_icgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1077,20 +1660,56 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>4th-order centered derivative along z. </p>
+<p class="reference">References <a class="el" href="#a9a6d00f8df14b450c0da7183a3edc301">Dz_ptr()</a>.</p>
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab20751cec48f34c566478200a41a74ae">tensorium_RG::bssn::compute_bssn_constraints()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ac9153162b0e444ecc58bb99e8fe08dbd">tensorium_RG::bssn::compute_tildeGamma_full()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ae50539f34a5756edd9a1d251c90c0b96">tensorium_RG::bssn::compute_momentum_constraint_Mi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a4da7b7bef5a1793a45a99f45e590cab4">tensorium_RG::bssn::compute_tildeGamma_symbols()</a>, <a class="el" href="#a659a58ed413811bedff65e3922dbc585">D()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c">tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ad27b4dab1db07f9ad4126754fc44b310_cgraph.svg" width="359" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ad27b4dab1db07f9ad4126754fc44b310_cgraph.svg" width="380" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ad27b4dab1db07f9ad4126754fc44b310_icgraph.svg" width="1752" height="890"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ad27b4dab1db07f9ad4126754fc44b310_icgraph.svg" width="2219" height="819"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a9a6d00f8df14b450c0da7183a3edc301" name="a9a6d00f8df14b450c0da7183a3edc301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a6d00f8df14b450c0da7183a3edc301">&#9670;&#160;</a></span>Dz_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dz_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_60dz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad199ca87c040a036dd2d3e4b99d7bcb1">tensorium_RG::bssn::compute_RicciZ4()</a>, <a class="el" href="#af879f7ee0e5e4a40039d26a11abc2c0c">covariant_D_vec()</a>, and <a class="el" href="#ad27b4dab1db07f9ad4126754fc44b310">Dz()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a9a6d00f8df14b450c0da7183a3edc301_icgraph.svg" width="2491" height="844"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1144,18 +1763,54 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0">tensorium_RG::bssn::compute_rhs_alpha()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>.</p>
+<p class="reference">References <a class="el" href="#acaf0dda7dab85101c6bb1b3418366ced">Dz_upwind_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa9b1ec23b60f9fd26345c4e285da1041_cgraph.svg" width="359" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa9b1ec23b60f9fd26345c4e285da1041_cgraph.svg" width="358" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="acaf0dda7dab85101c6bb1b3418366ced" name="acaf0dda7dab85101c6bb1b3418366ced"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaf0dda7dab85101c6bb1b3418366ced">&#9670;&#160;</a></span>Dz_upwind_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dz_upwind_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_2dz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>beta</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="#aa9b1ec23b60f9fd26345c4e285da1041">Dz_upwind()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa9b1ec23b60f9fd26345c4e285da1041_icgraph.svg" width="866" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_acaf0dda7dab85101c6bb1b3418366ced_icgraph.svg" width="1068" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1204,18 +1859,81 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>.</p>
+<p class="reference">References <a class="el" href="#aef7e21eff7d68cea7179f0ebf14ea169">Dzz_ptr()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa34e1bab95331559e7b7a4aca92b0a4f_cgraph.svg" width="366" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa34e1bab95331559e7b7a4aca92b0a4f_cgraph.svg" width="394" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="aef7e21eff7d68cea7179f0ebf14ea169" name="aef7e21eff7d68cea7179f0ebf14ea169"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7e21eff7d68cea7179f0ebf14ea169">&#9670;&#160;</a></span>Dzz_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::Dzz_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>inv_180dz2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8">tensorium_RG::bssn::compute_ricci_bssn()</a>, and <a class="el" href="#aa34e1bab95331559e7b7a4aca92b0a4f">Dzz()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa34e1bab95331559e7b7a4aca92b0a4f_icgraph.svg" width="844" height="452"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aef7e21eff7d68cea7179f0ebf14ea169_icgraph.svg" width="1262" height="420"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2e104edeeb1f8693eef62e09014ce8f9" name="a2e104edeeb1f8693eef62e09014ce8f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e104edeeb1f8693eef62e09014ce8f9">&#9670;&#160;</a></span>fd_dx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double &amp; tensorium_RG::fd::fd_dx </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="#a8478ac5c64b8238d30c54c29840b92ba">KO6()</a>, and <a class="el" href="#a3cdef70cd0a06fcb7b89c09231ebeebc">set_fd_dx()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a2e104edeeb1f8693eef62e09014ce8f9_icgraph.svg" width="382" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1261,17 +1979,39 @@ template&lt;typename Field&gt; </div>
 
 <p>Utility accessor that forwards to <span class="tt"><a class="el" href="structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77">Field3D::idx</a></span> / raw pointer storage. </p>
 
-<p class="reference">Referenced by <a class="el" href="#aece616f0079907fd036af81c285c1d58">Dx()</a>, <a class="el" href="#a08fab718996dbb317c3266bdbc3a1591">Dx_upwind()</a>, <a class="el" href="#abf5cde8a509521b837c07e9e4bc58070">Dxx()</a>, <a class="el" href="#a0e14527004ab51140c79622d51055767">Dxy()</a>, <a class="el" href="#a02ca6cf55ceebf8307c04c9d32a884a1">Dxy4()</a>, <a class="el" href="#a12a088911cf549078ea09deaa20d7824">Dxz()</a>, <a class="el" href="#af2989bbd2ef1ac60351fcd8a6f7c174e">Dxz4()</a>, <a class="el" href="#a4194bbf40e8164c3918733b1c8ebc050">Dy()</a>, <a class="el" href="#ae2026a7afa7947e4f5e285def87c7427">Dy_upwind()</a>, <a class="el" href="#a84127e355536ffe0a4b586aa024a00d2">Dyy()</a>, <a class="el" href="#accb19120f871fb5db9cdbe7fbe7427b2">Dyz()</a>, <a class="el" href="#a8c662afe5d7dc6e08ff887daf0d0970e">Dyz4()</a>, <a class="el" href="#ad27b4dab1db07f9ad4126754fc44b310">Dz()</a>, <a class="el" href="#aa9b1ec23b60f9fd26345c4e285da1041">Dz_upwind()</a>, <a class="el" href="#aa34e1bab95331559e7b7a4aca92b0a4f">Dzz()</a>, and <a class="el" href="#a9e557ea7b8cb853cbe0b520161551000">KO6_axis()</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a374c0723eefc82665114440219884598_icgraph.svg" width="2202" height="1492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+</div>
+<a id="a76900d833c006e35e7cc15349667d246" name="a76900d833c006e35e7cc15349667d246"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76900d833c006e35e7cc15349667d246">&#9670;&#160;</a></span>get_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::get_offset </td>
+          <td>(</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>ptr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
 <a id="a8478ac5c64b8238d30c54c29840b92ba" name="a8478ac5c64b8238d30c54c29840b92ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8478ac5c64b8238d30c54c29840b92ba">&#9670;&#160;</a></span>KO6()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8478ac5c64b8238d30c54c29840b92ba">&#9670;&#160;</a></span>KO6() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1314,21 +2054,76 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Dimension-summed Kreiss–Oliger dissipation scaled by \(\sigma\). </p>
-<dl class="section note"><dt>Note</dt><dd>RHS kernels typically set \(\sigma=0.1\) following the module conventions. </dd></dl>
-
-<p class="reference">References <a class="el" href="#a9e557ea7b8cb853cbe0b520161551000">KO6_axis()</a>, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255">X</a>, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a4334df597e2eff6d22e9b1f26faf6cd7">Y</a>, and <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a3d157744ef6777b208de27c5f2c31500">Z</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146">tensorium_RG::bssn::compute_rhs_A_tilde()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0">tensorium_RG::bssn::compute_rhs_alpha()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma()</a>, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, and <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e">tensorium_RG::bssn::compute_rhs_K()</a>.</p>
+<p class="reference">References <a class="el" href="#a2e104edeeb1f8693eef62e09014ce8f9">fd_dx()</a>, and <a class="el" href="#a2863fc24393090039ee1833c8ae87737">KO6()</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8478ac5c64b8238d30c54c29840b92ba_cgraph.svg" width="606" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8478ac5c64b8238d30c54c29840b92ba_cgraph.svg" width="588" height="94"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a2863fc24393090039ee1833c8ae87737" name="a2863fc24393090039ee1833c8ae87737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2863fc24393090039ee1833c8ae87737">&#9670;&#160;</a></span>KO6() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Field&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::KO6 </td>
+          <td>(</td>
+          <td class="paramtype">const Field &amp;</td>          <td class="paramname"><span class="paramname"><em>f</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>j</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>k</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>sigma</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="#ae0c037f6db2a07f34ceb4a7f4f8bb018">KO6_axis_ptr()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="#a8478ac5c64b8238d30c54c29840b92ba">KO6()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a2863fc24393090039ee1833c8ae87737_cgraph.svg" width="376" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a8478ac5c64b8238d30c54c29840b92ba_icgraph.svg" width="875" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a2863fc24393090039ee1833c8ae87737_icgraph.svg" width="376" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1377,21 +2172,119 @@ template&lt;typename Field&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>One-dimensional slice of the 6th-order Kreiss–Oliger filter. </p>
-<p>Implements \(\mathcal{D}_6[f]_j = (f_{j-3} - 6f_{j-2} + 15 f_{j-1} - 20 f_j + 15 f_{j+1} - 6 f_{j+2} + f_{j+3})/64\). </p>
-
-<p class="reference">References <a class="el" href="#a374c0723eefc82665114440219884598">get()</a>, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255">X</a>, and <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a4334df597e2eff6d22e9b1f26faf6cd7">Y</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="#a8478ac5c64b8238d30c54c29840b92ba">KO6()</a>.</p>
+<p class="reference">References <a class="el" href="#ae0c037f6db2a07f34ceb4a7f4f8bb018">KO6_axis_ptr()</a>, <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036ad2a560e83ff143d4105c90fda4cb5255">X</a>, and <a class="el" href="#aecd4aa0ffd4856f657bb5030114aa036a4334df597e2eff6d22e9b1f26faf6cd7">Y</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a9e557ea7b8cb853cbe0b520161551000_cgraph.svg" width="399" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a9e557ea7b8cb853cbe0b520161551000_cgraph.svg" width="407" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="ae0c037f6db2a07f34ceb4a7f4f8bb018" name="ae0c037f6db2a07f34ceb4a7f4f8bb018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0c037f6db2a07f34ceb4a7f4f8bb018">&#9670;&#160;</a></span>KO6_axis_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tensorium_RG::fd::KO6_axis_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const T *</td>          <td class="paramname"><span class="paramname"><em>p</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ptrdiff_t</td>          <td class="paramname"><span class="paramname"><em>stride</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389">tensorium_RG::bssn::compute_rhs_gamma_tilde()</a>, <a class="el" href="#a2863fc24393090039ee1833c8ae87737">KO6()</a>, and <a class="el" href="#a9e557ea7b8cb853cbe0b520161551000">KO6_axis()</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a9e557ea7b8cb853cbe0b520161551000_icgraph.svg" width="1112" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_ae0c037f6db2a07f34ceb4a7f4f8bb018_icgraph.svg" width="1082" height="159"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a3cdef70cd0a06fcb7b89c09231ebeebc" name="a3cdef70cd0a06fcb7b89c09231ebeebc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cdef70cd0a06fcb7b89c09231ebeebc">&#9670;&#160;</a></span>set_fd_dx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tensorium_RG::fd::set_fd_dx </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dx</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="#a2e104edeeb1f8693eef62e09014ce8f9">fd_dx()</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_a3cdef70cd0a06fcb7b89c09231ebeebc_cgraph.svg" width="374" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa6eace6803c9324b60889098af40527c" name="aa6eace6803c9324b60889098af40527c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6eace6803c9324b60889098af40527c">&#9670;&#160;</a></span>sym6()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tensorium_RG::fd::sym6 </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a115768fc80083e53ed5ae9dbf84a30a1">tensorium_RG::XX</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a28ab371d2f7403b03cad82076957e770">tensorium_RG::XY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4c15bf998ec0d2ebd6bca1c2620cb0ad">tensorium_RG::XZ</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a4f596e4aff43b688f8b844afd7416904">tensorium_RG::YY</a>, <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a1d8adff5cc89bcb84b21e64a07612574">tensorium_RG::YZ</a>, and <a class="el" href="namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7a042e8d2e2849d7b7a5004f2e64277202">tensorium_RG::ZZ</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad199ca87c040a036dd2d3e4b99d7bcb1">tensorium_RG::bssn::compute_RicciZ4()</a>, and <a class="el" href="#af879f7ee0e5e4a40039d26a11abc2c0c">covariant_D_vec()</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="namespacetensorium___r_g_1_1fd_aa6eace6803c9324b60889098af40527c_icgraph.svg" width="590" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

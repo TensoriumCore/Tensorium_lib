@@ -118,33 +118,51 @@ $(function() {
 
 <p>Analytic and Bowen–York puncture initial data generators for the BSSN grid.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_invariants_8hpp_source.html">../Geometry/BSSNInvariants.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_constrain_solver_8hpp_source.html">../Solvers/BSSNConstrainSolver.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_constraints_grid_8hpp_source.html">../Constraints/BSSNConstraintsGrid.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_constraints_grid_8hpp_source.html">../Constraints/BSSNConstraintsGrid.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_gamma_8hpp_source.html">../Geometry/BSSNGamma.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_invariants_8hpp_source.html">../Geometry/BSSNInvariants.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_projection_8hpp_source.html">../Geometry/BSSNProjection.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_ricci_8hpp_source.html">../Geometry/BSSNRicci.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_operations_8hpp_source.html">../Grid/BSSNGridOperations.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_constrain_solver_8hpp_source.html">../Solvers/BSSNConstrainSolver.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNInitialData.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_initial_data_8hpp__incl.svg" width="2144" height="568"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_initial_data_8hpp__incl.svg" width="2356" height="716"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_initial_data_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3AConstraintScratch_3C_20T_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3AConstraintScratch_3C_20T_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">tensorium_RG::init::ConstraintScratch&lt; T &gt;</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20typename_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20typename_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html">tensorium_RG::init::detail::HaloFinalizer&lt; Grid, typename &gt;</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28std_3A_3Adeclval_3C_20Grid_20_26_20_3E_28_29_2Eapply_5Fhalos_28_29_29_3E_20_3E" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail_3A_3AHaloFinalizer_3C_20Grid_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28std_3A_3Adeclval_3C_20Grid_20_26_20_3E_28_29_2Eapply_5Fhalos_28_29_29_3E_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c.html">tensorium_RG::init::detail::HaloFinalizer&lt; Grid, std::void_t&lt; decltype(std::declval&lt; Grid &amp; &gt;().apply_halos())&gt; &gt;</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Ainit" id="r_tensorium_5FRG_3A_3Ainit"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html">tensorium_RG::init</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Ainit_3A_3Adetail" id="r_tensorium_5FRG_3A_3Ainit_3A_3Adetail"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init_1_1detail.html">tensorium_RG::init::detail</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a59eecc4dc9f4245dd6d61c1cbfae2443" id="r_a59eecc4dc9f4245dd6d61c1cbfae2443"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a59eecc4dc9f4245dd6d61c1cbfae2443 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1init_1_1_constraint_scratch.html">ConstraintScratch</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a59eecc4dc9f4245dd6d61c1cbfae2443">tensorium_RG::init::make_constraint_scratch</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:ad3a3e8226526149764c24b82b7d535be" id="r_ad3a3e8226526149764c24b82b7d535be"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ad3a3e8226526149764c24b82b7d535be template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#ad3a3e8226526149764c24b82b7d535be">tensorium_RG::init::zero_z4c_fields</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7" id="r_a3d572ae1c03a2766a4887642259476a7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a3d572ae1c03a2766a4887642259476a7 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a3d572ae1c03a2766a4887642259476a7">tensorium_RG::init::sanitize_bssn_initial_state</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:adf69de1168c89259f3dfc845e1e58c16" id="r_adf69de1168c89259f3dfc845e1e58c16"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:adf69de1168c89259f3dfc845e1e58c16 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#adf69de1168c89259f3dfc845e1e58c16">tensorium_RG::init::print_bssn_state_at</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, const char *label=&quot;BSSN state&quot;)</td></tr>
 <tr class="memitem:a9472401ffc78a6088cfc35eb7416b943" id="r_a9472401ffc78a6088cfc35eb7416b943"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a9472401ffc78a6088cfc35eb7416b943 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a9472401ffc78a6088cfc35eb7416b943">tensorium_RG::init::print_ricci_samples</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
 <tr class="memdesc:a9472401ffc78a6088cfc35eb7416b943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print Ricci tensor samples at representative radii for diagnostic purposes.  <br /></td></tr>
@@ -162,12 +180,19 @@ Functions</h2></td></tr>
 <tr class="memdesc:a7ac89baed6b1550bce5f67c78c287bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Superpose two isotropic Schwarzschild conformal factors for binary puncture data.  <br /></td></tr>
 <tr class="memitem:ac5dbe8c0753adf8b1d8b68c2f5b78703" id="r_ac5dbe8c0753adf8b1d8b68c2f5b78703"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:ac5dbe8c0753adf8b1d8b68c2f5b78703 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703">tensorium_RG::init::binary_bowen_york_puncture_init</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, T m1, T x1, T y1, T z1, const T P1[3], const T S1[3], T m2, T x2, T y2, T z2, const T P2[3], const T S2[3], T r_floor=T(1e-6))</td></tr>
+<tr class="memitem:a369501e72854681990676a8801391ec3" id="r_a369501e72854681990676a8801391ec3"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a369501e72854681990676a8801391ec3 template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a369501e72854681990676a8801391ec3">tensorium_RG::init::ks_kerr_r_H_l</a> (T x, T y, T z, T M, T a, T &amp;r, T &amp;H, T l[3])</td></tr>
+<tr class="memitem:a17fb847787a3692727e4ccfc47c0411a" id="r_a17fb847787a3692727e4ccfc47c0411a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a17fb847787a3692727e4ccfc47c0411a template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a17fb847787a3692727e4ccfc47c0411a">tensorium_RG::init::invert_sym_3x3</a> (const T g_xx, const T g_xy, const T g_xz, const T g_yy, const T g_yz, const T g_zz, T &amp;inv_xx, T &amp;inv_xy, T &amp;inv_xz, T &amp;inv_yy, T &amp;inv_yz, T &amp;inv_zz, T &amp;det)</td></tr>
+<tr class="memitem:a8da49dd5bfbdbe2043286c2d323cc95f" id="r_a8da49dd5bfbdbe2043286c2d323cc95f"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a8da49dd5bfbdbe2043286c2d323cc95f template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f">tensorium_RG::init::kerr_schild_single</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, T M, T a, T xc=T(0), T yc=T(0), T zc=T(0), T r_floor=T(1e-6))</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Analytic and Bowen–York puncture initial data generators for the BSSN grid. </p>
 <p>Provides ready-to-use setups for:</p><ul>
 <li>Minkowski space (all fields equal to flat-space values).</li>
-<li>Single and binary isotropic Schwarzschild punctures with conformal factor \(\psi = 1 + \sum M_a/(2 r_a)\).</li>
+<li>Single and binary isotropic Schwarzschild punctures with conformal factor  \(\psi = 1 + \sum
+M_a/(2 r_a)\).</li>
 <li>Bowen–York extrinsic curvature contributions driven by specified momenta/spins.</li>
 <li>Lichnerowicz equation solver for binary data via successive over-relaxation. Each initializer fills \(\alpha,\chi,\tilde{\gamma}_{ij},\tilde{A}_{ij},K,\beta^i,B^i,\tilde{\Gamma}^i\) and recomputes geometric caches (Christoffels, Ricci) before asserting invariants. </li>
 </ul>

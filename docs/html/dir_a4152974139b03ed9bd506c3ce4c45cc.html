@@ -118,7 +118,7 @@ $(function() {
 <div class="dynheader">
 Directory dependency graph for BSSN_Grid:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="dir_a4152974139b03ed9bd506c3ce4c45cc_dep.svg" width="495" height="390"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="dir_a4152974139b03ed9bd506c3ce4c45cc_dep.svg" width="582" height="536"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-subdirs" class="groupheader"><a id="subdirs" name="subdirs"></a>
@@ -138,10 +138,11 @@ Directories</h2></td></tr>
 BSSN Grid Subsystem</h1>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
 1. Overview</h1>
-<p>The BSSN (Baumgarte–Shapiro–Shibata–Nakamura) formalism rewrites the Einstein field equations in terms of conformally rescaled variables that yield a strongly hyperbolic system well suited to numerical relativity. The <span class="tt"><a class="el" href="group___b_s_s_n___grid.html" title="BSSN-based numerical relativity infrastructure for evolving Einstein&#39;s equations.">BSSN Grid Module</a></span> module provides a structured-array storage format plus kernels for:</p><ul>
-<li>Evolving the vacuum general-relativistic metric degrees of freedom.</li>
-<li>Driving the gauge via 1+log slicing and the Gamma-driver shift.</li>
-<li>Enforcing projection constraints and monitoring the Hamiltonian, momentum, and Gamma constraints. The implementation targets vacuum spacetimes; matter sources are stubbed to zero but the infrastructure is explicit about where they would enter.</li>
+<p><span class="tt"><a class="el" href="group___b_s_s_n___grid.html" title="BSSN-based numerical relativity infrastructure for evolving Einstein&#39;s equations.">BSSN Grid Module</a></span> implements a CCZ4/Z4c-enhanced BSSN scheme. The conformally rescaled Einstein variables are supplemented with the CCZ4 scalar (\Theta) and vector (Z_i) so that constraint violations propagate and damp. The module provides:</p><ul>
+<li>Structure-of-arrays storage plus halo-aware indexing (<span class="tt"><a class="el" href="_b_s_s_n_grid_so_a_8hpp.html" title="Structure-of-arrays storage for all BSSN state variables.">BSSNGridSoA.hpp</a></span>).</li>
+<li>RHS kernels for every geometric, constraint, and gauge variable using sixth-order finite differences and shared KO6 dissipation.</li>
+<li>Ricci builders that inject the (\Delta R^{\mathrm{Z4}}_{ij}) correction before sourcing (\tilde{A}_{ij}), (K), and (\Theta).</li>
+<li>Projection/monitoring utilities that enforce (\det\tilde{\gamma}=1), (\mathrm{Tr}\tilde{A}=0), and emit Hamiltonian/momentum/Gamma norms as well as (||\Theta||_2|| and (||Z||_2||. Only vacuum sources are currently supported, but the RHS stubs highlight where matter terms would be added.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
 2. State Variables</h1>
@@ -152,8 +153,9 @@ BSSN Grid Subsystem</h1>
 <li><b>Conformal factor (\chi)</b> — equal to (e^{-4\phi}), used to rescale the physical metric.</li>
 <li><b>Conformal metric (\tilde{\gamma}_{ij})</b> and its inverse (\tilde{\gamma}^{ij})** — unit-determinant rescaling of the spatial metric.</li>
 <li><b>Trace-free conformal extrinsic curvature (\tilde{A}_{ij})</b>.</li>
-<li><b>Mean curvature (K)</b> — trace of the physical extrinsic curvature.</li>
-<li><b>Conformal connection functions (\tilde{\Gamma}^i)</b> — contracted Christoffel symbols. Each field is stored in a <span class="tt">Field3D</span> with identical strides (<span class="tt"><a class="el" href="_b_s_s_n_grid_so_a_8hpp.html" title="Structure-of-arrays storage for all BSSN state variables.">BSSNGridSoA.hpp</a></span>).</li>
+<li><b>Mean curvature (K)</b> — trace of the physical extrinsic curvature (RHSs mostly use (\hat{K}=K-2\Theta)).</li>
+<li><b>Conformal connection functions (\tilde{\Gamma}^i)</b> — contracted Christoffel symbols.</li>
+<li><b>Constraint fields</b> — (\Theta) and (Z_i) from CCZ4/Z4c. Each field is stored in a <span class="tt">Field3D</span> with identical strides (<span class="tt"><a class="el" href="_b_s_s_n_grid_so_a_8hpp.html" title="Structure-of-arrays storage for all BSSN state variables.">BSSNGridSoA.hpp</a></span>).</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
 3. Evolution Equations</h1>
@@ -164,7 +166,11 @@ BSSN Grid Subsystem</h1>
 </div><!-- fragment --></li>
 <li><b>Trace-free extrinsic curvature</b> <div class="fragment"><div class="line">\partial_t \tilde{A}_{ij} = \beta^k \partial_k \tilde{A}_{ij} + \tilde{A}_{ik} \partial_j \beta^k + \tilde{A}_{jk} \partial_i \beta^k - \frac{2}{3} \tilde{A}_{ij} \partial_k \beta^k - \left(D_i D_j \alpha\right)^{TF} + \alpha \left(R_{ij}^{TF} - 8\pi S_{ij}^{TF}\right),</div>
 </div><!-- fragment --> with (R_{ij}) built from the conformal metric, (D_i) the covariant derivative compatible with the physical metric, and the trace-free projector enforced explicitly; matter terms are zero in the current vacuum implementation.</li>
-<li><b>Mean curvature</b> <div class="fragment"><div class="line">\partial_t K = \beta^k \partial_k K - \gamma^{ij} D_i D_j \alpha + \alpha \left( \tilde{A}_{ij} \tilde{A}^{ij} + \frac{1}{3} K^2 \right).</div>
+<li><b>Mean curvature</b> (implemented with (K) storage and (\hat{K}) sources) <div class="fragment"><div class="line">\partial_t K = \beta^k \partial_k K - \gamma^{ij} D_i D_j \alpha + \alpha \left( \tilde{A}_{ij} \tilde{A}^{ij} + \frac{1}{3} \hat{K}^2 \right) + \alpha \kappa_1 (1-\kappa_2) \Theta.</div>
+</div><!-- fragment --></li>
+<li><b>CCZ4 scalar</b> <div class="fragment"><div class="line">\partial_t \Theta = \beta^k \partial_k \Theta + \frac{\alpha}{2}\left(R + 2 D_k Z^k - \tilde{A}_{ij}\tilde{A}^{ij} + \frac{2}{3} K^2\right) - \alpha \kappa_1 (2 + \kappa_2) \Theta.</div>
+</div><!-- fragment --></li>
+<li><b>CCZ4 vector</b> <div class="fragment"><div class="line">\partial_t Z_i = \beta^k \partial_k Z_i + \alpha \left(D_j \tilde{A}^j_{\ i} + 6 \tilde{A}_{ij} \partial^j \phi - \frac{2}{3} D_i K\right) - \alpha \kappa_z Z_i.</div>
 </div><!-- fragment --></li>
 <li><b>Conformal connection functions</b> <div class="fragment"><div class="line">\begin{aligned}</div>
 <div class="line">\partial_t \tilde{\Gamma}^i &amp;= \beta^k \partial_k \tilde{\Gamma}^i - \tilde{\Gamma}^k \partial_k \beta^i + \frac{2}{3} \tilde{\Gamma}^i \partial_k \beta^k \\</div>
@@ -186,7 +192,7 @@ BSSN Grid Subsystem</h1>
 4. Gauge System</h1>
 <ul>
 <li>(B^i) converts the second-order Gamma-driver into two first-order equations, providing control over the damping of coordinate drifts.</li>
-<li>The damping parameter (\eta) (default 1) and the (3/4) factor are configurable through <span class="tt">GaugeParameters</span> so individual runs can tune the shift driver.</li>
+<li>Damping parameters (\eta), (\kappa_1), (\kappa_2), and (\kappa_z) plus the shared KO6 strength are configurable through <span class="tt">GaugeParameters</span> so individual runs can tune both shift/lapse and Z4 damping.</li>
 <li>Advection by the shift ((\beta^k \partial_k \beta^i) and (\beta^k \partial_k B^i)) is included to preserve hyperbolicity and to keep the gauge locally transported with the physical flow.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
@@ -194,21 +200,21 @@ BSSN Grid Subsystem</h1>
 <ul>
 <li>(\tilde{\gamma}^{ij}) is obtained by explicitly inverting (\tilde{\gamma}_{ij}) per grid point; both tensors are stored simultaneously (<span class="tt">BSSNGridSoA</span>).</li>
 <li>(\tilde{\Gamma}^i_{\ jk}) is computed from spatial derivatives of the conformal metric using <span class="tt"><a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp.html" title="Builders for the Christoffel symbols  and their contraction.">BSSNCHristoffelTilde.hpp</a></span>, and (\tilde{\Gamma}^i) is the negative divergence of (\tilde{\gamma}^{ij}).</li>
-<li>The Ricci tensor is assembled in <span class="tt"><a class="el" href="_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split .">BSSNRicci.hpp</a></span> by combining conformal metric derivatives, the conformal factor gradient, and the stored Christoffels; the resulting (R_{ij}) feeds the (\tilde{A}_{ij}) and constraint kernels.</li>
+<li>The Ricci tensor is assembled in <span class="tt"><a class="el" href="_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split .">BSSNRicci.hpp</a></span> by combining conformal metric derivatives, the conformal factor gradient, and the stored Christoffels; <span class="tt">compute_RicciZ4</span> adds (\Delta R^{\mathrm{Z4}}_{ij} = D_i Z_j + D_j Z_i - \tfrac{2}{3}\gamma_{ij} D_k Z^k) before sourcing (\tilde{A}_{ij}), (K), and (\Theta).</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
 6. Projection Conditions</h1>
 <p>The conformal metric must maintain unit determinant and (\tilde{A}_{ij}) must remain trace-free. <span class="tt">project_bssn_after_update</span> enforces:</p><ul>
 <li>(\det(\tilde{\gamma}_{ij}) = 1) via rescaling.</li>
 <li>(\mathrm{Tr}\,\tilde{A} = \tilde{\gamma}^{ij} \tilde{A}_{ij} = 0) via explicit subtraction of the trace.</li>
-<li>Recompute (\tilde{\gamma}^{ij}) from the renormalized metric and resync (\tilde{\Gamma}^i) using the metric divergence. This helper is intended to run after each update in the forthcoming RK integrator.</li>
+<li>Recompute (\tilde{\gamma}^{ij}) from the renormalized metric and resync (\tilde{\Gamma}^i) using the metric divergence. This helper runs after every RK stage so CCZ4 variables remain consistent with the conformal constraints.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
 7. Constraints</h1>
 <ul>
-<li><b>Hamiltonian constraint</b> (H): monitors (R + K^2 - K_{ij} K^{ij}).</li>
-<li><b>Momentum constraint</b> (M_i): divergence of (\tilde{A}_{ij}) plus derivatives of (K).</li>
-<li><b>Gamma constraint</b> (C_i = \tilde{\Gamma}^i + \partial_j \tilde{\gamma}^{ij}). <span class="tt"><a class="el" href="_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma-constraint evaluation on the structured grid.">BSSNConstraintsGrid.hpp</a></span> evaluates (H), (M_i), and (C_i) while <span class="tt"><a class="el" href="_b_s_s_n_constraint_monitoring_8hpp.html" title="Reduce constraint fields to scalar diagnostics used by the RK driver.">BSSNConstraintMonitoring.hpp</a></span> condenses them into L∞/L² norms and tracks (|\det \tilde{\gamma} - 1|) and (|\mathrm{Tr}\,\tilde{A}|) for diagnostics.</li>
+<li><b>Hamiltonian</b> (H = R + K^2 - K_{ij} K^{ij}).</li>
+<li><b>Momentum</b> (M_i = D_j K^j_{\ i} - D_i K).</li>
+<li><b>Gamma</b> (C_i = \tilde{\Gamma}^i + \partial_j \tilde{\gamma}^{ij} + 2 Z^i). <span class="tt"><a class="el" href="_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma-constraint evaluation on the structured grid.">BSSNConstraintsGrid.hpp</a></span> evaluates (H), (M_i), and (C_i) on the interior region. <span class="tt"><a class="el" href="_b_s_s_n_constraint_monitoring_8hpp.html" title="Reduce constraint fields to scalar diagnostics used by the RK driver.">BSSNConstraintMonitoring.hpp</a></span> condenses them into L∞/L² norms, tracks (|\det \tilde{\gamma} - 1|) and (|\mathrm{Tr}\,\tilde{A}|), and (optionally) reports (||\Theta||_2|| and (||Z||_2|| to verify that CCZ4 damping remains effective.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
 8. Ghost Zones and Padding</h1>

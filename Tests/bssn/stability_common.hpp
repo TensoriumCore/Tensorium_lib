@@ -22,6 +22,22 @@ namespace tensorium::tests {
 
 using Grid = tensorium_RG::BSSNGridSoA<double>;
 
+struct ConstraintScratch {
+    tensorium_RG::Field3D<double> H;
+    tensorium_RG::Field3D<double> M[3];
+    tensorium_RG::Field3D<double> C[3];
+};
+
+inline ConstraintScratch make_constraint_scratch(const Grid &grid) {
+    ConstraintScratch scratch;
+    scratch.H = tensorium_RG::make_field(grid.alpha.st);
+    for (int q = 0; q < 3; ++q) {
+        scratch.M[q] = tensorium_RG::make_field(grid.alpha.st);
+        scratch.C[q] = tensorium_RG::make_field(grid.alpha.st);
+    }
+    return scratch;
+}
+
 inline void center_grid(Grid &grid) {
     const double hx = 0.5 * (static_cast<double>(grid.dims.nx) - 1.0) * grid.dx;
     const double hy = 0.5 * (static_cast<double>(grid.dims.ny) - 1.0) * grid.dy;
@@ -65,7 +81,12 @@ inline std::pair<double, double> gauge_snapshot(const Grid &grid, size_t padding
 
 inline RunSummary summarize_grid(const Grid &grid, size_t padding) {
     RunSummary summary;
-    const auto stats = tensorium_RG::bssn::compute_constraint_monitor(grid, grid.Hc, padding);
+    auto       scratch = make_constraint_scratch(grid);
+    auto &     mutable_grid = const_cast<Grid &>(grid);
+    tensorium_RG::bssn::compute_bssn_constraints(mutable_grid, grid.Ricci, scratch.H, scratch.M,
+                                                 scratch.C, 0.0, std::numeric_limits<double>::max(),
+                                                 0.0, 0.0, 0.0, false);
+    const auto stats = tensorium_RG::bssn::compute_constraint_monitor(grid, scratch.H, padding);
     summary.max_H = stats.max_H;
     summary.max_det_drift = stats.max_det_drift;
     summary.max_trace_A = stats.max_trace_A;
@@ -88,22 +109,24 @@ RunSummary run_stability_case_impl(const std::string &label, const StabilityRunC
     if (logger.enabled())
         logger.write_header();
 
+    auto constraint_fields = make_constraint_scratch(grid);
+
     if (cfg.simulate_only) {
         for (size_t step = 0; step < cfg.steps; ++step) {
             const double dt = tensorium_RG::bssn::compute_dt_cfl(grid, control, cfg.padding);
             tensorium_RG::bssn::compute_bssn_constraints(
-                grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc, 0.0,
+                grid, grid.Ricci, constraint_fields.H, constraint_fields.M, constraint_fields.C, 0.0,
                 std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
-            const auto stats =
-                tensorium_RG::bssn::compute_constraint_monitor(grid, grid.Hc, cfg.padding);
+            const auto stats = tensorium_RG::bssn::compute_constraint_monitor(grid, constraint_fields.H,
+                                                                              cfg.padding);
             if (logger.enabled()) {
                 const auto gauges = gauge_snapshot(grid, cfg.padding);
                 logger.write_step(step, dt, stats, gauges.first, gauges.second);
             }
         }
-        tensorium_RG::bssn::compute_bssn_constraints(grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc,
-                                                     0.0, std::numeric_limits<double>::max(), 0.0,
-                                                     0.0, 0.0, false);
+        tensorium_RG::bssn::compute_bssn_constraints(
+            grid, grid.Ricci, constraint_fields.H, constraint_fields.M, constraint_fields.C, 0.0,
+            std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
         return summarize_grid(grid, cfg.padding);
     }
 
@@ -148,18 +171,19 @@ RunSummary run_stability_case_impl(const std::string &label, const StabilityRunC
             break;
         }
 
-        tensorium_RG::bssn::compute_bssn_constraints(grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc,
-                                                     0.0, std::numeric_limits<double>::max(), 0.0,
-                                                     0.0, 0.0, false);
+        tensorium_RG::bssn::compute_bssn_constraints(
+            grid, grid.Ricci, constraint_fields.H, constraint_fields.M, constraint_fields.C, 0.0,
+            std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
         if (logger.enabled()) {
-            const auto stats =
-                tensorium_RG::bssn::compute_constraint_monitor(grid, grid.Hc, cfg.padding);
+            const auto stats = tensorium_RG::bssn::compute_constraint_monitor(grid, constraint_fields.H,
+                                                                              cfg.padding);
             const auto gauges = gauge_snapshot(grid, cfg.padding);
             logger.write_step(step, dt, stats, gauges.first, gauges.second);
         }
     }
 
-    tensorium_RG::bssn::compute_bssn_constraints(grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc, 0.0,
+    tensorium_RG::bssn::compute_bssn_constraints(grid, grid.Ricci, constraint_fields.H,
+                                                 constraint_fields.M, constraint_fields.C, 0.0,
                                                  std::numeric_limits<double>::max(), 0.0, 0.0, 0.0,
                                                  false);
     auto summary = summarize_grid(grid, cfg.padding);

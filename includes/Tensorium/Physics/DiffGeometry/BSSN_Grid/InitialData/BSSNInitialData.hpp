@@ -4,6 +4,7 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
+#include "../Geometry/BSSNGamma.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
 #include "../Geometry/BSSNProjection.hpp"
 #include "../Geometry/BSSNRicci.hpp"
@@ -12,6 +13,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <type_traits>
+#include <utility>
 
 /**
  * @file BSSNInitialData.hpp
@@ -29,6 +32,87 @@
  */
 
 namespace tensorium_RG::init {
+
+template <typename T> struct ConstraintScratch {
+    Field3D<T> H;
+    Field3D<T> M[3];
+    Field3D<T> C[3];
+};
+
+template <typename T>
+inline ConstraintScratch<T> make_constraint_scratch(const BSSNGridSoA<T> &G) {
+    ConstraintScratch<T> scratch;
+    scratch.H = tensorium_RG::make_field(G.alpha.st);
+    for (int q = 0; q < 3; ++q) {
+        scratch.M[q] = tensorium_RG::make_field(G.alpha.st);
+        scratch.C[q] = tensorium_RG::make_field(G.alpha.st);
+    }
+    return scratch;
+}
+
+template <typename T> inline void zero_z4c_fields(BSSNGridSoA<T> &G) {
+    const size_t total = G.Theta.st.nx_tot * G.Theta.st.ny_tot * G.Theta.st.nz_tot;
+    std::fill_n(G.Theta.ptr(), total, T(0));
+    for (int c = 0; c < 3; ++c)
+        std::fill_n(G.Z[c].ptr(), total, T(0));
+}
+
+namespace detail {
+
+template <typename Grid, typename = void> struct HaloFinalizer {
+    static inline void run(Grid &G) {
+        tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(G);
+    }
+};
+
+template <typename Grid> struct HaloFinalizer<Grid, std::void_t<decltype(std::declval<Grid &>().apply_halos())>> {
+    static inline void run(Grid &G) { G.apply_halos(); }
+};
+
+} // namespace detail
+
+template <typename T> void sanitize_bssn_initial_state(BSSNGridSoA<T> &G) {
+    const size_t nx_tot = G.alpha.st.nx_tot;
+    const size_t ny_tot = G.alpha.st.ny_tot;
+    const size_t nz_tot = G.alpha.st.nz_tot;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = 0; i < nx_tot; ++i) {
+        for (size_t j = 0; j < ny_tot; ++j) {
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t id = G.chi.idx(i, j, k);
+                const T       chi = G.chi.ptr()[id];
+                // Fix import error: convert physical A_ij to conformal A_tilde_ij by multiplying by chi
+                for (int s = 0; s < 6; ++s)
+                    G.A_tilde[s].ptr()[id] *= chi;
+            }
+        }
+    }
+
+    // Ensure Z4c constraint damping variables start at zero
+    zero_z4c_fields(G);
+
+    tensorium_RG::bssn::project_bssn_state(G);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = I0; i < I1; ++i) {
+        for (size_t j = J0; j < J1; ++j) {
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+                T            gamma_conn[3];
+                tensorium_RG::bssn::compute_contracted_gamma_from_metric(G, i, j, k, gamma_conn);
+                G.tildeGamma[0].ptr()[id] = gamma_conn[0];
+                G.tildeGamma[1].ptr()[id] = gamma_conn[1];
+                G.tildeGamma[2].ptr()[id] = gamma_conn[2];
+            }
+        }
+    }
+
+    detail::HaloFinalizer<BSSNGridSoA<T>>::run(G);
+}
 
 template <typename T>
 inline void print_bssn_state_at(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
@@ -230,7 +314,6 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
                 G.A_tilde[ZZ].ptr()[id] = zero;
             }
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
-    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
     double maxAbsR = 0.0;
@@ -289,10 +372,12 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
     printf("[CHECK] samples=%zu, rMin=%g, rMax=%g\n", nSamples, rMin, rMax);
     printf("[CHECK] max |R| for r > %.3f = %.3e\n", rMin, maxAbsR);
     print_ricci_samples(G);
-    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc,
-                                                 zc);
+    auto constraints = make_constraint_scratch(G);
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, constraints.H, constraints.M,
+                                                 constraints.C, 2.0, rMax, xc, yc, zc);
 
-    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
+    tensorium_RG::bssn::print_constraint_norms(G, constraints.H, constraints.M, constraints.C, 2.0,
+                                              rMax, xc, yc, zc);
     tensorium_RG::bssn::assert_invariants(G, "init.minkowski");
     tensorium_RG::bssn::project_bssn_state(G);
 }
@@ -318,6 +403,7 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
     const T one = T(1);
     const T zero = T(0);
     const T half = T(0.5);
+    zero_z4c_fields(G);
 
 #pragma omp parallel for collapse(3)
     for (size_t i = I0; i < I1; ++i)
@@ -370,7 +456,6 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
             }
 
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
-    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
 
     tensorium_RG::bssn::compute_tildeGamma_contracted(G); // Γ̃^i depuis γ̃_ij
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);   // R_ij
@@ -432,10 +517,12 @@ inline void schwarzschild_isotropic(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = 
     printf("[CHECK] max |R| for r > %.3f = %.3e\n", rMin, maxAbsR);
     print_ricci_samples(G);
 
-    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc,
-                                                 zc);
+    auto constraints = make_constraint_scratch(G);
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, constraints.H, constraints.M,
+                                                 constraints.C, 2.0, rMax, xc, yc, zc);
 
-    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, xc, yc, zc);
+    tensorium_RG::bssn::print_constraint_norms(G, constraints.H, constraints.M, constraints.C, 2.0,
+                                              rMax, xc, yc, zc);
     tensorium_RG::bssn::assert_invariants(G, "init.schwarzschild");
     tensorium_RG::bssn::project_bssn_state(G);
 }
@@ -451,6 +538,7 @@ inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x
                                                     T x2, T y2, T z2, T r_floor = T(1e-6)) {
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    zero_z4c_fields(G);
 
     const T one = T(1);
     const T zero = T(0);
@@ -507,7 +595,6 @@ inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x
 
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
 
-    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
 
@@ -567,9 +654,11 @@ inline void binary_schwarzschild_isotropic_2centers(BSSNGridSoA<T> &G, T m1, T x
     printf("[CHECK] max |R| for r > %.3f = %.3e\n", rMin, maxAbsR);
     print_ricci_samples(G);
 
-    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, 2.0, rMax, 0.0, 0.0,
-                                                 0.0);
-    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, 2.0, rMax, 0.0, 0.0, 0.0);
+    auto constraints = make_constraint_scratch(G);
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, constraints.H, constraints.M,
+                                                 constraints.C, 2.0, rMax, 0.0, 0.0, 0.0);
+    tensorium_RG::bssn::print_constraint_norms(G, constraints.H, constraints.M, constraints.C, 2.0,
+                                              rMax, 0.0, 0.0, 0.0);
     tensorium_RG::bssn::assert_invariants(G, "init.binary_schwarzschild");
     tensorium_RG::bssn::project_bssn_state(G);
 }
@@ -580,6 +669,7 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
                                             const T P2[3], const T S2[3], T r_floor = T(1e-6)) {
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    zero_z4c_fields(G);
 
     const T one = T(1);
     const T zero = T(0);
@@ -622,7 +712,7 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
     fill_Atilde_bowen_york_binary(G, x1, y1, z1, P1, S1, x2, y2, z2, P2, S2, r_floor);
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
 
-    solve_lichnerowicz_u_SOR(G, m1, x1, y1, z1, m2, x2, y2, z2, r_floor, 2000, T(1e-10), T(1.8));
+    solve_lichnerowicz_u_SOR(G, m1, x1, y1, z1, m2, x2, y2, z2, r_floor, 2500, T(1e-10), T(1.8));
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
 
 #pragma omp parallel for collapse(3)
@@ -637,7 +727,6 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
     }
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
 
-    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
 
@@ -691,6 +780,7 @@ inline void kerr_schild_single(BSSNGridSoA<T> &G, T M, T a, T xc = T(0), T yc = 
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    zero_z4c_fields(G);
 
     const T one = T(1);
     const T zero = T(0);
@@ -776,13 +866,12 @@ inline void kerr_schild_single(BSSNGridSoA<T> &G, T M, T a, T xc = T(0), T yc = 
             }
 
     bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
-    tensorium_RG::bssn::compute_tildeGamma_full(G, G.Gamma_tilde);
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);
 
 #pragma omp parallel for collapse(3)
-    for (size_t i = I0 + 2; i < I1 - 2; ++i)
-        for (size_t j = J0 + 2; j < J1 - 2; ++j)
-            for (size_t k = K0 + 2; k < K1 - 2; ++k) {
+    for (size_t i = I0 + 3; i < I1 - 3; ++i)
+        for (size_t j = J0 + 3; j < J1 - 3; ++j)
+            for (size_t k = K0 + 3; k < K1 - 3; ++k) {
 
                 const size_t id = G.alpha.idx(i, j, k);
 
@@ -877,11 +966,13 @@ inline void kerr_schild_single(BSSNGridSoA<T> &G, T M, T a, T xc = T(0), T yc = 
         rMax = r_max_cut;
     }
 
-    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, G.Hc, G.Mc, G.Cc, rMin, rMax,
-                                                 (double)xc, (double)yc, (double)zc);
+    auto constraints = make_constraint_scratch(G);
+    tensorium_RG::bssn::compute_bssn_constraints(G, G.Ricci, constraints.H, constraints.M,
+                                                 constraints.C, rMin, rMax, (double)xc, (double)yc,
+                                                 (double)zc);
 
-    tensorium_RG::bssn::print_constraint_norms(G, G.Hc, G.Mc, G.Cc, rMin, rMax, (double)xc,
-                                               (double)yc, (double)zc);
+    tensorium_RG::bssn::print_constraint_norms(G, constraints.H, constraints.M, constraints.C, rMin,
+                                              rMax, (double)xc, (double)yc, (double)zc);
 
     print_ricci_samples(G);
     tensorium_RG::bssn::assert_invariants(G, "init.kerr_schild_single");

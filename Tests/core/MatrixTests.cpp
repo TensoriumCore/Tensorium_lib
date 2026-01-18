@@ -3,6 +3,7 @@
 
 #include "../../includes/Tensorium/Tensorium.hpp"
 
+#include <cmath>
 #include <random>
 
 using namespace tensorium;
@@ -74,3 +75,41 @@ REGISTER_TEST("core.matrix.arithmetic", "Matrix arithmetic and inversion", []() 
     tensorium::tests::expect_near(det, 4 * 6 - 7 * 2, 1e-5f, "matrix det");
 });
 
+REGISTER_TEST("core.matrix.blocked_gemm", "Blocked GEMM executes without failures", []() {
+    constexpr size_t N = 32;
+    Matrix<float> A(N, N);
+    Matrix<float> B(N, N);
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            A(i, j) = static_cast<float>((i + 1) * (j + 2));
+            B(i, j) = static_cast<float>((i == j) ? 1.0f : (i + j));
+        }
+    }
+    auto C = tensorium::mul_mat(A, B);
+    double sum = 0.0;
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j) {
+            TENSORIUM_TEST_ASSERT(std::isfinite(C(i, j)));
+            sum += std::abs(C(i, j));
+        }
+    TENSORIUM_TEST_ASSERT(sum > 0.0);
+});
+
+REGISTER_TEST("core.matrix.mul_mat_vs_naive", "Matrix multiplication matches reference", []() {
+    constexpr size_t N = 6;
+    Matrix<double> A(N, N);
+    Matrix<double> B(N, N);
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j) {
+            A(i, j) = static_cast<double>(i + 2 * j + 1);
+            B(i, j) = static_cast<double>(3 * i - j + 0.5);
+        }
+    auto C = tensorium::mul_mat(A, B);
+    for (size_t i = 0; i < N; ++i)
+        for (size_t j = 0; j < N; ++j) {
+            double sum = 0.0;
+            for (size_t k = 0; k < N; ++k)
+                sum += A(i, k) * B(k, j);
+            tensorium::tests::expect_near(C(i, j), sum, 1e-10, "mul_mat reference");
+        }
+});

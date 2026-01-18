@@ -28,8 +28,7 @@ namespace tensorium_RG {
  * @details
  * Fields are grouped thematically: scalar gauges (`alpha`, `chi`, `K`), vectors (`beta`, `B`,
  * `tildeGamma`), symmetric tensors stored in 6-component packed form (\f$\tilde{\gamma}_{ij}\f$,
- * \f$\tilde{\gamma}^{ij}\f$, \f$\tilde{A}_{ij}\f$), and auxiliary caches (full \f$\tilde{\Gamma}^i_{\ jk}\f$,
- * Ricci, constraints).  Each `Field3D` shares the same stride metadata so pointer arithmetic is
+ * \f$\tilde{\gamma}^{ij}\f$, \f$\tilde{A}_{ij}\f$), and auxiliary caches (Ricci).  Each `Field3D` shares the same stride metadata so pointer arithmetic is
  * identical regardless of the component being accessed.  The grid remembers the physical spacing
  * `(dx,dy,dz)` and origin `(x0,y0,z0)` so derivative kernels can translate between index space and
  * physical coordinates when sampling diagnostics or initial data.
@@ -42,22 +41,19 @@ template <typename T> class BSSNGridSoA {
     Field3D<T> alpha;
     Field3D<T> chi;
     Field3D<T> K;
+    Field3D<T> Theta;
 
     Field3D<T> beta[3];
     Field3D<T> B[3];
     Field3D<T> tildeGamma[3];
+    Field3D<T> Z[3];
 
     Field3D<T> gamma_tilde[6];
     Field3D<T> gamma_tilde_inv[6];
     Field3D<T> A_tilde[6];
 
-    Field3D<T> Gamma_tilde[27];
     T          dx, dy, dz;
     Field3D<T> Ricci[6];
-
-    Field3D<T> Hc;
-    Field3D<T> Mc[3];
-    Field3D<T> Cc[3];
     /**
      * @brief Construct a grid with halo-aware allocation.
      * @param nx,ny,nz Number of physical cells along x/y/z.
@@ -103,11 +99,13 @@ template <typename T> class BSSNGridSoA {
         alloc_field(alpha);
         alloc_field(chi);
         alloc_field(K);
+        alloc_field(Theta);
 
         for (int i = 0; i < 3; ++i) {
             alloc_field(beta[i]);
             alloc_zero_field(B[i]);
             alloc_field(tildeGamma[i]);
+            alloc_field(Z[i]);
         }
 
         for (int s = 0; s < 6; ++s) {
@@ -115,16 +113,8 @@ template <typename T> class BSSNGridSoA {
             alloc_field(gamma_tilde_inv[s]);
             alloc_field(A_tilde[s]);
         }
-        for (int q = 0; q < 27; ++q)
-            alloc_field(Gamma_tilde[q]);
         for (int r = 0; r < 6; ++r)
             alloc_field(Ricci[r]);
-
-        alloc_field(Hc);
-        for (int q = 0; q < 3; ++q) {
-            alloc_field(Mc[q]);
-            alloc_field(Cc[q]);
-        }
     }
 
     /**

@@ -129,7 +129,7 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNRicci.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_ricci_8hpp__incl.svg" width="1140" height="450"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_ricci_8hpp__incl.svg" width="1404" height="598"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -152,12 +152,14 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Assembly of the Ricci tensor split \(R_{ij}=\tilde{R}_{ij}+R^{\chi}_{ij}\). </p>
-<p>The implementation follows the standard BSSN decomposition:          </p><p class="formulaDsp">
+<p>The implementation follows the standard BSSN decomposition:            </p><p class="formulaDsp">
 \[\begin{aligned}
 \tilde{R}_{ij} &amp;= -\tfrac{1}{2}\tilde{\gamma}^{mn}\partial_m\partial_n\tilde{\gamma}_{ij}
  + \tilde{\gamma}_{k(i}\partial_{j)}\tilde{\Gamma}^k + \tilde{\Gamma}^k\tilde{\Gamma}_{kij}
- + \tilde{\gamma}^{mn}\left(2\tilde{\Gamma}^k_{m(i}\tilde{\Gamma}_{j)kn} - \tilde{\Gamma}^k_{ij}\tilde{\Gamma}_{kmn}\right),\\
-R^{\chi}_{ij} &amp;= \tfrac{1}{2}\chi^{-1}\left(\tilde{D}_i\tilde{D}_j\chi + \tilde{\gamma}_{ij}\tilde{D}^k\tilde{D}_k\chi\right)
+ + \tilde{\gamma}^{mn}\left(2\tilde{\Gamma}^k_{m(i}\tilde{\Gamma}_{j)kn} -
+\tilde{\Gamma}^k_{ij}\tilde{\Gamma}_{kmn}\right),\\ R^{\chi}_{ij} &amp;=
+\tfrac{1}{2}\chi^{-1}\left(\tilde{D}_i\tilde{D}_j\chi +
+\tilde{\gamma}_{ij}\tilde{D}^k\tilde{D}_k\chi\right)
   - \tfrac{1}{4}\chi^{-2}\tilde{D}_i\chi\,\tilde{D}_j\chi
   - \tfrac{3}{4}\chi^{-2}\tilde{\gamma}_{ij}\tilde{D}^k\chi\,\tilde{D}_k\chi.
 \end{aligned}

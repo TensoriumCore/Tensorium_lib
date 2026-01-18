@@ -1,15 +1,15 @@
 var indexSectionsWithContent =
 {
   0: "123456789_abcdefghijklmnopqrstuvwxyz—",
-  1: "abcdefgijmprstv",
+  1: "abcdefghijkmprstv",
   2: "st",
   3: "abcdefglmrstv",
   4: "_abcdefghijklmnoprstuvxz",
-  5: "abcdeghijklmnoprstvwxyz",
+  5: "abcdefghijklmnoprstuvwxyz",
   6: "acdmoprstv",
-  7: "ads",
-  8: "cpsxyz",
-  9: "_at",
+  7: "abdksv",
+  8: "abcdgkpstuxyz",
+  9: "_abt",
   10: "bgm",
   11: "123456789abcdefghiklmnopqrstuvz—"
 };

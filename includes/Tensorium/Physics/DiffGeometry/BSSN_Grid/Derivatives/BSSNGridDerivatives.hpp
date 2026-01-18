@@ -1,6 +1,12 @@
 #pragma once
 
 #include "../Grid/BSSNGridOperations.hpp"
+
+namespace tensorium_RG::bssn {
+template <typename T>
+void compute_tildeGamma_symbols(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
+                                T (&Gamma)[3][3][3]);
+}
 #include <cstddef>
 
 /**
@@ -9,14 +15,15 @@
  * @details
  * All evolution, geometry, and constraint kernels call into this header to evaluate spatial
  * derivatives on the structure-of-arrays fields defined in `Fields/BSSNGridSoA.hpp`.  Unless noted
- * otherwise, operators are 4th-order accurate centered differences that require two guard cells on
+ * otherwise, operators are 6th-order accurate centered differences that require three guard cells on
  * each side:
  * \f[
- * \partial_x f_{i,j,k} = \frac{-f_{i+2,j,k} + 8 f_{i+1,j,k} - 8 f_{i-1,j,k} + f_{i-2,j,k}}
- *                             {12\,\Delta x}.
+ * \partial_x f_{i,j,k} = \frac{-f_{i+3,j,k} + 9 f_{i+2,j,k} - 45 f_{i+1,j,k} + 45 f_{i-1,j,k}
+ *                              - 9 f_{i-2,j,k} + f_{i-3,j,k}}
+ *                             {60\,\Delta x}.
  * \f]
- * Second derivatives follow the standard \f$(-1,16,-30,16,-1)/12\f$ stencil, and mixed derivatives
- * use either the classical 2nd-order cross operator (`Dxy`, `Dxz`, `Dyz`) or the 4th-order
+ * Second derivatives follow the standard 6th-order \f$(2,-27,270,-490,270,-27,2)/180\f$ stencil, and
+ * mixed derivatives use either the classical 2nd-order cross operator (`Dxy`, `Dxz`, `Dyz`) or the 4th-order
  * tensor-product version (`Dxy4`, `Dxz4`, `Dyz4`) when Ricci evaluations demand higher accuracy.
  * Upwinded advection relies on biased 3-point formulas activated according to the sign of the local
  * shift. Kreiss–Oliger dissipation implements the 6th-order filter used to stabilize high-frequency
@@ -34,31 +41,41 @@ enum Axis { X = 0, Y = 1, Z = 2 };
 
 inline double get_offset(const double *ptr, ptrdiff_t offset) { return ptr[offset]; }
 
-// First Derivatives (Order 4)
-template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_12dx) {
-    return (-p[2 * sx] + 8.0 * p[sx] - 8.0 * p[-sx] + p[-2 * sx]) * inv_12dx;
+// First Derivatives (Order 6)
+template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_60dx) {
+    return (p[3 * sx] - 9.0 * p[2 * sx] + 45.0 * p[sx] - 45.0 * p[-sx] + 9.0 * p[-2 * sx] -
+            p[-3 * sx]) *
+           inv_60dx;
 }
 
-template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_12dy) {
-    return (-p[2 * sy] + 8.0 * p[sy] - 8.0 * p[-sy] + p[-2 * sy]) * inv_12dy;
+template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_60dy) {
+    return (p[3 * sy] - 9.0 * p[2 * sy] + 45.0 * p[sy] - 45.0 * p[-sy] + 9.0 * p[-2 * sy] -
+            p[-3 * sy]) *
+           inv_60dy;
 }
 
-template <typename T> inline double Dz_ptr(const T *p, double inv_12dz) {
+template <typename T> inline double Dz_ptr(const T *p, double inv_60dz) {
     // Stride Z is always 1 in this layout
-    return (-p[2] + 8.0 * p[1] - 8.0 * p[-1] + p[-2]) * inv_12dz;
+    return (p[3] - 9.0 * p[2] + 45.0 * p[1] - 45.0 * p[-1] + 9.0 * p[-2] - p[-3]) * inv_60dz;
 }
 
-// Second Derivatives (Order 4)
-template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_12dx2) {
-    return (-p[2 * sx] + 16.0 * p[sx] - 30.0 * p[0] + 16.0 * p[-sx] - p[-2 * sx]) * inv_12dx2;
+// Second Derivatives (Order 6)
+template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_180dx2) {
+    return (2.0 * p[-3 * sx] - 27.0 * p[-2 * sx] + 270.0 * p[-sx] - 490.0 * p[0] +
+            270.0 * p[sx] - 27.0 * p[2 * sx] + 2.0 * p[3 * sx]) *
+           inv_180dx2;
 }
 
-template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_12dy2) {
-    return (-p[2 * sy] + 16.0 * p[sy] - 30.0 * p[0] + 16.0 * p[-sy] - p[-2 * sy]) * inv_12dy2;
+template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_180dy2) {
+    return (2.0 * p[-3 * sy] - 27.0 * p[-2 * sy] + 270.0 * p[-sy] - 490.0 * p[0] +
+            270.0 * p[sy] - 27.0 * p[2 * sy] + 2.0 * p[3 * sy]) *
+           inv_180dy2;
 }
 
-template <typename T> inline double Dzz_ptr(const T *p, double inv_12dz2) {
-    return (-p[2] + 16.0 * p[1] - 30.0 * p[0] + 16.0 * p[-1] - p[-2]) * inv_12dz2;
+template <typename T> inline double Dzz_ptr(const T *p, double inv_180dz2) {
+    return (2.0 * p[-3] - 27.0 * p[-2] + 270.0 * p[-1] - 490.0 * p[0] + 270.0 * p[1] -
+            27.0 * p[2] + 2.0 * p[3]) *
+           inv_180dz2;
 }
 
 // Mixed Derivatives (Order 2 - Compact)
@@ -154,32 +171,32 @@ template <typename Field> inline double get(const Field &f, size_t i, size_t j, 
 
 template <typename Field>
 inline double Dx(const Field &f, size_t i, size_t j, size_t k, double dx) {
-    return Dx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (12.0 * dx));
+    return Dx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (60.0 * dx));
 }
 
 template <typename Field>
 inline double Dy(const Field &f, size_t i, size_t j, size_t k, double dy) {
-    return Dy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (12.0 * dy));
+    return Dy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (60.0 * dy));
 }
 
 template <typename Field>
 inline double Dz(const Field &f, size_t i, size_t j, size_t k, double dz) {
-    return Dz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (12.0 * dz));
+    return Dz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (60.0 * dz));
 }
 
 template <typename Field>
 inline double Dxx(const Field &f, size_t i, size_t j, size_t k, double dx) {
-    return Dxx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (12.0 * dx * dx));
+    return Dxx_ptr(f.ptr() + f.idx(i, j, k), f.st.sx, 1.0 / (180.0 * dx * dx));
 }
 
 template <typename Field>
 inline double Dyy(const Field &f, size_t i, size_t j, size_t k, double dy) {
-    return Dyy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (12.0 * dy * dy));
+    return Dyy_ptr(f.ptr() + f.idx(i, j, k), f.st.sy, 1.0 / (180.0 * dy * dy));
 }
 
 template <typename Field>
 inline double Dzz(const Field &f, size_t i, size_t j, size_t k, double dz) {
-    return Dzz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (12.0 * dz * dz));
+    return Dzz_ptr(f.ptr() + f.idx(i, j, k), 1.0 / (180.0 * dz * dz));
 }
 
 template <typename Field>
@@ -281,8 +298,6 @@ inline int sym6(int a, int b) {
     return ZZ;
 }
 
-inline int g27(int up, int lo1, int lo2) { return up * 9 + lo1 * 3 + lo2; }
-
 // =========================================================
 // Complex Kernels (Optimized to reuse pointers)
 // =========================================================
@@ -293,9 +308,9 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
     const size_t id = G.alpha.idx(i, j, k);
 
     // Optimization: Pre-calculate inverses
-    const double    inv_12dx = 1.0 / (12.0 * G.dx);
-    const double    inv_12dy = 1.0 / (12.0 * G.dy);
-    const double    inv_12dz = 1.0 / (12.0 * G.dz);
+    const double    inv_12dx = 1.0 / (60.0 * G.dx);
+    const double    inv_12dy = 1.0 / (60.0 * G.dy);
+    const double    inv_12dz = 1.0 / (60.0 * G.dz);
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
 
@@ -339,12 +354,15 @@ inline void covariant_D_vec(const Grid &G, const Field3 Vfield[3], size_t i, siz
             dV_in[m][a] = dv;
         }
 
+    double Gamma_tilde[3][3][3];
+    tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_tilde);
+
     double Gamma_phys[3][3][3];
     for (int up = 0; up < 3; ++up)
         for (int lo1 = 0; lo1 < 3; ++lo1)
             for (int lo2 = 0; lo2 < 3; ++lo2) {
 
-                const double Gt = G.Gamma_tilde[g27(up, lo1, lo2)].ptr()[id];
+                const double Gt = Gamma_tilde[up][lo1][lo2];
                 const double term1 = (up == lo1) ? dchi[lo2] : 0.0;
                 const double term2 = (up == lo2) ? dchi[lo1] : 0.0;
 

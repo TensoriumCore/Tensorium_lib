@@ -1,5 +1,5 @@
 <map id="tensorium_RG::bssn::BSSNRHSWorkspace::zero" name="tensorium_RG::bssn::BSSNRHSWorkspace::zero">
-<area shape="rect" id="Node000001" title="Reset all RHS accumulators to zero before reuse." alt="" coords="5,5,199,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,199,46"/>
 <area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#abe73e32dfab0287b911bc1240aeb6644" title=" " alt="" coords="436,5,577,46"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,20,247,19,388,19,423,22,418,23,388,24,247,24,200,25"/>
 <area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a96e3dce63cdf301a149a60e4cc273d71" title=" " alt="" coords="247,33,388,74"/>

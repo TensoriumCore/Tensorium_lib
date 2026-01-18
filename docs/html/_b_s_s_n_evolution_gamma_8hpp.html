@@ -118,15 +118,17 @@ $(function() {
 
 <p>RHS for the contracted connection \(\tilde{\Gamma}^i\).  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_perf_timers_8hpp_source.html">../TimeIntegration/BSSNPerfTimers.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_common_8hpp_source.html">BSSNEvolutionCommon.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_evolution_gauge_8hpp_source.html">BSSNEvolutionGauge.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNEvolutionGamma.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gamma_8hpp__incl.svg" width="674" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_gamma_8hpp__incl.svg" width="1346" height="643"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -143,18 +145,21 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adf6c30f846c2c8c8808a6ee13f84106a" id="r_adf6c30f846c2c8c8808a6ee13f84106a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:adf6c30f846c2c8c8808a6ee13f84106a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a">tensorium_RG::bssn::compute_rhs_Gamma</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], size_t padding=4)</td></tr>
-<tr class="memdesc:adf6c30f846c2c8c8808a6ee13f84106a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\tilde{\Gamma}^i\) inside the interior region.  <br /></td></tr>
+<tr class="memitem:a978a32ae9ceab9a3d8fefab63ee46fbe" id="r_a978a32ae9ceab9a3d8fefab63ee46fbe"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a978a32ae9ceab9a3d8fefab63ee46fbe template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a978a32ae9ceab9a3d8fefab63ee46fbe">tensorium_RG::bssn::compute_rhs_Gamma</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; rhs[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; Z[3], const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;Theta, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;gauge_params={}, size_t padding=4)</td></tr>
+<tr class="memdesc:a978a32ae9ceab9a3d8fefab63ee46fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemble \(\partial_t\tilde{\Gamma}^i\) inside the interior region.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>RHS for the contracted connection \(\tilde{\Gamma}^i\). </p>
-<p>Implements the standard BSSN equation with advection, metric-Laplacian of the shift, lapse coupling, and Ricci-driven source terms:         </p><p class="formulaDsp">
+<p>Implements the standard BSSN equation with advection, metric-Laplacian of the shift, lapse coupling, and Ricci-driven source terms:            </p><p class="formulaDsp">
 \[\begin{aligned}
-\partial_t \tilde{\Gamma}^i &amp;= \beta^k\partial_k\tilde{\Gamma}^i - \tilde{\Gamma}^k\partial_k\beta^i
+\partial_t \tilde{\Gamma}^i &amp;= \beta^k\partial_k\tilde{\Gamma}^i -
+\tilde{\Gamma}^k\partial_k\beta^i
   + \tfrac{2}{3}\tilde{\Gamma}^i\partial_k\beta^k
-  + \tilde{\gamma}^{jk}\partial_j\partial_k\beta^i + \tfrac{1}{3}\tilde{\gamma}^{ij}\partial_j\partial_k\beta^k \\
-  &amp;\quad - 2\tilde{A}^{ij}\partial_j\alpha + 2\alpha\left(\tilde{\Gamma}^i_{\ jk}\tilde{A}^{jk} - \tfrac{2}{3}\tilde{\gamma}^{ij}\partial_j K\right)
+  + \tilde{\gamma}^{jk}\partial_j\partial_k\beta^i +
+\tfrac{1}{3}\tilde{\gamma}^{ij}\partial_j\partial_k\beta^k \\
+  &amp;\quad - 2\tilde{A}^{ij}\partial_j\alpha + 2\alpha\left(\tilde{\Gamma}^i_{\ jk}\tilde{A}^{jk} -
+\tfrac{2}{3}\tilde{\gamma}^{ij}\partial_j K\right)
   + \mathcal{D}_6[\tilde{\Gamma}^i].
 \end{aligned}
 \]

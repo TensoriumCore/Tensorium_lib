@@ -123,31 +123,40 @@ $(function() {
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_a_tilde_8hpp_source.html">../Evolution/BSSNEvolutionATilde.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_chi_8hpp_source.html">../Evolution/BSSNEvolutionChi.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_evolution_common_8hpp_source.html">../Evolution/BSSNEvolutionCommon.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_gamma_8hpp_source.html">../Evolution/BSSNEvolutionGamma.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_gamma_tilde_8hpp_source.html">../Evolution/BSSNEvolutionGammaTilde.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_gauge_8hpp_source.html">../Evolution/BSSNEvolutionGauge.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_evolution_k_8hpp_source.html">../Evolution/BSSNEvolutionK.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_evolution_z4_c_8hpp_source.html">../Evolution/BSSNEvolutionZ4C.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_algebraic_8hpp_source.html">../Geometry/BSSNAlgebraic.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_projection_8hpp_source.html">../Geometry/BSSNProjection.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_projection_monitor_8hpp_source.html">../Geometry/BSSNProjectionMonitor.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_c_hristoffel_tilde_8hpp_source.html">../Geometry/BSSNCHristoffelTilde.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_ricci_8hpp_source.html">../Geometry/BSSNRicci.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_b_s_s_n_grid_operations_8hpp_source.html">../Grid/BSSNGridOperations.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_perf_timers_8hpp_source.html">BSSNPerfTimers.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNRK4.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_r_k4_8hpp__incl.svg" width="3048" height="672"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_r_k4_8hpp__incl.svg" width="4188" height="820"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_r_k4_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABoundaryConfigurator_3C_20Boundary_2C_20typename_20_3E" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABoundaryConfigurator_3C_20Boundary_2C_20typename_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_boundary_configurator.html">tensorium_RG::bssn::BoundaryConfigurator&lt; Boundary, typename &gt;</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABoundaryConfigurator_3C_20Boundary_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28Boundary_3A_3Aset_5Fcharacteristic_28std_3A_3Adeclval_3C_20double_20_3E_28_29_2C_20std_3A_3Adeclval_3C_20double_20_3E_28_29_29_29_3E_20_3E" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABoundaryConfigurator_3C_20Boundary_2C_20std_3A_3Avoid_5Ft_3C_20decltype_28Boundary_3A_3Aset_5Fcharacteristic_28std_3A_3Adeclval_3C_20double_20_3E_28_29_2C_20std_3A_3Adeclval_3C_20double_20_3E_28_29_29_29_3E_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb.html">tensorium_RG::bssn::BoundaryConfigurator&lt; Boundary, std::void_t&lt; decltype(Boundary::set_characteristic(std::declval&lt; double &gt;(), std::declval&lt; double &gt;()))&gt; &gt;</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABSSNRHSWorkspace_3C_20T_20_3E" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABSSNRHSWorkspace_3C_20T_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html">tensorium_RG::bssn::BSSNRHSWorkspace&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores RHS buffers for every evolved variable.  <a href="structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#details">More...</a><br /></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ACFLControl_3C_20T_20_3E" id="r_tensorium_5FRG_3A_3Abssn_3A_3ACFLControl_3C_20T_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html">tensorium_RG::bssn::CFLControl&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control parameters for the CFL-based time-step computation.  <a href="structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html#details">More...</a><br /></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABSSNRKStepper_3C_20T_2C_20Boundary_20_3E" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABSSNRKStepper_3C_20T_2C_20Boundary_20_3E"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html">tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Classical RK4 stepper that manages halo exchanges, geometry refresh, and diagnostics.  <a href="classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -163,15 +172,15 @@ Functions</h2></td></tr>
 <tr class="memitem:abe73e32dfab0287b911bc1240aeb6644 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#abe73e32dfab0287b911bc1240aeb6644">tensorium_RG::bssn::detail::zero_field</a> (<a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;f)</td></tr>
 <tr class="memitem:a96e3dce63cdf301a149a60e4cc273d71" id="r_a96e3dce63cdf301a149a60e4cc273d71"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a96e3dce63cdf301a149a60e4cc273d71 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a96e3dce63cdf301a149a60e4cc273d71">tensorium_RG::bssn::detail::zero_fields</a> (<a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; *fields, size_t count)</td></tr>
-<tr class="memitem:a5b06c01193b4bba5247be26afc7a967c" id="r_a5b06c01193b4bba5247be26afc7a967c"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a5b06c01193b4bba5247be26afc7a967c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a5b06c01193b4bba5247be26afc7a967c">tensorium_RG::bssn::detail::copy_blend</a> (const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;base, const <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;delta, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;dst, T scale_dt)</td></tr>
+<tr class="memitem:a04f57f4dc710f649454cdbf5785d3db5" id="r_a04f57f4dc710f649454cdbf5785d3db5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a04f57f4dc710f649454cdbf5785d3db5 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a04f57f4dc710f649454cdbf5785d3db5">tensorium_RG::bssn::detail::smooth_floor</a> (T val, T floor)</td></tr>
+<tr class="memitem:a24bdb39bae45d8cb063ed3c0177beb69" id="r_a24bdb39bae45d8cb063ed3c0177beb69"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a24bdb39bae45d8cb063ed3c0177beb69 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a24bdb39bae45d8cb063ed3c0177beb69">tensorium_RG::bssn::compute_dt_cfl</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html">CFLControl</a>&lt; T &gt; &amp;control, size_t padding=4)</td></tr>
 <tr class="memitem:a437e52f04dbbda7748f36804c79c3705" id="r_a437e52f04dbbda7748f36804c79c3705"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a437e52f04dbbda7748f36804c79c3705 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a437e52f04dbbda7748f36804c79c3705">tensorium_RG::bssn::compute_dt_cfl</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, T cfl_factor, size_t padding=4)</td></tr>
-<tr class="memdesc:a437e52f04dbbda7748f36804c79c3705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a timestep satisfying \(dt = \,\text{CFL}\times \min(\Delta x)/(|\vec{\beta}|+\alpha_{max})\).  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fourth-order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds, RHS evaluations, and constraint monitoring. </p>
-<p>The step sequence follows: halo application → geometry projection/inversion → RHS per stage → stage blending → final projection + diagnostics. The driver templated on a <span class="tt">Boundary</span> functor so users can attach periodic, radiative, or clamp boundary conditions without modifying the physics kernels. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

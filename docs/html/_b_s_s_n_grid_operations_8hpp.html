@@ -119,29 +119,67 @@ $(function() {
 <p>Grid-wide helpers such as halo application shared by evolution and initialization code.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNGridOperations.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_grid_operations_8hpp__incl.svg" width="402" height="303"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_grid_operations_8hpp__incl.svg" width="423" height="303"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_grid_operations_8hpp__dep__incl.svg" width="379" height="186"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_grid_operations_8hpp__dep__incl.svg" width="2842" height="779"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_grid_operations_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABoundaryClamp" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABoundaryClamp"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_boundary_clamp.html">tensorium_RG::bssn::BoundaryClamp</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABoundarySponge" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABoundarySponge"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_boundary_sponge.html">tensorium_RG::bssn::BoundarySponge</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3ABoundaryRadiative" id="r_tensorium_5FRG_3A_3Abssn_3A_3ABoundaryRadiative"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_boundary_radiative.html">tensorium_RG::bssn::BoundaryRadiative</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Abssn" id="r_tensorium_5FRG_3A_3Abssn"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html">tensorium_RG::bssn</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3Adetail" id="r_tensorium_5FRG_3A_3Abssn_3A_3Adetail"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html">tensorium_RG::bssn::detail</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a1524aebfde10cd6e38077899ed147685" id="r_a1524aebfde10cd6e38077899ed147685"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685">tensorium_RG::bssn::BoundaryField</a> { <br />
+&#160;&#160;<a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a6132295fcf5570fb8b0a944ef322a598">tensorium_RG::bssn::Alpha</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685af77c43987f28d7a7b66b77c7f0184b03">tensorium_RG::bssn::Chi</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188">tensorium_RG::bssn::K</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685ad21c855a168b8f09d1ebb1bc596be927">tensorium_RG::bssn::Theta</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a0b87d66b88c72957dfea8c9605016442">tensorium_RG::bssn::Beta</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">tensorium_RG::bssn::B</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685af4e81963da0d175c8503e97d28c1b2eb">tensorium_RG::bssn::TildeGamma</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a4f6e96ddaddc6829e26a47c91fa2fa9f">tensorium_RG::bssn::GammaTilde</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a4ec092d7f8a0e66486816ad2b3b4fc6e">tensorium_RG::bssn::GammaTildeInverse</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a70765081ce1b41a26d6d37101633e21f">tensorium_RG::bssn::ATilde</a>
+, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a21c2e59531c8710156d34a3c30ac81d5">tensorium_RG::bssn::Z</a>
+<br />
+ }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab68985d58ba4dfc40800388462ee943b" id="r_ab68985d58ba4dfc40800388462ee943b"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
+<tr class="memitem:ab68985d58ba4dfc40800388462ee943b template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#ab68985d58ba4dfc40800388462ee943b">tensorium_RG::bssn::detail::apply_physical</a> (<a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;field, const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685">BoundaryField</a> which, int component)</td></tr>
+<tr class="memitem:a5705258d131aed40e38778d078099587" id="r_a5705258d131aed40e38778d078099587"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
+<tr class="memitem:a5705258d131aed40e38778d078099587 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a5705258d131aed40e38778d078099587">tensorium_RG::bssn::detail::apply_halo</a> (<a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;field, const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685">BoundaryField</a> which, int component)</td></tr>
+<tr class="memitem:aae2c416922a6f9b6ecfba6c3cde0f98c" id="r_aae2c416922a6f9b6ecfba6c3cde0f98c"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
+<tr class="memitem:aae2c416922a6f9b6ecfba6c3cde0f98c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#aae2c416922a6f9b6ecfba6c3cde0f98c">tensorium_RG::bssn::detail::apply_batch_physical</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:aa9ca0d198ac81f20587032b819968cba" id="r_aa9ca0d198ac81f20587032b819968cba"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
+<tr class="memitem:aa9ca0d198ac81f20587032b819968cba template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#aa9ca0d198ac81f20587032b819968cba">tensorium_RG::bssn::detail::apply_batch_halo</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
+<tr class="memitem:aad85515357d6a8e1cdedf6f5fbf528fb" id="r_aad85515357d6a8e1cdedf6f5fbf528fb"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#aad85515357d6a8e1cdedf6f5fbf528fb">tensorium_RG::bssn::detail::minkowski_target</a> (<a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685">BoundaryField</a> which, int component)</td></tr>
 <tr class="memitem:afc728a4a48cae76f72521a1dfdcdee11" id="r_afc728a4a48cae76f72521a1dfdcdee11"><td class="memTemplParams" colspan="2">template&lt;typename Boundary, typename T&gt; </td></tr>
 <tr class="memitem:afc728a4a48cae76f72521a1dfdcdee11 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#afc728a4a48cae76f72521a1dfdcdee11">tensorium_RG::bssn::apply_halos_grid</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G)</td></tr>
-<tr class="memdesc:afc728a4a48cae76f72521a1dfdcdee11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the boundary functor to every scalar, vector, and tensor field in the grid.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Grid-wide helpers such as halo application shared by evolution and initialization code. </p>

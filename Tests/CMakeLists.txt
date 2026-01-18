@@ -21,7 +21,10 @@ set(TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/VectorTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/TensorTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/DerivateTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/SpectralTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/AllocatorTests.cpp)
 
 set(TEST_GRID_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/grid/DerivativeTests.cpp)
@@ -30,6 +33,12 @@ set(TEST_BSSN_INITIAL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/initial_data/InitialDataTests.cpp)
 set(TEST_BSSN_CONSTRAINT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/ConstraintTests.cpp)
+if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/TildeGammaSymbolsValidationTests.cpp)
+    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/GammaSourceValidationTests.cpp)
+endif()
 set(TEST_BSSN_RICCI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ricci/RicciTests.cpp)
 set(TEST_BSSN_SOLVER_SOURCES
@@ -38,13 +47,16 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/CCZ4SchwarzschildStabilityTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RHSHaloSentinelTests.cpp)
 
 set(TEST_BSSN_STABILITY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/minkowski_stability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/schwarzschild_stability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/kerr_basic.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/bowen_york_boost_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ccz4_prime_stability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_spherical_analytic_constraints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_hyperbolicity_speeds.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/boundary_conditions.cpp)
@@ -149,10 +161,44 @@ target_include_directories(TensoriumBenchmarks PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
+find_package(PkgConfig QUIET)
+if(PkgConfig_FOUND)
+  pkg_check_modules(FFTW3 QUIET fftw3)
+endif()
+
+if(NOT FFTW3_FOUND)
+  find_path(FFTW3_INCLUDE_DIR fftw3.h
+            PATHS /opt/homebrew/include /usr/local/include /opt/local/include)
+  find_library(FFTW3_LIBRARY NAMES fftw3
+               PATHS /opt/homebrew/lib /usr/local/lib /opt/local/lib)
+  if(FFTW3_INCLUDE_DIR AND FFTW3_LIBRARY)
+    set(FFTW3_FOUND TRUE)
+    set(FFTW3_INCLUDE_DIRS ${FFTW3_INCLUDE_DIR})
+    set(FFTW3_LIBRARIES ${FFTW3_LIBRARY})
+  endif()
+endif()
+
+if(FFTW3_FOUND)
+  target_include_directories(TensoriumBenchmarks PRIVATE ${FFTW3_INCLUDE_DIRS})
+  target_link_libraries(TensoriumBenchmarks PRIVATE ${FFTW3_LIBRARIES})
+  target_compile_definitions(TensoriumBenchmarks PRIVATE TENSORIUM_USE_FFTW)
+endif()
+
 set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
     TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
     TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo)
+
+add_test(NAME tensorium.tests.all COMMAND TensoriumTests)
+add_test(NAME tensorium.tests.core COMMAND TensoriumTestCore)
+add_test(NAME tensorium.tests.grid COMMAND TensoriumTestGrid)
+add_test(NAME tensorium.tests.bssn COMMAND TensoriumTestBSSN)
+if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+  add_test(NAME gamma_source_validation
+           COMMAND TensoriumTests --test bssn.constraints.gamma_source_validation)
+endif()
+add_test(NAME ccz4_schwarzschild_stability
+         COMMAND TensoriumTests --test bssn.evolution.ccz4_schwarzschild_stability)
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})

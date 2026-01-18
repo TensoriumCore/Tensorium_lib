@@ -6,16 +6,18 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,69,200,76,195,78,162,75"/>
 <area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="448,65,595,121"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="397,90,436,92,430,93,398,95"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="643,5,793,31"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title=" " alt="" coords="643,5,793,31"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="587,62,642,40,657,37,662,36,644,45,588,67"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="643,55,793,80"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title=" " alt="" coords="643,55,793,80"/>
 <area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="595,81,630,79,625,80,596,86"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="643,104,793,130"/>
-<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="596,99,631,106,625,106,596,105"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="645,154,791,194"/>
-<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="591,119,656,148,650,147,590,124"/>
-<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="841,55,991,80"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="773,29,849,50,844,50,773,34"/>
-<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="793,65,828,67,823,68,793,70"/>
-<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="772,101,844,85,849,84,773,106"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title=" " alt="" coords="643,104,793,130"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="596,99,631,106,625,106,596,105"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="645,154,791,194"/>
+<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="591,119,656,148,650,147,590,124"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#ae41c19beb4fbed35a65c5b6bf40fca6e" title=" " alt="" coords="841,5,1012,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="793,16,828,18,822,18,793,21"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1fd.html#a07c6f54f50c56a1c736b6321b5f5384d" title=" " alt="" coords="841,55,1012,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="793,65,828,67,822,68,793,70"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#a9a6d00f8df14b450c0da7183a3edc301" title=" " alt="" coords="841,104,1012,130"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="793,114,828,117,822,117,793,119"/>
 </map>

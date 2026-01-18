@@ -9,5 +9,7 @@ var structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace =
     [ "chi", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a7ffb6f666da9abdda314efd59776caba", null ],
     [ "gamma_tilde", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#aa56cb8257b69a3d82fcdb2118ff02e1d", null ],
     [ "K", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a33a6cc93db8a52549dad312d627b1d90", null ],
-    [ "tildeGamma", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ad5e49ce7745f753beb613d87cf0485c8", null ]
+    [ "Theta", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a933357c76ec93b98d7fec859148e6a4d", null ],
+    [ "tildeGamma", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#ad5e49ce7745f753beb613d87cf0485c8", null ],
+    [ "Z", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html#a45740b21b2245999ed217763a2e93fd1", null ]
 ];

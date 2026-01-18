@@ -1,5 +1,31 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionCommon.hpp">
-<area shape="rect" id="Node000001" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="5,5,252,76"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="91,124,166,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,74,131,109,126,107,127,78"/>
+<area shape="rect" id="Node000001" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="338,5,585,76"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="308,352,383,378"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="488,74,519,122,543,180,550,211,552,241,547,271,533,299,505,326,471,345,434,357,399,363,398,358,433,352,469,340,502,322,529,295,542,269,547,241,545,211,538,181,514,125,487,79"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="461,271,518,297"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="467,74,489,257,484,255,464,79"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="88,124,344,150"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="369,78,263,120,261,116,373,75"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="254,271,437,297"/>
+<area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="447,75,360,259,355,256,443,78"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_grid_operations_8hpp.html" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="111,198,321,223"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="217,147,219,183,214,181,215,152"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="5,434,70,459"/>
+<area shape="poly" id="edge16_Node000004_Node000009" title=" " alt="" coords="177,152,139,171,101,200,81,224,66,252,47,312,39,371,39,418,33,418,34,371,42,311,61,250,77,221,97,196,136,167,180,148"/>
+<area shape="poly" id="edge13_Node000005_Node000002" title=" " alt="" coords="218,221,226,258,233,277,244,295,272,323,305,345,300,345,268,327,239,299,228,280,221,259,216,226"/>
+<area shape="poly" id="edge14_Node000005_Node000003" title=" " alt="" coords="265,221,448,269,443,272,265,227"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="238,221,313,263,308,264,238,227"/>
+<area shape="rect" id="Node000007" href="$_grid_layout_8hpp.html" title=" " alt="" coords="119,345,260,386"/>
+<area shape="poly" id="edge12_Node000005_Node000007" title=" " alt="" coords="213,222,200,272,193,331,188,329,195,271,210,226"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="75,271,128,297"/>
+<area shape="poly" id="edge15_Node000005_Node000012" title=" " alt="" coords="195,226,136,265,132,261,198,222"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="347,295,348,338,343,335,344,300"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="319,299,243,340,241,335,324,296"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="93,434,158,459"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="176,385,147,423,143,419,171,387"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="153,389,76,428,73,424,150,384"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="182,434,250,459"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="198,384,210,420,205,418,195,388"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="275,434,357,459"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="222,384,286,425,281,425,220,389"/>
 </map>

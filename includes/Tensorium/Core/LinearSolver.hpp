@@ -5,6 +5,7 @@
 #include "../Backend/SIMD/SIMD.hpp"
 #include "Matrix.hpp"
 #include "Vector.hpp"
+#include <cmath>
 
 /**
  * @brief Namespace containing linear system solvers
@@ -219,42 +220,15 @@ template <typename K> class Jacobi {
         Vector<K>    x(n, K(0));
         Vector<K>    x_new(n, K(0));
 
-        using Simd = simd::SimdTraits<K, DefaultISA>;
-        using reg = typename Simd::reg;
-        const size_t simd_width = Simd::width;
-
         for (int iter = 0; iter < max_iter; ++iter) {
+            Vector<K> Ax = A.mul_vec(x);
 #pragma omp parallel for schedule(dynamic, 4)
             for (size_t i = 0; i < n; ++i) {
-                if (MathsUtils::_abs(A(i, i)) < 1e-10)
-                    throw std::runtime_error("Jacobi: division by near-zero on diagonal, matrix "
-                                             "likely not diagonally dominant.");
-
-                reg    sum_vec = Simd::setzero();
-                size_t j = 0;
-
-                for (; j + simd_width <= n; j += simd_width) {
-                    reg a_vec = Simd::loadu(&A(i, j));
-                    reg x_vec = Simd::loadu(&x[j]);
-
-                    if (i >= j && i < j + simd_width) {
-                        std::array<K, simd_width> mask_arr;
-                        Simd::storeu(mask_arr.data(), a_vec);
-                        mask_arr[i - j] = K(0);
-                        a_vec = Simd::loadu(mask_arr.data());
-                    }
-
-                    sum_vec = Simd::fma(a_vec, x_vec, sum_vec);
-                }
-
-                K sigma = Simd::horizontal_add(sum_vec);
-
-                for (; j < n; ++j) {
-                    if (j != i)
-                        sigma += A(i, j) * x[j];
-                }
-
-                x_new[i] = (b[i] - sigma) / A(i, i);
+                K diag = A(i, i);
+                if (std::abs(diag) < K(1e-10))
+                    throw std::runtime_error("Jacobi: division by near-zero on diagonal, matrix likely not diagonally dominant.");
+                K sigma = Ax[i] - diag * x[i];
+                x_new[i] = (b[i] - sigma) / diag;
             }
 
             K err = K(0);

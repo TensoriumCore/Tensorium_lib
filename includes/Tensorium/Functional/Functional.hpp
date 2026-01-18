@@ -318,7 +318,7 @@ inline void centered_derivative(const Derivate<K> &input, Derivate<K> &output, s
 template <typename K>
 inline void centered_derivative_order4(const Derivate<K> &input, Derivate<K> &output, size_t axis,
                                        K dx) {
-    centered_derivative_order4(input, output, axis, dx);
+    input.centered_derivative_order4(input, output, axis, dx);
 }
 
 template <typename K, size_t Rank>

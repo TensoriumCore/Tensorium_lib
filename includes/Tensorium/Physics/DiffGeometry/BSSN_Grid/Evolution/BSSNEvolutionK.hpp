@@ -2,7 +2,9 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
+#include "BSSNEvolutionGauge.hpp"
 
 #include <algorithm>
 
@@ -19,30 +21,17 @@
 
 namespace tensorium_RG::bssn {
 
-#ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-#    define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
-    return std::min(lower + guard, upper);
-}
-
-inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
-    return (upper > guard) ? upper - guard : lower;
-}
-#endif
-
 /**
  * @brief Compute \f$\partial_t K\f$ throughout the interior region.
  */
 template <typename T>
-inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t padding = 4) {
+inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t padding = 4,
+                          const GaugeParameters<T> &gauge_params = {}) {
+    BSSN_PROFILE_KERNEL(K);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
-
+    const T ko_sigma = scaled_ko_sigma(gauge_params.ko_sigma);
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total = G.K.st.nx_tot * G.K.st.ny_tot * G.K.st.nz_tot;
-    std::fill(rhs_K.ptr(), rhs_K.ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -56,16 +45,16 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
 
     const T third = T(1) / T(3);
 
-    const double inv_12dx = 1.0 / (12.0 * G.dx);
-    const double inv_12dy = 1.0 / (12.0 * G.dy);
-    const double inv_12dz = 1.0 / (12.0 * G.dz);
+    const double inv_12dx = 1.0 / (60.0 * G.dx);
+    const double inv_12dy = 1.0 / (60.0 * G.dy);
+    const double inv_12dz = 1.0 / (60.0 * G.dz);
     const double inv_2dx = 1.0 / (2.0 * G.dx);
     const double inv_2dy = 1.0 / (2.0 * G.dy);
     const double inv_2dz = 1.0 / (2.0 * G.dz);
 
-    const double inv_12dx2 = 1.0 / (12.0 * G.dx * G.dx);
-    const double inv_12dy2 = 1.0 / (12.0 * G.dy * G.dy);
-    const double inv_12dz2 = 1.0 / (12.0 * G.dz * G.dz);
+    const double inv_12dx2 = 1.0 / (180.0 * G.dx * G.dx);
+    const double inv_12dy2 = 1.0 / (180.0 * G.dy * G.dy);
+    const double inv_12dz2 = 1.0 / (180.0 * G.dz * G.dz);
     const double inv_144dxdy = 1.0 / (144.0 * G.dx * G.dy);
     const double inv_144dxdz = 1.0 / (144.0 * G.dx * G.dz);
     const double inv_144dydz = 1.0 / (144.0 * G.dy * G.dz);
@@ -82,6 +71,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
+            const T *p_theta = G.Theta.ptr() + idx_start;
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
@@ -89,12 +79,14 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
             const T *p_gam[6];
             const T *p_gam_inv[6];
             const T *p_A[6];
+            const T *p_Ricci[6];
             T       *p_rhs = rhs_K.ptr() + idx_start;
 
             for (int s = 0; s < 6; ++s) {
                 p_gam[s] = G.gamma_tilde[s].ptr() + idx_start;
                 p_gam_inv[s] = G.gamma_tilde_inv[s].ptr() + idx_start;
                 p_A[s] = G.A_tilde[s].ptr() + idx_start;
+                p_Ricci[s] = G.Ricci[s].ptr() + idx_start;
             }
 
             for (size_t k = k0; k < k1; ++k) {
@@ -105,6 +97,8 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
+                T       RicciZ4[6];
+                compute_RicciZ4(G, i, j, k, RicciZ4);
 
                 T gamma_phys_inv[3][3];
                 T gamma_phys[3][3];
@@ -243,47 +237,86 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                     }
                 }
 
-                T A_up[3][3];
-                for (int row = 0; row < 3; ++row)
-                    for (int col = 0; col < 3; ++col) {
-                        T sum = T(0);
-                        for (int m = 0; m < 3; ++m)
-                            sum += gamma_tilde_inv[row][m] * A_mat[m][col];
-                        A_up[row][col] = sum;
-                    }
+                const T g_xx = gamma_tilde_inv[0][0];
+                const T g_xy = gamma_tilde_inv[0][1];
+                const T g_xz = gamma_tilde_inv[0][2];
+                const T g_yy = gamma_tilde_inv[1][1];
+                const T g_yz = gamma_tilde_inv[1][2];
+                const T g_zz = gamma_tilde_inv[2][2];
 
-                T A_contract = T(0);
-                for (int row = 0; row < 3; ++row)
-                    for (int col = 0; col < 3; ++col)
-                        A_contract += A_mat[row][col] * A_up[row][col];
+                const T R_xx = *p_Ricci[0] + RicciZ4[0];
+                const T R_xy = *p_Ricci[1] + RicciZ4[1];
+                const T R_xz = *p_Ricci[2] + RicciZ4[2];
+                const T R_yy = *p_Ricci[3] + RicciZ4[3];
+                const T R_yz = *p_Ricci[4] + RicciZ4[4];
+                const T R_zz = *p_Ricci[5] + RicciZ4[5];
 
-                for (int row = 0; row < 3; ++row) {
-                    for (int col = row; col < 3; ++col) {
-                        T sum = T(0);
-                        for (int m = 0; m < 3; ++m)
-                            for (int n = 0; n < 3; ++n)
-                                sum +=
-                                    gamma_tilde_inv[row][m] * gamma_tilde_inv[col][n] * A_mat[m][n];
-                        A_up[row][col] = sum;
-                        A_up[col][row] = sum;
-                    }
-                }
+                const T R_conformal =
+                    g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
+                    T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
+                const T R_scalar = chi * R_conformal;
+                const T ricci_drive = alpha * R_scalar;
 
-                A_contract = T(0);
-                for (int row = 0; row < 3; ++row)
-                    for (int col = 0; col < 3; ++col)
-                        A_contract += A_mat[row][col] * A_up[row][col];
+                const T A_xx = A_mat[0][0];
+                const T A_xy = A_mat[0][1];
+                const T A_xz = A_mat[0][2];
+                const T A_yy = A_mat[1][1];
+                const T A_yz = A_mat[1][2];
+                const T A_zz = A_mat[2][2];
 
-                const T quad = alpha * (A_contract + third * K_val * K_val);
+                const T row0_x = g_xx;
+                const T row0_y = g_xy;
+                const T row0_z = g_xz;
+                const T row1_x = g_xy;
+                const T row1_y = g_yy;
+                const T row1_z = g_yz;
+                const T row2_x = g_xz;
+                const T row2_y = g_yz;
+                const T row2_z = g_zz;
 
-                const T diss = KO6_axis_ptr(p_K, sx) + KO6_axis_ptr(p_K, sy) + KO6_axis_ptr(p_K, 1);
+                const T tmp0_x = A_xx * row0_x + A_xy * row0_y + A_xz * row0_z;
+                const T tmp0_y = A_xy * row0_x + A_yy * row0_y + A_yz * row0_z;
+                const T tmp0_z = A_xz * row0_x + A_yz * row0_y + A_zz * row0_z;
+
+                const T tmp1_x = A_xx * row1_x + A_xy * row1_y + A_xz * row1_z;
+                const T tmp1_y = A_xy * row1_x + A_yy * row1_y + A_yz * row1_z;
+                const T tmp1_z = A_xz * row1_x + A_yz * row1_y + A_zz * row1_z;
+
+                const T tmp2_x = A_xx * row2_x + A_xy * row2_y + A_xz * row2_z;
+                const T tmp2_y = A_xy * row2_x + A_yy * row2_y + A_yz * row2_z;
+                const T tmp2_z = A_xz * row2_x + A_yz * row2_y + A_zz * row2_z;
+
+                const T A_up_xx = row0_x * tmp0_x + row0_y * tmp0_y + row0_z * tmp0_z;
+                const T A_up_xy = row0_x * tmp1_x + row0_y * tmp1_y + row0_z * tmp1_z;
+                const T A_up_xz = row0_x * tmp2_x + row0_y * tmp2_y + row0_z * tmp2_z;
+                const T A_up_yy = row1_x * tmp1_x + row1_y * tmp1_y + row1_z * tmp1_z;
+                const T A_up_yz = row1_x * tmp2_x + row1_y * tmp2_y + row1_z * tmp2_z;
+                const T A_up_zz = row2_x * tmp2_x + row2_y * tmp2_y + row2_z * tmp2_z;
+
+                const T A_contract =
+                    A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
+                    T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
+
+                const T alpha_source = std::max(alpha, gauge_params.min_lapse_for_K);
+                // Limiter prevents K^2 from sourcing runaway growth when alpha collapses.
+                const T K_sq_limited = std::min(K_val * K_val, gauge_params.max_K_squared);
+                const T quad_terms = A_contract + third * K_sq_limited;
+                const T quad = alpha_source * std::clamp(quad_terms, T(-1e3), T(1e3));
+                // K evolves rather than Khat, so include the approximate correction from
+                // dKhat + 2 dTheta when forming the damping term.
+                const T z4c_term = alpha * gauge_params.kappa1 *
+                                   (T(1) - gauge_params.kappa2 -
+                                    T(2) * (T(2) + gauge_params.kappa2)) * (*p_theta);
+                const T diss = KO6_axis_ptr(p_K, sx) + KO6_axis_ptr(p_K, sy) +
+                               KO6_axis_ptr(p_K, 1);
                 const T diss_scaled = (ko_sigma / G.dx) * diss;
 
-                *p_rhs = adv - laplacian + quad + diss_scaled;
+                *p_rhs = adv - laplacian + quad + z4c_term + ricci_drive + diss_scaled;
 
                 ++p_K;
                 ++p_alpha;
                 ++p_chi;
+                ++p_theta;
                 ++p_rhs;
                 for (int c = 0; c < 3; ++c)
                     ++p_beta[c];
@@ -291,6 +324,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                     ++p_gam[s];
                     ++p_gam_inv[s];
                     ++p_A[s];
+                    ++p_Ricci[s];
                 }
             }
         }

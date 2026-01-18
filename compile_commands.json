@@ -1,157 +1,247 @@
 [
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Plugins",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -DTensoriumDispatchPlugin_EXPORTS -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/opt/local/libexec/llvm-20/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/local/include -isystem /opt/homebrew/include  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/TensoriumDispatchPlugin.dir/TensoriumDispatchPlugin.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Plugins",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -DTensoriumDispatchPlugin_EXPORTS -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/opt/local/libexec/llvm-20/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/local/include -isystem /opt/homebrew/include  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/TensoriumDispatchPlugin.dir/TensoriumDispatchPlugin.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumDispatchPlugin.cpp",
   "output": "Plugins/CMakeFiles/TensoriumDispatchPlugin.dir/TensoriumDispatchPlugin.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Plugins",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -DTensoriumLLVM_IRCheck_EXPORTS -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/opt/local/libexec/llvm-20/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/local/include -isystem /opt/homebrew/include  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/TensoriumLLVM_IRCheck.dir/TensoriumLLVM_IRCheck.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumLLVM_IRCheck.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Plugins",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -DTensoriumLLVM_IRCheck_EXPORTS -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/opt/local/libexec/llvm-20/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/local/include -isystem /opt/homebrew/include  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -fPIC   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -o CMakeFiles/TensoriumLLVM_IRCheck.dir/TensoriumLLVM_IRCheck.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumLLVM_IRCheck.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Plugins/TensoriumLLVM_IRCheck.cpp",
   "output": "Plugins/CMakeFiles/TensoriumLLVM_IRCheck.dir/TensoriumLLVM_IRCheck.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/MatrixTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/MatrixTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixTests.cpp",
   "output": "Tests/CMakeFiles/test_core_objs.dir/core/MatrixTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/VectorTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/VectorTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/VectorTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/VectorTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core/VectorTests.cpp",
   "output": "Tests/CMakeFiles/test_core_objs.dir/core/VectorTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/TensorTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/TensorTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/TensorTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/TensorTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core/TensorTests.cpp",
   "output": "Tests/CMakeFiles/test_core_objs.dir/core/TensorTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/LinearSystemsTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/LinearSystemsTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_core_objs.dir/core/LinearSystemsTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/LinearSystemsTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core/LinearSystemsTests.cpp",
   "output": "Tests/CMakeFiles/test_core_objs.dir/core/LinearSystemsTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_grid_objs.dir/grid/DerivativeTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/grid/DerivativeTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_grid_objs.dir/grid/DerivativeTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/grid/DerivativeTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/grid/DerivativeTests.cpp",
   "output": "Tests/CMakeFiles/test_grid_objs.dir/grid/DerivativeTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_initial_objs.dir/bssn/initial_data/InitialDataTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/initial_data/InitialDataTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_initial_objs.dir/bssn/initial_data/InitialDataTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/initial_data/InitialDataTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/initial_data/InitialDataTests.cpp",
   "output": "Tests/CMakeFiles/test_bssn_initial_objs.dir/bssn/initial_data/InitialDataTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_constraints_objs.dir/bssn/constraints/ConstraintTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/constraints/ConstraintTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_constraints_objs.dir/bssn/constraints/ConstraintTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/constraints/ConstraintTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/constraints/ConstraintTests.cpp",
   "output": "Tests/CMakeFiles/test_bssn_constraints_objs.dir/bssn/constraints/ConstraintTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_ricci_objs.dir/bssn/ricci/RicciTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/ricci/RicciTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_ricci_objs.dir/bssn/ricci/RicciTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/ricci/RicciTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/ricci/RicciTests.cpp",
   "output": "Tests/CMakeFiles/test_bssn_ricci_objs.dir/bssn/ricci/RicciTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_solvers_objs.dir/bssn/solvers/SolverTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/solvers/SolverTests.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_solvers_objs.dir/bssn/solvers/SolverTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/solvers/SolverTests.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/solvers/SolverTests.cpp",
   "output": "Tests/CMakeFiles/test_bssn_solvers_objs.dir/bssn/solvers/SolverTests.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNChiEvolutionDemo.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/ATildeEvolutionTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/ATildeEvolutionTests.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/ATildeEvolutionTests.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/ATildeEvolutionTests.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/KEvolutionTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/KEvolutionTests.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/KEvolutionTests.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/KEvolutionTests.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/GammaEvolutionTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/GammaEvolutionTests.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/GammaEvolutionTests.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/GammaEvolutionTests.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/GaugeEvolutionTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/GaugeEvolutionTests.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/GaugeEvolutionTests.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/GaugeEvolutionTests.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/RHSHaloSentinelTests.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/RHSHaloSentinelTests.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/evolution/RHSHaloSentinelTests.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_evolution_objs.dir/bssn/evolution/RHSHaloSentinelTests.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/minkowski_stability.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/minkowski_stability.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/minkowski_stability.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/minkowski_stability.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/schwarzschild_stability.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/schwarzschild_stability.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/schwarzschild_stability.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/schwarzschild_stability.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/kerr_basic.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/kerr_basic.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/kerr_basic.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/kerr_basic.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/bowen_york_boost_stability.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/bowen_york_boost_stability.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/bowen_york_boost_stability.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/bowen_york_boost_stability.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/brown_spherical_analytic_constraints.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/brown_spherical_analytic_constraints.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/brown_spherical_analytic_constraints.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/brown_spherical_analytic_constraints.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/brown_hyperbolicity_speeds.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/brown_hyperbolicity_speeds.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/brown_hyperbolicity_speeds.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/brown_hyperbolicity_speeds.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/test_bssn_stability_objs.dir/bssn/boundary_conditions.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/boundary_conditions.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/boundary_conditions.cpp",
+  "output": "Tests/CMakeFiles/test_bssn_stability_objs.dir/bssn/boundary_conditions.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNChiEvolutionDemo.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNChiEvolutionDemo.cpp",
   "output": "Tests/CMakeFiles/TensoriumChiEvolutionDemo.dir/bssn/binaries/BSSNChiEvolutionDemo.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -o CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNGammaEvolutionDemo.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNGammaEvolutionDemo.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNGammaEvolutionDemo.cpp",
   "output": "Tests/CMakeFiles/TensoriumGammaEvolutionDemo.dir/bssn/binaries/BSSNGammaEvolutionDemo.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/main.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumGaugeEvolutionDemo.dir/bssn/binaries/BSSNGaugeEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNGaugeEvolutionDemo.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNGaugeEvolutionDemo.cpp",
+  "output": "Tests/CMakeFiles/TensoriumGaugeEvolutionDemo.dir/bssn/binaries/BSSNGaugeEvolutionDemo.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumATildeEvolutionDemo.dir/bssn/binaries/BSSNATildeEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNATildeEvolutionDemo.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNATildeEvolutionDemo.cpp",
+  "output": "Tests/CMakeFiles/TensoriumATildeEvolutionDemo.dir/bssn/binaries/BSSNATildeEvolutionDemo.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumKEvolutionDemo.dir/bssn/binaries/BSSNKEvolutionDemo.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNKEvolutionDemo.cpp",
+  "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn/binaries/BSSNKEvolutionDemo.cpp",
+  "output": "Tests/CMakeFiles/TensoriumKEvolutionDemo.dir/bssn/binaries/BSSNKEvolutionDemo.cpp.o"
+},
+{
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/main.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/main.cpp",
   "output": "Tests/CMakeFiles/TensoriumTests.dir/main.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "output": "Tests/CMakeFiles/TensoriumTests.dir/framework/TestRegistry.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTests.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "output": "Tests/CMakeFiles/TensoriumTests.dir/framework/TestRunner.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/core_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core_main.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/core_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core_main.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core_main.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestCore.dir/core_main.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestCore.dir/framework/TestRegistry.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestCore.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestCore.dir/framework/TestRunner.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/grid_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/grid_main.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/grid_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/grid_main.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/grid_main.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestGrid.dir/grid_main.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestGrid.dir/framework/TestRegistry.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestGrid.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestGrid.dir/framework/TestRunner.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/bssn_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn_main.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/bssn_main.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/bssn_main.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/bssn_main.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestBSSN.dir/bssn_main.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/framework/TestRegistry.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRegistry.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestBSSN.dir/framework/TestRegistry.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumTestBSSN.dir/framework/TestRunner.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/framework/TestRunner.cpp",
   "output": "Tests/CMakeFiles/TensoriumTestBSSN.dir/framework/TestRunner.cpp.o"
 },
 {
-  "directory": "/Users/at0m/Desktop/Tensorium_lib/Tests",
-  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumBenchmarks.dir/core/MatrixBenchmark.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixBenchmark.cpp",
+  "directory": "/Users/at0m/Desktop/Tensorium_lib/build/Tests",
+  "command": "/usr/bin/c++ -DTENSORIUM_ARM -DTENSORIUM_BSSN_PROFILE_KERNELS -DTENSORIUM_NO_CUDA -DTENSORIUM_USE_CBLAS -I/opt/local/include -I/Users/at0m/Desktop/Tensorium_lib/Includes -I/opt/local/include/libomp -I/Users/at0m/Desktop/Tensorium_lib/includes -I/Users/at0m/Desktop/Tensorium_lib/Tests -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks  -O3 -mcpu=native -Wno-ignored-attributes -Xpreprocessor -fopenmp -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Xpreprocessor -fopenmp -o CMakeFiles/TensoriumBenchmarks.dir/core/MatrixBenchmark.cpp.o -c /Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixBenchmark.cpp",
   "file": "/Users/at0m/Desktop/Tensorium_lib/Tests/core/MatrixBenchmark.cpp",
   "output": "Tests/CMakeFiles/TensoriumBenchmarks.dir/core/MatrixBenchmark.cpp.o"
 }

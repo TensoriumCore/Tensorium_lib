@@ -1,5 +1,8 @@
 <map id="tensorium_RG::bssn::BSSNRKStepper::apply_rk_update" name="tensorium_RG::bssn::BSSNRKStepper::apply_rk_update">
-<area shape="rect" id="Node000001" title="Combine the four RK stages with weights (1,2,2,1)/6." alt="" coords="217,5,386,61"/>
-<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,13,169,54"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,33,169,36,169,31,204,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="420,5,589,61"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,13,372,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,33,373,36,373,31,407,33"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,5,161,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="190,42,161,45,161,39,195,42"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="176,22,211,24,205,25,177,27"/>
 </map>

@@ -1,9 +1,10 @@
 <map id="tensorium::jacobi_solve" name="tensorium::jacobi_solve">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,164,56"/>
-<area shape="rect" id="Node000002" href="$classtensorium_1_1solver_1_1_jacobi.html#a65dc458a7572a127c93ed2becbed88f9" title="Solve the system using the Jacobi method." alt="" coords="212,23,341,64"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,41,199,43,194,44,164,46"/>
-<area shape="rect" id="Node000003" href="$class_maths_utils.html#aef7c171225ec5072076aa1bc0182cc02" title=" " alt="" coords="407,5,527,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="341,32,394,28,389,29,342,38"/>
-<area shape="rect" id="Node000004" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="389,55,545,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="341,49,376,56,371,56,341,54"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,42,164,68"/>
+<area shape="rect" id="Node000002" href="$classtensorium_1_1solver_1_1_jacobi.html#a65dc458a7572a127c93ed2becbed88f9" title="Solve the system using the Jacobi method." alt="" coords="212,35,341,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,52,199,55,194,55,164,58"/>
+<area shape="rect" id="Node000003" href="$classtensorium_1_1_matrix.html#a5e1172e6298ebc08cc838ee69054ba3d" title="Multiply matrix by a vector using SIMD." alt="" coords="389,5,519,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="341,42,371,39,376,39,342,47"/>
+<area shape="rect" id="Node000004" href="$classtensorium_1_1_vector.html#aa89231755fb9476201cc1b4167b7a3ab" title=" " alt="" coords="567,42,724,68"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="341,54,389,55,519,55,554,57,549,57,519,60,389,60,341,59"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="520,33,555,41,550,41,520,38"/>
 </map>

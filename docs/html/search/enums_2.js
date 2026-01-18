@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sym6_0',['Sym6',['../namespacetensorium___r_g.html#af6a264f42797b6e1d8d4b0a3bb3244b7',1,'tensorium_RG']]]
+  ['diffmode_0',['DiffMode',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53',1,'tensorium_RG']]]
 ];

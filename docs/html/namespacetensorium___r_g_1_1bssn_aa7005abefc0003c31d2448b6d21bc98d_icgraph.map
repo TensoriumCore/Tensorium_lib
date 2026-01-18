@@ -1,7 +1,10 @@
 <map id="tensorium_RG::bssn::compute_constraint_monitor" name="tensorium_RG::bssn::compute_constraint_monitor">
-<area shape="rect" id="Node000001" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="217,31,360,87"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="14,5,160,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,45,161,40,161,35,204,44"/>
-<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,71,169,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,73,170,81,169,75,204,72"/>
+<area shape="rect" id="Node000001" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="420,31,563,87"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="217,5,364,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,45,364,40,364,35,407,44"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,71,372,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="407,72,373,81,372,75,402,73"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,63,161,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="190,100,161,102,161,97,195,100"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="176,79,211,82,205,83,177,85"/>
 </map>

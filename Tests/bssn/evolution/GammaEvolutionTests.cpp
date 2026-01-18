@@ -91,7 +91,8 @@ REGISTER_TEST("bssn.evolution.gamma_contracted", "Γ^i RHS behaves across datase
 
         tensorium_RG::Field3D<double> rhs[3];
         alloc_rhs(grid, rhs);
-        tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs, padding);
+        tensorium_RG::bssn::GaugeParameters<double> params;
+        tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs, grid.Z, grid.Theta, params, padding);
 
         const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
         const double max_int = interior_max(grid, rhs, padding);

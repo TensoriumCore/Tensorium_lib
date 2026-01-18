@@ -7,7 +7,12 @@ var hierarchy =
       [ "TensoriumASTConsumer", "class_tensorium_a_s_t_consumer.html", null ]
     ] ],
     [ "tensorium_RG::BoundaryClamp", "structtensorium___r_g_1_1_boundary_clamp.html", null ],
+    [ "tensorium_RG::bssn::BoundaryClamp", "structtensorium___r_g_1_1bssn_1_1_boundary_clamp.html", null ],
+    [ "tensorium_RG::bssn::BoundaryConfigurator&lt; Boundary, typename &gt;", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator.html", null ],
+    [ "tensorium_RG::bssn::BoundaryConfigurator&lt; Boundary, std::void_t&lt; decltype(Boundary::set_characteristic(std::declval&lt; double &gt;(), std::declval&lt; double &gt;()))&gt; &gt;", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb.html", null ],
     [ "tensorium_RG::BoundaryPeriodic", "structtensorium___r_g_1_1_boundary_periodic.html", null ],
+    [ "tensorium_RG::bssn::BoundaryRadiative", "structtensorium___r_g_1_1bssn_1_1_boundary_radiative.html", null ],
+    [ "tensorium_RG::bssn::BoundarySponge", "structtensorium___r_g_1_1bssn_1_1_boundary_sponge.html", null ],
     [ "tensorium_RG::BSSN&lt; T &gt;", "classtensorium___r_g_1_1_b_s_s_n.html", null ],
     [ "tensorium_RG::BSSNAtildeTensor&lt; K &gt;", "classtensorium___r_g_1_1_b_s_s_n_atilde_tensor.html", null ],
     [ "tensorium_RG::BSSNChristoffel&lt; T &gt;", "classtensorium___r_g_1_1_b_s_s_n_christoffel.html", null ],
@@ -19,9 +24,11 @@ var hierarchy =
     [ "tensorium_RG::bssn::BSSNRKStepper&lt; T, Boundary &gt;", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html", null ],
     [ "tensorium_RG::bssn::BSSNVariables&lt; T &gt;", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_variables.html", null ],
     [ "tensorium::CacheInfo", "classtensorium_1_1_cache_info.html", null ],
+    [ "tensorium_RG::bssn::CFLControl&lt; T &gt;", "structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html", null ],
     [ "tensorium_RG::ChiContext&lt; T &gt;", "structtensorium___r_g_1_1_chi_context.html", null ],
     [ "tensorium_RG::ChristoffelSym&lt; T &gt;", "classtensorium___r_g_1_1_christoffel_sym.html", null ],
     [ "tensorium_RG::bssn::ConstraintMonitorStats", "structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html", null ],
+    [ "tensorium_RG::init::ConstraintScratch&lt; T &gt;", "structtensorium___r_g_1_1init_1_1_constraint_scratch.html", null ],
     [ "tensorium_RG::ConstraintSolver&lt; T &gt;", "classtensorium___r_g_1_1_constraint_solver.html", null ],
     [ "tensorium::Derivate&lt; K &gt;", "classtensorium_1_1_derivate.html", null ],
     [ "tensorium::DerivateND&lt; K, Rank &gt;", "classtensorium_1_1_derivate_n_d.html", null ],
@@ -32,9 +39,14 @@ var hierarchy =
     [ "tensorium::solver::GaussSeidel&lt; K &gt;", "classtensorium_1_1solver_1_1_gauss_seidel.html", null ],
     [ "tensorium::GemmKernelBig&lt; T &gt;", "classtensorium_1_1_gemm_kernel_big.html", null ],
     [ "tensorium_RG::GridDims", "structtensorium___r_g_1_1_grid_dims.html", null ],
+    [ "tensorium_RG::init::detail::HaloFinalizer&lt; Grid, typename &gt;", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer.html", null ],
+    [ "tensorium_RG::init::detail::HaloFinalizer&lt; Grid, std::void_t&lt; decltype(std::declval&lt; Grid &amp; &gt;().apply_halos())&gt; &gt;", "structtensorium___r_g_1_1init_1_1detail_1_1_halo_finalizer_3_01_grid_00_01std_1_1void__t_3_01dec63802b93ee0e92f3e13bd7003720e55c.html", null ],
+    [ "tensorium_RG::bssn::InteriorRegion", "structtensorium___r_g_1_1bssn_1_1_interior_region.html", null ],
     [ "tensorium_RG::bssn::InvariantStats", "structtensorium___r_g_1_1bssn_1_1_invariant_stats.html", null ],
     [ "tensorium_RG::bssn::InvariantTolerances", "structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html", null ],
     [ "tensorium::solver::Jacobi&lt; K &gt;", "classtensorium_1_1solver_1_1_jacobi.html", null ],
+    [ "tensorium_RG::bssn::KernelTimerScope", "structtensorium___r_g_1_1bssn_1_1_kernel_timer_scope.html", null ],
+    [ "tensorium_RG::bssn::KOState", "structtensorium___r_g_1_1bssn_1_1_k_o_state.html", null ],
     [ "MatchFinder::MatchCallback", null, [
       [ "TensoriumASTConsumer::AlignedChecker", "class_tensorium_a_s_t_consumer_1_1_aligned_checker.html", null ]
     ] ],
@@ -62,5 +74,6 @@ var hierarchy =
     [ "tensorium::TensorTraits&lt; Tensor&lt; T, Rank &gt; &gt;", "structtensorium_1_1_tensor_traits_3_01_tensor_3_01_t_00_01_rank_01_4_01_4.html", null ],
     [ "tensorium::TensorTraits&lt; Vector&lt; T &gt; &gt;", "structtensorium_1_1_tensor_traits_3_01_vector_3_01_t_01_4_01_4.html", null ],
     [ "tensorium_RG::TildeGamma&lt; T &gt;", "classtensorium___r_g_1_1_tilde_gamma.html", null ],
+    [ "tensorium::SpectralFFT&lt; T &gt;::TwiddleCache", "structtensorium_1_1_spectral_f_f_t_1_1_twiddle_cache.html", null ],
     [ "tensorium::Vector&lt; K &gt;", "classtensorium_1_1_vector.html", null ]
 ];

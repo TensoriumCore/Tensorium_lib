@@ -1,0 +1,5 @@
+<map id="tensorium_RG::bssn::BSSNRKStepper::apply_chi_floor" name="tensorium_RG::bssn::BSSNRKStepper::apply_chi_floor">
+<area shape="rect" id="Node000001" title="Smoothly limit chi to keep metric well conditioned." alt="" coords="5,5,175,61"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a04f57f4dc710f649454cdbf5785d3db5" title=" " alt="" coords="223,13,366,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,31,210,33,205,33,175,36"/>
+</map>

@@ -119,19 +119,27 @@ $(function() {
 <p>Shared utilities (interior clamping helpers) for all RHS kernels.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNEvolutionCommon.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_common_8hpp__incl.svg" width="258" height="155"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_common_8hpp__incl.svg" width="591" height="466"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_common_8hpp__dep__incl.svg" width="528" height="319"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_common_8hpp__dep__incl.svg" width="1488" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_b_s_s_n_evolution_common_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3AInteriorRegion" id="r_tensorium_5FRG_3A_3Abssn_3A_3AInteriorRegion"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_interior_region.html">tensorium_RG::bssn::InteriorRegion</a></td></tr>
+<tr class="memitem:tensorium_5FRG_3A_3Abssn_3A_3AKOState" id="r_tensorium_5FRG_3A_3Abssn_3A_3AKOState"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_k_o_state.html">tensorium_RG::bssn::KOState</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
@@ -145,6 +153,23 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a8856f16ffa277149897f940d6dd9a184" id="r_a8856f16ffa277149897f940d6dd9a184"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184">tensorium_RG::bssn::clamped_lower</a> (size_t lower, size_t guard, size_t upper)</td></tr>
 <tr class="memitem:ab3f0032f87d8ca3cec1e2110b8189831" id="r_ab3f0032f87d8ca3cec1e2110b8189831"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831">tensorium_RG::bssn::clamped_upper</a> (size_t upper, size_t guard, size_t lower)</td></tr>
+<tr class="memitem:a962ad7602f817114d68dc50df7eaf5a3" id="r_a962ad7602f817114d68dc50df7eaf5a3"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a962ad7602f817114d68dc50df7eaf5a3 template"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_interior_region.html">InteriorRegion</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a962ad7602f817114d68dc50df7eaf5a3">tensorium_RG::bssn::interior_bounds</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, size_t padding)</td></tr>
+<tr class="memitem:a1a3822d1c282c0b0c62d43bae150ac21" id="r_a1a3822d1c282c0b0c62d43bae150ac21"><td class="memTemplParams" colspan="2">template&lt;typename T, typename Fn&gt; </td></tr>
+<tr class="memitem:a1a3822d1c282c0b0c62d43bae150ac21 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a1a3822d1c282c0b0c62d43bae150ac21">tensorium_RG::bssn::for_each_interior_index</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, size_t padding, Fn &amp;&amp;fn)</td></tr>
+<tr class="memitem:abb1a20994e0494b9bc005d3e8a43ba6b" id="r_abb1a20994e0494b9bc005d3e8a43ba6b"><td class="memItemLeft"><a class="el" href="structtensorium___r_g_1_1bssn_1_1_k_o_state.html">KOState</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#abb1a20994e0494b9bc005d3e8a43ba6b">tensorium_RG::bssn::ko_state</a> ()</td></tr>
+<tr class="memitem:a3a3f6e92df9a8f15d5490fa8c654ce23" id="r_a3a3f6e92df9a8f15d5490fa8c654ce23"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a3a3f6e92df9a8f15d5490fa8c654ce23 template"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a3a3f6e92df9a8f15d5490fa8c654ce23">tensorium_RG::bssn::compute_cfl_scale</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, T dt)</td></tr>
+<tr class="memitem:a3c74db7aea89b93c6677546ac1e2712a" id="r_a3c74db7aea89b93c6677546ac1e2712a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a3c74db7aea89b93c6677546ac1e2712a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a3c74db7aea89b93c6677546ac1e2712a">tensorium_RG::bssn::update_ko_scale</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;grid, T dt)</td></tr>
+<tr class="memitem:a64e2f07b59d299d09b094a76e5497a10" id="r_a64e2f07b59d299d09b094a76e5497a10"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a64e2f07b59d299d09b094a76e5497a10">tensorium_RG::bssn::current_ko_scale</a> ()</td></tr>
+<tr class="memitem:a6fd11afc9380d9ac2851eb478bc64d40" id="r_a6fd11afc9380d9ac2851eb478bc64d40"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a6fd11afc9380d9ac2851eb478bc64d40 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a6fd11afc9380d9ac2851eb478bc64d40">tensorium_RG::bssn::scaled_ko_sigma</a> (T base_sigma)</td></tr>
+<tr class="memitem:af7f8c9961cd18523ab29cbc361c049e3" id="r_af7f8c9961cd18523ab29cbc361c049e3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#af7f8c9961cd18523ab29cbc361c049e3">tensorium_RG::bssn::sym_index_to_pair</a> (int s, int &amp;row, int &amp;col)</td></tr>
+<tr class="memitem:ac9d011e751f624e299ed675cfa2319b4" id="r_ac9d011e751f624e299ed675cfa2319b4"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ac9d011e751f624e299ed675cfa2319b4 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ac9d011e751f624e299ed675cfa2319b4">tensorium_RG::bssn::Khat</a> (T K, T Theta)</td></tr>
+<tr class="memitem:ad199ca87c040a036dd2d3e4b99d7bcb1" id="r_ad199ca87c040a036dd2d3e4b99d7bcb1"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ad199ca87c040a036dd2d3e4b99d7bcb1 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad199ca87c040a036dd2d3e4b99d7bcb1">tensorium_RG::bssn::compute_RicciZ4</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t i, size_t j, size_t k, T Z4corr[6])</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Shared utilities (interior clamping helpers) for all RHS kernels. </p>

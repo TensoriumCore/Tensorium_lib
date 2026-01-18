@@ -1,7 +1,4 @@
 var _b_s_s_n_evolution_a_tilde_8hpp =
 [
-    [ "TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED", "_b_s_s_n_evolution_a_tilde_8hpp.html#aabc3a0e366d32711cb9269879b47fa67", null ],
-    [ "tensorium_RG::bssn::clamped_lower", "namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184", null ],
-    [ "tensorium_RG::bssn::clamped_upper", "namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831", null ],
-    [ "tensorium_RG::bssn::compute_rhs_A_tilde", "namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146", null ]
+    [ "tensorium_RG::bssn::compute_rhs_A_tilde", "namespacetensorium___r_g_1_1bssn.html#aa80c746828fb1f97f233031fba6ca218", null ]
 ];

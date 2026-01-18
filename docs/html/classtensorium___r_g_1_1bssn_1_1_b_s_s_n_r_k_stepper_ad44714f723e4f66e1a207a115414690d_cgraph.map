@@ -1,0 +1,128 @@
+<map id="tensorium_RG::bssn::BSSNRKStepper::log_full_bssn_diagnostics" name="tensorium_RG::bssn::BSSNRKStepper::log_full_bssn_diagnostics">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,1158,161,1214"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="1196,1198,1386,1238"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,1212,88,1300,96,1427,115,1580,129,1660,148,1741,173,1819,202,1894,238,1963,280,2023,329,2074,386,2113,417,2127,451,2137,487,2144,525,2146,800,2146,837,2144,873,2138,906,2128,938,2115,995,2079,1047,2031,1092,1974,1131,1910,1164,1839,1192,1765,1216,1688,1235,1612,1263,1466,1279,1341,1287,1256,1290,1252,1284,1342,1268,1466,1241,1613,1221,1690,1197,1766,1169,1841,1135,1912,1096,1977,1051,2035,999,2083,940,2120,908,2133,874,2143,838,2149,800,2151,525,2151,486,2149,450,2143,415,2132,383,2117,326,2078,276,2027,233,1965,197,1896,167,1821,143,1742,124,1661,109,1580,91,1428,83,1300,84,1217"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,1166,372,1206"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,1193,195,1193,191,1197,163,1197"/>
+<area shape="poly" id="edge59_Node000003_Node000001" title=" " alt="" coords="206,1179,178,1179,175,1175,210,1176"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a48a2aa4052dc8e106b2d8f943ce9c3a4" title=" " alt="" coords="442,694,611,750"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="289,1165,294,1091,312,983,328,924,350,865,380,810,418,760,430,752,427,756,422,764,385,813,355,868,333,926,317,984,299,1091,294,1166"/>
+<area shape="rect" id="Node000013" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac87a119e37dd28a113743f448983efa3" title=" " alt="" coords="444,1060,609,1115"/>
+<area shape="poly" id="edge9_Node000003_Node000013" title=" " alt="" coords="339,1163,446,1120,442,1124,343,1167"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium___r_g_1_1bssn.html#ac457bec2cd3c48effd9baaa1d30cb3c4" title="Fill the Hamiltonian , momentum , and Gamma &#160;constraint fields." alt="" coords="434,839,619,880"/>
+<area shape="poly" id="edge13_Node000003_Node000015" title=" " alt="" coords="304,1164,502,890,500,895,309,1167"/>
+<area shape="rect" id="Node000036" href="$namespacetensorium___r_g_1_1bssn.html#aa7005abefc0003c31d2448b6d21bc98d" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="727,1158,870,1214"/>
+<area shape="poly" id="edge39_Node000003_Node000036" title=" " alt="" coords="371,1184,713,1184,709,1188,373,1189"/>
+<area shape="rect" id="Node000039" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82" title="Invoke every RHS kernel using the provided grid snapshot." alt="" coords="420,1647,632,1688"/>
+<area shape="poly" id="edge45_Node000003_Node000039" title=" " alt="" coords="303,1204,511,1633,506,1634,300,1209"/>
+<area shape="rect" id="Node000059" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ae2b06d917afb6213054785d8e7c46f9e" title=" " alt="" coords="448,1285,604,1341"/>
+<area shape="poly" id="edge60_Node000003_Node000059" title=" " alt="" coords="326,1204,421,1257,457,1277,452,1279,419,1262,327,1209"/>
+<area shape="rect" id="Node000060" href="$namespacetensorium___r_g.html#adec8747b34cbb818f714a049f9623ec5" title=" " alt="" coords="454,1875,599,1916"/>
+<area shape="poly" id="edge62_Node000003_Node000060" title=" " alt="" coords="295,1204,312,1287,338,1410,375,1554,422,1698,464,1787,506,1862,501,1861,459,1790,418,1700,369,1555,333,1411,307,1288,295,1209"/>
+<area shape="rect" id="Node000062" href="$namespacetensorium___r_g_1_1bssn.html#a750c6f9b2fa48f09c6b86b0cecfa0a5a" title=" " alt="" coords="706,1238,891,1278"/>
+<area shape="poly" id="edge64_Node000003_Node000062" title=" " alt="" coords="372,1195,692,1241,688,1245,373,1200"/>
+<area shape="rect" id="Node000063" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="436,213,617,269"/>
+<area shape="poly" id="edge68_Node000003_Node000063" title=" " alt="" coords="294,1165,513,286,515,281,299,1166"/>
+<area shape="rect" id="Node000083" href="$namespacetensorium___r_g_1_1bssn.html#a3a219079602abd0309513440b9ee7534" title=" " alt="" coords="452,774,600,814"/>
+<area shape="poly" id="edge76_Node000003_Node000083" title=" " alt="" coords="290,1165,298,1100,318,1009,335,960,356,911,384,866,418,825,440,812,437,816,422,829,388,869,361,914,339,962,323,1010,303,1101,296,1166"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad8eb468e809d08c2e54d28eb0a57e126" title=" " alt="" coords="696,948,901,1003"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="610,746,634,760,665,790,702,836,772,935,767,935,697,839,661,794,631,764,612,752"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1bssn.html#a9e18922ef7a25735939fefe3685605df" title=" " alt="" coords="986,205,1127,261"/>
+<area shape="poly" id="edge7_Node000004_Node000011" title=" " alt="" coords="534,693,553,645,583,585,625,524,650,497,679,473,712,456,743,449,773,449,802,451,830,454,858,452,886,443,915,423,930,405,937,388,940,351,942,312,949,291,963,271,975,263,971,267,967,275,954,294,947,313,945,351,942,389,934,408,918,427,888,448,859,457,830,459,801,457,773,454,743,454,713,461,682,478,654,501,629,527,588,587,558,647,539,695"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#a1a3822d1c282c0b0c62d43bae150ac21" title=" " alt="" coords="975,948,1138,989"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="901,970,962,970,957,973,903,975"/>
+<area shape="rect" id="Node000010" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="966,1013,1147,1039"/>
+<area shape="poly" id="edge6_Node000005_Node000010" title=" " alt="" coords="901,993,975,1009,970,1011,903,998"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1bssn_1_1algebraic__detail.html#a33a96991e42e1c98c26935ea3a2dc17d" title=" " alt="" coords="1215,212,1367,253"/>
+<area shape="poly" id="edge8_Node000011_Node000012" title=" " alt="" coords="1126,230,1202,231,1197,234,1129,235"/>
+<area shape="rect" id="Node000014" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b09cda5fd1b690de5ce22d088cb265b" title=" " alt="" coords="714,1028,883,1083"/>
+<area shape="poly" id="edge10_Node000013_Node000014" title=" " alt="" coords="608,1075,701,1066,696,1069,610,1080"/>
+<area shape="poly" id="edge11_Node000014_Node000006" title=" " alt="" coords="882,1025,981,993,977,996,885,1029"/>
+<area shape="poly" id="edge12_Node000014_Node000010" title=" " alt="" coords="883,1043,953,1037,948,1039,885,1048"/>
+<area shape="poly" id="edge35_Node000015_Node000002" title=" " alt="" coords="618,858,754,863,909,875,984,885,1052,898,1109,914,1149,935,1179,960,1205,990,1226,1023,1244,1058,1271,1126,1286,1183,1281,1181,1266,1127,1240,1060,1222,1026,1201,993,1176,964,1147,939,1107,919,1051,903,984,890,909,881,754,868,620,863"/>
+<area shape="poly" id="edge37_Node000015_Node000010" title=" " alt="" coords="538,878,605,997,645,1058,664,1080,682,1093,743,1119,770,1124,796,1124,850,1114,916,1093,930,1086,939,1076,949,1066,963,1056,996,1043,992,1046,966,1060,953,1070,943,1080,933,1090,918,1098,851,1119,796,1130,769,1129,741,1124,679,1098,661,1083,641,1061,600,1000,538,883"/>
+<area shape="rect" id="Node000016" href="$namespacetensorium___r_g_1_1bssn.html#a882854a29de4e6552fccc878e016fe8d" title="Compare measured invariants against tolerances and throw/log when drifts exceed bounds." alt="" coords="728,756,869,797"/>
+<area shape="poly" id="edge14_Node000015_Node000016" title=" " alt="" coords="594,836,717,800,713,804,598,841"/>
+<area shape="rect" id="Node000018" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355" title="Map an index triple to physical coordinates." alt="" coords="1196,707,1386,748"/>
+<area shape="poly" id="edge34_Node000015_Node000018" title=" " alt="" coords="611,837,631,824,646,804,653,783,660,762,679,743,742,711,810,690,880,678,951,673,1021,675,1086,681,1200,702,1196,704,1086,686,1020,680,951,679,881,683,811,695,744,716,682,747,665,765,658,785,651,807,634,828,615,840"/>
+<area shape="rect" id="Node000020" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="1199,807,1383,848"/>
+<area shape="poly" id="edge36_Node000015_Node000020" title=" " alt="" coords="619,853,1186,830,1182,834,620,858"/>
+<area shape="rect" id="Node000029" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="1206,632,1376,658"/>
+<area shape="poly" id="edge38_Node000015_Node000029" title=" " alt="" coords="614,837,630,824,643,808,649,792,652,757,656,723,664,706,679,691,717,671,771,656,835,646,907,639,1057,635,1193,639,1188,641,1057,640,907,644,836,651,772,661,719,676,682,695,668,709,661,725,657,758,655,793,648,811,634,828,618,840"/>
+<area shape="rect" id="Node000031" href="$namespacetensorium___r_g_1_1bssn.html#ac93e4efe18487bdcf23dc50d43a86c9a" title="Build tolerances that reflect the expected truncation error of the chosen stencil order." alt="" coords="728,488,869,543"/>
+<area shape="poly" id="edge20_Node000015_Node000031" title=" " alt="" coords="616,837,630,824,652,791,660,758,659,725,654,692,649,658,648,624,656,589,678,554,694,540,715,530,712,534,697,544,682,557,661,591,653,624,654,657,659,691,665,724,665,758,657,793,634,828,620,840"/>
+<area shape="rect" id="Node000034" href="$namespacetensorium___r_g_1_1bssn.html#ae50539f34a5756edd9a1d251c90c0b96" title=" " alt="" coords="680,567,917,608"/>
+<area shape="poly" id="edge22_Node000015_Node000034" title=" " alt="" coords="615,837,630,824,647,800,655,776,656,751,654,726,652,701,653,676,661,650,678,624,692,614,689,619,682,628,665,652,658,677,657,701,659,726,661,751,660,777,652,802,634,828,619,840"/>
+<area shape="rect" id="Node000017" href="$namespacetensorium___r_g_1_1bssn.html#a1467fe6bd5dc5bd39c2f06041356faa4" title="Measure det, trace, metric&#45;identity, Gamma&#45;constraint, and minimum&#45; &#160;over the grid." alt="" coords="971,732,1142,773"/>
+<area shape="poly" id="edge15_Node000016_Node000017" title=" " alt="" coords="868,768,957,761,953,764,871,773"/>
+<area shape="poly" id="edge17_Node000017_Node000002" title=" " alt="" coords="1124,771,1150,790,1171,820,1191,864,1230,974,1263,1091,1285,1183,1279,1182,1257,1092,1225,976,1187,866,1166,823,1146,793,1125,776"/>
+<area shape="poly" id="edge16_Node000017_Node000018" title=" " alt="" coords="1141,741,1183,738,1178,741,1143,746"/>
+<area shape="poly" id="edge18_Node000017_Node000020" title=" " alt="" coords="1122,771,1213,801,1208,803,1124,776"/>
+<area shape="poly" id="edge19_Node000017_Node000029" title=" " alt="" coords="1101,730,1249,663,1245,666,1104,734"/>
+<area shape="rect" id="Node000032" href="$namespacetensorium___r_g_1_1bssn.html#ac4afae162c75d02e5d6d90b5ba455d40" title=" " alt="" coords="977,284,1136,325"/>
+<area shape="poly" id="edge21_Node000031_Node000032" title=" " alt="" coords="868,496,893,484,915,467,927,452,933,437,938,406,943,374,950,358,963,342,978,332,974,336,967,345,955,361,948,376,943,407,939,438,931,454,919,471,896,488,872,500"/>
+<area shape="poly" id="edge28_Node000034_Node000002" title=" " alt="" coords="813,605,876,688,919,737,966,783,992,802,1016,815,1061,833,1104,852,1127,868,1150,891,1178,926,1202,965,1241,1046,1268,1122,1285,1183,1280,1182,1263,1123,1236,1048,1197,967,1173,929,1146,895,1123,872,1102,857,1059,838,1014,820,989,806,963,787,915,741,872,692,813,611"/>
+<area shape="poly" id="edge32_Node000034_Node000010" title=" " alt="" coords="820,606,872,665,898,703,919,744,931,782,935,817,931,881,930,910,933,939,944,968,967,999,970,1004,965,1004,963,1003,940,971,928,940,925,910,926,880,930,818,926,783,914,746,893,706,867,668,821,611"/>
+<area shape="poly" id="edge33_Node000034_Node000029" title=" " alt="" coords="916,597,1148,623,1193,630,1188,633,1148,629,918,602"/>
+<area shape="rect" id="Node000035" href="$namespacetensorium___r_g_1_1bssn.html#a4da7b7bef5a1793a45a99f45e590cab4" title=" " alt="" coords="978,450,1134,506"/>
+<area shape="poly" id="edge23_Node000034_Node000035" title=" " alt="" coords="886,564,916,553,940,539,963,523,987,512,983,515,966,527,943,543,918,558,889,569"/>
+<area shape="rect" id="Node000022" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title=" " alt="" coords="1216,383,1366,408"/>
+<area shape="poly" id="edge29_Node000034_Node000022" title=" " alt="" coords="900,565,915,554,929,535,935,517,936,478,938,439,946,420,963,403,994,384,1028,371,1063,364,1100,361,1170,365,1233,377,1228,379,1169,370,1100,366,1064,369,1029,377,996,389,966,407,951,423,943,440,941,478,940,518,933,538,919,557,904,568"/>
+<area shape="rect" id="Node000024" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title=" " alt="" coords="1216,449,1366,475"/>
+<area shape="poly" id="edge30_Node000034_Node000024" title=" " alt="" coords="899,565,915,553,927,540,933,525,936,494,941,464,949,449,963,436,998,418,1035,408,1074,405,1113,407,1187,421,1249,442,1244,444,1185,426,1112,412,1074,410,1036,414,1000,423,966,440,953,452,946,465,942,495,938,526,931,542,918,557,903,569"/>
+<area shape="rect" id="Node000026" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title=" " alt="" coords="1216,515,1366,540"/>
+<area shape="poly" id="edge31_Node000034_Node000026" title=" " alt="" coords="916,571,1203,537,1199,540,918,575"/>
+<area shape="poly" id="edge27_Node000035_Node000029" title=" " alt="" coords="1097,504,1262,622,1256,623,1097,509"/>
+<area shape="poly" id="edge24_Node000035_Node000022" title=" " alt="" coords="1133,448,1240,412,1236,415,1137,453"/>
+<area shape="poly" id="edge25_Node000035_Node000024" title=" " alt="" coords="1134,470,1203,467,1199,470,1136,475"/>
+<area shape="poly" id="edge26_Node000035_Node000026" title=" " alt="" coords="1134,492,1214,510,1209,512,1136,497"/>
+<area shape="poly" id="edge41_Node000036_Node000002" title=" " alt="" coords="869,1164,930,1152,1000,1143,1075,1141,1149,1150,1199,1166,1245,1190,1240,1190,1197,1171,1147,1155,1075,1147,1001,1148,931,1157,872,1169"/>
+<area shape="poly" id="edge43_Node000036_Node000010" title=" " alt="" coords="869,1164,893,1152,915,1138,931,1118,938,1098,946,1077,963,1056,986,1044,982,1047,966,1060,950,1080,943,1099,935,1120,918,1141,896,1157,872,1169"/>
+<area shape="poly" id="edge44_Node000036_Node000029" title=" " alt="" coords="869,1159,1042,1095,1114,1066,1146,1049,1162,1027,1172,1005,1182,961,1180,919,1172,876,1164,833,1161,789,1169,743,1179,719,1194,694,1211,676,1235,663,1231,666,1214,680,1198,697,1184,721,1174,744,1167,789,1170,832,1178,875,1185,918,1187,962,1177,1006,1166,1030,1150,1053,1116,1071,1044,1100,872,1163"/>
+<area shape="rect" id="Node000037" href="$namespacetensorium___r_g_1_1bssn_1_1constraint__monitor__detail.html#a6f95a20ab5b32033e58aebfa0f02d10d" title=" " alt="" coords="986,1165,1127,1221"/>
+<area shape="poly" id="edge40_Node000036_Node000037" title=" " alt="" coords="870,1185,972,1189,968,1192,871,1190"/>
+<area shape="rect" id="Node000038" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="965,1245,1148,1271"/>
+<area shape="poly" id="edge42_Node000036_Node000038" title=" " alt="" coords="870,1204,965,1230,995,1240,990,1241,964,1235,871,1209"/>
+<area shape="rect" id="Node000040" href="$namespacetensorium___r_g_1_1bssn.html#aa80c746828fb1f97f233031fba6ca218" title="Assemble &#160;for each symmetric component." alt="" coords="723,1744,874,1785"/>
+<area shape="poly" id="edge46_Node000039_Node000040" title=" " alt="" coords="573,1686,681,1729,711,1740,705,1741,679,1734,574,1691"/>
+<area shape="rect" id="Node000041" href="$namespacetensorium___r_g_1_1bssn.html#a8d4f3d7f6f7ed10162191acdef732c3a" title="Build &#160;including advection." alt="" coords="727,1810,870,1850"/>
+<area shape="poly" id="edge47_Node000039_Node000041" title=" " alt="" coords="547,1685,605,1740,642,1769,682,1794,715,1810,710,1811,679,1799,639,1774,601,1744,546,1691"/>
+<area shape="rect" id="Node000042" href="$namespacetensorium___r_g_1_1bssn.html#a75dbad82545e00c5b727125fa275a730" title="Assemble &#160;given the previously computed ." alt="" coords="728,1875,869,1916"/>
+<area shape="poly" id="edge48_Node000039_Node000042" title=" " alt="" coords="538,1685,562,1724,593,1771,634,1819,682,1860,715,1878,710,1878,679,1864,630,1823,589,1774,557,1727,537,1691"/>
+<area shape="rect" id="Node000043" href="$namespacetensorium___r_g_1_1bssn.html#a6c35d2ed248f9e9d1b52788040e1023b" title="Assemble ." alt="" coords="728,1940,869,1981"/>
+<area shape="poly" id="edge49_Node000039_Node000043" title=" " alt="" coords="540,1686,615,1822,656,1890,682,1925,716,1946,710,1945,679,1929,651,1893,611,1825,538,1691"/>
+<area shape="rect" id="Node000044" href="$namespacetensorium___r_g_1_1bssn.html#ad91aa16c36da7c77058f3fa0a96851bd" title="Fill the RHS buffer for &#160;inside the padded interior region." alt="" coords="728,2006,869,2046"/>
+<area shape="poly" id="edge50_Node000039_Node000044" title=" " alt="" coords="541,1686,585,1763,635,1862,647,1901,652,1933,660,1962,682,1991,716,2013,710,2012,679,1995,655,1964,646,1934,642,1902,630,1864,580,1766,539,1691"/>
+<area shape="rect" id="Node000045" href="$namespacetensorium___r_g_1_1bssn.html#a978a32ae9ceab9a3d8fefab63ee46fbe" title="Assemble &#160;inside the interior region." alt="" coords="720,1418,877,1458"/>
+<area shape="poly" id="edge51_Node000039_Node000045" title=" " alt="" coords="536,1645,557,1608,589,1560,630,1511,679,1469,707,1457,703,1460,682,1474,634,1515,593,1563,562,1610,540,1648"/>
+<area shape="rect" id="Node000046" href="$namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389" title=" " alt="" coords="706,1352,891,1393"/>
+<area shape="poly" id="edge52_Node000039_Node000046" title=" " alt="" coords="531,1645,549,1596,579,1531,622,1463,649,1431,679,1404,694,1397,690,1400,682,1408,652,1435,626,1466,584,1533,554,1598,536,1648"/>
+<area shape="rect" id="Node000054" href="$namespacetensorium___r_g_1_1bssn.html#ae1e9d6f709c2a690fe2646757323ed3f" title="Compute &#160;throughout the interior region." alt="" coords="728,1483,869,1524"/>
+<area shape="poly" id="edge55_Node000039_Node000054" title=" " alt="" coords="544,1645,601,1590,639,1560,679,1534,715,1521,711,1524,682,1539,642,1564,605,1594,548,1649"/>
+<area shape="rect" id="Node000055" href="$namespacetensorium___r_g_1_1bssn.html#a5259728e6334dff9ec420fcca2c25509" title="RHS for the Z4c scalar ." alt="" coords="726,1548,871,1589"/>
+<area shape="poly" id="edge56_Node000039_Node000055" title=" " alt="" coords="571,1644,679,1600,714,1590,709,1593,681,1605,574,1649"/>
+<area shape="rect" id="Node000056" href="$namespacetensorium___r_g_1_1bssn.html#abcd9294ebedca18f0f1654bb41ec3d78" title="RHS for the Z4c spatial constraint vector &#160;(contravariant)." alt="" coords="728,1614,869,1654"/>
+<area shape="poly" id="edge57_Node000039_Node000056" title=" " alt="" coords="632,1652,715,1643,710,1646,634,1657"/>
+<area shape="rect" id="Node000057" href="$namespacetensorium___r_g_1_1bssn.html#a3c74db7aea89b93c6677546ac1e2712a" title=" " alt="" coords="728,1679,869,1720"/>
+<area shape="poly" id="edge58_Node000039_Node000057" title=" " alt="" coords="632,1677,715,1689,710,1690,633,1683"/>
+<area shape="poly" id="edge53_Node000046_Node000002" title=" " alt="" coords="886,1391,947,1400,1013,1402,1082,1396,1115,1388,1147,1376,1187,1351,1221,1318,1249,1283,1270,1254,1274,1250,1253,1286,1225,1322,1190,1355,1149,1381,1117,1393,1083,1401,1013,1408,946,1405,887,1396"/>
+<area shape="poly" id="edge54_Node000046_Node000010" title=" " alt="" coords="840,1350,879,1323,915,1289,934,1254,941,1223,948,1190,962,1152,997,1095,1032,1053,1036,1049,1001,1098,967,1154,953,1192,947,1224,939,1256,919,1292,883,1327,843,1354"/>
+<area shape="poly" id="edge61_Node000059_Node000002" title=" " alt="" coords="603,1321,713,1330,850,1333,924,1331,999,1325,1075,1314,1147,1297,1202,1274,1253,1246,1248,1249,1204,1279,1149,1302,1076,1319,1000,1330,924,1336,850,1339,713,1335,605,1326"/>
+<area shape="rect" id="Node000061" href="$namespacetensorium___r_g.html#a3826ece6c7a0bcbf83e8f75f2ce3af18" title=" " alt="" coords="721,2071,876,2112"/>
+<area shape="poly" id="edge63_Node000060_Node000061" title=" " alt="" coords="542,1914,599,1984,638,2023,682,2056,710,2072,705,2071,679,2060,634,2027,595,1988,540,1919"/>
+<area shape="poly" id="edge65_Node000062_Node000002" title=" " alt="" coords="891,1276,950,1285,1014,1290,1082,1290,1147,1281,1197,1265,1245,1245,1240,1248,1199,1270,1149,1286,1082,1295,1014,1296,949,1290,892,1282"/>
+<area shape="poly" id="edge67_Node000062_Node000010" title=" " alt="" coords="890,1238,915,1224,932,1208,942,1192,962,1151,1035,1053,1038,1049,967,1154,947,1194,936,1211,918,1228,893,1242"/>
+<area shape="poly" id="edge66_Node000062_Node000038" title=" " alt="" coords="891,1256,951,1257,947,1259,893,1261"/>
+<area shape="poly" id="edge73_Node000063_Node000011" title=" " alt="" coords="537,212,557,170,588,121,628,74,653,54,679,38,743,12,771,5,799,3,826,5,854,12,918,38,960,69,995,108,1022,150,1041,190,1036,190,1017,153,990,111,957,73,915,43,853,17,825,10,799,8,772,10,745,17,682,43,656,59,632,78,592,125,562,173,542,214"/>
+<area shape="rect" id="Node000064" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a113dac293338bb8aab21283d33273455" title="Smoothly limit alpha using Hyperbola smoothing to preserve C1 continuity." alt="" coords="714,53,883,109"/>
+<area shape="poly" id="edge69_Node000063_Node000064" title=" " alt="" coords="555,211,610,164,679,118,701,109,698,113,682,123,614,168,559,214"/>
+<area shape="rect" id="Node000066" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ada33c14519122bc2205d9609954545b4" title="Smoothly limit chi to keep metric well conditioned." alt="" coords="714,133,883,189"/>
+<area shape="poly" id="edge70_Node000063_Node000066" title=" " alt="" coords="615,212,701,188,697,192,619,216"/>
+<area shape="rect" id="Node000067" href="$namespacetensorium___r_g_1_1bssn.html#afc728a4a48cae76f72521a1dfdcdee11" title=" " alt="" coords="728,292,869,333"/>
+<area shape="poly" id="edge71_Node000063_Node000067" title=" " alt="" coords="616,262,715,289,711,292,618,267"/>
+<area shape="rect" id="Node000072" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a8ef12511becd43ce7d672878349b4a70" title=" " alt="" coords="703,357,894,413"/>
+<area shape="poly" id="edge72_Node000063_Node000072" title=" " alt="" coords="562,266,618,305,682,342,695,349,690,351,679,347,615,310,564,271"/>
+<area shape="rect" id="Node000074" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac27e7cdecedf55c2129cab6cdb9080cf" title=" " alt="" coords="710,213,887,269"/>
+<area shape="poly" id="edge74_Node000063_Node000074" title=" " alt="" coords="616,239,697,239,693,242,619,243"/>
+<area shape="poly" id="edge75_Node000074_Node000011" title=" " alt="" coords="886,236,972,234,968,237,889,240"/>
+</map>
