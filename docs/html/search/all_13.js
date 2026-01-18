@@ -1,6 +1,8 @@
 var searchData=
 [
   ['j_0',['j',['../structtensorium___r_g_1_1bssn_1_1_sample_location.html#a1744db8cabbe66d434fd575cd43c8b22',1,'tensorium_RG::bssn::SampleLocation']]],
-  ['jacobi_1',['Jacobi',['../classtensorium_1_1solver_1_1_jacobi.html',1,'tensorium::solver']]],
-  ['jacobi_5fsolve_2',['jacobi_solve',['../namespacetensorium.html#a961202aa0f295c710913121232c4863b',1,'tensorium']]]
+  ['j0_1',['j0',['../structtensorium___r_g_1_1bssn_1_1_interior_region.html#a94e8d73970f4f3cb6d443af6e2ba209e',1,'tensorium_RG::bssn::InteriorRegion']]],
+  ['j1_2',['j1',['../structtensorium___r_g_1_1bssn_1_1_interior_region.html#a4be3ed97b77d8e2313d83b53625fe0e9',1,'tensorium_RG::bssn::InteriorRegion']]],
+  ['jacobi_3',['Jacobi',['../classtensorium_1_1solver_1_1_jacobi.html',1,'tensorium::solver']]],
+  ['jacobi_5fsolve_4',['jacobi_solve',['../namespacetensorium.html#a961202aa0f295c710913121232c4863b',1,'tensorium']]]
 ];

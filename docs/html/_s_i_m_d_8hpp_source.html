@@ -1311,20 +1311,20 @@ $(function() {
 <div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>    <span class="keyword">static</span> <span class="keyword">inline</span> reg sub(reg a, reg b) { <span class="keywordflow">return</span> vsubq_u64(a, b); }</div>
 <div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span> </div>
 <div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>    <span class="keyword">static</span> <span class="keyword">inline</span> reg mul(reg a, reg b) {</div>
-<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>        uint64_t A[2], B[2], R[2];</div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>        uint64_t A[2], <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[2], R[2];</div>
 <div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>        vst1q_u64(A, a);</div>
 <div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>        vst1q_u64(B, b);</div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>        R[0] = A[0] * B[0];</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>        R[1] = A[1] * B[1];</div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>        R[0] = A[0] * <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[0];</div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>        R[1] = A[1] * <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[1];</div>
 <div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>        <span class="keywordflow">return</span> vld1q_u64(R);</div>
 <div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>    }</div>
 <div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>    <span class="keyword">static</span> <span class="keyword">inline</span> reg fmadd(reg a, reg b, reg c) {</div>
-<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>        uint64_t A[2], B[2], C[2], R[2];</div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>        uint64_t A[2], <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[2], C[2], R[2];</div>
 <div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>        vst1q_u64(A, a);</div>
 <div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>        vst1q_u64(B, b);</div>
 <div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span>        vst1q_u64(C, c);</div>
-<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>        R[0] = A[0] * B[0] + C[0];</div>
-<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>        R[1] = A[1] * B[1] + C[1];</div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>        R[0] = A[0] * <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[0] + C[0];</div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>        R[1] = A[1] * <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[1] + C[1];</div>
 <div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>        <span class="keywordflow">return</span> vld1q_u64(R);</div>
 <div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>    }</div>
 <div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>    <span class="keyword">static</span> <span class="keyword">inline</span> reg fma(reg a, reg b, reg c) { <span class="keywordflow">return</span> fmadd(a, b, c); }</div>
@@ -1479,6 +1479,7 @@ $(function() {
 <div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span><span class="preprocessor">#endif </span><span class="comment">// TENSORIUM_ARM</span></div>
 <div class="ttc" id="a_s_i_m_d_8hpp_html_ae4ff5a07c6ff43ed11a3887ef7d524f2"><div class="ttname"><a href="_s_i_m_d_8hpp.html#ae4ff5a07c6ff43ed11a3887ef7d524f2">ALIGN</a></div><div class="ttdeci">#define ALIGN</div><div class="ttdef"><b>Definition</b> SIMD.hpp:31</div></div>
 <div class="ttc" id="anamespacesimd_html"><div class="ttname"><a href="namespacesimd.html">simd</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:52</div></div>
+<div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html_a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">tensorium_RG::bssn::BoundaryField::B</a></div><div class="ttdeci">@ B</div><div class="ttdef"><b>Definition</b> BSSNGridOperations.hpp:30</div></div>
 <div class="ttc" id="anamespacetensorium___r_g_html_a1c0700c897553df855b385b0a9b2eb47"><div class="ttname"><a href="namespacetensorium___r_g.html#a1c0700c897553df855b385b0a9b2eb47">tensorium_RG::__attribute__</a></div><div class="ttdeci">__attribute__((always_inline, hot, flatten)) inline tensorium</div><div class="ttdoc">Compute the inverse of a 2D metric tensor using local matrix inversion.</div><div class="ttdef"><b>Definition</b> ChristoffelSymbol.hpp:161</div></div>
 <div class="ttc" id="astructsimd_1_1_simd_traits_html"><div class="ttname"><a href="structsimd_1_1_simd_traits.html">simd::SimdTraits</a></div><div class="ttdef"><b>Definition</b> SIMD.hpp:54</div></div>
 </div><!-- fragment --></div><!-- contents -->

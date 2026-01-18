@@ -1,22 +1,29 @@
 <map id="tensorium_RG::bssn::project_bssn_state" name="tensorium_RG::bssn::project_bssn_state">
-<area shape="rect" id="Node000001" title="Apply determinant renormalization, &#160;trace&#45;free projection, and &#160;resynchronization." alt="" coords="679,153,821,193"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="235,75,376,130"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="730,138,713,111,691,80,663,52,630,30,581,12,539,9,496,16,443,30,391,50,347,76,344,72,389,46,441,25,495,11,539,4,582,7,633,25,666,48,695,77,718,108,735,140"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="460,40,614,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="697,145,630,110,607,99,607,94,633,105,703,145"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="472,119,602,160"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="662,160,602,153,602,147,667,159"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#aacf72b389561019db6fa8c990db283b2" title="Convenience wrapper that enforces all invariants after every RK stage." alt="" coords="466,315,607,370"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="728,205,686,257,633,305,608,319,607,314,630,300,682,253,723,207"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="452,250,621,291"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="703,201,632,240,602,252,600,247,630,235,698,202"/>
-<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a" title="Solve the Lichnerowicz equation &#160;via red&#45;black SOR." alt="" coords="442,185,631,225"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="661,187,632,193,631,188,667,185"/>
-<area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="217,317,394,373"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="448,344,394,347,394,341,453,343"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="232,253,378,293"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="448,317,375,297,376,291,453,317"/>
-<area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,325,169,365"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="198,345,169,348,169,342,204,345"/>
-<area shape="poly" id="edge10_Node000010_Node000002" title=" " alt="" coords="456,179,441,174,358,133,358,128,443,169,462,179"/>
+<area shape="rect" id="Node000001" title="Apply determinant renormalization, &#160;trace&#45;free projection, and &#160;resynchronization." alt="" coords="887,223,1028,264"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="440,114,581,170"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="946,207,932,166,910,117,879,71,860,51,837,35,789,13,747,9,703,18,650,35,617,51,587,71,538,116,535,112,584,67,615,46,648,30,702,12,746,4,790,8,840,30,863,47,883,67,915,115,937,164,951,209"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="667,45,821,100"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="930,210,890,163,837,115,820,104,820,98,840,111,894,159,936,211"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="677,124,811,165"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="906,215,838,180,808,168,808,163,840,176,911,215"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="679,190,809,230"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="869,230,810,223,809,217,874,230"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#aacf72b389561019db6fa8c990db283b2" title="Convenience wrapper that enforces all invariants after every RK stage." alt="" coords="673,319,815,375"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="909,271,840,310,814,322,813,317,837,305,904,272"/>
+<area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac27e7cdecedf55c2129cab6cdb9080cf" title=" " alt="" coords="656,463,832,519"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="947,276,931,318,908,365,878,412,840,453,824,465,822,460,837,449,874,409,903,362,926,316,942,280"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="660,399,828,440"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="939,276,898,335,871,364,840,390,820,401,818,396,837,385,867,360,894,332,934,278"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1init.html#a6dc697a087b5aca2c323183a66e6d23a" title="Solve the Lichnerowicz equation &#160;via red&#45;black SOR." alt="" coords="649,255,839,296"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="869,257,840,264,839,258,874,256"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="438,327,584,368"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="655,348,585,350,584,345,660,347"/>
+<area shape="rect" id="Node000009" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="420,463,601,519"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="638,491,602,494,602,489,643,491"/>
+<area shape="rect" id="Node000010" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,471,372,512"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="402,491,373,494,372,489,407,491"/>
+<area shape="rect" id="Node000011" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,463,161,519"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="190,501,161,503,161,497,195,500"/>
+<area shape="poly" id="edge11_Node000011_Node000010" title=" " alt="" coords="176,480,211,482,205,483,177,485"/>
+<area shape="poly" id="edge14_Node000013_Node000002" title=" " alt="" coords="660,249,648,244,592,209,545,173,546,168,595,205,651,240,665,249"/>
 </map>

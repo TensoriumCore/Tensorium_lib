@@ -1,13 +1,20 @@
 # Python artifacts
 *.egg-info/
-build/
 dist/
 __pycache__/
+.venv/
 
-# CMake / ninja / cmake-build
-pybuild/
+# Build / CMake
 build/
+pybuild/
 compile_commands.json
+CMakeCache.txt
+CMakeFiles/
+Tests/CMakeFiles/
+CTestTestfile.cmake
+
+# Generated data / logs
+Output/
 *.o
 *.so
 *.a
@@ -15,18 +22,15 @@ compile_commands.json
 *.png
 *.jpeg
 *.jpg
-# python
-.venv/
-.make
-CMakeCache.txt
-Tests/CMakeFiles/
 
+# Tool caches
+.cache/
+.mpl/
+.idea/
+.make
 
 # macOS
 *.DS_Store
 
-# clangd
-.cache/
-.idea/
-Tests/spectral_deriv_output.csv
+# Misc test artifacts
 Tests/spectral_deriv_output.csv

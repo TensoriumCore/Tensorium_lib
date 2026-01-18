@@ -139,8 +139,8 @@ $(function() {
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_function" href="classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d">Matrix&lt;K&gt;</a> C(2, 2);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> b_col0 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[0]);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> b_col1 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[2]);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> b_col0 = Simd::loadu(&amp;B.data[0]);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> b_col1 = Simd::loadu(&amp;B.data[2]);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        K b00 = Simd::extract(b_col0, 0);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        K b10 = Simd::extract(b_col0, 1);</div>
@@ -196,10 +196,10 @@ $(function() {
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <a class="code hl_function" href="classtensorium_1_1_matrix.html#a0fa9f253277970a65e7fb2e9844c277d">Matrix&lt;K&gt;</a> result(4, 4);</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow0 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[0 * 4 + 0]);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow1 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[1 * 4 + 0]);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow2 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[2 * 4 + 0]);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow3 = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[3 * 4 + 0]);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow0 = Simd::loadu(&amp;B.data[0 * 4 + 0]);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow1 = Simd::loadu(&amp;B.data[1 * 4 + 0]);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow2 = Simd::loadu(&amp;B.data[2 * 4 + 0]);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow3 = Simd::loadu(&amp;B.data[3 * 4 + 0]);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        {</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keyword">const</span> K *a = &amp;<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[0 * 4];</div>
@@ -274,7 +274,7 @@ $(function() {
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> col[8];</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; 8; ++j)</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            col[j] = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[j * 8]);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            col[j] = Simd::loadu(&amp;B.data[j * 8]);</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 8; ++i) {</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <span class="keyword">const</span> K *a = &amp;<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[i * 8];</div>
@@ -311,8 +311,8 @@ $(function() {
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> row_lo[16], row_hi[16];</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 16; ++k) {</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            row_lo[k] = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[k * 16 + 0]);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            row_hi[k] = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[k * 16 + 8]);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            row_lo[k] = Simd::loadu(&amp;B.data[k * 16 + 0]);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            row_hi[k] = Simd::loadu(&amp;B.data[k * 16 + 8]);</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        }</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 16; ++i) {</div>
@@ -345,8 +345,8 @@ $(function() {
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow[32][2];</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="preprocessor">#pragma unroll(2)</span></div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 32; ++k) {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            brow[k][0] = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[k * 32 + 0]);</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            brow[k][1] = Simd::loadu(&amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[k * 32 + 16]);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            brow[k][0] = Simd::loadu(&amp;B.data[k * 32 + 0]);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            brow[k][1] = Simd::loadu(&amp;B.data[k * 32 + 16]);</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        }</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">#pragma unroll(2)</span></div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 32; ++i) {</div>
@@ -378,7 +378,7 @@ $(function() {
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <a class="code hl_typedef" href="classtensorium_1_1_matrix_kernel.html#ad383a38c7c68ef38dbab04d0ce8c588f">reg</a> brow_lo[64], brow_hi[64], brow_32[64], brow_48[64];</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 64; ++k) {</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            <span class="keyword">const</span> K *b = &amp;B.<a class="code hl_variable" href="classtensorium_1_1_matrix.html#a8892d0c0c6c72251409d9ee093576f91">data</a>[k * 64];</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            <span class="keyword">const</span> K *b = &amp;B.data[k * 64];</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>            brow_lo[k] = Simd::loadu(b + 0);</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            brow_hi[k] = Simd::loadu(b + 8);</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>            brow_32[k] = Simd::loadu(b + 16);</div>

@@ -51,19 +51,18 @@ void export_slice_csv(const tensorium::tests::Grid &grid, size_t step,
 using tensorium::tests::Grid;
 
 void initialize_single_boost(Grid &grid) {
-    const double scale = 4.0;
-    const double m1 = scale;
-    const double m2 = scale;
+    const double m1 = 1.0;
+    const double m2 = 1.0;
 
-    const double x1 = -12.0, y1 = 0.0, z1 = 0.0;
-    const double x2 = 12.0, y2 = 0.0, z2 = 0.0;
+    const double x1 = -10.0, y1 = 0.0, z1 = 0.0;
+    const double x2 = 10.0, y2 = 0.0, z2 = 0.0;
 
-    const double Py = 0.45 * scale;
+    const double Py = 0.45;
 
     const double P1[3] = {0.0, Py, 0.0};
     const double P2[3] = {0.0, -Py, 0.0};
-    const double S1[3] = {0.0, 0.0, 0.935};
-    const double S2[3] = {0.0, 0.0, 0.935};
+    const double S1[3] = {0.0, 0.0, 0.3};
+    const double S2[3] = {0.0, 0.0, 0.3};
 
     tensorium_RG::init::binary_bowen_york_puncture_init(grid, m1, x1, y1, z1, P1, S1, m2, x2, y2,
                                                         z2, P2, S2, 1e-10);
@@ -74,10 +73,10 @@ void initialize_single_boost(Grid &grid) {
 REGISTER_TEST(
     "bssn.viz.moving_puncture", "Export CSV slices of a moving spinning black hole", []() {
         tensorium::tests::StabilityRunConfig cfg;
-        cfg.nx = 384;
-        cfg.ny = 384;
-        cfg.nz = 384;
-        cfg.spacing = 0.25;
+        cfg.nx = 128;
+        cfg.ny = 128;
+        cfg.nz = 128;
+        cfg.spacing = 0.7;
         cfg.ng = 6;
         cfg.padding = 6;
         cfg.steps = 600;

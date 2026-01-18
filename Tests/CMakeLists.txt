@@ -34,6 +34,7 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/CCZ4SchwarzschildStabilityTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RHSHaloSentinelTests.cpp)
 
 set(TEST_BSSN_STABILITY_SOURCES
@@ -41,6 +42,7 @@ set(TEST_BSSN_STABILITY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/schwarzschild_stability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/kerr_basic.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/bowen_york_boost_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ccz4_prime_stability.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_spherical_analytic_constraints.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_hyperbolicity_speeds.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/boundary_conditions.cpp)
@@ -158,6 +160,8 @@ if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
   add_test(NAME gamma_source_validation
            COMMAND TensoriumTests --test bssn.constraints.gamma_source_validation)
 endif()
+add_test(NAME ccz4_schwarzschild_stability
+         COMMAND TensoriumTests --test bssn.evolution.ccz4_schwarzschild_stability)
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})

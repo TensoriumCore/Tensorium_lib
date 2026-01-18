@@ -1,7 +1,6 @@
 #pragma once
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
-#include "../Geometry/BSSNConformal.hpp"
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../Geometry/BSSNGamma.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
@@ -29,6 +28,140 @@
 
 namespace tensorium_RG::bssn {
 
+namespace detail {
+constexpr int sym_row_from_index[6] = {0, 0, 0, 1, 1, 2};
+constexpr int sym_col_from_index[6] = {0, 1, 2, 1, 2, 2};
+} // namespace detail
+
+template <typename T>
+inline void compute_momentum_constraint_Mi(const BSSNGridSoA<T> &G, Field3D<T> Mi[3],
+                                           size_t padding = 4) {
+    using namespace tensorium_RG::fd;
+
+    const size_t total = G.chi.st.nx_tot * G.chi.st.ny_tot * G.chi.st.nz_tot;
+    for (int comp = 0; comp < 3; ++comp)
+        std::fill_n(Mi[comp].ptr(), total, T(0));
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t guard = std::max<size_t>(padding, size_t(2));
+    const size_t i0 = std::min(I0 + guard, I1);
+    const size_t j0 = std::min(J0 + guard, J1);
+    const size_t k0 = std::min(K0 + guard, K1);
+    const size_t i1 = (I1 > guard) ? I1 - guard : I1;
+    const size_t j1 = (J1 > guard) ? J1 - guard : J1;
+    const size_t k1 = (K1 > guard) ? K1 - guard : K1;
+
+    if (i0 >= i1 || j0 >= j1 || k0 >= k1)
+        return;
+
+    auto deriv = [&](const Field3D<T> &F, size_t ii, size_t jj, size_t kk, int dir) -> double {
+        return (dir == 0)   ? Dx(F, ii, jj, kk, G.dx)
+               : (dir == 1) ? Dy(F, ii, jj, kk, G.dy)
+                            : Dz(F, ii, jj, kk, G.dz);
+    };
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t id = G.chi.idx(i, j, k);
+
+                double g_inv[3][3];
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b)
+                        g_inv[a][b] = (double)tensorium_RG::sym6_get(G.gamma_tilde_inv, id, a, b);
+
+                double A_lo[3][3];
+                for (int a = 0; a < 3; ++a)
+                    for (int b = 0; b < 3; ++b)
+                        A_lo[a][b] = (double)tensorium_RG::sym6_get(G.A_tilde, id, a, b);
+
+                double d_g_inv[3][3][3] = {};
+                double dA_lo[3][3][3] = {};
+                for (int dir = 0; dir < 3; ++dir) {
+                    for (int s = 0; s < 6; ++s) {
+                        const int row = detail::sym_row_from_index[s];
+                        const int col = detail::sym_col_from_index[s];
+                        const Field3D<T> &F_inv = G.gamma_tilde_inv[s];
+                        const Field3D<T> &F_A = G.A_tilde[s];
+                        const double dginv = deriv(F_inv, i, j, k, dir);
+                        const double dA = deriv(F_A, i, j, k, dir);
+                        d_g_inv[dir][row][col] = dginv;
+                        d_g_inv[dir][col][row] = dginv;
+                        dA_lo[dir][row][col] = dA;
+                        dA_lo[dir][col][row] = dA;
+                    }
+                }
+
+                const double chi = (double)G.chi.ptr()[id];
+                const double inv_chi = (chi != 0.0) ? (1.0 / chi) : 0.0;
+                const double d_chi[3] = {deriv(G.chi, i, j, k, 0), deriv(G.chi, i, j, k, 1),
+                                        deriv(G.chi, i, j, k, 2)};
+                const double dK[3] = {deriv(G.K, i, j, k, 0), deriv(G.K, i, j, k, 1),
+                                      deriv(G.K, i, j, k, 2)};
+
+                double A_mix[3][3];
+                for (int up = 0; up < 3; ++up)
+                    for (int lo = 0; lo < 3; ++lo) {
+                        double sum = 0.0;
+                        for (int m = 0; m < 3; ++m)
+                            sum += g_inv[up][m] * A_lo[m][lo];
+                        A_mix[up][lo] = sum;
+                    }
+
+                double dA_mix[3][3][3];
+                for (int dir = 0; dir < 3; ++dir)
+                    for (int up = 0; up < 3; ++up)
+                        for (int lo = 0; lo < 3; ++lo) {
+                            double sum = 0.0;
+                            for (int m = 0; m < 3; ++m)
+                                sum += d_g_inv[dir][up][m] * A_lo[m][lo] +
+                                        g_inv[up][m] * dA_lo[dir][m][lo];
+                            dA_mix[dir][up][lo] = sum;
+                        }
+
+                T Gamma_vals_T[3][3][3];
+                tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_vals_T);
+                double Gamma_vals[3][3][3];
+                for (int up = 0; up < 3; ++up)
+                    for (int lo1 = 0; lo1 < 3; ++lo1)
+                        for (int lo2 = 0; lo2 < 3; ++lo2)
+                            Gamma_vals[up][lo1][lo2] = (double)Gamma_vals_T[up][lo1][lo2];
+
+                double traceGamma[3] = {0.0, 0.0, 0.0};
+                for (int kidx = 0; kidx < 3; ++kidx)
+                    for (int jidx = 0; jidx < 3; ++jidx)
+                        traceGamma[kidx] += Gamma_vals[jidx][jidx][kidx];
+
+                const double grad_phi_factor[3] = {-(1.5) * d_chi[0] * inv_chi,
+                                                   -(1.5) * d_chi[1] * inv_chi,
+                                                   -(1.5) * d_chi[2] * inv_chi};
+
+                for (int lo = 0; lo < 3; ++lo) {
+                    double divA = dA_mix[0][0][lo] + dA_mix[1][1][lo] + dA_mix[2][2][lo];
+                    for (int kidx = 0; kidx < 3; ++kidx)
+                        divA += traceGamma[kidx] * A_mix[kidx][lo];
+
+                    double conn_term = 0.0;
+                    for (int jidx = 0; jidx < 3; ++jidx)
+                        for (int kidx = 0; kidx < 3; ++kidx)
+                            conn_term += Gamma_vals[kidx][jidx][lo] * A_mix[jidx][kidx];
+                    divA -= conn_term;
+
+                    double phi_term = 0.0;
+                    for (int jidx = 0; jidx < 3; ++jidx)
+                        phi_term += A_mix[jidx][lo] * grad_phi_factor[jidx];
+
+                    const double Mi_val = divA + phi_term - (2.0 / 3.0) * dK[lo];
+                    Mi[lo].ptr()[id] = (T)Mi_val;
+                }
+            }
+        }
+    }
+}
+
 /**
  * @brief Fill the Hamiltonian \f$H\f$, momentum \f$M_i\f$, and Gamma \f$C_i\f$ constraint fields.
  * @param Ricci6 Packed \f$R_{ij}\f$ produced by `compute_ricci_bssn`.
@@ -36,8 +169,8 @@ namespace tensorium_RG::bssn {
  * @param r_min,r_max Optional radial filter to skip interior/exterior regions (useful around punctures).
  * @details
  * - Hamiltonian block maps `gI_*` multiplications to \f$R=\gamma^{ij}R_{ij}\f$.
- * - Momentum block forms \f$M_i = \tilde{\gamma}^{jk}\tilde{D}_j\tilde{A}_{ki} + 6\tilde{A}_{ij}\partial^j\phi - \tfrac{2}{3}\partial_i K\f$
- *   using the helper `grad_6phi_from_chi`.
+ * - Momentum block forms \f$M_i\f$ via `compute_momentum_constraint_Mi`, which evaluates the lower
+ *   index expression \f$\tilde{D}_j\tilde{A}^j{}_{\ i} + 6\tilde{A}^j{}_{\ i}\partial_j\phi - \tfrac{2}{3}\partial_i K\f$.
  * - Gamma constraint reuses `metric_inverse_divergence` to compare the evolved \f$\tilde{\Gamma}^i\f$ against
  *   \f$-\partial_j\tilde{\gamma}^{ij}\f$.
  */
@@ -54,16 +187,14 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
 
     const size_t total = G.chi.st.nx_tot * G.chi.st.ny_tot * G.chi.st.nz_tot;
     std::fill_n(H_out.ptr(), total, T(0));
-    for (int a = 0; a < 3; ++a) {
-        std::fill_n(M_out[a].ptr(), total, T(0));
+    for (int a = 0; a < 3; ++a)
         std::fill_n(C_out[a].ptr(), total, T(0));
-    }
+
+    compute_momentum_constraint_Mi(G, M_out, 4);
 
     const size_t i0 = I0 + 4, i1 = I1 - 4;
     const size_t j0 = J0 + 4, j1 = J1 - 4;
     const size_t k0 = K0 + 4, k1 = K1 - 4;
-
-    const double dx = G.dx, dy = G.dy, dz = G.dz;
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -75,24 +206,17 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                 x -= xc;
                 y -= yc;
                 z -= zc;
-                const double r = std::sqrt(x * x + y * y + z * z);
-                if (r <= r_min || r >= r_max)
-                    continue;
-
                 const size_t id = G.chi.idx(i, j, k);
+                const double r = std::sqrt(x * x + y * y + z * z);
+                if (r <= r_min || r >= r_max) {
+                    for (int comp = 0; comp < 3; ++comp)
+                        M_out[comp].ptr()[id] = T(0);
+                    continue;
+                }
 
                 const double chi = (double)G.chi.ptr()[id];
 
-                const double dchi[3] = {(double)Dx(G.chi, i, j, k, dx),
-                                        (double)Dy(G.chi, i, j, k, dy),
-                                        (double)Dz(G.chi, i, j, k, dz)};
-
-                double d6phi[3];
-                tensorium_RG::bssn::grad_6phi_from_chi(dchi, chi, d6phi);
-
                 const double Ktr = (double)G.K.ptr()[id];
-                const double dK[3] = {(double)Dx(G.K, i, j, k, dx), (double)Dy(G.K, i, j, k, dy),
-                                      (double)Dz(G.K, i, j, k, dz)};
 
                 double gtI[3][3];
                 for (int a = 0; a < 3; ++a)
@@ -138,56 +262,6 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
 
                 const double H = Rsc + (2.0 / 3.0) * Ktr * Ktr - A2;
                 H_out.ptr()[id] = (T)H;
-
-                double dA[3][3][3];
-                for (int dir = 0; dir < 3; ++dir) {
-                    for (int a = 0; a < 3; ++a) {
-                        for (int b = a; b < 3; ++b) {
-                            const int         idx = tensorium_RG::sym6_index(a, b);
-                            const Field3D<T> &F = G.A_tilde[idx];
-                            const double      deriv = (dir == 0)   ? Dx(F, i, j, k, dx)
-                                                      : (dir == 1) ? Dy(F, i, j, k, dy)
-                                                                   : Dz(F, i, j, k, dz);
-                            dA[dir][a][b] = deriv;
-                            dA[dir][b][a] = deriv;
-                        }
-                    }
-                }
-
-                double Gamma_tilde_vals[3][3][3];
-                tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_tilde_vals);
-
-                auto Gamma = [&](int up, int low1, int low2) -> double {
-                    return (double)Gamma_tilde_vals[up][low1][low2];
-                };
-
-                auto covariant_derivative = [&](int dir, int k, int l) -> double {
-                    double sum = dA[dir][k][l];
-                    for (int m = 0; m < 3; ++m) {
-                        sum -= Gamma(m, k, dir) * Atd[m][l];
-                        sum -= Gamma(m, l, dir) * Atd[k][m];
-                    }
-                    return sum;
-                };
-
-                for (int ii = 0; ii < 3; ++ii) {
-                    double div = 0.0;
-                    for (int dir = 0; dir < 3; ++dir)
-                        for (int k = 0; k < 3; ++k)
-                            for (int l = 0; l < 3; ++l)
-                                div += gtI[ii][k] * gtI[dir][l] * covariant_derivative(dir, k, l);
-
-                    double phi_term = 0.0;
-                    for (int jdir = 0; jdir < 3; ++jdir)
-                        phi_term += Atu[ii][jdir] * d6phi[jdir];
-
-                    double DK = 0.0;
-                    for (int j = 0; j < 3; ++j)
-                        DK += gtI[ii][j] * dK[j];
-
-                    const double Mi = div + phi_term - (2.0 / 3.0) * DK;
-                    M_out[ii].ptr()[id] = (T)Mi;
-                }
 
                 T div_gamma[3];
                 tensorium_RG::bssn::metric_inverse_divergence(G, i, j, k, div_gamma);

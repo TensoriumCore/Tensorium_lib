@@ -5,6 +5,8 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
+#include "BSSNEvolutionCommon.hpp"
+#include "BSSNEvolutionGauge.hpp"
 /**
  * @file BSSNEvolutionChi.hpp
  * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi =
@@ -21,32 +23,23 @@
 
 namespace tensorium_RG::bssn {
 
-#ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-#    define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
-    return std::min(lower + guard, upper);
-}
-
-inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
-    return (upper > guard) ? upper - guard : lower;
-}
-#endif
-
 /**
  * @brief Fill the RHS buffer for \f$\chi\f$ inside the padded interior region.
  * @param padding Number of guard cells skipped on each side before looping.
+ * @param params Gauge knobs (KO6 strength, optional Θ-in-lapse) shared with the other RHS kernels.
  *
  * **Mapping to code.**
  * - `d_chi` corresponds to the advective term \f$\beta^i\partial_i\chi\f$.
  * - `div_beta` uses centered derivatives to compute \f$\partial_i\beta^i\f$.
- * - The scalar multiplier `T(2/3)*chi*(alpha*K - div_beta)` encodes the source term.
- * - KO6 call adds dissipation with \f$\sigma=0.02\f$.
+ * - The scalar multiplier `T(2/3)*chi*(alpha*Khat - div_beta)` encodes the source term.
+ * - KO6 call adds dissipation using `params.ko_sigma` so all fields share the same filter.
  */
 template <typename T>
-inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t padding = 4) {
+inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t padding = 4,
+                            const GaugeParameters<T> &params = {}) {
     BSSN_PROFILE_KERNEL(Chi);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.02);
+    const T ko_sigma = scaled_ko_sigma(params.ko_sigma);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -79,6 +72,7 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
+            const T *p_theta = G.Theta.ptr() + idx_start;
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
             T       *p_rhs = rhs_chi.ptr() + idx_start;
@@ -87,6 +81,8 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                 const T chi = *p_chi;
                 const T alpha = *p_alpha;
                 const T K = *p_K;
+                const T theta = *p_theta;
+                const T khat = Khat(K, theta);
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
@@ -101,13 +97,14 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                 const T diss =
                     KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
 
-                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
+                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * khat - div_beta) +
                          (ko_sigma / G.dx) * diss;
 
                 // Increment pointers
                 ++p_chi;
                 ++p_alpha;
                 ++p_K;
+                ++p_theta;
                 ++p_rhs;
                 ++p_beta[0];
                 ++p_beta[1];

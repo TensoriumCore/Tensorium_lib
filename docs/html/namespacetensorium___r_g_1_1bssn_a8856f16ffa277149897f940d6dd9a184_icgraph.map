@@ -1,24 +1,26 @@
 <map id="tensorium_RG::bssn::clamped_lower" name="tensorium_RG::bssn::clamped_lower">
-<area shape="rect" id="Node000001" title=" " alt="" coords="710,169,852,210"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a50230b731fbf44e0ce3f7d8fa0a66146" title="Assemble &#160;for each symmetric component." alt="" coords="494,5,645,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="755,156,714,109,689,83,661,61,640,49,640,44,664,57,692,79,718,105,760,157"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#a0e98ef8bc1b9faade555cf639acbf8f0" title="Build &#160;including advection and KO6 dissipation." alt="" coords="498,71,641,111"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="730,161,661,127,632,115,633,109,663,122,735,161"/>
-<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f" title="Fill the RHS buffer for &#160;inside the padded interior region." alt="" coords="499,136,640,177"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="693,176,641,170,641,165,698,176"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn.html#adf6c30f846c2c8c8808a6ee13f84106a" title="Assemble &#160;inside the interior region." alt="" coords="491,201,648,242"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="693,203,649,212,648,207,698,202"/>
-<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389" title="Fill &#160;for all six symmetric components." alt="" coords="477,267,662,307"/>
-<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="734,217,663,256,633,269,632,263,661,251,729,219"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1bssn.html#a26e0e7a80891485f5ea3a9e1764d519e" title="Compute &#160;throughout the interior region." alt="" coords="499,332,640,373"/>
-<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="759,222,718,274,692,299,664,321,640,334,639,329,661,317,689,295,714,270,755,224"/>
-<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82" title="Invoke every RHS kernel using the provided grid snapshot." alt="" coords="217,169,429,210"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="486,54,478,61,439,88,402,117,345,171,342,167,399,113,436,83,476,57,491,51"/>
-<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,169,169,210"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="199,191,170,192,168,187,203,188"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="493,118,478,127,373,171,370,166,476,122,498,116"/>
-<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="481,169,430,178,429,173,486,167"/>
-<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="473,210,430,206,429,201,478,209"/>
-<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="493,261,476,256,372,213,373,208,478,251,498,261"/>
-<area shape="poly" id="edge13_Node000009_Node000003" title=" " alt="" coords="486,325,476,321,436,295,399,266,343,213,345,208,403,262,439,291,478,317,491,326"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1384,39,1526,79"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a2021b3f9dc20d94b54647cfa72a5b389" title=" " alt="" coords="1151,5,1336,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1367,45,1337,43,1337,38,1372,46"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1bssn.html#a962ad7602f817114d68dc50df7eaf5a3" title=" " alt="" coords="1173,71,1314,111"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="1372,72,1315,83,1315,78,1367,72"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b6faf9c13845a4e462e89994f214a82" title="Invoke every RHS kernel using the provided grid snapshot." alt="" coords="891,5,1103,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1132,26,1104,28,1103,23,1138,25"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,71,372,111"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="872,23,662,28,541,37,421,54,349,73,347,68,419,48,540,32,662,23,878,21"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,63,161,119"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="190,101,162,102,161,97,195,99"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="176,79,211,81,206,83,177,85"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn.html#a1a3822d1c282c0b0c62d43bae150ac21" title=" " alt="" coords="915,71,1078,111"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="1155,91,1079,94,1079,88,1160,91"/>
+<area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad8eb468e809d08c2e54d28eb0a57e126" title=" " alt="" coords="637,63,843,119"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="897,91,843,94,843,88,902,91"/>
+<area shape="rect" id="Node000010" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a9b09cda5fd1b690de5ce22d088cb265b" title=" " alt="" coords="655,143,825,199"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="917,116,825,147,824,142,912,117"/>
+<area shape="rect" id="Node000009" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a48a2aa4052dc8e106b2d8f943ce9c3a4" title=" " alt="" coords="420,63,589,119"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="619,91,590,94,590,88,624,91"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="402,91,373,94,372,88,407,91"/>
+<area shape="rect" id="Node000011" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac87a119e37dd28a113743f448983efa3" title=" " alt="" coords="422,143,587,199"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="637,171,588,174,588,168,642,171"/>
+<area shape="poly" id="edge13_Node000011_Node000004" title=" " alt="" coords="411,137,346,114,347,109,417,137"/>
 </map>

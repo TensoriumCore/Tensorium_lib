@@ -24,18 +24,18 @@
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-158.25" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text xml:space="preserve" text-anchor="start" x="35.25" y="-158.25" font-family="Helvetica,sans-Serif" font-size="10.00">K</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-143" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-143" font-family="Helvetica,sans-Serif" font-size="10.00">beta</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-143" font-family="Helvetica,sans-Serif" font-size="10.00">Theta</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-127.75" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-127.75" font-family="Helvetica,sans-Serif" font-size="10.00">B</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-127.75" font-family="Helvetica,sans-Serif" font-size="10.00">beta</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-112.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-112.5" font-family="Helvetica,sans-Serif" font-size="10.00">tildeGamma</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-112.5" font-family="Helvetica,sans-Serif" font-size="10.00">B</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-97.25" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-97.25" font-family="Helvetica,sans-Serif" font-size="10.00">gamma_tilde</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-97.25" font-family="Helvetica,sans-Serif" font-size="10.00">tildeGamma</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">gamma_tilde_inv</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">Z</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-66.75" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-66.75" font-family="Helvetica,sans-Serif" font-size="10.00">A_tilde</text>
-<text xml:space="preserve" text-anchor="start" x="35.25" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-66.75" font-family="Helvetica,sans-Serif" font-size="10.00">gamma_tilde</text>
+<text xml:space="preserve" text-anchor="start" x="35.25" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 9 more...</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-36.25" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text xml:space="preserve" text-anchor="start" x="35.25" y="-36.25" font-family="Helvetica,sans-Serif" font-size="10.00">BSSNGridSoA()</text>
 <text xml:space="preserve" text-anchor="start" x="14.62" y="-21" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

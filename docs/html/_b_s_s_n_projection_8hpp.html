@@ -118,15 +118,15 @@ $(function() {
 
 <p>Enforce the algebraic BSSN constraints \(\det\tilde{\gamma}=1\) and \(\mathrm{tr}\,\tilde{A}=0\).  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_gamma_8hpp_source.html">BSSNGamma.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_gamma_8hpp_source.html">BSSNGamma.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNProjection.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_projection_8hpp__incl.svg" width="658" height="376"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_projection_8hpp__incl.svg" width="614" height="524"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -150,6 +150,8 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7828e574fa46093c40ea6dca4381d401" id="r_a7828e574fa46093c40ea6dca4381d401"><td class="memItemLeft">double&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn_1_1detail.html#a7828e574fa46093c40ea6dca4381d401">tensorium_RG::bssn::detail::det3</a> (double gxx, double gxy, double gxz, double gyy, double gyz, double gzz)</td></tr>
+<tr class="memitem:a5aca56610a8f949fec050a8a819ae506" id="r_a5aca56610a8f949fec050a8a819ae506"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a5aca56610a8f949fec050a8a819ae506 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a5aca56610a8f949fec050a8a819ae506">tensorium_RG::bssn::project_conformal_metric_and_A</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, size_t padding=4, bool renormalize_metric=true, bool project_A_tilde=true)</td></tr>
 <tr class="memitem:a54708e29d39d8a410304c794b3bab92e" id="r_a54708e29d39d8a410304c794b3bab92e"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a54708e29d39d8a410304c794b3bab92e template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a54708e29d39d8a410304c794b3bab92e">tensorium_RG::bssn::project_bssn_state</a> (<a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_projection_config.html">ProjectionConfig</a> &amp;cfg={})</td></tr>
 <tr class="memdesc:a54708e29d39d8a410304c794b3bab92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply determinant renormalization, \(\tilde{A}\) trace-free projection, and \(\tilde{\Gamma}^i\) resynchronization.  <br /></td></tr>

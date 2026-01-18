@@ -1,0 +1,4 @@
+var structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb =
+[
+    [ "set_characteristic", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb.html#ac56a2dce9336cd51ca680e87bf5469cc", null ]
+];

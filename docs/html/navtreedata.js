@@ -40,7 +40,8 @@ var NAVTREE =
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
-        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
+        [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ],
         [ "Enumerator", "namespacemembers_eval.html", null ]
@@ -73,12 +74,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_allocator_8hpp.html",
-"classtensorium_1_1_derivate.html#adbf0aa8ef44649422a3134796d5a4e36",
-"classtensorium_1_1_tensor.html#aaa22549a588a313c5fff0666d8a94c92",
-"classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aa53d563230dedcc7c400169410308e31",
-"functions_func_m.html",
-"namespacetensorium___r_g_1_1bssn.html#a6f30410d0e983cf74dc0855581c2c39e",
-"structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html"
+"classtensorium_1_1_derivate.html#ac07d764b878d441266222c9ce9bbf96b",
+"classtensorium_1_1_tensor.html#a9b630e527a4677ae26dd4043095550a1",
+"classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a9c061ceb127029a0e88fa4eb53877fba",
+"functions_b.html",
+"namespacetensorium___r_g.html#a77ec31ba0fe314dbb821107831bdadc3",
+"structtensorium___r_g_1_1_b_s_s_n_grid.html#a4d8ffd13157208559d3adc490500b95d",
+"structtensorium___r_g_1_1bssn_1_1_invariant_stats.html#a5a0bdef2a2af0216fc956ddf3a815989"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

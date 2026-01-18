@@ -1,0 +1,14 @@
+<map id="tensorium_RG::bssn::project_conformal_metric_and_A" name="tensorium_RG::bssn::project_conformal_metric_and_A">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,147,148"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#a2de8a28d1ac63e0734e1622fd2cef468" title=" " alt="" coords="219,5,360,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,90,194,57,214,50,210,53,196,61,129,94"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#a4de335f2d9c21fb17857cd0a13e44256" title="Return the inclusive&#45;exclusive bounds of the physical domain inside the halo buffer." alt="" coords="195,71,385,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,108,182,105,177,107,148,113"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g.html#af2f556e67f46e7ab301fa2c32d35e69f" title=" " alt="" coords="202,136,378,161"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,127,189,134,184,136,147,132"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g.html#aa1d29fa8d0c1b575446ccd7cf01ce5fa" title=" " alt="" coords="199,185,380,210"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="135,146,196,171,218,180,212,180,194,176,134,151"/>
+<area shape="rect" id="Node000005" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="433,161,614,186"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="379,155,420,162,415,162,379,161"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="380,186,415,185,420,184,381,191"/>
+</map>

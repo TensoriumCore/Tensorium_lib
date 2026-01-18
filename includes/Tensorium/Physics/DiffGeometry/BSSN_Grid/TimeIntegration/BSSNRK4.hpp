@@ -399,7 +399,8 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             }
             compute_bssn_constraints(grid, grid.Ricci, H_tmp, M_tmp, C_tmp, r_min, r_max, 0.0, 0.0,
                                      0.0);
-            const auto stats = compute_constraint_monitor(grid, H_tmp, padding_);
+            auto stats = compute_constraint_monitor(grid, H_tmp, padding_);
+            populate_constraint_norms(grid, M_tmp, stats, padding_);
             if (monitor_callback_)
                 monitor_callback_(grid, stats);
         }
@@ -502,13 +503,14 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     void evaluate_rhs(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
         if (rhs_prep_callback_)
             rhs_prep_callback_(rhs);
+        update_ko_scale(grid, boundary_dt_);
         compute_rhs_Gamma(grid, rhs.tildeGamma, grid.Z, grid.Theta, gauge_params_, padding_);
         compute_rhs_B(grid, rhs.tildeGamma, rhs.B, gauge_params_, padding_);
         compute_rhs_beta(grid, rhs.beta, gauge_params_, padding_);
         compute_rhs_alpha(grid, rhs.alpha, padding_, gauge_params_);
-        compute_rhs_chi(grid, rhs.chi, padding_);
+        compute_rhs_chi(grid, rhs.chi, padding_, gauge_params_);
         compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, padding_);
-        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_);
+        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, gauge_params_);
         compute_rhs_K(grid, rhs.K, padding_, gauge_params_);
         compute_rhs_Theta(grid, rhs.Theta, gauge_params_, padding_);
         compute_rhs_Z(grid, rhs.Z, gauge_params_, padding_);

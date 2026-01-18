@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="RHS for the conformal factor equation .">
+<g id="a_Node000001"><a xlink:title="RHS for the conformal factor equation &#160;.">
 <polygon fill="#999999" stroke="#666666" points="184.75,-142 0,-142 0,-89 184.75,-89 184.75,-142"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">includes/Tensorium</text>
 <text xml:space="preserve" text-anchor="start" x="8" y="-117.25" font-family="Helvetica,sans-Serif" font-size="10.00">/Physics/DiffGeometry</text>

@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structtensorium___r_g_1_1bssn_1_1_sample_location.html" target="_top" xlink:title="Index&#45;space and physical coordinates where the worst invariant violation occurred.">
+<g id="a_Node000000"><a xlink:href="structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html" target="_top" xlink:title="Control parameters for the CFL&#45;based time&#45;step computation.">
 <polygon fill="white" stroke="#666666" points="106,-30.5 0,-30.5 0,0 106,0 106,-30.5"/>
 <text xml:space="preserve" text-anchor="start" x="8" y="-17" font-family="Helvetica,sans-Serif" font-size="10.00">tensorium_RG::bssn</text>
-<text xml:space="preserve" text-anchor="middle" x="53" y="-5.75" font-family="Helvetica,sans-Serif" font-size="10.00">::SampleLocation</text>
+<text xml:space="preserve" text-anchor="middle" x="53" y="-5.75" font-family="Helvetica,sans-Serif" font-size="10.00">::CFLControl&lt; T &gt;</text>
 </a>
 </g>
 </g>

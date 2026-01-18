@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['tensor_0',['Tensor',['../classtensorium_1_1_tensor.html',1,'tensorium']]],
-  ['tensor_3c_20k_2c_202_20_3e_1',['Tensor&lt; K, 2 &gt;',['../classtensorium_1_1_tensor.html',1,'tensorium']]],
-  ['tensor_3c_20t_2c_202_20_3e_2',['Tensor&lt; T, 2 &gt;',['../classtensorium_1_1_tensor.html',1,'tensorium']]],
-  ['tensor_3c_20t_2c_204_20_3e_3',['Tensor&lt; T, 4 &gt;',['../classtensorium_1_1_tensor.html',1,'tensorium']]],
-  ['tensoriumastconsumer_4',['TensoriumASTConsumer',['../class_tensorium_a_s_t_consumer.html',1,'']]],
-  ['tensoriumtarget_5',['TensoriumTarget',['../struct_tensorium_target.html',1,'']]],
-  ['tensortraits_6',['TensorTraits',['../structtensorium_1_1_tensor_traits.html',1,'tensorium']]],
-  ['tensortraits_3c_20tensor_3c_20t_2c_20rank_20_3e_20_3e_7',['TensorTraits&lt; Tensor&lt; T, Rank &gt; &gt;',['../structtensorium_1_1_tensor_traits_3_01_tensor_3_01_t_00_01_rank_01_4_01_4.html',1,'tensorium']]],
-  ['tensortraits_3c_20vector_3c_20t_20_3e_20_3e_8',['TensorTraits&lt; Vector&lt; T &gt; &gt;',['../structtensorium_1_1_tensor_traits_3_01_vector_3_01_t_01_4_01_4.html',1,'tensorium']]],
-  ['tildegamma_9',['TildeGamma',['../classtensorium___r_g_1_1_tilde_gamma.html',1,'tensorium_RG']]]
+  ['samplelocation_0',['SampleLocation',['../structtensorium___r_g_1_1bssn_1_1_sample_location.html',1,'tensorium_RG::bssn']]],
+  ['simdtraits_1',['SimdTraits',['../structsimd_1_1_simd_traits.html',1,'simd']]],
+  ['simdtraits_3c_20k_2c_20defaultisa_20_3e_2',['SimdTraits&lt; K, DefaultISA &gt;',['../structsimd_1_1_simd_traits.html',1,'simd']]],
+  ['simdtraits_3c_20t_2c_20defaultisa_20_3e_3',['SimdTraits&lt; T, DefaultISA &gt;',['../structsimd_1_1_simd_traits.html',1,'simd']]],
+  ['spectalchebyshev_4',['SpectalChebyshev',['../classtensorium_1_1_spectal_chebyshev.html',1,'tensorium']]],
+  ['spectralfft_5',['SpectralFFT',['../classtensorium_1_1_spectral_f_f_t.html',1,'tensorium']]],
+  ['strides_6',['Strides',['../structtensorium___r_g_1_1_strides.html',1,'tensorium_RG']]]
 ];

@@ -116,14 +116,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>RHS for the conformal factor equation \((\partial_t-\mathcal{L}_\beta)\chi = \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\).  
+<p>RHS for the conformal factor equation  \((\partial_t-\mathcal{L}_\beta)\chi =
+\frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="_b_s_s_n_grid_so_a_8hpp_source.html">../Fields/BSSNGridSoA.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_grid_layout_8hpp_source.html">Tensorium_Grid/Grid/GridLayout.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_grid_derivatives_8hpp_source.html">../Derivatives/BSSNGridDerivatives.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_perf_timers_8hpp_source.html">../TimeIntegration/BSSNPerfTimers.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_evolution_common_8hpp_source.html">BSSNEvolutionCommon.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_b_s_s_n_evolution_gauge_8hpp_source.html">BSSNEvolutionGauge.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BSSNEvolutionChi.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_chi_8hpp__incl.svg" width="419" height="318"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="_b_s_s_n_evolution_chi_8hpp__incl.svg" width="1015" height="627"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -138,41 +143,22 @@ Namespaces</h2></td></tr>
 <tr class="memitem:tensorium_5FRG" id="r_tensorium_5FRG"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g.html">tensorium_RG</a></td></tr>
 <tr class="memitem:tensorium_5FRG_3A_3Abssn" id="r_tensorium_5FRG_3A_3Abssn"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html">tensorium_RG::bssn</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:aabc3a0e366d32711cb9269879b47fa67" id="r_aabc3a0e366d32711cb9269879b47fa67"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aabc3a0e366d32711cb9269879b47fa67">TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED</a></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8856f16ffa277149897f940d6dd9a184" id="r_a8856f16ffa277149897f940d6dd9a184"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a8856f16ffa277149897f940d6dd9a184">tensorium_RG::bssn::clamped_lower</a> (size_t lower, size_t guard, size_t upper)</td></tr>
-<tr class="memitem:ab3f0032f87d8ca3cec1e2110b8189831" id="r_ab3f0032f87d8ca3cec1e2110b8189831"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ab3f0032f87d8ca3cec1e2110b8189831">tensorium_RG::bssn::clamped_upper</a> (size_t upper, size_t guard, size_t lower)</td></tr>
-<tr class="memitem:a63018070ef162fcb1bc235bd8e212f8f" id="r_a63018070ef162fcb1bc235bd8e212f8f"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a63018070ef162fcb1bc235bd8e212f8f template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#a63018070ef162fcb1bc235bd8e212f8f">tensorium_RG::bssn::compute_rhs_chi</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_chi, size_t padding=4)</td></tr>
-<tr class="memdesc:a63018070ef162fcb1bc235bd8e212f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the RHS buffer for \(\chi\) inside the padded interior region.  <br /></td></tr>
+<tr class="memitem:ad91aa16c36da7c77058f3fa0a96851bd" id="r_ad91aa16c36da7c77058f3fa0a96851bd"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ad91aa16c36da7c77058f3fa0a96851bd template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacetensorium___r_g_1_1bssn.html#ad91aa16c36da7c77058f3fa0a96851bd">tensorium_RG::bssn::compute_rhs_chi</a> (const <a class="el" href="classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html">BSSNGridSoA</a>&lt; T &gt; &amp;G, <a class="el" href="structtensorium___r_g_1_1_field3_d.html">Field3D</a>&lt; T &gt; &amp;rhs_chi, size_t padding=4, const <a class="el" href="structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html">GaugeParameters</a>&lt; T &gt; &amp;params={})</td></tr>
+<tr class="memdesc:ad91aa16c36da7c77058f3fa0a96851bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the RHS buffer for \(\chi\) inside the padded interior region.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>RHS for the conformal factor equation \((\partial_t-\mathcal{L}_\beta)\chi = \frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\). </p>
-<p>The implementation evaluates   </p><p class="formulaDsp">
-\[\partial_t\chi = \beta^i\partial_i\chi + \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i) + \mathcal{D}_6[\chi]
+<div class="textblock"><p>RHS for the conformal factor equation  \((\partial_t-\mathcal{L}_\beta)\chi =
+\frac{2}{3}\chi(\alpha K-\partial_i\beta^i)\). </p>
+<p>The implementation evaluates    </p><p class="formulaDsp">
+\[\partial_t\chi = \beta^i\partial_i\chi + \tfrac{2}{3}\chi(\alpha K-\partial_i\beta^i) +
+\mathcal{D}_6[\chi]
 \]
 </p>
 <p> where advection uses third-order upwind stencils tied to the sign of each \(\beta^i\) component and \(\mathcal{D}_6\) is the KO6 dissipation. </p>
-</div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="aabc3a0e366d32711cb9269879b47fa67" name="aabc3a0e366d32711cb9269879b47fa67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabc3a0e366d32711cb9269879b47fa67">&#9670;&#160;</a></span>TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

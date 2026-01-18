@@ -47,7 +47,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                               const GaugeParameters<T> &gauge_params = {}, size_t padding = 4) {
     BSSN_PROFILE_KERNEL(Gamma);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = gauge_params.ko_sigma; // Use the user-provided KO6 knob everywhere.
+    const T ko_sigma = scaled_ko_sigma(gauge_params.ko_sigma); // Adaptive KO6 knob.
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
     constexpr size_t gamma_validation_stride = 8;
 #endif
@@ -87,7 +87,6 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
-    const T          kappa1 = gauge_params.kappa1;
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -287,10 +286,10 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
-                const T d_K[3] = {Dx_ptr(p_K, sx, inv_12dx), Dy_ptr(p_K, sy, inv_12dy),
-                                  Dz_ptr(p_K, inv_12dz)};
                 const T d_theta[3] = {Dx_ptr(p_theta, sx, inv_12dx), Dy_ptr(p_theta, sy, inv_12dy),
                                       Dz_ptr(p_theta, inv_12dz)};
+                const T d_K[3] = {Dx_ptr(p_K, sx, inv_12dx), Dy_ptr(p_K, sy, inv_12dy),
+                                  Dz_ptr(p_K, inv_12dz)};
                 const T alpha = *p_alpha;
 
                 for (int comp = 0; comp < 3; ++comp) {
@@ -315,27 +314,16 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                     const T grad_K_up = dot_metric_row(comp, d_K);
 
                     const T source = T(2) * alpha * (GammaA - two_thirds * grad_K_up);
+                    const T grad_theta_up = dot_metric_row(comp, d_theta);
+                    const T theta_drive = T(2) * alpha * grad_theta_up;
                     const T z_comp = *p_Z[comp];
-                    const T damping = -T(2) * alpha * kappa1 * z_comp;
-                    T       coupling = T(0);
-                    if (comp == 0)
-                        coupling = T(2) * alpha *
-                                   (cov_row0_x * d_theta[0] + cov_row0_y * d_theta[1] +
-                                    cov_row0_z * d_theta[2]);
-                    else if (comp == 1)
-                        coupling = T(2) * alpha *
-                                   (cov_row1_x * d_theta[0] + cov_row1_y * d_theta[1] +
-                                    cov_row1_z * d_theta[2]);
-                    else
-                        coupling = T(2) * alpha *
-                                   (cov_row2_x * d_theta[0] + cov_row2_y * d_theta[1] +
-                                    cov_row2_z * d_theta[2]);
+                    const T damping = -T(2) * alpha * gauge_params.kappa1 * z_comp;
 
                     const T diss = KO6_axis_ptr(p_Gamma[comp], sx) +
                                    KO6_axis_ptr(p_Gamma[comp], sy) + KO6_axis_ptr(p_Gamma[comp], 1);
 
                     *p_rhs[comp] = adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
-                                   T(2) * A_grad_alpha + source + damping + coupling +
+                                   T(2) * A_grad_alpha + source + theta_drive + damping +
                                    (ko_sigma / G.dx) * diss;
                 }
 

@@ -51,11 +51,11 @@ This library is built with the goal of empowering projects that require both spe
 ---
 ## Build Instructions
 
-###  Recommended LLVM/Clang Toolchain
+### Recommended LLVM/Clang Toolchain
 
-If you want the best performance, use **LLVM/Clang 20+**.
+Clang/LLVM 20+ delivers the best SIMD + OpenMP performance on x86_64 and AArch64.
 
-### Install LLVM/Clang (example for Linux)
+#### Install LLVM/Clang (Linux example)
 
 ```bash
 # Clone the official LLVM project
@@ -84,15 +84,53 @@ if(BUILD_SRCS)
   add_subdirectory(SRCS)
 endif()
 ```
-### Build the lib
+### Configure & Build
 
 ```bash
-git clone https://github.com/TensoriumCore/Tensorium_lib.git && cd Tensorium_lib
-mkdir build && cd build
-cmake .. (options if you need, a documentation is comming soon)
-make -j
+git clone https://github.com/TensoriumCore/Tensorium_lib.git
+cd Tensorium_lib
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DTENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS=ON \
+  -DTENSORIUM_BSSN_PROFILE_KERNELS=ON
+cmake --build build -j
 ```
-The Python module will be created as a .so file in the pybuild/ directory.
+
+Key CMake switches:
+
+| Option | Default | Description |
+| --- | --- | --- |
+| `TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS` | OFF | Extra CCZ4/BSSN consistency checks (slower, useful during development). |
+| `TENSORIUM_BSSN_PROFILE_KERNELS` | OFF | Records per-kernel timing information for the CCZ4 RHS. |
+| `BUILD_TESTING` | ON | Controls the test suites under `Tests/`. |
+| `BUILD_PYBIND` | ON | Builds the Python module in `pybuild/`. |
+
+The Python extension ends up in `pybuild/` and can be imported by setting `PYTHONPATH=pybuild` or by running `pip install -e .`.
+
+### Running the Test Suites
+
+After building, run the aggregated tests:
+
+```bash
+cd Tensorium_lib
+ctest --test-dir build --output-on-failure
+```
+
+Common filters:
+
+- `ctest -R bssn` – run all BSSN/CCZ4 regression tests.
+- `ctest -R ccz4_schwarzschild_stability` – long-running Schwarzschild CCZ4 check.
+- `./build/Tests/TensoriumTests --list` – list individual tests.
+
+### Generating Documentation
+
+The Doxygen configuration lives at the project root:
+
+```bash
+doxygen Doxyfile
+```
+
+HTML docs are emitted to `docs/html/index.html`. The BSSN/CCZ4 subsystem also ships a dedicated README (`includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md`) describing the equations and state layout.
 
 ## Highlights
 
@@ -190,6 +228,5 @@ print("norm_inf(v) =", tns.norm_inf(v))
 print("cosine(v, v2) =", tns.cosine(v, v2))
 print("lerp(v, v2, 0.5) =", tns.lerp(v, v2, 0.5))
 ```
-
 
 

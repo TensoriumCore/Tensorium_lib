@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['diffmode_0',['DiffMode',['../namespacetensorium___r_g.html#a3572ba60924be18ca9dcccd98b210f53',1,'tensorium_RG']]]
+  ['boundaryfield_0',['BoundaryField',['../namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685',1,'tensorium_RG::bssn']]]
 ];

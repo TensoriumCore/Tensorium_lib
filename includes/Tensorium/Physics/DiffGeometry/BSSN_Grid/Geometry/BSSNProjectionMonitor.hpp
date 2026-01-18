@@ -59,7 +59,9 @@ inline ConstraintMonitorStats project_and_monitor(BSSNGridSoA<T> &G, Field3D<T> 
     project_bssn_after_update(G, padding);
     compute_bssn_constraints(G, G.Ricci, H, M, C, r_min, r_max, xc, yc, zc);
     detail::subtract_z4c_gamma(G, C);
-    return compute_constraint_monitor(G, H, padding);
+    auto stats = compute_constraint_monitor(G, H, padding);
+    populate_constraint_norms(G, M, stats, padding);
+    return stats;
 }
 
 } // namespace tensorium_RG::bssn

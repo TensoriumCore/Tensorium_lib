@@ -1,0 +1,18 @@
+<map id="tensorium_RG::make_field" name="tensorium_RG::make_field">
+<area shape="rect" id="Node000001" title=" " alt="" coords="445,220,590,260"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#a59eecc4dc9f4245dd6d61c1cbfae2443" title=" " alt="" coords="222,150,397,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="437,214,373,194,373,189,442,214"/>
+<area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="228,288,391,328"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="441,265,375,290,373,284,436,266"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="12,5,167,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="268,141,223,109,172,75,153,64,152,59,175,71,226,105,273,140"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="23,85,156,126"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="222,146,157,128,156,122,227,144"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="24,150,155,191"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="204,172,156,173,154,168,209,169"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="5,216,174,256"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="222,197,162,217,160,212,227,194"/>
+<area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="12,280,167,336"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="209,317,168,319,168,314,215,317"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="183,296,230,299,224,299,183,302"/>
+</map>

@@ -3,6 +3,8 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
+#include "BSSNEvolutionCommon.hpp"
+#include "BSSNEvolutionGauge.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 #include <algorithm>
@@ -22,17 +24,6 @@
 
 namespace tensorium_RG::bssn {
 
-#ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-#    define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
-inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
-    return std::min(lower + guard, upper);
-}
-
-inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
-    return (upper > guard) ? upper - guard : lower;
-}
-#endif
-
 /**
  * @brief Assemble \f$\partial_t\tilde{A}_{ij}\f$ for each symmetric component.
  * @details
@@ -41,10 +32,11 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  * - `term_quad` implements \f$\alpha(K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})\f$.
  */
 template <typename T>
-inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4) {
+inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
+                                const GaugeParameters<T> &params = {}) {
     BSSN_PROFILE_KERNEL(ATilde);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.02);
+    const T ko_sigma = scaled_ko_sigma(params.ko_sigma);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -97,6 +89,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
+            const T *p_theta = G.Theta.ptr() + idx_start;
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
@@ -120,6 +113,10 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 const T chi = *p_chi;
                 const T inv_chi = T(1) / chi;
                 const T K = *p_K;
+                const T theta = *p_theta;
+                const T khat = Khat(K, theta);
+                T       RicciZ4[6];
+                compute_RicciZ4(G, i, j, k, RicciZ4);
 
                 // --- 1. Load Local Tensors ---
                 T gamma_tilde_inv[3][3];
@@ -153,7 +150,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                     const T gt = *p_gam[s];
                     const T gt_inv = *p_gam_inv[s];
                     const T Aval = *p_A[s];
-                    const T Rval = *p_Ricci[s];
+                    const T Rval = *p_Ricci[s] + RicciZ4[s];
 
                     gamma_tilde_inv[a][b] = gt_inv;
                     gamma_tilde_inv[b][a] = gt_inv;
@@ -325,8 +322,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                         lie -= two_thirds * A_mat[a][b] * div_beta;
 
                         const T term_geom = chi * S_tf[a][b];
-                        const T term_quad = alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
-
+                        const T term_quad =
+                            alpha * (khat * A_mat[a][b] - T(2) * A_contracted[a][b]);
                         const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
                                        KO6_axis_ptr(p_field, 1);
                         const T diss_scaled = (ko_sigma / G.dx) * diss;
@@ -338,6 +335,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 ++p_alpha;
                 ++p_chi;
                 ++p_K;
+                ++p_theta;
                 for (int c = 0; c < 3; ++c)
                     ++p_beta[c];
                 for (int s = 0; s < 6; ++s) {

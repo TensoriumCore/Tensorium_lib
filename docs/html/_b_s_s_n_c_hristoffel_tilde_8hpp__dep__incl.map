@@ -1,14 +1,26 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNCHristoffelTilde.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNCHristoffelTilde.hpp">
-<area shape="rect" id="Node000001" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="153,5,411,76"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="292,132,542,187"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="334,84,388,131,383,131,333,89"/>
-<area shape="rect" id="Node000003" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="71,243,227,313"/>
-<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="136,56,105,66,73,81,44,101,20,126,11,143,8,158,12,175,20,193,43,221,73,244,68,246,39,225,16,196,7,176,3,159,6,141,16,122,41,96,70,76,103,61,140,52"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="405,243,592,313"/>
-<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="427,67,506,91,537,106,556,122,564,137,568,153,563,185,549,216,530,245,527,240,544,214,558,184,562,153,559,139,552,126,534,110,504,96,427,72"/>
-<area shape="rect" id="Node000005" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="30,124,268,195"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="229,88,190,125,187,121,233,85"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="343,193,228,245,226,240,338,194"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="445,197,477,243,472,242,443,202"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="151,208,151,243,146,241,147,212"/>
+<area shape="rect" id="Node000001" title="Builders for the Christoffel symbols &#160;and their contraction." alt="" coords="423,5,681,76"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_constraints_grid_8hpp.html" title="Hamiltonian, momentum, and Gamma&#45;constraint evaluation on the structured grid." alt="" coords="463,124,641,195"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="553,89,554,125,549,122,550,93"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_r_k4_8hpp.html" title="Fourth&#45;order Runge–Kutta time integrator that orchestrates halo updates, geometry rebuilds,..." alt="" coords="331,361,519,432"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="405,53,305,73,251,88,198,108,147,133,99,163,57,200,22,244,12,264,8,282,11,298,19,313,31,326,49,338,95,357,151,371,212,381,334,393,329,394,212,386,150,376,93,362,46,342,28,330,14,316,6,300,3,282,7,263,17,241,53,197,96,159,144,128,196,103,250,83,304,68,409,50"/>
+<area shape="rect" id="Node000005" href="$_b_s_s_n_initial_data_8hpp.html" title="Analytic and Bowen–York puncture initial data generators for the BSSN grid." alt="" coords="940,243,1097,313"/>
+<area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="696,48,844,59,998,76,1124,96,1167,108,1191,122,1203,140,1206,158,1202,177,1191,196,1173,219,1150,237,1098,262,1096,256,1147,232,1169,215,1187,193,1197,175,1200,158,1198,142,1187,126,1165,113,1123,101,997,81,844,65,697,53"/>
+<area shape="rect" id="Node000006" href="$_b_s_s_n_evolution_gamma_8hpp.html" title="RHS for the contracted connection ." alt="" coords="31,243,278,313"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="480,87,214,245,211,240,480,82"/>
+<area shape="rect" id="Node000007" href="$_b_s_s_n_evolution_z4_c_8hpp.html" title=" " alt="" coords="302,243,548,313"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="485,84,467,106,453,125,440,154,432,185,426,244,422,241,427,184,435,152,448,123,463,102,481,88"/>
+<area shape="rect" id="Node000008" href="$_b_s_s_n_ricci_8hpp.html" title="Assembly of the Ricci tensor split ." alt="" coords="665,132,916,187"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="637,81,738,131,732,131,636,86"/>
+<area shape="rect" id="Node000009" href="$_b_s_s_n_constrain_solver_8hpp.html" title="Bowen–York extrinsic curvature assembly and Lichnerowicz equation solver." alt="" coords="939,124,1178,195"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="696,69,928,121,941,127,936,127,927,127,696,75"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_projection_monitor_8hpp.html" title="Combined helper that enforces algebraic constraints, recomputes , and reports diagnostic norms." alt="" coords="572,243,825,313"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="608,202,657,242,652,242,606,207"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="655,192,811,231,942,261,937,262,810,236,655,198"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="606,319,507,363,505,358,600,320"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="250,317,347,360,342,361,249,323"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="427,327,427,363,423,359,423,330"/>
+<area shape="poly" id="edge11_Node000008_Node000004" title=" " alt="" coords="822,197,839,226,850,256,851,287,847,302,839,315,818,332,787,347,705,369,609,384,519,393,519,387,609,379,704,364,785,342,815,328,835,312,842,299,846,286,844,257,834,228,819,202"/>
+<area shape="poly" id="edge10_Node000008_Node000005" title=" " alt="" coords="857,192,953,242,948,242,856,197"/>
+<area shape="poly" id="edge14_Node000009_Node000005" title=" " alt="" coords="1044,207,1032,244,1028,240,1040,211"/>
 </map>

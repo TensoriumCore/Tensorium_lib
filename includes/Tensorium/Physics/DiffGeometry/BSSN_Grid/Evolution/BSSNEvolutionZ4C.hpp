@@ -5,8 +5,8 @@
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../Geometry/BSSNConformal.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
-#include "Tensorium_Grid/Grid/GridLayout.hpp"
 #include "BSSNEvolutionGauge.hpp"
+#include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 namespace tensorium_RG::bssn {
 
@@ -24,7 +24,7 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 namespace detail {
 constexpr int sym_row_index[6] = {0, 0, 0, 1, 1, 2};
 constexpr int sym_col_index[6] = {0, 1, 2, 1, 2, 2};
-}
+} // namespace detail
 
 /**
  * @brief RHS for the Z4c scalar \f$\Theta\f$.
@@ -34,7 +34,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                               const GaugeParameters<T> &params = {}, size_t padding = 4) {
     BSSN_PROFILE_KERNEL(Theta);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = params.ko_sigma; // Share KO6 strength with the gauge sector for consistency.
+    const T ko_sigma = scaled_ko_sigma(params.ko_sigma); // Adaptive KO6 strength.
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -90,6 +90,9 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
                 const T K_val = *p_K;
+                const T khat = Khat(K_val, theta);
+                T       RicciZ4[6];
+                compute_RicciZ4(G, i, j, k, RicciZ4);
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
@@ -100,12 +103,22 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
+                const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
+                                    Dz_ptr(p_chi, inv_12dz)};
 
                 const T adv = bx * Dx_upwind_ptr(p_theta, sx, inv_2dx, bx) +
                               by * Dy_upwind_ptr(p_theta, sy, inv_2dy, by) +
                               bz * Dz_upwind_ptr(p_theta, inv_2dz, bz);
 
-                const T z_grad_alpha = z_x * d_alpha[0] + z_y * d_alpha[1] + z_z * d_alpha[2];
+                const T inv_chi = T(1) / chi;
+                const T grad_ln_sqrt_gamma[3] = {-T(1.5) * d_chi[0] * inv_chi,
+                                                 -T(1.5) * d_chi[1] * inv_chi,
+                                                 -T(1.5) * d_chi[2] * inv_chi};
+                const T div_Z_partial = Dx_ptr(p_Z[0], sx, inv_12dx) +
+                                        Dy_ptr(p_Z[1], sy, inv_12dy) + Dz_ptr(p_Z[2], inv_12dz);
+                const T div_Z_conn = z_x * grad_ln_sqrt_gamma[0] + z_y * grad_ln_sqrt_gamma[1] +
+                                     z_z * grad_ln_sqrt_gamma[2];
+                const T div_Z = div_Z_partial + div_Z_conn;
 
                 const T g_xx = *p_ginv[0];
                 const T g_xy = *p_ginv[1];
@@ -114,16 +127,15 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T g_yz = *p_ginv[4];
                 const T g_zz = *p_ginv[5];
 
-                const T R_xx = *p_R[0];
-                const T R_xy = *p_R[1];
-                const T R_xz = *p_R[2];
-                const T R_yy = *p_R[3];
-                const T R_yz = *p_R[4];
-                const T R_zz = *p_R[5];
+                const T R_xx = *p_R[0] + RicciZ4[0];
+                const T R_xy = *p_R[1] + RicciZ4[1];
+                const T R_xz = *p_R[2] + RicciZ4[2];
+                const T R_yy = *p_R[3] + RicciZ4[3];
+                const T R_yz = *p_R[4] + RicciZ4[4];
+                const T R_zz = *p_R[5] + RicciZ4[5];
 
-                const T R_conformal =
-                    g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
-                    T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
+                const T R_conformal = g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
+                                      T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
                 const T R_scalar = chi * R_conformal;
 
                 const T row0_x = g_xx;
@@ -162,17 +174,17 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T A_up_yz = row1_x * tmp2_x + row1_y * tmp2_y + row1_z * tmp2_z;
                 const T A_up_zz = row2_x * tmp2_x + row2_y * tmp2_y + row2_z * tmp2_z;
 
-                const T A_contract =
-                    A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
-                    T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
+                const T A_contract = A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
+                                     T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
 
-                const T geom_source = R_scalar + two_thirds * K_val * K_val - A_contract;
-                const T geom = T(0.5) * alpha * std::clamp(geom_source, T(-1e3), T(1e3));
+                const T geom_source =
+                    T(0.5) * (R_scalar + T(2) * div_Z - A_contract + (T(2) / T(3)) * K_val * K_val);
+                const T geom = alpha * std::clamp(geom_source, T(-1e3), T(1e3));
                 const T damping = -alpha * params.kappa1 * two_plus_kappa2 * theta;
                 const T diss = KO6_axis_ptr(p_theta, sx) + KO6_axis_ptr(p_theta, sy) +
                                KO6_axis_ptr(p_theta, 1);
 
-                *p_rhs = geom + damping + adv - z_grad_alpha + (ko_sigma / G.dx) * diss;
+                *p_rhs = geom + damping + adv + (ko_sigma / G.dx) * diss;
 
                 ++p_theta;
                 ++p_alpha;
@@ -201,7 +213,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                           const GaugeParameters<T> &params = {}, size_t padding = 4) {
     BSSN_PROFILE_KERNEL(Z);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = params.ko_sigma; // Keeps Z^i filtering synchronized with gauge fields.
+    const T ko_sigma = scaled_ko_sigma(params.ko_sigma); // Adaptive KO6 for Z^i.
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -225,7 +237,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
 
     const ptrdiff_t sx = G.Z[0].st.sx;
     const ptrdiff_t sy = G.Z[0].st.sy;
-    const T        two_thirds = T(2) / T(3);
+    const T         two_thirds = T(2) / T(3);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -302,13 +314,13 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
 
                 T A_up_matrix[3][3];
                 A_up_matrix[0][0] = row0_x * tmp0_x + row0_y * tmp0_y + row0_z * tmp0_z;
-                A_up_matrix[0][1] = A_up_matrix[1][0] = row0_x * tmp1_x + row0_y * tmp1_y +
-                                                       row0_z * tmp1_z;
-                A_up_matrix[0][2] = A_up_matrix[2][0] = row0_x * tmp2_x + row0_y * tmp2_y +
-                                                       row0_z * tmp2_z;
+                A_up_matrix[0][1] = A_up_matrix[1][0] =
+                    row0_x * tmp1_x + row0_y * tmp1_y + row0_z * tmp1_z;
+                A_up_matrix[0][2] = A_up_matrix[2][0] =
+                    row0_x * tmp2_x + row0_y * tmp2_y + row0_z * tmp2_z;
                 A_up_matrix[1][1] = row1_x * tmp1_x + row1_y * tmp1_y + row1_z * tmp1_z;
-                A_up_matrix[1][2] = A_up_matrix[2][1] = row1_x * tmp2_x + row1_y * tmp2_y +
-                                                       row1_z * tmp2_z;
+                A_up_matrix[1][2] = A_up_matrix[2][1] =
+                    row1_x * tmp2_x + row1_y * tmp2_y + row1_z * tmp2_z;
                 A_up_matrix[2][2] = row2_x * tmp2_x + row2_y * tmp2_y + row2_z * tmp2_z;
 
                 const T dK[3] = {Dx_ptr(p_K, sx, inv_12dx), Dy_ptr(p_K, sy, inv_12dy),
@@ -317,7 +329,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                                     Dz_ptr(p_chi, inv_12dz)};
                 const T chi_val = *p_chi;
                 const T z_vals[3] = {*p_Z[0], *p_Z[1], *p_Z[2]};
-                T d6phi[3];
+                T       d6phi[3];
                 grad_6phi_from_chi(d_chi, chi_val, d6phi);
 
                 T beta_grad[3][3];
@@ -340,9 +352,9 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                 for (int s = 0; s < 6; ++s) {
                     const int row = detail::sym_row_index[s];
                     const int col = detail::sym_col_index[s];
-                    const T  dx = dA_dx[s];
-                    const T  dy = dA_dy[s];
-                    const T  dz = dA_dz[s];
+                    const T   dx = dA_dx[s];
+                    const T   dy = dA_dy[s];
+                    const T   dz = dA_dz[s];
                     dA_tensor[0][row][col] = dx;
                     dA_tensor[0][col][row] = dx;
                     dA_tensor[1][row][col] = dy;
@@ -389,7 +401,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                                   by * Dy_upwind_ptr(p_Z[comp], sy, inv_2dy, by) +
                                   bz * Dz_upwind_ptr(p_Z[comp], inv_2dz, bz);
 
-                    const T damping = -params.kappa1 * alpha * (*p_Z[comp]);
+                    const T damping = -params.kappa_z * alpha * (*p_Z[comp]);
                     const T lie_drag =
                         -(z_vals[0] * beta_grad[comp][0] + z_vals[1] * beta_grad[comp][1] +
                           z_vals[2] * beta_grad[comp][2]);
@@ -411,8 +423,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                     const T diss = KO6_axis_ptr(p_Z[comp], sx) + KO6_axis_ptr(p_Z[comp], sy) +
                                    KO6_axis_ptr(p_Z[comp], 1);
 
-                    *p_rhs[comp] = alpha * momentum + adv + lie_drag + damping +
-                                   dissZ_coef * diss;
+                    *p_rhs[comp] = alpha * momentum + adv + lie_drag + damping + dissZ_coef * diss;
                 }
 
                 for (int c = 0; c < 3; ++c) {

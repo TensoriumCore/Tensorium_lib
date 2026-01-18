@@ -4,6 +4,7 @@
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
+#include "BSSNEvolutionCommon.hpp"
 
 /**
  * @file BSSNEvolutionGammaTilde.hpp
@@ -49,7 +50,7 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    const T         ko_sigma = T(0.02);
+    const T         ko_sigma = scaled_ko_sigma(T(0.02));
     const double    inv_12dx = 1.0 / (60.0 * G.dx);
     const double    inv_12dy = 1.0 / (60.0 * G.dy);
     const double    inv_12dz = 1.0 / (60.0 * G.dz);

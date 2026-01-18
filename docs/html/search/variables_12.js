@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['v_0',['v',['../classtensorium_1_1_vector.html#a9f6e6354fe88791fae5173b8f81b2dc0',1,'tensorium::Vector']]],
-  ['void_1',['void',['../classtensorium_1_1_vector.html#a0cc64e44d55471370dd1825ef84040ed',1,'tensorium::Vector']]],
-  ['vt_2',['vt',['../classtensorium_1_1_vector.html#a4ee32b6260be6bd443fb54763c873904',1,'tensorium::Vector']]],
-  ['vt1_3',['vt1',['../classtensorium_1_1_vector.html#acfce8daf9c52adeec1a0fa559c460e17',1,'tensorium::Vector']]]
+  ['use_5fshift_5fadvection_0',['use_shift_advection',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#a2b0238c35e612de84e8fc24e38922d0b',1,'tensorium_RG::bssn::GaugeParameters']]],
+  ['use_5ftheta_5fin_5flapse_1',['use_theta_in_lapse',['../structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html#a5141a60be3263f57941d5a237f5a6a29',1,'tensorium_RG::bssn::GaugeParameters']]]
 ];

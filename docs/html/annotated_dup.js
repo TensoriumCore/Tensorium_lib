@@ -26,6 +26,8 @@ var annotated_dup =
     [ "tensorium_RG", "namespacetensorium___r_g.html", [
       [ "bssn", "namespacetensorium___r_g_1_1bssn.html", [
         [ "ConstraintMonitorStats", "structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats.html", "structtensorium___r_g_1_1bssn_1_1_constraint_monitor_stats" ],
+        [ "InteriorRegion", "structtensorium___r_g_1_1bssn_1_1_interior_region.html", "structtensorium___r_g_1_1bssn_1_1_interior_region" ],
+        [ "KOState", "structtensorium___r_g_1_1bssn_1_1_k_o_state.html", "structtensorium___r_g_1_1bssn_1_1_k_o_state" ],
         [ "GaugeParameters", "structtensorium___r_g_1_1bssn_1_1_gauge_parameters.html", "structtensorium___r_g_1_1bssn_1_1_gauge_parameters" ],
         [ "ADMVariables", "structtensorium___r_g_1_1bssn_1_1_a_d_m_variables.html", "structtensorium___r_g_1_1bssn_1_1_a_d_m_variables" ],
         [ "BSSNVariables", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_variables.html", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_variables" ],
@@ -33,8 +35,18 @@ var annotated_dup =
         [ "InvariantStats", "structtensorium___r_g_1_1bssn_1_1_invariant_stats.html", "structtensorium___r_g_1_1bssn_1_1_invariant_stats" ],
         [ "InvariantTolerances", "structtensorium___r_g_1_1bssn_1_1_invariant_tolerances.html", "structtensorium___r_g_1_1bssn_1_1_invariant_tolerances" ],
         [ "ProjectionConfig", "structtensorium___r_g_1_1bssn_1_1_projection_config.html", "structtensorium___r_g_1_1bssn_1_1_projection_config" ],
+        [ "BoundaryClamp", "structtensorium___r_g_1_1bssn_1_1_boundary_clamp.html", "structtensorium___r_g_1_1bssn_1_1_boundary_clamp" ],
+        [ "BoundarySponge", "structtensorium___r_g_1_1bssn_1_1_boundary_sponge.html", "structtensorium___r_g_1_1bssn_1_1_boundary_sponge" ],
+        [ "BoundaryRadiative", "structtensorium___r_g_1_1bssn_1_1_boundary_radiative.html", "structtensorium___r_g_1_1bssn_1_1_boundary_radiative" ],
+        [ "KernelTimerScope", "structtensorium___r_g_1_1bssn_1_1_kernel_timer_scope.html", "structtensorium___r_g_1_1bssn_1_1_kernel_timer_scope" ],
+        [ "BoundaryConfigurator", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator.html", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator" ],
+        [ "BoundaryConfigurator&lt; Boundary, std::void_t&lt; decltype(Boundary::set_characteristic(std::declval&lt; double &gt;(), std::declval&lt; double &gt;()))&gt; &gt;", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb.html", "structtensorium___r_g_1_1bssn_1_1_boundary_configurator_3_01_boundary_00_01std_1_1void__t_3_01de888804a305a74f9b37c23c07ce6163cb" ],
         [ "BSSNRHSWorkspace", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace.html", "structtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_h_s_workspace" ],
+        [ "CFLControl", "structtensorium___r_g_1_1bssn_1_1_c_f_l_control.html", "structtensorium___r_g_1_1bssn_1_1_c_f_l_control" ],
         [ "BSSNRKStepper", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html", "classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper" ]
+      ] ],
+      [ "init", "namespacetensorium___r_g_1_1init.html", [
+        [ "ConstraintScratch", "structtensorium___r_g_1_1init_1_1_constraint_scratch.html", "structtensorium___r_g_1_1init_1_1_constraint_scratch" ]
       ] ],
       [ "BSSNAtildeTensor", "classtensorium___r_g_1_1_b_s_s_n_atilde_tensor.html", "classtensorium___r_g_1_1_b_s_s_n_atilde_tensor" ],
       [ "ChiContext", "structtensorium___r_g_1_1_chi_context.html", "structtensorium___r_g_1_1_chi_context" ],

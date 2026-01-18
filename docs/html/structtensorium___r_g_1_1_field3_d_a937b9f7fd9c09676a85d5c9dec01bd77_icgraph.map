@@ -1,17 +1,30 @@
 <map id="tensorium_RG::Field3D::idx" name="tensorium_RG::Field3D::idx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="471,146,654,172"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#aa7005abefc0003c31d2448b6d21bc98d" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="274,59,418,115"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="505,141,418,113,418,108,510,141"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g.html#a45fcd4de7be61cb0c5a3b8042077166f" title=" " alt="" coords="269,139,423,179"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="453,159,424,162,423,156,458,159"/>
-<area shape="rect" id="Node000007" href="$namespacetensorium___r_g.html#a8e554fdef3559c64d8401e7026f717ad" title=" " alt="" coords="277,204,414,245"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="506,176,416,206,414,201,500,177"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="40,5,186,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,65,187,48,186,42,261,63"/>
-<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="31,71,195,111"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="256,90,196,92,194,87,261,87"/>
-<area shape="rect" id="Node000006" href="$structtensorium___r_g_1_1_boundary_clamp.html#ae810d670e755bc74c23f609b1254aa86" title=" " alt="" coords="10,139,216,179"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="251,160,217,162,216,156,256,158"/>
-<area shape="rect" id="Node000008" href="$structtensorium___r_g_1_1_boundary_periodic.html#a51b8cedb04ed30f44bfc6fe64bedb000" title=" " alt="" coords="5,204,221,245"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="259,224,221,227,221,222,264,224"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="705,164,889,190"/>
+<area shape="rect" id="Node000002" href="$structtensorium___r_g_1_1bssn_1_1_boundary_radiative.html#a4251ed154fefce41d4fb9c4a6435b094" title=" " alt="" coords="494,5,635,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="766,154,717,116,656,75,636,64,636,59,659,71,720,112,771,154"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#aa7005abefc0003c31d2448b6d21bc98d" title="Aggregate Linf/L2 norms of the Hamiltonian constraint and track det/trace violations." alt="" coords="493,149,636,205"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="687,178,637,180,637,175,693,177"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g.html#a45fcd4de7be61cb0c5a3b8042077166f" title=" " alt="" coords="488,254,642,295"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="753,196,616,256,614,251,748,197"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g.html#a8e554fdef3559c64d8401e7026f717ad" title=" " alt="" coords="496,352,633,392"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="774,200,722,253,659,309,598,353,596,349,656,304,718,249,769,203"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1bssn.html#a750c6f9b2fa48f09c6b86b0cecfa0a5a" title=" " alt="" coords="472,85,657,126"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="736,160,633,129,633,123,741,159"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="243,72,390,112"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="476,145,423,128,387,115,386,110,425,123,481,144"/>
+<area shape="rect" id="Node000005" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="235,137,398,178"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="475,171,399,166,398,161,480,169"/>
+<area shape="rect" id="Node000006" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,129,161,185"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="217,168,162,168,160,163,221,165"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="175,146,237,147,232,150,177,151"/>
+<area shape="rect" id="Node000008" href="$structtensorium___r_g_1_1_boundary_clamp.html#ae810d670e755bc74c23f609b1254aa86" title=" " alt="" coords="213,202,420,243"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="469,256,417,246,416,241,475,255"/>
+<area shape="rect" id="Node000009" href="$structtensorium___r_g_1_1bssn_1_1_boundary_clamp.html#a7723edbb5a1fc20f9cc4e488012146ef" title=" " alt="" coords="220,268,412,308"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="469,280,414,285,413,280,474,279"/>
+<area shape="rect" id="Node000010" href="$structtensorium___r_g_1_1bssn_1_1_boundary_sponge.html#a8e6dc47705f3b68b445e841ce8d47f37" title=" " alt="" coords="217,333,416,374"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="488,299,425,322,385,335,384,330,423,317,483,301"/>
+<area shape="rect" id="Node000012" href="$structtensorium___r_g_1_1_boundary_periodic.html#a51b8cedb04ed30f44bfc6fe64bedb000" title=" " alt="" coords="209,398,424,439"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="483,387,425,401,424,396,478,388"/>
+<area shape="poly" id="edge14_Node000013_Node000004" title=" " alt="" coords="454,100,391,98,389,93,459,98"/>
+<area shape="poly" id="edge15_Node000013_Node000005" title=" " alt="" coords="454,129,399,143,397,138,459,127"/>
 </map>

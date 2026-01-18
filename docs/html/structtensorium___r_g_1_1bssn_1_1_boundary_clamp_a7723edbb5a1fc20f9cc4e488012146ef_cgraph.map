@@ -1,0 +1,9 @@
+<map id="tensorium_RG::bssn::BoundaryClamp::apply_halo" name="tensorium_RG::bssn::BoundaryClamp::apply_halo">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,198,64"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g.html#a45fcd4de7be61cb0c5a3b8042077166f" title=" " alt="" coords="246,23,400,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,41,233,43,228,44,198,46"/>
+<area shape="rect" id="Node000003" href="$structtensorium___r_g_1_1_field3_d.html#a937b9f7fd9c09676a85d5c9dec01bd77" title=" " alt="" coords="448,5,631,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="400,32,430,31,435,30,401,37"/>
+<area shape="rect" id="Node000004" href="$structtensorium___r_g_1_1_field3_d.html#a1cb7bcacc1ff5d7f5533cc9eb3ac5921" title=" " alt="" coords="449,55,630,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="400,49,436,56,431,56,400,55"/>
+</map>

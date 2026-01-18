@@ -1,15 +1,17 @@
 <map id="tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component" name="tensorium_RG::bssn::detail::diff_gamma_tilde_inv_component">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,65,153,121"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="201,5,350,31"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title=" " alt="" coords="201,5,350,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,62,200,40,219,35,214,38,202,45,146,67"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="201,55,350,80"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title=" " alt="" coords="201,55,350,80"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,81,188,78,183,80,154,86"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="201,104,350,130"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="153,99,188,105,183,107,153,104"/>
-<area shape="rect" id="Node000006" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="203,154,348,194"/>
-<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="148,119,213,147,208,148,148,124"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="398,55,548,80"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="330,29,407,50,401,51,330,34"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="350,65,385,67,380,68,351,70"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="329,101,406,84,401,85,331,106"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title=" " alt="" coords="201,104,350,130"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="153,99,188,105,183,107,153,104"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="203,154,348,194"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="148,119,213,147,208,148,148,124"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1fd.html#ae41c19beb4fbed35a65c5b6bf40fca6e" title=" " alt="" coords="398,5,569,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,16,385,17,380,19,351,21"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1fd.html#a07c6f54f50c56a1c736b6321b5f5384d" title=" " alt="" coords="398,55,569,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="350,65,385,67,380,68,351,70"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1fd.html#a9a6d00f8df14b450c0da7183a3edc301" title=" " alt="" coords="398,104,569,130"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="350,114,385,117,380,117,351,119"/>
 </map>

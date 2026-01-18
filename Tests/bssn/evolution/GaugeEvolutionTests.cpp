@@ -12,6 +12,7 @@
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 
 #include <algorithm>
+#include <array>
 
 namespace {
 
@@ -403,6 +404,178 @@ REGISTER_TEST("bssn.evolution.gauge_rhs", "Gauge RHS validation", []() {
                         .perturb_beta = true,
                         .perturb_alpha = true,
                         .perturb_eps = 1e-6});
+});
+
+REGISTER_TEST("bssn.evolution.gamma_driver_convective",
+              "Gamma-driver RHS matches convective form", []() {
+    using namespace tensorium_RG::fd;
+    constexpr size_t padding = 4;
+    tensorium_RG::BSSNGridSoA<double> grid(20, 18, 16, 4, 0.4, 0.35, 0.3);
+
+    tensorium_RG::Field3D<double> rhs_Gamma[3];
+    tensorium_RG::Field3D<double> rhs_B[3];
+    alloc_vector_rhs(grid.tildeGamma, rhs_Gamma);
+    alloc_vector_rhs(grid.B, rhs_B);
+
+    const std::array<double, 3> beta_vals = {0.15, -0.05, 0.08};
+    const std::array<double, 3> rhs_gamma_vals = {0.4, -0.2, 0.3};
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+
+    for (size_t i = 0; i < nx_tot; ++i) {
+        for (size_t j = 0; j < ny_tot; ++j) {
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.alpha.idx(i, j, k);
+                const double x = (static_cast<double>(i) - double(grid.dims.ng)) * grid.dx;
+                const double y = (static_cast<double>(j) - double(grid.dims.ng)) * grid.dy;
+                const double z = (static_cast<double>(k) - double(grid.dims.ng)) * grid.dz;
+
+                grid.beta[0].ptr()[idx] = beta_vals[0];
+                grid.beta[1].ptr()[idx] = beta_vals[1];
+                grid.beta[2].ptr()[idx] = beta_vals[2];
+
+                grid.B[0].ptr()[idx] = 0.1 + 0.04 * x + 0.01 * y - 0.02 * z;
+                grid.B[1].ptr()[idx] = -0.05 + 0.015 * x - 0.03 * y + 0.005 * z;
+                grid.B[2].ptr()[idx] = 0.02 - 0.01 * x + 0.025 * y + 0.02 * z;
+
+                grid.tildeGamma[0].ptr()[idx] = -0.2 + 0.03 * x - 0.02 * y + 0.01 * z;
+                grid.tildeGamma[1].ptr()[idx] = 0.05 + 0.02 * x + 0.015 * y - 0.005 * z;
+                grid.tildeGamma[2].ptr()[idx] = -0.08 - 0.01 * x + 0.02 * y + 0.03 * z;
+
+                for (int c = 0; c < 3; ++c)
+                    rhs_Gamma[c].ptr()[idx] = rhs_gamma_vals[c];
+            }
+        }
+    }
+
+    tensorium_RG::bssn::GaugeParameters<double> params;
+    params.eta = 1.4;
+    params.ko_sigma = 0.0;
+
+    tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B, params, padding);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t i0 = tensorium_RG::bssn::clamped_lower(I0, padding, I1);
+    const size_t j0 = tensorium_RG::bssn::clamped_lower(J0, padding, J1);
+    const size_t k0 = tensorium_RG::bssn::clamped_lower(K0, padding, K1);
+    const size_t i1 = tensorium_RG::bssn::clamped_upper(I1, padding, I0);
+    const size_t j1 = tensorium_RG::bssn::clamped_upper(J1, padding, J0);
+    const size_t k1 = tensorium_RG::bssn::clamped_upper(K1, padding, K0);
+
+    const double inv_2dx = 1.0 / (2.0 * grid.dx);
+    const double inv_2dy = 1.0 / (2.0 * grid.dy);
+    const double inv_2dz = 1.0 / (2.0 * grid.dz);
+    const ptrdiff_t sx = grid.B[0].st.sx;
+    const ptrdiff_t sy = grid.B[0].st.sy;
+    const double eta_coeff = params.effective_eta();
+
+    double max_err = 0.0;
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t idx = grid.B[0].idx(i, j, k);
+                const double bx = grid.beta[0].ptr()[idx];
+                const double by = grid.beta[1].ptr()[idx];
+                const double bz = grid.beta[2].ptr()[idx];
+
+                for (int c = 0; c < 3; ++c) {
+                    const size_t field_idx = grid.B[c].idx(i, j, k);
+                    const double *p_B = grid.B[c].ptr() + field_idx;
+                    const double *p_G = grid.tildeGamma[c].ptr() + field_idx;
+                    const double adv_B = bx * Dx_upwind_ptr(p_B, sx, inv_2dx, bx) +
+                                         by * Dy_upwind_ptr(p_B, sy, inv_2dy, by) +
+                                         bz * Dz_upwind_ptr(p_B, inv_2dz, bz);
+                    const double adv_Gamma = bx * Dx_upwind_ptr(p_G, sx, inv_2dx, bx) +
+                                             by * Dy_upwind_ptr(p_G, sy, inv_2dy, by) +
+                                             bz * Dz_upwind_ptr(p_G, inv_2dz, bz);
+                    const double rhs_gamma_val =
+                        rhs_Gamma[c].ptr()[rhs_Gamma[c].idx(i, j, k)];
+                    const double expected = rhs_gamma_val - adv_Gamma + adv_B -
+                                            eta_coeff * grid.B[c].ptr()[field_idx];
+                    const double rhs_val = rhs_B[c].ptr()[rhs_B[c].idx(i, j, k)];
+                    max_err = std::max(max_err, std::abs(rhs_val - expected));
+                }
+            }
+        }
+    }
+
+    tensorium::tests::expect_le(max_err, 1e-11,
+                                "Gamma-driver convective RHS matches discrete form");
+});
+
+REGISTER_TEST("bssn.evolution.gamma_driver_no_adv",
+              "Gamma-driver RHS without shift advection", []() {
+    constexpr size_t padding = 4;
+    tensorium_RG::BSSNGridSoA<double> grid(18, 16, 14, 4, 0.3, 0.27, 0.25);
+
+    tensorium_RG::Field3D<double> rhs_Gamma[3];
+    tensorium_RG::Field3D<double> rhs_B[3];
+    alloc_vector_rhs(grid.tildeGamma, rhs_Gamma);
+    alloc_vector_rhs(grid.B, rhs_B);
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.alpha.idx(i, j, k);
+                const double x = (static_cast<double>(i) - double(grid.dims.ng)) * grid.dx;
+                const double y = (static_cast<double>(j) - double(grid.dims.ng)) * grid.dy;
+                const double z = (static_cast<double>(k) - double(grid.dims.ng)) * grid.dz;
+
+                grid.beta[0].ptr()[idx] = 0.08 * x;
+                grid.beta[1].ptr()[idx] = -0.05 * y;
+                grid.beta[2].ptr()[idx] = 0.03 * z;
+
+                grid.B[0].ptr()[idx] = 0.02 + 0.01 * x - 0.005 * y + 0.002 * z;
+                grid.B[1].ptr()[idx] = -0.03 + 0.007 * x + 0.012 * y - 0.004 * z;
+                grid.B[2].ptr()[idx] = 0.01 - 0.009 * x + 0.004 * y + 0.006 * z;
+
+                const double rhs_val0 = 0.2 + 0.05 * x;
+                const double rhs_val1 = -0.1 + 0.02 * y;
+                const double rhs_val2 = 0.15 - 0.03 * z;
+                rhs_Gamma[0].ptr()[idx] = rhs_val0;
+                rhs_Gamma[1].ptr()[idx] = rhs_val1;
+                rhs_Gamma[2].ptr()[idx] = rhs_val2;
+            }
+
+    tensorium_RG::bssn::GaugeParameters<double> params;
+    params.eta = 0.9;
+    params.ko_sigma = 0.0;
+    params.use_shift_advection = false;
+
+    tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B, params, padding);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t i0 = tensorium_RG::bssn::clamped_lower(I0, padding, I1);
+    const size_t j0 = tensorium_RG::bssn::clamped_lower(J0, padding, J1);
+    const size_t k0 = tensorium_RG::bssn::clamped_lower(K0, padding, K1);
+    const size_t i1 = tensorium_RG::bssn::clamped_upper(I1, padding, I0);
+    const size_t j1 = tensorium_RG::bssn::clamped_upper(J1, padding, J0);
+    const size_t k1 = tensorium_RG::bssn::clamped_upper(K1, padding, K0);
+
+    const double eta_coeff = params.effective_eta();
+    double       max_err = 0.0;
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j)
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t idx = grid.B[0].idx(i, j, k);
+                for (int c = 0; c < 3; ++c) {
+                    const double rhs_val = rhs_B[c].ptr()[rhs_B[c].idx(i, j, k)];
+                    const double expected = rhs_Gamma[c].ptr()[rhs_Gamma[c].idx(i, j, k)] -
+                                            eta_coeff * grid.B[c].ptr()[idx];
+                    max_err = std::max(max_err, std::abs(rhs_val - expected));
+                }
+            }
+
+    tensorium::tests::expect_le(max_err, 1e-12,
+                                "Gamma-driver RHS w/out advection matches input");
 });
 
 #endif

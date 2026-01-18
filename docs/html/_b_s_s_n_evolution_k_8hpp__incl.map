@@ -1,22 +1,48 @@
 <map id="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionK.hpp" name="includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionK.hpp">
-<area shape="rect" id="Node000001" title="RHS for the mean curvature ." alt="" coords="222,5,502,61"/>
-<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="5,109,261,135"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,63,181,105,178,101,292,60"/>
-<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="336,109,519,135"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="383,59,412,97,407,96,382,64"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="261,190,336,216"/>
-<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="348,60,326,110,306,177,302,174,321,108,345,63"/>
-<area shape="rect" id="Node000006" href="$_grid_layout_8hpp.html" title=" " alt="" coords="360,183,500,223"/>
-<area shape="poly" id="edge10_Node000001_Node000006" title=" " alt="" coords="474,59,508,79,534,108,540,128,532,147,515,163,494,177,491,173,512,159,527,144,534,128,529,110,504,83,473,64"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="184,271,248,297"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="141,133,205,257,200,257,137,137"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="410,134,332,184,330,179,406,136"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="430,133,431,169,427,166,426,137"/>
-<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="379,224,263,268,261,263,374,224"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="308,271,372,297"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="410,223,366,263,364,259,405,225"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="396,271,464,297"/>
-<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="432,222,432,257,428,254,428,226"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="489,271,572,297"/>
-<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="456,221,506,262,501,261,454,226"/>
+<area shape="rect" id="Node000001" title="RHS for the mean curvature ." alt="" coords="441,5,722,61"/>
+<area shape="rect" id="Node000002" href="$_b_s_s_n_grid_derivatives_8hpp.html" title="High&#45;order finite&#45;difference stencils and dissipation operators used by the BSSN grid." alt="" coords="290,271,545,297"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="566,60,436,260,432,256,562,63"/>
+<area shape="rect" id="Node000004" href="$_b_s_s_n_grid_so_a_8hpp.html" title="Structure&#45;of&#45;arrays storage for all BSSN state variables." alt="" coords="318,419,501,444"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="518,63,459,97,392,143,359,171,328,202,302,236,280,272,274,293,276,313,285,332,298,350,335,383,375,410,369,411,331,387,294,354,280,335,271,314,269,292,275,270,297,233,324,198,355,167,388,139,457,93,522,60"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="762,500,836,526"/>
+<area shape="poly" id="edge31_Node000001_Node000005" title=" " alt="" coords="722,41,802,57,840,70,875,87,906,108,930,134,945,165,951,201,951,359,948,382,940,404,912,442,876,472,840,495,838,490,873,468,908,438,935,402,943,381,946,359,946,202,940,167,925,137,902,112,873,92,838,75,800,62,723,46"/>
+<area shape="rect" id="Node000006" href="$_grid_layout_8hpp.html" title=" " alt="" coords="102,492,242,533"/>
+<area shape="poly" id="edge18_Node000001_Node000006" title=" " alt="" coords="439,63,343,89,250,121,211,139,180,159,160,180,153,202,153,359,158,421,167,477,162,476,153,422,148,359,148,201,156,177,177,155,208,134,248,116,342,84,443,60"/>
+<area shape="rect" id="Node000013" href="$_b_s_s_n_perf_timers_8hpp.html" title=" " alt="" coords="986,183,1137,223"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="722,39,782,48,845,61,908,81,968,107,1008,136,1041,171,1036,170,1005,140,966,111,907,86,844,67,781,53,723,45"/>
+<area shape="rect" id="Node000014" href="$_b_s_s_n_evolution_gauge_8hpp.html" title="Gauge drivers for , , and &#160;(1+log + Gamma&#45;driver)." alt="" coords="562,109,737,135"/>
+<area shape="poly" id="edge19_Node000001_Node000014" title=" " alt="" coords="603,59,633,97,628,97,602,64"/>
+<area shape="rect" id="Node000003" href="$_b_s_s_n_grid_operations_8hpp.html" title="Grid&#45;wide helpers such as halo application shared by evolution and initialization code." alt="" coords="498,345,708,371"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="449,295,560,338,555,340,449,300"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="293,581,358,607"/>
+<area shape="poly" id="edge14_Node000002_Node000008" title=" " alt="" coords="404,296,353,348,327,382,308,420,300,458,302,498,309,535,318,568,313,565,304,536,296,499,295,458,303,418,323,379,349,344,400,299"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="568,372,458,415,456,410,573,370"/>
+<area shape="poly" id="edge11_Node000003_Node000005" title=" " alt="" coords="603,369,604,406,609,426,618,443,646,467,679,485,714,497,749,506,744,506,712,502,677,490,643,472,614,446,604,428,599,407,600,373"/>
+<area shape="poly" id="edge10_Node000003_Node000006" title=" " alt="" coords="596,370,563,410,540,430,515,447,451,473,383,492,317,504,259,510,258,505,317,499,382,487,449,468,512,442,537,426,559,406,592,373"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="628,419,685,444"/>
+<area shape="poly" id="edge12_Node000003_Node000011" title=" " alt="" coords="613,368,641,407,635,405,611,373"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="709,419,761,444"/>
+<area shape="poly" id="edge13_Node000003_Node000012" title=" " alt="" coords="626,369,702,411,697,411,625,374"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="470,442,749,500,744,502,469,448"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="371,446,247,489,245,484,375,444"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,581,70,607"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="141,535,73,575,70,570,136,532"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="211,531,292,573,286,574,210,536"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="94,581,162,607"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="164,532,144,569,140,565,159,535"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="187,581,269,607"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="187,531,213,568,208,568,185,536"/>
+<area shape="poly" id="edge17_Node000013_Node000008" title=" " alt="" coords="1057,222,1041,283,1035,320,1032,357,1032,433,1026,458,1010,480,984,500,950,517,864,544,761,564,651,578,543,587,373,595,373,589,542,582,650,573,760,559,863,539,948,512,981,495,1006,476,1021,456,1027,433,1027,356,1029,319,1036,282,1053,226"/>
+<area shape="poly" id="edge22_Node000014_Node000002" title=" " alt="" coords="630,137,449,264,446,260,634,134"/>
+<area shape="poly" id="edge23_Node000014_Node000004" title=" " alt="" coords="642,133,611,184,597,216,590,244,580,271,559,299,532,317,506,324,480,330,454,347,433,375,419,406,415,402,429,372,450,343,478,325,505,319,530,312,556,295,576,268,585,242,592,215,606,181,638,137"/>
+<area shape="poly" id="edge20_Node000014_Node000005" title=" " alt="" coords="737,131,796,149,824,163,850,181,874,203,889,225,898,250,900,283,900,359,893,399,874,435,851,467,826,492,824,487,847,463,870,433,888,397,895,359,895,283,893,251,885,227,870,207,846,185,822,167,794,154,738,136"/>
+<area shape="poly" id="edge30_Node000014_Node000006" title=" " alt="" coords="573,137,507,155,428,182,349,221,312,245,279,273,259,296,241,322,212,378,193,432,181,478,176,476,188,431,208,375,236,319,255,293,276,269,309,241,346,216,426,177,505,150,578,134"/>
+<area shape="poly" id="edge21_Node000014_Node000012" title=" " alt="" coords="737,130,785,148,806,162,824,181,838,210,841,242,837,274,825,306,793,364,758,409,755,405,788,361,821,303,831,272,836,242,833,212,819,184,803,166,783,153,738,135"/>
+<area shape="poly" id="edge24_Node000014_Node000013" title=" " alt="" coords="713,133,973,183,968,185,713,138"/>
+<area shape="rect" id="Node000015" href="$_b_s_s_n_evolution_common_8hpp.html" title="Shared utilities (interior clamping helpers) for all RHS kernels." alt="" coords="620,190,810,216"/>
+<area shape="poly" id="edge25_Node000014_Node000015" title=" " alt="" coords="660,132,698,178,693,178,659,138"/>
+<area shape="poly" id="edge28_Node000015_Node000002" title=" " alt="" coords="667,218,479,269,477,264,671,215"/>
+<area shape="poly" id="edge29_Node000015_Node000004" title=" " alt="" coords="705,214,662,257,603,299,571,315,543,322,517,330,487,347,454,377,428,408,425,404,450,373,484,343,515,325,542,317,569,310,600,295,659,252,701,217"/>
+<area shape="poly" id="edge26_Node000015_Node000005" title=" " alt="" coords="723,214,752,270,770,329,783,389,798,486,793,484,778,390,765,331,747,272,721,219"/>
+<area shape="poly" id="edge27_Node000015_Node000011" title=" " alt="" coords="720,214,728,244,734,284,734,328,723,372,708,394,689,412,687,407,704,390,718,370,728,328,728,284,723,245,717,219"/>
 </map>

@@ -1,0 +1,26 @@
+<map id="tensorium_RG::fd::Dxy4_ptr" name="tensorium_RG::fd::Dxy4_ptr">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1085,235,1270,261"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a00ddfb96cc3a527ad849dfc490893be8" title="Populate the Ricci tensor cache &#160;throughout the interior grid." alt="" coords="883,198,1028,239"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1067,234,1029,231,1028,225,1072,233"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1fd.html#a02ca6cf55ceebf8307c04c9d32a884a1" title=" " alt="" coords="874,263,1037,289"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="1067,262,1038,268,1037,263,1072,261"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#ac5dbe8c0753adf8b1d8b68c2f5b78703" title=" " alt="" coords="667,5,808,61"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="929,185,884,131,855,102,824,75,807,64,808,59,827,71,859,98,888,128,934,186"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="660,85,815,141"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="899,191,824,156,801,144,801,139,827,151,904,191"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="671,165,804,206"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="865,205,805,198,805,193,870,205"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="672,230,803,271"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="865,232,804,244,803,238,870,231"/>
+<area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ac27e7cdecedf55c2129cab6cdb9080cf" title=" " alt="" coords="649,295,826,350"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="886,245,875,253,851,268,827,285,804,297,803,292,824,280,848,264,872,248,881,247"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="653,374,822,415"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="879,247,876,252,864,266,858,280,852,307,847,335,840,350,827,364,812,376,810,371,824,361,835,347,842,334,847,306,853,278,860,263,872,249,874,249"/>
+<area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="420,295,601,350"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="631,323,602,325,601,320,636,322"/>
+<area shape="rect" id="Node000009" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,302,372,343"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="402,323,373,325,372,320,407,322"/>
+<area shape="rect" id="Node000010" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,295,161,350"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="190,332,162,334,161,329,195,331"/>
+<area shape="poly" id="edge10_Node000010_Node000009" title=" " alt="" coords="176,311,211,313,206,314,177,316"/>
+</map>

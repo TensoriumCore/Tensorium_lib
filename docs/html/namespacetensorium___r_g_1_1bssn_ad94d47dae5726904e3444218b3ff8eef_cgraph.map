@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,275,147,315"/>
 <area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a882854a29de4e6552fccc878e016fe8d" title="Compare measured invariants against tolerances and throw/log when drifts exceed bounds." alt="" coords="195,213,336,254"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,272,188,258,184,261,142,276"/>
-<area shape="rect" id="Node000016" href="$namespacetensorium___r_g_1_1bssn.html#ac93e4efe18487bdcf23dc50d43a86c9a" title="Build tolerances that reflect the expected truncation error of the chosen stencil order." alt="" coords="195,303,336,359"/>
-<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="146,306,182,314,177,316,147,311"/>
+<area shape="rect" id="Node000018" href="$namespacetensorium___r_g_1_1bssn.html#ac93e4efe18487bdcf23dc50d43a86c9a" title="Build tolerances that reflect the expected truncation error of the chosen stencil order." alt="" coords="195,303,336,359"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="146,306,182,314,177,316,147,311"/>
 <area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#a1467fe6bd5dc5bd39c2f06041356faa4" title="Measure det, trace, metric&#45;identity, Gamma&#45;constraint, and minimum&#45; &#160;over the grid." alt="" coords="384,201,555,242"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="336,227,371,227,366,228,337,232"/>
 <area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1_b_s_s_n_grid_so_a.html#aab523f1249b3ec9f1b0490c85a87d355" title="Map an index triple to physical coordinates." alt="" coords="603,5,794,46"/>
@@ -14,26 +14,28 @@
 <area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="542,198,613,181,608,182,544,203"/>
 <area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1bssn.html#ac0ff801adfd5fd1985ae3ce40263bf3c" title="Evaluate &#160;using the 4th&#45;order derivative operators." alt="" coords="606,201,791,242"/>
 <area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="555,219,593,221,588,222,556,224"/>
-<area shape="rect" id="Node000014" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="613,266,784,292"/>
-<area shape="poly" id="edge15_Node000003_Node000014" title=" " alt="" coords="553,240,632,262,627,262,553,245"/>
-<area shape="rect" id="Node000015" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="679,316,718,341"/>
-<area shape="poly" id="edge16_Node000003_Node000015" title=" " alt="" coords="499,240,548,272,604,302,667,323,662,322,602,307,545,276,498,245"/>
+<area shape="rect" id="Node000016" href="$namespacetensorium___r_g.html#a6e4da58decb324906a6eaa5fa81e8f55" title=" " alt="" coords="613,266,784,292"/>
+<area shape="poly" id="edge15_Node000003_Node000016" title=" " alt="" coords="553,240,632,262,627,262,553,245"/>
+<area shape="rect" id="Node000017" href="$_tensorium_dispatch_plugin_8cpp.html#aaf4ed39d5feb1b385de1cd66358ce087" title=" " alt="" coords="679,316,718,341"/>
+<area shape="poly" id="edge16_Node000003_Node000017" title=" " alt="" coords="499,240,548,272,604,302,667,323,662,322,602,307,545,276,498,245"/>
 <area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1bssn_1_1detail.html#ae9f5c5d9672a4dd8198a3aae33479f3c" title=" " alt="" coords="842,194,989,250"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="791,219,829,221,824,222,792,224"/>
-<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title="4th&#45;order centered derivative along x." alt="" coords="1037,134,1186,160"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1fd.html#aece616f0079907fd036af81c285c1d58" title=" " alt="" coords="1037,134,1186,160"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="980,191,1036,169,1050,166,1055,165,1038,173,982,196"/>
-<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title="4th&#45;order centered derivative along y." alt="" coords="1037,184,1186,209"/>
+<area shape="rect" id="Node000011" href="$namespacetensorium___r_g_1_1fd.html#a4194bbf40e8164c3918733b1c8ebc050" title=" " alt="" coords="1037,184,1186,209"/>
 <area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="989,210,1024,207,1019,208,990,215"/>
-<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title="4th&#45;order centered derivative along z." alt="" coords="1037,233,1186,258"/>
-<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="989,228,1024,235,1019,235,989,233"/>
-<area shape="rect" id="Node000013" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="1039,283,1184,323"/>
-<area shape="poly" id="edge14_Node000008_Node000013" title=" " alt="" coords="985,247,1049,276,1044,276,984,253"/>
-<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="1234,184,1385,209"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1166,158,1243,179,1238,179,1166,163"/>
-<area shape="poly" id="edge11_Node000011_Node000010" title=" " alt="" coords="1187,194,1222,196,1216,197,1187,199"/>
-<area shape="poly" id="edge13_Node000012_Node000010" title=" " alt="" coords="1166,230,1238,214,1243,213,1167,235"/>
-<area shape="rect" id="Node000017" href="$namespacetensorium___r_g_1_1bssn.html#ac4afae162c75d02e5d6d90b5ba455d40" title=" " alt="" coords="390,360,549,401"/>
-<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="337,345,377,357,372,357,336,351"/>
-<area shape="rect" id="Node000018" href="$namespacetensorium___r_g_1_1bssn.html#ab4b67c92f3686a50fb7bb562d87656c5" title=" " alt="" coords="619,366,778,422"/>
-<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="549,382,606,388,601,388,549,388"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1fd.html#ad27b4dab1db07f9ad4126754fc44b310" title=" " alt="" coords="1037,233,1186,258"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="989,228,1024,235,1019,235,989,233"/>
+<area shape="rect" id="Node000015" href="$namespacetensorium___r_g.html#a33a97574aae50390bcbc4b4d581cc6a4" title=" " alt="" coords="1039,283,1184,323"/>
+<area shape="poly" id="edge14_Node000008_Node000015" title=" " alt="" coords="985,247,1049,276,1044,276,984,253"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1fd.html#ae41c19beb4fbed35a65c5b6bf40fca6e" title=" " alt="" coords="1234,134,1406,160"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1186,144,1221,147,1216,147,1187,150"/>
+<area shape="rect" id="Node000012" href="$namespacetensorium___r_g_1_1fd.html#a07c6f54f50c56a1c736b6321b5f5384d" title=" " alt="" coords="1234,184,1406,209"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1186,194,1221,196,1216,197,1187,199"/>
+<area shape="rect" id="Node000014" href="$namespacetensorium___r_g_1_1fd.html#a9a6d00f8df14b450c0da7183a3edc301" title=" " alt="" coords="1234,233,1406,258"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="1186,243,1221,245,1216,246,1187,248"/>
+<area shape="rect" id="Node000019" href="$namespacetensorium___r_g_1_1bssn.html#ac4afae162c75d02e5d6d90b5ba455d40" title=" " alt="" coords="390,360,549,401"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="337,345,377,357,372,357,336,351"/>
+<area shape="rect" id="Node000020" href="$namespacetensorium___r_g_1_1bssn.html#ab4b67c92f3686a50fb7bb562d87656c5" title=" " alt="" coords="619,366,778,422"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="549,382,606,388,601,388,549,388"/>
 </map>

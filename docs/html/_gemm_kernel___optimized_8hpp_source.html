@@ -901,7 +901,7 @@ $(function() {
 <div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    <span class="keyword">inline</span> <span class="keywordtype">void</span> pack_panelB(T *B, T *blockB_packed, <span class="keywordtype">int</span> nr, <span class="keywordtype">int</span> kc, <span class="keywordtype">int</span> K) {</div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = 0; p &lt; kc; p++) {</div>
 <div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; nr; j++) {</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>                *blockB_packed++ = B[j * K + p];</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>                *blockB_packed++ = <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">B</a>[j * <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188">K</a> + p];</div>
 <div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>            }</div>
 <div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = nr; j &lt; 6; j++) {</div>
 <div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>                *blockB_packed++ = 0;</div>
@@ -967,7 +967,7 @@ $(function() {
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>                    }</div>
 <div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>                }</div>
 <div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>            }</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = kc; p &lt; K; p += KC) {</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = kc; p &lt; <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188">K</a>; p += KC) {</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>                <span class="keywordtype">int</span> cur_kc = _min(KC, K - p);</div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>                pack_blockB(&amp;B[j * K + p], blockB_packed, nc, cur_kc, K);</div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span> </div>
@@ -1216,7 +1216,7 @@ $(function() {
 <div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>                        }</div>
 <div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>                    }</div>
 <div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>                }</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = KC; p &lt; K; p += KC) {</div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = KC; p &lt; <a class="code hl_enumvalue" href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188">K</a>; p += KC) {</div>
 <div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>                    <span class="keywordtype">int</span> kb = std::min(KC, K - p);</div>
 <div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> jr = 0; jr &lt; nb; jr += NR)</div>
 <div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>                        pack_panelB(&amp;B[p + (j + jr) * K], &amp;packed_B[jr * kb], std::min(NR, nb - jr),</div>
@@ -1265,6 +1265,8 @@ $(function() {
 <div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_maths_utils_8hpp_html"><div class="ttname"><a href="_maths_utils_8hpp.html">MathsUtils.hpp</a></div></div>
 <div class="ttc" id="a_s_i_m_d_8hpp_html"><div class="ttname"><a href="_s_i_m_d_8hpp.html">SIMD.hpp</a></div></div>
+<div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html_a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685a9d5ed678fe57bcca610140957afab571">tensorium_RG::bssn::BoundaryField::B</a></div><div class="ttdeci">@ B</div><div class="ttdef"><b>Definition</b> BSSNGridOperations.hpp:30</div></div>
+<div class="ttc" id="anamespacetensorium___r_g_1_1bssn_html_a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188"><div class="ttname"><a href="namespacetensorium___r_g_1_1bssn.html#a1524aebfde10cd6e38077899ed147685aa5f3c6a11b03839d46af9fb43c97c188">tensorium_RG::bssn::BoundaryField::K</a></div><div class="ttdeci">@ K</div><div class="ttdef"><b>Definition</b> BSSNGridOperations.hpp:27</div></div>
 <div class="ttc" id="anamespacetensorium___r_g_html_a1c0700c897553df855b385b0a9b2eb47"><div class="ttname"><a href="namespacetensorium___r_g.html#a1c0700c897553df855b385b0a9b2eb47">tensorium_RG::__attribute__</a></div><div class="ttdeci">__attribute__((always_inline, hot, flatten)) inline tensorium</div><div class="ttdoc">Compute the inverse of a 2D metric tensor using local matrix inversion.</div><div class="ttdef"><b>Definition</b> ChristoffelSymbol.hpp:161</div></div>
 <div class="ttc" id="anamespacetensorium_html"><div class="ttname"><a href="namespacetensorium.html">tensorium</a></div><div class="ttdef"><b>Definition</b> GemmKernel_Ref.hpp:5</div></div>
 </div><!-- fragment --></div><!-- contents -->

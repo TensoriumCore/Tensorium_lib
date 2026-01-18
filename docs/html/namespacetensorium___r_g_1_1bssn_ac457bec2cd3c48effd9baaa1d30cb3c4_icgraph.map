@@ -1,0 +1,18 @@
+<map id="tensorium_RG::bssn::compute_bssn_constraints" name="tensorium_RG::bssn::compute_bssn_constraints">
+<area shape="rect" id="Node000001" title="Fill the Hamiltonian , momentum , and Gamma &#160;constraint fields." alt="" coords="425,184,610,224"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="216,5,370,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,172,437,125,375,75,358,64,358,59,379,71,440,121,491,172"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="226,85,360,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="457,177,376,141,348,129,347,123,378,136,462,176"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="228,150,358,191"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="407,189,359,183,358,178,413,187"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="220,216,366,256"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="407,220,367,228,366,223,412,218"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="209,281,377,322"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="461,230,378,270,348,283,346,278,376,265,456,232"/>
+<area shape="rect" id="Node000007" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="211,346,374,387"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="491,235,441,287,378,335,355,348,353,343,376,331,437,283,486,237"/>
+<area shape="rect" id="Node000008" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,339,161,394"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="193,376,161,378,161,373,198,375"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="176,355,213,357,208,358,176,360"/>
+</map>

@@ -1,5 +1,5 @@
 <map id="tensorium_RG::fd::KO6_axis" name="tensorium_RG::fd::KO6_axis">
-<area shape="rect" id="Node000001" title="One&#45;dimensional slice of the 6th&#45;order Kreiss–Oliger filter." alt="" coords="5,5,195,31"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#a374c0723eefc82665114440219884598" title="Utility accessor that forwards to Field3D::idx / raw pointer storage." alt="" coords="243,5,393,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,16,230,18,225,18,195,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,195,38"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1fd.html#ae0c037f6db2a07f34ceb4a7f4f8bb018" title=" " alt="" coords="243,5,401,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,23,229,25,224,26,195,28"/>
 </map>

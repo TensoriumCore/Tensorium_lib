@@ -1,9 +1,5 @@
 <map id="tensorium_RG::bssn::project_bssn_after_update" name="tensorium_RG::bssn::project_bssn_after_update">
-<area shape="rect" id="Node000001" title="Convenience wrapper that enforces all invariants after every RK stage." alt="" coords="442,41,583,97"/>
-<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="217,5,394,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="424,54,394,51,394,46,429,54"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="232,85,378,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="429,84,379,95,379,90,424,84"/>
-<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,13,169,54"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="199,34,170,36,169,31,204,32"/>
+<area shape="rect" id="Node000001" title="Convenience wrapper that enforces all invariants after every RK stage." alt="" coords="200,5,341,61"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="5,13,152,54"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,33,152,36,152,31,187,33"/>
 </map>

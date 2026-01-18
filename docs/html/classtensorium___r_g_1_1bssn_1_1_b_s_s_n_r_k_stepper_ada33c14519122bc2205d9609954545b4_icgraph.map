@@ -1,7 +1,10 @@
 <map id="tensorium_RG::bssn::BSSNRKStepper::apply_chi_floor" name="tensorium_RG::bssn::BSSNRKStepper::apply_chi_floor">
-<area shape="rect" id="Node000001" title="Prevent &#160;from reaching zero to keep &#160;well conditioned." alt="" coords="442,5,611,61"/>
-<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad2e2e4acabae8ae90f3793efaad083e2" title="Reproject the grid, floor , and rebuild Christoffels and Ricci." alt="" coords="217,5,394,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="424,33,394,36,394,31,429,33"/>
-<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title="Advance the grid by dt using four RK stages." alt="" coords="5,13,169,54"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="198,33,169,36,169,31,204,33"/>
+<area shape="rect" id="Node000001" title="Smoothly limit chi to keep metric well conditioned." alt="" coords="649,5,819,61"/>
+<area shape="rect" id="Node000002" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4799c3a442d6d6dd5734ab2af16f4bd9" title="Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation." alt="" coords="420,5,601,61"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="631,33,602,36,602,31,637,33"/>
+<area shape="rect" id="Node000003" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="209,13,372,54"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,33,373,36,372,31,407,33"/>
+<area shape="rect" id="Node000004" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,5,161,61"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="190,42,161,45,161,39,195,42"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="176,22,211,24,205,25,177,27"/>
 </map>

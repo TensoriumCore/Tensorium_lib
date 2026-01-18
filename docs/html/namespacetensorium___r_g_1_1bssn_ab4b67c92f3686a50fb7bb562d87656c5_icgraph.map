@@ -1,11 +1,28 @@
 <map id="tensorium_RG::bssn::chi_tolerance_override_storage" name="tensorium_RG::bssn::chi_tolerance_override_storage">
-<area shape="rect" id="Node000001" title=" " alt="" coords="591,41,751,97"/>
-<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#ac4afae162c75d02e5d6d90b5ba455d40" title=" " alt="" coords="384,13,543,54"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="574,53,544,50,544,44,579,53"/>
-<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#a43ad06f60a47d04124d19ea98d45195d" title=" " alt="" coords="393,77,534,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="579,85,535,96,535,90,574,86"/>
-<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ac93e4efe18487bdcf23dc50d43a86c9a" title="Build tolerances that reflect the expected truncation error of the chosen stencil order." alt="" coords="195,5,336,61"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,34,337,36,336,31,371,33"/>
-<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#ad94d47dae5726904e3444218b3ff8eef" title=" " alt="" coords="5,13,147,54"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,34,147,36,146,31,182,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1055,180,1214,236"/>
+<area shape="rect" id="Node000002" href="$namespacetensorium___r_g_1_1bssn.html#ac4afae162c75d02e5d6d90b5ba455d40" title=" " alt="" coords="848,152,1007,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1037,191,1007,188,1007,183,1043,191"/>
+<area shape="rect" id="Node000013" href="$namespacetensorium___r_g_1_1bssn.html#a43ad06f60a47d04124d19ea98d45195d" title=" " alt="" coords="857,216,998,272"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="1043,224,999,234,998,229,1037,225"/>
+<area shape="rect" id="Node000003" href="$namespacetensorium___r_g_1_1bssn.html#ac93e4efe18487bdcf23dc50d43a86c9a" title="Build tolerances that reflect the expected truncation error of the chosen stencil order." alt="" coords="658,144,800,200"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="830,172,800,174,800,169,835,171"/>
+<area shape="rect" id="Node000004" href="$namespacetensorium___r_g_1_1bssn.html#ad94d47dae5726904e3444218b3ff8eef" title=" " alt="" coords="447,118,588,159"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="641,159,589,152,589,147,646,158"/>
+<area shape="rect" id="Node000005" href="$namespacetensorium___r_g_1_1bssn.html#ac457bec2cd3c48effd9baaa1d30cb3c4" title="Fill the Hamiltonian , momentum , and Gamma &#160;constraint fields." alt="" coords="425,184,610,224"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="641,185,611,192,610,187,646,184"/>
+<area shape="rect" id="Node000006" href="$namespacetensorium___r_g_1_1init.html#a7ac89baed6b1550bce5f67c78c287bd6" title="Superpose two isotropic Schwarzschild conformal factors for binary puncture data." alt="" coords="216,5,370,61"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="428,175,423,172,405,148,398,123,391,99,375,75,363,64,363,59,379,71,396,97,403,122,410,145,427,169,433,175"/>
+<area shape="rect" id="Node000007" href="$namespacetensorium___r_g_1_1init.html#a8da49dd5bfbdbe2043286c2d323cc95f" title=" " alt="" coords="226,85,360,126"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="437,177,424,173,399,157,376,141,351,129,350,123,378,136,402,152,426,168,442,177"/>
+<area shape="rect" id="Node000008" href="$namespacetensorium___r_g_1_1init.html#af307809ffe0a2d01e1cd387a670bb564" title="Populate the grid with Minkowski (flat) initial data." alt="" coords="228,150,358,191"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="407,189,359,183,358,178,413,187"/>
+<area shape="rect" id="Node000009" href="$namespacetensorium___r_g_1_1bssn.html#a84e52bf3ece58a774be1567a5e14437b" title="Project the BSSN state and immediately recompute Hamiltonian, momentum, and Gamma constraints." alt="" coords="220,216,366,256"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="407,220,367,228,366,223,412,218"/>
+<area shape="rect" id="Node000010" href="$namespacetensorium___r_g_1_1init.html#a996e43c04ea0758b97725bb1117d7f9f" title="Construct an isotropic Schwarzschild puncture with conformal factor ." alt="" coords="209,281,377,322"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="461,230,378,270,348,283,346,278,376,265,456,232"/>
+<area shape="rect" id="Node000011" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#a4ad69561ae2821477d424f8f34eb9b23" title=" " alt="" coords="211,346,374,387"/>
+<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="491,235,441,287,378,335,355,348,353,343,376,331,437,283,486,237"/>
+<area shape="rect" id="Node000012" href="$classtensorium___r_g_1_1bssn_1_1_b_s_s_n_r_k_stepper.html#ad44714f723e4f66e1a207a115414690d" title=" " alt="" coords="5,339,161,394"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="193,376,161,378,161,373,198,375"/>
+<area shape="poly" id="edge12_Node000012_Node000011" title=" " alt="" coords="176,355,213,357,208,358,176,360"/>
 </map>
