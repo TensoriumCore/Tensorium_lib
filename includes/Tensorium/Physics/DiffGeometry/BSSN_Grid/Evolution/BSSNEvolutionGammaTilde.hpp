@@ -2,6 +2,7 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 /**
@@ -10,7 +11,7 @@
  * @details Evaluates
  * \f[
  * \partial_t\tilde{\gamma}_{ij} = -2\alpha\tilde{A}_{ij} + \mathcal{L}_\beta \tilde{\gamma}_{ij} -
- * \tfrac{2}{3}\tilde{\gamma}_{ij}\partial_k\beta^k + \mathcal{D}_6[\tilde{\gamma}_{ij}].
+ * \tfrac{2}{3}\tilde{\gamma}_{ij}\partial_k\beta^k.
  * \f]
  * Lie derivatives expand into \f$\tilde{\gamma}_{ik}\partial_j\beta^k +
  * \tilde{\gamma}_{jk}\partial_i\beta^k\f$ plus the advection term
@@ -33,14 +34,10 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 template <typename T>
 inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
                                     size_t padding = 4) {
+    BSSN_PROFILE_KERNEL(GammaTilde);
     using namespace tensorium_RG::fd;
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total =
-        G.gamma_tilde[0].st.nx_tot * G.gamma_tilde[0].st.ny_tot * G.gamma_tilde[0].st.nz_tot;
-    for (int s = 0; s < 6; ++s)
-        std::fill(rhs[s].ptr(), rhs[s].ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -52,14 +49,14 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    const T ko_sigma = T(0.6);
-
-    const double    inv_12dx = 1.0 / (12.0 * G.dx);
-    const double    inv_12dy = 1.0 / (12.0 * G.dy);
-    const double    inv_12dz = 1.0 / (12.0 * G.dz);
+    const T         ko_sigma = T(0.02);
+    const double    inv_12dx = 1.0 / (60.0 * G.dx);
+    const double    inv_12dy = 1.0 / (60.0 * G.dy);
+    const double    inv_12dz = 1.0 / (60.0 * G.dz);
     const double    inv_2dx = 1.0 / (2.0 * G.dx);
     const double    inv_2dy = 1.0 / (2.0 * G.dy);
     const double    inv_2dz = 1.0 / (2.0 * G.dz);
+    const T         two_thirds = T(2) / T(3);
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
 
@@ -95,42 +92,41 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
                 const T div_beta = d_beta[0][0] + d_beta[1][1] + d_beta[2][2];
                 const T beta_vec[3] = {*p_beta[0], *p_beta[1], *p_beta[2]};
 
-                T gam[3][3];
-                gam[0][0] = *p_gam[0];
-                gam[0][1] = *p_gam[1];
-                gam[0][2] = *p_gam[2];
-                gam[1][0] = gam[0][1];
-                gam[1][1] = *p_gam[3];
-                gam[1][2] = *p_gam[4];
-                gam[2][0] = gam[0][2];
-                gam[2][1] = gam[1][2];
-                gam[2][2] = *p_gam[5];
+                const T g_xx = *p_gam[tensorium_RG::XX];
+                const T g_xy = *p_gam[tensorium_RG::XY];
+                const T g_xz = *p_gam[tensorium_RG::XZ];
+                const T g_yy = *p_gam[tensorium_RG::YY];
+                const T g_yz = *p_gam[tensorium_RG::YZ];
+                const T g_zz = *p_gam[tensorium_RG::ZZ];
 
-                const int map_s[3][3] = {{0, 1, 2}, {1, 3, 4}, {2, 4, 5}};
+                const T lie_vals[6] = {
+                    T(2) * (g_xx * d_beta[0][0] + g_xy * d_beta[1][0] + g_xz * d_beta[2][0]),
+                    (g_xx * d_beta[0][1] + g_xy * d_beta[1][1] + g_xz * d_beta[2][1]) +
+                        (g_xy * d_beta[0][0] + g_yy * d_beta[1][0] + g_yz * d_beta[2][0]),
+                    (g_xx * d_beta[0][2] + g_xy * d_beta[1][2] + g_xz * d_beta[2][2]) +
+                        (g_xz * d_beta[0][0] + g_yz * d_beta[1][0] + g_zz * d_beta[2][0]),
+                    T(2) * (g_xy * d_beta[0][1] + g_yy * d_beta[1][1] + g_yz * d_beta[2][1]),
+                    (g_xy * d_beta[0][2] + g_yy * d_beta[1][2] + g_yz * d_beta[2][2]) +
+                        (g_xz * d_beta[0][1] + g_yz * d_beta[1][1] + g_zz * d_beta[2][1]),
+                    T(2) * (g_xz * d_beta[0][2] + g_yz * d_beta[1][2] + g_zz * d_beta[2][2])};
 
-                for (int a = 0; a < 3; ++a) {
-                    for (int b = a; b < 3; ++b) {
-                        const int s = map_s[a][b];
-                        const T  *p_g = p_gam[s];
+                const T trace_vals[6] = {
+                    -two_thirds * g_xx * div_beta, -two_thirds * g_xy * div_beta,
+                    -two_thirds * g_xz * div_beta, -two_thirds * g_yy * div_beta,
+                    -two_thirds * g_yz * div_beta, -two_thirds * g_zz * div_beta};
 
-                        T adv = beta_vec[0] * Dx_upwind_ptr(p_g, sx, inv_2dx, beta_vec[0]) +
-                                beta_vec[1] * Dy_upwind_ptr(p_g, sy, inv_2dy, beta_vec[1]) +
-                                beta_vec[2] * Dz_upwind_ptr(p_g, inv_2dz, beta_vec[2]);
+                for (int s = 0; s < 6; ++s) {
+                    const T *p_g = p_gam[s];
+                    const T  adv = beta_vec[0] * Dx_upwind_ptr(p_g, sx, inv_2dx, beta_vec[0]) +
+                                   beta_vec[1] * Dy_upwind_ptr(p_g, sy, inv_2dy, beta_vec[1]) +
+                                   beta_vec[2] * Dz_upwind_ptr(p_g, inv_2dz, beta_vec[2]);
 
-                        T lie = T(0);
-                        for (int m = 0; m < 3; ++m) {
-                            lie += gam[a][m] * d_beta[m][b];
-                            lie += gam[b][m] * d_beta[m][a];
-                        }
+                    const T source = -T(2) * alpha * (*p_A[s]);
+                    const T diss = KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) +
+                                   KO6_axis_ptr(p_g, 1);
+                    const T diss_scaled = (ko_sigma / G.dx) * diss;
 
-                        const T source = -T(2) * alpha * (*p_A[s]);
-                        const T trace_rem = -T(2.0 / 3.0) * gam[a][b] * div_beta;
-                        const T diss =
-                            KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) + KO6_axis_ptr(p_g, 1);
-                        const T diss_scaled = (ko_sigma / G.dx) * diss;
-
-                        *p_rhs[s] = adv + lie + source + trace_rem + diss_scaled;
-                    }
+                    *p_rhs[s] = adv + lie_vals[s] + source + trace_vals[s] + diss_scaled;
                 }
 
                 for (int c = 0; c < 3; ++c)

@@ -2,6 +2,7 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 #include <algorithm>
@@ -41,8 +42,9 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  */
 template <typename T>
 inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4) {
+    BSSN_PROFILE_KERNEL(ATilde);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
+    const T ko_sigma = T(0.02);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -65,16 +67,16 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     const T two_thirds = T(2) * third;
 
     // Pre-compute optimization constants
-    const double inv_12dx = 1.0 / (12.0 * G.dx);
-    const double inv_12dy = 1.0 / (12.0 * G.dy);
-    const double inv_12dz = 1.0 / (12.0 * G.dz);
+    const double inv_12dx = 1.0 / (60.0 * G.dx);
+    const double inv_12dy = 1.0 / (60.0 * G.dy);
+    const double inv_12dz = 1.0 / (60.0 * G.dz);
     const double inv_2dx = 1.0 / (2.0 * G.dx);
     const double inv_2dy = 1.0 / (2.0 * G.dy);
     const double inv_2dz = 1.0 / (2.0 * G.dz);
 
-    const double inv_12dx2 = 1.0 / (12.0 * G.dx * G.dx);
-    const double inv_12dy2 = 1.0 / (12.0 * G.dy * G.dy);
-    const double inv_12dz2 = 1.0 / (12.0 * G.dz * G.dz);
+    const double inv_12dx2 = 1.0 / (180.0 * G.dx * G.dx);
+    const double inv_12dy2 = 1.0 / (180.0 * G.dy * G.dy);
+    const double inv_12dz2 = 1.0 / (180.0 * G.dz * G.dz);
     const double inv_144dxdy = 1.0 / (144.0 * G.dx * G.dy);
     const double inv_144dxdz = 1.0 / (144.0 * G.dx * G.dz);
     const double inv_144dydz = 1.0 / (144.0 * G.dy * G.dz);

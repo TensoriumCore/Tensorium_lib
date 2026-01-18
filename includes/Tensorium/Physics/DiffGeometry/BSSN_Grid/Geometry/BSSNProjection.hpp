@@ -91,6 +91,9 @@ inline void project_bssn_state(BSSNGridSoA<T> &G, const ProjectionConfig &cfg = 
                         gzz *= scale;
                         tensorium_RG::store_sym6(G.gamma_tilde, id, (T)gxx, (T)gxy, (T)gxz, (T)gyy,
                                                  (T)gyz, (T)gzz);
+                        // Reload the renormalized components so subsequent steps (inverse/Gamma)
+                        // never see stale values if the compiler reorders stores.
+                        tensorium_RG::load_sym6(G.gamma_tilde, id, gxx, gxy, gxz, gyy, gyz, gzz);
                     }
                 }
 

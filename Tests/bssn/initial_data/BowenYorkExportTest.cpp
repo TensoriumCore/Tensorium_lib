@@ -37,8 +37,9 @@ REGISTER_TEST("bssn.initial_data.bowen_york_export",
                   size_t I0, I1, J0, J1, K0, K1;
                   grid.domain_bounds(I0, I1, J0, J1, K0, K1);
 
+                  auto constraints = tensorium_RG::init::make_constraint_scratch(grid);
                   tensorium_RG::bssn::compute_bssn_constraints(
-                      grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc, 0.5,
+                      grid, grid.Ricci, constraints.H, constraints.M, constraints.C, 0.5,
                       std::numeric_limits<double>::max(), 0.0, 0.0, 0.0);
 
                   const auto stats = tensorium::tests::compute_invariants(grid, 4, 0.5,
@@ -75,13 +76,13 @@ REGISTER_TEST("bssn.initial_data.bowen_york_export",
                               const size_t id = grid.alpha.idx(i, j, k);
                               double x, y, z;
                               grid.coords(i, j, k, x, y, z);
-                              const double H = grid.Hc.ptr()[id];
-                              const double Mx = grid.Mc[0].ptr()[id];
-                              const double My = grid.Mc[1].ptr()[id];
-                              const double Mz = grid.Mc[2].ptr()[id];
-                              const double Cx = grid.Cc[0].ptr()[id];
-                              const double Cy = grid.Cc[1].ptr()[id];
-                              const double Cz = grid.Cc[2].ptr()[id];
+                              const double H = constraints.H.ptr()[id];
+                              const double Mx = constraints.M[0].ptr()[id];
+                              const double My = constraints.M[1].ptr()[id];
+                              const double Mz = constraints.M[2].ptr()[id];
+                              const double Cx = constraints.C[0].ptr()[id];
+                              const double Cy = constraints.C[1].ptr()[id];
+                              const double Cz = constraints.C[2].ptr()[id];
                               const double Mmag = std::sqrt(Mx * Mx + My * My + Mz * Mz);
                               const double Cmag = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                               constr << x << ',' << y << ',' << z << ',' << H << ',' << Mmag

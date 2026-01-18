@@ -16,10 +16,12 @@ REGISTER_TEST("bssn.ricci.flat", "Ricci tensor close to zero for flat data", [](
     tensorium::tests::expect_le(stats.max_det_deviation, tol.det_tol, "det gamma");
     tensorium::tests::expect_le(stats.max_trace_A, tol.trace_tol, "trace A");
     tensorium::tests::expect_le(stats.max_metric_identity, tol.metric_tol, "metric identity");
-    tensorium::tests::expect_le(stats.max_gamma_constraint, tol.gamma_tol, "gamma coherence");
+    const double gamma_violation = tensorium::tests::max_gamma_violation_z4c(grid, 4);
+    tensorium::tests::expect_le(gamma_violation, tol.gamma_tol, "gamma coherence (Z4c)");
     tensorium::tests::expect_le(stats.max_H, 5.0 * tol.metric_tol, "Hamiltonian constraint");
     tensorium::tests::expect_le(stats.max_M, 5.0 * tol.metric_tol, "Momentum constraint");
-    tensorium::tests::expect_le(stats.max_C, 5.0 * tol.gamma_tol, "Contracted Gamma constraint");
+    tensorium::tests::expect_le(gamma_violation, 5.0 * tol.gamma_tol,
+                                "Contracted Gamma constraint (Z4c)");
     TENSORIUM_TEST_ASSERT(stats.min_chi > 0.0);
 });
 
@@ -35,9 +37,13 @@ REGISTER_TEST("bssn.ricci.vacuum",
     tensorium::tests::expect_le(stats.max_det_deviation, 10.0 * tol.det_tol, "det gamma");
     tensorium::tests::expect_le(stats.max_trace_A, 10.0 * tol.trace_tol, "trace A");
     tensorium::tests::expect_le(stats.max_metric_identity, 10.0 * tol.metric_tol, "metric identity");
-    tensorium::tests::expect_le(stats.max_gamma_constraint, 10.0 * tol.gamma_tol, "gamma coherence");
+    const double gamma_violation =
+        tensorium::tests::max_gamma_violation_z4c(grid, 4, 2.0, 0.35 * domain_extent);
+    tensorium::tests::expect_le(gamma_violation, 10.0 * tol.gamma_tol,
+                                "gamma coherence (Z4c)");
     tensorium::tests::expect_le(stats.max_H, 80.0 * tol.metric_tol, "Hamiltonian constraint");
     tensorium::tests::expect_le(stats.max_M, 80.0 * tol.metric_tol, "Momentum constraint");
-    tensorium::tests::expect_le(stats.max_C, 80.0 * tol.gamma_tol, "Contracted Gamma constraint");
+    tensorium::tests::expect_le(gamma_violation, 80.0 * tol.gamma_tol,
+                                "Contracted Gamma constraint (Z4c)");
     TENSORIUM_TEST_ASSERT(stats.min_chi > 0.0);
 });

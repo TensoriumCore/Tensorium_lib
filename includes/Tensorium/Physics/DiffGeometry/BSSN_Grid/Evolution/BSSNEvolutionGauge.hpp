@@ -1,9 +1,11 @@
 #pragma once
 
 #include <algorithm>
+#include <limits>
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "BSSNEvolutionCommon.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
@@ -23,10 +25,21 @@ namespace tensorium_RG::bssn {
 template <typename T> struct GaugeParameters {
     T beta_B_coeff = T(3.0 / 4.0);
     T eta = T(1);
+    T mass_scale = T(1);
+    T kappa1 = T(0.02);
+    T kappa2 = T(0.0);
+    T ko_sigma = T(0.3);              ///< KO6 filter strength (scaled by dx).
+    T min_lapse_for_K = T(5e-3);      ///< Floor applied when sourcing the K quadratic term.
+    T max_K_squared = T(1e4);         ///< Safety cap for K^2 when alpha collapses.
+
+    inline T effective_eta() const noexcept {
+        const T scale = std::max(mass_scale, std::numeric_limits<T>::epsilon());
+        return eta / scale;
+    }
 };
 
 /**
- * @brief Build \f$\partial_t\alpha\f$ including advection and KO6 dissipation.
+ * @brief Build \f$\partial_t\alpha\f$ including advection.
  */
 
 #ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
@@ -44,15 +57,14 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  * @brief Build \f$\partial_t\alpha\f$ including advection and KO6 dissipation.
  */
 template <typename T>
-inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, size_t padding = 4) {
+inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, size_t padding = 4,
+                              const GaugeParameters<T> &params = {}) {
+    BSSN_PROFILE_KERNEL(Alpha);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
+    const T ko_sigma = params.ko_sigma; // Tunable KO6 strength from runtime parameters.
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total = G.alpha.st.nx_tot * G.alpha.st.ny_tot * G.alpha.st.nz_tot;
-    std::fill(rhs_alpha.ptr(), rhs_alpha.ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -113,20 +125,17 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
 }
 
 /**
- * @brief Assemble \f$\partial_t\beta^i = \beta^k\partial_k\beta^i + (3/4)B^i\f$ plus dissipation.
+ * @brief Assemble \f$\partial_t\beta^i = \beta^k\partial_k\beta^i + (3/4)B^i\f$.
  */
 template <typename T>
 inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                              const GaugeParameters<T> &params = {}, size_t padding = 4) {
+    BSSN_PROFILE_KERNEL(Beta);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
+    const T ko_sigma = params.ko_sigma; // Shared filter strength keeps beta damping consistent.
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total = G.beta[0].st.nx_tot * G.beta[0].st.ny_tot * G.beta[0].st.nz_tot;
-    for (int c = 0; c < 3; ++c)
-        std::fill(rhs[c].ptr(), rhs[c].ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -166,8 +175,8 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 for (int comp = 0; comp < 3; ++comp) {
                     const T *p_f = p_beta[comp];
                     const T  adv = bx * Dx_upwind_ptr(p_f, sx, inv_2dx, bx) +
-                                  by * Dy_upwind_ptr(p_f, sy, inv_2dy, by) +
-                                  bz * Dz_upwind_ptr(p_f, inv_2dz, bz);
+                                   by * Dy_upwind_ptr(p_f, sy, inv_2dy, by) +
+                                   bz * Dz_upwind_ptr(p_f, inv_2dz, bz);
 
                     const T diss =
                         KO6_axis_ptr(p_f, sx) + KO6_axis_ptr(p_f, sy) + KO6_axis_ptr(p_f, 1);
@@ -195,15 +204,11 @@ template <typename T>
 inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3],
                           Field3D<T> rhs_B[3], const GaugeParameters<T> &params = {},
                           size_t padding = 4) {
+    BSSN_PROFILE_KERNEL(B);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
-
+    const T ko_sigma = params.ko_sigma; // Reuse the same KO6 dial to quell B^i high-freq noise.
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total = G.B[0].st.nx_tot * G.B[0].st.ny_tot * G.B[0].st.nz_tot;
-    for (int c = 0; c < 3; ++c)
-        std::fill(rhs_B[c].ptr(), rhs_B[c].ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -217,6 +222,7 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
 
     const ptrdiff_t sx = G.B[0].st.sx;
     const ptrdiff_t sy = G.B[0].st.sy;
+    const T         eta_coeff = params.effective_eta();
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -237,7 +243,7 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
                                    KO6_axis_ptr(p_B[comp], 1);
                     const T diss_scaled = (ko_sigma / G.dx) * diss;
 
-                    *p_rhs_B[comp] = *p_rhs_G[comp] - params.eta * (*p_B[comp]) + diss_scaled;
+                    *p_rhs_B[comp] = *p_rhs_G[comp] - eta_coeff * (*p_B[comp]) + diss_scaled;
                 }
 
                 // Increments

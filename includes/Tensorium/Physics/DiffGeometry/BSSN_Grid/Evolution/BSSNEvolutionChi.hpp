@@ -4,6 +4,7 @@
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
+#include "../TimeIntegration/BSSNPerfTimers.hpp"
 /**
  * @file BSSNEvolutionChi.hpp
  * @brief RHS for the conformal factor equation \f$(\partial_t-\mathcal{L}_\beta)\chi =
@@ -39,18 +40,16 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
  * - `d_chi` corresponds to the advective term \f$\beta^i\partial_i\chi\f$.
  * - `div_beta` uses centered derivatives to compute \f$\partial_i\beta^i\f$.
  * - The scalar multiplier `T(2/3)*chi*(alpha*K - div_beta)` encodes the source term.
- * - KO6 call adds dissipation with \f$\sigma=0.1\f$.
+ * - KO6 call adds dissipation with \f$\sigma=0.02\f$.
  */
 template <typename T>
 inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t padding = 4) {
+    BSSN_PROFILE_KERNEL(Chi);
     using namespace tensorium_RG::fd;
-    const T ko_sigma = T(0.6);
+    const T ko_sigma = T(0.02);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    std::fill(rhs_chi.ptr(), rhs_chi.ptr() + G.chi.st.nx_tot * G.chi.st.ny_tot * G.chi.st.nz_tot,
-              T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -62,9 +61,9 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    const double    inv_12dx = 1.0 / (12.0 * G.dx);
-    const double    inv_12dy = 1.0 / (12.0 * G.dy);
-    const double    inv_12dz = 1.0 / (12.0 * G.dz);
+    const double    inv_12dx = 1.0 / (60.0 * G.dx);
+    const double    inv_12dy = 1.0 / (60.0 * G.dy);
+    const double    inv_12dz = 1.0 / (60.0 * G.dz);
     const double    inv_2dx = 1.0 / (2.0 * G.dx);
     const double    inv_2dy = 1.0 / (2.0 * G.dy);
     const double    inv_2dz = 1.0 / (2.0 * G.dz);

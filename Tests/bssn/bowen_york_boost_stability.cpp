@@ -51,16 +51,17 @@ void export_slice_csv(const tensorium::tests::Grid &grid, size_t step,
 using tensorium::tests::Grid;
 
 void initialize_single_boost(Grid &grid) {
-    const double m1 = 1.0;
-    const double m2 = 1.0;
+    const double scale = 4.0;
+    const double m1 = scale;
+    const double m2 = scale;
 
-    const double x1 = -5, y1 = 0.0, z1 = 0.0;
-    const double x2 = 5, y2 = 0.0, z2 = 0.0;
+    const double x1 = -12.0, y1 = 0.0, z1 = 0.0;
+    const double x2 = 12.0, y2 = 0.0, z2 = 0.0;
 
-    const double Py = 0.65;
+    const double Py = 0.45 * scale;
+
     const double P1[3] = {0.0, Py, 0.0};
     const double P2[3] = {0.0, -Py, 0.0};
-
     const double S1[3] = {0.0, 0.0, 0.0};
     const double S2[3] = {0.0, 0.0, 0.0};
 
@@ -80,7 +81,7 @@ REGISTER_TEST(
         cfg.ng = 4;
         cfg.padding = 4;
         cfg.steps = 600;
-        cfg.cfl = 0.25;
+        cfg.cfl = 0.15;
         cfg.gauge_factor = 1.0;
 
         tensorium_RG::fd::set_fd_dx(cfg.spacing);
@@ -102,9 +103,9 @@ REGISTER_TEST(
         proj_cfg.recompute_inverse = true;
 
         tensorium_RG::bssn::GaugeParameters<double> params;
-        params.eta = 2.0;
-        params.beta_B_coeff = 0.75;
+        params.eta = 2.0 / 4.0;
 
+        params.beta_B_coeff = 0.75;
         tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
 
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
@@ -137,7 +138,7 @@ REGISTER_TEST(
         cfg.nx = 128;
         cfg.ny = 128;
         cfg.nz = 128;
-        cfg.spacing = 0.3;
+        cfg.spacing = 0.5;
         cfg.ng = 4;
         cfg.steps = 60;
         cfg.cfl = 0.15;

@@ -2,6 +2,7 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../Geometry/BSSNConformal.hpp"
+#include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../Geometry/BSSNGamma.hpp"
 #include "../Geometry/BSSNInvariants.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
@@ -153,9 +154,11 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                     }
                 }
 
+                double Gamma_tilde_vals[3][3][3];
+                tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_tilde_vals);
+
                 auto Gamma = [&](int up, int low1, int low2) -> double {
-                    const int idx = up * 9 + low1 * 3 + low2;
-                    return (double)G.Gamma_tilde[idx].ptr()[id];
+                    return (double)Gamma_tilde_vals[up][low1][low2];
                 };
 
                 auto covariant_derivative = [&](int dir, int k, int l) -> double {

@@ -19,6 +19,12 @@ set(TEST_BSSN_INITIAL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/initial_data/InitialDataTests.cpp)
 set(TEST_BSSN_CONSTRAINT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/ConstraintTests.cpp)
+if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/TildeGammaSymbolsValidationTests.cpp)
+    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/GammaSourceValidationTests.cpp)
+endif()
 set(TEST_BSSN_RICCI_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ricci/RicciTests.cpp)
 set(TEST_BSSN_SOLVER_SOURCES
@@ -27,7 +33,8 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RHSHaloSentinelTests.cpp)
 
 set(TEST_BSSN_STABILITY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/minkowski_stability.cpp
@@ -142,6 +149,15 @@ set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid Tensoriu
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
     TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
     TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo)
+
+add_test(NAME tensorium.tests.all COMMAND TensoriumTests)
+add_test(NAME tensorium.tests.core COMMAND TensoriumTestCore)
+add_test(NAME tensorium.tests.grid COMMAND TensoriumTestGrid)
+add_test(NAME tensorium.tests.bssn COMMAND TensoriumTestBSSN)
+if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+  add_test(NAME gamma_source_validation
+           COMMAND TensoriumTests --test bssn.constraints.gamma_source_validation)
+endif()
 
 if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
   include_directories(${OPENMP_INCLUDE_PATH})

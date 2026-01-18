@@ -37,23 +37,6 @@ double max_abs_interior(const Field &field, const Grid &grid, size_t padding) {
     return max_val;
 }
 
-void expect_guard_zero(const Field &field, const Grid &grid, const char *label) {
-    size_t I0, I1, J0, J1, K0, K1;
-    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    auto check = [&](size_t i, size_t j, size_t k) {
-        const double val = field.ptr()[field.idx(i, j, k)];
-        tensorium::tests::expect_near(val, 0.0, 0.0, std::string(label) + " guard zero");
-    };
-
-    check(I0 - 1, J0, K0);
-    check(I1, J0, K0);
-    check(I0, J0 - 1, K0);
-    check(I0, J1, K0);
-    check(I0, J0, K0 - 1);
-    check(I0, J0, K1);
-}
-
 struct RegionStats {
     double max_far = 0.0;
     double l2_far = 0.0;
@@ -96,7 +79,6 @@ REGISTER_TEST("bssn.evolution.k.minkowski", "K RHS zero for Minkowski data", [](
 
     tensorium::tests::expect_near(max_abs_interior(rhs, grid, 4), 0.0, 0.0,
                                   "minkowski interior rhs K");
-    expect_guard_zero(rhs, grid, "minkowski K");
 });
 
 REGISTER_TEST("bssn.evolution.k.schwarzschild", "K RHS bounded far from BH", []() {

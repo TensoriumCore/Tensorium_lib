@@ -25,19 +25,15 @@ REGISTER_TEST("bssn.constraints.gamma_coherence_no_resync",
 
                   grid.tildeGamma[0].ptr()[id] += 1e-2; // introduce incoherence
 
-                  bool threw = false;
-                  try {
-                      tensorium_RG::bssn::compute_bssn_constraints(
-                          grid, grid.Ricci, grid.Hc, grid.Mc, grid.Cc, 0.0,
-                          std::numeric_limits<double>::max(), 0.0, 0.0, 0.0);
-                  } catch (const std::exception &) {
-                      threw = true;
-                  }
-                  TENSORIUM_TEST_ASSERT(threw);
+                  auto constraints = tensorium_RG::init::make_constraint_scratch(grid);
+                  tensorium_RG::bssn::compute_bssn_constraints(
+                      grid, grid.Ricci, constraints.H, constraints.M, constraints.C, 0.0,
+                      std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
 
                   const auto stats = tensorium::tests::compute_invariants(grid, 4);
                   const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
-                  TENSORIUM_TEST_ASSERT(stats.max_gamma_constraint > 10.0 * tol.gamma_tol);
+                  const double gamma_violation = tensorium::tests::max_gamma_violation_z4c(grid, 4);
+                  TENSORIUM_TEST_ASSERT(gamma_violation > 10.0 * tol.gamma_tol);
               });
 
 #endif // TENSORIUM_BSSN_GAMMA_COHERENCE_NORESYNC_TESTS_CPP

@@ -25,13 +25,14 @@ enum class BoundaryField {
     Alpha,
     Chi,
     K,
+    Theta,
     Beta,
     B,
     TildeGamma,
     GammaTilde,
     GammaTildeInverse,
     ATilde,
-    GammaTildeCache
+    Z
 };
 
 namespace detail {
@@ -52,11 +53,13 @@ template <typename Boundary, typename T> inline void apply_batch_physical(BSSNGr
     apply_physical<Boundary>(G.alpha, G, BoundaryField::Alpha, 0);
     apply_physical<Boundary>(G.chi, G, BoundaryField::Chi, 0);
     apply_physical<Boundary>(G.K, G, BoundaryField::K, 0);
+    apply_physical<Boundary>(G.Theta, G, BoundaryField::Theta, 0);
 
     for (int c = 0; c < 3; ++c) {
         apply_physical<Boundary>(G.beta[c], G, BoundaryField::Beta, c);
         apply_physical<Boundary>(G.B[c], G, BoundaryField::B, c);
         apply_physical<Boundary>(G.tildeGamma[c], G, BoundaryField::TildeGamma, c);
+        apply_physical<Boundary>(G.Z[c], G, BoundaryField::Z, c);
     }
 
     for (int s = 0; s < 6; ++s) {
@@ -65,19 +68,19 @@ template <typename Boundary, typename T> inline void apply_batch_physical(BSSNGr
         apply_physical<Boundary>(G.A_tilde[s], G, BoundaryField::ATilde, s);
     }
 
-    for (int q = 0; q < 27; ++q)
-        apply_physical<Boundary>(G.Gamma_tilde[q], G, BoundaryField::GammaTildeCache, q);
 }
 
 template <typename Boundary, typename T> inline void apply_batch_halo(BSSNGridSoA<T> &G) {
     apply_halo<Boundary>(G.alpha, G, BoundaryField::Alpha, 0);
     apply_halo<Boundary>(G.chi, G, BoundaryField::Chi, 0);
+    apply_halo<Boundary>(G.Theta, G, BoundaryField::Theta, 0);
     apply_halo<Boundary>(G.K, G, BoundaryField::K, 0);
 
     for (int c = 0; c < 3; ++c) {
         apply_halo<Boundary>(G.beta[c], G, BoundaryField::Beta, c);
         apply_halo<Boundary>(G.B[c], G, BoundaryField::B, c);
         apply_halo<Boundary>(G.tildeGamma[c], G, BoundaryField::TildeGamma, c);
+        apply_halo<Boundary>(G.Z[c], G, BoundaryField::Z, c);
     }
 
     for (int s = 0; s < 6; ++s) {
@@ -86,8 +89,6 @@ template <typename Boundary, typename T> inline void apply_batch_halo(BSSNGridSo
         apply_halo<Boundary>(G.A_tilde[s], G, BoundaryField::ATilde, s);
     }
 
-    for (int q = 0; q < 27; ++q)
-        apply_halo<Boundary>(G.Gamma_tilde[q], G, BoundaryField::GammaTildeCache, q);
 }
 
 inline double minkowski_target(BoundaryField which, int component) {
@@ -99,6 +100,8 @@ inline double minkowski_target(BoundaryField which, int component) {
     case BoundaryField::B:
     case BoundaryField::TildeGamma:
     case BoundaryField::ATilde:
+    case BoundaryField::Theta:
+    case BoundaryField::Z:
         return 0.0;
     case BoundaryField::GammaTilde:
         if (component == tensorium_RG::XX || component == tensorium_RG::YY ||
@@ -133,6 +136,14 @@ struct BoundarySponge {
 };
 
 struct BoundaryRadiative {
+    inline static double characteristic_speed = 1.0;
+    inline static double characteristic_dt = 0.0;
+
+    static inline void set_characteristic(double speed, double dt) {
+        characteristic_speed = std::max(speed, 1.0e-6);
+        characteristic_dt = std::max(dt, 0.0);
+    }
+
     template <typename T>
     static inline void apply_physical(Field3D<T> &, const BSSNGridSoA<T> &, BoundaryField, int) {}
 
@@ -167,7 +178,13 @@ struct BoundaryRadiative {
         auto set_sommerfeld = [&](size_t ob, size_t ib, double r_ob, double r_ib) {
             double u_ib = double(ptr[ib]);
             double du = u_ib - u_inf;
-            ptr[ob] = T(u_inf + du * (r_ib / r_ob));
+            const double dt_wave = characteristic_dt;
+            const double c_wave = characteristic_speed;
+            double denom = r_ob;
+            if (dt_wave > 0.0)
+                denom += c_wave * dt_wave;
+            denom = std::max(denom, 1.0e-12);
+            ptr[ob] = T(u_inf + du * (r_ib / denom));
         };
 
         for (size_t g = 1; g <= D.ng; ++g)

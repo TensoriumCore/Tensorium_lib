@@ -286,7 +286,7 @@ REGISTER_TEST("bssn.evolution.gauge_rhs", "Gauge RHS validation", []() {
         alloc_vector_rhs(grid.B, rhs_B);
         alloc_vector_rhs(grid.tildeGamma, rhs_Gamma);
 
-        tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs_Gamma, padding);
+        tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs_Gamma, grid.Z, grid.Theta, params, padding);
         tensorium_RG::bssn::compute_rhs_alpha(grid, rhs_alpha, padding);
         tensorium_RG::bssn::compute_rhs_beta(grid, rhs_beta, params, padding);
         tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B, params, padding);
@@ -350,9 +350,16 @@ REGISTER_TEST("bssn.evolution.gauge_rhs", "Gauge RHS validation", []() {
                                             (grid.dims.nz - 1) * grid.dz});
         const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
         const double r_max = 0.45 * min_extent;
-        const auto   monitor = tensorium_RG::bssn::project_and_monitor(grid, grid.Hc, grid.Mc, grid.Cc,
-                                                                       r_min, r_max, 0.0, 0.0, 0.0,
-                                                                       padding);
+        auto                         H_tmp = tensorium_RG::make_field(grid.alpha.st);
+        tensorium_RG::Field3D<double> M_tmp[3];
+        tensorium_RG::Field3D<double> C_tmp[3];
+        for (int q = 0; q < 3; ++q) {
+            M_tmp[q] = tensorium_RG::make_field(grid.alpha.st);
+            C_tmp[q] = tensorium_RG::make_field(grid.alpha.st);
+        }
+        const auto monitor = tensorium_RG::bssn::project_and_monitor(grid, H_tmp, M_tmp, C_tmp,
+                                                                      r_min, r_max, 0.0, 0.0, 0.0,
+                                                                      padding);
 
         tensorium::tests::expect_le(monitor.max_trace_A, cfg.trace_tol,
                                     std::string("trace projection (") + label + ")");
