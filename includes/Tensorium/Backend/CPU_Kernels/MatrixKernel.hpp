@@ -1,12 +1,6 @@
 #pragma once
 
-<<<<<<< HEAD:includes/Tensorium/Core/MatrixKernels/MatrixKernel.hpp
-#include "../Matrix.hpp"
-#define TENSORIUM_DUMP     __attribute__((noinline, used, annotate("tensorium_dump")))
-#define TENSORIUM_ANNOTATE __attribute__((annotate("tensorium_dump")))
-=======
 #include "../../Core/Matrix.hpp"
->>>>>>> 2226d95657c81e6fb423aba1d20316dc597cb1a6:includes/Tensorium/Backend/CPU_Kernels/MatrixKernel.hpp
 
 namespace tensorium {
 

@@ -1,17 +1,6 @@
-<<<<<<< HEAD
-file(GLOB TEST_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Matrix/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Vector/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Derivatives/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/LinearSystems/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tensor/*.cpp
-)
-=======
 enable_testing()
 
 enable_testing()
->>>>>>> 2226d95657c81e6fb423aba1d20316dc597cb1a6
 
 set(TEST_FRAMEWORK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/framework/TestRegistry.cpp
@@ -196,6 +185,8 @@ add_test(NAME tensorium.tests.bssn COMMAND TensoriumTestBSSN)
 if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
   add_test(NAME gamma_source_validation
            COMMAND TensoriumTests --test bssn.constraints.gamma_source_validation)
+  add_test(NAME tilde_gamma_symbols
+           COMMAND TensoriumTests --test bssn.constraints.tilde_gamma_symbols_validation)
 endif()
 add_test(NAME ccz4_schwarzschild_stability
          COMMAND TensoriumTests --test bssn.evolution.ccz4_schwarzschild_stability)
@@ -222,28 +213,11 @@ if(USE_MPI)
 endif()
 
 if(USE_KNL)
-<<<<<<< HEAD
-  target_compile_options(TensoriumTests PRIVATE -mtune=knl -mfma -mavx512f -mavx512cd)
-  target_compile_definitions(TensoriumTests PRIVATE USE_KNL)
-  target_link_libraries(TensoriumTests PRIVATE memkind)
-endif()
-
-option(DUMP_ASM "Dump generated assembly (.s files) for inspection" OFF)
-option(DUMP_LLVM "Dump LLVM IR (.ll files) for inspection" OFF)
-
-if(DUMP_ASM)
-  add_compile_options(-S -masm=intel -fverbose-asm)
-endif()
-
-if(DUMP_LLVM)
-  add_compile_options(-emit-llvm -S)
-=======
   foreach(target ${TENSORIUM_ALL_EXECUTABLES})
     target_compile_options(${target} PRIVATE -mtune=knl -mfma -mavx512f -mavx512cd)
     target_compile_definitions(${target} PRIVATE USE_KNL)
     target_link_libraries(${target} PRIVATE memkind)
   endforeach()
->>>>>>> 2226d95657c81e6fb423aba1d20316dc597cb1a6
 endif()
 
 find_library(OPENBLAS_LIB
@@ -251,18 +225,6 @@ find_library(OPENBLAS_LIB
     PATHS /opt/OpenBLAS/lib /usr/lib64 /usr/lib /usr/local/lib)
 
 if(OPENBLAS_LIB)
-<<<<<<< HEAD
-  target_link_libraries(TensoriumTests PRIVATE ${OPENBLAS_LIB})
-  if(EXISTS "/opt/OpenBLAS/include/cblas.h")
-    set(BLAS_INCLUDE_DIR "/opt/OpenBLAS/include")
-  elseif(EXISTS "/usr/include/openblas/cblas.h")
-    set(BLAS_INCLUDE_DIR "/usr/include/openblas")
-  elseif(EXISTS "/usr/include/cblas.h")
-    set(BLAS_INCLUDE_DIR "/usr/include")
-  endif()
-  if(DEFINED BLAS_INCLUDE_DIR)
-    target_include_directories(TensoriumTests PRIVATE ${BLAS_INCLUDE_DIR})
-=======
   foreach(target ${TENSORIUM_ALL_EXECUTABLES})
     target_link_libraries(${target} PRIVATE ${OPENBLAS_LIB})
   endforeach()
@@ -273,67 +235,10 @@ if(OPENBLAS_LIB)
     include_directories(/usr/include/openblas)
   elseif(EXISTS "/usr/include/cblas.h")
     include_directories(/usr/include)
->>>>>>> 2226d95657c81e6fb423aba1d20316dc597cb1a6
   endif()
 else()
   find_package(BLAS)
   if(BLAS_FOUND)
-<<<<<<< HEAD
-    target_link_libraries(TensoriumTests PRIVATE ${BLAS_LIBRARIES})
-  endif()
-endif()
-option(GENERATE_BC "Emit LLVM bitcode (.bc) for TensoriumTests" OFF)
-
-if(GENERATE_BC)
-  set(BC_OUTPUT_DIR "${CMAKE_BINARY_DIR}/out/bitcode")
-  file(MAKE_DIRECTORY ${BC_OUTPUT_DIR})
-
-  if(TARGET TensoriumTests)
-    get_target_property(target_sources TensoriumTests SOURCES)
-    get_target_property(target_includes TensoriumTests INCLUDE_DIRECTORIES)
-    separate_arguments(CLANG_FLAGS UNIX_COMMAND "${CMAKE_CXX_FLAGS}")
-
-    set(INCLUDE_ARGS "")
-    if(DEFINED target_includes)
-      foreach(inc ${target_includes})
-        list(APPEND INCLUDE_ARGS "-I${inc}")
-      endforeach()
-    endif()
-    if(DEFINED BLAS_INCLUDE_DIR)
-      list(APPEND INCLUDE_ARGS "-I${BLAS_INCLUDE_DIR}")
-    endif()
-    if(EXISTS "${CMAKE_SOURCE_DIR}/Includes")
-      list(APPEND INCLUDE_ARGS "-I${CMAKE_SOURCE_DIR}/Includes")
-    endif()
-
-    set(BC_FILES "")
-    foreach(src ${target_sources})
-      get_filename_component(src_name ${src} NAME_WE)
-      set(bc_file "${BC_OUTPUT_DIR}/${src_name}.bc")
-      add_custom_command(
-        OUTPUT ${bc_file}
-        COMMAND ${CMAKE_CXX_COMPILER}
-                -emit-llvm -c ${src}
-                -std=c++17
-                ${CLANG_FLAGS}
-                ${INCLUDE_ARGS}
-                -o ${bc_file}
-        DEPENDS ${src}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        VERBATIM
-      )
-      list(APPEND BC_FILES ${bc_file})
-    endforeach()
-
-    add_custom_target(tensorium_bc ALL
-      COMMAND llvm-link ${BC_FILES} -o ${BC_OUTPUT_DIR}/Tensorium_full.bc
-      DEPENDS ${BC_FILES}
-      VERBATIM
-    )
-  endif()
-endif()
-
-=======
     foreach(target ${TENSORIUM_ALL_EXECUTABLES})
       target_link_libraries(${target} PRIVATE ${BLAS_LIBRARIES})
     endforeach()
@@ -349,4 +254,3 @@ add_test(NAME bssn.initial_data COMMAND TensoriumTests --test bssn.initial_data)
 add_test(NAME bssn.constraints COMMAND TensoriumTests --test bssn.constraints)
 add_test(NAME bssn.ricci COMMAND TensoriumTests --test bssn.ricci)
 add_test(NAME bssn.solvers COMMAND TensoriumTests --test bssn.solvers)
->>>>>>> 2226d95657c81e6fb423aba1d20316dc597cb1a6
