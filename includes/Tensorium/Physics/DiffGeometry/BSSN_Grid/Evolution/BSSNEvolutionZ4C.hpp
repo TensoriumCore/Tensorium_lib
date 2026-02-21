@@ -90,35 +90,41 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
                 const T K_val = *p_K;
-                const T khat = Khat(K_val, theta);
                 T       RicciZ4[6];
-                compute_RicciZ4(G, i, j, k, RicciZ4);
+                compute_RicciZ4(G, i, j, k, RicciZ4, params.chi_div_floor);
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
                 const T chi = *p_chi;
-                const T z_x = *p_Z[0];
-                const T z_y = *p_Z[1];
-                const T z_z = *p_Z[2];
+                const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
+                T       z_phys[3] = {T(0), T(0), T(0)};
+                if (params.evolve_Z) {
+                    z_phys[0] = *p_Z[0];
+                    z_phys[1] = *p_Z[1];
+                    z_phys[2] = *p_Z[2];
+                } else {
+                    T div_metric_inv[3] = {T(0), T(0), T(0)};
+                    metric_inverse_divergence(G, i, j, k, div_metric_inv);
+                    // gamma_metric is the contracted conformal Christoffel from metric derivatives.
+                    const T gamma_metric[3] = {-div_metric_inv[0], -div_metric_inv[1],
+                                               -div_metric_inv[2]};
+                    const T z_over_chi[3] = {T(0.5) * (G.tildeGamma[0].ptr()[G.alpha.idx(i, j, k)] -
+                                                       gamma_metric[0]),
+                                             T(0.5) * (G.tildeGamma[1].ptr()[G.alpha.idx(i, j, k)] -
+                                                       gamma_metric[1]),
+                                             T(0.5) * (G.tildeGamma[2].ptr()[G.alpha.idx(i, j, k)] -
+                                                       gamma_metric[2])};
+                    z_phys[0] = chi_guarded * z_over_chi[0];
+                    z_phys[1] = chi_guarded * z_over_chi[1];
+                    z_phys[2] = chi_guarded * z_over_chi[2];
+                }
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
-                const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
-                                    Dz_ptr(p_chi, inv_12dz)};
 
                 const T adv = bx * Dx_upwind_ptr(p_theta, sx, inv_2dx, bx) +
                               by * Dy_upwind_ptr(p_theta, sy, inv_2dy, by) +
                               bz * Dz_upwind_ptr(p_theta, inv_2dz, bz);
-
-                const T inv_chi = T(1) / chi;
-                const T grad_ln_sqrt_gamma[3] = {-T(1.5) * d_chi[0] * inv_chi,
-                                                 -T(1.5) * d_chi[1] * inv_chi,
-                                                 -T(1.5) * d_chi[2] * inv_chi};
-                const T div_Z_partial = Dx_ptr(p_Z[0], sx, inv_12dx) +
-                                        Dy_ptr(p_Z[1], sy, inv_12dy) + Dz_ptr(p_Z[2], inv_12dz);
-                const T div_Z_conn = z_x * grad_ln_sqrt_gamma[0] + z_y * grad_ln_sqrt_gamma[1] +
-                                     z_z * grad_ln_sqrt_gamma[2];
-                const T div_Z = div_Z_partial + div_Z_conn;
 
                 const T g_xx = *p_ginv[0];
                 const T g_xy = *p_ginv[1];
@@ -136,7 +142,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
                 const T R_conformal = g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
                                       T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
-                const T R_scalar = chi * R_conformal;
+                const T R_scalar = chi_guarded * R_conformal;
 
                 const T row0_x = g_xx;
                 const T row0_y = g_xy;
@@ -177,14 +183,16 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T A_contract = A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
                                      T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
 
-                const T geom_source =
-                    T(0.5) * (R_scalar + T(2) * div_Z - A_contract + (T(2) / T(3)) * K_val * K_val);
-                const T geom = alpha * std::clamp(geom_source, T(-1e3), T(1e3));
-                const T damping = -alpha * params.kappa1 * two_plus_kappa2 * theta;
+                const T geom_source = T(0.5) * (R_scalar - A_contract + (T(2) / T(3)) * K_val * K_val -
+                                                T(2) * theta * K_val);
+                const T Z_dot_dalpha =
+                    z_phys[0] * d_alpha[0] + z_phys[1] * d_alpha[1] + z_phys[2] * d_alpha[2];
+                const T geom = alpha * geom_source;
+                const T damping = -params.kappa1_times_lapse(alpha) * two_plus_kappa2 * theta;
                 const T diss = KO6_axis_ptr(p_theta, sx) + KO6_axis_ptr(p_theta, sy) +
                                KO6_axis_ptr(p_theta, 1);
 
-                *p_rhs = geom + damping + adv + (ko_sigma / G.dx) * diss;
+                *p_rhs = geom + damping + adv - Z_dot_dalpha + (ko_sigma / G.dx) * diss;
 
                 ++p_theta;
                 ++p_alpha;
@@ -227,6 +235,27 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
 
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
+
+    if (!params.evolve_Z) {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i) {
+            for (size_t j = j0; j < j1; ++j) {
+                size_t idx_start = rhs_Z[0].idx(i, j, k0);
+                T     *p_rhs0 = rhs_Z[0].ptr() + idx_start;
+                T     *p_rhs1 = rhs_Z[1].ptr() + idx_start;
+                T     *p_rhs2 = rhs_Z[2].ptr() + idx_start;
+                for (size_t k = k0; k < k1; ++k) {
+                    *p_rhs0 = T(0);
+                    *p_rhs1 = T(0);
+                    *p_rhs2 = T(0);
+                    ++p_rhs0;
+                    ++p_rhs1;
+                    ++p_rhs2;
+                }
+            }
+        }
+        return;
+    }
 
     const double inv_12dx = 1.0 / (60.0 * G.dx);
     const double inv_12dy = 1.0 / (60.0 * G.dy);

@@ -53,6 +53,59 @@ set(TEST_BSSN_STABILITY_SOURCES
 set(BENCHMARK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)
 
+set(TWOPUNCTURES_C_TARGET "")
+set(TWOPUNCTURES_C_ROOT "${PROJECT_SOURCE_DIR}/../TwoPuncturesC")
+if(EXISTS "${TWOPUNCTURES_C_ROOT}/include/TwoPunctures.h")
+    find_program(GSL_CONFIG_EXECUTABLE gsl-config)
+    if(GSL_CONFIG_EXECUTABLE)
+        execute_process(COMMAND ${GSL_CONFIG_EXECUTABLE} --cflags
+                        OUTPUT_VARIABLE TP_GSL_CFLAGS
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        execute_process(COMMAND ${GSL_CONFIG_EXECUTABLE} --libs
+                        OUTPUT_VARIABLE TP_GSL_LIBS
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        separate_arguments(TP_GSL_CFLAGS_LIST UNIX_COMMAND "${TP_GSL_CFLAGS}")
+        separate_arguments(TP_GSL_LIBS_LIST UNIX_COMMAND "${TP_GSL_LIBS}")
+
+        set(TWOPUNCTURES_C_SOURCES
+            ${TWOPUNCTURES_C_ROOT}/src/TwoPunctures.c
+            ${TWOPUNCTURES_C_ROOT}/src/TP_CoordTransf.c
+            ${TWOPUNCTURES_C_ROOT}/src/TP_Equations.c
+            ${TWOPUNCTURES_C_ROOT}/src/TP_FuncAndJacobian.c
+            ${TWOPUNCTURES_C_ROOT}/src/TP_Newton.c
+            ${TWOPUNCTURES_C_ROOT}/src/TP_Utilities.c)
+        add_library(tensorium_twopunctures_c STATIC ${TWOPUNCTURES_C_SOURCES})
+        target_compile_definitions(tensorium_twopunctures_c PRIVATE TP_OMP)
+        add_compile_definitions(TENSORIUM_TWOPUNCTURES_OMP)
+        target_include_directories(tensorium_twopunctures_c PUBLIC
+            ${TWOPUNCTURES_C_ROOT}/include)
+        if(TARGET OpenMP::OpenMP_C)
+            target_link_libraries(tensorium_twopunctures_c PUBLIC OpenMP::OpenMP_C)
+        elseif(TARGET OpenMP::OpenMP_CXX)
+            target_link_libraries(tensorium_twopunctures_c PUBLIC OpenMP::OpenMP_CXX)
+        elseif(OPENMP_LIB)
+            target_link_libraries(tensorium_twopunctures_c PUBLIC ${OPENMP_LIB})
+        endif()
+        if(OPENMP_COMPILE_FLAGS)
+            target_compile_options(tensorium_twopunctures_c PRIVATE ${OPENMP_COMPILE_FLAGS})
+        endif()
+        if(TP_GSL_CFLAGS_LIST)
+            target_compile_options(tensorium_twopunctures_c PRIVATE ${TP_GSL_CFLAGS_LIST})
+        endif()
+        if(TP_GSL_LIBS_LIST)
+            target_link_libraries(tensorium_twopunctures_c PUBLIC ${TP_GSL_LIBS_LIST})
+        endif()
+        add_compile_definitions(TENSORIUM_HAS_TWOPUNCTURES_C)
+        include_directories(${TWOPUNCTURES_C_ROOT}/include)
+        set(TWOPUNCTURES_C_TARGET tensorium_twopunctures_c)
+        message(STATUS "TwoPuncturesC backend enabled")
+    else()
+        message(STATUS "TwoPuncturesC found but gsl-config missing; backend disabled")
+    endif()
+else()
+    message(STATUS "TwoPuncturesC source tree not found; backend disabled")
+endif()
+
 function(tensorium_add_object_library target)
     add_library(${target} OBJECT ${ARGN})
     target_include_directories(${target} PRIVATE
@@ -68,6 +121,15 @@ tensorium_add_object_library(test_bssn_ricci_objs ${TEST_BSSN_RICCI_SOURCES})
 tensorium_add_object_library(test_bssn_solvers_objs ${TEST_BSSN_SOLVER_SOURCES})
 tensorium_add_object_library(test_bssn_evolution_objs ${TEST_BSSN_EVOLUTION_SOURCES})
 tensorium_add_object_library(test_bssn_stability_objs ${TEST_BSSN_STABILITY_SOURCES})
+set(TEST_OBJECT_TARGETS
+    test_core_objs
+    test_grid_objs
+    test_bssn_initial_objs
+    test_bssn_constraints_objs
+    test_bssn_ricci_objs
+    test_bssn_solvers_objs
+    test_bssn_evolution_objs
+    test_bssn_stability_objs)
 
 set(BSSN_OBJECTS
     $<TARGET_OBJECTS:test_bssn_initial_objs>
@@ -177,6 +239,13 @@ set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid Tensoriu
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
     TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
     TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo)
+set(TENSORIUM_OPENMP_TARGETS ${TEST_OBJECT_TARGETS} ${TENSORIUM_ALL_EXECUTABLES})
+
+if(TWOPUNCTURES_C_TARGET)
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_link_libraries(${target} PRIVATE ${TWOPUNCTURES_C_TARGET})
+  endforeach()
+endif()
 
 add_test(NAME tensorium.tests.all COMMAND TensoriumTests)
 add_test(NAME tensorium.tests.core COMMAND TensoriumTestCore)
@@ -191,16 +260,18 @@ endif()
 add_test(NAME ccz4_schwarzschild_stability
          COMMAND TensoriumTests --test bssn.evolution.ccz4_schwarzschild_stability)
 
-if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
-  include_directories(${OPENMP_INCLUDE_PATH})
-  link_directories(${OPENMP_LIB_PATH})
-  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
-    target_compile_options(${target} PRIVATE -Xpreprocessor -fopenmp)
+if(OPENMP_LIB)
+  if(APPLE AND IS_ABSOLUTE "${OPENMP_LIB}")
+    get_filename_component(OPENMP_LIB_DIR "${OPENMP_LIB}" DIRECTORY)
+  endif()
+  foreach(target ${TENSORIUM_OPENMP_TARGETS})
+    if(OPENMP_COMPILE_FLAGS)
+      target_compile_options(${target} PRIVATE ${OPENMP_COMPILE_FLAGS})
+    endif()
     target_link_libraries(${target} PRIVATE ${OPENMP_LIB})
-  endforeach()
-elseif(DEFINED OPENMP_LIB)
-  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
-    target_link_libraries(${target} PRIVATE ${OPENMP_LIB})
+    if(APPLE AND OPENMP_LIB_DIR)
+      target_link_options(${target} PRIVATE "-Wl,-rpath,${OPENMP_LIB_DIR}")
+    endif()
   endforeach()
 endif()
 
@@ -208,7 +279,7 @@ if(USE_MPI)
   find_package(MPI REQUIRED)
   foreach(target ${TENSORIUM_ALL_EXECUTABLES})
     target_link_libraries(${target} PRIVATE MPI::MPI_CXX)
-    target_compile_definitions(${target} PRIVATE MORPHEUS_USE_MPI)
+    target_compile_definitions(${target} PRIVATE MORPHEUS_USE_MPI TENSORIUM_USE_MPI)
   endforeach()
 endif()
 

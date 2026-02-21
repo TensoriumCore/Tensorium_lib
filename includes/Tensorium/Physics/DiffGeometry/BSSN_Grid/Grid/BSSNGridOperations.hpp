@@ -138,10 +138,108 @@ struct BoundarySponge {
 struct BoundaryRadiative {
     inline static double characteristic_speed = 1.0;
     inline static double characteristic_dt = 0.0;
+    // Per-face mask for RHS Sommerfeld-style boundary updates:
+    // [axis][side], side=0 -> inner, side=1 -> outer.
+    inline static bool rhs_sommerfeld_face[3][2] = {{true, true}, {true, true}, {true, true}};
+    // Per-face reflective mask (parity BC), same indexing convention as rhs_sommerfeld_face.
+    inline static bool reflective_face[3][2] = {{false, false}, {false, false}, {false, false}};
 
     static inline void set_characteristic(double speed, double dt) {
         characteristic_speed = std::max(speed, 1.0e-6);
         characteristic_dt = std::max(dt, 0.0);
+    }
+
+    static inline void set_rhs_sommerfeld_faces(bool ix1, bool ox1, bool ix2, bool ox2, bool ix3,
+                                                bool ox3) {
+        rhs_sommerfeld_face[0][0] = ix1;
+        rhs_sommerfeld_face[0][1] = ox1;
+        rhs_sommerfeld_face[1][0] = ix2;
+        rhs_sommerfeld_face[1][1] = ox2;
+        rhs_sommerfeld_face[2][0] = ix3;
+        rhs_sommerfeld_face[2][1] = ox3;
+    }
+
+    static inline void set_reflective_faces(bool ix1, bool ox1, bool ix2, bool ox2, bool ix3,
+                                            bool ox3) {
+        reflective_face[0][0] = ix1;
+        reflective_face[0][1] = ox1;
+        reflective_face[1][0] = ix2;
+        reflective_face[1][1] = ox2;
+        reflective_face[2][0] = ix3;
+        reflective_face[2][1] = ox3;
+    }
+
+    static inline bool rhs_sommerfeld_enabled(int axis, bool outer) {
+        const int ax = std::clamp(axis, 0, 2);
+        return rhs_sommerfeld_face[ax][outer ? 1 : 0];
+    }
+
+    static inline bool reflective_enabled(int axis, bool outer) {
+        const int ax = std::clamp(axis, 0, 2);
+        return reflective_face[ax][outer ? 1 : 0];
+    }
+
+    static inline int tensor_component_index_a(int component) {
+        switch (component) {
+        case XX:
+            return 0;
+        case XY:
+            return 0;
+        case XZ:
+            return 0;
+        case YY:
+            return 1;
+        case YZ:
+            return 1;
+        case ZZ:
+            return 2;
+        default:
+            return 0;
+        }
+    }
+
+    static inline int tensor_component_index_b(int component) {
+        switch (component) {
+        case XX:
+            return 0;
+        case XY:
+            return 1;
+        case XZ:
+            return 2;
+        case YY:
+            return 1;
+        case YZ:
+            return 2;
+        case ZZ:
+            return 2;
+        default:
+            return 0;
+        }
+    }
+
+    static inline int parity_sign(BoundaryField which, int component, int axis) {
+        switch (which) {
+        case BoundaryField::Alpha:
+        case BoundaryField::Chi:
+        case BoundaryField::K:
+        case BoundaryField::Theta:
+            return +1;
+        case BoundaryField::Beta:
+        case BoundaryField::B:
+        case BoundaryField::TildeGamma:
+        case BoundaryField::Z:
+            return (component == axis) ? -1 : +1;
+        case BoundaryField::GammaTilde:
+        case BoundaryField::GammaTildeInverse:
+        case BoundaryField::ATilde: {
+            const int a = tensor_component_index_a(component);
+            const int b = tensor_component_index_b(component);
+            const int flips = (a == axis ? 1 : 0) + (b == axis ? 1 : 0);
+            return (flips % 2 == 0) ? +1 : -1;
+        }
+        default:
+            return +1;
+        }
     }
 
     template <typename T>
@@ -150,6 +248,24 @@ struct BoundaryRadiative {
     template <typename T>
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                                   int component) {
+        enum class HaloMode { Sommerfeld, Outflow, Skip };
+        HaloMode mode = HaloMode::Sommerfeld;
+        switch (which) {
+        case BoundaryField::Beta:
+        case BoundaryField::B:
+        case BoundaryField::TildeGamma:
+            mode = HaloMode::Outflow;
+            break;
+        case BoundaryField::GammaTildeInverse:
+            mode = HaloMode::Skip;
+            break;
+        default:
+            mode = HaloMode::Sommerfeld;
+            break;
+        }
+        if (mode == HaloMode::Skip)
+            return;
+
         const auto  &D = G.dims;
         const double u_inf = detail::minkowski_target(which, component);
 
@@ -186,42 +302,71 @@ struct BoundaryRadiative {
             denom = std::max(denom, 1.0e-12);
             ptr[ob] = T(u_inf + du * (r_ib / denom));
         };
+        auto set_outflow = [&](size_t ob, size_t ib) { ptr[ob] = ptr[ib]; };
+        auto set_reflective = [&](size_t ob, size_t ib_reflect, int axis) {
+            const int sign = parity_sign(which, component, axis);
+            ptr[ob] = T(sign) * ptr[ib_reflect];
+        };
+        auto set_halo = [&](size_t ob, size_t ib, double r_ob, double r_ib,
+                            bool use_sommerfeld_face, bool use_reflective_face, int axis) {
+            if (use_reflective_face) {
+                set_reflective(ob, ib, axis);
+                return;
+            }
+            if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
+                set_sommerfeld(ob, ib, r_ob, r_ib);
+            else
+                set_outflow(ob, ib);
+        };
+
+        const bool sf_ix1 = rhs_sommerfeld_enabled(0, false);
+        const bool sf_ox1 = rhs_sommerfeld_enabled(0, true);
+        const bool sf_ix2 = rhs_sommerfeld_enabled(1, false);
+        const bool sf_ox2 = rhs_sommerfeld_enabled(1, true);
+        const bool sf_ix3 = rhs_sommerfeld_enabled(2, false);
+        const bool sf_ox3 = rhs_sommerfeld_enabled(2, true);
+        const bool rf_ix1 = reflective_enabled(0, false);
+        const bool rf_ox1 = reflective_enabled(0, true);
+        const bool rf_ix2 = reflective_enabled(1, false);
+        const bool rf_ox2 = reflective_enabled(1, true);
+        const bool rf_ix3 = reflective_enabled(2, false);
+        const bool rf_ox3 = reflective_enabled(2, true);
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
-                    set_sommerfeld(field.idx(I0 - g, j, k), field.idx(I0, j, k), r_of(I0 - g, j, k),
-                                   r_of(I0, j, k));
+                    set_halo(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
+                             r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1, rf_ix1, 0);
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
-                    set_sommerfeld(field.idx(I1 + g, j, k), field.idx(I1 - 1, j, k),
-                                   r_of(I1 + g, j, k), r_of(I1 - 1, j, k));
+                    set_halo(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
+                             r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1, rf_ox1, 0);
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    set_sommerfeld(field.idx(i, J0 - g, k), field.idx(i, J0, k), r_of(i, J0 - g, k),
-                                   r_of(i, J0, k));
+                    set_halo(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
+                             r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2, rf_ix2, 1);
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    set_sommerfeld(field.idx(i, J1 + g, k), field.idx(i, J1 - 1, k),
-                                   r_of(i, J1 + g, k), r_of(i, J1 - 1, k));
+                    set_halo(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
+                             r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k), sf_ox2, rf_ox2, 1);
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    set_sommerfeld(field.idx(i, j, K0 - g), field.idx(i, j, K0), r_of(i, j, K0 - g),
-                                   r_of(i, j, K0));
+                    set_halo(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
+                             r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3, rf_ix3, 2);
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    set_sommerfeld(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1),
-                                   r_of(i, j, K1 + g), r_of(i, j, K1 - 1));
+                    set_halo(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
+                             r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g), sf_ox3, rf_ox3, 2);
     }
 };
 

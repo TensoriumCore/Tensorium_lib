@@ -10,19 +10,22 @@
 
 /**
  * @file BSSNEvolutionK.hpp
- * @brief RHS for the mean curvature \f$K\f$.
- * @details Combines advection, the covariant Laplacian of the lapse, and quadratic extrinsic
- * curvature terms:
+ * @brief RHS kernel for \f$\hat{K}=K-2\Theta\f$ (stored into `rhs_K`).
+ * @details This kernel computes the \f$\hat{K}\f$ equation and leaves reconstruction of
+ * \f$\partial_t K = \partial_t \hat{K} + 2\partial_t\Theta\f$ to the time integrator.
+ * The local geometric part is:
  * \f[
- * \partial_t K = \beta^i\partial_i K - \gamma^{ij}D_i D_j \alpha +
- * \alpha(\tilde{A}_{ij}\tilde{A}^{ij} + \tfrac{1}{3}K^2).
+ * \partial_t \hat{K} = \beta^i\partial_i \hat{K} - \gamma^{ij}D_i D_j \alpha +
+ * \alpha(\tilde{A}_{ij}\tilde{A}^{ij} + \tfrac{1}{3}K^2) +
+ * \alpha\kappa_1(1-\kappa_2)\Theta.
  * \f]
  */
 
 namespace tensorium_RG::bssn {
 
 /**
- * @brief Compute \f$\partial_t K\f$ throughout the interior region.
+ * @brief Compute \f$\partial_t \hat{K}\f$ throughout the interior region.
+ * @note The result is written into `rhs_K` for compatibility with existing storage.
  */
 template <typename T>
 inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t padding = 4,
@@ -79,26 +82,24 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
             const T *p_gam[6];
             const T *p_gam_inv[6];
             const T *p_A[6];
-            const T *p_Ricci[6];
             T       *p_rhs = rhs_K.ptr() + idx_start;
 
             for (int s = 0; s < 6; ++s) {
                 p_gam[s] = G.gamma_tilde[s].ptr() + idx_start;
                 p_gam_inv[s] = G.gamma_tilde_inv[s].ptr() + idx_start;
                 p_A[s] = G.A_tilde[s].ptr() + idx_start;
-                p_Ricci[s] = G.Ricci[s].ptr() + idx_start;
             }
 
             for (size_t k = k0; k < k1; ++k) {
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
-                const T inv_chi = T(1) / chi;
+                const T chi_guarded = guard_chi_div(chi, gauge_params.chi_div_floor);
+                const T inv_chi = T(1) / chi_guarded;
                 const T K_val = *p_K;
+                const T theta = *p_theta;
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
-                T       RicciZ4[6];
-                compute_RicciZ4(G, i, j, k, RicciZ4);
 
                 T gamma_phys_inv[3][3];
                 T gamma_phys[3][3];
@@ -146,9 +147,13 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                     A_mat[b][a] = Aval;
                 }
 
-                const T adv = bx * Dx_upwind_ptr(p_K, sx, inv_2dx, bx) +
-                              by * Dy_upwind_ptr(p_K, sy, inv_2dy, by) +
-                              bz * Dz_upwind_ptr(p_K, inv_2dz, bz);
+                const T dKhat_x =
+                    Dx_upwind_ptr(p_K, sx, inv_2dx, bx) - T(2) * Dx_upwind_ptr(p_theta, sx, inv_2dx, bx);
+                const T dKhat_y =
+                    Dy_upwind_ptr(p_K, sy, inv_2dy, by) - T(2) * Dy_upwind_ptr(p_theta, sy, inv_2dy, by);
+                const T dKhat_z =
+                    Dz_upwind_ptr(p_K, inv_2dz, bz) - T(2) * Dz_upwind_ptr(p_theta, inv_2dz, bz);
+                const T adv = bx * dKhat_x + by * dKhat_y + bz * dKhat_z;
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
@@ -244,19 +249,6 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T g_yz = gamma_tilde_inv[1][2];
                 const T g_zz = gamma_tilde_inv[2][2];
 
-                const T R_xx = *p_Ricci[0] + RicciZ4[0];
-                const T R_xy = *p_Ricci[1] + RicciZ4[1];
-                const T R_xz = *p_Ricci[2] + RicciZ4[2];
-                const T R_yy = *p_Ricci[3] + RicciZ4[3];
-                const T R_yz = *p_Ricci[4] + RicciZ4[4];
-                const T R_zz = *p_Ricci[5] + RicciZ4[5];
-
-                const T R_conformal =
-                    g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
-                    T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
-                const T R_scalar = chi * R_conformal;
-                const T ricci_drive = alpha * R_scalar;
-
                 const T A_xx = A_mat[0][0];
                 const T A_xy = A_mat[0][1];
                 const T A_xz = A_mat[0][2];
@@ -297,21 +289,15 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                     A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
                     T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
 
-                const T alpha_source = std::max(alpha, gauge_params.min_lapse_for_K);
-                // Limiter prevents K^2 from sourcing runaway growth when alpha collapses.
-                const T K_sq_limited = std::min(K_val * K_val, gauge_params.max_K_squared);
-                const T quad_terms = A_contract + third * K_sq_limited;
-                const T quad = alpha_source * std::clamp(quad_terms, T(-1e3), T(1e3));
-                // K evolves rather than Khat, so include the approximate correction from
-                // dKhat + 2 dTheta when forming the damping term.
-                const T z4c_term = alpha * gauge_params.kappa1 *
-                                   (T(1) - gauge_params.kappa2 -
-                                    T(2) * (T(2) + gauge_params.kappa2)) * (*p_theta);
-                const T diss = KO6_axis_ptr(p_K, sx) + KO6_axis_ptr(p_K, sy) +
-                               KO6_axis_ptr(p_K, 1);
-                const T diss_scaled = (ko_sigma / G.dx) * diss;
+                const T quad = alpha * (A_contract + third * K_val * K_val);
+                const T z4c_term =
+                    gauge_params.kappa1_times_lapse(alpha) * (T(1) - gauge_params.kappa2) * theta;
+                const T diss_khat = (KO6_axis_ptr(p_K, sx) - T(2) * KO6_axis_ptr(p_theta, sx)) +
+                                    (KO6_axis_ptr(p_K, sy) - T(2) * KO6_axis_ptr(p_theta, sy)) +
+                                    (KO6_axis_ptr(p_K, 1) - T(2) * KO6_axis_ptr(p_theta, 1));
+                const T diss_scaled = (ko_sigma / G.dx) * diss_khat;
 
-                *p_rhs = adv - laplacian + quad + z4c_term + ricci_drive + diss_scaled;
+                *p_rhs = adv - laplacian + quad + z4c_term + diss_scaled;
 
                 ++p_K;
                 ++p_alpha;
@@ -324,7 +310,6 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                     ++p_gam[s];
                     ++p_gam_inv[s];
                     ++p_A[s];
-                    ++p_Ricci[s];
                 }
             }
         }

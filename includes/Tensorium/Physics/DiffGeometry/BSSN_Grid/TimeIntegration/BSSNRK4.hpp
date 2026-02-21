@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -133,44 +134,28 @@ inline T compute_dt_cfl(const BSSNGridSoA<T> &grid, const CFLControl<T> &control
     const size_t j_end = (J1 > guard) ? J1 - guard : J1;
     const size_t k_end = (K1 > guard) ? K1 - guard : K1;
 
-    T   max_beta = T(0);
-    T   min_alpha = std::numeric_limits<T>::infinity();
-    int gradient_flag = 0;
-#pragma omp parallel for collapse(3) reduction(max : max_beta) reduction(min : min_alpha)                     \
-    reduction(max : gradient_flag)
+    T max_beta = T(0);
+#pragma omp parallel for collapse(3) reduction(max : max_beta)
     for (size_t i = i_begin; i < i_end; ++i)
         for (size_t j = j_begin; j < j_end; ++j)
             for (size_t k = k_begin; k < k_end; ++k) {
                 const size_t id = grid.alpha.idx(i, j, k);
-                const T      alpha = std::abs(grid.alpha.ptr()[id]);
                 const T      bx = grid.beta[0].ptr()[id];
                 const T      by = grid.beta[1].ptr()[id];
                 const T      bz = grid.beta[2].ptr()[id];
-                const T      theta_val = grid.Theta.ptr()[id];
 
                 const T beta_mag = std::sqrt(bx * bx + by * by + bz * bz);
 
                 max_beta = std::max(max_beta, beta_mag);
-                min_alpha = std::min(min_alpha, alpha);
-                // Gauge-shock sensors: strong shifts, collapsing lapse, or large Theta.
-                if (alpha < T(0.1) || beta_mag > T(0.8) || std::abs(theta_val) > T(1.0))
-                    gradient_flag = 1;
             }
 
-    const T alpha_floor = T(0.1);
-    const T a = std::max(min_alpha, alpha_floor);
-
-    const T gauge_term = control.gauge_speed * std::sqrt(T(1) / a);
+    const T gauge_term = control.gauge_speed;
 
     T denom = max_beta + gauge_term;
     if (denom <= T(0))
         denom = T(1);
 
-    T cfl_number = control.cfl;
-    if (gradient_flag != 0)
-        cfl_number = std::min(cfl_number, T(0.12));
-
-    return cfl_number * (min_dx / denom);
+    return control.cfl * (min_dx / denom);
 }
 
 template <typename T>
@@ -214,13 +199,12 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                    double r_max, double chi_cut = 0.0) {
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-        const size_t guard = std::max(padding_, size_t(2));
-        const size_t i0 = std::min(I0 + guard, I1);
-        const size_t j0 = std::min(J0 + guard, J1);
-        const size_t k0 = std::min(K0 + guard, K1);
-        const size_t i1 = (I1 > guard) ? I1 - guard : I1;
-        const size_t j1 = (J1 > guard) ? J1 - guard : J1;
-        const size_t k1 = (K1 > guard) ? K1 - guard : K1;
+        const size_t i0 = I0;
+        const size_t j0 = J0;
+        const size_t k0 = K0;
+        const size_t i1 = I1;
+        const size_t j1 = J1;
+        const size_t k1 = K1;
 
         double max_beta = 0.0, max_B = 0.0;
         double min_alpha = 1e100, min_chi = 1e100;
@@ -359,23 +343,41 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
         tensorium_RG::bssn::detail::begin_contracted_warning_step(step_index);
 #endif
+        static constexpr std::array<double, 4> gam0_ref = {
+            0.0, 0.121098479554482, -3.843833699660025, 0.546370891121863};
+        static constexpr std::array<double, 4> gam1_ref = {
+            1.0, 0.721781678111411, 2.121209265338722, 0.198653035682705};
+        static constexpr std::array<double, 4> beta_ref = {
+            1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
+        static constexpr std::array<double, 4> delta_ref = {
+            1.0, 0.217683334308543, 1.065841341361089, 0.0};
+
         boundary_dt_ = dt;
-        prepare_state_for_rhs(grid);
-        evaluate_rhs(grid, stages_[0]);
+        for (int stage = 0; stage < 4; ++stage) {
+            if (stage == 0)
+                copy_stage_reference(grid, stage_grid_);
+            else
+                accumulate_stage_reference(grid, stage_grid_, T(delta_ref[stage]));
 
-        build_stage_state(grid, stages_[0], dt * T(0.5));
-        prepare_state_for_rhs(stage_grid_);
-        evaluate_rhs(stage_grid_, stages_[1]);
+            prepare_state_for_rhs(grid);
+            auto stage_params = gauge_params_;
+            stage_params.current_time = simulation_time_;
+            evaluate_rhs(grid, stages_[stage], stage_params);
 
-        build_stage_state(grid, stages_[1], dt * T(0.5));
-        prepare_state_for_rhs(stage_grid_);
-        evaluate_rhs(stage_grid_, stages_[2]);
+            apply_explicit_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
+                                        T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
+            if (gauge_params_.alpha_floor > T(0))
+                apply_alpha_floor(grid, gauge_params_.alpha_floor);
+            if (gauge_params_.chi_floor > T(0))
+                apply_chi_floor(grid, gauge_params_.chi_floor);
+        }
+        simulation_time_ += dt;
 
-        build_stage_state(grid, stages_[2], dt);
-        prepare_state_for_rhs(stage_grid_);
-        evaluate_rhs(stage_grid_, stages_[3]);
+        if (gauge_params_.alpha_floor > T(0))
+            apply_alpha_floor(grid, gauge_params_.alpha_floor);
+        if (gauge_params_.chi_floor > T(0))
+            apply_chi_floor(grid, gauge_params_.chi_floor);
 
-        apply_rk_update(grid, dt);
         prepare_state_for_rhs(grid);
 
         const double min_extent =
@@ -423,6 +425,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     std::function<void(const BSSNGridSoA<T> &, size_t)>                         snapshot_callback_;
     std::function<void(BSSNRHSWorkspace<T> &)>                                  rhs_prep_callback_;
     T                                                                           boundary_dt_ = T(0);
+    T                                                                           simulation_time_ = T(0);
 
     void add_dissipation(const Field3D<T> &u, Field3D<T> &rhs, T sigma) {
         const size_t nx = u.st.nx_tot;
@@ -463,13 +466,13 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     /// @brief Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation.
     void prepare_state_for_rhs(BSSNGridSoA<T> &grid) {
         configure_boundary_characteristics();
-        tensorium_RG::bssn::enforce_algebraic_constraints(grid);
         apply_halos_grid<Boundary>(grid);
 
-        apply_chi_floor(grid, T(1e-8));
-        apply_alpha_floor(grid, T(1e-8));
-
         rebuild_geometry(grid);
+        if (!gauge_params_.evolve_Z) {
+            synchronize_z_from_gamma_constraint(grid);
+            apply_halos_grid<Boundary>(grid);
+        }
     }
 
     void rebuild_geometry(BSSNGridSoA<T> &grid) {
@@ -478,10 +481,59 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         cfg.padding = padding_;
         cfg.renormalize_metric = false;
         cfg.project_A_tilde = false;
-        cfg.recompute_inverse = false;
-        cfg.resync_contracted_gamma = true;
+        cfg.recompute_inverse = true;
+        cfg.resync_contracted_gamma = false;
         project_bssn_state(grid, cfg);
         compute_ricci_bssn(grid, grid.Ricci, false);
+    }
+
+    void synchronize_z_from_gamma_constraint(BSSNGridSoA<T> &grid) {
+        using namespace tensorium_RG::fd;
+        const double inv_12dx = 1.0 / (60.0 * grid.dx);
+        const double inv_12dy = 1.0 / (60.0 * grid.dy);
+        const double inv_12dz = 1.0 / (60.0 * grid.dz);
+        const ptrdiff_t sx = grid.alpha.st.sx;
+        const ptrdiff_t sy = grid.alpha.st.sy;
+
+        size_t I0, I1, J0, J1, K0, K1;
+        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i) {
+            for (size_t j = J0; j < J1; ++j) {
+                for (size_t k = K0; k < K1; ++k) {
+                    const size_t idx = grid.alpha.idx(i, j, k);
+                    const T      chi = grid.chi.ptr()[idx];
+                    const T      chi_guarded = guard_chi_div(chi, gauge_params_.chi_div_floor);
+
+                    const T *p_xx = grid.gamma_tilde_inv[XX].ptr() + idx;
+                    const T *p_xy = grid.gamma_tilde_inv[XY].ptr() + idx;
+                    const T *p_xz = grid.gamma_tilde_inv[XZ].ptr() + idx;
+                    const T *p_yy = grid.gamma_tilde_inv[YY].ptr() + idx;
+                    const T *p_yz = grid.gamma_tilde_inv[YZ].ptr() + idx;
+                    const T *p_zz = grid.gamma_tilde_inv[ZZ].ptr() + idx;
+
+                    const T div0 =
+                        Dx_ptr(p_xx, sx, inv_12dx) + Dy_ptr(p_xy, sy, inv_12dy) + Dz_ptr(p_xz, inv_12dz);
+                    const T div1 =
+                        Dx_ptr(p_xy, sx, inv_12dx) + Dy_ptr(p_yy, sy, inv_12dy) + Dz_ptr(p_yz, inv_12dz);
+                    const T div2 =
+                        Dx_ptr(p_xz, sx, inv_12dx) + Dy_ptr(p_yz, sy, inv_12dy) + Dz_ptr(p_zz, inv_12dz);
+
+                    const T gamma_metric0 = -div0;
+                    const T gamma_metric1 = -div1;
+                    const T gamma_metric2 = -div2;
+
+                    const T z_over_chi0 = T(0.5) * (grid.tildeGamma[0].ptr()[idx] - gamma_metric0);
+                    const T z_over_chi1 = T(0.5) * (grid.tildeGamma[1].ptr()[idx] - gamma_metric1);
+                    const T z_over_chi2 = T(0.5) * (grid.tildeGamma[2].ptr()[idx] - gamma_metric2);
+
+                    grid.Z[0].ptr()[idx] = chi_guarded * z_over_chi0;
+                    grid.Z[1].ptr()[idx] = chi_guarded * z_over_chi1;
+                    grid.Z[2].ptr()[idx] = chi_guarded * z_over_chi2;
+                }
+            }
+        }
     }
 
     void configure_boundary_characteristics() {
@@ -500,20 +552,131 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
     /// @brief Invoke every RHS kernel using the provided grid snapshot.
-    void evaluate_rhs(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
+    void evaluate_rhs(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
+                      const GaugeParameters<T> &params) {
         if (rhs_prep_callback_)
             rhs_prep_callback_(rhs);
         update_ko_scale(grid, boundary_dt_);
-        compute_rhs_Gamma(grid, rhs.tildeGamma, grid.Z, grid.Theta, gauge_params_, padding_);
-        compute_rhs_B(grid, rhs.tildeGamma, rhs.B, gauge_params_, padding_);
-        compute_rhs_beta(grid, rhs.beta, gauge_params_, padding_);
-        compute_rhs_alpha(grid, rhs.alpha, padding_, gauge_params_);
-        compute_rhs_chi(grid, rhs.chi, padding_, gauge_params_);
-        compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, padding_);
-        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, gauge_params_);
-        compute_rhs_K(grid, rhs.K, padding_, gauge_params_);
-        compute_rhs_Theta(grid, rhs.Theta, gauge_params_, padding_);
-        compute_rhs_Z(grid, rhs.Z, gauge_params_, padding_);
+        compute_rhs_Gamma(grid, rhs.tildeGamma, grid.Z, grid.Theta, params, padding_);
+        compute_rhs_B(grid, rhs.tildeGamma, rhs.B, params, padding_);
+        compute_rhs_beta(grid, rhs.beta, params, padding_);
+        compute_rhs_alpha(grid, rhs.alpha, padding_, params);
+        compute_rhs_chi(grid, rhs.chi, padding_, params);
+        compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, padding_, params);
+        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, params);
+        // compute_rhs_K stores rhs(Khat) with Khat = K - 2*Theta.
+        compute_rhs_K(grid, rhs.K, padding_, params);
+        compute_rhs_Theta(grid, rhs.Theta, params, padding_);
+        compute_rhs_Z(grid, rhs.Z, params, padding_);
+        apply_rhs_sommerfeld(grid, rhs);
+        recompose_rhs_K_from_khat(grid, rhs);
+    }
+
+    void apply_rhs_sommerfeld(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
+        if (!gauge_params_.apply_rhs_sommerfeld)
+            return;
+        if constexpr (!std::is_same_v<Boundary, BoundaryRadiative>)
+            return;
+
+        size_t I0, I1, J0, J1, K0, K1;
+        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+        const size_t i0 = I0;
+        const size_t j0 = J0;
+        const size_t k0 = K0;
+        const size_t i1 = I1;
+        const size_t j1 = J1;
+        const size_t k1 = K1;
+
+        if (i0 >= i1 || j0 >= j1 || k0 >= k1)
+            return;
+
+        const T inv_2dx = T(0.5) / grid.dx;
+        const T inv_2dy = T(0.5) / grid.dy;
+        const T inv_2dz = T(0.5) / grid.dz;
+        const T inv_r_floor = T(1e-12);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = i0; i < i1; ++i) {
+            for (size_t j = j0; j < j1; ++j) {
+                for (size_t k = k0; k < k1; ++k) {
+                    const bool on_ix1 = (i == i0) &&
+                                        BoundaryRadiative::rhs_sommerfeld_enabled(0, false) &&
+                                        !BoundaryRadiative::reflective_enabled(0, false);
+                    const bool on_ox1 =
+                        (i + 1 == i1) && BoundaryRadiative::rhs_sommerfeld_enabled(0, true) &&
+                        !BoundaryRadiative::reflective_enabled(0, true);
+                    const bool on_ix2 = (j == j0) &&
+                                        BoundaryRadiative::rhs_sommerfeld_enabled(1, false) &&
+                                        !BoundaryRadiative::reflective_enabled(1, false);
+                    const bool on_ox2 =
+                        (j + 1 == j1) && BoundaryRadiative::rhs_sommerfeld_enabled(1, true) &&
+                        !BoundaryRadiative::reflective_enabled(1, true);
+                    const bool on_ix3 = (k == k0) &&
+                                        BoundaryRadiative::rhs_sommerfeld_enabled(2, false) &&
+                                        !BoundaryRadiative::reflective_enabled(2, false);
+                    const bool on_ox3 =
+                        (k + 1 == k1) && BoundaryRadiative::rhs_sommerfeld_enabled(2, true) &&
+                        !BoundaryRadiative::reflective_enabled(2, true);
+                    const bool on_surface = on_ix1 || on_ox1 || on_ix2 || on_ox2 || on_ix3 || on_ox3;
+                    if (!on_surface)
+                        continue;
+
+                    const size_t id = grid.alpha.idx(i, j, k);
+                    T            x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    const T r = std::sqrt(x * x + y * y + z * z);
+                    const T inv_r = T(1) / std::max(r, inv_r_floor);
+                    const T sx = x * inv_r;
+                    const T sy = y * inv_r;
+                    const T sz = z * inv_r;
+
+                    auto radial_derivative = [&](const Field3D<T> &f) -> T {
+                        const T *p = f.ptr() + id;
+                        const T  dfx = (p[f.st.sx] - p[-f.st.sx]) * inv_2dx;
+                        const T  dfy = (p[f.st.sy] - p[-f.st.sy]) * inv_2dy;
+                        const T  dfz = (p[1] - p[-1]) * inv_2dz;
+                        return sx * dfx + sy * dfy + sz * dfz;
+                    };
+
+                    auto sommerfeld_rhs = [&](const Field3D<T> &u, T asymptotic) -> T {
+                        const T u0 = u.ptr()[id];
+                        return -radial_derivative(u) + (asymptotic - u0) * inv_r;
+                    };
+
+                    rhs.alpha.ptr()[id] = sommerfeld_rhs(grid.alpha, T(1));
+                    rhs.chi.ptr()[id] = sommerfeld_rhs(grid.chi, T(1));
+                    rhs.Theta.ptr()[id] = sommerfeld_rhs(grid.Theta, T(0));
+                    // rhs.K currently stores rhs(Khat); enforce Sommerfeld on K then convert.
+                    const T rhs_K = sommerfeld_rhs(grid.K, T(0));
+                    rhs.K.ptr()[id] = rhs_K - T(2) * rhs.Theta.ptr()[id];
+
+                    for (int a = 0; a < 3; ++a)
+                        rhs.beta[a].ptr()[id] = sommerfeld_rhs(grid.beta[a], T(0));
+                    for (int a = 0; a < 3; ++a)
+                        rhs.B[a].ptr()[id] = sommerfeld_rhs(grid.B[a], T(0));
+                    for (int a = 0; a < 3; ++a)
+                        rhs.tildeGamma[a].ptr()[id] = sommerfeld_rhs(grid.tildeGamma[a], T(0));
+                    for (int a = 0; a < 3; ++a)
+                        rhs.Z[a].ptr()[id] = sommerfeld_rhs(grid.Z[a], T(0));
+
+                    rhs.gamma_tilde[XX].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[XX], T(1));
+                    rhs.gamma_tilde[XY].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[XY], T(0));
+                    rhs.gamma_tilde[XZ].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[XZ], T(0));
+                    rhs.gamma_tilde[YY].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[YY], T(1));
+                    rhs.gamma_tilde[YZ].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[YZ], T(0));
+                    rhs.gamma_tilde[ZZ].ptr()[id] = sommerfeld_rhs(grid.gamma_tilde[ZZ], T(1));
+
+                    for (int s = 0; s < 6; ++s)
+                        rhs.A_tilde[s].ptr()[id] = sommerfeld_rhs(grid.A_tilde[s], T(0));
+                }
+            }
+        }
+    }
+
+    void recompose_rhs_K_from_khat(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
+        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
+            rhs.K.ptr()[idx] += T(2) * rhs.Theta.ptr()[idx];
+        });
     }
 
     void log_gauge_diagnostics(const BSSNGridSoA<T> &grid, size_t step_index) {
@@ -592,85 +755,90 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                max_gamma, max_det, max_trA);
     }
 
-    void blend_field_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &base,
-                              const Field3D<T> &delta, Field3D<T> &dst, T scale_dt) {
-        const size_t total = base.st.nx_tot * base.st.ny_tot * base.st.nz_tot;
-        std::copy(base.ptr(), base.ptr() + total, dst.ptr());
+    void copy_scalar_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &src, Field3D<T> &dst) {
+        const T *in = src.ptr();
+        T       *out = dst.ptr();
         for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            dst.ptr()[idx] += scale_dt * delta.ptr()[idx];
+            out[idx] = in[idx];
         });
     }
 
-    void build_stage_state(const BSSNGridSoA<T> &base, const BSSNRHSWorkspace<T> &delta,
-                           T scale_dt) {
-        stage_grid_.x0 = base.x0;
-        stage_grid_.y0 = base.y0;
-        stage_grid_.z0 = base.z0;
-        blend_field_interior(base, base.alpha, delta.alpha, stage_grid_.alpha, scale_dt);
-        blend_field_interior(base, base.chi, delta.chi, stage_grid_.chi, scale_dt);
-        blend_field_interior(base, base.K, delta.K, stage_grid_.K, scale_dt);
-        blend_field_interior(base, base.Theta, delta.Theta, stage_grid_.Theta, scale_dt);
-        for (int i = 0; i < 3; ++i) {
-            blend_field_interior(base, base.beta[i], delta.beta[i], stage_grid_.beta[i], scale_dt);
-            blend_field_interior(base, base.B[i], delta.B[i], stage_grid_.B[i], scale_dt);
-            blend_field_interior(base, base.tildeGamma[i], delta.tildeGamma[i],
-                                 stage_grid_.tildeGamma[i], scale_dt);
-            blend_field_interior(base, base.Z[i], delta.Z[i], stage_grid_.Z[i], scale_dt);
-        }
-        for (int s = 0; s < 6; ++s) {
-            blend_field_interior(base, base.gamma_tilde[s], delta.gamma_tilde[s],
-                                 stage_grid_.gamma_tilde[s], scale_dt);
-            blend_field_interior(base, base.A_tilde[s], delta.A_tilde[s], stage_grid_.A_tilde[s],
-                                 scale_dt);
-        }
-    }
-
-    void accumulate_scalar(const BSSNGridSoA<T> &grid, Field3D<T> &dest, const Field3D<T> &k1,
-                           const Field3D<T> &k2, const Field3D<T> &k3, const Field3D<T> &k4, T c1,
-                           T c2, T c3, T c4) {
-        T       *out = dest.ptr();
-        const T *p1 = k1.ptr();
-        const T *p2 = k2.ptr();
-        const T *p3 = k3.ptr();
-        const T *p4 = k4.ptr();
+    void add_scaled_scalar_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &src,
+                                    Field3D<T> &dst, T scale) {
+        const T *in = src.ptr();
+        T       *out = dst.ptr();
         for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            out[idx] += c1 * p1[idx] + c2 * p2[idx] + c3 * p3[idx] + c4 * p4[idx];
+            out[idx] += scale * in[idx];
         });
     }
 
-    void apply_rk_update(BSSNGridSoA<T> &grid, T dt) {
-        const T c1 = dt / T(6);
-        const T c2 = dt / T(3);
-        const T c3 = dt / T(3);
-        const T c4 = dt / T(6);
-        accumulate_scalar(grid, grid.alpha, stages_[0].alpha, stages_[1].alpha, stages_[2].alpha,
-                          stages_[3].alpha, c1, c2, c3, c4);
-        accumulate_scalar(grid, grid.chi, stages_[0].chi, stages_[1].chi, stages_[2].chi,
-                          stages_[3].chi, c1, c2, c3, c4);
-        accumulate_scalar(grid, grid.K, stages_[0].K, stages_[1].K, stages_[2].K, stages_[3].K, c1,
-                          c2, c3, c4);
-        accumulate_scalar(grid, grid.Theta, stages_[0].Theta, stages_[1].Theta, stages_[2].Theta,
-                          stages_[3].Theta, c1, c2, c3, c4);
+    void update_scalar_interior(const BSSNGridSoA<T> &grid, Field3D<T> &u0, const Field3D<T> &u1,
+                                const Field3D<T> &rhs, T gam0, T gam1, T beta_dt) {
+        T       *out = u0.ptr();
+        const T *base = u1.ptr();
+        const T *k = rhs.ptr();
+        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
+            out[idx] = gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
+        });
+    }
+
+    void copy_stage_reference(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst) {
+        dst.x0 = src.x0;
+        dst.y0 = src.y0;
+        dst.z0 = src.z0;
+        copy_scalar_interior(src, src.alpha, dst.alpha);
+        copy_scalar_interior(src, src.chi, dst.chi);
+        copy_scalar_interior(src, src.K, dst.K);
+        copy_scalar_interior(src, src.Theta, dst.Theta);
         for (int i = 0; i < 3; ++i) {
-            accumulate_scalar(grid, grid.beta[i], stages_[0].beta[i], stages_[1].beta[i],
-                              stages_[2].beta[i], stages_[3].beta[i], c1, c2, c3, c4);
-            accumulate_scalar(grid, grid.B[i], stages_[0].B[i], stages_[1].B[i], stages_[2].B[i],
-                              stages_[3].B[i], c1, c2, c3, c4);
-            accumulate_scalar(grid, grid.tildeGamma[i], stages_[0].tildeGamma[i],
-                              stages_[1].tildeGamma[i], stages_[2].tildeGamma[i],
-                              stages_[3].tildeGamma[i], c1, c2, c3, c4);
-            accumulate_scalar(grid, grid.Z[i], stages_[0].Z[i], stages_[1].Z[i], stages_[2].Z[i],
-                              stages_[3].Z[i], c1, c2, c3, c4);
+            copy_scalar_interior(src, src.beta[i], dst.beta[i]);
+            copy_scalar_interior(src, src.B[i], dst.B[i]);
+            copy_scalar_interior(src, src.tildeGamma[i], dst.tildeGamma[i]);
+            copy_scalar_interior(src, src.Z[i], dst.Z[i]);
         }
         for (int s = 0; s < 6; ++s) {
-            accumulate_scalar(grid, grid.gamma_tilde[s], stages_[0].gamma_tilde[s],
-                              stages_[1].gamma_tilde[s], stages_[2].gamma_tilde[s],
-                              stages_[3].gamma_tilde[s], c1, c2, c3, c4);
-            accumulate_scalar(grid, grid.A_tilde[s], stages_[0].A_tilde[s], stages_[1].A_tilde[s],
-                              stages_[2].A_tilde[s], stages_[3].A_tilde[s], c1, c2, c3, c4);
+            copy_scalar_interior(src, src.gamma_tilde[s], dst.gamma_tilde[s]);
+            copy_scalar_interior(src, src.A_tilde[s], dst.A_tilde[s]);
         }
+    }
 
-        tensorium_RG::bssn::enforce_algebraic_constraints(grid);
+    void accumulate_stage_reference(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst, T delta) {
+        add_scaled_scalar_interior(src, src.alpha, dst.alpha, delta);
+        add_scaled_scalar_interior(src, src.chi, dst.chi, delta);
+        add_scaled_scalar_interior(src, src.K, dst.K, delta);
+        add_scaled_scalar_interior(src, src.Theta, dst.Theta, delta);
+        for (int i = 0; i < 3; ++i) {
+            add_scaled_scalar_interior(src, src.beta[i], dst.beta[i], delta);
+            add_scaled_scalar_interior(src, src.B[i], dst.B[i], delta);
+            add_scaled_scalar_interior(src, src.tildeGamma[i], dst.tildeGamma[i], delta);
+            add_scaled_scalar_interior(src, src.Z[i], dst.Z[i], delta);
+        }
+        for (int s = 0; s < 6; ++s) {
+            add_scaled_scalar_interior(src, src.gamma_tilde[s], dst.gamma_tilde[s], delta);
+            add_scaled_scalar_interior(src, src.A_tilde[s], dst.A_tilde[s], delta);
+        }
+    }
+
+    void apply_explicit_stage_update(BSSNGridSoA<T> &u0, const BSSNGridSoA<T> &u1,
+                                     const BSSNRHSWorkspace<T> &rhs, T gam0, T gam1, T beta_dt) {
+        update_scalar_interior(u0, u0.alpha, u1.alpha, rhs.alpha, gam0, gam1, beta_dt);
+        update_scalar_interior(u0, u0.chi, u1.chi, rhs.chi, gam0, gam1, beta_dt);
+        update_scalar_interior(u0, u0.K, u1.K, rhs.K, gam0, gam1, beta_dt);
+        update_scalar_interior(u0, u0.Theta, u1.Theta, rhs.Theta, gam0, gam1, beta_dt);
+        for (int i = 0; i < 3; ++i) {
+            update_scalar_interior(u0, u0.beta[i], u1.beta[i], rhs.beta[i], gam0, gam1, beta_dt);
+            update_scalar_interior(u0, u0.B[i], u1.B[i], rhs.B[i], gam0, gam1, beta_dt);
+            update_scalar_interior(u0, u0.tildeGamma[i], u1.tildeGamma[i], rhs.tildeGamma[i], gam0,
+                                   gam1, beta_dt);
+            update_scalar_interior(u0, u0.Z[i], u1.Z[i], rhs.Z[i], gam0, gam1, beta_dt);
+        }
+        for (int s = 0; s < 6; ++s) {
+            update_scalar_interior(u0, u0.gamma_tilde[s], u1.gamma_tilde[s], rhs.gamma_tilde[s],
+                                   gam0, gam1, beta_dt);
+            update_scalar_interior(u0, u0.A_tilde[s], u1.A_tilde[s], rhs.A_tilde[s], gam0, gam1,
+                                   beta_dt);
+        }
+        tensorium_RG::bssn::enforce_algebraic_constraints(u0);
     }
 };
 

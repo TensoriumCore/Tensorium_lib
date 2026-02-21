@@ -89,7 +89,6 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
-            const T *p_theta = G.Theta.ptr() + idx_start;
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
@@ -111,12 +110,11 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
             for (size_t k = k0; k < k1; ++k) {
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
-                const T inv_chi = T(1) / chi;
+                const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
+                const T inv_chi = T(1) / chi_guarded;
                 const T K = *p_K;
-                const T theta = *p_theta;
-                const T khat = Khat(K, theta);
                 T       RicciZ4[6];
-                compute_RicciZ4(G, i, j, k, RicciZ4);
+                compute_RicciZ4(G, i, j, k, RicciZ4, params.chi_div_floor);
 
                 // --- 1. Load Local Tensors ---
                 T gamma_tilde_inv[3][3];
@@ -323,7 +321,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
 
                         const T term_geom = chi * S_tf[a][b];
                         const T term_quad =
-                            alpha * (khat * A_mat[a][b] - T(2) * A_contracted[a][b]);
+                            alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
                         const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
                                        KO6_axis_ptr(p_field, 1);
                         const T diss_scaled = (ko_sigma / G.dx) * diss;
@@ -335,7 +333,6 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 ++p_alpha;
                 ++p_chi;
                 ++p_K;
-                ++p_theta;
                 for (int c = 0; c < 3; ++c)
                     ++p_beta[c];
                 for (int s = 0; s < 6; ++s) {

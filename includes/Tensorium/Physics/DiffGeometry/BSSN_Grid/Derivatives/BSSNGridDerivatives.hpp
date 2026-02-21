@@ -41,38 +41,74 @@ enum Axis { X = 0, Y = 1, Z = 2 };
 
 inline double get_offset(const double *ptr, ptrdiff_t offset) { return ptr[offset]; }
 
+inline int &fd_spatial_order() {
+    static int v = 6;
+    return v;
+}
+
+inline void set_max_spatial_derivative_order(int order) {
+    fd_spatial_order() = (order == 4) ? 4 : 6;
+}
+
+inline int max_spatial_derivative_order() { return fd_spatial_order(); }
+
 // First Derivatives (Order 6)
 template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_60dx) {
+    if (fd_spatial_order() == 4) {
+        // 4th-order centered first derivative:
+        // (-f_{i+2} + 8 f_{i+1} - 8 f_{i-1} + f_{i-2}) / (12 dx)
+        return (-p[2 * sx] + 8.0 * p[sx] - 8.0 * p[-sx] + p[-2 * sx]) * (5.0 * inv_60dx);
+    }
     return (p[3 * sx] - 9.0 * p[2 * sx] + 45.0 * p[sx] - 45.0 * p[-sx] + 9.0 * p[-2 * sx] -
             p[-3 * sx]) *
            inv_60dx;
 }
 
 template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_60dy) {
+    if (fd_spatial_order() == 4) {
+        return (-p[2 * sy] + 8.0 * p[sy] - 8.0 * p[-sy] + p[-2 * sy]) * (5.0 * inv_60dy);
+    }
     return (p[3 * sy] - 9.0 * p[2 * sy] + 45.0 * p[sy] - 45.0 * p[-sy] + 9.0 * p[-2 * sy] -
             p[-3 * sy]) *
            inv_60dy;
 }
 
 template <typename T> inline double Dz_ptr(const T *p, double inv_60dz) {
+    if (fd_spatial_order() == 4) {
+        return (-p[2] + 8.0 * p[1] - 8.0 * p[-1] + p[-2]) * (5.0 * inv_60dz);
+    }
     // Stride Z is always 1 in this layout
     return (p[3] - 9.0 * p[2] + 45.0 * p[1] - 45.0 * p[-1] + 9.0 * p[-2] - p[-3]) * inv_60dz;
 }
 
 // Second Derivatives (Order 6)
 template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_180dx2) {
+    if (fd_spatial_order() == 4) {
+        // 4th-order centered second derivative:
+        // (-f_{i+2} + 16 f_{i+1} - 30 f_i + 16 f_{i-1} - f_{i-2}) / (12 dx^2)
+        return (-p[2 * sx] + 16.0 * p[sx] - 30.0 * p[0] + 16.0 * p[-sx] - p[-2 * sx]) *
+               (15.0 * inv_180dx2);
+    }
     return (2.0 * p[-3 * sx] - 27.0 * p[-2 * sx] + 270.0 * p[-sx] - 490.0 * p[0] +
             270.0 * p[sx] - 27.0 * p[2 * sx] + 2.0 * p[3 * sx]) *
            inv_180dx2;
 }
 
 template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_180dy2) {
+    if (fd_spatial_order() == 4) {
+        return (-p[2 * sy] + 16.0 * p[sy] - 30.0 * p[0] + 16.0 * p[-sy] - p[-2 * sy]) *
+               (15.0 * inv_180dy2);
+    }
     return (2.0 * p[-3 * sy] - 27.0 * p[-2 * sy] + 270.0 * p[-sy] - 490.0 * p[0] +
             270.0 * p[sy] - 27.0 * p[2 * sy] + 2.0 * p[3 * sy]) *
            inv_180dy2;
 }
 
 template <typename T> inline double Dzz_ptr(const T *p, double inv_180dz2) {
+    if (fd_spatial_order() == 4) {
+        return (-p[2] + 16.0 * p[1] - 30.0 * p[0] + 16.0 * p[-1] - p[-2]) *
+               (15.0 * inv_180dz2);
+    }
     return (2.0 * p[-3] - 27.0 * p[-2] + 270.0 * p[-1] - 490.0 * p[0] + 270.0 * p[1] -
             27.0 * p[2] + 2.0 * p[3]) *
            inv_180dz2;
@@ -139,22 +175,48 @@ template <typename T> inline double Dyz4_ptr(const T *p, ptrdiff_t sy, double in
 // Upwind Derivatives
 template <typename T>
 inline double Dx_upwind_ptr(const T *p, ptrdiff_t sx, double inv_2dx, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * p[0] - 4.0 * p[-sx] + p[-2 * sx]) * inv_2dx;
-    return (-3.0 * p[0] + 4.0 * p[sx] - p[2 * sx]) * inv_2dx;
+    // High-order upwind stencil matching the NGHOST=4 finite-difference form.
+    if (beta < 0.0) {
+        const double dl = (1.0 / 30.0) * p[-4 * sx] + (-4.0 / 15.0) * p[-3 * sx] +
+                          (1.0) * p[-2 * sx] + (-8.0 / 3.0) * p[-sx] +
+                          (7.0 / 6.0) * p[0] + (4.0 / 5.0) * p[sx] +
+                          (-1.0 / 15.0) * p[2 * sx];
+        return dl * inv_2dx;
+    }
+    const double dr = (-1.0 / 30.0) * p[4 * sx] + (4.0 / 15.0) * p[3 * sx] +
+                      (-1.0) * p[2 * sx] + (8.0 / 3.0) * p[sx] +
+                      (-7.0 / 6.0) * p[0] + (-4.0 / 5.0) * p[-sx] +
+                      (1.0 / 15.0) * p[-2 * sx];
+    return dr * inv_2dx;
 }
 
 template <typename T>
 inline double Dy_upwind_ptr(const T *p, ptrdiff_t sy, double inv_2dy, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * p[0] - 4.0 * p[-sy] + p[-2 * sy]) * inv_2dy;
-    return (-3.0 * p[0] + 4.0 * p[sy] - p[2 * sy]) * inv_2dy;
+    if (beta < 0.0) {
+        const double dl = (1.0 / 30.0) * p[-4 * sy] + (-4.0 / 15.0) * p[-3 * sy] +
+                          (1.0) * p[-2 * sy] + (-8.0 / 3.0) * p[-sy] +
+                          (7.0 / 6.0) * p[0] + (4.0 / 5.0) * p[sy] +
+                          (-1.0 / 15.0) * p[2 * sy];
+        return dl * inv_2dy;
+    }
+    const double dr = (-1.0 / 30.0) * p[4 * sy] + (4.0 / 15.0) * p[3 * sy] +
+                      (-1.0) * p[2 * sy] + (8.0 / 3.0) * p[sy] +
+                      (-7.0 / 6.0) * p[0] + (-4.0 / 5.0) * p[-sy] +
+                      (1.0 / 15.0) * p[-2 * sy];
+    return dr * inv_2dy;
 }
 
 template <typename T> inline double Dz_upwind_ptr(const T *p, double inv_2dz, double beta) {
-    if (beta >= 0.0)
-        return (3.0 * p[0] - 4.0 * p[-1] + p[-2]) * inv_2dz;
-    return (-3.0 * p[0] + 4.0 * p[1] - p[2]) * inv_2dz;
+    if (beta < 0.0) {
+        const double dl = (1.0 / 30.0) * p[-4] + (-4.0 / 15.0) * p[-3] + (1.0) * p[-2] +
+                          (-8.0 / 3.0) * p[-1] + (7.0 / 6.0) * p[0] + (4.0 / 5.0) * p[1] +
+                          (-1.0 / 15.0) * p[2];
+        return dl * inv_2dz;
+    }
+    const double dr = (-1.0 / 30.0) * p[4] + (4.0 / 15.0) * p[3] + (-1.0) * p[2] +
+                      (8.0 / 3.0) * p[1] + (-7.0 / 6.0) * p[0] + (-4.0 / 5.0) * p[-1] +
+                      (1.0 / 15.0) * p[-2];
+    return dr * inv_2dz;
 }
 
 // KO6 Dissipation

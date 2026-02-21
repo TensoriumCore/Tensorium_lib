@@ -7,15 +7,33 @@
 #include <cstdlib>
 #include <cstring>
 #include <thread>
-#ifdef _OPENMP
-#    include <omp.h>
-#endif
+#include <Tensorium/Backend/OpenMP/OpenMPCompat.hpp>
 /*
  * this Gemm kernel is based on Aman Salykov version. Improvment of the OMP schedulding and Block
  * sizes
  *
  */
-#if defined(TENSORIUM_X86) || defined(TENSORIUM_ARM)
+#if defined(TENSORIUM_X86) && !defined(__AVX2__) && !defined(__AVX512F__)
+namespace tensorium {
+template <typename T> class GemmKernelBigger {
+  public:
+    inline void matmul(T *A, T *B, T *C, int M, int N, int K) {
+#ifdef _OPENMP
+#pragma omp parallel for collapse(2) schedule(static)
+#endif
+        for (int j = 0; j < N; ++j) {
+            for (int i = 0; i < M; ++i) {
+                T sum = T(0);
+                for (int p = 0; p < K; ++p)
+                    sum += A[i + p * M] * B[p + j * K];
+                C[i + j * M] = sum;
+            }
+        }
+    }
+};
+} // namespace tensorium
+
+#elif defined(TENSORIUM_X86) || defined(TENSORIUM_ARM)
 namespace tensorium {
 template <typename T> class GemmKernelBigger {
   public:

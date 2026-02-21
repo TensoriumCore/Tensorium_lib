@@ -102,6 +102,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_theta = Theta.ptr() + idx_start;
+            const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_Z[3] = {Z[0].ptr() + idx_start, Z[1].ptr() + idx_start,
                                Z[2].ptr() + idx_start};
 
@@ -286,11 +287,36 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
+                const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
+                                    Dz_ptr(p_chi, inv_12dz)};
                 const T d_theta[3] = {Dx_ptr(p_theta, sx, inv_12dx), Dy_ptr(p_theta, sy, inv_12dy),
                                       Dz_ptr(p_theta, inv_12dz)};
                 const T d_K[3] = {Dx_ptr(p_K, sx, inv_12dx), Dy_ptr(p_K, sy, inv_12dy),
                                   Dz_ptr(p_K, inv_12dz)};
                 const T alpha = *p_alpha;
+                const T chi = *p_chi;
+                const T chi_guarded = guard_chi_div(chi, gauge_params.chi_div_floor);
+                const T K_val = *p_K;
+                const T kappa1_lapse = gauge_params.kappa1_times_lapse(alpha);
+                T       gamma_metric[3] = {T(0), T(0), T(0)};
+                metric_inverse_divergence(G, i, j, k, gamma_metric);
+                gamma_metric[0] = -gamma_metric[0];
+                gamma_metric[1] = -gamma_metric[1];
+                gamma_metric[2] = -gamma_metric[2];
+
+                T z_over_chi[3] = {T(0), T(0), T(0)};
+                for (int c = 0; c < 3; ++c) {
+                    if (gauge_params.evolve_Z) {
+                        // Stored Z is contravariant physical Z^i; convert to Z^i/chi here.
+                        z_over_chi[c] = *p_Z[c] / chi_guarded;
+                    } else {
+                        z_over_chi[c] = T(0.5) * (gamma_vec[c] - gamma_metric[c]);
+                    }
+                }
+
+                T gamma_driver[3] = {T(0), T(0), T(0)};
+                for (int c = 0; c < 3; ++c)
+                    gamma_driver[c] = gamma_metric[c] + T(2) * gauge_params.kappa3 * z_over_chi[c];
 
                 for (int comp = 0; comp < 3; ++comp) {
                     const T adv =
@@ -300,9 +326,9 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
                     T gamma_beta = T(0);
                     for (int axis = 0; axis < 3; ++axis)
-                        gamma_beta += gamma_vec[axis] * d_beta[comp][axis];
+                        gamma_beta += gamma_driver[axis] * d_beta[comp][axis];
 
-                    const T stretch = two_thirds * gamma_vec[comp] * div_beta;
+                    const T stretch = two_thirds * gamma_driver[comp] * div_beta;
                     const T grad_div_term = dot_metric_row(comp, grad_div) * inv_third;
                     const T A_grad_alpha = dot_A_row(comp, d_alpha);
 
@@ -312,19 +338,22 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                             GammaA += Gamma_tilde_vals[comp][m][n] * A_up_matrix[m][n];
 
                     const T grad_K_up = dot_metric_row(comp, d_K);
+                    const T A_grad_chi_over_chi = dot_A_row(comp, d_chi) / chi_guarded;
 
                     const T source = T(2) * alpha * (GammaA - two_thirds * grad_K_up);
                     const T grad_theta_up = dot_metric_row(comp, d_theta);
-                    const T theta_drive = T(2) * alpha * grad_theta_up;
-                    const T z_comp = *p_Z[comp];
-                    const T damping = -T(2) * alpha * gauge_params.kappa1 * z_comp;
+                    const T grad_alpha_up = dot_metric_row(comp, d_alpha);
+                    const T theta_drive = T(2) * alpha * grad_theta_up - T(2) * (*p_theta) * grad_alpha_up;
+                    const T chi_drive = -T(3) * alpha * A_grad_chi_over_chi;
+                    const T z4_k_drive = -T(4) / T(3) * alpha * K_val * z_over_chi[comp];
+                    const T damping = -T(2) * kappa1_lapse * z_over_chi[comp];
 
                     const T diss = KO6_axis_ptr(p_Gamma[comp], sx) +
                                    KO6_axis_ptr(p_Gamma[comp], sy) + KO6_axis_ptr(p_Gamma[comp], 1);
 
                     *p_rhs[comp] = adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
-                                   T(2) * A_grad_alpha + source + theta_drive + damping +
-                                   (ko_sigma / G.dx) * diss;
+                                   T(2) * A_grad_alpha + source + theta_drive + chi_drive +
+                                   z4_k_drive + damping + (ko_sigma / G.dx) * diss;
                 }
 
                 for (int c = 0; c < 3; ++c) {
@@ -334,6 +363,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                     ++p_rhs[c];
                 }
                 ++p_alpha;
+                ++p_chi;
                 ++p_K;
                 ++p_theta;
                 for (int s = 0; s < 6; ++s) {
