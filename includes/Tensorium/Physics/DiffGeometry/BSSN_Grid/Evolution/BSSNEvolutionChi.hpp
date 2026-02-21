@@ -31,7 +31,7 @@ namespace tensorium_RG::bssn {
  * **Mapping to code.**
  * - `d_chi` corresponds to the advective term \f$\beta^i\partial_i\chi\f$.
  * - `div_beta` uses centered derivatives to compute \f$\partial_i\beta^i\f$.
- * - The scalar multiplier `T(2/3)*chi*(alpha*Khat - div_beta)` encodes the source term.
+ * - The scalar multiplier `T(2/3)*chi*(alpha*K - div_beta)` encodes the source term.
  * - KO6 call adds dissipation using `params.ko_sigma` so all fields share the same filter.
  */
 template <typename T>
@@ -72,7 +72,6 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
-            const T *p_theta = G.Theta.ptr() + idx_start;
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
             T       *p_rhs = rhs_chi.ptr() + idx_start;
@@ -81,8 +80,6 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                 const T chi = *p_chi;
                 const T alpha = *p_alpha;
                 const T K = *p_K;
-                const T theta = *p_theta;
-                const T khat = Khat(K, theta);
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
@@ -97,14 +94,13 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                 const T diss =
                     KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
 
-                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * khat - div_beta) +
+                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
                          (ko_sigma / G.dx) * diss;
 
                 // Increment pointers
                 ++p_chi;
                 ++p_alpha;
                 ++p_K;
-                ++p_theta;
                 ++p_rhs;
                 ++p_beta[0];
                 ++p_beta[1];

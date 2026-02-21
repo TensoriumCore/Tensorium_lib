@@ -36,17 +36,6 @@ static inline void by_add_momentum_TF(T A[3][3], const T n[3], const T P[3], T r
 
     const T nP = n[0] * P[0] + n[1] * P[1] + n[2] * P[2];
 
-    T Sij[3][3];
-    for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j)
-            Sij[i][j] = n[i] * P[j] + n[j] * P[i] - (one - (i == j ? one : T(0))) * T(0);
-
-    for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j)
-            Sij[i][j] = n[i] * P[j] + n[j] * P[i] -
-                        (i == j ? (one - n[i] * n[i])
-                                : (-nP * (i == j ? one : T(0)))); 
-
     // Ã_ij^P = (3/(2 r^2)) [ n_i P_j + n_j P_i - (δ_ij - n_i n_j) (n·P) ]
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
@@ -159,7 +148,9 @@ template <typename T> static inline T Atilde_sq_flat_from_soa(const BSSNGridSoA<
  * @param maxIter,tol,omega Solver controls (iterations, residual tolerance, relaxation factor).
  * @details
  * The discrete Laplacian uses standard 2nd-order stencils to balance efficiency with robustness.
- * After convergence the routine updates \f$\chi=\psi^{-4}\f$ and \f$\alpha=\psi^{-2}\f$ and reprojects the grid.
+ * After convergence the routine updates \f$\chi=\psi^{-4}\f$, \f$\alpha=\psi^{-2}\f$, converts the
+ * Bowen--York conformal source \f$\bar{A}_{ij}\f$ to the evolved BSSN variable
+ * \f$\tilde{A}_{ij}=\psi^{-6}\bar{A}_{ij}=\chi^{3/2}\bar{A}_{ij}\f$, and reprojects the grid.
  */
 template <typename T>
 inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, T m2, T x2, T y2,
@@ -275,9 +266,13 @@ inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, 
 
                 const T chi = T(1) / (psi * psi * psi * psi);
                 const T alpha = T(1) / (psi * psi);
+                const T chi_sqrt = std::sqrt(std::max(chi, T(0)));
+                const T A_scale = chi * chi_sqrt; // psi^{-6}
 
                 G.chi.ptr()[id] = chi;
                 G.alpha.ptr()[id] = alpha;
+                for (int s = 0; s < 6; ++s)
+                    G.A_tilde[s].ptr()[id] *= A_scale;
             }
 
     tensorium_RG::bssn::compute_tildeGamma_contracted(G);

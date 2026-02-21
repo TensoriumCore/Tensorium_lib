@@ -11,10 +11,17 @@
 #include "../Grid/BSSNGridOperations.hpp"
 #include "../Solvers/BSSNConstrainSolver.hpp"
 #include <algorithm>
+#include <chrono>
 #include <cmath>
+#include <cstdlib>
 #include <cstdio>
 #include <type_traits>
 #include <utility>
+#include <vector>
+
+#if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
+#    include "TwoPunctures.h"
+#endif
 
 /**
  * @file BSSNInitialData.hpp
@@ -733,6 +740,403 @@ inline void binary_bowen_york_puncture_init(BSSNGridSoA<T> &G, T m1, T x1, T y1,
     print_ricci_samples(G);
     tensorium_RG::bssn::assert_invariants(G, "init.bowen_york");
     tensorium_RG::bssn::project_bssn_state(G);
+}
+
+template <typename T>
+inline T sample_trilinear_field(const BSSNGridSoA<T> &src, const Field3D<T> &field, T x, T y, T z) {
+    size_t I0, I1, J0, J1, K0, K1;
+    src.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t ix_min = I0;
+    const size_t iy_min = J0;
+    const size_t iz_min = K0;
+    const size_t ix_max = I1 - 1;
+    const size_t iy_max = J1 - 1;
+    const size_t iz_max = K1 - 1;
+
+    auto axis_weights = [](T coord, T origin, T spacing, size_t a_min, size_t a_max, size_t &a0,
+                           size_t &a1, T &w) {
+        const T u = (coord - origin) / spacing + T(a_min);
+        if (u <= T(a_min)) {
+            a0 = a_min;
+            a1 = std::min(a_min + size_t(1), a_max);
+            w = T(0);
+            return;
+        }
+        if (u >= T(a_max)) {
+            a1 = a_max;
+            a0 = (a_max > a_min) ? (a_max - size_t(1)) : a_max;
+            w = T(1);
+            return;
+        }
+        const T uf = std::floor(u);
+        a0 = static_cast<size_t>(uf);
+        a1 = std::min(a0 + size_t(1), a_max);
+        w = std::clamp(u - T(a0), T(0), T(1));
+    };
+
+    size_t i0, i1, j0, j1, k0, k1;
+    T      tx, ty, tz;
+    axis_weights(x, src.x0, src.dx, ix_min, ix_max, i0, i1, tx);
+    axis_weights(y, src.y0, src.dy, iy_min, iy_max, j0, j1, ty);
+    axis_weights(z, src.z0, src.dz, iz_min, iz_max, k0, k1, tz);
+
+    auto at = [&](size_t i, size_t j, size_t k) -> T { return field.ptr()[field.idx(i, j, k)]; };
+
+    const T c000 = at(i0, j0, k0);
+    const T c100 = at(i1, j0, k0);
+    const T c010 = at(i0, j1, k0);
+    const T c110 = at(i1, j1, k0);
+    const T c001 = at(i0, j0, k1);
+    const T c101 = at(i1, j0, k1);
+    const T c011 = at(i0, j1, k1);
+    const T c111 = at(i1, j1, k1);
+
+    const T c00 = c000 * (T(1) - tx) + c100 * tx;
+    const T c10 = c010 * (T(1) - tx) + c110 * tx;
+    const T c01 = c001 * (T(1) - tx) + c101 * tx;
+    const T c11 = c011 * (T(1) - tx) + c111 * tx;
+    const T c0 = c00 * (T(1) - ty) + c10 * ty;
+    const T c1 = c01 * (T(1) - ty) + c11 * ty;
+    return c0 * (T(1) - tz) + c1 * tz;
+}
+
+template <typename T>
+static inline void invert_sym_3x3(const T g_xx, const T g_xy, const T g_xz, const T g_yy,
+                                  const T g_yz, const T g_zz, T &inv_xx, T &inv_xy, T &inv_xz,
+                                  T &inv_yy, T &inv_yz, T &inv_zz, T &det);
+
+template <typename T>
+inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1,
+                                                         const T P1[3], const T S1[3], T m2, T x2,
+                                                         T y2, T z2, const T P2[3], const T S2[3],
+                                                         size_t interp_seed_n = 64,
+                                                         T r_floor = T(1e-6)) {
+#if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
+    (void)interp_seed_n;
+    (void)r_floor;
+    auto now_s = []() -> double {
+        using clock = std::chrono::steady_clock;
+        return std::chrono::duration<double>(clock::now().time_since_epoch()).count();
+    };
+    const double t_init_begin = now_s();
+    int          tp_verbose = 0;
+    if (const char *v = std::getenv("TENSORIUM_TWOPUNCTURES_VERBOSE"))
+        tp_verbose = (std::atoi(v) != 0) ? 1 : 0;
+    int omp_threads = 1;
+    if (const char *threads_env = std::getenv("OMP_NUM_THREADS")) {
+        const int parsed = std::atoi(threads_env);
+        if (parsed > 0)
+            omp_threads = parsed;
+    }
+    std::printf("[init.interpolate][step 1/7] setup TwoPunctures backend (omp_threads=%d, tp_omp=%d)\n",
+                omp_threads,
+#if defined(TENSORIUM_TWOPUNCTURES_OMP)
+                1
+#else
+                0
+#endif
+    );
+    std::fflush(stdout);
+
+    // TwoPunctures assumes punctures at (+/- par_b, 0, 0) plus a common center offset.
+    // For this path we require x-aligned punctures and identical y/z coordinates.
+    const T center_x = T(0.5) * (x1 + x2);
+    const T center_y = T(0.5) * (y1 + y2);
+    const T center_z = T(0.5) * (z1 + z2);
+    const T b = T(0.5) * std::abs(x2 - x1);
+    const T yz_mismatch = std::abs(y1 - y2) + std::abs(z1 - z2);
+    if (b <= T(0) || yz_mismatch > T(1e-12)) {
+        std::printf("[init.interpolate][warn] invalid puncture layout for TwoPunctures backend; "
+                    "falling back to Bowen-York init\n");
+        binary_bowen_york_puncture_init(G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, T(1e-6));
+        return;
+    }
+
+    const bool plus_is_second = (x2 > x1);
+    const T m_plus = plus_is_second ? m2 : m1;
+    const T m_minus = plus_is_second ? m1 : m2;
+    const T *P_plus = plus_is_second ? P2 : P1;
+    const T *P_minus = plus_is_second ? P1 : P2;
+    const T *S_plus = plus_is_second ? S2 : S1;
+    const T *S_minus = plus_is_second ? S1 : S2;
+
+    TwoPunctures_params_set_default();
+    TwoPunctures_params_set_Int(const_cast<char *>("verbose"), tp_verbose);
+    TwoPunctures_params_set_Int(const_cast<char *>("give_bare_mass"), 1);
+    TwoPunctures_params_set_Int(const_cast<char *>("grid_setup_method"), evaluation);
+    TwoPunctures_params_set_Int(const_cast<char *>("initial_lapse"), psin);
+    TwoPunctures_params_set_Real(const_cast<char *>("initial_lapse_psi_exponent"), -2.0);
+    TwoPunctures_params_set_Int(const_cast<char *>("conformal_state"), 1);
+    TwoPunctures_params_set_Real(const_cast<char *>("par_b"), double(b));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_m_plus"), double(m_plus));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_m_minus"), double(m_minus));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus1"), double(P_plus[0]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus2"), double(P_plus[1]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus3"), double(P_plus[2]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus1"), double(P_minus[0]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus2"), double(P_minus[1]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus3"), double(P_minus[2]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus1"), double(S_plus[0]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus2"), double(S_plus[1]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus3"), double(S_plus[2]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus1"), double(S_minus[0]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus2"), double(S_minus[1]));
+    TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus3"), double(S_minus[2]));
+    TwoPunctures_params_set_Real(const_cast<char *>("center_offset1"), double(center_x));
+    TwoPunctures_params_set_Real(const_cast<char *>("center_offset2"), double(center_y));
+    TwoPunctures_params_set_Real(const_cast<char *>("center_offset3"), double(center_z));
+    // Match the GRChombo BinaryBH TwoPunctures defaults.
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_A"), 30);
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_B"), 30);
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_phi"), 16);
+    TwoPunctures_params_set_Real(const_cast<char *>("Newton_tol"), 1.0e-10);
+    TwoPunctures_params_set_Int(const_cast<char *>("Newton_maxit"), 5);
+    TwoPunctures_params_set_Real(const_cast<char *>("TP_epsilon"), 1.0e-6);
+
+    std::printf("[init.interpolate][step 2/7] solving TwoPunctures spectral system...\n");
+    std::fflush(stdout);
+    const double t_solve_begin = now_s();
+    ini_data *tp_data = TwoPunctures_make_initial_data();
+    const double t_solve_end = now_s();
+    std::printf("[init.interpolate][step 2/7] solve done in %.3fs\n",
+                t_solve_end - t_solve_begin);
+    std::fflush(stdout);
+    if (tp_data == nullptr) {
+        std::printf("[init.interpolate][warn] TwoPunctures solver failed; "
+                    "falling back to Bowen-York init\n");
+        binary_bowen_york_puncture_init(G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, T(1e-6));
+        return;
+    }
+
+    const int nx = static_cast<int>(G.dims.nx);
+    const int ny = static_cast<int>(G.dims.ny);
+    const int nz = static_cast<int>(G.dims.nz);
+    const size_t nt = static_cast<size_t>(nx) * static_cast<size_t>(ny) * static_cast<size_t>(nz);
+
+    const double bytes = double(nt) * double(28u) * double(sizeof(double));
+    std::printf("[init.interpolate][step 3/7] preparing interpolation buffers (nt=%zu, %.2f MiB)\n",
+                nt, bytes / (1024.0 * 1024.0));
+    std::fflush(stdout);
+
+    std::vector<double> xs(static_cast<size_t>(nx));
+    std::vector<double> ys(static_cast<size_t>(ny));
+    std::vector<double> zs(static_cast<size_t>(nz));
+    for (int i = 0; i < nx; ++i)
+        xs[static_cast<size_t>(i)] = double(G.x0 + T(i) * G.dx);
+    for (int j = 0; j < ny; ++j)
+        ys[static_cast<size_t>(j)] = double(G.y0 + T(j) * G.dy);
+    for (int k = 0; k < nz; ++k)
+        zs[static_cast<size_t>(k)] = double(G.z0 + T(k) * G.dz);
+
+    std::vector<double> alp(nt), psi(nt), psix(nt), psiy(nt), psiz(nt), psixx(nt), psixy(nt),
+        psixz(nt), psiyy(nt), psiyz(nt), psizz(nt);
+    std::vector<double> gxx(nt), gxy(nt), gxz(nt), gyy(nt), gyz(nt), gzz(nt);
+    std::vector<double> kxx(nt), kxy(nt), kxz(nt), kyy(nt), kyz(nt), kzz(nt);
+
+    int imin[3] = {0, 0, 0};
+    int imax[3] = {nx, ny, nz};
+    int nxyz[3] = {nx, ny, nz};
+    std::printf("[init.interpolate][step 4/7] spectral->Cartesian interpolation...\n");
+    std::fflush(stdout);
+    const double t_interp_begin = now_s();
+    TwoPunctures_Cartesian_interpolation(
+        tp_data, imin, imax, nxyz, xs.data(), ys.data(), zs.data(), alp.data(), psi.data(),
+        psix.data(), psiy.data(), psiz.data(), psixx.data(), psixy.data(), psixz.data(),
+        psiyy.data(), psiyz.data(), psizz.data(), gxx.data(), gxy.data(), gxz.data(), gyy.data(),
+        gyz.data(), gzz.data(), kxx.data(), kxy.data(), kxz.data(), kyy.data(), kyz.data(),
+        kzz.data());
+    const double t_interp_end = now_s();
+    std::printf("[init.interpolate][step 4/7] interpolation done in %.3fs\n",
+                t_interp_end - t_interp_begin);
+    std::fflush(stdout);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const T one = T(1);
+    const T eps = T(1e-20);
+
+    std::printf("[init.interpolate][step 5/7] mapping TP fields -> BSSN state...\n");
+    std::fflush(stdout);
+    const double t_map_begin = now_s();
+#pragma omp parallel for collapse(3)
+    for (int kk = 0; kk < nz; ++kk) {
+        for (int jj = 0; jj < ny; ++jj) {
+            for (int ii = 0; ii < nx; ++ii) {
+                const size_t ind = static_cast<size_t>(ii) + static_cast<size_t>(nx) *
+                                                             (static_cast<size_t>(jj) +
+                                                              static_cast<size_t>(ny) *
+                                                                  static_cast<size_t>(kk));
+                const size_t i = I0 + static_cast<size_t>(ii);
+                const size_t j = J0 + static_cast<size_t>(jj);
+                const size_t k = K0 + static_cast<size_t>(kk);
+                const size_t id = G.alpha.idx(i, j, k);
+
+                // TwoPunctures C API returns conformal metric components (gbar_ij) and the
+                // static puncture conformal factor psi separately. Reconstruct physical gamma_ij.
+                const T psi_static = std::max(T(psi[ind]), T(1e-15));
+                const T psi2 = psi_static * psi_static;
+                const T psi4 = psi2 * psi2;
+
+                const T g_xx = psi4 * T(gxx[ind]);
+                const T g_xy = psi4 * T(gxy[ind]);
+                const T g_xz = psi4 * T(gxz[ind]);
+                const T g_yy = psi4 * T(gyy[ind]);
+                const T g_yz = psi4 * T(gyz[ind]);
+                const T g_zz = psi4 * T(gzz[ind]);
+
+                const T detg = g_xx * (g_yy * g_zz - g_yz * g_yz) -
+                               g_xy * (g_xy * g_zz - g_xz * g_yz) +
+                               g_xz * (g_xy * g_yz - g_xz * g_yy);
+                const T det_pos = std::max(detg, eps);
+                const T chi = std::pow(det_pos, T(-1) / T(3));
+
+                const T K_xx = T(kxx[ind]);
+                const T K_xy = T(kxy[ind]);
+                const T K_xz = T(kxz[ind]);
+                const T K_yy = T(kyy[ind]);
+                const T K_yz = T(kyz[ind]);
+                const T K_zz = T(kzz[ind]);
+                const T Abar_xx = chi * K_xx;
+                const T Abar_xy = chi * K_xy;
+                const T Abar_xz = chi * K_xz;
+                const T Abar_yy = chi * K_yy;
+                const T Abar_yz = chi * K_yz;
+                const T Abar_zz = chi * K_zz;
+                const T one_third = T(1) / T(3);
+                const T trAbar = Abar_xx + Abar_yy + Abar_zz;
+
+                G.alpha.ptr()[id] = std::max(T(alp[ind]), T(1e-12));
+                G.chi.ptr()[id] = std::max(chi, T(1e-16));
+                G.K.ptr()[id] = T(0);
+                G.Theta.ptr()[id] = T(0);
+
+                for (int c = 0; c < 3; ++c) {
+                    G.beta[c].ptr()[id] = T(0);
+                    G.B[c].ptr()[id] = T(0);
+                    G.tildeGamma[c].ptr()[id] = T(0);
+                    G.Z[c].ptr()[id] = T(0);
+                }
+
+                G.gamma_tilde[XX].ptr()[id] = one;
+                G.gamma_tilde[XY].ptr()[id] = T(0);
+                G.gamma_tilde[XZ].ptr()[id] = T(0);
+                G.gamma_tilde[YY].ptr()[id] = one;
+                G.gamma_tilde[YZ].ptr()[id] = T(0);
+                G.gamma_tilde[ZZ].ptr()[id] = one;
+
+                G.gamma_tilde_inv[XX].ptr()[id] = one;
+                G.gamma_tilde_inv[XY].ptr()[id] = T(0);
+                G.gamma_tilde_inv[XZ].ptr()[id] = T(0);
+                G.gamma_tilde_inv[YY].ptr()[id] = one;
+                G.gamma_tilde_inv[YZ].ptr()[id] = T(0);
+                G.gamma_tilde_inv[ZZ].ptr()[id] = one;
+
+                G.A_tilde[XX].ptr()[id] = Abar_xx - one_third * trAbar;
+                G.A_tilde[XY].ptr()[id] = Abar_xy;
+                G.A_tilde[XZ].ptr()[id] = Abar_xz;
+                G.A_tilde[YY].ptr()[id] = Abar_yy - one_third * trAbar;
+                G.A_tilde[YZ].ptr()[id] = Abar_yz;
+                G.A_tilde[ZZ].ptr()[id] = Abar_zz - one_third * trAbar;
+            }
+        }
+    }
+    const double t_map_end = now_s();
+    std::printf("[init.interpolate][step 5/7] mapping done in %.3fs\n", t_map_end - t_map_begin);
+    std::fflush(stdout);
+
+    std::printf("[init.interpolate][step 6/7] cleanup TP workspace + enforce constraints...\n");
+    std::fflush(stdout);
+    const double t_post_begin = now_s();
+    TwoPunctures_finalise(tp_data);
+
+    bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
+    tensorium_RG::bssn::ProjectionConfig proj_cfg;
+    proj_cfg.padding = 0;
+    proj_cfg.renormalize_metric = true;
+    proj_cfg.project_A_tilde = true;
+    proj_cfg.recompute_inverse = true;
+    proj_cfg.resync_contracted_gamma = true;
+    tensorium_RG::bssn::project_bssn_state(G, proj_cfg);
+    bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
+    tensorium_RG::bssn::compute_tildeGamma_contracted(G);
+    tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
+    tensorium_RG::bssn::assert_invariants(G, "init.twopunctures_interpolated");
+    const double t_post_end = now_s();
+    std::printf("[init.interpolate][step 6/7] post-process done in %.3fs\n",
+                t_post_end - t_post_begin);
+    std::printf("[init.interpolate][step 7/7] complete total=%.3fs\n", t_post_end - t_init_begin);
+    std::fflush(stdout);
+#else
+    const size_t seed_n = std::max<size_t>(24, interp_seed_n);
+
+    const T Lx = G.dx * T(G.dims.nx);
+    const T Ly = G.dy * T(G.dims.ny);
+    const T Lz = G.dz * T(G.dims.nz);
+
+    const T seed_dx = Lx / T(seed_n);
+    const T seed_dy = Ly / T(seed_n);
+    const T seed_dz = Lz / T(seed_n);
+
+    BSSNGridSoA<T> seed(seed_n, seed_n, seed_n, G.dims.ng, seed_dx, seed_dy, seed_dz);
+
+    const T x_lo = G.x0 - T(0.5) * G.dx;
+    const T y_lo = G.y0 - T(0.5) * G.dy;
+    const T z_lo = G.z0 - T(0.5) * G.dz;
+    seed.x0 = x_lo + T(0.5) * seed_dx;
+    seed.y0 = y_lo + T(0.5) * seed_dy;
+    seed.z0 = z_lo + T(0.5) * seed_dz;
+
+    std::printf("[init.interpolate] seed grid=%zux%zux%zu spacing=(%.6f, %.6f, %.6f)\n", seed_n,
+                seed_n, seed_n, double(seed_dx), double(seed_dy), double(seed_dz));
+
+    binary_bowen_york_puncture_init(seed, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, r_floor);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(3)
+    for (size_t i = I0; i < I1; ++i) {
+        for (size_t j = J0; j < J1; ++j) {
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t id = G.alpha.idx(i, j, k);
+                T            x, y, z;
+                G.coords(i, j, k, x, y, z);
+
+                G.alpha.ptr()[id] = sample_trilinear_field(seed, seed.alpha, x, y, z);
+                G.chi.ptr()[id] = sample_trilinear_field(seed, seed.chi, x, y, z);
+                G.K.ptr()[id] = sample_trilinear_field(seed, seed.K, x, y, z);
+                G.Theta.ptr()[id] = sample_trilinear_field(seed, seed.Theta, x, y, z);
+
+                for (int c = 0; c < 3; ++c) {
+                    G.beta[c].ptr()[id] = sample_trilinear_field(seed, seed.beta[c], x, y, z);
+                    G.B[c].ptr()[id] = sample_trilinear_field(seed, seed.B[c], x, y, z);
+                    G.tildeGamma[c].ptr()[id] =
+                        sample_trilinear_field(seed, seed.tildeGamma[c], x, y, z);
+                    G.Z[c].ptr()[id] = sample_trilinear_field(seed, seed.Z[c], x, y, z);
+                }
+
+                for (int s = 0; s < 6; ++s) {
+                    G.gamma_tilde[s].ptr()[id] =
+                        sample_trilinear_field(seed, seed.gamma_tilde[s], x, y, z);
+                    G.A_tilde[s].ptr()[id] = sample_trilinear_field(seed, seed.A_tilde[s], x, y, z);
+                }
+            }
+        }
+    }
+
+    bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
+    tensorium_RG::bssn::ProjectionConfig proj_cfg;
+    proj_cfg.padding = 0;
+    proj_cfg.renormalize_metric = true;
+    proj_cfg.project_A_tilde = true;
+    proj_cfg.recompute_inverse = true;
+    proj_cfg.resync_contracted_gamma = true;
+    tensorium_RG::bssn::project_bssn_state(G, proj_cfg);
+    bssn::apply_halos_grid<bssn::BoundaryRadiative>(G);
+    tensorium_RG::bssn::compute_tildeGamma_contracted(G);
+    tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
+    tensorium_RG::bssn::assert_invariants(G, "init.bowen_york_interpolated");
+#endif
 }
 
 template <typename T>

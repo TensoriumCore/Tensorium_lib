@@ -63,7 +63,7 @@ inline void for_each_interior_index(const BSSNGridSoA<T> &grid, size_t padding, 
 }
 
 struct KOState {
-    double scale = 0.0;
+    double scale = 1.0;
 };
 
 inline KOState &ko_state() {
@@ -71,42 +71,13 @@ inline KOState &ko_state() {
     return state;
 }
 
-template <typename T> inline double compute_cfl_scale(const BSSNGridSoA<T> &grid, T dt) {
-    const double dt_val = double(dt);
-    if (!(dt_val > 0.0))
-        return 0.0;
-    const double dx_min = std::min({double(grid.dx), double(grid.dy), double(grid.dz)});
-    if (!(dx_min > 0.0))
-        return 0.0;
-
-    const size_t total = grid.alpha.st.nx_tot * grid.alpha.st.ny_tot * grid.alpha.st.nz_tot;
-    const T     *p_alpha = grid.alpha.ptr();
-    const T     *p_bx = grid.beta[0].ptr();
-    const T     *p_by = grid.beta[1].ptr();
-    const T     *p_bz = grid.beta[2].ptr();
-
-    double max_speed = 0.0;
-#pragma omp parallel for reduction(max:max_speed)
-    for (ptrdiff_t idx = 0; idx < static_cast<ptrdiff_t>(total); ++idx) {
-        const double alpha = double(p_alpha[idx]);
-        const double bx = std::abs(double(p_bx[idx]));
-        const double by = std::abs(double(p_by[idx]));
-        const double bz = std::abs(double(p_bz[idx]));
-        const double local = std::max({bx, by, bz}) + alpha;
-        if (std::isfinite(local))
-            max_speed = std::max(max_speed, local);
-    }
-
-    const double cfl = max_speed * dt_val / dx_min;
-    constexpr double cfl_ref = 0.5;
-    if (!(cfl_ref > 0.0))
-        return 0.0;
-    const double ratio = cfl / cfl_ref;
-    return std::clamp(ratio, 0.0, 1.0);
+// Keep KO dissipation coefficient constant (reference-parity behavior).
+template <typename T> inline double compute_cfl_scale(const BSSNGridSoA<T> &, T) {
+    return 1.0;
 }
 
-template <typename T> inline void update_ko_scale(const BSSNGridSoA<T> &grid, T dt) {
-    ko_state().scale = compute_cfl_scale(grid, dt);
+template <typename T> inline void update_ko_scale(const BSSNGridSoA<T> &, T) {
+    ko_state().scale = 1.0;
 }
 
 inline double current_ko_scale() { return ko_state().scale; }
@@ -148,8 +119,13 @@ template <typename T> inline T Khat(T K, T Theta) {
     return K - T(2) * Theta;
 }
 
+template <typename T> inline T guard_chi_div(T chi, T chi_div_floor) {
+    return (chi > chi_div_floor) ? chi : chi_div_floor;
+}
+
 template <typename T>
-inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k, T Z4corr[6]) {
+inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k, T Z4corr[6],
+                            T chi_div_floor = T(-1000.0)) {
     using namespace tensorium_RG::fd;
 
     const double    inv_12dx = 1.0 / (60.0 * G.dx);
@@ -161,7 +137,8 @@ inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t 
     const size_t idx = G.alpha.idx(i, j, k);
 
     const T chi = G.chi.ptr()[idx];
-    const T inv_chi = T(1) / chi;
+    const T chi_guarded = guard_chi_div(chi, chi_div_floor);
+    const T inv_chi = T(1) / chi_guarded;
 
     T gamma_phys[3][3];
     T gamma_phys_inv[3][3];

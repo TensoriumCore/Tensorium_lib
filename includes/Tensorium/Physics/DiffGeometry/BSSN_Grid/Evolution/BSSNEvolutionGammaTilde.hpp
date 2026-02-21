@@ -3,8 +3,9 @@
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
-#include "Tensorium_Grid/Grid/GridLayout.hpp"
 #include "BSSNEvolutionCommon.hpp"
+#include "BSSNEvolutionGauge.hpp"
+#include "Tensorium_Grid/Grid/GridLayout.hpp"
 
 /**
  * @file BSSNEvolutionGammaTilde.hpp
@@ -33,8 +34,8 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 #endif
 
 template <typename T>
-inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
-                                    size_t padding = 4) {
+inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
+                                    const GaugeParameters<T> &params = {}) {
     BSSN_PROFILE_KERNEL(GammaTilde);
     using namespace tensorium_RG::fd;
     size_t I0, I1, J0, J1, K0, K1;
@@ -50,7 +51,7 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    const T         ko_sigma = scaled_ko_sigma(T(0.02));
+    const T         ko_sigma = scaled_ko_sigma(params.ko_sigma);
     const double    inv_12dx = 1.0 / (60.0 * G.dx);
     const double    inv_12dy = 1.0 / (60.0 * G.dy);
     const double    inv_12dz = 1.0 / (60.0 * G.dz);
@@ -119,12 +120,12 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
                 for (int s = 0; s < 6; ++s) {
                     const T *p_g = p_gam[s];
                     const T  adv = beta_vec[0] * Dx_upwind_ptr(p_g, sx, inv_2dx, beta_vec[0]) +
-                                   beta_vec[1] * Dy_upwind_ptr(p_g, sy, inv_2dy, beta_vec[1]) +
-                                   beta_vec[2] * Dz_upwind_ptr(p_g, inv_2dz, beta_vec[2]);
+                                  beta_vec[1] * Dy_upwind_ptr(p_g, sy, inv_2dy, beta_vec[1]) +
+                                  beta_vec[2] * Dz_upwind_ptr(p_g, inv_2dz, beta_vec[2]);
 
                     const T source = -T(2) * alpha * (*p_A[s]);
-                    const T diss = KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) +
-                                   KO6_axis_ptr(p_g, 1);
+                    const T diss =
+                        KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) + KO6_axis_ptr(p_g, 1);
                     const T diss_scaled = (ko_sigma / G.dx) * diss;
 
                     *p_rhs[s] = adv + lie_vals[s] + source + trace_vals[s] + diss_scaled;

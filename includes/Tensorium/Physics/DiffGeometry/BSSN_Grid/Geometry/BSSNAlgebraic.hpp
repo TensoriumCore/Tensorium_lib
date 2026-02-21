@@ -3,7 +3,6 @@
 #include "../Fields/BSSNGridSoA.hpp"
 #include "Tensorium_Grid/Grid/GridLayout.hpp"
 
-#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -116,25 +115,6 @@ template <typename T> inline void enforce_algebraic_constraints(BSSNGridSoA<T> &
         Azz_ptr[idx] = static_cast<T>(Azz);
     }
 
-    const T alpha_floor = T(1e-3);
-    const T chi_floor = T(1e-3);
-    const T beta_cap = T(0.8);
-    const T B_cap = T(0.2);
-    T      *alpha_ptr = grid.alpha.ptr();
-    T      *chi_ptr = grid.chi.ptr();
-    T      *beta_ptr[3] = {grid.beta[0].ptr(), grid.beta[1].ptr(), grid.beta[2].ptr()};
-    T      *B_ptr[3] = {grid.B[0].ptr(), grid.B[1].ptr(), grid.B[2].ptr()};
-#pragma omp parallel for
-    for (size_t idx = 0; idx < total; ++idx) {
-        if (alpha_ptr[idx] < alpha_floor)
-            alpha_ptr[idx] = alpha_floor;
-        if (chi_ptr[idx] < chi_floor)
-            chi_ptr[idx] = chi_floor;
-        for (int c = 0; c < 3; ++c) {
-            beta_ptr[c][idx] = std::clamp(beta_ptr[c][idx], -beta_cap, beta_cap);
-            B_ptr[c][idx] = std::clamp(B_ptr[c][idx], -B_cap, B_cap);
-        }
-    }
 }
 
 } // namespace tensorium_RG::bssn

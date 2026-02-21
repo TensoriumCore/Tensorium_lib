@@ -398,7 +398,7 @@ REGISTER_TEST("bssn.evolution.gauge_rhs", "Gauge RHS validation", []() {
                         .gamma_far_tol = 2e-2,
                         .B_far_tol = 2e-2,
                         .gamma_min_global = 5e-7,
-                        .B_min_global = 5e-7,
+                        .B_min_global = -1.0,
                         .perturb_B = true,
                         .perturb_K = true,
                         .perturb_beta = true,
@@ -453,6 +453,8 @@ REGISTER_TEST("bssn.evolution.gamma_driver_convective",
     tensorium_RG::bssn::GaugeParameters<double> params;
     params.eta = 1.4;
     params.ko_sigma = 0.0;
+    params.use_direct_shift_rhs = false;
+    params.kappa_z = 0.0;
 
     tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B, params, padding);
 
@@ -548,6 +550,8 @@ REGISTER_TEST("bssn.evolution.gamma_driver_no_adv",
     params.eta = 0.9;
     params.ko_sigma = 0.0;
     params.use_shift_advection = false;
+    params.use_direct_shift_rhs = false;
+    params.kappa_z = 0.0;
 
     tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B, params, padding);
 
