@@ -105,6 +105,5 @@ If your goal is NR runs, keep `BUILD_PLUGINS=OFF`.
 
 - Doxygen config: `Doxyfile`
 - Generated docs: `docs/html/index.html`
-- BSSN_Grid technical overview:
-  `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md`
-
+- BSSN_Grid technical guide:
+  [includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md](includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md)
