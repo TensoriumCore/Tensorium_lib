@@ -1,105 +1,471 @@
-# BSSN Grid Subsystem
+# BSSN_Grid Technical Guide
 
-## 1. Overview
-`BSSN_Grid` implements a CCZ4/Z4c-enhanced BSSN scheme.  The conformally rescaled Einstein variables are supplemented with the CCZ4 scalar \(\Theta\) and vector \(Z_i\) so that constraint violations propagate and damp.  The module provides:
-- Structure-of-arrays storage plus halo-aware indexing (`BSSNGridSoA.hpp`).
-- RHS kernels for every geometric, constraint, and gauge variable using sixth-order finite differences and shared KO6 dissipation.
-- Ricci builders that inject the \(\Delta R^{\mathrm{Z4}}_{ij}\) correction before sourcing \(\tilde{A}_{ij}\), \(K\), and \(\Theta\).
-- Projection/monitoring utilities that enforce \(\det\tilde{\gamma}=1\), \(\mathrm{Tr}\tilde{A}=0\), and emit Hamiltonian/momentum/Gamma norms as well as \(||\Theta||_2|| and \(||Z||_2||.
-Only vacuum sources are currently supported, but the RHS stubs highlight where matter terms would be added.
+This document is the implementation-level reference for the `BSSN_Grid` subsystem in Tensorium.
+It describes the mathematical formulation, the discretization and time integration strategy,
+the boundary/halo logic, the initialization pipelines, and the diagnostics used in production runs.
 
-## 2. State Variables
-For every grid point the module stores:
-- **Lapse \(\alpha\)** — controls the slicing of spacetime.
-- **Shift \(\beta^i\)** — advects the spatial coordinates.
-- **Gamma-driver auxiliary \(B^i\)** — first-order variable that damps the shift.
-- **Conformal factor \(\chi\)** — equal to \(e^{-4\phi}\), used to rescale the physical metric.
-- **Conformal metric \(\tilde{\gamma}_{ij}\)** and its inverse \(\tilde{\gamma}^{ij}\)** — unit-determinant rescaling of the spatial metric.
-- **Trace-free conformal extrinsic curvature \(\tilde{A}_{ij}\)**.
-- **Mean curvature \(K\)** — trace of the physical extrinsic curvature (RHSs mostly use \(\hat{K}=K-2\Theta\)).
-- **Conformal connection functions \(\tilde{\Gamma}^i\)** — contracted Christoffel symbols.
-- **Constraint fields** — \(\Theta\) and \(Z_i\) from CCZ4/Z4c.
-Each field is stored in a `Field3D` with identical strides (`BSSNGridSoA.hpp`).
+The intent is to keep the theory and the code paths aligned. Every section points to concrete
+headers so you can verify behavior directly.
 
-## 3. Evolution Equations
-The implemented right-hand sides (padding-aware, allocation-free) correspond to the standard BSSN vacuum system:
-- **Conformal factor**
-  ```math
-  \partial_t \chi = \beta^k \partial_k \chi + \frac{2}{3} \chi \left( \alpha K - \partial_k \beta^k \right).
-  ```
-- **Conformal metric**
-  ```math
-  \partial_t \tilde{\gamma}_{ij} = \beta^k \partial_k \tilde{\gamma}_{ij} + \tilde{\gamma}_{ik} \partial_j \beta^k + \tilde{\gamma}_{jk} \partial_i \beta^k - \frac{2}{3} \tilde{\gamma}_{ij} \partial_k \beta^k - 2 \alpha \tilde{A}_{ij}.
-  ```
-- **Trace-free extrinsic curvature**
-  ```math
-  \partial_t \tilde{A}_{ij} = \beta^k \partial_k \tilde{A}_{ij} + \tilde{A}_{ik} \partial_j \beta^k + \tilde{A}_{jk} \partial_i \beta^k - \frac{2}{3} \tilde{A}_{ij} \partial_k \beta^k - \left(D_i D_j \alpha\right)^{TF} + \alpha \left(R_{ij}^{TF} - 8\pi S_{ij}^{TF}\right),
-  ```
-  with \(R_{ij}\) built from the conformal metric, \(D_i\) the covariant derivative compatible with the physical metric, and the trace-free projector enforced explicitly; matter terms are zero in the current vacuum implementation.
-- **Mean curvature** (implemented with \(K\) storage and \(\hat{K}\) sources)
-  ```math
-  \partial_t K = \beta^k \partial_k K - \gamma^{ij} D_i D_j \alpha + \alpha \left( \tilde{A}_{ij} \tilde{A}^{ij} + \frac{1}{3} \hat{K}^2 \right) + \alpha \kappa_1 (1-\kappa_2) \Theta.
-  ```
-- **CCZ4 scalar**
-  ```math
-  \partial_t \Theta = \beta^k \partial_k \Theta + \frac{\alpha}{2}\left(R + 2 D_k Z^k - \tilde{A}_{ij}\tilde{A}^{ij} + \frac{2}{3} K^2\right) - \alpha \kappa_1 (2 + \kappa_2) \Theta.
-  ```
-- **CCZ4 vector**
-  ```math
-  \partial_t Z_i = \beta^k \partial_k Z_i + \alpha \left(D_j \tilde{A}^j_{\ i} + 6 \tilde{A}_{ij} \partial^j \phi - \frac{2}{3} D_i K\right) - \alpha \kappa_z Z_i.
-  ```
-- **Conformal connection functions**
-  ```math
-  \begin{aligned}
-  \partial_t \tilde{\Gamma}^i &= \beta^k \partial_k \tilde{\Gamma}^i - \tilde{\Gamma}^k \partial_k \beta^i + \frac{2}{3} \tilde{\Gamma}^i \partial_k \beta^k \\
-  &\quad + \tilde{\gamma}^{jk} \partial_j \partial_k \beta^i + \frac{1}{3} \tilde{\gamma}^{ij} \partial_j \partial_k \beta^k - 2 \tilde{A}^{ij} \partial_j \alpha \\
-  &\quad + 2 \alpha \left( \tilde{\Gamma}^i_{\ jk} \tilde{A}^{jk} - \frac{2}{3} \tilde{\gamma}^{ij} \partial_j K \right).
-  \end{aligned}
-  ```
-- **Gauge system**
-  - 1+log slicing:
-    ```math
-    \partial_t \alpha = \beta^k \partial_k \alpha - 2 \alpha K.
-    ```
-  - Gamma-driver shift and auxiliary:
-    ```math
-    \partial_t \beta^i = \beta^k \partial_k \beta^i + \frac{3}{4} B^i,
-    \qquad
-    \partial_t B^i = \beta^k \partial_k B^i + \partial_t \tilde{\Gamma}^i - \eta B^i.
-    ```
-  The code evaluates \(\partial_t \tilde{\Gamma}^i\) first and feeds it directly into the driver RHS.
+## 1. Scope and Design Goals
+
+`BSSN_Grid` is a structured-grid, finite-difference numerical relativity module for vacuum
+Einstein evolution in a BSSN/Z4c-style formulation.
+
+What it currently targets:
+
+- 3D Cartesian grids with ghost zones.
+- High-order finite differences (order 6 default, order 4 optional).
+- Moving-puncture style gauge evolution.
+- Constraint-aware evolution with Z4 variables (`Theta`, `Z^i`).
+- CPU execution with OpenMP parallel loops.
+
+What it does not yet provide as a full integrated runtime:
+
+- End-to-end AMR integration in this module.
+- End-to-end MPI-distributed BSSN runtime in this module.
+- Matter source terms in the evolution equations (vacuum-only RHS at present).
+
+Core paths:
+
+- State and storage: `Fields/BSSNGridSoA.hpp`
+- Derivatives: `Derivatives/BSSNGridDerivatives.hpp`
+- Evolution kernels: `Evolution/BSSNEvolution*.hpp`
+- Geometry/projection: `Geometry/*.hpp`
+- Constraints/monitoring: `Constraints/*.hpp`
+- Time integrator: `TimeIntegration/BSSNRK4.hpp`
+- Initialization: `InitialData/BSSNInitialData.hpp`
+
+## 2. State Vector and Conventions
+
+### 2.1 Evolved variables
+
+At each cell, the evolved variables are:
+
+- Scalars:
+  - `alpha` (lapse)
+  - `chi` (conformal factor, with `gamma_ij = chi^{-1} * gamma_tilde_ij`)
+  - `K` (trace of extrinsic curvature)
+  - `Theta` (Z4 scalar constraint variable)
+- Vectors:
+  - `beta^i` (shift)
+  - `B^i` (Gamma-driver auxiliary)
+  - `tildeGamma^i` (contracted conformal connection)
+  - `Z^i` (Z4 vector, contravariant)
+- Symmetric tensors in packed 6-component form:
+  - `gamma_tilde_ij`
+  - `gamma_tilde^ij`
+  - `A_tilde_ij`
+
+### 2.2 Packed symmetric index convention
+
+The 6 packed components follow:
+
+- `0 -> XX`
+- `1 -> XY`
+- `2 -> XZ`
+- `3 -> YY`
+- `4 -> YZ`
+- `5 -> ZZ`
+
+### 2.3 Geometry relations
+
+The implementation consistently uses:
+
+- `gamma_ij = chi^{-1} * gamma_tilde_ij`
+- `gamma^ij = chi * gamma_tilde^ij`
+- `Khat = K - 2*Theta` in parts of the RHS assembly
+
+Helper routines:
+
+- `Khat(...)`: `Evolution/BSSNEvolutionCommon.hpp`
+- `guard_chi_div(...)`: `Evolution/BSSNEvolutionCommon.hpp`
+
+## 3. Mathematical Formulation in Code
+
+The subsystem is BSSN with Z4c-driven terms added in the evolved connection and constraints.
+The exact algebra follows the kernel implementations; this section summarizes the principal form.
+
+### 3.1 Conformal factor
+
+Implemented in `Evolution/BSSNEvolutionChi.hpp`:
+
+- `d_t chi = beta^k d_k chi + (2/3) chi (alpha K - d_k beta^k) + KO(chi)`
+
+### 3.2 Conformal metric
+
+Implemented in `Evolution/BSSNEvolutionGammaTilde.hpp`:
+
+- `d_t gamma_tilde_ij = adv + Lie_beta(gamma_tilde)_ij - (2/3) gamma_tilde_ij d_k beta^k`
+- source part includes `-2 alpha A_tilde_ij`
+- KO dissipation is added component-wise
+
+### 3.3 Trace-free extrinsic curvature
+
+Implemented in `Evolution/BSSNEvolutionATilde.hpp`:
+
+- Uses the trace-free combination of `chi[-D_i D_j alpha + alpha R_ij]`
+- Adds quadratic term `alpha (K A_tilde_ij - 2 A_tilde_{ik} A_tilde^k_j)`
+- Includes Lie/advection transport and KO dissipation
+- Adds Z4 Ricci correction via `compute_RicciZ4(...)`
+
+### 3.4 Mean curvature / Khat handling
+
+Implemented in `Evolution/BSSNEvolutionK.hpp` and recomposed in `TimeIntegration/BSSNRK4.hpp`:
+
+- The kernel computes RHS for `Khat = K - 2 Theta`.
+- The stepper later reconstructs `RHS(K) = RHS(Khat) + 2*RHS(Theta)`.
+
+This split is deliberate and keeps the Z4-coupled source terms consistent.
+
+### 3.5 Contracted connection evolution
+
+Implemented in `Evolution/BSSNEvolutionGamma.hpp`:
+
+- Includes advection, stretching, shift-Laplacian pieces, lapse-gradient coupling, and geometric source terms.
+- Includes Z4-driven couplings (`Theta`, `Z^i`, `kappa*` parameters).
+- Uses `gamma_driver = gamma_metric + 2*kappa3*(Z/chi)` when `evolve_Z=true`.
+- If `evolve_Z=false`, `Z/chi` is reconstructed from `tildeGamma - gamma_metric`.
+
+### 3.6 Z4 scalar and vector
+
+Implemented in `Evolution/BSSNEvolutionZ4C.hpp`:
+
+- `compute_rhs_Theta(...)` builds a geometric source from Ricci scalar, `A_tilde` contraction, `K`, and Z4 couplings, then adds damping/advection/KO.
+- `compute_rhs_Z(...)` evolves contravariant `Z^i` with momentum-like source terms, Lie/advection terms, damping, and KO.
+- If `evolve_Z=false`, `rhs_Z` is forced to zero.
 
 ## 4. Gauge System
-- \(B^i\) converts the second-order Gamma-driver into two first-order equations, providing control over the damping of coordinate drifts.
-- Damping parameters \(\eta\), \(\kappa_1\), \(\kappa_2\), and \(\kappa_z\) plus the shared KO6 strength are configurable through `GaugeParameters` so individual runs can tune both shift/lapse and Z4 damping.
-- Advection by the shift (\(\beta^k \partial_k \beta^i\) and \(\beta^k \partial_k B^i\)) is included to preserve hyperbolicity and to keep the gauge locally transported with the physical flow.
 
-## 5. Geometric Quantities
-- \(\tilde{\gamma}^{ij}\) is obtained by explicitly inverting \(\tilde{\gamma}_{ij}\) per grid point; both tensors are stored simultaneously (`BSSNGridSoA`).
-- \(\tilde{\Gamma}^i_{\ jk}\) is computed from spatial derivatives of the conformal metric using `BSSNCHristoffelTilde.hpp`, and \(\tilde{\Gamma}^i\) is the negative divergence of \(\tilde{\gamma}^{ij}\).
-- The Ricci tensor is assembled in `BSSNRicci.hpp` by combining conformal metric derivatives, the conformal factor gradient, and the stored Christoffels; `compute_RicciZ4` adds \(\Delta R^{\mathrm{Z4}}_{ij} = D_i Z_j + D_j Z_i - \tfrac{2}{3}\gamma_{ij} D_k Z^k\) before sourcing \(\tilde{A}_{ij}\), \(K\), and \(\Theta\).
+Gauge controls live in `Evolution/BSSNEvolutionGauge.hpp` through `GaugeParameters<T>`.
 
-## 6. Projection Conditions
-The conformal metric must maintain unit determinant and \(\tilde{A}_{ij}\) must remain trace-free.  `project_bssn_after_update` enforces:
-- \(\det(\tilde{\gamma}_{ij}) = 1\) via rescaling.
-- \(\mathrm{Tr}\,\tilde{A} = \tilde{\gamma}^{ij} \tilde{A}_{ij} = 0\) via explicit subtraction of the trace.
-- Recompute \(\tilde{\gamma}^{ij}\) from the renormalized metric and resync \(\tilde{\Gamma}^i\) using the metric divergence.
-This helper runs after every RK stage so CCZ4 variables remain consistent with the conformal constraints.
+### 4.1 Lapse
 
-## 7. Constraints
-- **Hamiltonian** \(H = R + K^2 - K_{ij} K^{ij}\).
-- **Momentum** \(M_i = D_j K^j_{\ i} - D_i K\).
-- **Gamma** \(C_i = \tilde{\Gamma}^i + \partial_j \tilde{\gamma}^{ij} + 2 Z^i\).
-`BSSNConstraintsGrid.hpp` evaluates \(H\), \(M_i\), and \(C_i\) on the interior region.  `BSSNConstraintMonitoring.hpp` condenses them into L∞/L² norms, tracks \(|\det \tilde{\gamma} - 1|\) and \(|\mathrm{Tr}\,\tilde{A}|\), and (optionally) reports \(||\Theta||_2|| and \(||Z||_2|| to verify that CCZ4 damping remains effective.
+`compute_rhs_alpha(...)` supports a generalized source of the form:
 
-## 8. Ghost Zones and Padding
-Fourth-order finite differences require two guard cells.  `clamped_lower` and `clamped_upper` limit interior loops so that \(i \in [\mathrm{ng}+2, \mathrm{ng}+n-2]\).  Before each RHS evaluation, callers must refresh halo values (periodic, clamp, or problem-specific) using `apply_halos_grid`.  This separation lets the RK driver decide when halo exchanges occur.
+- advection term
+- multiplicative factor `f = lapse_oplog*lapse_harmonicf + lapse_harmonic*alpha`
+- source `- f * alpha * lapse_K` where `lapse_K` can use `Khat` if `use_theta_in_lapse=true`
 
-## 9. Code Structure
-- `Fields/` — `BSSNGridSoA.hpp` defines the structure-of-arrays storage and utility routines.
-- `Evolution/` — `BSSNEvolution*.hpp` contain the RHS kernels for \(\chi, \tilde{\gamma}_{ij}, \tilde{A}_{ij}, K, \tilde{\Gamma}^i\) and the gauge.
-- `Geometry/` — Christoffel builders, Ricci calculators, projections, and monitoring helpers.
-- `Constraints/` — Hamiltonian, momentum, and Gamma constraint evaluation plus statistics.
-- `InitialData/` — Minkowski, isotropic Schwarzschild, and Bowen–York puncture datasets initialize all state fields and precompute geometric quantities.
+Optional slow-start damping is available through:
 
-For additional usage context, see the tests and demos in `Tests/bssn/`.
+- `slow_start_lapse`
+- `ssl_damping_amp`
+- `ssl_damping_time`
+- `ssl_damping_index`
+
+### 4.2 Shift and B-driver
+
+Two modes are implemented:
+
+- Direct-shift mode (`use_direct_shift_rhs=true`):
+  - `beta^i` evolved directly from `Gamma`/advection/damping/harmonic couplings.
+  - `B^i` RHS is set to zero.
+- Legacy B-driver mode (`use_direct_shift_rhs=false`):
+  - `beta^i` includes `beta_B_coeff * B^i` plus advection.
+  - `B^i` evolves from `rhs_Gamma`, advection, damping, and optional `Z` feedback.
+
+Important practical point:
+
+- `use_direct_shift_rhs` defaults to `true` in `GaugeParameters`.
+
+## 5. Geometry and Algebraic Constraints
+
+### 5.1 Contracted Gamma and Christoffels
+
+- `Geometry/BSSNCHristoffelTilde.hpp`:
+  - `compute_tildeGamma_symbols(...)` builds local `tildeGamma^i_{jk}`.
+  - `compute_tildeGamma_contracted(...)` recomputes `tildeGamma^i = -d_j gamma_tilde^{ij}`.
+
+### 5.2 Ricci decomposition
+
+`Geometry/BSSNRicci.hpp` computes:
+
+- `R_ij = R_tilde_ij + R_chi_ij`
+
+with high-order derivatives and explicit conformal contributions.
+
+### 5.3 Projection and invariant enforcement
+
+`Geometry/BSSNProjection.hpp` provides:
+
+- determinant renormalization (`det(gamma_tilde)=1`)
+- trace projection (`tr(A_tilde)=0`)
+- inverse recomputation
+- optional re-sync of contracted Gamma
+
+Key entry points:
+
+- `project_bssn_state(...)`
+- `project_bssn_after_update(...)`
+
+Invariants are checked via `Geometry/BSSNInvariants.hpp` helpers used across init, Ricci, and constraints.
+
+## 6. Spatial Discretization
+
+All derivative operators are centralized in `Derivatives/BSSNGridDerivatives.hpp`.
+
+### 6.1 Orders
+
+Runtime-selectable maximum order:
+
+- Order 6 (default)
+- Order 4 (optional)
+
+API:
+
+- `set_max_spatial_derivative_order(int)`
+- `max_spatial_derivative_order()`
+
+### 6.2 First and second derivatives
+
+- Centered high-order stencils for `Dx,Dy,Dz` and `Dxx,Dyy,Dzz`.
+- Mixed derivatives:
+  - compact order-2 (`Dxy`, `Dxz`, `Dyz`)
+  - order-4 tensor-product (`Dxy4`, `Dxz4`, `Dyz4`), used in high-sensitivity geometry pieces.
+
+### 6.3 Upwind advection
+
+Advection uses sign-dependent biased stencils:
+
+- `Dx_upwind_ptr`, `Dy_upwind_ptr`, `Dz_upwind_ptr`
+
+These are used in transport terms of gauge and geometry variables.
+
+### 6.4 KO dissipation
+
+KO operator:
+
+- `KO6_axis_ptr(...)`
+
+Applied in most RHS kernels as:
+
+- `(ko_sigma / dx) * (KO_x + KO_y + KO_z)`
+
+The module currently keeps KO scaling constant (`update_ko_scale` sets scale to `1.0`).
+
+## 7. Time Integration (Low-Storage 4-Stage RK)
+
+Implemented in `TimeIntegration/BSSNRK4.hpp`.
+
+### 7.1 CFL estimate
+
+`compute_dt_cfl(...)` uses:
+
+- `min(dx,dy,dz)`
+- `max |beta|` on interior
+- gauge speed factor
+
+`dt = cfl * min_dx / (max_beta + gauge_speed)`
+
+### 7.2 Stage coefficients
+
+The stepper uses the fixed 4-stage coefficient arrays:
+
+- `gam0_ref`
+- `gam1_ref`
+- `beta_ref`
+- `delta_ref`
+
+These are embedded in `BSSNRK4.hpp` and define the low-storage update.
+
+### 7.3 Stage pipeline
+
+Per stage, the sequence is:
+
+1. Build/update stage reference state.
+2. Apply halos and rebuild geometry (`prepare_state_for_rhs`).
+3. Evaluate all RHS kernels.
+4. Optional RHS Sommerfeld correction on boundary surfaces.
+5. Recompose `rhs(K)` from `rhs(Khat)`.
+6. Apply explicit low-storage update.
+7. Enforce algebraic constraints.
+8. Optional smooth floors on `alpha` and `chi`.
+
+Post-step, diagnostics and constraint monitors are evaluated.
+
+## 8. Halos and Boundary Conditions
+
+Implemented in `Grid/BSSNGridOperations.hpp`.
+
+### 8.1 Boundary functors
+
+Available boundary functors include:
+
+- `BoundaryClamp`
+- `BoundarySponge`
+- `BoundaryRadiative`
+
+`apply_halos_grid<Boundary>(...)` applies all physical/halo passes for every field in `BSSNGridSoA`.
+
+### 8.2 Radiative boundary behavior
+
+`BoundaryRadiative` supports:
+
+- per-face RHS Sommerfeld masks (`rhs_sommerfeld_face[axis][side]`)
+- per-face reflective parity masks (`reflective_face[axis][side]`)
+- characteristic speed/time updates from the stepper
+
+Vector and tensor parity on reflective faces is component-aware.
+
+### 8.3 RHS-level Sommerfeld correction
+
+In addition to halo filling, the RK stepper can apply a direct RHS Sommerfeld operator near boundary surfaces:
+
+- enabled by `GaugeParameters::apply_rhs_sommerfeld`
+- implemented in `BSSNRK4::apply_rhs_sommerfeld(...)`
+
+## 9. Initial Data Pipelines
+
+Implemented in `InitialData/BSSNInitialData.hpp` and `Solvers/BSSNConstrainSolver.hpp`.
+
+### 9.1 Analytic initializers
+
+Provided initializers include:
+
+- `minkowski(...)`
+- `isotropic schwarzschild` (single/binary puncture style)
+- `kerr_schild_single(...)`
+
+### 9.2 Bowen-York binary puncture
+
+`binary_bowen_york_puncture_init(...)` uses:
+
+- Bowen-York `A_tilde` assembly (`fill_Atilde_bowen_york_binary`)
+- optional Lichnerowicz solve (`solve_lichnerowicz_u_SOR`)
+
+The Lichnerowicz solver is red-black SOR on a 2nd-order Laplacian discretization.
+
+### 9.3 Interpolated puncture initialization
+
+`binary_bowen_york_puncture_interpolated_init(...)` has two runtime branches:
+
+- If `TENSORIUM_HAS_TWOPUNCTURES_C` is enabled:
+  - solve external spectral puncture backend
+  - required upstream Two-Punctures code: `https://github.com/GRTLCollaboration/TwoPunctures.git`
+  - interpolate to Cartesian grid
+  - map into BSSN state and reproject
+- Otherwise:
+  - generate a seed Bowen-York grid
+  - trilinear interpolation onto target grid
+
+Both paths finish with projection/invariant checks and geometry rebuild.
+
+## 10. Constraint Evaluation and Monitoring
+
+### 10.1 Constraint fields
+
+`Constraints/BSSNConstraintsGrid.hpp` computes:
+
+- Hamiltonian constraint `H`
+- Momentum constraint `M_i`
+- Gamma constraint surrogate from `tildeGamma + div(gamma_tilde_inv)`
+
+### 10.2 Reduced monitoring stats
+
+`Constraints/BSSNConstraintMonitoring.hpp` computes:
+
+- `max_H`, `l2_H`
+- `l2_theta`, `l2_Z`, `l2_M`
+- `max_trace_A`, `max_det_drift`
+- `samples`
+
+The RK stepper calls these diagnostics and can forward them via callback hooks.
+
+## 11. Runtime Controls and Stability Knobs
+
+Most evolution controls are in `GaugeParameters<T>`.
+
+Frequently tuned knobs:
+
+- Gauge:
+  - `use_direct_shift_rhs`
+  - `shift_eta`, `shift_Gamma`, `shift_advect`
+  - `lapse_oplog`, `lapse_harmonic*`, `slow_start_lapse*`
+- Z4/constraint damping:
+  - `kappa1`, `kappa2`, `kappa3`, `kappa_z`
+  - `evolve_Z`
+- Numerical stabilization:
+  - `ko_sigma`
+  - `chi_div_floor`
+  - `alpha_floor`, `chi_floor`
+- Boundary coupling:
+  - `apply_rhs_sommerfeld`
+  - per-face masks in `BoundaryRadiative`
+
+## 12. Performance Model
+
+### 12.1 Memory layout
+
+`BSSNGridSoA` is structure-of-arrays with aligned allocations and shared strides.
+This favors contiguous component loops and predictable streaming behavior.
+
+### 12.2 Parallelism
+
+Most hot loops use:
+
+- `#pragma omp parallel for collapse(...)`
+
+Thread-level parallelism is CPU/OpenMP-centric.
+
+### 12.3 Kernel timing
+
+`TimeIntegration/BSSNPerfTimers.hpp` instruments kernels (`Gamma`, `A_tilde`, `Theta`, etc.).
+`BSSNRK4` prints timers per step when enabled.
+
+## 13. Practical Workflow
+
+A typical evolution loop using this subsystem is:
+
+1. Allocate `BSSNGridSoA` with chosen `nx,ny,nz,ng,dx,dy,dz`.
+2. Fill initial data (`binary_bowen_york...` or another initializer).
+3. Configure `GaugeParameters` and boundary face masks.
+4. Build `BSSNRKStepper<T, BoundaryRadiative>`.
+5. Compute `dt` from `compute_dt_cfl(...)`.
+6. Repeatedly call `step(grid, dt, step_index)`.
+7. Export slices/constraints/trackers via callbacks and test harness utilities.
+
+## 14. Current Limitations and Extension Targets
+
+Current limitations:
+
+- Single-grid architecture in this module (no integrated AMR hierarchy update).
+- No integrated multi-rank BSSN runtime path yet.
+- Vacuum-only RHS terms (no matter coupling path wired through kernels).
+
+Natural extension targets:
+
+- Matter source integration in RHS.
+- AMR prolongation/restriction for BSSN fields.
+- Fully integrated MPI halo exchange for distributed runs.
+- Higher-level problem setup API (config-driven run construction).
+
+## 15. Source Map (Quick Navigation)
+
+- `Fields/BSSNGridSoA.hpp`
+- `Derivatives/BSSNGridDerivatives.hpp`
+- `Evolution/BSSNEvolutionChi.hpp`
+- `Evolution/BSSNEvolutionGammaTilde.hpp`
+- `Evolution/BSSNEvolutionATilde.hpp`
+- `Evolution/BSSNEvolutionK.hpp`
+- `Evolution/BSSNEvolutionGamma.hpp`
+- `Evolution/BSSNEvolutionZ4C.hpp`
+- `Evolution/BSSNEvolutionGauge.hpp`
+- `Geometry/BSSNRicci.hpp`
+- `Geometry/BSSNProjection.hpp`
+- `Constraints/BSSNConstraintsGrid.hpp`
+- `Constraints/BSSNConstraintMonitoring.hpp`
+- `InitialData/BSSNInitialData.hpp`
+- `Solvers/BSSNConstrainSolver.hpp`
+- `TimeIntegration/BSSNRK4.hpp`
+
+## 16. Notes on Code-Theory Consistency
+
+This guide intentionally tracks the implementation rather than presenting an idealized textbook system.
+When behavior appears different from a canonical equation set, trust the kernel source first:
+
+- evolution details: `Evolution/*.hpp`
+- projection and invariants: `Geometry/BSSNProjection.hpp`, `Geometry/BSSNInvariants.hpp`
+- step orchestration: `TimeIntegration/BSSNRK4.hpp`
+
+That is the authoritative behavior for current Tensorium runs.

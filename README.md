@@ -87,7 +87,9 @@ ctest --test-dir build -R bssn
 
 - The active physics path is `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid`.
 - The moving puncture visualization/stability driver is in `Tests/bssn/bowen_york_boost_stability.cpp`.
-- Interpolated TwoPunctures init is optional and enabled only if `../TwoPuncturesC` + GSL are found at build time.
+- Interpolated Two-Punctures initialization requires the external TwoPunctures codebase from:
+  `https://github.com/GRTLCollaboration/TwoPunctures.git`
+- In this repository, that external solver is expected through the local `../TwoPuncturesC` integration (with GSL) at build time.
 
 ## LLVM/MLIR plugins
 
@@ -105,6 +107,5 @@ If your goal is NR runs, keep `BUILD_PLUGINS=OFF`.
 
 - Doxygen config: `Doxyfile`
 - Generated docs: `docs/html/index.html`
-- BSSN_Grid technical overview:
-  `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md`
-
+- BSSN_Grid technical guide:
+  [includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md](includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md)
