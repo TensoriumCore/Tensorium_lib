@@ -342,6 +342,7 @@ The Lichnerowicz solver is red-black SOR on a 2nd-order Laplacian discretization
 
 - If `TENSORIUM_HAS_TWOPUNCTURES_C` is enabled:
   - solve external spectral puncture backend
+  - required upstream Two-Punctures code: `https://github.com/GRTLCollaboration/TwoPunctures.git`
   - interpolate to Cartesian grid
   - map into BSSN state and reproject
 - Otherwise:
