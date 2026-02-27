@@ -124,15 +124,13 @@ template <typename T> inline T guard_chi_div(T chi, T chi_div_floor) {
 }
 
 template <typename T>
-inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k, T Z4corr[6],
-                            T chi_div_floor = T(-1000.0)) {
+inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
+                                 T Z4corr[6], T chi_div_floor, const double inv_12dx,
+                                 const double inv_12dy, const double inv_12dz,
+                                 const ptrdiff_t sx, const ptrdiff_t sy) {
     using namespace tensorium_RG::fd;
-
-    const double    inv_12dx = 1.0 / (60.0 * G.dx);
-    const double    inv_12dy = 1.0 / (60.0 * G.dy);
-    const double    inv_12dz = 1.0 / (60.0 * G.dz);
-    const ptrdiff_t sx = G.alpha.st.sx;
-    const ptrdiff_t sy = G.alpha.st.sy;
+    constexpr int row_of_sym[6] = {0, 0, 0, 1, 1, 2};
+    constexpr int col_of_sym[6] = {0, 1, 2, 1, 2, 2};
 
     const size_t idx = G.alpha.idx(i, j, k);
 
@@ -151,9 +149,8 @@ inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t 
     }
 
     for (int s = 0; s < 6; ++s) {
-        int row = 0;
-        int col = 0;
-        sym_index_to_pair(s, row, col);
+        const int row = row_of_sym[s];
+        const int col = col_of_sym[s];
         const T gt = *p_gamma[s];
         const T gt_inv = *p_gamma_inv[s];
         const T g_phys = gt * inv_chi;
@@ -170,9 +167,8 @@ inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t 
 
     T d_g_phys[3][3][3];
     for (int s = 0; s < 6; ++s) {
-        int row = 0;
-        int col = 0;
-        sym_index_to_pair(s, row, col);
+        const int row = row_of_sym[s];
+        const int col = col_of_sym[s];
         const T *p_g = p_gamma[s];
         const T  d_gt_x = Dx_ptr(p_g, sx, inv_12dx);
         const T  d_gt_y = Dy_ptr(p_g, sy, inv_12dy);
@@ -253,6 +249,17 @@ inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t 
             const T   val = sym - two_thirds * gamma_phys[a][b] * divZ;
             Z4corr[s] = val;
         }
+}
+
+template <typename T>
+inline void compute_RicciZ4(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k, T Z4corr[6],
+                            T chi_div_floor = T(-1000.0)) {
+    const double    inv_12dx = 1.0 / (60.0 * G.dx);
+    const double    inv_12dy = 1.0 / (60.0 * G.dy);
+    const double    inv_12dz = 1.0 / (60.0 * G.dz);
+    const ptrdiff_t sx = G.alpha.st.sx;
+    const ptrdiff_t sy = G.alpha.st.sy;
+    compute_RicciZ4_core(G, i, j, k, Z4corr, chi_div_floor, inv_12dx, inv_12dy, inv_12dz, sx, sy);
 }
 
 } // namespace tensorium_RG::bssn

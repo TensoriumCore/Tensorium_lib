@@ -1,0 +1,34 @@
+constraints] norms_stride=5 slice_export=1 slice_stride=5
+[Gauge 00]
+        alpha_min= 4.891e-02    chi_min= 2.377e-03      Theta_min=-1.510e-03    Theta_max= 2.577e-04
+        beta_max= 1.182e-05     B_max= 3.937e-03        Gamma_max= 3.854e-03
+        det_err= 6.661e-16      trA= 1.260e-17
+[BSSN 0000]
+        alpha_min= 4.891e-02    chi_min= 2.377e-03      Theta_min=-1.510e-03    Theta_max= 2.577e-04
+        beta_max= 1.182e-05     B_max= 3.937e-03        Gamma_max= 3.854e-03
+        det_err= 6.661e-16      trA= 1.260e-17  K_max= 3.239e-03        A_max= 8.090e-02
+        Ricci_cmax= 1.134e+03   R3_max= 3.258e+03       samples=4232664
+>> Exporting slice 0...
+[BSSN timers] step=0
+        Gamma        15633.301 ms
+        B            2740.495 ms
+        Beta         3111.334 ms
+        Alpha        1014.325 ms
+        Chi           799.391 ms
+        GammaTilde   6142.093 ms
+        A_tilde      17790.331 ms
+        K            3641.552 ms
+        Theta        7342.589 ms
+        Z            2914.101 ms
+[diag] step=0 ||Theta||2=1.79634e-06 ||Z||2=5.92219e-07 ||H||2=0.00777708 ||M||2=0.000105337 det_drift=6.66134e-16 trA=1.25971e-17 caps(theta=0.08,constraint=0.6)
+dt = 8.0357e-03  step=0/4000  t=0.0080
+[Gauge 01]
+        alpha_min= 4.898e-02    chi_min= 2.370e-03      Theta_min=-3.031e-03    Theta_max= 5.092e-04
+        beta_max= 4.761e-05     B_max= 7.951e-03        Gamma_max= 7.807e-03
+        det_err= 6.661e-16      trA= 1.037e-17
+[BSSN 0001]
+        alpha_min= 4.898e-02    chi_min= 2.370e-03      Theta_min=-3.031e-03    Theta_max= 5.092e-04
+        beta_max= 4.761e-05     B_max= 7.951e-03        Gamma_max= 7.807e-03
+        det_err= 6.661e-16      trA= 1.037e-17  K_max= 6.498e-03        A_max= 8.234e-02
+        Ricci_cmax= 1.148e+03   R3_max= 3.300e+03       samples=4232664
+[BSSN timers] step=1

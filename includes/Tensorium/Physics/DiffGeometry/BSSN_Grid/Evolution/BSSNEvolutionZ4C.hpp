@@ -31,7 +31,8 @@ constexpr int sym_col_index[6] = {0, 1, 2, 1, 2, 2};
  */
 template <typename T>
 inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
-                              const GaugeParameters<T> &params = {}, size_t padding = 4) {
+                              const GaugeParameters<T> &params = {}, size_t padding = 4,
+                              const Field3D<T> *z4_conformal_trace_cache = nullptr) {
     BSSN_PROFILE_KERNEL(Theta);
     using namespace tensorium_RG::fd;
     const T ko_sigma = scaled_ko_sigma(params.ko_sigma); // Adaptive KO6 strength.
@@ -61,6 +62,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
     const T two_plus_kappa2 = T(2) + params.kappa2;
     const T two_thirds = T(2) / T(3);
+    const T ko_scale = T(ko_sigma / G.dx);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -74,6 +76,9 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                                   G.beta[2].ptr() + idx_start};
             const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
                                G.Z[2].ptr() + idx_start};
+            const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
+                                        G.tildeGamma[1].ptr() + idx_start,
+                                        G.tildeGamma[2].ptr() + idx_start};
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_ginv[6];
             const T *p_A[6];
@@ -83,6 +88,8 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 p_A[s] = G.A_tilde[s].ptr() + idx_start;
                 p_R[s] = G.Ricci[s].ptr() + idx_start;
             }
+            const T *p_z4_trace =
+                z4_conformal_trace_cache ? (z4_conformal_trace_cache->ptr() + idx_start) : nullptr;
 
             T *p_rhs = rhs_theta.ptr() + idx_start;
 
@@ -90,8 +97,6 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
                 const T K_val = *p_K;
-                T       RicciZ4[6];
-                compute_RicciZ4(G, i, j, k, RicciZ4, params.chi_div_floor);
                 const T bx = *p_beta[0];
                 const T by = *p_beta[1];
                 const T bz = *p_beta[2];
@@ -104,16 +109,15 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                     z_phys[2] = *p_Z[2];
                 } else {
                     T div_metric_inv[3] = {T(0), T(0), T(0)};
-                    metric_inverse_divergence(G, i, j, k, div_metric_inv);
+                    detail::metric_inverse_divergence_ptr(
+                        p_ginv[0], p_ginv[1], p_ginv[2], p_ginv[3], p_ginv[4], p_ginv[5], sx,
+                        sy, inv_12dx, inv_12dy, inv_12dz, div_metric_inv);
                     // gamma_metric is the contracted conformal Christoffel from metric derivatives.
                     const T gamma_metric[3] = {-div_metric_inv[0], -div_metric_inv[1],
                                                -div_metric_inv[2]};
-                    const T z_over_chi[3] = {T(0.5) * (G.tildeGamma[0].ptr()[G.alpha.idx(i, j, k)] -
-                                                       gamma_metric[0]),
-                                             T(0.5) * (G.tildeGamma[1].ptr()[G.alpha.idx(i, j, k)] -
-                                                       gamma_metric[1]),
-                                             T(0.5) * (G.tildeGamma[2].ptr()[G.alpha.idx(i, j, k)] -
-                                                       gamma_metric[2])};
+                    const T z_over_chi[3] = {T(0.5) * (*p_tildeGamma[0] - gamma_metric[0]),
+                                             T(0.5) * (*p_tildeGamma[1] - gamma_metric[1]),
+                                             T(0.5) * (*p_tildeGamma[2] - gamma_metric[2])};
                     z_phys[0] = chi_guarded * z_over_chi[0];
                     z_phys[1] = chi_guarded * z_over_chi[1];
                     z_phys[2] = chi_guarded * z_over_chi[2];
@@ -133,15 +137,21 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T g_yz = *p_ginv[4];
                 const T g_zz = *p_ginv[5];
 
-                const T R_xx = *p_R[0] + RicciZ4[0];
-                const T R_xy = *p_R[1] + RicciZ4[1];
-                const T R_xz = *p_R[2] + RicciZ4[2];
-                const T R_yy = *p_R[3] + RicciZ4[3];
-                const T R_yz = *p_R[4] + RicciZ4[4];
-                const T R_zz = *p_R[5] + RicciZ4[5];
-
-                const T R_conformal = g_xx * R_xx + g_yy * R_yy + g_zz * R_zz +
-                                      T(2) * (g_xy * R_xy + g_xz * R_xz + g_yz * R_yz);
+                const T R_conformal_base = g_xx * (*p_R[0]) + g_yy * (*p_R[3]) + g_zz * (*p_R[5]) +
+                                           T(2) * (g_xy * (*p_R[1]) + g_xz * (*p_R[2]) +
+                                                   g_yz * (*p_R[4]));
+                T       R_conformal_z4 = T(0);
+                if (p_z4_trace) {
+                    R_conformal_z4 = *p_z4_trace;
+                } else {
+                    T RicciZ4[6];
+                    compute_RicciZ4_core(G, i, j, k, RicciZ4, params.chi_div_floor, inv_12dx,
+                                         inv_12dy, inv_12dz, sx, sy);
+                    R_conformal_z4 =
+                        g_xx * RicciZ4[0] + g_yy * RicciZ4[3] + g_zz * RicciZ4[5] +
+                        T(2) * (g_xy * RicciZ4[1] + g_xz * RicciZ4[2] + g_yz * RicciZ4[4]);
+                }
+                const T R_conformal = R_conformal_base + R_conformal_z4;
                 const T R_scalar = chi_guarded * R_conformal;
 
                 const T row0_x = g_xx;
@@ -183,7 +193,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T A_contract = A_xx * A_up_xx + A_yy * A_up_yy + A_zz * A_up_zz +
                                      T(2) * (A_xy * A_up_xy + A_xz * A_up_xz + A_yz * A_up_yz);
 
-                const T geom_source = T(0.5) * (R_scalar - A_contract + (T(2) / T(3)) * K_val * K_val -
+                const T geom_source = T(0.5) * (R_scalar - A_contract + two_thirds * K_val * K_val -
                                                 T(2) * theta * K_val);
                 const T Z_dot_dalpha =
                     z_phys[0] * d_alpha[0] + z_phys[1] * d_alpha[1] + z_phys[2] * d_alpha[2];
@@ -192,16 +202,19 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T diss = KO6_axis_ptr(p_theta, sx) + KO6_axis_ptr(p_theta, sy) +
                                KO6_axis_ptr(p_theta, 1);
 
-                *p_rhs = geom + damping + adv - Z_dot_dalpha + (ko_sigma / G.dx) * diss;
+                *p_rhs = geom + damping + adv - Z_dot_dalpha + ko_scale * diss;
 
                 ++p_theta;
                 ++p_alpha;
                 ++p_K;
                 ++p_rhs;
                 ++p_chi;
+                if (p_z4_trace)
+                    ++p_z4_trace;
                 for (int c = 0; c < 3; ++c) {
                     ++p_beta[c];
                     ++p_Z[c];
+                    ++p_tildeGamma[c];
                 }
                 for (int s = 0; s < 6; ++s) {
                     ++p_ginv[s];
@@ -281,9 +294,11 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
+            const T *p_gcov[6];
             const T *p_ginv[6];
             const T *p_A[6];
             for (int s = 0; s < 6; ++s) {
+                p_gcov[s] = G.gamma_tilde[s].ptr() + idx_start;
                 p_ginv[s] = G.gamma_tilde_inv[s].ptr() + idx_start;
                 p_A[s] = G.A_tilde[s].ptr() + idx_start;
             }
@@ -359,7 +374,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                 const T chi_val = *p_chi;
                 const T z_vals[3] = {*p_Z[0], *p_Z[1], *p_Z[2]};
                 T       d6phi[3];
-                grad_6phi_from_chi(d_chi, chi_val, d6phi);
+                grad_6phi_from_chi(d_chi, chi_val, d6phi, params.chi_div_floor);
 
                 T beta_grad[3][3];
                 for (int comp = 0; comp < 3; ++comp) {
@@ -393,7 +408,8 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                 }
 
                 T Gamma_tilde_vals[3][3][3];
-                tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_tilde_vals);
+                tensorium_RG::bssn::compute_tildeGamma_symbols_ptr(
+                    p_gcov, p_ginv, sx, sy, inv_12dx, inv_12dy, inv_12dz, Gamma_tilde_vals);
 
                 T covariant[3][3][3];
                 for (int dir = 0; dir < 3; ++dir)
@@ -465,6 +481,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                 ++p_K;
                 ++p_chi;
                 for (int s = 0; s < 6; ++s) {
+                    ++p_gcov[s];
                     ++p_ginv[s];
                     ++p_A[s];
                 }

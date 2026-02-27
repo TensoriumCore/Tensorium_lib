@@ -18,15 +18,18 @@ namespace tensorium_RG::bssn {
 namespace detail {
 
 template <typename T>
-inline T diff_gamma_tilde_inv_component(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
-                                        int row, int col, int dir) {
-    const int idx = tensorium_RG::sym6_index(row, col);
-    const auto &F = G.gamma_tilde_inv[idx];
-    if (dir == 0)
-        return (T)tensorium_RG::fd::Dx(F, i, j, k, G.dx);
-    if (dir == 1)
-        return (T)tensorium_RG::fd::Dy(F, i, j, k, G.dy);
-    return (T)tensorium_RG::fd::Dz(F, i, j, k, G.dz);
+inline void metric_inverse_divergence_ptr(const T *p_ginv_xx, const T *p_ginv_xy,
+                                          const T *p_ginv_xz, const T *p_ginv_yy,
+                                          const T *p_ginv_yz, const T *p_ginv_zz,
+                                          ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
+                                          double inv_12dy, double inv_12dz, T out[3]) {
+    using namespace tensorium_RG::fd;
+    out[0] = Dx_ptr(p_ginv_xx, sx, inv_12dx) + Dy_ptr(p_ginv_xy, sy, inv_12dy) +
+             Dz_ptr(p_ginv_xz, inv_12dz);
+    out[1] = Dx_ptr(p_ginv_xy, sx, inv_12dx) + Dy_ptr(p_ginv_yy, sy, inv_12dy) +
+             Dz_ptr(p_ginv_yz, inv_12dz);
+    out[2] = Dx_ptr(p_ginv_xz, sx, inv_12dx) + Dy_ptr(p_ginv_yz, sy, inv_12dy) +
+             Dz_ptr(p_ginv_zz, inv_12dz);
 }
 
 } // namespace detail
@@ -43,13 +46,21 @@ inline T diff_gamma_tilde_inv_component(const BSSNGridSoA<T> &G, size_t i, size_
 template <typename T>
 inline void metric_inverse_divergence(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
                                       T out[3]) {
-    for (int a = 0; a < 3; ++a) {
-        T sum = T(0);
-        sum += detail::diff_gamma_tilde_inv_component(G, i, j, k, a, 0, 0);
-        sum += detail::diff_gamma_tilde_inv_component(G, i, j, k, a, 1, 1);
-        sum += detail::diff_gamma_tilde_inv_component(G, i, j, k, a, 2, 2);
-        out[a] = sum;
-    }
+    const size_t id = G.gamma_tilde_inv[XX].idx(i, j, k);
+    const auto  *p_xx = G.gamma_tilde_inv[XX].ptr() + id;
+    const auto  *p_xy = G.gamma_tilde_inv[XY].ptr() + id;
+    const auto  *p_xz = G.gamma_tilde_inv[XZ].ptr() + id;
+    const auto  *p_yy = G.gamma_tilde_inv[YY].ptr() + id;
+    const auto  *p_yz = G.gamma_tilde_inv[YZ].ptr() + id;
+    const auto  *p_zz = G.gamma_tilde_inv[ZZ].ptr() + id;
+    const auto   sx = G.gamma_tilde_inv[XX].st.sx;
+    const auto   sy = G.gamma_tilde_inv[XX].st.sy;
+    const double inv_12dx = 1.0 / (60.0 * G.dx);
+    const double inv_12dy = 1.0 / (60.0 * G.dy);
+    const double inv_12dz = 1.0 / (60.0 * G.dz);
+
+    detail::metric_inverse_divergence_ptr(p_xx, p_xy, p_xz, p_yy, p_yz, p_zz, sx, sy, inv_12dx,
+                                          inv_12dy, inv_12dz, out);
 }
 
 /**

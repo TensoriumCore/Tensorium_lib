@@ -176,6 +176,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         stage_grid_.z0 = prototype.z0;
         for (auto &stage : stages_)
             stage.allocate_like(prototype);
+        detail::allocate_like(prototype.alpha, theta_ricciz4_trace_cache_);
     }
 
     void set_gauge_parameters(const GaugeParameters<T> &params) { gauge_params_ = params; }
@@ -188,6 +189,8 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     void set_snapshot_callback(std::function<void(const BSSNGridSoA<T> &, size_t)> cb) {
         snapshot_callback_ = std::move(cb);
     }
+
+    void set_state_log_stride(size_t stride) { state_log_stride_ = std::max<size_t>(size_t(1), stride); }
 
     void set_rhs_prep_callback(std::function<void(BSSNRHSWorkspace<T> &)> cb) {
         rhs_prep_callback_ = std::move(cb);
@@ -386,12 +389,14 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
         const double r_max = 0.45 * min_extent;
 
-        log_gauge_diagnostics(grid, step_index);
+        const bool do_state_log = (step_index % state_log_stride_ == 0);
+        if (do_state_log) {
+            log_gauge_diagnostics(grid, step_index);
+            const double chi_cut = 1e-7;
+            log_full_bssn_diagnostics(grid, step_index, r_min, r_max, chi_cut);
+        }
 
-        const double chi_cut = 1e-7;
-        log_full_bssn_diagnostics(grid, step_index, r_min, r_max, chi_cut);
-
-        if (monitor_callback_ || snapshot_callback_) {
+        if (monitor_callback_) {
             auto        H_tmp = tensorium_RG::make_field(grid.alpha.st);
             Field3D<T>  M_tmp[3];
             Field3D<T>  C_tmp[3];
@@ -421,9 +426,11 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     GaugeParameters<T>                                                          gauge_params_{};
     BSSNRHSWorkspace<T>                                                         stages_[4];
     BSSNGridSoA<T>                                                              stage_grid_;
+    Field3D<T>                                                                  theta_ricciz4_trace_cache_;
     std::function<void(const BSSNGridSoA<T> &, const ConstraintMonitorStats &)> monitor_callback_;
     std::function<void(const BSSNGridSoA<T> &, size_t)>                         snapshot_callback_;
     std::function<void(BSSNRHSWorkspace<T> &)>                                  rhs_prep_callback_;
+    size_t                                                                       state_log_stride_ = 1;
     T                                                                           boundary_dt_ = T(0);
     T                                                                           simulation_time_ = T(0);
 
@@ -463,10 +470,34 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         }
     }
 
+    /// @brief Enforce hard positivity floors before RHS assembly (GRChombo-style pre-RHS clamp).
+    void enforce_positive_chi_alpha_pre_rhs(BSSNGridSoA<T> &grid) {
+        const bool do_alpha = gauge_params_.alpha_floor > T(0);
+        const bool do_chi = gauge_params_.chi_floor > T(0);
+        if (!do_alpha && !do_chi)
+            return;
+
+        const size_t total = grid.alpha.st.nx_tot * grid.alpha.st.ny_tot * grid.alpha.st.nz_tot;
+        T           *alpha = grid.alpha.ptr();
+        T           *chi = grid.chi.ptr();
+        const T      alpha_floor = gauge_params_.alpha_floor;
+        const T      chi_floor = gauge_params_.chi_floor;
+
+#pragma omp parallel for
+        for (size_t idx = 0; idx < total; ++idx) {
+            if (do_alpha && alpha[idx] < alpha_floor)
+                alpha[idx] = alpha_floor;
+            if (do_chi && chi[idx] < chi_floor)
+                chi[idx] = chi_floor;
+        }
+    }
+
     /// @brief Project det/tr, apply boundaries, and refresh derivatives before RHS evaluation.
     void prepare_state_for_rhs(BSSNGridSoA<T> &grid) {
+        enforce_positive_chi_alpha_pre_rhs(grid);
         configure_boundary_characteristics();
         apply_halos_grid<Boundary>(grid);
+        enforce_positive_chi_alpha_pre_rhs(grid);
 
         rebuild_geometry(grid);
         if (!gauge_params_.evolve_Z) {
@@ -563,10 +594,10 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         compute_rhs_alpha(grid, rhs.alpha, padding_, params);
         compute_rhs_chi(grid, rhs.chi, padding_, params);
         compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, padding_, params);
-        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, params);
+        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, params, &theta_ricciz4_trace_cache_);
         // compute_rhs_K stores rhs(Khat) with Khat = K - 2*Theta.
         compute_rhs_K(grid, rhs.K, padding_, params);
-        compute_rhs_Theta(grid, rhs.Theta, params, padding_);
+        compute_rhs_Theta(grid, rhs.Theta, params, padding_, &theta_ricciz4_trace_cache_);
         compute_rhs_Z(grid, rhs.Z, params, padding_);
         apply_rhs_sommerfeld(grid, rhs);
         recompose_rhs_K_from_khat(grid, rhs);

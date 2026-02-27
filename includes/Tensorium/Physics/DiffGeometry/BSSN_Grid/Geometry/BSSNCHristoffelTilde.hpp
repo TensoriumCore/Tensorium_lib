@@ -2,6 +2,7 @@
 #include "BSSNGamma.hpp"
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include <Tensorium/Backend/SIMD/SIMD.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -21,6 +22,25 @@
 
 namespace tensorium_RG::bssn {
 
+namespace detail {
+
+template <typename T> inline T dot3_simd(T a0, T a1, T a2, T b0, T b1, T b2) {
+    if constexpr (std::is_same_v<T, double>) {
+        using Simd = simd::SimdTraits<double, DefaultISA>;
+        if constexpr (Simd::width >= 4) {
+            alignas(Simd::alignment) double va_buf[4] = {double(a0), double(a1), double(a2), 0.0};
+            alignas(Simd::alignment) double vb_buf[4] = {double(b0), double(b1), double(b2), 0.0};
+            const typename Simd::reg va = Simd::loadu(va_buf);
+            const typename Simd::reg vb = Simd::loadu(vb_buf);
+            const typename Simd::reg vm = Simd::mul(va, vb);
+            return static_cast<T>(Simd::horizontal_add(vm));
+        }
+    }
+    return a0 * b0 + a1 * b1 + a2 * b2;
+}
+
+} // namespace detail
+
 /**
  * @brief Refresh the evolved \f$\tilde{\Gamma}^i\f$ from the metric inverse divergence.
  * @details Mapping to code:
@@ -36,52 +56,117 @@ template <typename T> inline void compute_tildeGamma_contracted(BSSNGridSoA<T> &
     const size_t j0 = J0 + 3, j1 = J1 - 3;
     const size_t k0 = K0 + 3, k1 = K1 - 3;
 
-#pragma omp parallel for collapse(3)
-    for (size_t i = i0; i < i1; ++i)
-        for (size_t j = j0; j < j1; ++j)
+    const double    inv_12dx = 1.0 / (60.0 * G.dx);
+    const double    inv_12dy = 1.0 / (60.0 * G.dy);
+    const double    inv_12dz = 1.0 / (60.0 * G.dz);
+    const ptrdiff_t sx = G.gamma_tilde_inv[XX].st.sx;
+    const ptrdiff_t sy = G.gamma_tilde_inv[XX].st.sy;
+
+#pragma omp parallel for collapse(2)
+    for (size_t i = i0; i < i1; ++i) {
+        for (size_t j = j0; j < j1; ++j) {
+            const size_t idx_start = G.gamma_tilde_inv[XX].idx(i, j, k0);
+            const T     *p_xx = G.gamma_tilde_inv[XX].ptr() + idx_start;
+            const T     *p_xy = G.gamma_tilde_inv[XY].ptr() + idx_start;
+            const T     *p_xz = G.gamma_tilde_inv[XZ].ptr() + idx_start;
+            const T     *p_yy = G.gamma_tilde_inv[YY].ptr() + idx_start;
+            const T     *p_yz = G.gamma_tilde_inv[YZ].ptr() + idx_start;
+            const T     *p_zz = G.gamma_tilde_inv[ZZ].ptr() + idx_start;
+            T           *p_gt0 = G.tildeGamma[0].ptr() + idx_start;
+            T           *p_gt1 = G.tildeGamma[1].ptr() + idx_start;
+            T           *p_gt2 = G.tildeGamma[2].ptr() + idx_start;
+
             for (size_t k = k0; k < k1; ++k) {
-                const size_t id = G.gamma_tilde[XX].idx(i, j, k);
-                T            div[3];
-                metric_inverse_divergence(G, i, j, k, div);
-                G.tildeGamma[0].ptr()[id] = -div[0];
-                G.tildeGamma[1].ptr()[id] = -div[1];
-                G.tildeGamma[2].ptr()[id] = -div[2];
+                T div[3];
+                detail::metric_inverse_divergence_ptr(p_xx, p_xy, p_xz, p_yy, p_yz, p_zz, sx, sy,
+                                                      inv_12dx, inv_12dy, inv_12dz, div);
+                *p_gt0 = -div[0];
+                *p_gt1 = -div[1];
+                *p_gt2 = -div[2];
+                ++p_xx;
+                ++p_xy;
+                ++p_xz;
+                ++p_yy;
+                ++p_yz;
+                ++p_zz;
+                ++p_gt0;
+                ++p_gt1;
+                ++p_gt2;
             }
+        }
+    }
+}
+
+template <typename T>
+inline void compute_tildeGamma_symbols_ptr(const T *const p_gam[6], const T *const p_ginv[6],
+                                           ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
+                                           double inv_12dy, double inv_12dz,
+                                           T (&Gamma)[3][3][3]) {
+    using namespace tensorium_RG::fd;
+
+    T ginv[3][3];
+    ginv[0][0] = *p_ginv[XX];
+    ginv[0][1] = *p_ginv[XY];
+    ginv[0][2] = *p_ginv[XZ];
+    ginv[1][0] = ginv[0][1];
+    ginv[1][1] = *p_ginv[YY];
+    ginv[1][2] = *p_ginv[YZ];
+    ginv[2][0] = ginv[0][2];
+    ginv[2][1] = ginv[1][2];
+    ginv[2][2] = *p_ginv[ZZ];
+
+    T grad_metric[3][6];
+    for (int comp = 0; comp < 6; ++comp) {
+        const T *p = p_gam[comp];
+        grad_metric[0][comp] = static_cast<T>(Dx_ptr(p, sx, inv_12dx));
+        grad_metric[1][comp] = static_cast<T>(Dy_ptr(p, sy, inv_12dy));
+        grad_metric[2][comp] = static_cast<T>(Dz_ptr(p, inv_12dz));
+    }
+
+    for (int up = 0; up < 3; ++up) {
+        const T g0 = ginv[up][0];
+        const T g1 = ginv[up][1];
+        const T g2 = ginv[up][2];
+        for (int lo1 = 0; lo1 < 3; ++lo1) {
+            for (int lo2 = 0; lo2 < 3; ++lo2) {
+                const int s_lo2_0 = sym6(lo2, 0);
+                const int s_lo2_1 = sym6(lo2, 1);
+                const int s_lo2_2 = sym6(lo2, 2);
+                const int s_lo1_0 = sym6(lo1, 0);
+                const int s_lo1_1 = sym6(lo1, 1);
+                const int s_lo1_2 = sym6(lo1, 2);
+                const int s_12 = sym6(lo1, lo2);
+
+                const T q0 = grad_metric[lo1][s_lo2_0] + grad_metric[lo2][s_lo1_0] -
+                             grad_metric[0][s_12];
+                const T q1 = grad_metric[lo1][s_lo2_1] + grad_metric[lo2][s_lo1_1] -
+                             grad_metric[1][s_12];
+                const T q2 = grad_metric[lo1][s_lo2_2] + grad_metric[lo2][s_lo1_2] -
+                             grad_metric[2][s_12];
+
+                const T sum = detail::dot3_simd(g0, g1, g2, q0, q1, q2);
+                Gamma[up][lo1][lo2] = T(0.5) * sum;
+            }
+        }
+    }
 }
 template <typename T>
 inline void compute_tildeGamma_symbols(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
                                        T (&Gamma)[3][3][3]) {
-    using tensorium_RG::fd::Dx;
-    using tensorium_RG::fd::Dy;
-    using tensorium_RG::fd::Dz;
-
     const size_t id = G.gamma_tilde[XX].idx(i, j, k);
+    const double inv_12dx = 1.0 / (60.0 * G.dx);
+    const double inv_12dy = 1.0 / (60.0 * G.dy);
+    const double inv_12dz = 1.0 / (60.0 * G.dz);
+    const ptrdiff_t sx = G.gamma_tilde[XX].st.sx;
+    const ptrdiff_t sy = G.gamma_tilde[XX].st.sy;
 
-    auto d_g = [&](int dir, int a, int b) -> T {
-        if (a > b)
-            std::swap(a, b);
-        const Field3D<T> &F = (a == 0 && b == 0)   ? G.gamma_tilde[XX]
-                                  : (a == 0 && b == 1) ? G.gamma_tilde[XY]
-                                  : (a == 0 && b == 2) ? G.gamma_tilde[XZ]
-                                  : (a == 1 && b == 1) ? G.gamma_tilde[YY]
-                                  : (a == 1 && b == 2) ? G.gamma_tilde[YZ]
-                                                       : G.gamma_tilde[ZZ];
-        return (dir == 0) ? Dx(F, i, j, k, G.dx)
-               : (dir == 1) ? Dy(F, i, j, k, G.dy)
-                            : Dz(F, i, j, k, G.dz);
-    };
-
-    for (int up = 0; up < 3; ++up)
-        for (int lo1 = 0; lo1 < 3; ++lo1)
-            for (int lo2 = 0; lo2 < 3; ++lo2) {
-                T sum = T(0);
-                for (int ell = 0; ell < 3; ++ell) {
-                    const T ginv = sym6_get(G.gamma_tilde_inv, id, up, ell);
-                    const T term = d_g(lo1, lo2, ell) + d_g(lo2, lo1, ell) - d_g(ell, lo1, lo2);
-                    sum += ginv * term;
-                }
-                Gamma[up][lo1][lo2] = T(0.5) * sum;
-            }
+    const T *p_gam[6];
+    const T *p_ginv[6];
+    for (int s = 0; s < 6; ++s) {
+        p_gam[s] = G.gamma_tilde[s].ptr() + id;
+        p_ginv[s] = G.gamma_tilde_inv[s].ptr() + id;
+    }
+    compute_tildeGamma_symbols_ptr(p_gam, p_ginv, sx, sy, inv_12dx, inv_12dy, inv_12dz, Gamma);
 }
 
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)

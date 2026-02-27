@@ -251,11 +251,6 @@ struct BoundaryRadiative {
         enum class HaloMode { Sommerfeld, Outflow, Skip };
         HaloMode mode = HaloMode::Sommerfeld;
         switch (which) {
-        case BoundaryField::Beta:
-        case BoundaryField::B:
-        case BoundaryField::TildeGamma:
-            mode = HaloMode::Outflow;
-            break;
         case BoundaryField::GammaTildeInverse:
             mode = HaloMode::Skip;
             break;
