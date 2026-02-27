@@ -150,6 +150,48 @@ struct PunctureCandidate {
     bool   found = false;
 };
 
+enum class TrackerRecenterMode {
+    Mixed,
+    Chi,
+    Alpha,
+};
+
+const char *tracker_recenter_mode_name(TrackerRecenterMode mode) {
+    switch (mode) {
+    case TrackerRecenterMode::Chi:
+        return "chi";
+    case TrackerRecenterMode::Alpha:
+        return "alpha";
+    case TrackerRecenterMode::Mixed:
+    default:
+        return "mixed";
+    }
+}
+
+std::string ascii_lower_copy(std::string s) {
+    for (char &c : s) {
+        if (c >= 'A' && c <= 'Z')
+            c = static_cast<char>(c - 'A' + 'a');
+    }
+    return s;
+}
+
+TrackerRecenterMode parse_tracker_recenter_mode_or(const char *name, TrackerRecenterMode fallback) {
+    if (const char *raw = std::getenv(name)) {
+        const std::string mode = ascii_lower_copy(std::string(raw));
+        if (mode == "mixed")
+            return TrackerRecenterMode::Mixed;
+        if (mode == "chi")
+            return TrackerRecenterMode::Chi;
+        if (mode == "alpha")
+            return TrackerRecenterMode::Alpha;
+        std::cout << "[warn] invalid " << name << "='" << raw
+                  << "' (expected mixed|chi|alpha), fallback="
+                  << tracker_recenter_mode_name(fallback) << std::endl;
+    }
+    return fallback;
+}
+
 inline PuncturePrediction predict_puncture_positions(const PunctureTrackHistory &history,
                                                      double current_time) {
     PuncturePrediction pred;
@@ -211,7 +253,9 @@ PunctureCandidate find_min_candidate_in_window(const tensorium::tests::Grid &gri
                                                double ex_r2 = 0.0, bool use_anchor = false,
                                                double x_ref = 0.0, double y_ref = 0.0,
                                                double dist_weight = 0.0,
-                                               double alpha_weight = 0.0) {
+                                               double alpha_weight = 0.0,
+                                               TrackerRecenterMode score_mode =
+                                                   TrackerRecenterMode::Mixed) {
     PunctureCandidate out;
     double            best_score = std::numeric_limits<double>::infinity();
     const size_t ng = grid.dims.ng;
@@ -235,7 +279,12 @@ PunctureCandidate find_min_candidate_in_window(const tensorium::tests::Grid &gri
             if (!std::isfinite(chi) || !std::isfinite(alpha))
                 continue;
 
-            double score = chi + alpha_weight * alpha;
+            double score = chi;
+            if (score_mode == TrackerRecenterMode::Alpha) {
+                score = alpha;
+            } else if (score_mode == TrackerRecenterMode::Mixed) {
+                score = chi + alpha_weight * alpha;
+            }
             if (use_anchor) {
                 const double dx_cells = (x - x_ref) * inv_dx;
                 const double dy_cells = (y - y_ref) * inv_dy;
@@ -312,6 +361,42 @@ bool parse_env_bool_or(const char *name, bool fallback) {
     return fallback;
 }
 
+struct CircularMomentumSuggestion {
+    bool   valid = false;
+    double d = 0.0;
+    double total_mass = 0.0;
+    double reduced_mass = 0.0;
+    double p_newtonian = 0.0;
+    double p_pn = 0.0;
+};
+
+CircularMomentumSuggestion suggest_circular_momentum(double m1, double m2, double separation) {
+    CircularMomentumSuggestion out{};
+    if (!(std::isfinite(m1) && std::isfinite(m2) && std::isfinite(separation)))
+        return out;
+    if (m1 <= 0.0 || m2 <= 0.0 || separation <= 0.0)
+        return out;
+
+    const double d = 2.0 * separation;
+    const double M = m1 + m2;
+    if (!(std::isfinite(d) && std::isfinite(M)) || d <= 0.0 || M <= 0.0)
+        return out;
+
+    const double mu = (m1 * m2) / M;
+    const double p_newt = mu * std::sqrt(M / d);
+    const double p_pn = 0.295 / std::sqrt(d);
+    if (!(std::isfinite(mu) && std::isfinite(p_newt) && std::isfinite(p_pn)))
+        return out;
+
+    out.valid = true;
+    out.d = d;
+    out.total_mass = M;
+    out.reduced_mass = mu;
+    out.p_newtonian = p_newt;
+    out.p_pn = p_pn;
+    return out;
+}
+
 struct ShiftPunctureTracker {
     std::array<double, 3> p1{0.0, 0.0, 0.0};
     std::array<double, 3> p2{0.0, 0.0, 0.0};
@@ -361,6 +446,15 @@ bool trilinear_indices(const tensorium::tests::Grid &grid, double x, double y, d
     return true;
 }
 
+inline void lagrange4_weights(double t, double w[4]) {
+    // 4-point Lagrange interpolation on {-1,0,1,2} around the local cell.
+    // t in [0,1] is the fractional offset from the i0 node.
+    w[0] = -t * (t - 1.0) * (t - 2.0) / 6.0;
+    w[1] = (t + 1.0) * (t - 1.0) * (t - 2.0) / 2.0;
+    w[2] = -(t + 1.0) * t * (t - 2.0) / 2.0;
+    w[3] = (t + 1.0) * t * (t - 1.0) / 6.0;
+}
+
 template <typename FieldLike>
 bool sample_scalar_trilinear(const tensorium::tests::Grid &grid, const FieldLike &field, double x,
                              double y, double z, double &value) {
@@ -396,10 +490,68 @@ bool sample_scalar_trilinear(const tensorium::tests::Grid &grid, const FieldLike
     return std::isfinite(value);
 }
 
+template <typename FieldLike>
+bool sample_scalar_lagrange4(const tensorium::tests::Grid &grid, const FieldLike &field, double x,
+                             double y, double z, double &value) {
+    size_t i0 = 0, j0 = 0, k0 = 0;
+    double tx = 0.0, ty = 0.0, tz = 0.0;
+    if (!trilinear_indices(grid, x, y, z, i0, j0, k0, tx, ty, tz))
+        return false;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    // Need i0-1..i0+2 in each direction.
+    if (i0 < I0 + 1 || i0 + 2 >= I1 || j0 < J0 + 1 || j0 + 2 >= J1 || k0 < K0 + 1 ||
+        k0 + 2 >= K1) {
+        return false;
+    }
+
+    double wx[4], wy[4], wz[4];
+    lagrange4_weights(tx, wx);
+    lagrange4_weights(ty, wy);
+    lagrange4_weights(tz, wz);
+
+    value = 0.0;
+    for (size_t a = 0; a < 4; ++a) {
+        const size_t ii = i0 + a - 1;
+        for (size_t b = 0; b < 4; ++b) {
+            const size_t jj = j0 + b - 1;
+            for (size_t c = 0; c < 4; ++c) {
+                const size_t kk = k0 + c - 1;
+                const double v = double(field.ptr()[field.idx(ii, jj, kk)]);
+                if (!std::isfinite(v))
+                    return false;
+                value += wx[a] * wy[b] * wz[c] * v;
+            }
+        }
+    }
+    return std::isfinite(value);
+}
+
+template <typename FieldLike>
+bool sample_scalar_tracker_interp(const tensorium::tests::Grid &grid, const FieldLike &field,
+                                  double x, double y, double z, double &value) {
+    if (sample_scalar_lagrange4(grid, field, x, y, z, value))
+        return true;
+    return sample_scalar_trilinear(grid, field, x, y, z, value);
+}
+
 bool sample_vector3_trilinear(const tensorium::tests::Grid &grid, const tensorium_RG::Field3D<double> f[3],
                               const std::array<double, 3> &p, std::array<double, 3> &out) {
     for (int d = 0; d < 3; ++d) {
         if (!sample_scalar_trilinear(grid, f[d], p[0], p[1], p[2], out[d]))
+            return false;
+    }
+    return true;
+}
+
+bool sample_vector3_tracker_interp(const tensorium::tests::Grid                &grid,
+                                   const tensorium_RG::Field3D<double>          f[3],
+                                   const std::array<double, 3>                 &p,
+                                   std::array<double, 3>                       &out) {
+    for (int d = 0; d < 3; ++d) {
+        if (!sample_scalar_tracker_interp(grid, f[d], p[0], p[1], p[2], out[d]))
             return false;
     }
     return true;
@@ -428,8 +580,8 @@ void initialize_shift_puncture_tracker(const tensorium::tests::Grid &grid, Shift
 
     std::array<double, 3> b1{0.0, 0.0, 0.0};
     std::array<double, 3> b2{0.0, 0.0, 0.0};
-    (void)sample_vector3_trilinear(grid, grid.beta, tracker.p1, b1);
-    (void)sample_vector3_trilinear(grid, grid.beta, tracker.p2, b2);
+    (void)sample_vector3_tracker_interp(grid, grid.beta, tracker.p1, b1);
+    (void)sample_vector3_tracker_interp(grid, grid.beta, tracker.p2, b2);
     tracker.beta1_prev = b1;
     tracker.beta2_prev = b2;
     tracker.initialized = true;
@@ -442,9 +594,9 @@ void advance_shift_puncture_tracker(const tensorium::tests::Grid &grid, ShiftPun
 
     std::array<double, 3> b1_new{0.0, 0.0, 0.0};
     std::array<double, 3> b2_new{0.0, 0.0, 0.0};
-    if (!sample_vector3_trilinear(grid, grid.beta, tracker.p1, b1_new))
+    if (!sample_vector3_tracker_interp(grid, grid.beta, tracker.p1, b1_new))
         b1_new = tracker.beta1_prev;
-    if (!sample_vector3_trilinear(grid, grid.beta, tracker.p2, b2_new))
+    if (!sample_vector3_tracker_interp(grid, grid.beta, tracker.p2, b2_new))
         b2_new = tracker.beta2_prev;
 
     for (int d = 0; d < 3; ++d) {
@@ -467,10 +619,14 @@ PuncturePlaneSample make_tracker_sample(const tensorium::tests::Grid &grid,
     double chi2 = std::numeric_limits<double>::quiet_NaN();
     double alpha1 = std::numeric_limits<double>::quiet_NaN();
     double alpha2 = std::numeric_limits<double>::quiet_NaN();
-    (void)sample_scalar_trilinear(grid, grid.chi, tracker.p1[0], tracker.p1[1], tracker.p1[2], chi1);
-    (void)sample_scalar_trilinear(grid, grid.chi, tracker.p2[0], tracker.p2[1], tracker.p2[2], chi2);
-    (void)sample_scalar_trilinear(grid, grid.alpha, tracker.p1[0], tracker.p1[1], tracker.p1[2], alpha1);
-    (void)sample_scalar_trilinear(grid, grid.alpha, tracker.p2[0], tracker.p2[1], tracker.p2[2], alpha2);
+    (void)sample_scalar_tracker_interp(grid, grid.chi, tracker.p1[0], tracker.p1[1], tracker.p1[2],
+                                       chi1);
+    (void)sample_scalar_tracker_interp(grid, grid.chi, tracker.p2[0], tracker.p2[1], tracker.p2[2],
+                                       chi2);
+    (void)sample_scalar_tracker_interp(grid, grid.alpha, tracker.p1[0], tracker.p1[1],
+                                       tracker.p1[2], alpha1);
+    (void)sample_scalar_tracker_interp(grid, grid.alpha, tracker.p2[0], tracker.p2[1],
+                                       tracker.p2[2], alpha2);
 
     sample.has_left = true;
     sample.x_left = tracker.p1[0];
@@ -488,7 +644,9 @@ PuncturePlaneSample make_tracker_sample(const tensorium::tests::Grid &grid,
 
 PuncturePlaneSample sample_punctures_equatorial(const tensorium::tests::Grid &grid,
                                                 const PunctureTrackHistory *history = nullptr,
-                                                double current_time = 0.0) {
+                                                double current_time = 0.0,
+                                                TrackerRecenterMode score_mode =
+                                                    TrackerRecenterMode::Mixed) {
     PuncturePlaneSample sample;
     const size_t ng = grid.dims.ng;
     const size_t nx = grid.dims.nx;
@@ -524,7 +682,7 @@ PuncturePlaneSample sample_punctures_equatorial(const tensorium::tests::Grid &gr
         const size_t j_hi = std::min(j_max, jc + kLocalRadiusCells) + 1;
         return find_min_candidate_in_window(grid, i_lo, i_hi, j_lo, j_hi, with_exclusion, ex_x,
                                             ex_y, ex_r2, true, x_ref, y_ref, kDistWeight,
-                                            kAlphaWeight);
+                                            kAlphaWeight, score_mode);
     };
 
     PunctureCandidate a;
@@ -547,11 +705,14 @@ PuncturePlaneSample sample_punctures_equatorial(const tensorium::tests::Grid &gr
     }
 
     if (!have_pair) {
-        a = find_min_candidate_in_window(grid, i_min, i_max + 1, j_min, j_max + 1);
+        a = find_min_candidate_in_window(grid, i_min, i_max + 1, j_min, j_max + 1, false, 0.0,
+                                         0.0, 0.0, false, 0.0, 0.0, kDistWeight, kAlphaWeight,
+                                         score_mode);
         if (a.found) {
             const double ex_r = double(kDistinctRadiusCells) * h;
             b = find_min_candidate_in_window(grid, i_min, i_max + 1, j_min, j_max + 1, true, a.x,
-                                             a.y, ex_r * ex_r);
+                                             a.y, ex_r * ex_r, false, 0.0, 0.0, kDistWeight,
+                                             kAlphaWeight, score_mode);
             have_pair = b.found;
         }
     }
@@ -680,7 +841,7 @@ REGISTER_TEST(
         cfg.spacing = 62.4 / 96.0;
         cfg.ng = 6;
         cfg.padding = 0;
-        cfg.steps = 1000;
+        cfg.steps = 6000;
         cfg.cfl = 0.10;
         cfg.gauge_factor = 1.0;
 
@@ -809,6 +970,47 @@ REGISTER_TEST(
             if (end != mom_r_env && std::isfinite(parsed) && parsed >= 0.0)
                 radial_momentum = parsed;
         }
+        const double user_tangential_momentum = momentum;
+        const CircularMomentumSuggestion circular_hint =
+            suggest_circular_momentum(m1, m2, separation);
+        const bool print_suggested_momentum =
+            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_PRINT_SUGGESTED_MOMENTUM", false);
+        const bool auto_circular =
+            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_AUTO_CIRCULAR", false);
+
+        if (print_suggested_momentum) {
+            if (circular_hint.valid) {
+                std::cout << "[Z4c.Init] Physics Diagnostic for d = " << circular_hint.d
+                          << std::endl;
+                std::cout << "[Z4c.Init] > Suggested P_tang (Newtonian): "
+                          << circular_hint.p_newtonian << std::endl;
+                std::cout << "[Z4c.Init] > Suggested P_tang (Post-Newtonian): "
+                          << circular_hint.p_pn << std::endl;
+                std::cout << "[Z4c.Init] Current P_tang (User): " << user_tangential_momentum
+                          << std::endl;
+                std::cout
+                    << "[Z4c.Init] Note: suggestions are optimized for Z4c with active "
+                       "constraint damping."
+                    << std::endl;
+            } else {
+                std::cout << "[Z4c.Init] Physics Diagnostic unavailable: invalid masses/"
+                             "separation for momentum suggestion."
+                          << std::endl;
+            }
+        }
+
+        if (auto_circular) {
+            if (circular_hint.valid) {
+                momentum = circular_hint.p_pn;
+                std::cout << "[Z4c.Init] AUTO_CIRCULAR enabled: overriding P_tang from "
+                          << user_tangential_momentum << " to " << momentum
+                          << " (Post-Newtonian, Z4c constraint-damping preset)." << std::endl;
+            } else {
+                std::cout << "[Z4c.Init] AUTO_CIRCULAR requested but suggestion is invalid; "
+                             "keeping user P_tang="
+                          << momentum << std::endl;
+            }
+        }
         std::cout << "[init] puncture separation=" << separation
                   << " momentum_tan=" << momentum
                   << " momentum_rad=" << radial_momentum
@@ -903,6 +1105,13 @@ REGISTER_TEST(
             parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_COVARIANT_Z4", params.covariant_z4);
         params.evolve_Z =
             parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EVOLVE_Z", params.evolve_Z);
+        if (const char *chi_div_floor_env =
+                std::getenv("TENSORIUM_MOVING_PUNCTURE_CHI_DIV_FLOOR")) {
+            char *end = nullptr;
+            const double parsed = std::strtod(chi_div_floor_env, &end);
+            if (end != chi_div_floor_env && std::isfinite(parsed) && parsed > 0.0)
+                params.chi_div_floor = parsed;
+        }
         if (const char *ko_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_KO_SIGMA")) {
             char *end = nullptr;
             const double parsed = std::strtod(ko_env, &end);
@@ -941,25 +1150,31 @@ REGISTER_TEST(
 
         if (strict_tp_gauge) {
             params.use_direct_shift_rhs = false;
-            // Keep full moving-puncture transport terms in the Gamma-driver.
-            params.use_shift_advection = true;
-            params.shift_advect = 1.0;
+            // Match GRChombo BinaryBH two-puncture gauge defaults.
+            params.use_shift_advection = false;
+            params.shift_advect = 0.0;
             params.shift_Gamma = 0.75;
             params.beta_B_coeff = 0.75;
-            // Slightly lower damping so puncture coordinates do not over-freeze.
-            params.eta = 0.75;
-            params.shift_eta = 0.75;
+            params.eta = 1.0;
+            params.shift_eta = 1.0;
             params.lapse_oplog = 2.0;
             params.lapse_advect = 1.0;
             params.use_theta_in_lapse = true;
             params.slow_start_lapse = false;
-            // Avoid over-damping orbital dynamics by default in strict TP mode.
-            params.ko_sigma = std::min(params.ko_sigma, 0.20);
+            params.ko_sigma = 1.0;
+            params.alpha_floor = std::max(params.alpha_floor, 1e-4);
+            params.chi_floor = std::max(params.chi_floor, 1e-4);
+            params.chi_div_floor = std::max(params.chi_div_floor, 1e-4);
+            params.min_lapse_for_K = std::max(params.min_lapse_for_K, 1e-4);
             std::cout << "[gauge] strict_tp_gauge=1 (two-puncture reference preset)"
                       << std::endl;
         } else {
             std::cout << "[gauge] strict_tp_gauge=0 (env-tuned gauge allowed)" << std::endl;
         }
+        std::cout << "[scale] alpha_floor=" << params.alpha_floor
+                  << " chi_floor=" << params.chi_floor
+                  << " chi_div_floor=" << params.chi_div_floor
+                  << " min_lapse_for_K=" << params.min_lapse_for_K << std::endl;
 
         bool rhs_ix1 = true;
         bool rhs_ox1 = true;
@@ -1004,6 +1219,15 @@ REGISTER_TEST(
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
             grid, cfg.padding);
         stepper.set_gauge_parameters(params);
+        size_t state_log_stride = 10;
+        if (const char *state_log_stride_env =
+                std::getenv("TENSORIUM_MOVING_PUNCTURE_STATE_LOG_STRIDE")) {
+            const long parsed = std::strtol(state_log_stride_env, nullptr, 10);
+            if (parsed > 0)
+                state_log_stride = static_cast<size_t>(parsed);
+        }
+        stepper.set_state_log_stride(state_log_stride);
+        std::cout << "[log] state_log_stride=" << state_log_stride << std::endl;
 
         ShiftPunctureTracker puncture_shift_tracker;
         if (use_interpolated_init) {
@@ -1067,6 +1291,11 @@ REGISTER_TEST(
             tensorium_RG::bssn::populate_constraint_norms(grid, constraint_scratch.M, stats,
                                                           cfg.padding);
             return stats;
+        };
+        auto compute_constraints_full_domain_for_slice = [&]() {
+            tensorium_RG::bssn::compute_bssn_constraints(
+                grid, grid.Ricci, constraint_scratch.H, constraint_scratch.M, constraint_scratch.C,
+                0.0, std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
         };
         auto log_diagnostics = [&](size_t step_index,
                                    const tensorium_RG::bssn::ConstraintMonitorStats *precomputed =
@@ -1172,6 +1401,74 @@ REGISTER_TEST(
                   << " slice_export=" << (export_constraint_slices ? 1 : 0)
                   << " slice_stride=" << constraint_slice_stride << std::endl;
 
+        (void)std::remove("Output/viz/puncture_track_minima.csv");
+        std::ofstream puncture_track_minima("Output/viz/puncture_track_minima.csv",
+                                            std::ios::out | std::ios::trunc);
+        if (puncture_track_minima.is_open()) {
+            puncture_track_minima.setf(std::ios::unitbuf);
+            puncture_track_minima << "step,t,"
+                                  << "x_left,y_left,chi_left,alpha_left,"
+                                  << "x_right,y_right,chi_right,alpha_right\n";
+        } else {
+            std::cout << "[warn] could not open Output/viz/puncture_track_minima.csv for writing"
+                      << std::endl;
+        }
+
+        (void)std::remove("Output/viz/puncture_tracker_drift.csv");
+        std::ofstream puncture_tracker_drift("Output/viz/puncture_tracker_drift.csv",
+                                             std::ios::out | std::ios::trunc);
+        if (puncture_tracker_drift.is_open()) {
+            puncture_tracker_drift.setf(std::ios::unitbuf);
+            puncture_tracker_drift
+                << "step,t,drift_left,drift_right,recentered,"
+                << "shift_x_left,shift_y_left,shift_x_right,shift_y_right,"
+                << "min_x_left,min_y_left,min_x_right,min_y_right\n";
+        } else {
+            std::cout << "[warn] could not open Output/viz/puncture_tracker_drift.csv for writing"
+                      << std::endl;
+        }
+
+        PunctureTrackHistory puncture_minima_history;
+        const TrackerRecenterMode tracker_recenter_mode = parse_tracker_recenter_mode_or(
+            "TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_MODE", TrackerRecenterMode::Mixed);
+        {
+            const auto init_minima =
+                sample_punctures_equatorial(grid, nullptr, t, tracker_recenter_mode);
+            if (init_minima.has_left && init_minima.has_right) {
+                puncture_minima_history.last = init_minima;
+                puncture_minima_history.t_last = t;
+                puncture_minima_history.has_last = true;
+            }
+        }
+
+        const double tracker_h = std::max(grid.dx, grid.dy);
+        double       tracker_drift_warn_cells = 1.5;
+        if (const char *warn_cells_env =
+                std::getenv("TENSORIUM_MOVING_PUNCTURE_TRACKER_DRIFT_WARN_CELLS")) {
+            char *end = nullptr;
+            const double parsed = std::strtod(warn_cells_env, &end);
+            if (end != warn_cells_env && std::isfinite(parsed) && parsed > 0.0)
+                tracker_drift_warn_cells = parsed;
+        }
+        bool tracker_recenter_on_drift =
+            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_ON_DRIFT", false);
+        double tracker_recenter_cells = 4.0;
+        if (const char *recenter_cells_env =
+                std::getenv("TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_CELLS")) {
+            char *end = nullptr;
+            const double parsed = std::strtod(recenter_cells_env, &end);
+            if (end != recenter_cells_env && std::isfinite(parsed) && parsed > 0.0)
+                tracker_recenter_cells = parsed;
+        }
+        const double tracker_drift_warn_radius = tracker_drift_warn_cells * tracker_h;
+        const double tracker_recenter_radius = tracker_recenter_cells * tracker_h;
+        std::cout << "[tracker] interp=lagrange4(fallback=trilinear) drift_warn_cells="
+                  << tracker_drift_warn_cells << " recenter_on_drift="
+                  << (tracker_recenter_on_drift ? 1 : 0)
+                  << " recenter_cells=" << tracker_recenter_cells
+                  << " recenter_mode=" << tracker_recenter_mode_name(tracker_recenter_mode)
+                  << std::endl;
+
         bool   constraint_violation = false;
         bool   gauge_instability = false;
         size_t failure_step = std::numeric_limits<size_t>::max();
@@ -1184,21 +1481,133 @@ REGISTER_TEST(
             t += dt;
             advance_shift_puncture_tracker(grid, puncture_shift_tracker, dt);
 
+            auto punctures_shift = make_tracker_sample(grid, puncture_shift_tracker);
+            auto punctures_minima =
+                sample_punctures_equatorial(grid, &puncture_minima_history, t,
+                                            tracker_recenter_mode);
+            if (punctures_minima.has_left && punctures_minima.has_right) {
+                if (puncture_minima_history.has_last) {
+                    puncture_minima_history.prev = puncture_minima_history.last;
+                    puncture_minima_history.t_prev = puncture_minima_history.t_last;
+                    puncture_minima_history.has_prev = true;
+                }
+                puncture_minima_history.last = punctures_minima;
+                puncture_minima_history.t_last = t;
+                puncture_minima_history.has_last = true;
+            }
+
+            bool   recentered = false;
+            double drift_left = std::numeric_limits<double>::quiet_NaN();
+            double drift_right = std::numeric_limits<double>::quiet_NaN();
+            bool   have_drift = false;
+            auto compute_tracker_drift = [&](double &dl, double &dr) -> bool {
+                if (!(punctures_shift.has_left && punctures_shift.has_right &&
+                      punctures_minima.has_left && punctures_minima.has_right))
+                    return false;
+                dl = std::hypot(punctures_shift.x_left - punctures_minima.x_left,
+                                punctures_shift.y_left - punctures_minima.y_left);
+                dr = std::hypot(punctures_shift.x_right - punctures_minima.x_right,
+                                punctures_shift.y_right - punctures_minima.y_right);
+                return std::isfinite(dl) && std::isfinite(dr);
+            };
+            have_drift = compute_tracker_drift(drift_left, drift_right);
+
+            if (tracker_recenter_on_drift && have_drift &&
+                (drift_left > tracker_recenter_radius || drift_right > tracker_recenter_radius)) {
+                puncture_shift_tracker.p1[0] = punctures_minima.x_left;
+                puncture_shift_tracker.p1[1] = punctures_minima.y_left;
+                puncture_shift_tracker.p2[0] = punctures_minima.x_right;
+                puncture_shift_tracker.p2[1] = punctures_minima.y_right;
+                clamp_tracker_to_domain(grid, puncture_shift_tracker.p1);
+                clamp_tracker_to_domain(grid, puncture_shift_tracker.p2);
+                std::array<double, 3> b1{0.0, 0.0, 0.0};
+                std::array<double, 3> b2{0.0, 0.0, 0.0};
+                if (sample_vector3_tracker_interp(grid, grid.beta, puncture_shift_tracker.p1, b1))
+                    puncture_shift_tracker.beta1_prev = b1;
+                if (sample_vector3_tracker_interp(grid, grid.beta, puncture_shift_tracker.p2, b2))
+                    puncture_shift_tracker.beta2_prev = b2;
+                recentered = true;
+                punctures_shift = make_tracker_sample(grid, puncture_shift_tracker);
+                have_drift = compute_tracker_drift(drift_left, drift_right);
+            }
+
+            if (have_drift &&
+                (drift_left > tracker_drift_warn_radius || drift_right > tracker_drift_warn_radius) &&
+                (n % log_stride == 0)) {
+                std::cout << "[tracker][warn] step=" << n << " drift_left=" << drift_left
+                          << " drift_right=" << drift_right
+                          << " warn_radius=" << tracker_drift_warn_radius
+                          << " recentered=" << (recentered ? 1 : 0) << std::endl;
+            }
+
             if (puncture_track.is_open()) {
-                auto punctures = make_tracker_sample(grid, puncture_shift_tracker);
                 puncture_track << n << "," << t << ",";
-                if (punctures.has_left) {
-                    puncture_track << punctures.x_left << "," << punctures.y_left << ","
-                                   << punctures.chi_left << "," << punctures.alpha_left << ",";
+                if (punctures_shift.has_left) {
+                    puncture_track << punctures_shift.x_left << "," << punctures_shift.y_left
+                                   << "," << punctures_shift.chi_left << ","
+                                   << punctures_shift.alpha_left << ",";
                 } else {
                     puncture_track << "nan,nan,nan,nan,";
                 }
-                if (punctures.has_right) {
-                    puncture_track << punctures.x_right << "," << punctures.y_right << ","
-                                   << punctures.chi_right << "," << punctures.alpha_right << "\n";
+                if (punctures_shift.has_right) {
+                    puncture_track << punctures_shift.x_right << "," << punctures_shift.y_right
+                                   << "," << punctures_shift.chi_right << ","
+                                   << punctures_shift.alpha_right << "\n";
                 } else {
                     puncture_track << "nan,nan,nan,nan\n";
                 }
+            }
+            if (puncture_track_minima.is_open()) {
+                puncture_track_minima << n << "," << t << ",";
+                if (punctures_minima.has_left) {
+                    puncture_track_minima << punctures_minima.x_left << ","
+                                          << punctures_minima.y_left << ","
+                                          << punctures_minima.chi_left << ","
+                                          << punctures_minima.alpha_left << ",";
+                } else {
+                    puncture_track_minima << "nan,nan,nan,nan,";
+                }
+                if (punctures_minima.has_right) {
+                    puncture_track_minima << punctures_minima.x_right << ","
+                                          << punctures_minima.y_right << ","
+                                          << punctures_minima.chi_right << ","
+                                          << punctures_minima.alpha_right << "\n";
+                } else {
+                    puncture_track_minima << "nan,nan,nan,nan\n";
+                }
+            }
+            if (puncture_tracker_drift.is_open()) {
+                puncture_tracker_drift << n << "," << t << ","
+                                      << (have_drift ? drift_left
+                                                     : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (have_drift ? drift_right
+                                                     : std::numeric_limits<double>::quiet_NaN())
+                                      << "," << (recentered ? 1 : 0) << ","
+                                      << (punctures_shift.has_left ? punctures_shift.x_left
+                                                                   : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_shift.has_left ? punctures_shift.y_left
+                                                                   : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_shift.has_right ? punctures_shift.x_right
+                                                                    : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_shift.has_right ? punctures_shift.y_right
+                                                                    : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_minima.has_left ? punctures_minima.x_left
+                                                                    : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_minima.has_left ? punctures_minima.y_left
+                                                                    : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_minima.has_right ? punctures_minima.x_right
+                                                                     : std::numeric_limits<double>::quiet_NaN())
+                                      << ","
+                                      << (punctures_minima.has_right ? punctures_minima.y_right
+                                                                     : std::numeric_limits<double>::quiet_NaN())
+                                      << "\n";
             }
 
             if (projection_stride > 0 && (n % projection_stride == 0))
@@ -1223,6 +1632,9 @@ REGISTER_TEST(
                                << stats.max_trace_A << "," << stats.samples << "\n";
             }
             if (need_constraint_slice_export && have_stats) {
+                // Export full-domain constraints for visualization so slices do not appear
+                // artificially clipped by the radial monitoring mask.
+                compute_constraints_full_domain_for_slice();
                 export_constraint_slice_csv(grid, constraint_scratch, n, "Output/viz");
             }
 

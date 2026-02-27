@@ -131,44 +131,39 @@ template <typename T> inline double Dyz_ptr(const T *p, ptrdiff_t sy, double inv
 // Mixed Derivatives (Order 4)
 template <typename T>
 inline double Dxy4_ptr(const T *p, ptrdiff_t sx, ptrdiff_t sy, double inv_144dxdy) {
-    double          sum = 0.0;
-    const ptrdiff_t idx_x[4] = {-2 * sx, -sx, sx, 2 * sx};
-    const ptrdiff_t idx_y[4] = {-2 * sy, -sy, sy, 2 * sy};
-    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
-
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * p[idx_x[a] + idx_y[b]];
-        }
-    }
+    const ptrdiff_t sx2 = 2 * sx;
+    const ptrdiff_t sy2 = 2 * sy;
+    const double sum =
+        (+1.0) * p[-sx2 - sy2] + (-8.0) * p[-sx2 - sy] + (+8.0) * p[-sx2 + sy] +
+        (-1.0) * p[-sx2 + sy2] + (-8.0) * p[-sx - sy2] + (+64.0) * p[-sx - sy] +
+        (-64.0) * p[-sx + sy] + (+8.0) * p[-sx + sy2] + (+8.0) * p[sx - sy2] +
+        (-64.0) * p[sx - sy] + (+64.0) * p[sx + sy] + (-8.0) * p[sx + sy2] +
+        (-1.0) * p[sx2 - sy2] + (+8.0) * p[sx2 - sy] + (-8.0) * p[sx2 + sy] +
+        (+1.0) * p[sx2 + sy2];
     return sum * inv_144dxdy;
 }
 
 template <typename T> inline double Dxz4_ptr(const T *p, ptrdiff_t sx, double inv_144dxdz) {
-    double          sum = 0.0;
-    const ptrdiff_t idx_x[4] = {-2 * sx, -sx, sx, 2 * sx};
-    const ptrdiff_t idx_z[4] = {-2, -1, 1, 2};
-    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
-
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * p[idx_x[a] + idx_z[b]];
-        }
-    }
+    const ptrdiff_t sx2 = 2 * sx;
+    const double sum =
+        (+1.0) * p[-sx2 - 2] + (-8.0) * p[-sx2 - 1] + (+8.0) * p[-sx2 + 1] +
+        (-1.0) * p[-sx2 + 2] + (-8.0) * p[-sx - 2] + (+64.0) * p[-sx - 1] +
+        (-64.0) * p[-sx + 1] + (+8.0) * p[-sx + 2] + (+8.0) * p[sx - 2] +
+        (-64.0) * p[sx - 1] + (+64.0) * p[sx + 1] + (-8.0) * p[sx + 2] +
+        (-1.0) * p[sx2 - 2] + (+8.0) * p[sx2 - 1] + (-8.0) * p[sx2 + 1] +
+        (+1.0) * p[sx2 + 2];
     return sum * inv_144dxdz;
 }
 
 template <typename T> inline double Dyz4_ptr(const T *p, ptrdiff_t sy, double inv_144dydz) {
-    double          sum = 0.0;
-    const ptrdiff_t idx_y[4] = {-2 * sy, -sy, sy, 2 * sy};
-    const ptrdiff_t idx_z[4] = {-2, -1, 1, 2};
-    const double    w[4] = {-1.0, 8.0, -8.0, 1.0};
-
-    for (int a = 0; a < 4; ++a) {
-        for (int b = 0; b < 4; ++b) {
-            sum += w[a] * w[b] * p[idx_y[a] + idx_z[b]];
-        }
-    }
+    const ptrdiff_t sy2 = 2 * sy;
+    const double sum =
+        (+1.0) * p[-sy2 - 2] + (-8.0) * p[-sy2 - 1] + (+8.0) * p[-sy2 + 1] +
+        (-1.0) * p[-sy2 + 2] + (-8.0) * p[-sy - 2] + (+64.0) * p[-sy - 1] +
+        (-64.0) * p[-sy + 1] + (+8.0) * p[-sy + 2] + (+8.0) * p[sy - 2] +
+        (-64.0) * p[sy - 1] + (+64.0) * p[sy + 1] + (-8.0) * p[sy + 2] +
+        (-1.0) * p[sy2 - 2] + (+8.0) * p[sy2 - 1] + (-8.0) * p[sy2 + 1] +
+        (+1.0) * p[sy2 + 2];
     return sum * inv_144dydz;
 }
 

@@ -33,17 +33,14 @@ namespace tensorium_RG::bssn {
  */
 template <typename T>
 inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
-                                const GaugeParameters<T> &params = {}) {
+                                const GaugeParameters<T> &params = {},
+                                Field3D<T> *z4_conformal_trace_cache = nullptr) {
     BSSN_PROFILE_KERNEL(ATilde);
     using namespace tensorium_RG::fd;
     const T ko_sigma = scaled_ko_sigma(params.ko_sigma);
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-    const size_t total = G.A_tilde[0].st.nx_tot * G.A_tilde[0].st.ny_tot * G.A_tilde[0].st.nz_tot;
-    for (int s = 0; s < 6; ++s)
-        std::fill(rhs[s].ptr(), rhs[s].ptr() + total, T(0));
 
     const size_t i0 = clamped_lower(I0, padding, I1);
     const size_t j0 = clamped_lower(J0, padding, J1);
@@ -77,7 +74,10 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     const ptrdiff_t sy = G.A_tilde[0].st.sy;
 
     // Map (row, col) -> symmetric index 0..5
-    const int map_s[3][3] = {{0, 1, 2}, {1, 3, 4}, {2, 4, 5}};
+    constexpr int map_s[3][3] = {{XX, XY, XZ}, {XY, YY, YZ}, {XZ, YZ, ZZ}};
+    constexpr int sym_row[6] = {0, 0, 0, 1, 1, 2};
+    constexpr int sym_col[6] = {0, 1, 2, 1, 2, 2};
+    const T       ko_scale = T(ko_sigma / G.dx);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -106,6 +106,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 p_Ricci[s] = G.Ricci[s].ptr() + idx_start;
                 p_rhs[s] = rhs[s].ptr() + idx_start;
             }
+            T *p_z4_trace =
+                z4_conformal_trace_cache ? (z4_conformal_trace_cache->ptr() + idx_start) : nullptr;
 
             for (size_t k = k0; k < k1; ++k) {
                 const T alpha = *p_alpha;
@@ -114,7 +116,19 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 const T inv_chi = T(1) / chi_guarded;
                 const T K = *p_K;
                 T       RicciZ4[6];
-                compute_RicciZ4(G, i, j, k, RicciZ4, params.chi_div_floor);
+                compute_RicciZ4_core(G, i, j, k, RicciZ4, params.chi_div_floor, inv_12dx,
+                                     inv_12dy, inv_12dz, sx, sy);
+                if (p_z4_trace) {
+                    const T g_xx = *p_gam_inv[0];
+                    const T g_xy = *p_gam_inv[1];
+                    const T g_xz = *p_gam_inv[2];
+                    const T g_yy = *p_gam_inv[3];
+                    const T g_yz = *p_gam_inv[4];
+                    const T g_zz = *p_gam_inv[5];
+                    *p_z4_trace = g_xx * RicciZ4[0] + g_yy * RicciZ4[3] + g_zz * RicciZ4[5] +
+                                  T(2) * (g_xy * RicciZ4[1] + g_xz * RicciZ4[2] +
+                                          g_yz * RicciZ4[4]);
+                }
 
                 // --- 1. Load Local Tensors ---
                 T gamma_tilde_inv[3][3];
@@ -124,26 +138,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 T Ricci_mat[3][3];
 
                 for (int s = 0; s < 6; ++s) {
-                    int a, b;
-                    if (s == 0) {
-                        a = 0;
-                        b = 0;
-                    } else if (s == 1) {
-                        a = 0;
-                        b = 1;
-                    } else if (s == 2) {
-                        a = 0;
-                        b = 2;
-                    } else if (s == 3) {
-                        a = 1;
-                        b = 1;
-                    } else if (s == 4) {
-                        a = 1;
-                        b = 2;
-                    } else {
-                        a = 2;
-                        b = 2;
-                    }
+                    const int a = sym_row[s];
+                    const int b = sym_col[s];
 
                     const T gt = *p_gam[s];
                     const T gt_inv = *p_gam_inv[s];
@@ -185,26 +181,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 T d_g_phys[3][3][3]; // dir, row, col
 
                 for (int s = 0; s < 6; ++s) {
-                    int row, col;
-                    if (s == 0) {
-                        row = 0;
-                        col = 0;
-                    } else if (s == 1) {
-                        row = 0;
-                        col = 1;
-                    } else if (s == 2) {
-                        row = 0;
-                        col = 2;
-                    } else if (s == 3) {
-                        row = 1;
-                        col = 1;
-                    } else if (s == 4) {
-                        row = 1;
-                        col = 2;
-                    } else {
-                        row = 2;
-                        col = 2;
-                    }
+                    const int row = sym_row[s];
+                    const int col = sym_col[s];
 
                     const T *p_g = p_gam[s];
                     const T  d_gt_x = Dx_ptr(p_g, sx, inv_12dx);
@@ -304,13 +282,9 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                         const int s = map_s[a][b];
                         const T  *p_field = p_A[s];
 
-                        const T bx = beta[0];
-                        const T by = beta[1];
-                        const T bz = beta[2];
-
-                        const T adv = bx * Dx_upwind_ptr(p_field, sx, inv_2dx, bx) +
-                                      by * Dy_upwind_ptr(p_field, sy, inv_2dy, by) +
-                                      bz * Dz_upwind_ptr(p_field, inv_2dz, bz);
+                        const T adv = beta[0] * Dx_upwind_ptr(p_field, sx, inv_2dx, beta[0]) +
+                                      beta[1] * Dy_upwind_ptr(p_field, sy, inv_2dy, beta[1]) +
+                                      beta[2] * Dz_upwind_ptr(p_field, inv_2dz, beta[2]);
 
                         T lie = T(0);
                         for (int m = 0; m < 3; ++m) {
@@ -324,7 +298,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                             alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
                         const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
                                        KO6_axis_ptr(p_field, 1);
-                        const T diss_scaled = (ko_sigma / G.dx) * diss;
+                        const T diss_scaled = ko_scale * diss;
 
                         *p_rhs[s] = adv + lie + term_geom + term_quad + diss_scaled;
                     }
@@ -342,6 +316,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                     ++p_Ricci[s];
                     ++p_rhs[s];
                 }
+                if (p_z4_trace)
+                    ++p_z4_trace;
             }
         }
     }

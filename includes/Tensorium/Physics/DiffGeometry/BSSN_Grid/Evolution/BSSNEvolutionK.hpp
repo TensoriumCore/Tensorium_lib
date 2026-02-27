@@ -64,6 +64,9 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
 
     const ptrdiff_t sx = G.K.st.sx;
     const ptrdiff_t sy = G.K.st.sy;
+    constexpr int   sym_row[6] = {0, 0, 0, 1, 1, 2};
+    constexpr int   sym_col[6] = {0, 1, 2, 1, 2, 2};
+    const T         ko_scale = T(ko_sigma / G.dx);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -107,26 +110,8 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 T A_mat[3][3];
 
                 for (int s = 0; s < 6; ++s) {
-                    int a, b;
-                    if (s == 0) {
-                        a = 0;
-                        b = 0;
-                    } else if (s == 1) {
-                        a = 0;
-                        b = 1;
-                    } else if (s == 2) {
-                        a = 0;
-                        b = 2;
-                    } else if (s == 3) {
-                        a = 1;
-                        b = 1;
-                    } else if (s == 4) {
-                        a = 1;
-                        b = 2;
-                    } else {
-                        a = 2;
-                        b = 2;
-                    }
+                    const int a = sym_row[s];
+                    const int b = sym_col[s];
 
                     const T gt_inv = *p_gam_inv[s];
                     const T gt = *p_gam[s];
@@ -163,26 +148,8 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 T d_g_phys[3][3][3]; 
 
                 for (int s = 0; s < 6; ++s) {
-                    int row, col;
-                    if (s == 0) {
-                        row = 0;
-                        col = 0;
-                    } else if (s == 1) {
-                        row = 0;
-                        col = 1;
-                    } else if (s == 2) {
-                        row = 0;
-                        col = 2;
-                    } else if (s == 3) {
-                        row = 1;
-                        col = 1;
-                    } else if (s == 4) {
-                        row = 1;
-                        col = 2;
-                    } else {
-                        row = 2;
-                        col = 2;
-                    }
+                    const int row = sym_row[s];
+                    const int col = sym_col[s];
 
                     const T *p_g = p_gam[s];
                     const T  d_gt_x = Dx_ptr(p_g, sx, inv_12dx);
@@ -295,7 +262,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T diss_khat = (KO6_axis_ptr(p_K, sx) - T(2) * KO6_axis_ptr(p_theta, sx)) +
                                     (KO6_axis_ptr(p_K, sy) - T(2) * KO6_axis_ptr(p_theta, sy)) +
                                     (KO6_axis_ptr(p_K, 1) - T(2) * KO6_axis_ptr(p_theta, 1));
-                const T diss_scaled = (ko_sigma / G.dx) * diss_khat;
+                const T diss_scaled = ko_scale * diss_khat;
 
                 *p_rhs = adv - laplacian + quad + z4c_term + diss_scaled;
 

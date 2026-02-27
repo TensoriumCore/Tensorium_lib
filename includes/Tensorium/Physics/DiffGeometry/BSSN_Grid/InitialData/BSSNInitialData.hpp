@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
+#include <limits>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -279,6 +280,7 @@ inline void minkowski(BSSNGridSoA<T> &G, T M, T xc = T(0), T yc = T(0), T zc = T
 
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    zero_z4c_fields(G);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = I0; i < I1; ++i)
@@ -822,6 +824,46 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     int          tp_verbose = 0;
     if (const char *v = std::getenv("TENSORIUM_TWOPUNCTURES_VERBOSE"))
         tp_verbose = (std::atoi(v) != 0) ? 1 : 0;
+    if (const char *v = std::getenv("TENSORIUM_MOVING_PUNCTURE_TP_VERBOSE"))
+        tp_verbose = (std::atoi(v) != 0) ? 1 : 0;
+    auto parse_env_int = [](const char *name, int fallback, int min_value) {
+        const char *raw = std::getenv(name);
+        if (raw == nullptr || *raw == '\0')
+            return fallback;
+        char *end = nullptr;
+        const long parsed = std::strtol(raw, &end, 10);
+        if (end == raw || *end != '\0')
+            return fallback;
+        if (parsed < long(min_value))
+            return min_value;
+        if (parsed > long(std::numeric_limits<int>::max()))
+            return std::numeric_limits<int>::max();
+        return int(parsed);
+    };
+    auto parse_env_real = [](const char *name, double fallback, double min_value) {
+        const char *raw = std::getenv(name);
+        if (raw == nullptr || *raw == '\0')
+            return fallback;
+        char *end = nullptr;
+        const double parsed = std::strtod(raw, &end);
+        if (end == raw || *end != '\0')
+            return fallback;
+        if (!std::isfinite(parsed))
+            return fallback;
+        return (parsed < min_value) ? min_value : parsed;
+    };
+    const int    tp_npoints_A =
+        parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_NPOINTS_A", 30, 8);
+    const int tp_npoints_B =
+        parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_NPOINTS_B", 30, 8);
+    const int tp_npoints_phi =
+        parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_NPOINTS_PHI", 16, 4);
+    const double tp_newton_tol =
+        parse_env_real("TENSORIUM_MOVING_PUNCTURE_TP_NEWTON_TOL", 1.0e-10, 1.0e-16);
+    const int tp_newton_maxit =
+        parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_NEWTON_MAXIT", 5, 1);
+    const double tp_epsilon =
+        parse_env_real("TENSORIUM_MOVING_PUNCTURE_TP_EPSILON", 1.0e-6, 1.0e-16);
     int omp_threads = 1;
     if (const char *threads_env = std::getenv("OMP_NUM_THREADS")) {
         const int parsed = std::atoi(threads_env);
@@ -836,6 +878,10 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
                 0
 #endif
     );
+    std::printf("[init.interpolate][cfg] npoints_A=%d npoints_B=%d npoints_phi=%d "
+                "Newton_tol=%.3e Newton_maxit=%d TP_epsilon=%.3e verbose=%d\n",
+                tp_npoints_A, tp_npoints_B, tp_npoints_phi, tp_newton_tol, tp_newton_maxit,
+                tp_epsilon, tp_verbose);
     std::fflush(stdout);
 
     // TwoPunctures assumes punctures at (+/- par_b, 0, 0) plus a common center offset.
@@ -886,12 +932,12 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     TwoPunctures_params_set_Real(const_cast<char *>("center_offset2"), double(center_y));
     TwoPunctures_params_set_Real(const_cast<char *>("center_offset3"), double(center_z));
     // Match the GRChombo BinaryBH TwoPunctures defaults.
-    TwoPunctures_params_set_Int(const_cast<char *>("npoints_A"), 30);
-    TwoPunctures_params_set_Int(const_cast<char *>("npoints_B"), 30);
-    TwoPunctures_params_set_Int(const_cast<char *>("npoints_phi"), 16);
-    TwoPunctures_params_set_Real(const_cast<char *>("Newton_tol"), 1.0e-10);
-    TwoPunctures_params_set_Int(const_cast<char *>("Newton_maxit"), 5);
-    TwoPunctures_params_set_Real(const_cast<char *>("TP_epsilon"), 1.0e-6);
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_A"), tp_npoints_A);
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_B"), tp_npoints_B);
+    TwoPunctures_params_set_Int(const_cast<char *>("npoints_phi"), tp_npoints_phi);
+    TwoPunctures_params_set_Real(const_cast<char *>("Newton_tol"), tp_newton_tol);
+    TwoPunctures_params_set_Int(const_cast<char *>("Newton_maxit"), tp_newton_maxit);
+    TwoPunctures_params_set_Real(const_cast<char *>("TP_epsilon"), tp_epsilon);
 
     std::printf("[init.interpolate][step 2/7] solving TwoPunctures spectral system...\n");
     std::fflush(stdout);

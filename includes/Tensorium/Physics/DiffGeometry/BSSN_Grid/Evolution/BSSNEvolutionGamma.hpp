@@ -87,6 +87,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
+    const T         ko_scale = T(ko_sigma / G.dx);
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -121,7 +122,8 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             for (size_t k = k0; k < k1; ++k) {
 
                 T Gamma_tilde_vals[3][3][3];
-                tensorium_RG::bssn::compute_tildeGamma_symbols(G, i, j, k, Gamma_tilde_vals);
+                tensorium_RG::bssn::compute_tildeGamma_symbols_ptr(
+                    p_gcov, p_ginv, sx, sy, inv_12dx, inv_12dy, inv_12dz, Gamma_tilde_vals);
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
                 if (((i - i0) % gamma_validation_stride == 0) &&
                     ((j - j0) % gamma_validation_stride == 0) &&
@@ -225,19 +227,6 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 }
 #endif
 
-                auto dot_metric_row = [&](int row, const T vec[3]) -> T {
-                    if (row == 0)
-                        return row0_x * vec[0] + row0_y * vec[1] + row0_z * vec[2];
-                    if (row == 1)
-                        return row1_x * vec[0] + row1_y * vec[1] + row1_z * vec[2];
-                    return row2_x * vec[0] + row2_y * vec[1] + row2_z * vec[2];
-                };
-
-                auto dot_A_row = [&](int row, const T vec[3]) -> T {
-                    return A_up_matrix[row][0] * vec[0] + A_up_matrix[row][1] * vec[1] +
-                           A_up_matrix[row][2] * vec[2];
-                };
-
                 const T beta_vec[3] = {*p_beta[0], *p_beta[1], *p_beta[2]};
                 const T gamma_vec[3] = {*p_Gamma[0], *p_Gamma[1], *p_Gamma[2]};
 
@@ -295,11 +284,43 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                                   Dz_ptr(p_K, inv_12dz)};
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
+                const T theta_val = *p_theta;
                 const T chi_guarded = guard_chi_div(chi, gauge_params.chi_div_floor);
                 const T K_val = *p_K;
                 const T kappa1_lapse = gauge_params.kappa1_times_lapse(alpha);
-                T       gamma_metric[3] = {T(0), T(0), T(0)};
-                metric_inverse_divergence(G, i, j, k, gamma_metric);
+
+                const T metric_dot_grad_div[3] = {
+                    row0_x * grad_div[0] + row0_y * grad_div[1] + row0_z * grad_div[2],
+                    row1_x * grad_div[0] + row1_y * grad_div[1] + row1_z * grad_div[2],
+                    row2_x * grad_div[0] + row2_y * grad_div[1] + row2_z * grad_div[2]};
+                const T metric_dot_dK[3] = {row0_x * d_K[0] + row0_y * d_K[1] + row0_z * d_K[2],
+                                            row1_x * d_K[0] + row1_y * d_K[1] + row1_z * d_K[2],
+                                            row2_x * d_K[0] + row2_y * d_K[1] + row2_z * d_K[2]};
+                const T metric_dot_dtheta[3] = {
+                    row0_x * d_theta[0] + row0_y * d_theta[1] + row0_z * d_theta[2],
+                    row1_x * d_theta[0] + row1_y * d_theta[1] + row1_z * d_theta[2],
+                    row2_x * d_theta[0] + row2_y * d_theta[1] + row2_z * d_theta[2]};
+                const T metric_dot_dalpha[3] = {
+                    row0_x * d_alpha[0] + row0_y * d_alpha[1] + row0_z * d_alpha[2],
+                    row1_x * d_alpha[0] + row1_y * d_alpha[1] + row1_z * d_alpha[2],
+                    row2_x * d_alpha[0] + row2_y * d_alpha[1] + row2_z * d_alpha[2]};
+                const T A_dot_dalpha[3] = {
+                    A_up_matrix[0][0] * d_alpha[0] + A_up_matrix[0][1] * d_alpha[1] +
+                        A_up_matrix[0][2] * d_alpha[2],
+                    A_up_matrix[1][0] * d_alpha[0] + A_up_matrix[1][1] * d_alpha[1] +
+                        A_up_matrix[1][2] * d_alpha[2],
+                    A_up_matrix[2][0] * d_alpha[0] + A_up_matrix[2][1] * d_alpha[1] +
+                        A_up_matrix[2][2] * d_alpha[2]};
+                const T A_dot_dchi[3] = {A_up_matrix[0][0] * d_chi[0] + A_up_matrix[0][1] * d_chi[1] +
+                                             A_up_matrix[0][2] * d_chi[2],
+                                         A_up_matrix[1][0] * d_chi[0] + A_up_matrix[1][1] * d_chi[1] +
+                                             A_up_matrix[1][2] * d_chi[2],
+                                         A_up_matrix[2][0] * d_chi[0] + A_up_matrix[2][1] * d_chi[1] +
+                                             A_up_matrix[2][2] * d_chi[2]};
+                T gamma_metric[3] = {T(0), T(0), T(0)};
+                detail::metric_inverse_divergence_ptr(p_ginv[0], p_ginv[1], p_ginv[2], p_ginv[3],
+                                                      p_ginv[4], p_ginv[5], sx, sy, inv_12dx,
+                                                      inv_12dy, inv_12dz, gamma_metric);
                 gamma_metric[0] = -gamma_metric[0];
                 gamma_metric[1] = -gamma_metric[1];
                 gamma_metric[2] = -gamma_metric[2];
@@ -329,21 +350,21 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                         gamma_beta += gamma_driver[axis] * d_beta[comp][axis];
 
                     const T stretch = two_thirds * gamma_driver[comp] * div_beta;
-                    const T grad_div_term = dot_metric_row(comp, grad_div) * inv_third;
-                    const T A_grad_alpha = dot_A_row(comp, d_alpha);
+                    const T grad_div_term = metric_dot_grad_div[comp] * inv_third;
+                    const T A_grad_alpha = A_dot_dalpha[comp];
 
                     T GammaA = T(0);
                     for (int m = 0; m < 3; ++m)
                         for (int n = 0; n < 3; ++n)
                             GammaA += Gamma_tilde_vals[comp][m][n] * A_up_matrix[m][n];
 
-                    const T grad_K_up = dot_metric_row(comp, d_K);
-                    const T A_grad_chi_over_chi = dot_A_row(comp, d_chi) / chi_guarded;
+                    const T grad_K_up = metric_dot_dK[comp];
+                    const T A_grad_chi_over_chi = A_dot_dchi[comp] / chi_guarded;
 
                     const T source = T(2) * alpha * (GammaA - two_thirds * grad_K_up);
-                    const T grad_theta_up = dot_metric_row(comp, d_theta);
-                    const T grad_alpha_up = dot_metric_row(comp, d_alpha);
-                    const T theta_drive = T(2) * alpha * grad_theta_up - T(2) * (*p_theta) * grad_alpha_up;
+                    const T grad_theta_up = metric_dot_dtheta[comp];
+                    const T grad_alpha_up = metric_dot_dalpha[comp];
+                    const T theta_drive = T(2) * alpha * grad_theta_up - T(2) * theta_val * grad_alpha_up;
                     const T chi_drive = -T(3) * alpha * A_grad_chi_over_chi;
                     const T z4_k_drive = -T(4) / T(3) * alpha * K_val * z_over_chi[comp];
                     const T damping = -T(2) * kappa1_lapse * z_over_chi[comp];
@@ -353,7 +374,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
 
                     *p_rhs[comp] = adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
                                    T(2) * A_grad_alpha + source + theta_drive + chi_drive +
-                                   z4_k_drive + damping + (ko_sigma / G.dx) * diss;
+                                   z4_k_drive + damping + ko_scale * diss;
                 }
 
                 for (int c = 0; c < 3; ++c) {

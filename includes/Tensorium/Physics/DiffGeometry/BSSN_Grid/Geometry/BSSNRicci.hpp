@@ -38,8 +38,8 @@ namespace tensorium_RG::bssn {
  * cached
  *          \f$\tilde{\Gamma}^i\f$.
  * @param[out] Ricci6 Packed symmetric destination fields.
- * @param throw_on_violation If true, `assert_invariants` raises when the projector detects
- *                           determinant or trace drifts beyond tolerance.
+ * @param throw_on_violation If true, run post-Ricci invariant checks and raise on violation.
+ *                           If false, skip invariant scans entirely (performance path).
  *
  * @details
  * **Mapping to code.**
@@ -76,6 +76,7 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
 
     const ptrdiff_t sx = G.gamma_tilde[0].st.sx;
     const ptrdiff_t sy = G.gamma_tilde[0].st.sy;
+    constexpr int   map_s[3][3] = {{XX, XY, XZ}, {XY, YY, YZ}, {XZ, YZ, ZZ}};
 
 #pragma omp parallel for collapse(2)
     for (size_t i = i0; i < i1; ++i) {
@@ -121,8 +122,7 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
                 gI[2][0] = gI[0][2];
                 gI[2][1] = gI[1][2];
 
-                double    dg[3][3][3];
-                const int map_s[3][3] = {{0, 1, 2}, {1, 3, 4}, {2, 4, 5}};
+                double dg[3][3][3];
 
                 for (int a = 0; a < 3; ++a) {
                     for (int b = a; b < 3; ++b) {
@@ -272,11 +272,12 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
                     }
                 }
 
-                for (int s = 0; s < 6; ++s) {
-                    int a = (s == 0 || s == 1 || s == 2) ? 0 : ((s == 3 || s == 4) ? 1 : 2);
-                    int b = (s == 0) ? 0 : ((s == 1 || s == 3) ? 1 : 2);
-                    *p_Ricci[s] = (T)(R_tilde[a][b] + R_chi[a][b]);
-                }
+                *p_Ricci[XX] = (T)(R_tilde[0][0] + R_chi[0][0]);
+                *p_Ricci[XY] = (T)(R_tilde[0][1] + R_chi[0][1]);
+                *p_Ricci[XZ] = (T)(R_tilde[0][2] + R_chi[0][2]);
+                *p_Ricci[YY] = (T)(R_tilde[1][1] + R_chi[1][1]);
+                *p_Ricci[YZ] = (T)(R_tilde[1][2] + R_chi[1][2]);
+                *p_Ricci[ZZ] = (T)(R_tilde[2][2] + R_chi[2][2]);
 
                 for (int s = 0; s < 6; ++s) {
                     ++p_gam[s];
@@ -290,7 +291,9 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
         }
     }
 
-    tensorium_RG::bssn::assert_invariants(G, "ricci", 4, throw_on_violation);
+    if (throw_on_violation) {
+        tensorium_RG::bssn::assert_invariants(G, "ricci", 4, true);
+    }
 }
 
 } // namespace tensorium_RG::bssn
