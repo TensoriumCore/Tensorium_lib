@@ -164,6 +164,24 @@ inline __m256 extractf32x8_ps_fallback(__m512 v, int imm8) {
         return _mm256_load_ps(&tmp[8]);
 }
 
+inline __m256d extractf64x4_pd_fallback(__m512d v, int imm8) {
+    alignas(64) double tmp[8];
+    _mm512_store_pd(tmp, v);
+    if (imm8 == 0)
+        return _mm256_load_pd(&tmp[0]);
+    else
+        return _mm256_load_pd(&tmp[4]);
+}
+
+inline __m256i extracti64x4_epi64_fallback(__m512i v, int imm8) {
+    alignas(64) std::uint64_t tmp[8];
+    _mm512_store_si512(reinterpret_cast<__m512i *>(tmp), v);
+    if (imm8 == 0)
+        return _mm256_load_si256(reinterpret_cast<const __m256i *>(&tmp[0]));
+    else
+        return _mm256_load_si256(reinterpret_cast<const __m256i *>(&tmp[4]));
+}
+
 /*
  * REAL NUMBERS
  */
@@ -211,13 +229,21 @@ __attribute__((always_inline, hot, flatten)) inline float reduce_sum(__m512 acc)
 }
 __attribute__((always_inline, hot, flatten)) inline double reduce_sum(__m512d acc) {
     __m256d low = _mm512_castpd512_pd256(acc);
+    #if defined(__AVX512DQ__)
     __m256d high = _mm512_extractf64x4_pd(acc, 1);
+    #else
+    __m256d high = extractf64x4_pd_fallback(acc, 1);
+    #endif
     __m256d sum = _mm256_add_pd(low, high);
     return reduce_sum(sum);
 }
 __attribute__((always_inline, hot, flatten)) inline uint64_t reduce_sum(__m512i acc) {
     __m256i low = _mm512_castsi512_si256(acc);
+    #if defined(__AVX512DQ__)
     __m256i high = _mm512_extracti64x4_epi64(acc, 1);
+    #else
+    __m256i high = extracti64x4_epi64_fallback(acc, 1);
+    #endif
     __m256i sum = _mm256_add_epi64(low, high);
     return reduce_sum(sum);
 }
@@ -235,6 +261,14 @@ static inline __m512 andnot_fallback(__m512 a, __m512 b) {
     __m512i b_bits = _mm512_castps_si512(b);
     __m512i result_bits = _mm512_and_si512(not_a_bits, b_bits);
     return _mm512_castsi512_ps(result_bits);
+}
+
+static inline __m512d andnot_pd_fallback(__m512d a, __m512d b) {
+    __m512i a_bits = _mm512_castpd_si512(a);
+    __m512i not_a_bits = _mm512_xor_si512(a_bits, _mm512_set1_epi32(-1));
+    __m512i b_bits = _mm512_castpd_si512(b);
+    __m512i result_bits = _mm512_and_si512(not_a_bits, b_bits);
+    return _mm512_castsi512_pd(result_bits);
 }
 #    endif
 
@@ -783,6 +817,7 @@ template <> struct SimdTraits<float, avx512_t> {
     static inline reg   load(const float *ptr) { return _mm512_load_ps(ptr); }
     static inline reg   loadu(const float *ptr) { return _mm512_loadu_ps(ptr); }
     static inline void  store(float *ptr, reg x) { _mm512_store_ps(ptr, x); }
+    static inline void  storeu(float *ptr, reg x) { _mm512_storeu_ps(ptr, x); }
     static inline reg   loadu_stream(const float *ptr) { return _mm512_loadu_ps(ptr); }
     static inline reg   zero() { return _mm512_setzero_ps(); }
     static inline reg   fmadd(reg a, reg b, reg c) { return _mm512_fmadd_ps(a, b, c); }
@@ -819,13 +854,18 @@ template <> struct SimdTraits<double, avx512_t> {
     static inline reg   load(const double *ptr) { return _mm512_load_pd(ptr); }
     static inline reg   loadu(const double *ptr) { return _mm512_loadu_pd(ptr); }
     static inline void  store(double *ptr, reg x) { _mm512_store_pd(ptr, x); }
+    static inline void  storeu(double *ptr, reg x) { _mm512_storeu_pd(ptr, x); }
     static inline reg   loadu_stream(const double *ptr) { return _mm512_loadu_pd(ptr); }
     static inline reg   zero() { return _mm512_setzero_pd(); }
     static inline reg   fmadd(reg a, reg b, reg c) { return _mm512_fmadd_pd(a, b, c); }
     static inline reg   add(reg a, reg b) { return _mm512_add_pd(a, b); }
     static inline reg   mul(reg a, reg b) { return _mm512_mul_pd(a, b); }
     static inline reg   sub(reg a, reg b) { return _mm512_sub_pd(a, b); }
+    #        if defined(__AVX512DQ__)
     static inline reg   andnot(reg a, reg b) { return _mm512_andnot_pd(a, b); }
+    #        else
+    static inline reg   andnot(reg a, reg b) { return andnot_pd_fallback(a, b); }
+    #        endif
     static inline void  store_stream(double *ptr, reg x) { _mm512_stream_pd(ptr, x); }
     static inline reg   max(reg a, reg b) { return _mm512_max_pd(a, b); }
 };
@@ -1424,7 +1464,11 @@ template <> struct SimdTraits<std::complex<float>, avx512_t> {
 
     static inline reg setzero() { return _mm512_setzero_ps(); }
     static inline reg zero() { return _mm512_setzero_ps(); }
+    #        if defined(__AVX512DQ__)
     static inline reg andnot(reg a, reg b) { return _mm512_andnot_ps(a, b); }
+    #        else
+    static inline reg andnot(reg a, reg b) { return andnot_fallback(a, b); }
+    #        endif
     static inline reg max(reg a, reg b) { return _mm512_max_ps(a, b); }
     static inline reg min(reg a, reg b) { return _mm512_min_ps(a, b); }
 
@@ -1501,7 +1545,11 @@ template <> struct SimdTraits<std::complex<double>, avx512_t> {
 
     static inline reg setzero() { return _mm512_setzero_pd(); }
     static inline reg zero() { return _mm512_setzero_pd(); }
+    #        if defined(__AVX512DQ__)
     static inline reg andnot(reg a, reg b) { return _mm512_andnot_pd(a, b); }
+    #        else
+    static inline reg andnot(reg a, reg b) { return andnot_pd_fallback(a, b); }
+    #        endif
     static inline reg max(reg a, reg b) { return _mm512_max_pd(a, b); }
     static inline reg min(reg a, reg b) { return _mm512_min_pd(a, b); }
 

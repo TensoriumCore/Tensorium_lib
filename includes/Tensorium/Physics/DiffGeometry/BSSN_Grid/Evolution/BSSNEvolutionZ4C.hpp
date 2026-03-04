@@ -63,10 +63,9 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
     const T two_plus_kappa2 = T(2) + params.kappa2;
     const T two_thirds = T(2) / T(3);
     const T ko_scale = T(ko_sigma / G.dx);
+    const bool use_Z_field = params.evolve_Z || params.frozen_Z_is_synced;
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.Theta.idx(i, j, k0);
 
             const T *p_theta = G.Theta.ptr() + idx_start;
@@ -93,6 +92,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
             T *p_rhs = rhs_theta.ptr() + idx_start;
 
+            #pragma omp simd
             for (size_t k = k0; k < k1; ++k) {
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
@@ -103,7 +103,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
                 T       z_phys[3] = {T(0), T(0), T(0)};
-                if (params.evolve_Z) {
+                if (use_Z_field) {
                     z_phys[0] = *p_Z[0];
                     z_phys[1] = *p_Z[1];
                     z_phys[2] = *p_Z[2];
@@ -222,7 +222,18 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                     ++p_R[s];
                 }
             }
-        }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 
@@ -250,9 +261,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
         return;
 
     if (!params.evolve_Z) {
-#pragma omp parallel for collapse(2)
-        for (size_t i = i0; i < i1; ++i) {
-            for (size_t j = j0; j < j1; ++j) {
+        auto loop_zero_ij = [&](size_t i, size_t j) {
                 size_t idx_start = rhs_Z[0].idx(i, j, k0);
                 T     *p_rhs0 = rhs_Z[0].ptr() + idx_start;
                 T     *p_rhs1 = rhs_Z[1].ptr() + idx_start;
@@ -265,7 +274,17 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                     ++p_rhs1;
                     ++p_rhs2;
                 }
-            }
+        };
+        if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_zero_ij(i, j);
+        } else {
+#pragma omp parallel for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_zero_ij(i, j);
         }
         return;
     }
@@ -281,9 +300,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
     const ptrdiff_t sy = G.Z[0].st.sy;
     const T         two_thirds = T(2) / T(3);
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.Z[0].idx(i, j, k0);
 
             const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
@@ -486,7 +503,18 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                     ++p_A[s];
                 }
             }
-        }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 

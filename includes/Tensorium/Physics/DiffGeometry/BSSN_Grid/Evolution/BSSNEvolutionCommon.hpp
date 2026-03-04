@@ -15,6 +15,15 @@
 
 namespace tensorium_RG::bssn {
 
+inline bool &rhs_kernel_team_mode_flag() {
+    static thread_local bool enabled = false;
+    return enabled;
+}
+
+inline void set_rhs_kernel_team_mode(bool enabled) { rhs_kernel_team_mode_flag() = enabled; }
+
+inline bool rhs_kernel_team_mode_enabled() { return rhs_kernel_team_mode_flag(); }
+
 #ifndef TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
 #define TENSORIUM_BSSN_EVOLUTION_CLAMP_HELPERS_DEFINED
 inline size_t clamped_lower(size_t lower, size_t guard, size_t upper) {
@@ -129,8 +138,6 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
                                  const double inv_12dy, const double inv_12dz,
                                  const ptrdiff_t sx, const ptrdiff_t sy) {
     using namespace tensorium_RG::fd;
-    constexpr int row_of_sym[6] = {0, 0, 0, 1, 1, 2};
-    constexpr int col_of_sym[6] = {0, 1, 2, 1, 2, 2};
 
     const size_t idx = G.alpha.idx(i, j, k);
 
@@ -138,116 +145,29 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
     const T chi_guarded = guard_chi_div(chi, chi_div_floor);
     const T inv_chi = T(1) / chi_guarded;
 
-    T gamma_phys[3][3];
-    T gamma_phys_inv[3][3];
-
-    const T *p_gamma[6];
-    const T *p_gamma_inv[6];
-    for (int s = 0; s < 6; ++s) {
-        p_gamma[s] = G.gamma_tilde[s].ptr() + idx;
-        p_gamma_inv[s] = G.gamma_tilde_inv[s].ptr() + idx;
-    }
-
-    for (int s = 0; s < 6; ++s) {
-        const int row = row_of_sym[s];
-        const int col = col_of_sym[s];
-        const T gt = *p_gamma[s];
-        const T gt_inv = *p_gamma_inv[s];
-        const T g_phys = gt * inv_chi;
-        const T g_phys_inv = gt_inv * chi;
-        gamma_phys[row][col] = g_phys;
-        gamma_phys[col][row] = g_phys;
-        gamma_phys_inv[row][col] = g_phys_inv;
-        gamma_phys_inv[col][row] = g_phys_inv;
-    }
-
     const T *p_chi = G.chi.ptr() + idx;
     const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
                         Dz_ptr(p_chi, inv_12dz)};
 
-    T d_g_phys[3][3][3];
-    for (int s = 0; s < 6; ++s) {
-        const int row = row_of_sym[s];
-        const int col = col_of_sym[s];
-        const T *p_g = p_gamma[s];
-        const T  d_gt_x = Dx_ptr(p_g, sx, inv_12dx);
-        const T  d_gt_y = Dy_ptr(p_g, sy, inv_12dy);
-        const T  d_gt_z = Dz_ptr(p_g, inv_12dz);
-        const T  g_val = gamma_phys[row][col];
-        const T  val_x = (d_gt_x - g_val * d_chi[0]) * inv_chi;
-        const T  val_y = (d_gt_y - g_val * d_chi[1]) * inv_chi;
-        const T  val_z = (d_gt_z - g_val * d_chi[2]) * inv_chi;
-        d_g_phys[0][row][col] = val_x;
-        d_g_phys[0][col][row] = val_x;
-        d_g_phys[1][row][col] = val_y;
-        d_g_phys[1][col][row] = val_y;
-        d_g_phys[2][row][col] = val_z;
-        d_g_phys[2][col][row] = val_z;
-    }
+    T g_tilde[3][3];
+    g_tilde[0][0] = G.gamma_tilde[XX].ptr()[idx];
+    g_tilde[0][1] = g_tilde[1][0] = G.gamma_tilde[XY].ptr()[idx];
+    g_tilde[0][2] = g_tilde[2][0] = G.gamma_tilde[XZ].ptr()[idx];
+    g_tilde[1][1] = G.gamma_tilde[YY].ptr()[idx];
+    g_tilde[1][2] = g_tilde[2][1] = G.gamma_tilde[YZ].ptr()[idx];
+    g_tilde[2][2] = G.gamma_tilde[ZZ].ptr()[idx];
 
-    T gamma_conn[3][3][3];
-    for (int up = 0; up < 3; ++up)
-        for (int lo1 = 0; lo1 < 3; ++lo1)
-            for (int lo2 = 0; lo2 < 3; ++lo2) {
-                T sum = T(0);
-                for (int m = 0; m < 3; ++m)
-                    sum += gamma_phys_inv[up][m] *
-                           (d_g_phys[lo1][lo2][m] + d_g_phys[lo2][lo1][m] -
-                            d_g_phys[m][lo1][lo2]);
-                gamma_conn[up][lo1][lo2] = T(0.5) * sum;
-            }
-
-    const T *p_Z[3] = {G.Z[0].ptr() + idx, G.Z[1].ptr() + idx, G.Z[2].ptr() + idx};
-    const T z_contra[3] = {*p_Z[0], *p_Z[1], *p_Z[2]};
-
-    T Z_cov[3] = {T(0), T(0), T(0)};
-    for (int row = 0; row < 3; ++row)
-        for (int m = 0; m < 3; ++m)
-            Z_cov[row] += gamma_phys[row][m] * z_contra[m];
-
-    T dZ_contra[3][3];
-    for (int comp = 0; comp < 3; ++comp) {
-        const T *p_vec = p_Z[comp];
-        dZ_contra[0][comp] = Dx_ptr(p_vec, sx, inv_12dx);
-        dZ_contra[1][comp] = Dy_ptr(p_vec, sy, inv_12dy);
-        dZ_contra[2][comp] = Dz_ptr(p_vec, inv_12dz);
-    }
-
-    T partial_Zcov[3][3];
-    for (int dir = 0; dir < 3; ++dir)
-        for (int b = 0; b < 3; ++b) {
-            T sum = T(0);
-            for (int m = 0; m < 3; ++m) {
-                sum += d_g_phys[dir][b][m] * z_contra[m];
-                sum += gamma_phys[b][m] * dZ_contra[dir][m];
-            }
-            partial_Zcov[dir][b] = sum;
-        }
-
-    T covZ[3][3];
-    for (int dir = 0; dir < 3; ++dir)
-        for (int b = 0; b < 3; ++b) {
-            T val = partial_Zcov[dir][b];
-            for (int m = 0; m < 3; ++m)
-                val -= gamma_conn[m][dir][b] * Z_cov[m];
-            covZ[dir][b] = val;
-        }
-
-    T divZ = T(0);
-    for (int dir = 0; dir < 3; ++dir)
-        for (int b = 0; b < 3; ++b)
-            divZ += gamma_phys_inv[dir][b] * covZ[dir][b];
-
-    const T two_thirds = T(2) / T(3);
-    for (int s = 0; s < 6; ++s)
-        Z4corr[s] = T(0);
+    const T z_over_chi[3] = {G.Z[0].ptr()[idx] * inv_chi, G.Z[1].ptr()[idx] * inv_chi,
+                             G.Z[2].ptr()[idx] * inv_chi};
 
     for (int a = 0; a < 3; ++a)
         for (int b = a; b < 3; ++b) {
-            const int s = tensorium_RG::fd::sym6(a, b);
-            const T   sym = covZ[a][b] + covZ[b][a];
-            const T   val = sym - two_thirds * gamma_phys[a][b] * divZ;
-            Z4corr[s] = val;
+            T z_terms = T(0);
+            for (int m = 0; m < 3; ++m) {
+                z_terms += z_over_chi[m] * (g_tilde[a][m] * d_chi[b] + g_tilde[b][m] * d_chi[a] -
+                                            g_tilde[a][b] * d_chi[m]);
+            }
+            Z4corr[sym6(a, b)] = z_terms * inv_chi;
         }
 }
 

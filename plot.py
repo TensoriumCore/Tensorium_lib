@@ -79,6 +79,9 @@ no_auto_clim = ("--no-auto-clim" in flags) or (
 contours_off = ("--no-contours" in flags) or (
     os.getenv("TENSORIUM_PLOT_NO_CONTOURS", "0") != "0"
 )
+horizon_overlay_mode = ("--horizon-overlay" in flags) or (
+    os.getenv("TENSORIUM_PLOT_HORIZON_OVERLAY", "0") != "0"
+)
 yt_colors = ("--yt-colors" in flags) or (os.getenv("TENSORIUM_PLOT_USE_YT_COLORS", "1") != "0")
 if "--no-yt-colors" in flags:
     yt_colors = False
@@ -163,8 +166,28 @@ def parse_int_value(name, default):
         return default
 
 
+def parse_float_value(name, default):
+    raw = parse_flag_value(name, str(default))
+    try:
+        return float(raw)
+    except ValueError:
+        return default
+
+
 def smooth(M, sigma=1.0):
     return gaussian_filter(M, sigma=sigma)
+
+
+def truncated_cmap(name, minval=0.0, maxval=1.0, n=256):
+    base = plt.get_cmap(name)
+    minval = float(np.clip(minval, 0.0, 1.0))
+    maxval = float(np.clip(maxval, 0.0, 1.0))
+    if maxval <= minval:
+        maxval = min(1.0, minval + 1e-6)
+    return colors.LinearSegmentedColormap.from_list(
+        f"{name}_trunc_{minval:.3f}_{maxval:.3f}",
+        base(np.linspace(minval, maxval, n)),
+    )
 
 
 def extract_step(path):
@@ -460,28 +483,44 @@ def update_regular(frame_idx):
     if step is None:
         step = frame_idx
 
-    W = df.pivot(index="y", columns="x", values="W").values
+    value_col = "W" if "W" in df.columns else ("chi" if "chi" in df.columns else None)
+    if value_col is None:
+        print(
+            "[ERR] slice CSV missing both 'chi' and 'W' columns. Available columns:",
+            list(df.columns),
+        )
+        sys.exit(1)
+
+    conformal_field = df.pivot(index="y", columns="x", values=value_col).values
     alpha = df.pivot(index="y", columns="x", values="alpha").values
-    mask = df.pivot(index="y", columns="x", values="mask").values
+    if "mask" in df.columns:
+        mask = df.pivot(index="y", columns="x", values="mask").values
+    else:
+        mask = np.zeros_like(alpha)
 
     if smooth_sigma > 0.0:
-        W_plot = smooth(W, smooth_sigma)
+        conformal_plot = smooth(conformal_field, smooth_sigma)
         alpha_plot = smooth(alpha, smooth_sigma)
     else:
-        W_plot = W
+        conformal_plot = conformal_field
         alpha_plot = alpha
 
-    # Physical display clamp: avoid negative undershoot from smoothing/interpolation.
-    W_disp = np.maximum(W_plot, 0.0)
+    conformal_disp = np.maximum(conformal_plot, 0.0)
     alpha_disp = np.maximum(alpha_plot, 0.0)
 
-    # Keep a distinct black region on BH interiors/horizons.
-    # Prefer exported mask, then reinforce with an alpha threshold.
-    horizon_mask = np.isfinite(mask) & (mask > 0.5)
-    horizon_mask = horizon_mask | (np.isfinite(alpha) & (alpha <= 0.14))
-    if np.any(horizon_mask):
-        horizon_mask = binary_dilation(horizon_mask, iterations=1)
-    horizon_overlay_alpha = 0.94 * horizon_mask.astype(float)
+    if horizon_overlay_mode:
+        horizon_mask = np.isfinite(mask) & (mask > 0.5)
+        horizon_alpha_cutoff = parse_float_value(
+            "--horizon-alpha-cutoff",
+            float(os.getenv("TENSORIUM_PLOT_HORIZON_ALPHA_CUTOFF", "-1")),
+        )
+        if np.isfinite(horizon_alpha_cutoff) and horizon_alpha_cutoff >= 0.0:
+            horizon_mask = horizon_mask | (np.isfinite(alpha) & (alpha <= horizon_alpha_cutoff))
+        if np.any(horizon_mask):
+            horizon_mask = binary_dilation(horizon_mask, iterations=1)
+        horizon_overlay_alpha = 0.94 * horizon_mask.astype(float)
+    else:
+        horizon_overlay_alpha = np.zeros_like(alpha_disp)
 
     extent = [df["x"].min(), df["x"].max(), df["y"].min(), df["y"].max()]
     x_unique = np.sort(df["x"].unique())
@@ -492,45 +531,51 @@ def update_regular(frame_idx):
     ax2.clear()
     ax3.clear()
 
-    w_source = "fixed"
+    conformal_source = "fixed"
     a_source = "fixed"
     if no_auto_clim:
-        w_vmin, w_vmax = 0.0, 1.0
+        conformal_vmin, conformal_vmax = 0.0, 1.0
         a_vmin, a_vmax = 0.0, 1.0
-        w_gamma, a_gamma = 0.65, 0.75
+        conformal_gamma, a_gamma = 0.65, 0.75
     else:
         if yt_colors:
-            w_vmin, w_vmax, w_gamma, w_source = profiled_clim(
-                W_disp, "W", vmax_floor=0.80, vmax_cap=1.30, default_gamma=0.68
+            conformal_vmin, conformal_vmax, conformal_gamma, conformal_source = profiled_clim(
+                conformal_disp, value_col, vmax_floor=0.80, vmax_cap=1.30, default_gamma=0.68
             )
             a_vmin, a_vmax, a_gamma, a_source = profiled_clim(
                 alpha_disp, "alpha", vmax_floor=0.70, vmax_cap=1.15, default_gamma=0.78
             )
         else:
-            w_vmin, w_vmax = horizon_clim(
-                W_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.8, vmax_cap=1.2
+            conformal_vmin, conformal_vmax = horizon_clim(
+                conformal_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.8, vmax_cap=1.2
             )
             a_vmin, a_vmax = horizon_clim(
                 alpha_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.7, vmax_cap=1.1
             )
-            w_gamma, a_gamma = 0.55, 0.62
-            w_source = "numpy"
+            conformal_gamma, a_gamma = 0.55, 0.62
+            conformal_source = "numpy"
             a_source = "numpy"
 
-    # Nonlinear norm keeps low-but-physical values visible; black remains near horizon interior.
-    w_norm = colors.PowerNorm(gamma=w_gamma, vmin=w_vmin, vmax=w_vmax)
+    conformal_norm = colors.PowerNorm(
+        gamma=conformal_gamma, vmin=conformal_vmin, vmax=conformal_vmax
+    )
     a_norm = colors.PowerNorm(gamma=a_gamma, vmin=a_vmin, vmax=a_vmax)
+    alpha_cmap_min = parse_float_value(
+        "--alpha-cmap-min",
+        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.12")),
+    )
+    alpha_cmap = truncated_cmap("magma", alpha_cmap_min, 1.0)
 
     ax1.imshow(
-        W_disp,
+        conformal_disp,
         extent=extent,
         origin="lower",
         cmap="turbo",
-        norm=w_norm,
+        norm=conformal_norm,
         interpolation="bilinear",
     )
     ax1.imshow(
-        np.zeros_like(W_disp),
+        np.zeros_like(conformal_disp),
         extent=extent,
         origin="lower",
         cmap="gray",
@@ -539,27 +584,43 @@ def update_regular(frame_idx):
         alpha=horizon_overlay_alpha,
         interpolation="nearest",
     )
-    ax1.set_title(
-        tex(
-            rf"$W\ \left(\mathrm{{step}}={step},\ \mathrm{{profile}}={w_source}\right)$",
-            f"W (Conformal Factor)  step = {step}  [profile:{w_source}]",
+    if value_col == "chi":
+        ax1.set_title(
+            tex(
+                rf"$\chi\ \left(\mathrm{{step}}={step},\ \mathrm{{profile}}={conformal_source}\right)$",
+                f"chi (Conformal Factor)  step = {step}  [profile:{conformal_source}]",
+            )
         )
-    )
+    else:
+        ax1.set_title(
+            tex(
+                rf"$W\ \left(\mathrm{{step}}={step},\ \mathrm{{profile}}={conformal_source}\right)$",
+                f"W (Conformal Factor)  step = {step}  [profile:{conformal_source}]",
+            )
+        )
     ax1.set_aspect("equal")
     ax1.set_xlabel(tex(r"$x$", "x"))
     ax1.set_ylabel(tex(r"$y$", "y"))
     ax1.grid(True, color="white", linestyle="--", linewidth=0.4, alpha=0.35)
     if not contours_off:
-        finite_w = W[np.isfinite(W)]
-        if finite_w.size > 0:
-            w_q = np.percentile(finite_w, [5.0, 15.0, 30.0])
-            ax1.contour(Xg, Yg, W, levels=np.unique(w_q), colors="white", linewidths=0.55, alpha=0.6)
+        finite_conformal = conformal_field[np.isfinite(conformal_field)]
+        if finite_conformal.size > 0:
+            conformal_q = np.percentile(finite_conformal, [5.0, 15.0, 30.0])
+            ax1.contour(
+                Xg,
+                Yg,
+                conformal_field,
+                levels=np.unique(conformal_q),
+                colors="white",
+                linewidths=0.55,
+                alpha=0.6,
+            )
 
     ax2.imshow(
         alpha_disp,
         extent=extent,
         origin="lower",
-        cmap="magma",
+        cmap=alpha_cmap,
         norm=a_norm,
         interpolation="bilinear",
     )

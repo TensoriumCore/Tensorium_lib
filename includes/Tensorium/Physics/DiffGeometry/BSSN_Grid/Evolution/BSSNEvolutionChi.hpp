@@ -63,48 +63,94 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
     const ptrdiff_t sx = G.chi.st.sx;
     const ptrdiff_t sy = G.chi.st.sy;
 
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i) {
+            for (size_t j = j0; j < j1; ++j) {
+
+                size_t idx_start = G.chi.idx(i, j, k0);
+
+                const T *p_chi = G.chi.ptr() + idx_start;
+                const T *p_alpha = G.alpha.ptr() + idx_start;
+                const T *p_K = G.K.ptr() + idx_start;
+                const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                                      G.beta[2].ptr() + idx_start};
+                T       *p_rhs = rhs_chi.ptr() + idx_start;
+
+                for (size_t k = k0; k < k1; ++k) {
+                    const T chi = *p_chi;
+                    const T alpha = *p_alpha;
+                    const T K = *p_K;
+                    const T bx = *p_beta[0];
+                    const T by = *p_beta[1];
+                    const T bz = *p_beta[2];
+
+                    const T d_chi = bx * Dx_upwind_ptr(p_chi, sx, inv_2dx, bx) +
+                                    by * Dy_upwind_ptr(p_chi, sy, inv_2dy, by) +
+                                    bz * Dz_upwind_ptr(p_chi, inv_2dz, bz);
+
+                    const T div_beta = Dx_ptr(p_beta[0], sx, inv_12dx) +
+                                       Dy_ptr(p_beta[1], sy, inv_12dy) + Dz_ptr(p_beta[2], inv_12dz);
+
+                    const T diss =
+                        KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
+
+                    *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
+                             (ko_sigma / G.dx) * diss;
+
+                    ++p_chi;
+                    ++p_alpha;
+                    ++p_K;
+                    ++p_rhs;
+                    ++p_beta[0];
+                    ++p_beta[1];
+                    ++p_beta[2];
+                }
+            }
+        }
+    } else {
 #pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+        for (size_t i = i0; i < i1; ++i) {
+            for (size_t j = j0; j < j1; ++j) {
 
-            size_t idx_start = G.chi.idx(i, j, k0);
+                size_t idx_start = G.chi.idx(i, j, k0);
 
-            const T *p_chi = G.chi.ptr() + idx_start;
-            const T *p_alpha = G.alpha.ptr() + idx_start;
-            const T *p_K = G.K.ptr() + idx_start;
-            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
-                                  G.beta[2].ptr() + idx_start};
-            T       *p_rhs = rhs_chi.ptr() + idx_start;
+                const T *p_chi = G.chi.ptr() + idx_start;
+                const T *p_alpha = G.alpha.ptr() + idx_start;
+                const T *p_K = G.K.ptr() + idx_start;
+                const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                                      G.beta[2].ptr() + idx_start};
+                T       *p_rhs = rhs_chi.ptr() + idx_start;
 
-            for (size_t k = k0; k < k1; ++k) {
-                const T chi = *p_chi;
-                const T alpha = *p_alpha;
-                const T K = *p_K;
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+                for (size_t k = k0; k < k1; ++k) {
+                    const T chi = *p_chi;
+                    const T alpha = *p_alpha;
+                    const T K = *p_K;
+                    const T bx = *p_beta[0];
+                    const T by = *p_beta[1];
+                    const T bz = *p_beta[2];
 
-                const T d_chi = bx * Dx_upwind_ptr(p_chi, sx, inv_2dx, bx) +
-                                by * Dy_upwind_ptr(p_chi, sy, inv_2dy, by) +
-                                bz * Dz_upwind_ptr(p_chi, inv_2dz, bz);
+                    const T d_chi = bx * Dx_upwind_ptr(p_chi, sx, inv_2dx, bx) +
+                                    by * Dy_upwind_ptr(p_chi, sy, inv_2dy, by) +
+                                    bz * Dz_upwind_ptr(p_chi, inv_2dz, bz);
 
-                const T div_beta = Dx_ptr(p_beta[0], sx, inv_12dx) +
-                                   Dy_ptr(p_beta[1], sy, inv_12dy) + Dz_ptr(p_beta[2], inv_12dz);
+                    const T div_beta = Dx_ptr(p_beta[0], sx, inv_12dx) +
+                                       Dy_ptr(p_beta[1], sy, inv_12dy) + Dz_ptr(p_beta[2], inv_12dz);
 
-                const T diss =
-                    KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
+                    const T diss =
+                        KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
 
-                *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
-                         (ko_sigma / G.dx) * diss;
+                    *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
+                             (ko_sigma / G.dx) * diss;
 
-                // Increment pointers
-                ++p_chi;
-                ++p_alpha;
-                ++p_K;
-                ++p_rhs;
-                ++p_beta[0];
-                ++p_beta[1];
-                ++p_beta[2];
+                    ++p_chi;
+                    ++p_alpha;
+                    ++p_K;
+                    ++p_rhs;
+                    ++p_beta[0];
+                    ++p_beta[1];
+                    ++p_beta[2];
+                }
             }
         }
     }

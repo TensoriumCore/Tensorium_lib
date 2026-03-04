@@ -6,6 +6,11 @@
 #    include <array>
 #    include <chrono>
 #    include <cstdio>
+#    ifdef _OPENMP
+extern "C" int omp_in_parallel(void);
+extern "C" int omp_get_thread_num(void);
+#        define TENSORIUM_BSSN_TIMERS_HAS_OMP_API 1
+#    endif
 #endif
 
 namespace tensorium_RG::bssn {
@@ -64,10 +69,19 @@ class KernelTimerAggregator {
 
 class KernelTimerScope {
   public:
-    explicit KernelTimerScope(KernelTimerId id)
-        : id_(id), start_(std::chrono::steady_clock::now()) {}
+    explicit KernelTimerScope(KernelTimerId id) : id_(id) {
+        enabled_ = true;
+#ifdef TENSORIUM_BSSN_TIMERS_HAS_OMP_API
+        if (omp_in_parallel() != 0)
+            enabled_ = (omp_get_thread_num() == 0);
+#endif
+        if (enabled_)
+            start_ = std::chrono::steady_clock::now();
+    }
 
     ~KernelTimerScope() {
+        if (!enabled_)
+            return;
         const auto end = std::chrono::steady_clock::now();
         const std::chrono::duration<double> elapsed = end - start_;
         KernelTimerAggregator::instance().add(id_, elapsed.count());
@@ -75,6 +89,7 @@ class KernelTimerScope {
 
   private:
     KernelTimerId                                      id_;
+    bool                                               enabled_ = false;
     std::chrono::steady_clock::time_point start_;
 };
 

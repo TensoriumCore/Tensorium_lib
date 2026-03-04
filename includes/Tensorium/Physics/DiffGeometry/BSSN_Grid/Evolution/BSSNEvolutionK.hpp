@@ -68,11 +68,9 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
     constexpr int   sym_col[6] = {0, 1, 2, 1, 2, 2};
     const T         ko_scale = T(ko_sigma / G.dx);
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
-            size_t idx_start = G.K.idx(i, j, k0);
+        size_t idx_start = G.K.idx(i, j, k0);
 
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_alpha = G.alpha.ptr() + idx_start;
@@ -93,7 +91,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 p_A[s] = G.A_tilde[s].ptr() + idx_start;
             }
 
-            for (size_t k = k0; k < k1; ++k) {
+        for (size_t k = k0; k < k1; ++k) {
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, gauge_params.chi_div_floor);
@@ -273,13 +271,24 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 ++p_rhs;
                 for (int c = 0; c < 3; ++c)
                     ++p_beta[c];
-                for (int s = 0; s < 6; ++s) {
-                    ++p_gam[s];
-                    ++p_gam_inv[s];
-                    ++p_A[s];
-                }
+            for (int s = 0; s < 6; ++s) {
+                ++p_gam[s];
+                ++p_gam_inv[s];
+                ++p_A[s];
             }
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 
