@@ -17,6 +17,7 @@ namespace tensorium_RG::bssn {
 
 namespace detail {
 
+#pragma omp declare simd notinbranch
 template <typename T>
 inline void metric_inverse_divergence_ptr(const T *p_ginv_xx, const T *p_ginv_xy,
                                           const T *p_ginv_xz, const T *p_ginv_yy,

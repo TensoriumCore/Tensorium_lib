@@ -92,14 +92,39 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
             T *p_rhs = rhs_theta.ptr() + idx_start;
 
-            #pragma omp simd
+            const T *p_beta0 = p_beta[0];
+            const T *p_beta1 = p_beta[1];
+            const T *p_beta2 = p_beta[2];
+            const T *p_tg0 = p_tildeGamma[0];
+            const T *p_tg1 = p_tildeGamma[1];
+            const T *p_tg2 = p_tildeGamma[2];
+            const T *p_g0 = p_ginv[0];
+            const T *p_g1 = p_ginv[1];
+            const T *p_g2 = p_ginv[2];
+            const T *p_g3 = p_ginv[3];
+            const T *p_g4 = p_ginv[4];
+            const T *p_g5 = p_ginv[5];
+            const T *p_A0 = p_A[0];
+            const T *p_A1 = p_A[1];
+            const T *p_A2 = p_A[2];
+            const T *p_A3 = p_A[3];
+            const T *p_A4 = p_A[4];
+            const T *p_A5 = p_A[5];
+            const T *p_R0 = p_R[0];
+            const T *p_R1 = p_R[1];
+            const T *p_R2 = p_R[2];
+            const T *p_R3 = p_R[3];
+            const T *p_R4 = p_R[4];
+            const T *p_R5 = p_R[5];
+
+            #pragma omp simd aligned(p_theta,p_alpha,p_K,p_chi,p_beta0,p_beta1,p_beta2,p_tg0,p_tg1,p_tg2,p_g0,p_g1,p_g2,p_g3,p_g4,p_g5,p_A0,p_A1,p_A2,p_A3,p_A4,p_A5,p_R0,p_R1,p_R2,p_R3,p_R4,p_R5,p_rhs:64)
             for (size_t k = k0; k < k1; ++k) {
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
                 const T K_val = *p_K;
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+                const T bx = *p_beta0;
+                const T by = *p_beta1;
+                const T bz = *p_beta2;
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
                 T       z_phys[3] = {T(0), T(0), T(0)};
@@ -110,8 +135,8 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 } else {
                     T div_metric_inv[3] = {T(0), T(0), T(0)};
                     detail::metric_inverse_divergence_ptr(
-                        p_ginv[0], p_ginv[1], p_ginv[2], p_ginv[3], p_ginv[4], p_ginv[5], sx,
-                        sy, inv_12dx, inv_12dy, inv_12dz, div_metric_inv);
+                        p_g0, p_g1, p_g2, p_g3, p_g4, p_g5, sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                        div_metric_inv);
                     // gamma_metric is the contracted conformal Christoffel from metric derivatives.
                     const T gamma_metric[3] = {-div_metric_inv[0], -div_metric_inv[1],
                                                -div_metric_inv[2]};
@@ -130,16 +155,16 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                               by * Dy_upwind_ptr(p_theta, sy, inv_2dy, by) +
                               bz * Dz_upwind_ptr(p_theta, inv_2dz, bz);
 
-                const T g_xx = *p_ginv[0];
-                const T g_xy = *p_ginv[1];
-                const T g_xz = *p_ginv[2];
-                const T g_yy = *p_ginv[3];
-                const T g_yz = *p_ginv[4];
-                const T g_zz = *p_ginv[5];
+                const T g_xx = *p_g0;
+                const T g_xy = *p_g1;
+                const T g_xz = *p_g2;
+                const T g_yy = *p_g3;
+                const T g_yz = *p_g4;
+                const T g_zz = *p_g5;
 
-                const T R_conformal_base = g_xx * (*p_R[0]) + g_yy * (*p_R[3]) + g_zz * (*p_R[5]) +
-                                           T(2) * (g_xy * (*p_R[1]) + g_xz * (*p_R[2]) +
-                                                   g_yz * (*p_R[4]));
+                const T R_conformal_base = g_xx * (*p_R0) + g_yy * (*p_R3) + g_zz * (*p_R5) +
+                                           T(2) * (g_xy * (*p_R1) + g_xz * (*p_R2) +
+                                                   g_yz * (*p_R4));
                 T       R_conformal_z4 = T(0);
                 if (p_z4_trace) {
                     R_conformal_z4 = *p_z4_trace;
@@ -164,12 +189,12 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T row2_y = g_yz;
                 const T row2_z = g_zz;
 
-                const T A_xx = *p_A[0];
-                const T A_xy = *p_A[1];
-                const T A_xz = *p_A[2];
-                const T A_yy = *p_A[3];
-                const T A_yz = *p_A[4];
-                const T A_zz = *p_A[5];
+                const T A_xx = *p_A0;
+                const T A_xy = *p_A1;
+                const T A_xz = *p_A2;
+                const T A_yy = *p_A3;
+                const T A_yz = *p_A4;
+                const T A_zz = *p_A5;
 
                 const T tmp0_x = A_xx * row0_x + A_xy * row0_y + A_xz * row0_z;
                 const T tmp0_y = A_xy * row0_x + A_yy * row0_y + A_yz * row0_z;
@@ -211,16 +236,33 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 ++p_chi;
                 if (p_z4_trace)
                     ++p_z4_trace;
-                for (int c = 0; c < 3; ++c) {
-                    ++p_beta[c];
-                    ++p_Z[c];
-                    ++p_tildeGamma[c];
-                }
-                for (int s = 0; s < 6; ++s) {
-                    ++p_ginv[s];
-                    ++p_A[s];
-                    ++p_R[s];
-                }
+                ++p_beta0;
+                ++p_beta1;
+                ++p_beta2;
+                ++p_Z[0];
+                ++p_Z[1];
+                ++p_Z[2];
+                ++p_tg0;
+                ++p_tg1;
+                ++p_tg2;
+                ++p_g0;
+                ++p_g1;
+                ++p_g2;
+                ++p_g3;
+                ++p_g4;
+                ++p_g5;
+                ++p_A0;
+                ++p_A1;
+                ++p_A2;
+                ++p_A3;
+                ++p_A4;
+                ++p_A5;
+                ++p_R0;
+                ++p_R1;
+                ++p_R2;
+                ++p_R3;
+                ++p_R4;
+                ++p_R5;
             }
     };
 

@@ -67,6 +67,15 @@ if(EXISTS "${TWOPUNCTURES_C_ROOT}/include/TwoPunctures.h")
         separate_arguments(TP_GSL_CFLAGS_LIST UNIX_COMMAND "${TP_GSL_CFLAGS}")
         separate_arguments(TP_GSL_LIBS_LIST UNIX_COMMAND "${TP_GSL_LIBS}")
 
+        # Extract include directories from gsl-config output so every target that
+        # sees TwoPunctures headers also sees the GSL headers they rely on.
+        set(TP_GSL_INCLUDE_DIRS "")
+        foreach(flag ${TP_GSL_CFLAGS_LIST})
+            if(flag MATCHES "^-I(.+)")
+                list(APPEND TP_GSL_INCLUDE_DIRS "${CMAKE_MATCH_1}")
+            endif()
+        endforeach()
+
         set(TWOPUNCTURES_C_SOURCES
             ${TWOPUNCTURES_C_ROOT}/src/TwoPunctures.c
             ${TWOPUNCTURES_C_ROOT}/src/TP_CoordTransf.c
@@ -78,7 +87,8 @@ if(EXISTS "${TWOPUNCTURES_C_ROOT}/include/TwoPunctures.h")
         target_compile_definitions(tensorium_twopunctures_c PRIVATE TP_OMP)
         add_compile_definitions(TENSORIUM_TWOPUNCTURES_OMP)
         target_include_directories(tensorium_twopunctures_c PUBLIC
-            ${TWOPUNCTURES_C_ROOT}/include)
+            ${TWOPUNCTURES_C_ROOT}/include
+            ${TP_GSL_INCLUDE_DIRS})
         if(TARGET OpenMP::OpenMP_C)
             target_link_libraries(tensorium_twopunctures_c PUBLIC OpenMP::OpenMP_C)
         elseif(TARGET OpenMP::OpenMP_CXX)
@@ -96,6 +106,9 @@ if(EXISTS "${TWOPUNCTURES_C_ROOT}/include/TwoPunctures.h")
             target_link_libraries(tensorium_twopunctures_c PUBLIC ${TP_GSL_LIBS_LIST})
         endif()
         add_compile_definitions(TENSORIUM_HAS_TWOPUNCTURES_C)
+        if(TP_GSL_INCLUDE_DIRS)
+            include_directories(${TP_GSL_INCLUDE_DIRS})
+        endif()
         include_directories(${TWOPUNCTURES_C_ROOT}/include)
         set(TWOPUNCTURES_C_TARGET tensorium_twopunctures_c)
         message(STATUS "TwoPuncturesC backend enabled")
