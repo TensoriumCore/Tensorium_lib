@@ -43,7 +43,7 @@ Plugins/                                         # Optional LLVM/Clang/MLIR expe
 - CMake >= 3.22
 - C++17 compiler (Clang recommended)
 - OpenMP runtime
-- Optional: MPI, CUDA toolkit, OpenBLAS/BLAS, pybind11
+- Optional: MPI, CUDA toolkit, OpenBLAS/BLAS (or Accelerate on macOS), pybind11, NumPy
 
 ### Configure and compile
 
@@ -54,6 +54,17 @@ cmake -S . -B build \
   -DBUILD_PYBIND=OFF \
   -DBUILD_PLUGINS=OFF
 cmake --build build -j
+```
+
+If you need the Python extension from CMake:
+
+```bash
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_TESTS=OFF \
+  -DBUILD_PYBIND=ON \
+  -DBUILD_PLUGINS=OFF
+cmake --build build -j --target tensorium
 ```
 
 ### Useful options
@@ -83,6 +94,66 @@ ctest --test-dir build -R bssn
 ./build/Tests/TensoriumTests --list
 ```
 
+## Python bindings
+
+Python bindings expose core vector/matrix/tensor algebra and selected differential-geometry helpers.
+
+### Prerequisites
+
+- `python3`
+- `python3 -m pip`
+- Python packages: `setuptools`, `wheel`, `cmake`, `numpy`, `pybind11`
+
+Install prerequisites:
+
+```bash
+python3 -m pip install --upgrade pip setuptools wheel cmake numpy pybind11
+```
+
+### Build and install (editable)
+
+```bash
+python3 -m pip install -e .
+```
+
+### Alternative: build extension only (no install)
+
+```bash
+python3 setup.py build_ext --inplace
+```
+
+### Quick check
+
+```bash
+python3 - <<'PY'
+import tensorium
+v = tensorium.Vectord([1.0, 2.0, 3.0])
+print(v)
+PY
+```
+
+NumPy interop example:
+
+```bash
+python3 - <<'PY'
+import numpy as np
+import tensorium
+A = tensorium.Matrixd.from_numpy(np.array([[1.0, 2.0], [3.0, 4.0]]))
+print(tensorium.matrices.det(A))
+PY
+```
+
+Current scope of Python API:
+
+- `Vector`/`Vectord`, `Matrix`/`Matrixd`, `Tensor2d`, `Tensor4d`
+- `tns.*` algebra helpers (`add/sub/mul`, norms, solvers, tensor contractions, etc.)
+- metric/curvature helpers (`Metric`, `compute_christoffel`, `compute_riemann_tensor`, Ricci utilities)
+
+Not yet exposed in Python:
+
+- full `BSSN_Grid` evolution runtime and diagnostics stack
+- MPI/CUDA backends
+
 ## Numerical relativity notes
 
 - The active physics path is `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid`.
@@ -106,6 +177,7 @@ If your goal is NR runs, keep `BUILD_PLUGINS=OFF`.
 ## Documentation
 
 - Doxygen config: `Doxyfile`
-- Generated docs: `docs/html/index.html`
+- Generated docs: `docs/index.html`
+- Python binding guide: `Pybind/README.md`
 - BSSN_Grid technical guide:
   [includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md](includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/README.md)

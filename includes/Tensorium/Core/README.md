@@ -52,7 +52,7 @@ Core/
 ## Internal Dependencies
 
 - Depends on `SIMD/` for vectorization and aligned allocation
-- No external linear algebra or math libraries
+- Uses optional BLAS acceleration (`TENSORIUM_USE_CBLAS`) when available
 - Compatible with `Symbolics/` and `DiffGeometry/` layers
 
 ## Example Usage

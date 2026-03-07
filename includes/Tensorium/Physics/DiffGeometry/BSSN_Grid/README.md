@@ -472,7 +472,7 @@ That is the authoritative behavior for current Tensorium runs.
 
 ## Test for a two puncture initial data (no merge but BBH drift over lapse):
 
-`bash
+```bash
   OMP_NUM_THREADS=24 \
   OMP_PROC_BIND=close \
   OMP_PLACES=cores \
@@ -499,4 +499,4 @@ That is the authoritative behavior for current Tensorium runs.
   TENSORIUM_MOVING_PUNCTURE_EXPORT_CONSTRAINT_SLICES=1 \
   TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE=2 \
   ./build/Tests/TensoriumTests --test bssn.viz.moving_puncture_interpolate
-`
+```

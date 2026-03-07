@@ -8,7 +8,7 @@ This module enables:
 - Representation and manipulation of the spacetime metric
 - Computation of Christoffel symbols (first and second kind)
 - Construction of curvature tensors: Riemann, Ricci, and Ricci scalar
-- (Upcoming) Support for the BSSN conformal formalism on spatial grids
+- BSSN-related helpers (`BSSN/`) and the production grid evolution path (`BSSN_Grid/`)
 
 ## Structure
 
@@ -19,7 +19,8 @@ DiffGeometry/
 ├── RicciTensor.hpp         // Ricci tensor computation
 ├── RiemannTensor.hpp       // Full Riemann tensor computation
 ├── Tensor.hpp              // Basic tensor structures
-└── BSSN/                   // Conformal BSSN variables and evolution (WIP)
+├── BSSN/                   // Legacy/pointwise BSSN helpers
+└── BSSN_Grid/              // Main finite-difference BSSN/Z4c grid implementation
 ```
 
 ## Features
@@ -28,7 +29,8 @@ DiffGeometry/
 - `ChristoffelSymbol` computes the Christoffel symbols from metric derivatives.
 - `RicciTensor` constructs the Ricci tensor by contracting the Riemann tensor.
 - `RiemannTensor` provides full access to the Riemann curvature tensor \( R^\mu_{\ \nu\rho\sigma} \).
-- `BSSN/` (to be implemented) will handle the conformal metric decomposition, trace-free extrinsic curvature, and conformal connection functions.
+- `BSSN/` provides pointwise and helper routines.
+- `BSSN_Grid/` is the active path for current evolution tests and moving-puncture workflows.
 
 ## Internal Dependencies
 
@@ -41,6 +43,8 @@ DiffGeometry/
 - Minkowski (flat spacetime)
 - Schwarzschild (non-rotating black hole)
 - Kerr (rotating black hole)
+- Kerr-Schild
+- FLRW
 
 ## Example: Compute Riemann and Ricci Tensors from Kerr Metric
 

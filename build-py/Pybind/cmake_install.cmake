@@ -1,4 +1,4 @@
-# Install script for directory: /Users/at0m/Desktop/Bureau - Mac Pro de at0m/Tensorium_lib/Tests
+# Install script for directory: /Users/at0m/Desktop/Tensorium_lib 2/Pybind
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/at0m/Desktop/Bureau - Mac Pro de at0m/Tensorium_lib/build_knl_objdump/Tests/install_local_manifest.txt"
+  file(WRITE "/Users/at0m/Desktop/Tensorium_lib 2/build-py/Pybind/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

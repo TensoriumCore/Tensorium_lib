@@ -114,7 +114,7 @@ else()
   add_compile_definitions(TENSORIUM_NO_CUDA)
 endif()
 
-include_directories(${CMAKE_SOURCE_DIR}/Includes)
+include_directories(${CMAKE_SOURCE_DIR}/includes)
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "amd64")
   if(USE_KNL)
@@ -228,6 +228,10 @@ endif()
 
 if(BUILD_PLUGINS)
   add_subdirectory(Plugins)
+endif()
+
+if(BUILD_PYBIND)
+  add_subdirectory(Pybind)
 endif()
 
 if(BUILD_TESTS)

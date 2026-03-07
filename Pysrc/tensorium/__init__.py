@@ -11,6 +11,7 @@ from . import tensors
 Vector = vectors.Vector
 Vectord = vectors.Vectord
 Matrix = matrices.Matrix
+Matrixd = matrices.Matrixd
 Tensor2d = tensors.Tensor2d
 Tensor4d = tensors.Tensor4d
 
@@ -18,6 +19,7 @@ __all__ = [
     "Vector",
     "Vectord",
     "Matrix",
+    "Matrixd",
     "Tensor2d",
     "Tensor4d",
     "vectors",
