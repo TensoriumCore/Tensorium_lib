@@ -62,11 +62,9 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
-            size_t idx_start = G.gamma_tilde[0].idx(i, j, k0);
+        size_t idx_start = G.gamma_tilde[0].idx(i, j, k0);
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
@@ -81,7 +79,7 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
             }
             const T *p_alpha = G.alpha.ptr() + idx_start;
 
-            for (size_t k = k0; k < k1; ++k) {
+        for (size_t k = k0; k < k1; ++k) {
 
                 const T alpha = *p_alpha;
 
@@ -138,9 +136,20 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
                     ++p_A[s];
                     ++p_rhs[s];
                 }
-                ++p_alpha;
-            }
+            ++p_alpha;
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 } // namespace tensorium_RG::bssn

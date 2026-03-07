@@ -89,9 +89,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
     const ptrdiff_t sy = G.alpha.st.sy;
     const T         ko_scale = T(ko_sigma / G.dx);
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
             size_t idx_start = G.alpha.idx(i, j, k0);
 
@@ -119,7 +117,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             T *p_rhs[3] = {rhs[0].ptr() + idx_start, rhs[1].ptr() + idx_start,
                            rhs[2].ptr() + idx_start};
 
-            for (size_t k = k0; k < k1; ++k) {
+        for (size_t k = k0; k < k1; ++k) {
 
                 T Gamma_tilde_vals[3][3][3];
                 tensorium_RG::bssn::compute_tildeGamma_symbols_ptr(
@@ -392,8 +390,19 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                     ++p_gcov[s];
                     ++p_A[s];
                 }
-            }
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 

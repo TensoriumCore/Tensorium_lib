@@ -870,8 +870,24 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
         if (parsed > 0)
             omp_threads = parsed;
     }
-    std::printf("[init.interpolate][step 1/7] setup TwoPunctures backend (omp_threads=%d, tp_omp=%d)\n",
-                omp_threads,
+    const int tp_threads = parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_THREADS", omp_threads, 1);
+#if defined(TENSORIUM_TWOPUNCTURES_OMP)
+    const char *tp_prev_omp_env_raw = std::getenv("OMP_NUM_THREADS");
+    char        tp_prev_omp_env[64] = {};
+    bool        tp_prev_omp_env_valid = false;
+    if (tp_prev_omp_env_raw != nullptr && *tp_prev_omp_env_raw != '\0') {
+        std::snprintf(tp_prev_omp_env, sizeof(tp_prev_omp_env), "%s", tp_prev_omp_env_raw);
+        tp_prev_omp_env_valid = true;
+    }
+    char tp_threads_buf[32];
+    std::snprintf(tp_threads_buf, sizeof(tp_threads_buf), "%d", tp_threads);
+#if !defined(_WIN32)
+    setenv("OMP_NUM_THREADS", tp_threads_buf, 1);
+#endif
+#endif
+    std::printf("[init.interpolate][step 1/7] setup TwoPunctures backend "
+                "(omp_threads=%d, tp_threads=%d, tp_omp=%d)\n",
+                omp_threads, tp_threads,
 #if defined(TENSORIUM_TWOPUNCTURES_OMP)
                 1
 #else
@@ -991,6 +1007,12 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
         psiyy.data(), psiyz.data(), psizz.data(), gxx.data(), gxy.data(), gxz.data(), gyy.data(),
         gyz.data(), gzz.data(), kxx.data(), kxy.data(), kxz.data(), kyy.data(), kyz.data(),
         kzz.data());
+#if defined(TENSORIUM_TWOPUNCTURES_OMP) && !defined(_WIN32)
+    if (tp_prev_omp_env_valid)
+        setenv("OMP_NUM_THREADS", tp_prev_omp_env, 1);
+    else
+        unsetenv("OMP_NUM_THREADS");
+#endif
     const double t_interp_end = now_s();
     std::printf("[init.interpolate][step 4/7] interpolation done in %.3fs\n",
                 t_interp_end - t_interp_begin);

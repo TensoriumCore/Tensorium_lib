@@ -55,6 +55,7 @@ template <typename T> struct GaugeParameters {
     T current_time = T(0.0);              ///< Runtime time provided by the RK driver.
     bool use_direct_shift_rhs = true;     ///< Use direct beta RHS instead of B-driver.
     bool evolve_Z = true;                 ///< Evolve Z_i as an independent field.
+    bool frozen_Z_is_synced = false;      ///< If true and evolve_Z=false, read synchronized Z field directly.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
     bool apply_rhs_sommerfeld = false;    ///< Apply Sommerfeld-like RHS corrections near boundaries.
 
@@ -133,52 +134,58 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
-            size_t idx_start = G.alpha.idx(i, j, k0);
+        size_t idx_start = G.alpha.idx(i, j, k0);
 
-            const T *p_alpha = G.alpha.ptr() + idx_start;
-            const T *p_K = G.K.ptr() + idx_start;
-            const T *p_theta = use_theta ? (G.Theta.ptr() + idx_start) : nullptr;
-            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
-                                  G.beta[2].ptr() + idx_start};
-            T       *p_rhs = rhs_alpha.ptr() + idx_start;
+        const T *p_alpha = G.alpha.ptr() + idx_start;
+        const T *p_K = G.K.ptr() + idx_start;
+        const T *p_theta = use_theta ? (G.Theta.ptr() + idx_start) : nullptr;
+        const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                              G.beta[2].ptr() + idx_start};
+        T       *p_rhs = rhs_alpha.ptr() + idx_start;
 
-            for (size_t k = k0; k < k1; ++k) {
-                const T alpha = *p_alpha;
-                const T K = *p_K;
-                const T theta = use_theta ? *p_theta : T(0);
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+        for (size_t k = k0; k < k1; ++k) {
+            const T alpha = *p_alpha;
+            const T K = *p_K;
+            const T theta = use_theta ? *p_theta : T(0);
+            const T bx = *p_beta[0];
+            const T by = *p_beta[1];
+            const T bz = *p_beta[2];
 
-                const T advection = bx * Dx_upwind_ptr(p_alpha, sx, inv_2dx, bx) +
-                                    by * Dy_upwind_ptr(p_alpha, sy, inv_2dy, by) +
-                                    bz * Dz_upwind_ptr(p_alpha, inv_2dz, bz);
+            const T advection = bx * Dx_upwind_ptr(p_alpha, sx, inv_2dx, bx) +
+                                by * Dy_upwind_ptr(p_alpha, sy, inv_2dy, by) +
+                                bz * Dz_upwind_ptr(p_alpha, inv_2dz, bz);
 
-                const T diss = KO6_axis_ptr(p_alpha, sx) + KO6_axis_ptr(p_alpha, sy) +
-                               KO6_axis_ptr(p_alpha, 1);
-                const T diss_scaled = (ko_sigma / G.dx) * diss;
+            const T diss = KO6_axis_ptr(p_alpha, sx) + KO6_axis_ptr(p_alpha, sy) +
+                           KO6_axis_ptr(p_alpha, 1);
+            const T diss_scaled = (ko_sigma / G.dx) * diss;
 
-                const T lapse_K = use_theta ? Khat(K, theta) : K;
-                const T f = params.lapse_oplog * params.lapse_harmonicf +
-                            params.lapse_harmonic * alpha;
-                *p_rhs =
-                    params.lapse_advect * advection - ssl_factor * f * alpha * lapse_K + diss_scaled;
+            const T lapse_K = use_theta ? Khat(K, theta) : K;
+            const T f = params.lapse_oplog * params.lapse_harmonicf + params.lapse_harmonic * alpha;
+            *p_rhs = params.lapse_advect * advection - ssl_factor * f * alpha * lapse_K + diss_scaled;
 
-                // Increments
-                ++p_alpha;
-                ++p_K;
-                ++p_rhs;
-                if (use_theta)
-                    ++p_theta;
-                ++p_beta[0];
-                ++p_beta[1];
-                ++p_beta[2];
-            }
+            ++p_alpha;
+            ++p_K;
+            ++p_rhs;
+            if (use_theta)
+                ++p_theta;
+            ++p_beta[0];
+            ++p_beta[1];
+            ++p_beta[2];
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 
@@ -212,27 +219,23 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
 
-    // Constants
-    const double    inv_12dx = 1.0 / (60.0 * G.dx);
-    const double    inv_12dy = 1.0 / (60.0 * G.dy);
-    const double    inv_12dz = 1.0 / (60.0 * G.dz);
-    const double    inv_2dx = 1.0 / (2.0 * G.dx);
-    const double    inv_2dy = 1.0 / (2.0 * G.dy);
-    const double    inv_2dz = 1.0 / (2.0 * G.dz);
     const ptrdiff_t sx = G.beta[0].st.sx;
     const ptrdiff_t sy = G.beta[0].st.sy;
-    const T         shift_eta = params.effective_shift_eta();
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    if (params.use_direct_shift_rhs) {
+        const double inv_12dx = 1.0 / (60.0 * G.dx);
+        const double inv_12dy = 1.0 / (60.0 * G.dy);
+        const double inv_12dz = 1.0 / (60.0 * G.dz);
+        const double inv_2dx = 1.0 / (2.0 * G.dx);
+        const double inv_2dy = 1.0 / (2.0 * G.dy);
+        const double inv_2dz = 1.0 / (2.0 * G.dz);
+        const T      shift_eta = params.effective_shift_eta();
 
+        auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.beta[0].idx(i, j, k0);
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
-            const T *p_B[3] = {G.B[0].ptr() + idx_start, G.B[1].ptr() + idx_start,
-                               G.B[2].ptr() + idx_start};
             const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
                                         G.tildeGamma[1].ptr() + idx_start,
                                         G.tildeGamma[2].ptr() + idx_start};
@@ -241,21 +244,38 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             const T *p_ginv[6];
             for (int s = 0; s < 6; ++s)
                 p_ginv[s] = G.gamma_tilde_inv[s].ptr() + idx_start;
-            T       *p_rhs[3] = {rhs[0].ptr() + idx_start, rhs[1].ptr() + idx_start,
-                                 rhs[2].ptr() + idx_start};
+            T *p_rhs[3] = {rhs[0].ptr() + idx_start, rhs[1].ptr() + idx_start,
+                           rhs[2].ptr() + idx_start};
 
+            const T *p_beta0 = p_beta[0];
+            const T *p_beta1 = p_beta[1];
+            const T *p_beta2 = p_beta[2];
+            const T *p_tg0 = p_tildeGamma[0];
+            const T *p_tg1 = p_tildeGamma[1];
+            const T *p_tg2 = p_tildeGamma[2];
+            const T *p_g0 = p_ginv[0];
+            const T *p_g1 = p_ginv[1];
+            const T *p_g2 = p_ginv[2];
+            const T *p_g3 = p_ginv[3];
+            const T *p_g4 = p_ginv[4];
+            const T *p_g5 = p_ginv[5];
+            T       *p_rhs0 = p_rhs[0];
+            T       *p_rhs1 = p_rhs[1];
+            T       *p_rhs2 = p_rhs[2];
+
+            #pragma omp simd aligned(p_alpha,p_chi,p_beta0,p_beta1,p_beta2,p_tg0,p_tg1,p_tg2,p_g0,p_g1,p_g2,p_g3,p_g4,p_g5,p_rhs0,p_rhs1,p_rhs2:64)
             for (size_t k = k0; k < k1; ++k) {
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+                const T bx = *p_beta0;
+                const T by = *p_beta1;
+                const T bz = *p_beta2;
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
-                const T g_xx = *p_ginv[0];
-                const T g_xy = *p_ginv[1];
-                const T g_xz = *p_ginv[2];
-                const T g_yy = *p_ginv[3];
-                const T g_yz = *p_ginv[4];
-                const T g_zz = *p_ginv[5];
+                const T g_xx = *p_g0;
+                const T g_xy = *p_g1;
+                const T g_xz = *p_g2;
+                const T g_yy = *p_g3;
+                const T g_yz = *p_g4;
+                const T g_zz = *p_g5;
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
@@ -265,57 +285,173 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                                               T(0.5) * alpha * d_chi[1] - d_alpha[1],
                                               T(0.5) * alpha * d_chi[2] - d_alpha[2]};
 
-                for (int comp = 0; comp < 3; ++comp) {
-                    const T *p_f = p_beta[comp];
-                    const T  adv = bx * Dx_upwind_ptr(p_f, sx, inv_2dx, bx) +
-                                   by * Dy_upwind_ptr(p_f, sy, inv_2dy, by) +
-                                   bz * Dz_upwind_ptr(p_f, inv_2dz, bz);
+                // comp = 0
+                const T *p_f0 = p_beta0;
+                const T adv0 = bx * Dx_upwind_ptr(p_f0, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_f0, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_f0, inv_2dz, bz);
+                const T diss0 = KO6_axis_ptr(p_f0, sx) + KO6_axis_ptr(p_f0, sy) + KO6_axis_ptr(p_f0, 1);
+                const T gamma0 = *p_tg0;
+                T gauge0 = g_xx * gauge_combo_cov[0] + g_xy * gauge_combo_cov[1] + g_xz * gauge_combo_cov[2];
+                T rhs0 = params.shift_Gamma * gamma0 + params.shift_advect * adv0 - shift_eta * (*p_beta0);
+                rhs0 += params.shift_alpha2Gamma * alpha * alpha * gamma0;
+                rhs0 += params.shift_H * alpha * chi * gauge0;
+                *p_rhs0 = rhs0 + (ko_sigma / G.dx) * diss0;
 
-                    const T diss =
-                        KO6_axis_ptr(p_f, sx) + KO6_axis_ptr(p_f, sy) + KO6_axis_ptr(p_f, 1);
-                    const T diss_scaled = (ko_sigma / G.dx) * diss;
+                // comp = 1
+                const T *p_f1 = p_beta1;
+                const T adv1 = bx * Dx_upwind_ptr(p_f1, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_f1, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_f1, inv_2dz, bz);
+                const T diss1 = KO6_axis_ptr(p_f1, sx) + KO6_axis_ptr(p_f1, sy) + KO6_axis_ptr(p_f1, 1);
+                const T gamma1 = *p_tg1;
+                T gauge1 = g_xy * gauge_combo_cov[0] + g_yy * gauge_combo_cov[1] + g_yz * gauge_combo_cov[2];
+                T rhs1 = params.shift_Gamma * gamma1 + params.shift_advect * adv1 - shift_eta * (*p_beta1);
+                rhs1 += params.shift_alpha2Gamma * alpha * alpha * gamma1;
+                rhs1 += params.shift_H * alpha * chi * gauge1;
+                *p_rhs1 = rhs1 + (ko_sigma / G.dx) * diss1;
 
-                    if (params.use_direct_shift_rhs) {
-                        const T gamma_comp = *p_tildeGamma[comp];
-                        T       gauge_combo_up = T(0);
-                        if (comp == 0) {
-                            gauge_combo_up = g_xx * gauge_combo_cov[0] + g_xy * gauge_combo_cov[1] +
-                                             g_xz * gauge_combo_cov[2];
-                        } else if (comp == 1) {
-                            gauge_combo_up = g_xy * gauge_combo_cov[0] + g_yy * gauge_combo_cov[1] +
-                                             g_yz * gauge_combo_cov[2];
-                        } else {
-                            gauge_combo_up = g_xz * gauge_combo_cov[0] + g_yz * gauge_combo_cov[1] +
-                                             g_zz * gauge_combo_cov[2];
-                        }
+                // comp = 2
+                const T *p_f2 = p_beta2;
+                const T adv2 = bx * Dx_upwind_ptr(p_f2, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_f2, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_f2, inv_2dz, bz);
+                const T diss2 = KO6_axis_ptr(p_f2, sx) + KO6_axis_ptr(p_f2, sy) + KO6_axis_ptr(p_f2, 1);
+                const T gamma2 = *p_tg2;
+                T gauge2 = g_xz * gauge_combo_cov[0] + g_yz * gauge_combo_cov[1] + g_zz * gauge_combo_cov[2];
+                T rhs2 = params.shift_Gamma * gamma2 + params.shift_advect * adv2 - shift_eta * (*p_beta2);
+                rhs2 += params.shift_alpha2Gamma * alpha * alpha * gamma2;
+                rhs2 += params.shift_H * alpha * chi * gauge2;
+                *p_rhs2 = rhs2 + (ko_sigma / G.dx) * diss2;
 
-                        T rhs_beta = params.shift_Gamma * gamma_comp + params.shift_advect * adv -
-                                     shift_eta * (*p_beta[comp]);
-                        rhs_beta += params.shift_alpha2Gamma * alpha * alpha * gamma_comp;
-                        rhs_beta += params.shift_H * alpha * chi * gauge_combo_up;
-                        *p_rhs[comp] = rhs_beta + diss_scaled;
-                    } else {
-                        // Legacy Gamma-driver mode: allow disabling advection to match
-                        // the standard moving-puncture choice.
-                        *p_rhs[comp] =
-                            params.shift_advect * adv + params.beta_B_coeff * (*p_B[comp]) +
-                            diss_scaled;
-                    }
-                }
-
-                // Increments
-                for (int c = 0; c < 3; ++c) {
-                    ++p_beta[c];
-                    ++p_B[c];
-                    ++p_tildeGamma[c];
-                    ++p_rhs[c];
-                }
+                ++p_beta0;
+                ++p_beta1;
+                ++p_beta2;
+                ++p_tg0;
+                ++p_tg1;
+                ++p_tg2;
+                ++p_rhs0;
+                ++p_rhs1;
+                ++p_rhs2;
                 ++p_alpha;
                 ++p_chi;
-                for (int s = 0; s < 6; ++s)
-                    ++p_ginv[s];
+                ++p_g0;
+                ++p_g1;
+                ++p_g2;
+                ++p_g3;
+                ++p_g4;
+                ++p_g5;
             }
+        };
+
+        if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_ij(i, j);
+        } else {
+#pragma omp parallel for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_ij(i, j);
         }
+        return;
+    }
+
+    const bool   use_advect = (params.shift_advect != T(0));
+    const double inv_2dx = use_advect ? (1.0 / (2.0 * G.dx)) : 0.0;
+    const double inv_2dy = use_advect ? (1.0 / (2.0 * G.dy)) : 0.0;
+    const double inv_2dz = use_advect ? (1.0 / (2.0 * G.dz)) : 0.0;
+
+    auto loop_ij = [&](size_t i, size_t j) {
+        size_t idx_start = G.beta[0].idx(i, j, k0);
+
+        const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                              G.beta[2].ptr() + idx_start};
+        const T *p_B[3] = {G.B[0].ptr() + idx_start, G.B[1].ptr() + idx_start,
+                           G.B[2].ptr() + idx_start};
+        T *p_rhs[3] = {rhs[0].ptr() + idx_start, rhs[1].ptr() + idx_start,
+                       rhs[2].ptr() + idx_start};
+
+        T *p_rhs0 = p_rhs[0];
+        T *p_rhs1 = p_rhs[1];
+        T *p_rhs2 = p_rhs[2];
+        const T *p_beta0 = p_beta[0];
+        const T *p_beta1 = p_beta[1];
+        const T *p_beta2 = p_beta[2];
+        const T *p_B0 = p_B[0];
+        const T *p_B1 = p_B[1];
+        const T *p_B2 = p_B[2];
+
+        #pragma omp simd aligned(p_beta0,p_beta1,p_beta2,p_B0,p_B1,p_B2,p_rhs0,p_rhs1,p_rhs2:64)
+        for (size_t k = k0; k < k1; ++k) {
+            if (use_advect) {
+                const T bx = *p_beta0;
+                const T by = *p_beta1;
+                const T bz = *p_beta2;
+
+                const T adv0 = bx * Dx_upwind_ptr(p_beta0, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_beta0, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_beta0, inv_2dz, bz);
+                const T adv1 = bx * Dx_upwind_ptr(p_beta1, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_beta1, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_beta1, inv_2dz, bz);
+                const T adv2 = bx * Dx_upwind_ptr(p_beta2, sx, inv_2dx, bx) +
+                               by * Dy_upwind_ptr(p_beta2, sy, inv_2dy, by) +
+                               bz * Dz_upwind_ptr(p_beta2, inv_2dz, bz);
+
+                const T diss0 =
+                    KO6_axis_ptr(p_beta0, sx) + KO6_axis_ptr(p_beta0, sy) + KO6_axis_ptr(p_beta0, 1);
+                const T diss1 =
+                    KO6_axis_ptr(p_beta1, sx) + KO6_axis_ptr(p_beta1, sy) + KO6_axis_ptr(p_beta1, 1);
+                const T diss2 =
+                    KO6_axis_ptr(p_beta2, sx) + KO6_axis_ptr(p_beta2, sy) + KO6_axis_ptr(p_beta2, 1);
+
+                const T diss0_scaled = (ko_sigma / G.dx) * diss0;
+                const T diss1_scaled = (ko_sigma / G.dx) * diss1;
+                const T diss2_scaled = (ko_sigma / G.dx) * diss2;
+
+                *p_rhs0 = params.beta_B_coeff * (*p_B0) + params.shift_advect * adv0 + diss0_scaled;
+                *p_rhs1 = params.beta_B_coeff * (*p_B1) + params.shift_advect * adv1 + diss1_scaled;
+                *p_rhs2 = params.beta_B_coeff * (*p_B2) + params.shift_advect * adv2 + diss2_scaled;
+            } else {
+                const T diss0 =
+                    KO6_axis_ptr(p_beta0, sx) + KO6_axis_ptr(p_beta0, sy) + KO6_axis_ptr(p_beta0, 1);
+                const T diss1 =
+                    KO6_axis_ptr(p_beta1, sx) + KO6_axis_ptr(p_beta1, sy) + KO6_axis_ptr(p_beta1, 1);
+                const T diss2 =
+                    KO6_axis_ptr(p_beta2, sx) + KO6_axis_ptr(p_beta2, sy) + KO6_axis_ptr(p_beta2, 1);
+                const T diss0_scaled = (ko_sigma / G.dx) * diss0;
+                const T diss1_scaled = (ko_sigma / G.dx) * diss1;
+                const T diss2_scaled = (ko_sigma / G.dx) * diss2;
+
+                *p_rhs0 = params.beta_B_coeff * (*p_B0) + diss0_scaled;
+                *p_rhs1 = params.beta_B_coeff * (*p_B1) + diss1_scaled;
+                *p_rhs2 = params.beta_B_coeff * (*p_B2) + diss2_scaled;
+            }
+
+            ++p_beta0;
+            ++p_beta1;
+            ++p_beta2;
+            ++p_B0;
+            ++p_B1;
+            ++p_B2;
+            ++p_rhs0;
+            ++p_rhs1;
+            ++p_rhs2;
+        }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 
@@ -351,9 +487,7 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
         return;
 
     if (params.use_direct_shift_rhs) {
-#pragma omp parallel for collapse(2)
-        for (size_t i = i0; i < i1; ++i) {
-            for (size_t j = j0; j < j1; ++j) {
+        auto loop_direct_ij = [&](size_t i, size_t j) {
                 size_t idx_start = rhs_B[0].idx(i, j, k0);
                 T     *p_rhs_B[3] = {rhs_B[0].ptr() + idx_start, rhs_B[1].ptr() + idx_start,
                                      rhs_B[2].ptr() + idx_start};
@@ -363,7 +497,17 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
                     for (int comp = 0; comp < 3; ++comp)
                         ++p_rhs_B[comp];
                 }
-            }
+        };
+        if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_direct_ij(i, j);
+        } else {
+#pragma omp parallel for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_direct_ij(i, j);
         }
         return;
     }
@@ -376,70 +520,74 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
     const T         eta_coeff = params.effective_eta();
     const bool      use_shift_advection = params.use_shift_advection;
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
-            size_t idx_start = G.B[0].idx(i, j, k0);
+        size_t idx_start = G.B[0].idx(i, j, k0);
 
-            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
-                                  G.beta[2].ptr() + idx_start};
-            const T *p_B[3] = {G.B[0].ptr() + idx_start, G.B[1].ptr() + idx_start,
-                               G.B[2].ptr() + idx_start};
-            const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
-                                        G.tildeGamma[1].ptr() + idx_start,
-                                        G.tildeGamma[2].ptr() + idx_start};
-            const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
-                               G.Z[2].ptr() + idx_start};
-            const T *p_rhs_G[3] = {rhs_Gamma[0].ptr() + idx_start, rhs_Gamma[1].ptr() + idx_start,
-                                   rhs_Gamma[2].ptr() + idx_start};
-            T       *p_rhs_B[3] = {rhs_B[0].ptr() + idx_start, rhs_B[1].ptr() + idx_start,
-                                   rhs_B[2].ptr() + idx_start};
+        const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
+                              G.beta[2].ptr() + idx_start};
+        const T *p_B[3] = {G.B[0].ptr() + idx_start, G.B[1].ptr() + idx_start,
+                           G.B[2].ptr() + idx_start};
+        const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
+                                    G.tildeGamma[1].ptr() + idx_start,
+                                    G.tildeGamma[2].ptr() + idx_start};
+        const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
+                           G.Z[2].ptr() + idx_start};
+        const T *p_rhs_G[3] = {rhs_Gamma[0].ptr() + idx_start, rhs_Gamma[1].ptr() + idx_start,
+                               rhs_Gamma[2].ptr() + idx_start};
+        T       *p_rhs_B[3] = {rhs_B[0].ptr() + idx_start, rhs_B[1].ptr() + idx_start,
+                               rhs_B[2].ptr() + idx_start};
 
-            for (size_t k = k0; k < k1; ++k) {
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+        for (size_t k = k0; k < k1; ++k) {
+            const T bx = *p_beta[0];
+            const T by = *p_beta[1];
+            const T bz = *p_beta[2];
 
-                for (int comp = 0; comp < 3; ++comp) {
-                    const T adv_B = use_shift_advection
+            for (int comp = 0; comp < 3; ++comp) {
+                const T adv_B = use_shift_advection
+                                    ? (params.shift_advect *
+                                       (bx * Dx_upwind_ptr(p_B[comp], sx, inv_2dx, bx) +
+                                        by * Dy_upwind_ptr(p_B[comp], sy, inv_2dy, by) +
+                                        bz * Dz_upwind_ptr(p_B[comp], inv_2dz, bz)))
+                                    : T(0);
+                const T adv_Gamma = use_shift_advection
                                         ? (params.shift_advect *
-                                           (bx * Dx_upwind_ptr(p_B[comp], sx, inv_2dx, bx) +
-                                            by * Dy_upwind_ptr(p_B[comp], sy, inv_2dy, by) +
-                                            bz * Dz_upwind_ptr(p_B[comp], inv_2dz, bz)))
+                                           (bx * Dx_upwind_ptr(p_tildeGamma[comp], sx, inv_2dx, bx) +
+                                            by * Dy_upwind_ptr(p_tildeGamma[comp], sy, inv_2dy, by) +
+                                            bz * Dz_upwind_ptr(p_tildeGamma[comp], inv_2dz, bz)))
                                         : T(0);
-                    const T adv_Gamma = use_shift_advection
-                                            ? (params.shift_advect *
-                                               (bx * Dx_upwind_ptr(p_tildeGamma[comp], sx, inv_2dx,
-                                                                   bx) +
-                                                by * Dy_upwind_ptr(p_tildeGamma[comp], sy, inv_2dy,
-                                                                   by) +
-                                                bz * Dz_upwind_ptr(p_tildeGamma[comp], inv_2dz,
-                                                                   bz)))
-                                            : T(0);
 
-                    const T diss = KO6_axis_ptr(p_B[comp], sx) + KO6_axis_ptr(p_B[comp], sy) +
-                                   KO6_axis_ptr(p_B[comp], 1);
-                    const T diss_scaled = (ko_sigma / G.dx) * diss;
-                    const T rhs_gamma_eff = *p_rhs_G[comp] - adv_Gamma;
-                    const T z_feedback =
-                        params.evolve_Z ? (-params.kappa_z * (*p_Z[comp])) : T(0);
+                const T diss = KO6_axis_ptr(p_B[comp], sx) + KO6_axis_ptr(p_B[comp], sy) +
+                               KO6_axis_ptr(p_B[comp], 1);
+                const T diss_scaled = (ko_sigma / G.dx) * diss;
+                const T rhs_gamma_eff = *p_rhs_G[comp] - adv_Gamma;
+                const T z_feedback = params.evolve_Z ? (-params.kappa_z * (*p_Z[comp])) : T(0);
 
-                    *p_rhs_B[comp] = rhs_gamma_eff + adv_B - eta_coeff * (*p_B[comp]) +
-                                     z_feedback + diss_scaled;
-                }
+                *p_rhs_B[comp] =
+                    rhs_gamma_eff + adv_B - eta_coeff * (*p_B[comp]) + z_feedback + diss_scaled;
+            }
 
-                // Increments
-                for (int c = 0; c < 3; ++c) {
-                    ++p_beta[c];
-                    ++p_B[c];
-                    ++p_tildeGamma[c];
-                    ++p_Z[c];
-                    ++p_rhs_G[c];
-                    ++p_rhs_B[c];
-                }
+            for (int c = 0; c < 3; ++c) {
+                ++p_beta[c];
+                ++p_B[c];
+                ++p_tildeGamma[c];
+                ++p_Z[c];
+                ++p_rhs_G[c];
+                ++p_rhs_B[c];
             }
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 } // namespace tensorium_RG::bssn

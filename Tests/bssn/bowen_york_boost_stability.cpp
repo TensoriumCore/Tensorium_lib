@@ -28,7 +28,7 @@ void export_slice_csv(const tensorium::tests::Grid &grid, size_t step,
     if (!file.is_open())
         return;
 
-    file << "x,y,alpha,W,mask\n";
+    file << "x,y,alpha,chi,mask\n";
 
     const size_t nx = grid.dims.nx;
     const size_t ny = grid.dims.ny;
@@ -44,11 +44,9 @@ void export_slice_csv(const tensorium::tests::Grid &grid, size_t step,
 
             const double alpha = grid.alpha.ptr()[idx];
             const double chi = grid.chi.ptr()[idx];
-            const double W = std::sqrt(std::max(chi, 1e-16));
-
             const double mask = (alpha < 0.1) ? 1.0 : 0.0;
 
-            file << x << "," << y << "," << alpha << "," << W << "," << mask << "\n";
+            file << x << "," << y << "," << alpha << "," << chi << "," << mask << "\n";
         }
     }
 }
@@ -65,7 +63,7 @@ void export_constraint_slice_csv(
     if (!file.is_open())
         return;
 
-    file << "x,y,alpha,W,H,absH,Mx,My,Mz,Mnorm,Cx,Cy,Cz,Cnorm,Theta,Zx,Zy,Zz,Znorm\n";
+    file << "x,y,alpha,chi,H,absH,Mx,My,Mz,Mnorm,Cx,Cy,Cz,Cnorm,Theta,Zx,Zy,Zz,Znorm\n";
 
     const size_t nx = grid.dims.nx;
     const size_t ny = grid.dims.ny;
@@ -82,8 +80,6 @@ void export_constraint_slice_csv(
 
             const double alpha = double(grid.alpha.ptr()[idx]);
             const double chi = double(grid.chi.ptr()[idx]);
-            const double W = std::sqrt(std::max(chi, 1e-16));
-
             const double H = double(constraint_scratch.H.ptr()[cidx]);
             const double Mx = double(constraint_scratch.M[0].ptr()[cidx]);
             const double My = double(constraint_scratch.M[1].ptr()[cidx]);
@@ -101,7 +97,7 @@ void export_constraint_slice_csv(
             const double Zz = double(grid.Z[2].ptr()[idx]);
             const double Znorm = std::sqrt(Zx * Zx + Zy * Zy + Zz * Zz);
 
-            file << x << "," << y << "," << alpha << "," << W << "," << H << ","
+            file << x << "," << y << "," << alpha << "," << chi << "," << H << ","
                  << std::abs(H) << "," << Mx << "," << My << "," << Mz << "," << Mnorm << ","
                  << Cx << "," << Cy << "," << Cz << "," << Cnorm << "," << Theta << "," << Zx
                  << "," << Zy << "," << Zz << "," << Znorm << "\n";

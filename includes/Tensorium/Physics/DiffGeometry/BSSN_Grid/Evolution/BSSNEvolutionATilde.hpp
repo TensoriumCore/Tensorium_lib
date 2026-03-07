@@ -79,9 +79,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     constexpr int sym_col[6] = {0, 1, 2, 1, 2, 2};
     const T       ko_scale = T(ko_sigma / G.dx);
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
 
             size_t idx_start = G.A_tilde[0].idx(i, j, k0);
 
@@ -109,7 +107,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
             T *p_z4_trace =
                 z4_conformal_trace_cache ? (z4_conformal_trace_cache->ptr() + idx_start) : nullptr;
 
-            for (size_t k = k0; k < k1; ++k) {
+        for (size_t k = k0; k < k1; ++k) {
                 const T alpha = *p_alpha;
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
@@ -318,8 +316,19 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 }
                 if (p_z4_trace)
                     ++p_z4_trace;
-            }
         }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 } // namespace tensorium_RG::bssn

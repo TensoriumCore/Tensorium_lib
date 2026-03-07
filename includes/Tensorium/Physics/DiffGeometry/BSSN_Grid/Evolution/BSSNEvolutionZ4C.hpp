@@ -63,10 +63,9 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
     const T two_plus_kappa2 = T(2) + params.kappa2;
     const T two_thirds = T(2) / T(3);
     const T ko_scale = T(ko_sigma / G.dx);
+    const bool use_Z_field = params.evolve_Z || params.frozen_Z_is_synced;
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.Theta.idx(i, j, k0);
 
             const T *p_theta = G.Theta.ptr() + idx_start;
@@ -93,25 +92,51 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
 
             T *p_rhs = rhs_theta.ptr() + idx_start;
 
+            const T *p_beta0 = p_beta[0];
+            const T *p_beta1 = p_beta[1];
+            const T *p_beta2 = p_beta[2];
+            const T *p_tg0 = p_tildeGamma[0];
+            const T *p_tg1 = p_tildeGamma[1];
+            const T *p_tg2 = p_tildeGamma[2];
+            const T *p_g0 = p_ginv[0];
+            const T *p_g1 = p_ginv[1];
+            const T *p_g2 = p_ginv[2];
+            const T *p_g3 = p_ginv[3];
+            const T *p_g4 = p_ginv[4];
+            const T *p_g5 = p_ginv[5];
+            const T *p_A0 = p_A[0];
+            const T *p_A1 = p_A[1];
+            const T *p_A2 = p_A[2];
+            const T *p_A3 = p_A[3];
+            const T *p_A4 = p_A[4];
+            const T *p_A5 = p_A[5];
+            const T *p_R0 = p_R[0];
+            const T *p_R1 = p_R[1];
+            const T *p_R2 = p_R[2];
+            const T *p_R3 = p_R[3];
+            const T *p_R4 = p_R[4];
+            const T *p_R5 = p_R[5];
+
+            #pragma omp simd aligned(p_theta,p_alpha,p_K,p_chi,p_beta0,p_beta1,p_beta2,p_tg0,p_tg1,p_tg2,p_g0,p_g1,p_g2,p_g3,p_g4,p_g5,p_A0,p_A1,p_A2,p_A3,p_A4,p_A5,p_R0,p_R1,p_R2,p_R3,p_R4,p_R5,p_rhs:64)
             for (size_t k = k0; k < k1; ++k) {
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;
                 const T K_val = *p_K;
-                const T bx = *p_beta[0];
-                const T by = *p_beta[1];
-                const T bz = *p_beta[2];
+                const T bx = *p_beta0;
+                const T by = *p_beta1;
+                const T bz = *p_beta2;
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
                 T       z_phys[3] = {T(0), T(0), T(0)};
-                if (params.evolve_Z) {
+                if (use_Z_field) {
                     z_phys[0] = *p_Z[0];
                     z_phys[1] = *p_Z[1];
                     z_phys[2] = *p_Z[2];
                 } else {
                     T div_metric_inv[3] = {T(0), T(0), T(0)};
                     detail::metric_inverse_divergence_ptr(
-                        p_ginv[0], p_ginv[1], p_ginv[2], p_ginv[3], p_ginv[4], p_ginv[5], sx,
-                        sy, inv_12dx, inv_12dy, inv_12dz, div_metric_inv);
+                        p_g0, p_g1, p_g2, p_g3, p_g4, p_g5, sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                        div_metric_inv);
                     // gamma_metric is the contracted conformal Christoffel from metric derivatives.
                     const T gamma_metric[3] = {-div_metric_inv[0], -div_metric_inv[1],
                                                -div_metric_inv[2]};
@@ -130,16 +155,16 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                               by * Dy_upwind_ptr(p_theta, sy, inv_2dy, by) +
                               bz * Dz_upwind_ptr(p_theta, inv_2dz, bz);
 
-                const T g_xx = *p_ginv[0];
-                const T g_xy = *p_ginv[1];
-                const T g_xz = *p_ginv[2];
-                const T g_yy = *p_ginv[3];
-                const T g_yz = *p_ginv[4];
-                const T g_zz = *p_ginv[5];
+                const T g_xx = *p_g0;
+                const T g_xy = *p_g1;
+                const T g_xz = *p_g2;
+                const T g_yy = *p_g3;
+                const T g_yz = *p_g4;
+                const T g_zz = *p_g5;
 
-                const T R_conformal_base = g_xx * (*p_R[0]) + g_yy * (*p_R[3]) + g_zz * (*p_R[5]) +
-                                           T(2) * (g_xy * (*p_R[1]) + g_xz * (*p_R[2]) +
-                                                   g_yz * (*p_R[4]));
+                const T R_conformal_base = g_xx * (*p_R0) + g_yy * (*p_R3) + g_zz * (*p_R5) +
+                                           T(2) * (g_xy * (*p_R1) + g_xz * (*p_R2) +
+                                                   g_yz * (*p_R4));
                 T       R_conformal_z4 = T(0);
                 if (p_z4_trace) {
                     R_conformal_z4 = *p_z4_trace;
@@ -164,12 +189,12 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T row2_y = g_yz;
                 const T row2_z = g_zz;
 
-                const T A_xx = *p_A[0];
-                const T A_xy = *p_A[1];
-                const T A_xz = *p_A[2];
-                const T A_yy = *p_A[3];
-                const T A_yz = *p_A[4];
-                const T A_zz = *p_A[5];
+                const T A_xx = *p_A0;
+                const T A_xy = *p_A1;
+                const T A_xz = *p_A2;
+                const T A_yy = *p_A3;
+                const T A_yz = *p_A4;
+                const T A_zz = *p_A5;
 
                 const T tmp0_x = A_xx * row0_x + A_xy * row0_y + A_xz * row0_z;
                 const T tmp0_y = A_xy * row0_x + A_yy * row0_y + A_yz * row0_z;
@@ -211,18 +236,46 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 ++p_chi;
                 if (p_z4_trace)
                     ++p_z4_trace;
-                for (int c = 0; c < 3; ++c) {
-                    ++p_beta[c];
-                    ++p_Z[c];
-                    ++p_tildeGamma[c];
-                }
-                for (int s = 0; s < 6; ++s) {
-                    ++p_ginv[s];
-                    ++p_A[s];
-                    ++p_R[s];
-                }
+                ++p_beta0;
+                ++p_beta1;
+                ++p_beta2;
+                ++p_Z[0];
+                ++p_Z[1];
+                ++p_Z[2];
+                ++p_tg0;
+                ++p_tg1;
+                ++p_tg2;
+                ++p_g0;
+                ++p_g1;
+                ++p_g2;
+                ++p_g3;
+                ++p_g4;
+                ++p_g5;
+                ++p_A0;
+                ++p_A1;
+                ++p_A2;
+                ++p_A3;
+                ++p_A4;
+                ++p_A5;
+                ++p_R0;
+                ++p_R1;
+                ++p_R2;
+                ++p_R3;
+                ++p_R4;
+                ++p_R5;
             }
-        }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 
@@ -250,9 +303,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
         return;
 
     if (!params.evolve_Z) {
-#pragma omp parallel for collapse(2)
-        for (size_t i = i0; i < i1; ++i) {
-            for (size_t j = j0; j < j1; ++j) {
+        auto loop_zero_ij = [&](size_t i, size_t j) {
                 size_t idx_start = rhs_Z[0].idx(i, j, k0);
                 T     *p_rhs0 = rhs_Z[0].ptr() + idx_start;
                 T     *p_rhs1 = rhs_Z[1].ptr() + idx_start;
@@ -265,7 +316,17 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                     ++p_rhs1;
                     ++p_rhs2;
                 }
-            }
+        };
+        if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_zero_ij(i, j);
+        } else {
+#pragma omp parallel for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_zero_ij(i, j);
         }
         return;
     }
@@ -281,9 +342,7 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
     const ptrdiff_t sy = G.Z[0].st.sy;
     const T         two_thirds = T(2) / T(3);
 
-#pragma omp parallel for collapse(2)
-    for (size_t i = i0; i < i1; ++i) {
-        for (size_t j = j0; j < j1; ++j) {
+    auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.Z[0].idx(i, j, k0);
 
             const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
@@ -486,7 +545,18 @@ inline void compute_rhs_Z(const BSSNGridSoA<T> &G, Field3D<T> rhs_Z[3],
                     ++p_A[s];
                 }
             }
-        }
+    };
+
+    if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
+    } else {
+#pragma omp parallel for collapse(2)
+        for (size_t i = i0; i < i1; ++i)
+            for (size_t j = j0; j < j1; ++j)
+                loop_ij(i, j);
     }
 }
 

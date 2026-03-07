@@ -23,6 +23,7 @@
 #include "../Geometry/BSSNRicci.hpp"
 #include "../Grid/BSSNGridOperations.hpp"
 #include "BSSNPerfTimers.hpp"
+#include "BSSNRHSSweep.hpp"
 
 /**
  * @file BSSNRK4.hpp
@@ -365,6 +366,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             prepare_state_for_rhs(grid);
             auto stage_params = gauge_params_;
             stage_params.current_time = simulation_time_;
+            stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stages_[stage], stage_params);
 
             apply_explicit_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
@@ -588,19 +590,11 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if (rhs_prep_callback_)
             rhs_prep_callback_(rhs);
         update_ko_scale(grid, boundary_dt_);
-        compute_rhs_Gamma(grid, rhs.tildeGamma, grid.Z, grid.Theta, params, padding_);
-        compute_rhs_B(grid, rhs.tildeGamma, rhs.B, params, padding_);
-        compute_rhs_beta(grid, rhs.beta, params, padding_);
-        compute_rhs_alpha(grid, rhs.alpha, padding_, params);
-        compute_rhs_chi(grid, rhs.chi, padding_, params);
-        compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, padding_, params);
-        compute_rhs_A_tilde(grid, rhs.A_tilde, padding_, params, &theta_ricciz4_trace_cache_);
-        // compute_rhs_K stores rhs(Khat) with Khat = K - 2*Theta.
-        compute_rhs_K(grid, rhs.K, padding_, params);
-        compute_rhs_Theta(grid, rhs.Theta, params, padding_, &theta_ricciz4_trace_cache_);
-        compute_rhs_Z(grid, rhs.Z, params, padding_);
+        evaluate_rhs_sweep_core(grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B,
+                                rhs.gamma_tilde, rhs.A_tilde, rhs.tildeGamma, rhs.Z, params,
+                                padding_, &theta_ricciz4_trace_cache_);
         apply_rhs_sommerfeld(grid, rhs);
-        recompose_rhs_K_from_khat(grid, rhs);
+        recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, padding_);
     }
 
     void apply_rhs_sommerfeld(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
@@ -702,12 +696,6 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                 }
             }
         }
-    }
-
-    void recompose_rhs_K_from_khat(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
-        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            rhs.K.ptr()[idx] += T(2) * rhs.Theta.ptr()[idx];
-        });
     }
 
     void log_gauge_diagnostics(const BSSNGridSoA<T> &grid, size_t step_index) {

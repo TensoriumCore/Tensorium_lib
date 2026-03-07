@@ -53,6 +53,7 @@ inline void set_max_spatial_derivative_order(int order) {
 inline int max_spatial_derivative_order() { return fd_spatial_order(); }
 
 // First Derivatives (Order 6)
+#pragma omp declare simd notinbranch
 template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_60dx) {
     if (fd_spatial_order() == 4) {
         // 4th-order centered first derivative:
@@ -64,6 +65,7 @@ template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_
            inv_60dx;
 }
 
+#pragma omp declare simd notinbranch
 template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_60dy) {
     if (fd_spatial_order() == 4) {
         return (-p[2 * sy] + 8.0 * p[sy] - 8.0 * p[-sy] + p[-2 * sy]) * (5.0 * inv_60dy);
@@ -73,6 +75,7 @@ template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_
            inv_60dy;
 }
 
+#pragma omp declare simd notinbranch
 template <typename T> inline double Dz_ptr(const T *p, double inv_60dz) {
     if (fd_spatial_order() == 4) {
         return (-p[2] + 8.0 * p[1] - 8.0 * p[-1] + p[-2]) * (5.0 * inv_60dz);
@@ -168,6 +171,7 @@ template <typename T> inline double Dyz4_ptr(const T *p, ptrdiff_t sy, double in
 }
 
 // Upwind Derivatives
+#pragma omp declare simd notinbranch
 template <typename T>
 inline double Dx_upwind_ptr(const T *p, ptrdiff_t sx, double inv_2dx, double beta) {
     // High-order upwind stencil matching the NGHOST=4 finite-difference form.
@@ -185,6 +189,7 @@ inline double Dx_upwind_ptr(const T *p, ptrdiff_t sx, double inv_2dx, double bet
     return dr * inv_2dx;
 }
 
+#pragma omp declare simd notinbranch
 template <typename T>
 inline double Dy_upwind_ptr(const T *p, ptrdiff_t sy, double inv_2dy, double beta) {
     if (beta < 0.0) {
@@ -201,6 +206,7 @@ inline double Dy_upwind_ptr(const T *p, ptrdiff_t sy, double inv_2dy, double bet
     return dr * inv_2dy;
 }
 
+#pragma omp declare simd notinbranch
 template <typename T> inline double Dz_upwind_ptr(const T *p, double inv_2dz, double beta) {
     if (beta < 0.0) {
         const double dl = (1.0 / 30.0) * p[-4] + (-4.0 / 15.0) * p[-3] + (1.0) * p[-2] +
@@ -215,6 +221,7 @@ template <typename T> inline double Dz_upwind_ptr(const T *p, double inv_2dz, do
 }
 
 // KO6 Dissipation
+#pragma omp declare simd notinbranch
 template <typename T> inline double KO6_axis_ptr(const T *p, ptrdiff_t stride) {
     return (p[-3 * stride] - 6.0 * p[-2 * stride] + 15.0 * p[-stride] - 20.0 * p[0] +
             15.0 * p[stride] - 6.0 * p[2 * stride] + p[3 * stride]) *
