@@ -6,6 +6,7 @@ __pycache__/
 
 # Build / CMake
 build/
+build-*/
 pybuild/
 compile_commands.json
 CMakeCache.txt

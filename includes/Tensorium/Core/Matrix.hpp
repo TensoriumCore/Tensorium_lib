@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 
-#ifdef TENSORIUM_USE_CBLAS
+#if defined(TENSORIUM_USE_CBLAS) && !defined(TENSORIUM_FORCE_NO_CBLAS)
 #    ifdef __APPLE__
 #        include <Accelerate/Accelerate.h>
 #    else
@@ -225,7 +225,7 @@ template <typename K, bool RowMajor = false> class Matrix {
 
         // On active le kernel optimisé SEULEMENT pour float et double
         if constexpr (std::is_same_v<K, float> || std::is_same_v<K, double>) {
-#ifdef TENSORIUM_USE_CBLAS
+#if defined(TENSORIUM_USE_CBLAS) && !defined(TENSORIUM_FORCE_NO_CBLAS)
             const int M = static_cast<int>(rows);
             const int N = static_cast<int>(mat.cols);
             const int Kdim = static_cast<int>(cols);

@@ -182,6 +182,12 @@ target_include_directories(TensoriumKEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(TensoriumMovingPuncture
+    bssn/binaries/MovingPunctureRunner.cpp)
+target_include_directories(TensoriumMovingPuncture PRIVATE
+    ${PROJECT_SOURCE_DIR}/includes
+    ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(TensoriumTests
     main.cpp
     ${TEST_FRAMEWORK_SOURCES}
@@ -251,7 +257,7 @@ endif()
 set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
     TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
-    TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo)
+    TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo TensoriumMovingPuncture)
 set(TENSORIUM_OPENMP_TARGETS ${TEST_OBJECT_TARGETS} ${TENSORIUM_ALL_EXECUTABLES})
 
 if(TWOPUNCTURES_C_TARGET)
@@ -294,6 +300,41 @@ if(USE_MPI)
     target_link_libraries(${target} PRIVATE MPI::MPI_CXX)
     target_compile_definitions(${target} PRIVATE MORPHEUS_USE_MPI TENSORIUM_USE_MPI)
   endforeach()
+
+  # MPI-specific executables
+  add_executable(TensoriumMPIMovingPuncture
+      bssn/mpi/mpi_moving_puncture.cpp)
+  target_include_directories(TensoriumMPIMovingPuncture PRIVATE
+      ${PROJECT_SOURCE_DIR}/includes
+      ${CMAKE_CURRENT_SOURCE_DIR})
+  target_link_libraries(TensoriumMPIMovingPuncture PRIVATE MPI::MPI_CXX)
+  target_compile_definitions(TensoriumMPIMovingPuncture PRIVATE
+      TENSORIUM_ENABLE_MPI TENSORIUM_USE_MPI)
+
+  if(OPENMP_LIB)
+    if(OPENMP_COMPILE_FLAGS)
+      target_compile_options(TensoriumMPIMovingPuncture PRIVATE ${OPENMP_COMPILE_FLAGS})
+    endif()
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${OPENMP_LIB})
+    if(APPLE AND OPENMP_LIB_DIR)
+      target_link_options(TensoriumMPIMovingPuncture PRIVATE "-Wl,-rpath,${OPENMP_LIB_DIR}")
+    endif()
+  endif()
+
+  if(TWOPUNCTURES_C_TARGET)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${TWOPUNCTURES_C_TARGET})
+  endif()
+
+  if(OPENBLAS_LIB)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${OPENBLAS_LIB})
+  elseif(BLAS_FOUND)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${BLAS_LIBRARIES})
+  endif()
+
+  # MPI test
+  add_test(NAME mpi.moving_puncture
+           COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2
+                   $<TARGET_FILE:TensoriumMPIMovingPuncture> --nx 64 --steps 10)
 endif()
 
 find_library(TENSORIUM_MEMKIND_LIB NAMES memkind)

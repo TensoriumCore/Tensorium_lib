@@ -148,19 +148,71 @@ Current scope of Python API:
 - `Vector`/`Vectord`, `Matrix`/`Matrixd`, `Tensor2d`, `Tensor4d`
 - `tns.*` algebra helpers (`add/sub/mul`, norms, solvers, tensor contractions, etc.)
 - metric/curvature helpers (`Metric`, `compute_christoffel`, `compute_riemann_tensor`, Ricci utilities)
+- `bssn.BSSNGrid` with BSSN initial-data builders (`minkowski`, `schwarzschild_isotropic`,
+  `kerr_schild_single`, Bowen-York puncture initializers)
+- explicit `TwoPuncturesC` init path via
+  `tensorium.bssn.binary_bowen_york_puncture_twopunctures_c_init(...)`
+
+`bssn` quick start:
+
+```bash
+python3 - <<'PY'
+import tensorium
+g = tensorium.bssn.BSSNGrid(24, 24, 24, 4, 0.25, 0.25, 0.25)
+tensorium.bssn.minkowski(g)
+alpha = g.alpha()
+print(alpha.shape, alpha.min(), alpha.max())
+PY
+```
+
+Field access examples:
+
+- `g.alpha()` interior values
+- `g.alpha(include_halo=True)` including ghost zones
+- `g.beta(0)` for `beta^x`
+- `g.gamma_tilde(tensorium.bssn.XX)` for `\\tilde{\\gamma}_{xx}`
+
+TwoPuncturesC availability check:
+
+```bash
+python3 - <<'PY'
+import tensorium
+print(tensorium.bssn.has_twopunctures_c())
+PY
+```
 
 Not yet exposed in Python:
 
-- full `BSSN_Grid` evolution runtime and diagnostics stack
+- full `BSSN_Grid` evolution runtime (RK stepper/gauge controls/diagnostics callbacks)
 - MPI/CUDA backends
 
 ## Numerical relativity notes
 
 - The active physics path is `includes/Tensorium/Physics/DiffGeometry/BSSN_Grid`.
 - The moving puncture visualization/stability driver is in `Tests/bssn/bowen_york_boost_stability.cpp`.
+- A standalone moving-puncture executable is available at:
+  `./build/Tests/TensoriumMovingPuncture`
+- It consumes the same environment variables as the test driver
+  (`TENSORIUM_MOVING_PUNCTURE_*` + `OMP_*`) without `--test`.
 - Interpolated Two-Punctures initialization requires the external TwoPunctures codebase from:
   `https://github.com/GRTLCollaboration/TwoPunctures.git`
 - In this repository, that external solver is expected through the local `../TwoPuncturesC` integration (with GSL) at build time.
+
+Standalone run example:
+
+```bash
+OMP_NUM_THREADS=24 \
+OMP_PROC_BIND=spread \
+OMP_PLACES=cores \
+OMP_DYNAMIC=FALSE \
+TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT=1 \
+TENSORIUM_MOVING_PUNCTURE_GRID_N=212 \
+TENSORIUM_MOVING_PUNCTURE_BOX_LENGTH=24.0 \
+TENSORIUM_MOVING_PUNCTURE_SPATIAL_ORDER=6 \
+TENSORIUM_MOVING_PUNCTURE_CFL=0.11 \
+TENSORIUM_MOVING_PUNCTURE_STEPS=12000 \
+./build/Tests/TensoriumMovingPuncture
+```
 
 ## LLVM/MLIR plugins
 

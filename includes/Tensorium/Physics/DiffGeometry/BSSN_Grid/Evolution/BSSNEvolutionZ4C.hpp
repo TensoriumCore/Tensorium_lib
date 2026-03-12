@@ -117,7 +117,7 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
             const T *p_R4 = p_R[4];
             const T *p_R5 = p_R[5];
 
-            #pragma omp simd aligned(p_theta,p_alpha,p_K,p_chi,p_beta0,p_beta1,p_beta2,p_tg0,p_tg1,p_tg2,p_g0,p_g1,p_g2,p_g3,p_g4,p_g5,p_A0,p_A1,p_A2,p_A3,p_A4,p_A5,p_R0,p_R1,p_R2,p_R3,p_R4,p_R5,p_rhs:64)
+            #pragma omp simd
             for (size_t k = k0; k < k1; ++k) {
                 const T theta = *p_theta;
                 const T alpha = *p_alpha;

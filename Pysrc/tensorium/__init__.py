@@ -6,6 +6,7 @@ from . import tensorium as _C
 from . import vectors
 from . import matrices
 from . import tensors
+from . import bssn
 
 # Re-export commonly used classes
 Vector = vectors.Vector
@@ -14,6 +15,7 @@ Matrix = matrices.Matrix
 Matrixd = matrices.Matrixd
 Tensor2d = tensors.Tensor2d
 Tensor4d = tensors.Tensor4d
+BSSNGrid = bssn.BSSNGrid
 
 __all__ = [
     "Vector",
@@ -22,7 +24,9 @@ __all__ = [
     "Matrixd",
     "Tensor2d",
     "Tensor4d",
+    "BSSNGrid",
     "vectors",
     "matrices",
     "tensors",
+    "bssn",
 ]

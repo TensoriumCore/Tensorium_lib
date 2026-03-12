@@ -73,12 +73,85 @@ PY
   - `tns.compute_christoffel`
   - `tns.compute_riemann_tensor`
   - Ricci contraction/scalar helpers
+- BSSN grid initial-data bindings:
+  - `bssn.BSSNGrid`
+  - `bssn.minkowski`
+  - `bssn.schwarzschild_isotropic`
+  - `bssn.kerr_schild_single`
+  - `bssn.binary_bowen_york_puncture_init`
+  - `bssn.binary_bowen_york_puncture_interpolated_init`
+  - `bssn.binary_bowen_york_puncture_twopunctures_c_init`
 - NumPy conversion helpers are available on bound classes via
   - `Class.from_numpy(...)`
   - `instance.to_numpy()`
 
+## BSSN quick start
+
+```bash
+python3 - <<'PY'
+import tensorium
+g = tensorium.bssn.BSSNGrid(24, 24, 24, 4, 0.25, 0.25, 0.25)
+tensorium.bssn.minkowski(g)
+alpha = g.alpha()
+print(alpha.shape, alpha.min(), alpha.max())
+PY
+```
+
+### TwoPuncturesC backend
+
+The Python extension enables TwoPuncturesC automatically when:
+
+- `../TwoPuncturesC/include/TwoPunctures.h` exists (relative to repo root)
+- `gsl-config` is available in `PATH`
+
+Runtime check:
+
+```bash
+python3 - <<'PY'
+import tensorium
+print("two_punctures_c:", tensorium.bssn.has_twopunctures_c())
+PY
+```
+
+Explicit TwoPuncturesC init:
+
+```bash
+python3 - <<'PY'
+import tensorium
+g = tensorium.bssn.BSSNGrid(64, 64, 64, 4, 0.125, 0.125, 0.125)
+tensorium.bssn.binary_bowen_york_puncture_twopunctures_c_init(
+    g,
+    0.5, -1.0, 0.0, 0.0, [0.1, 0.0, 0.0], [0.0, 0.0, 0.0],
+    0.5,  1.0, 0.0, 0.0, [-0.1, 0.0, 0.0], [0.0, 0.0, 0.0],
+    npoints_A=30, npoints_B=30, npoints_phi=16, tp_threads=8
+)
+PY
+```
+
+### Grid field access
+
+- Scalar fields:
+  - `g.alpha(include_halo=False)`
+  - `g.chi(include_halo=False)`
+  - `g.K(include_halo=False)`
+  - `g.Theta(include_halo=False)`
+- Vector fields (`component` in `[0,1,2]`):
+  - `g.beta(component, include_halo=False)`
+  - `g.B(component, include_halo=False)`
+  - `g.tildeGamma(component, include_halo=False)`
+  - `g.Z(component, include_halo=False)`
+- Symmetric tensor fields (`component` in `[0..5]`, constants `XX,XY,XZ,YY,YZ,ZZ`):
+  - `g.gamma_tilde(component, include_halo=False)`
+  - `g.gamma_tilde_inv(component, include_halo=False)`
+  - `g.A_tilde(component, include_halo=False)`
+  - `g.Ricci(component, include_halo=False)`
+- Basic scalar setters:
+  - `g.set_alpha(array3d, include_halo=False)`
+  - `g.set_chi(array3d, include_halo=False)`
+  - `g.set_K(array3d, include_halo=False)`
+
 ## Not Yet Exposed
 
-- `BSSN_Grid` runtime objects and steppers
+- `BSSN_Grid` steppers and gauge runtime controls
 - MPI-distributed paths and CUDA backends
 - High-level Python orchestration APIs for full NR runs

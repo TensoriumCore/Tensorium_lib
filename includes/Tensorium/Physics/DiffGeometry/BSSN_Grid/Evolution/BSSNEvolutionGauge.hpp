@@ -263,7 +263,7 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             T       *p_rhs1 = p_rhs[1];
             T       *p_rhs2 = p_rhs[2];
 
-            #pragma omp simd aligned(p_alpha,p_chi,p_beta0,p_beta1,p_beta2,p_tg0,p_tg1,p_tg2,p_g0,p_g1,p_g2,p_g3,p_g4,p_g5,p_rhs0,p_rhs1,p_rhs2:64)
+            #pragma omp simd
             for (size_t k = k0; k < k1; ++k) {
                 const T bx = *p_beta0;
                 const T by = *p_beta1;
@@ -383,7 +383,7 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
         const T *p_B1 = p_B[1];
         const T *p_B2 = p_B[2];
 
-        #pragma omp simd aligned(p_beta0,p_beta1,p_beta2,p_B0,p_B1,p_B2,p_rhs0,p_rhs1,p_rhs2:64)
+        #pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
             if (use_advect) {
                 const T bx = *p_beta0;

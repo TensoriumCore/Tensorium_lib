@@ -14,6 +14,7 @@
 #include <utility>
 
 #include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
+#include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
 #include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
 
@@ -355,42 +356,6 @@ bool parse_env_bool_or(const char *name, bool fallback) {
             return parsed != 0;
     }
     return fallback;
-}
-
-struct CircularMomentumSuggestion {
-    bool   valid = false;
-    double d = 0.0;
-    double total_mass = 0.0;
-    double reduced_mass = 0.0;
-    double p_newtonian = 0.0;
-    double p_pn = 0.0;
-};
-
-CircularMomentumSuggestion suggest_circular_momentum(double m1, double m2, double separation) {
-    CircularMomentumSuggestion out{};
-    if (!(std::isfinite(m1) && std::isfinite(m2) && std::isfinite(separation)))
-        return out;
-    if (m1 <= 0.0 || m2 <= 0.0 || separation <= 0.0)
-        return out;
-
-    const double d = 2.0 * separation;
-    const double M = m1 + m2;
-    if (!(std::isfinite(d) && std::isfinite(M)) || d <= 0.0 || M <= 0.0)
-        return out;
-
-    const double mu = (m1 * m2) / M;
-    const double p_newt = mu * std::sqrt(M / d);
-    const double p_pn = 0.295 / std::sqrt(d);
-    if (!(std::isfinite(mu) && std::isfinite(p_newt) && std::isfinite(p_pn)))
-        return out;
-
-    out.valid = true;
-    out.d = d;
-    out.total_mass = M;
-    out.reduced_mass = mu;
-    out.p_newtonian = p_newt;
-    out.p_pn = p_pn;
-    return out;
 }
 
 struct ShiftPunctureTracker {
@@ -830,88 +795,27 @@ struct ScopedEnvOverride {
 
 REGISTER_TEST(
     "bssn.viz.moving_puncture", "Export CSV slices of a moving spinning black hole", []() {
+        const auto mp_env = tensorium_RG::bssn::load_moving_puncture_env();
+
         tensorium::tests::StabilityRunConfig cfg;
-        cfg.nx = 96;
-        cfg.ny = 96;
-        cfg.nz = 96;
-        cfg.spacing = 62.4 / 96.0;
-        cfg.ng = 6;
-        cfg.padding = 0;
-        cfg.steps = 6000;
-        cfg.cfl = 0.10;
-        cfg.gauge_factor = 1.0;
-
-        // Physical box length used by default when spacing is not overridden explicitly.
-        // With defaults: L = 62.4
-        double box_length = cfg.spacing * static_cast<double>(cfg.nx);
-
-        if (const char *n_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_GRID_N")) {
-            const long parsed = std::strtol(n_env, nullptr, 10);
-            if (parsed > 8) {
-                const size_t n = static_cast<size_t>(parsed);
-                cfg.nx = n;
-                cfg.ny = n;
-                cfg.nz = n;
-            }
-        }
-        if (const char *nx_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_NX")) {
-            const long parsed = std::strtol(nx_env, nullptr, 10);
-            if (parsed > 8)
-                cfg.nx = static_cast<size_t>(parsed);
-        }
-        if (const char *ny_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_NY")) {
-            const long parsed = std::strtol(ny_env, nullptr, 10);
-            if (parsed > 8)
-                cfg.ny = static_cast<size_t>(parsed);
-        }
-        if (const char *nz_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_NZ")) {
-            const long parsed = std::strtol(nz_env, nullptr, 10);
-            if (parsed > 8)
-                cfg.nz = static_cast<size_t>(parsed);
-        }
-        if (const char *box_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_BOX_LENGTH")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(box_env, &end);
-            if (end != box_env && std::isfinite(parsed) && parsed > 0.0)
-                box_length = parsed;
-        }
-        bool spacing_set = false;
-        if (const char *spacing_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_SPACING")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(spacing_env, &end);
-            if (end != spacing_env && std::isfinite(parsed) && parsed > 0.0) {
-                cfg.spacing = parsed;
-                spacing_set = true;
-            }
-        }
-        if (!spacing_set)
-            cfg.spacing = box_length / static_cast<double>(cfg.nx);
-
-        if (const char *steps_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_STEPS")) {
-            const long parsed = std::strtol(steps_env, nullptr, 10);
-            if (parsed > 0)
-                cfg.steps = static_cast<size_t>(parsed);
-        }
-        if (const char *cfl_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_CFL")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(cfl_env, &end);
-            if (end != cfl_env && std::isfinite(parsed) && parsed > 0.0)
-                cfg.cfl = parsed;
-        }
+        cfg.nx = mp_env.nx;
+        cfg.ny = mp_env.ny;
+        cfg.nz = mp_env.nz;
+        cfg.spacing = mp_env.spacing;
+        cfg.ng = mp_env.ng;
+        cfg.padding = mp_env.padding;
+        cfg.steps = mp_env.steps;
+        cfg.cfl = mp_env.cfl;
+        cfg.gauge_factor = mp_env.gauge_speed;
 
         std::cout << "[mesh] nx=" << cfg.nx << " ny=" << cfg.ny << " nz=" << cfg.nz
                   << " spacing=" << cfg.spacing
                   << " box=(" << cfg.nx * cfg.spacing << ", " << cfg.ny * cfg.spacing << ", "
                   << cfg.nz * cfg.spacing << ")" << std::endl;
 
-        int spatial_derivative_order = 4;
-        if (const char *order_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_SPATIAL_ORDER")) {
-            const int parsed = std::atoi(order_env);
-            if (parsed == 4 || parsed == 6)
-                spatial_derivative_order = parsed;
-        }
-        tensorium_RG::fd::set_max_spatial_derivative_order(spatial_derivative_order);
-        std::cout << "[num] spatial_derivative_order=" << spatial_derivative_order << std::endl;
+        tensorium_RG::fd::set_max_spatial_derivative_order(mp_env.spatial_derivative_order);
+        std::cout << "[num] spatial_derivative_order=" << mp_env.spatial_derivative_order
+                  << std::endl;
 
         tensorium_RG::fd::set_fd_dx(cfg.spacing);
         (void)system("mkdir -p Output/viz");
@@ -923,56 +827,15 @@ REGISTER_TEST(
         grid.y0 = -0.5 * cfg.spacing * cfg.ny + 0.5 * cfg.spacing;
         grid.z0 = -0.5 * cfg.spacing * cfg.nz + 0.5 * cfg.spacing;
 
-        double m1 = 0.48847892320123;
-        double m2 = 0.48847892320123;
-        double separation = 6.10679;
-        double momentum = 0.0841746;
-        double radial_momentum = 0.000510846;
-        if (const char *mass_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_MASS")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(mass_env, &end);
-            if (end != mass_env && std::isfinite(parsed) && parsed > 0.0) {
-                m1 = parsed;
-                m2 = parsed;
-            }
-        }
-        if (const char *mass1_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_MASS1")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(mass1_env, &end);
-            if (end != mass1_env && std::isfinite(parsed) && parsed > 0.0)
-                m1 = parsed;
-        }
-        if (const char *mass2_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_MASS2")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(mass2_env, &end);
-            if (end != mass2_env && std::isfinite(parsed) && parsed > 0.0)
-                m2 = parsed;
-        }
-        if (const char *sep_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_SEPARATION")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(sep_env, &end);
-            if (end != sep_env && std::isfinite(parsed) && parsed > 0.0)
-                separation = parsed;
-        }
-        if (const char *mom_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_MOMENTUM")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(mom_env, &end);
-            if (end != mom_env && std::isfinite(parsed) && parsed > 0.0)
-                momentum = parsed;
-        }
-        if (const char *mom_r_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_RADIAL_MOMENTUM")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(mom_r_env, &end);
-            if (end != mom_r_env && std::isfinite(parsed) && parsed >= 0.0)
-                radial_momentum = parsed;
-        }
-        const double user_tangential_momentum = momentum;
-        const CircularMomentumSuggestion circular_hint =
-            suggest_circular_momentum(m1, m2, separation);
-        const bool print_suggested_momentum =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_PRINT_SUGGESTED_MOMENTUM", false);
-        const bool auto_circular =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_AUTO_CIRCULAR", false);
+        const double m1 = mp_env.mass1;
+        const double m2 = mp_env.mass2;
+        const double separation = mp_env.separation;
+        const double momentum = mp_env.tangential_momentum;
+        const double radial_momentum = mp_env.radial_momentum;
+        const double user_tangential_momentum = mp_env.user_tangential_momentum;
+        const auto   circular_hint = mp_env.circular_hint;
+        const bool   print_suggested_momentum = mp_env.print_suggested_momentum;
+        const bool   auto_circular = mp_env.auto_circular;
 
         if (print_suggested_momentum) {
             if (circular_hint.valid) {
@@ -997,7 +860,6 @@ REGISTER_TEST(
 
         if (auto_circular) {
             if (circular_hint.valid) {
-                momentum = circular_hint.p_pn;
                 std::cout << "[Z4c.Init] AUTO_CIRCULAR enabled: overriding P_tang from "
                           << user_tangential_momentum << " to " << momentum
                           << " (Post-Newtonian, Z4c constraint-damping preset)." << std::endl;
@@ -1012,18 +874,9 @@ REGISTER_TEST(
                   << " momentum_rad=" << radial_momentum
                   << " m1=" << m1
                   << " m2=" << m2 << std::endl;
-        const bool use_interpolated_init =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT", false);
-        size_t interp_seed_n = 64;
-        if (const char *seed_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_INTERP_SEED_N")) {
-            const long parsed = std::strtol(seed_env, nullptr, 10);
-            if (parsed >= 24)
-                interp_seed_n = static_cast<size_t>(parsed);
-        }
-        const char *interp_mode = "interpolated_seed";
-#if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
-        interp_mode = "interpolated_twopunctures";
-#endif
+        const bool use_interpolated_init = mp_env.use_interpolated_init;
+        const size_t interp_seed_n = mp_env.interp_seed_n;
+        const char *interp_mode = tensorium_RG::bssn::moving_puncture_interpolated_mode_name();
         std::cout << "[init] mode=" << (use_interpolated_init ? interp_mode : "bowen_york")
                   << " seed_n=" << interp_seed_n << std::endl;
         if (use_interpolated_init)
@@ -1038,130 +891,11 @@ REGISTER_TEST(
         proj_cfg.project_A_tilde = true;
         proj_cfg.recompute_inverse = true;
 
-        tensorium_RG::bssn::GaugeParameters<double> params;
-        params.eta = 1.0;
-        params.beta_B_coeff = 0.75;
-        params.use_direct_shift_rhs = false;
-        params.use_shift_advection = false;
-        params.shift_Gamma = 0.75;
-        params.shift_advect = 0.0;
-        params.shift_eta = 1.0;
-        params.lapse_oplog = 2.0;
-        params.lapse_advect = 1.0;
-
-        params.kappa1 = 0.1;
-        params.kappa2 = 0.0;
-        params.kappa3 = 1.0;
-        params.kappa_z = 1.0;
-        params.covariant_z4 = true;
-        params.chi_div_floor = 1e-5;
-        params.use_theta_in_lapse = true;
-        params.ko_sigma = 1.0;
-        params.slow_start_lapse = false;
-        params.min_lapse_for_K = 1e-4;
-        params.max_K_squared = 1e4;
-        params.alpha_floor = 1e-4;
-        params.chi_floor = 1e-4;
-        params.evolve_Z = false;
-        params.gamma_damping_uses_metric = false;
-        params.apply_rhs_sommerfeld = true;
-
-        // Point 5 parity: keep moving-puncture gauge strictly aligned with
-        // two-puncture reference in interpolated mode unless explicitly disabled.
-        const bool strict_tp_gauge =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_STRICT_TP_GAUGE",
-                              use_interpolated_init);
-        if (const char *shift_eta_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_SHIFT_ETA")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(shift_eta_env, &end);
-            if (end != shift_eta_env && std::isfinite(parsed) && parsed >= 0.0) {
-                params.eta = parsed;
-                params.shift_eta = parsed;
-            }
-        }
-        if (const char *kappa1_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_KAPPA1")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(kappa1_env, &end);
-            if (end != kappa1_env && std::isfinite(parsed) && parsed >= 0.0)
-                params.kappa1 = parsed;
-        }
-        if (const char *kappa2_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_KAPPA2")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(kappa2_env, &end);
-            if (end != kappa2_env && std::isfinite(parsed))
-                params.kappa2 = parsed;
-        }
-        if (const char *kappa3_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_KAPPA3")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(kappa3_env, &end);
-            if (end != kappa3_env && std::isfinite(parsed))
-                params.kappa3 = parsed;
-        }
-        params.covariant_z4 =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_COVARIANT_Z4", params.covariant_z4);
-        params.evolve_Z =
-            parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EVOLVE_Z", params.evolve_Z);
-        if (const char *chi_div_floor_env =
-                std::getenv("TENSORIUM_MOVING_PUNCTURE_CHI_DIV_FLOOR")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(chi_div_floor_env, &end);
-            if (end != chi_div_floor_env && std::isfinite(parsed) && parsed > 0.0)
-                params.chi_div_floor = parsed;
-        }
-        if (const char *ko_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_KO_SIGMA")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(ko_env, &end);
-            if (end != ko_env && std::isfinite(parsed) && parsed >= 0.0)
-                params.ko_sigma = parsed;
-        }
-        if (const char *alpha_floor_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_ALPHA_FLOOR")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(alpha_floor_env, &end);
-            if (end != alpha_floor_env && std::isfinite(parsed) && parsed >= 0.0)
-                params.alpha_floor = parsed;
-        }
-        if (const char *chi_floor_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_CHI_FLOOR")) {
-            char *end = nullptr;
-            const double parsed = std::strtod(chi_floor_env, &end);
-            if (end != chi_floor_env && std::isfinite(parsed) && parsed >= 0.0)
-                params.chi_floor = parsed;
-        }
-        size_t projection_stride = 0;
-        if (const char *proj_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_PROJECTION_STRIDE")) {
-            const long parsed = std::strtol(proj_env, nullptr, 10);
-            if (parsed > 0)
-                projection_stride = static_cast<size_t>(parsed);
-        }
-        if (const char *ultra_env = std::getenv("TENSORIUM_MOVING_PUNCTURE_ULTRA_STABLE")) {
-            if (std::atoi(ultra_env) != 0) {
-                cfg.cfl = std::min(cfg.cfl, 0.07);
-                params.eta = std::max(params.eta, 6.0);
-                params.shift_eta = std::max(params.shift_eta, 6.0);
-                params.kappa1 = std::max(params.kappa1, 0.18);
-                params.ko_sigma = std::max(params.ko_sigma, 0.28);
-                projection_stride =
-                    (projection_stride == 0) ? size_t(5) : std::min(projection_stride, size_t(5));
-            }
-        }
+        tensorium_RG::bssn::GaugeParameters<double> params = mp_env.gauge_params;
+        const bool strict_tp_gauge = mp_env.strict_tp_gauge;
+        size_t projection_stride = mp_env.projection_stride;
 
         if (strict_tp_gauge) {
-            params.use_direct_shift_rhs = false;
-            // Match GRChombo BinaryBH two-puncture gauge defaults.
-            params.use_shift_advection = false;
-            params.shift_advect = 0.0;
-            params.shift_Gamma = 0.75;
-            params.beta_B_coeff = 0.75;
-            params.eta = 1.0;
-            params.shift_eta = 1.0;
-            params.lapse_oplog = 2.0;
-            params.lapse_advect = 1.0;
-            params.use_theta_in_lapse = true;
-            params.slow_start_lapse = false;
-            params.ko_sigma = 1.0;
-            params.alpha_floor = std::max(params.alpha_floor, 1e-4);
-            params.chi_floor = std::max(params.chi_floor, 1e-4);
-            params.chi_div_floor = std::max(params.chi_div_floor, 1e-4);
-            params.min_lapse_for_K = std::max(params.min_lapse_for_K, 1e-4);
             std::cout << "[gauge] strict_tp_gauge=1 (two-puncture reference preset)"
                       << std::endl;
         } else {
@@ -1172,42 +906,20 @@ REGISTER_TEST(
                   << " chi_div_floor=" << params.chi_div_floor
                   << " min_lapse_for_K=" << params.min_lapse_for_K << std::endl;
 
-        bool rhs_ix1 = true;
-        bool rhs_ox1 = true;
-        bool rhs_ix2 = true;
-        bool rhs_ox2 = true;
-        bool rhs_ix3 = false;
-        bool rhs_ox3 = true;
-        bool rf_ix1 = false;
-        bool rf_ox1 = false;
-        bool rf_ix2 = false;
-        bool rf_ox2 = false;
-        bool rf_ix3 = true;
-        bool rf_ox3 = false;
-        rhs_ix1 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX1", rhs_ix1);
-        rhs_ox1 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX1", rhs_ox1);
-        rhs_ix2 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX2", rhs_ix2);
-        rhs_ox2 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX2", rhs_ox2);
-        rhs_ix3 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX3", rhs_ix3);
-        rhs_ox3 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX3", rhs_ox3);
-        rf_ix1 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX1", rf_ix1);
-        rf_ox1 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX1", rf_ox1);
-        rf_ix2 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX2", rf_ix2);
-        rf_ox2 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX2", rf_ox2);
-        rf_ix3 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX3", rf_ix3);
-        rf_ox3 = parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX3", rf_ox3);
-        tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(rf_ix1, rf_ox1, rf_ix2, rf_ox2,
-                                                                    rf_ix3, rf_ox3);
+        const auto &bc = mp_env.boundary_faces;
+        tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(bc.rf_ix1, bc.rf_ox1, bc.rf_ix2,
+                                                                    bc.rf_ox2, bc.rf_ix3,
+                                                                    bc.rf_ox3);
         tensorium_RG::bssn::BoundaryRadiative::set_rhs_sommerfeld_faces(
-            rhs_ix1, rhs_ox1, rhs_ix2, rhs_ox2, rhs_ix3, rhs_ox3);
+            bc.rhs_ix1, bc.rhs_ox1, bc.rhs_ix2, bc.rhs_ox2, bc.rhs_ix3, bc.rhs_ox3);
         std::cout << "[bc] reflective_faces="
-                  << " ix1=" << rf_ix1 << " ox1=" << rf_ox1
-                  << " ix2=" << rf_ix2 << " ox2=" << rf_ox2
-                  << " ix3=" << rf_ix3 << " ox3=" << rf_ox3 << std::endl;
+                  << " ix1=" << bc.rf_ix1 << " ox1=" << bc.rf_ox1
+                  << " ix2=" << bc.rf_ix2 << " ox2=" << bc.rf_ox2
+                  << " ix3=" << bc.rf_ix3 << " ox3=" << bc.rf_ox3 << std::endl;
         std::cout << "[bc] rhs_sommerfeld_faces="
-                  << " ix1=" << rhs_ix1 << " ox1=" << rhs_ox1
-                  << " ix2=" << rhs_ix2 << " ox2=" << rhs_ox2
-                  << " ix3=" << rhs_ix3 << " ox3=" << rhs_ox3 << std::endl;
+                  << " ix1=" << bc.rhs_ix1 << " ox1=" << bc.rhs_ox1
+                  << " ix2=" << bc.rhs_ix2 << " ox2=" << bc.rhs_ox2
+                  << " ix3=" << bc.rhs_ix3 << " ox3=" << bc.rhs_ox3 << std::endl;
 
         tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
         tensorium_RG::init::zero_z4c_fields(grid);
@@ -1215,13 +927,7 @@ REGISTER_TEST(
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
             grid, cfg.padding);
         stepper.set_gauge_parameters(params);
-        size_t state_log_stride = 10;
-        if (const char *state_log_stride_env =
-                std::getenv("TENSORIUM_MOVING_PUNCTURE_STATE_LOG_STRIDE")) {
-            const long parsed = std::strtol(state_log_stride_env, nullptr, 10);
-            if (parsed > 0)
-                state_log_stride = static_cast<size_t>(parsed);
-        }
+        const size_t state_log_stride = mp_env.state_log_stride;
         stepper.set_state_log_stride(state_log_stride);
         std::cout << "[log] state_log_stride=" << state_log_stride << std::endl;
 
@@ -1469,7 +1175,7 @@ REGISTER_TEST(
         bool   gauge_instability = false;
         size_t failure_step = std::numeric_limits<size_t>::max();
 
-        for (size_t n = 0; n <= cfg.steps; ++n) {
+        for (size_t n = 0; n < cfg.steps; ++n) {
             const double dt = tensorium_RG::bssn::compute_dt_cfl(
                 grid, tensorium::tests::make_cfl_control(cfg), cfg.padding);
 
@@ -1637,17 +1343,17 @@ REGISTER_TEST(
             if (need_constraint_log &&
                 !log_diagnostics(n, have_stats ? &stats : nullptr)) {
                 constraint_violation = true;
-                failure_step = n;
+                failure_step = n + 1;
                 break;
             }
 
             if (!guard_gauge(n)) {
                 gauge_instability = true;
-                failure_step = n;
+                failure_step = n + 1;
                 break;
             }
 
-            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f\n", dt, n, cfg.steps, t);
+            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f\n", dt, n + 1, cfg.steps, t);
         }
 
         if (constraint_violation) {
@@ -1725,7 +1431,7 @@ REGISTER_TEST(
 
         double t = 0.0;
 
-        for (size_t n = 0; n <= cfg.steps; ++n) {
+        for (size_t n = 0; n < cfg.steps; ++n) {
             const double dt = tensorium_RG::bssn::compute_dt_cfl(
                 grid, tensorium::tests::make_cfl_control(cfg), cfg.padding);
 
@@ -1733,7 +1439,7 @@ REGISTER_TEST(
             t += dt;
 
             std::printf("dt = %.4e\n", dt);
-            std::printf("Step %zu / %zu (t=%.4f)\n", n, cfg.steps, t);
+            std::printf("Step %zu / %zu (t=%.4f)\n", n + 1, cfg.steps, t);
         }
         std::cout << "Kerr–Schild init test completed.\n";
     });
