@@ -240,15 +240,8 @@ def run_moving_puncture_interpolate_from_env() -> tuple[BSSNGrid, float]:
     use_interpolated = _env_bool("TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT", True)
     interp_seed_n = max(_env_int("TENSORIUM_MOVING_PUNCTURE_INTERP_SEED_N", 64), 24)
 
-    if use_interpolated and has_twopunctures_c():
+    if use_interpolated:
         binary_bowen_york_puncture_twopunctures_c_init(
-            grid,
-            m1, -separation, 0.0, 0.0, [radial_momentum, -momentum, 0.0], [0.0, 0.0, 0.0],
-            m2, separation, 0.0, 0.0, [-radial_momentum, momentum, 0.0], [0.0, 0.0, 0.0],
-            interp_seed_n=interp_seed_n,
-        )
-    elif use_interpolated:
-        binary_bowen_york_puncture_interpolated_init(
             grid,
             m1, -separation, 0.0, 0.0, [radial_momentum, -momentum, 0.0], [0.0, 0.0, 0.0],
             m2, separation, 0.0, 0.0, [-radial_momentum, momentum, 0.0], [0.0, 0.0, 0.0],

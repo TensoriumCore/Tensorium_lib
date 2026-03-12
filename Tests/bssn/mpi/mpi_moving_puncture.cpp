@@ -207,7 +207,7 @@ void initialize_binary_puncture(BSSNGridSoA<T>& grid, const RunConfig& cfg) {
     const T S2[3] = {T(0), T(0), T(0)};
 
     if (cfg.use_interpolated_init) {
-        tensorium_RG::init::binary_bowen_york_puncture_interpolated_init(
+        tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init(
             grid, T(cfg.mass1), x1, y, z, P1, S1, T(cfg.mass2), x2, y, z, P2, S2,
             cfg.interp_seed_n, T(1e-10));
     } else {

@@ -500,7 +500,7 @@ PYBIND11_MODULE(tensorium, m) {
            double y2, double z2, const std::array<double, 3> &P2, const std::array<double, 3> &S2,
            size_t interp_seed_n, double r_floor) {
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
-            tensorium_RG::init::binary_bowen_york_puncture_interpolated_init<double>(
+            tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init<double>(
                 grid, m1, x1, y1, z1, P1.data(), S1.data(), m2, x2, y2, z2, P2.data(), S2.data(),
                 interp_seed_n, r_floor);
 #else

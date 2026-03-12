@@ -354,7 +354,7 @@ inline void initialize_moving_puncture_data(BSSNGridSoA<double> &grid,
         const double P1[3] = {cfg.radial_momentum, -cfg.tangential_momentum, 0.0};
         const double P2[3] = {-cfg.radial_momentum, cfg.tangential_momentum, 0.0};
 
-        tensorium_RG::init::binary_bowen_york_puncture_interpolated_init(
+        tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init(
             grid, cfg.mass1, x1, y, z, P1, S1, cfg.mass2, x2, y, z, P2, S2, cfg.interp_seed_n,
             1e-10);
         return;
@@ -371,11 +371,7 @@ inline void initialize_moving_puncture_data(BSSNGridSoA<double> &grid,
 }
 
 inline const char *moving_puncture_interpolated_mode_name() {
-#if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
     return "interpolated_twopunctures";
-#else
-    return "interpolated_seed";
-#endif
 }
 
 inline void apply_boundary_faces(const MovingPunctureBoundaryFaces &faces) {

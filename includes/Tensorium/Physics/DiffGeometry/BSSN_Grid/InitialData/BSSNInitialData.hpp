@@ -16,6 +16,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <limits>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -807,12 +808,13 @@ static inline void invert_sym_3x3(const T g_xx, const T g_xy, const T g_xz, cons
                                   const T g_yz, const T g_zz, T &inv_xx, T &inv_xy, T &inv_xz,
                                   T &inv_yy, T &inv_yz, T &inv_zz, T &det);
 
+namespace detail {
+
 template <typename T>
-inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1,
-                                                         const T P1[3], const T S1[3], T m2, T x2,
-                                                         T y2, T z2, const T P2[3], const T S2[3],
-                                                         size_t interp_seed_n = 64,
-                                                         T r_floor = T(1e-6)) {
+inline void binary_bowen_york_puncture_interpolated_init_impl(
+    BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, const T P1[3], const T S1[3], T m2, T x2, T y2,
+    T z2, const T P2[3], const T S2[3], size_t interp_seed_n, T r_floor,
+    bool require_twopunctures_c) {
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
     (void)interp_seed_n;
     (void)r_floor;
@@ -885,6 +887,14 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     setenv("OMP_NUM_THREADS", tp_threads_buf, 1);
 #endif
 #endif
+    auto restore_tp_omp_env = [&]() {
+#if defined(TENSORIUM_TWOPUNCTURES_OMP) && !defined(_WIN32)
+        if (tp_prev_omp_env_valid)
+            setenv("OMP_NUM_THREADS", tp_prev_omp_env, 1);
+        else
+            unsetenv("OMP_NUM_THREADS");
+#endif
+    };
     std::printf("[init.interpolate][step 1/7] setup TwoPunctures backend "
                 "(omp_threads=%d, tp_threads=%d, tp_omp=%d)\n",
                 omp_threads, tp_threads,
@@ -908,6 +918,12 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     const T b = T(0.5) * std::abs(x2 - x1);
     const T yz_mismatch = std::abs(y1 - y2) + std::abs(z1 - z2);
     if (b <= T(0) || yz_mismatch > T(1e-12)) {
+        restore_tp_omp_env();
+        if (require_twopunctures_c) {
+            throw std::runtime_error(
+                "TwoPuncturesC initialization requires x-aligned punctures with identical y/z "
+                "coordinates");
+        }
         std::printf("[init.interpolate][warn] invalid puncture layout for TwoPunctures backend; "
                     "falling back to Bowen-York init\n");
         binary_bowen_york_puncture_init(G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, T(1e-6));
@@ -964,6 +980,9 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
                 t_solve_end - t_solve_begin);
     std::fflush(stdout);
     if (tp_data == nullptr) {
+        restore_tp_omp_env();
+        if (require_twopunctures_c)
+            throw std::runtime_error("TwoPuncturesC solver failed to produce initial data");
         std::printf("[init.interpolate][warn] TwoPunctures solver failed; "
                     "falling back to Bowen-York init\n");
         binary_bowen_york_puncture_init(G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, T(1e-6));
@@ -1007,12 +1026,7 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
         psiyy.data(), psiyz.data(), psizz.data(), gxx.data(), gxy.data(), gxz.data(), gyy.data(),
         gyz.data(), gzz.data(), kxx.data(), kxy.data(), kxz.data(), kyy.data(), kyz.data(),
         kzz.data());
-#if defined(TENSORIUM_TWOPUNCTURES_OMP) && !defined(_WIN32)
-    if (tp_prev_omp_env_valid)
-        setenv("OMP_NUM_THREADS", tp_prev_omp_env, 1);
-    else
-        unsetenv("OMP_NUM_THREADS");
-#endif
+    restore_tp_omp_env();
     const double t_interp_end = now_s();
     std::printf("[init.interpolate][step 4/7] interpolation done in %.3fs\n",
                 t_interp_end - t_interp_begin);
@@ -1135,6 +1149,11 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     std::printf("[init.interpolate][step 7/7] complete total=%.3fs\n", t_post_end - t_init_begin);
     std::fflush(stdout);
 #else
+    if (require_twopunctures_c) {
+        throw std::runtime_error(
+            "TwoPuncturesC support is required but this build was compiled without "
+            "TENSORIUM_HAS_TWOPUNCTURES_C");
+    }
     const size_t seed_n = std::max<size_t>(24, interp_seed_n);
 
     const T Lx = G.dx * T(G.dims.nx);
@@ -1205,6 +1224,26 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
     tensorium_RG::bssn::compute_ricci_bssn(G, G.Ricci);
     tensorium_RG::bssn::assert_invariants(G, "init.bowen_york_interpolated");
 #endif
+}
+
+} // namespace detail
+
+template <typename T>
+inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1,
+                                                         const T P1[3], const T S1[3], T m2, T x2,
+                                                         T y2, T z2, const T P2[3], const T S2[3],
+                                                         size_t interp_seed_n = 64,
+                                                         T r_floor = T(1e-6)) {
+    detail::binary_bowen_york_puncture_interpolated_init_impl(
+        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, false);
+}
+
+template <typename T>
+inline void binary_bowen_york_puncture_twopunctures_c_init(
+    BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, const T P1[3], const T S1[3], T m2, T x2, T y2,
+    T z2, const T P2[3], const T S2[3], size_t interp_seed_n = 64, T r_floor = T(1e-6)) {
+    detail::binary_bowen_york_puncture_interpolated_init_impl(
+        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, true);
 }
 
 template <typename T>

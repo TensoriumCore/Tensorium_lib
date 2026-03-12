@@ -765,7 +765,7 @@ void initialize_single_boost_interpolated(Grid &grid, double separation,
     const double S1[3] = {0.0, 0.0, 0.0};
     const double S2[3] = {0.0, 0.0, 0.0};
 
-    tensorium_RG::init::binary_bowen_york_puncture_interpolated_init(
+    tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init(
         grid, m1, x1, y, z, P1, S1, m2, x2, y, z, P2, S2, interp_seed_n, 1e-10);
 }
 
