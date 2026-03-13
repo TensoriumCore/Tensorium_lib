@@ -298,6 +298,15 @@ def run_moving_puncture_interpolate_from_env() -> tuple[BSSNGrid, float]:
     params.chi_floor = _env_float("TENSORIUM_MOVING_PUNCTURE_CHI_FLOOR", 1e-4)
     params.gamma_damping_uses_metric = False
     params.apply_rhs_sommerfeld = True
+    params.use_direct_shift_rhs = _env_bool(
+        "TENSORIUM_MOVING_PUNCTURE_USE_DIRECT_SHIFT_RHS", params.use_direct_shift_rhs
+    )
+    params.use_shift_advection = _env_bool(
+        "TENSORIUM_MOVING_PUNCTURE_USE_SHIFT_ADVECTION", params.use_shift_advection
+    )
+    params.shift_advect = _env_float("TENSORIUM_MOVING_PUNCTURE_SHIFT_ADVECT", params.shift_advect)
+    params.lapse_advect = _env_float("TENSORIUM_MOVING_PUNCTURE_LAPSE_ADVECT", params.lapse_advect)
+    params.beta_B_coeff = _env_float("TENSORIUM_MOVING_PUNCTURE_BETA_B_COEFF", params.beta_B_coeff)
 
     stepper = BSSNRKStepper(grid, padding)
     stepper.set_gauge_parameters(params)

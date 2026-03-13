@@ -52,17 +52,15 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
     constexpr size_t gamma_validation_stride = 8;
 #endif
 
-    size_t I0, I1, J0, J1, K0, K1;
-    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const auto region = interior_bounds(G, padding);
+    const size_t i0 = region.i0;
+    const size_t j0 = region.j0;
+    const size_t k0 = region.k0;
+    const size_t i1 = region.i1;
+    const size_t j1 = region.j1;
+    const size_t k1 = region.k1;
 
-    const size_t i0 = clamped_lower(I0, padding, I1);
-    const size_t j0 = clamped_lower(J0, padding, J1);
-    const size_t k0 = clamped_lower(K0, padding, K1);
-    const size_t i1 = clamped_upper(I1, padding, I0);
-    const size_t j1 = clamped_upper(J1, padding, J0);
-    const size_t k1 = clamped_upper(K1, padding, K0);
-
-    if (i0 >= i1 || j0 >= j1 || k0 >= k1) {
+    if (region.empty()) {
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
         tensorium_RG::bssn::detail::finalize_contracted_warning_step();
 #endif

@@ -43,18 +43,63 @@ struct InteriorRegion {
     [[nodiscard]] bool empty() const noexcept { return i0 >= i1 || j0 >= j1 || k0 >= k1; }
 };
 
+struct InteriorPaddingOverride {
+    bool active = false;
+    size_t lower[3] = {0, 0, 0};
+    size_t upper[3] = {0, 0, 0};
+};
+
+inline InteriorPaddingOverride &interior_padding_override() {
+    static InteriorPaddingOverride override_state{};
+    return override_state;
+}
+
+inline void set_interior_padding_override(size_t i_lower, size_t i_upper, size_t j_lower,
+                                          size_t j_upper, size_t k_lower, size_t k_upper) {
+    auto &state = interior_padding_override();
+    state.active = true;
+    state.lower[0] = i_lower;
+    state.upper[0] = i_upper;
+    state.lower[1] = j_lower;
+    state.upper[1] = j_upper;
+    state.lower[2] = k_lower;
+    state.upper[2] = k_upper;
+}
+
+inline void clear_interior_padding_override() { interior_padding_override().active = false; }
+
+struct ScopedInteriorPaddingOverride {
+    InteriorPaddingOverride previous_{};
+
+    explicit ScopedInteriorPaddingOverride(size_t i_lower, size_t i_upper, size_t j_lower,
+                                           size_t j_upper, size_t k_lower, size_t k_upper) {
+        previous_ = interior_padding_override();
+        set_interior_padding_override(i_lower, i_upper, j_lower, j_upper, k_lower, k_upper);
+    }
+
+    ~ScopedInteriorPaddingOverride() { interior_padding_override() = previous_; }
+};
+
 template <typename T>
 inline InteriorRegion interior_bounds(const BSSNGridSoA<T> &grid, size_t padding) {
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
 
+    const auto &override_state = interior_padding_override();
+    const size_t i_lower = override_state.active ? override_state.lower[0] : padding;
+    const size_t i_upper = override_state.active ? override_state.upper[0] : padding;
+    const size_t j_lower = override_state.active ? override_state.lower[1] : padding;
+    const size_t j_upper = override_state.active ? override_state.upper[1] : padding;
+    const size_t k_lower = override_state.active ? override_state.lower[2] : padding;
+    const size_t k_upper = override_state.active ? override_state.upper[2] : padding;
+
     InteriorRegion region;
-    region.i0 = clamped_lower(I0, padding, I1);
-    region.j0 = clamped_lower(J0, padding, J1);
-    region.k0 = clamped_lower(K0, padding, K1);
-    region.i1 = clamped_upper(I1, padding, I0);
-    region.j1 = clamped_upper(J1, padding, J0);
-    region.k1 = clamped_upper(K1, padding, K0);
+    region.i0 = clamped_lower(I0, i_lower, I1);
+    region.j0 = clamped_lower(J0, j_lower, J1);
+    region.k0 = clamped_lower(K0, k_lower, K1);
+    region.i1 = clamped_upper(I1, i_upper, I0);
+    region.j1 = clamped_upper(J1, j_upper, J0);
+    region.k1 = clamped_upper(K1, k_upper, K0);
     return region;
 }
 

@@ -319,26 +319,41 @@ class MPIBoundary {
                                     int component) {
         // Store original settings
         bool orig[6];
+        bool active_orig[6];
         for (int axis = 0; axis < 3; ++axis) {
             orig[axis * 2] = PhysicalBoundary::rhs_sommerfeld_enabled(axis, false);
             orig[axis * 2 + 1] = PhysicalBoundary::rhs_sommerfeld_enabled(axis, true);
+            active_orig[axis * 2] = PhysicalBoundary::active_enabled(axis, false);
+            active_orig[axis * 2 + 1] = PhysicalBoundary::active_enabled(axis, true);
         }
+
+        const bool act_ix1 = is_boundary_minus(0);
+        const bool act_ox1 = is_boundary_plus(0);
+        const bool act_ix2 = is_boundary_minus(1);
+        const bool act_ox2 = is_boundary_plus(1);
+        const bool act_ix3 = is_boundary_minus(2);
+        const bool act_ox3 = is_boundary_plus(2);
 
         // Only enable at true domain boundaries
         PhysicalBoundary::set_rhs_sommerfeld_faces(
-            is_boundary_minus(0) && orig[0],
-            is_boundary_plus(0) && orig[1],
-            is_boundary_minus(1) && orig[2],
-            is_boundary_plus(1) && orig[3],
-            is_boundary_minus(2) && orig[4],
-            is_boundary_plus(2) && orig[5]
+            act_ix1 && orig[0],
+            act_ox1 && orig[1],
+            act_ix2 && orig[2],
+            act_ox2 && orig[3],
+            act_ix3 && orig[4],
+            act_ox3 && orig[5]
         );
+        PhysicalBoundary::set_active_faces(act_ix1, act_ox1, act_ix2, act_ox2, act_ix3, act_ox3);
 
         PhysicalBoundary::apply_halo(field, G, which, component);
 
         // Restore
         PhysicalBoundary::set_rhs_sommerfeld_faces(
             orig[0], orig[1], orig[2], orig[3], orig[4], orig[5]
+        );
+        PhysicalBoundary::set_active_faces(
+            active_orig[0], active_orig[1], active_orig[2],
+            active_orig[3], active_orig[4], active_orig[5]
         );
     }
 

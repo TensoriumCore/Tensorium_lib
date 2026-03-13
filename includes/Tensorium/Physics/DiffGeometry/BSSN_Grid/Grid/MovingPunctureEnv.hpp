@@ -316,6 +316,20 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         params.chi_div_floor = std::max(params.chi_div_floor, 1e-4);
         params.min_lapse_for_K = std::max(params.min_lapse_for_K, 1e-4);
     }
+
+    params.use_direct_shift_rhs = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_USE_DIRECT_SHIFT_RHS", params.use_direct_shift_rhs);
+    params.use_shift_advection = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_USE_SHIFT_ADVECTION", params.use_shift_advection);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_SHIFT_ADVECT")) {
+        params.shift_advect = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_LAPSE_ADVECT")) {
+        params.lapse_advect = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_BETA_B_COEFF")) {
+        params.beta_B_coeff = *parsed;
+    }
     cfg.gauge_params = params;
 
     auto &bc = cfg.boundary_faces;
