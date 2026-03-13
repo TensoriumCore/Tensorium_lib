@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import sys
+from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
@@ -32,6 +33,15 @@ def _ensure_tex_binaries_in_path():
 
 _ensure_tex_binaries_in_path()
 
+
+def _raw_flag_value(name):
+    prefix = name + "="
+    for token in sys.argv[1:]:
+        if token.startswith(prefix):
+            return token[len(prefix):]
+    return None
+
+
 raw_flags = {a for a in sys.argv[1:] if a.startswith("--")}
 raw_save_png = ("--save-png" in raw_flags) or (os.getenv("TENSORIUM_PLOT_SAVE_PNG", "0") != "0")
 raw_video = ("--video" in raw_flags) or (os.getenv("TENSORIUM_PLOT_VIDEO", "0") != "0")
@@ -48,14 +58,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.ndimage import binary_dilation, gaussian_filter
-
-data_dir = "Output/viz"
-slice_files = sorted(glob.glob(os.path.join(data_dir, "slice_*.csv")))
-constraint_files = sorted(glob.glob(os.path.join(data_dir, "constraint_slice_*.csv")))
-track_file = os.path.join(data_dir, "puncture_track.csv")
-track_df = pd.read_csv(track_file) if os.path.exists(track_file) else None
-drift_file = os.path.join(data_dir, "puncture_tracker_drift.csv")
-drift_df = pd.read_csv(drift_file) if os.path.exists(drift_file) else None
 
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 flags = {a for a in sys.argv[1:] if a.startswith("--")}
@@ -122,6 +124,101 @@ auto_zoom = True
 zoom_margin = 15.0
 zoom_min_half_width = 19.0
 
+
+def extract_step(path):
+    name = os.path.basename(path)
+    patterns = (
+        r"slice_step_(\d+)_rank_\d+\.csv$",
+        r"(?:slice|constraint_slice|drift_step)_(\d+)\.csv$",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, name)
+        if match:
+            return int(match.group(1))
+    return None
+
+
+def discover_data_dir():
+    explicit_dir = _raw_flag_value("--data-dir") or os.getenv("TENSORIUM_PLOT_DATA_DIR")
+    if explicit_dir:
+        return explicit_dir
+
+    candidates = [
+        "Output/viz",
+        "Output/viz/mpi",
+        "Output/vis",
+        "Output/vis/mpi",
+    ]
+
+    def has_plot_data(path):
+        if tracker_drift_mode:
+            return os.path.exists(os.path.join(path, "puncture_tracker_drift.csv"))
+        if constraint_mode:
+            return bool(glob.glob(os.path.join(path, "constraint_slice_*.csv")))
+        return bool(
+            glob.glob(os.path.join(path, "slice_*.csv"))
+            or glob.glob(os.path.join(path, "slice_step_*_rank_*.csv"))
+        )
+
+    for candidate in candidates:
+        if os.path.isdir(candidate) and has_plot_data(candidate):
+            return candidate
+
+    return "Output/viz"
+
+
+def make_frame_entries(paths):
+    return [{"step": extract_step(path), "paths": [path]} for path in paths]
+
+
+def discover_slice_entries(path):
+    mpi_paths = sorted(glob.glob(os.path.join(path, "slice_step_*_rank_*.csv")))
+    if mpi_paths:
+        by_step = defaultdict(list)
+        for csv_path in mpi_paths:
+            step = extract_step(csv_path)
+            by_step[step].append(csv_path)
+        entries = []
+        for step in sorted(by_step.keys(), key=lambda x: (-1 if x is None else x)):
+            entries.append({"step": step, "paths": sorted(by_step[step])})
+        return entries
+
+    standalone_paths = sorted(glob.glob(os.path.join(path, "slice_*.csv")))
+    return make_frame_entries(standalone_paths)
+
+
+def discover_constraint_entries(path):
+    return make_frame_entries(sorted(glob.glob(os.path.join(path, "constraint_slice_*.csv"))))
+
+
+def frame_step(frame_entry):
+    return frame_entry["step"]
+
+
+def load_frame_df(frame_entry):
+    paths = frame_entry["paths"]
+    if len(paths) == 1:
+        return pd.read_csv(paths[0])
+
+    parts = [pd.read_csv(path) for path in paths]
+    df = pd.concat(parts, ignore_index=True)
+    if {"global_i", "global_j"}.issubset(df.columns):
+        df = df.drop_duplicates(subset=["global_i", "global_j"], keep="last")
+    elif {"x", "y"}.issubset(df.columns):
+        df = df.drop_duplicates(subset=["x", "y"], keep="last")
+    if {"y", "x"}.issubset(df.columns):
+        df = df.sort_values(["y", "x"]).reset_index(drop=True)
+    return df
+
+
+data_dir = discover_data_dir()
+slice_files = discover_slice_entries(data_dir)
+constraint_files = discover_constraint_entries(data_dir)
+track_file = os.path.join(data_dir, "puncture_track.csv")
+track_df = pd.read_csv(track_file) if os.path.exists(track_file) else None
+drift_file = os.path.join(data_dir, "puncture_tracker_drift.csv")
+drift_df = pd.read_csv(drift_file) if os.path.exists(drift_file) else None
+
 if constraint_mode and tracker_drift_mode:
     print("[ERR] --constraints et --tracker-drift sont exclusifs.")
     sys.exit(1)
@@ -137,7 +234,7 @@ if tracker_drift_mode:
     drift_df = drift_df.sort_values("step").drop_duplicates("step", keep="last").reset_index(drop=True)
 else:
     if not files:
-        wanted = "constraint_slice_*.csv" if constraint_mode else "slice_*.csv"
+        wanted = "constraint_slice_*.csv" if constraint_mode else "slice_*.csv or slice_step_*_rank_*.csv"
         print(f"[ERR] aucun fichier {wanted} dans {data_dir}")
         sys.exit(1)
 
@@ -190,14 +287,6 @@ def truncated_cmap(name, minval=0.0, maxval=1.0, n=256):
     )
 
 
-def extract_step(path):
-    name = os.path.basename(path)
-    match = re.search(r"(?:slice|constraint_slice|drift_step)_(\d+)\.csv$", name)
-    if match:
-        return int(match.group(1))
-    return None
-
-
 def parse_requested_step():
     if len(args) == 0:
         return None
@@ -205,6 +294,7 @@ def parse_requested_step():
         print(
             "Usage: python3 plot.py [step] [--animate] [--save-png] [--video] [--fps=N] "
             "[--frames-dir=DIR] [--video-file=FILE.mp4] [--video-codec=auto|libx264|h264_videotoolbox] "
+            "[--data-dir=DIR] "
             "[--workers=N] [--dpi=N] "
             "[--constraints] [--tracker-drift] [--no-smooth] "
             "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
@@ -478,8 +568,8 @@ def overlay_track(ax, track_slice):
 
 def update_regular(frame_idx):
     current_file = files[frame_idx]
-    df = pd.read_csv(current_file)
-    step = extract_step(current_file)
+    df = load_frame_df(current_file)
+    step = frame_step(current_file)
     if step is None:
         step = frame_idx
 
@@ -711,8 +801,8 @@ def update_regular(frame_idx):
 
 def update_constraints(frame_idx):
     current_file = files[frame_idx]
-    df = pd.read_csv(current_file)
-    step = extract_step(current_file)
+    df = load_frame_df(current_file)
+    step = frame_step(current_file)
     if step is None:
         step = frame_idx
 
@@ -1042,7 +1132,14 @@ def render_single_frame_to_png(frame_idx, out_path, dpi):
 
 
 def build_child_render_command(step, out_path, dpi):
-    cmd = [sys.executable, os.path.abspath(__file__), str(step), f"--single-frame-out={out_path}", f"--dpi={dpi}"]
+    cmd = [
+        sys.executable,
+        os.path.abspath(__file__),
+        str(step),
+        f"--single-frame-out={out_path}",
+        f"--dpi={dpi}",
+        f"--data-dir={data_dir}",
+    ]
     if tracker_drift_mode:
         cmd.append("--tracker-drift")
     if constraint_mode:
@@ -1081,7 +1178,7 @@ def export_frames_to_png_parallel(frame_indices, out_dir, dpi, workers):
         if tracker_drift_mode:
             step = int(drift_df.iloc[frame_idx]["step"])
         else:
-            step = extract_step(files[frame_idx])
+            step = frame_step(files[frame_idx])
             if step is None:
                 step = frame_idx
         out_path = written[n]
@@ -1196,7 +1293,7 @@ if tracker_drift_mode:
 else:
     step_to_index = {}
     for idx, path in enumerate(files):
-        step = extract_step(path)
+        step = frame_step(path)
         if step is not None:
             step_to_index[step] = idx
 
