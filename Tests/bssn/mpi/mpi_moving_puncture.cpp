@@ -114,12 +114,7 @@ struct RunConfig {
     bool use_interpolated_init = false;
     size_t interp_seed_n = 64;
     MovingPunctureBoundaryFaces boundary_faces{};
-
-    double kappa1 = 0.02;
-    double kappa2 = 0.0;
-    double shift_eta = 2.0;
-    double alpha_floor = 1e-4;
-    double chi_floor = 1e-4;
+    GaugeParameters<double> gauge_params{};
 };
 
 RunConfig make_default_config() {
@@ -144,11 +139,7 @@ RunConfig make_default_config() {
     cfg.use_interpolated_init = mp.use_interpolated_init;
     cfg.interp_seed_n = mp.interp_seed_n;
     cfg.boundary_faces = mp.boundary_faces;
-    cfg.kappa1 = mp.gauge_params.kappa1;
-    cfg.kappa2 = mp.gauge_params.kappa2;
-    cfg.shift_eta = mp.gauge_params.shift_eta;
-    cfg.alpha_floor = mp.gauge_params.alpha_floor;
-    cfg.chi_floor = mp.gauge_params.chi_floor;
+    cfg.gauge_params = mp.gauge_params;
 
     return cfg;
 }
@@ -281,17 +272,7 @@ int main(int argc, char** argv) {
     MPIBSSNRKStepper<double> stepper(domain, *grid);
 
     // Configure gauge parameters
-    GaugeParameters<double> gauge;
-    gauge.kappa1 = cfg.kappa1;
-    gauge.kappa2 = cfg.kappa2;
-    gauge.shift_eta = cfg.shift_eta;
-    gauge.alpha_floor = cfg.alpha_floor;
-    gauge.chi_floor = cfg.chi_floor;
-    gauge.chi_div_floor = 1e-5;
-    gauge.evolve_Z = false;
-    gauge.covariant_z4 = true;
-    gauge.ko_sigma = 0.5;
-    stepper.set_gauge_parameters(gauge);
+    stepper.set_gauge_parameters(cfg.gauge_params);
 
     // Set output stride
     stepper.set_state_log_stride(cfg.output_stride);

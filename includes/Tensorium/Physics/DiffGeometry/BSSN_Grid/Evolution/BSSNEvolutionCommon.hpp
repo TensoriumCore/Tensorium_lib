@@ -71,6 +71,21 @@ inline void for_each_interior_index(const BSSNGridSoA<T> &grid, size_t padding, 
             }
 }
 
+template <typename T, typename Fn>
+inline void for_each_interior_index_parallel(const BSSNGridSoA<T> &grid, size_t padding,
+                                             Fn &&fn) {
+    const auto region = interior_bounds(grid, padding);
+    if (region.empty())
+        return;
+#pragma omp parallel for collapse(3)
+    for (size_t i = region.i0; i < region.i1; ++i)
+        for (size_t j = region.j0; j < region.j1; ++j)
+            for (size_t k = region.k0; k < region.k1; ++k) {
+                const size_t idx = grid.alpha.idx(i, j, k);
+                fn(i, j, k, idx);
+            }
+}
+
 struct KOState {
     double scale = 1.0;
 };

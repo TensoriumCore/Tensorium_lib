@@ -18,10 +18,44 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <memory>
 #include <type_traits>
 
 namespace tensorium::mpi {
+
+enum HaloFieldMask : uint32_t {
+    HaloFieldNone = 0,
+    HaloFieldAlpha = 1u << 0,
+    HaloFieldChi = 1u << 1,
+    HaloFieldK = 1u << 2,
+    HaloFieldTheta = 1u << 3,
+    HaloFieldBeta = 1u << 4,
+    HaloFieldB = 1u << 5,
+    HaloFieldTildeGamma = 1u << 6,
+    HaloFieldZ = 1u << 7,
+    HaloFieldGammaTilde = 1u << 8,
+    HaloFieldGammaTildeInverse = 1u << 9,
+    HaloFieldATilde = 1u << 10,
+    HaloFieldAll = (1u << 11) - 1
+};
+
+inline constexpr HaloFieldMask operator|(HaloFieldMask lhs, HaloFieldMask rhs) {
+    return static_cast<HaloFieldMask>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+}
+
+inline constexpr HaloFieldMask operator&(HaloFieldMask lhs, HaloFieldMask rhs) {
+    return static_cast<HaloFieldMask>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+}
+
+inline constexpr HaloFieldMask& operator|=(HaloFieldMask& lhs, HaloFieldMask rhs) {
+    lhs = lhs | rhs;
+    return lhs;
+}
+
+inline constexpr bool halo_mask_has(HaloFieldMask mask, HaloFieldMask field) {
+    return static_cast<uint32_t>(mask & field) != 0u;
+}
 
 /**
  * @brief Create a local BSSNGridSoA for this MPI process's subdomain.
@@ -71,6 +105,8 @@ std::unique_ptr<tensorium_RG::BSSNGridSoA<T>> create_local_bssn_grid(const MPIDo
 template <typename T>
 class BSSNHaloExchanger {
   public:
+    using ExchangeState = typename BatchHaloExchanger<T>::ExchangeState;
+
     BSSNHaloExchanger(const MPIDomain& domain,
                       const tensorium_RG::Strides<T>& st,
                       size_t local_nx,
@@ -89,40 +125,78 @@ class BSSNHaloExchanger {
     template <typename U>
     void exchange(tensorium_RG::Field3D<U>& field) {
         static_assert(std::is_same_v<U, T>, "All BSSN fields must share the same scalar type");
-        exchanger_.exchange_blocking(field.ptr());
+        exchanger_.exchanger().exchange_blocking(field.ptr());
     }
 
     /**
      * @brief Exchange halos for all BSSN fields.
      */
     void exchange_all(tensorium_RG::BSSNGridSoA<T>& grid) {
-        // Scalars
-        exchange(grid.alpha);
-        exchange(grid.chi);
-        exchange(grid.K);
-        exchange(grid.Theta);
+        auto fields = collect_fields(grid, HaloFieldAll);
+        exchanger_.exchange_all(fields);
+    }
 
-        // Vectors
-        for (int i = 0; i < 3; ++i) {
-            exchange(grid.beta[i]);
-            exchange(grid.B[i]);
-            exchange(grid.tildeGamma[i]);
-            exchange(grid.Z[i]);
-        }
+    void exchange_all_start(tensorium_RG::BSSNGridSoA<T>& grid, ExchangeState& state) {
+        auto fields = collect_fields(grid, HaloFieldAll);
+        exchanger_.exchange_start(fields, state);
+    }
 
-        // Symmetric tensors
-        for (int s = 0; s < 6; ++s) {
-            exchange(grid.gamma_tilde[s]);
-            exchange(grid.gamma_tilde_inv[s]);
-            exchange(grid.A_tilde[s]);
-        }
+    void exchange_all_wait(ExchangeState& state) {
+        exchanger_.exchange_wait(state);
+    }
+
+    void exchange(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask) {
+        auto fields = collect_fields(grid, mask);
+        exchanger_.exchange_all(fields);
+    }
+
+    void exchange_start(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask,
+                        ExchangeState& state) {
+        auto fields = collect_fields(grid, mask);
+        exchanger_.exchange_start(fields, state);
     }
 
     const MPIDomain& domain() const { return domain_; }
 
   private:
     const MPIDomain& domain_;
-    HaloExchanger<T> exchanger_;
+    BatchHaloExchanger<T> exchanger_;
+
+    static std::vector<T*> collect_fields(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask) {
+        std::vector<T*> fields;
+        fields.reserve(34);
+
+        if (halo_mask_has(mask, HaloFieldAlpha))
+            fields.push_back(grid.alpha.ptr());
+        if (halo_mask_has(mask, HaloFieldChi))
+            fields.push_back(grid.chi.ptr());
+        if (halo_mask_has(mask, HaloFieldK))
+            fields.push_back(grid.K.ptr());
+        if (halo_mask_has(mask, HaloFieldTheta))
+            fields.push_back(grid.Theta.ptr());
+
+        for (int i = 0; i < 3; ++i) {
+            if (halo_mask_has(mask, HaloFieldBeta))
+                fields.push_back(grid.beta[i].ptr());
+            if (halo_mask_has(mask, HaloFieldB))
+                fields.push_back(grid.B[i].ptr());
+            if (halo_mask_has(mask, HaloFieldTildeGamma))
+                fields.push_back(grid.tildeGamma[i].ptr());
+            if (halo_mask_has(mask, HaloFieldZ))
+                fields.push_back(grid.Z[i].ptr());
+        }
+
+        for (int s = 0; s < 6; ++s) {
+            if (halo_mask_has(mask, HaloFieldGammaTilde))
+                fields.push_back(grid.gamma_tilde[s].ptr());
+            if (halo_mask_has(mask, HaloFieldGammaTildeInverse))
+                fields.push_back(grid.gamma_tilde_inv[s].ptr());
+            if (halo_mask_has(mask, HaloFieldATilde))
+                fields.push_back(grid.A_tilde[s].ptr());
+        }
+
+        return fields;
+    }
 };
 
 /**
@@ -134,6 +208,8 @@ class BSSNHaloExchanger {
 template <typename T, typename PhysicalBoundary = tensorium_RG::bssn::BoundaryRadiative>
 class MPIBoundary {
   public:
+    using ExchangeState = typename BSSNHaloExchanger<T>::ExchangeState;
+
     MPIBoundary(const MPIDomain& domain,
                 const tensorium_RG::Strides<T>& st,
                 size_t local_nx,
@@ -175,7 +251,35 @@ class MPIBoundary {
      * @brief Exchange halos for all fields.
      */
     void exchange_all_halos(tensorium_RG::BSSNGridSoA<T>& grid) {
-        exchanger_.exchange_all(grid);
+        ExchangeState state;
+        exchange_all_halos_start(grid, state);
+        exchange_all_halos_finish(grid, state);
+    }
+
+    void exchange_all_halos_start(tensorium_RG::BSSNGridSoA<T>& grid, ExchangeState& state) {
+        exchanger_.exchange_all_start(grid, state);
+    }
+
+    void exchange_all_halos_finish(tensorium_RG::BSSNGridSoA<T>& grid, ExchangeState& state) {
+        exchanger_.exchange_all_wait(state);
+        apply_physical_bc_all_fields(grid, HaloFieldAll);
+    }
+
+    void exchange_halos(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask) {
+        ExchangeState state;
+        exchange_halos_start(grid, mask, state);
+        exchange_halos_finish(grid, mask, state);
+    }
+
+    void exchange_halos_start(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask,
+                              ExchangeState& state) {
+        exchanger_.exchange_start(grid, mask, state);
+    }
+
+    void exchange_halos_finish(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask,
+                               ExchangeState& state) {
+        exchanger_.exchange_all_wait(state);
+        apply_physical_bc_all_fields(grid, mask);
     }
 
     /**
@@ -236,6 +340,47 @@ class MPIBoundary {
         PhysicalBoundary::set_rhs_sommerfeld_faces(
             orig[0], orig[1], orig[2], orig[3], orig[4], orig[5]
         );
+    }
+
+    void apply_physical_bc_all_fields(tensorium_RG::BSSNGridSoA<T>& grid, HaloFieldMask mask) {
+        if (halo_mask_has(mask, HaloFieldAlpha))
+            apply_physical_bc_at_edges(grid.alpha, grid, tensorium_RG::bssn::BoundaryField::Alpha,
+                                       0);
+        if (halo_mask_has(mask, HaloFieldChi))
+            apply_physical_bc_at_edges(grid.chi, grid, tensorium_RG::bssn::BoundaryField::Chi, 0);
+        if (halo_mask_has(mask, HaloFieldK))
+            apply_physical_bc_at_edges(grid.K, grid, tensorium_RG::bssn::BoundaryField::K, 0);
+        if (halo_mask_has(mask, HaloFieldTheta))
+            apply_physical_bc_at_edges(grid.Theta, grid,
+                                       tensorium_RG::bssn::BoundaryField::Theta, 0);
+
+        for (int i = 0; i < 3; ++i) {
+            if (halo_mask_has(mask, HaloFieldBeta))
+                apply_physical_bc_at_edges(grid.beta[i], grid,
+                                           tensorium_RG::bssn::BoundaryField::Beta, i);
+            if (halo_mask_has(mask, HaloFieldB))
+                apply_physical_bc_at_edges(grid.B[i], grid, tensorium_RG::bssn::BoundaryField::B,
+                                           i);
+            if (halo_mask_has(mask, HaloFieldTildeGamma))
+                apply_physical_bc_at_edges(grid.tildeGamma[i], grid,
+                                           tensorium_RG::bssn::BoundaryField::TildeGamma, i);
+            if (halo_mask_has(mask, HaloFieldZ))
+                apply_physical_bc_at_edges(grid.Z[i], grid, tensorium_RG::bssn::BoundaryField::Z,
+                                           i);
+        }
+
+        for (int s = 0; s < 6; ++s) {
+            if (halo_mask_has(mask, HaloFieldGammaTilde))
+                apply_physical_bc_at_edges(grid.gamma_tilde[s], grid,
+                                           tensorium_RG::bssn::BoundaryField::GammaTilde, s);
+            if (halo_mask_has(mask, HaloFieldGammaTildeInverse))
+                apply_physical_bc_at_edges(grid.gamma_tilde_inv[s], grid,
+                                           tensorium_RG::bssn::BoundaryField::GammaTildeInverse,
+                                           s);
+            if (halo_mask_has(mask, HaloFieldATilde))
+                apply_physical_bc_at_edges(grid.A_tilde[s], grid,
+                                           tensorium_RG::bssn::BoundaryField::ATilde, s);
+        }
     }
 };
 

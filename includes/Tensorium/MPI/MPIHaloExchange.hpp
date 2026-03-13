@@ -371,6 +371,12 @@ template <typename T> class HaloExchanger {
  */
 template <typename T> class BatchHaloExchanger {
   public:
+    struct ExchangeState {
+        std::vector<MPI_Request> requests;
+        int                      total_requests = 0;
+        bool                     active = false;
+    };
+
     BatchHaloExchanger(const MPIDomain &domain, const tensorium_RG::Strides<T> &st, size_t local_nx,
                        size_t local_ny, size_t local_nz)
         : exchanger_(domain, st, local_nx, local_ny, local_nz) {}
@@ -388,16 +394,31 @@ template <typename T> class BatchHaloExchanger {
      * @brief Exchange halos for multiple fields with non-blocking ops.
      */
     void exchange_all(std::vector<T *> &fields) {
-        const int                nfields = static_cast<int>(fields.size());
-        std::vector<MPI_Request> requests(nfields * HaloExchanger<T>::MAX_REQUESTS);
+        ExchangeState state;
+        exchange_start(fields, state);
+        exchange_wait(state);
+    }
 
-        int total_reqs = 0;
+    void exchange_start(std::vector<T *> &fields, ExchangeState &state) {
+        const int nfields = static_cast<int>(fields.size());
+        state.requests.assign(nfields * HaloExchanger<T>::MAX_REQUESTS, MPI_REQUEST_NULL);
+        state.total_requests = 0;
+
         for (int i = 0; i < nfields; ++i) {
-            int nreq = exchanger_.exchange_start(fields[i], &requests[total_reqs]);
-            total_reqs += nreq;
+            const int nreq = exchanger_.exchange_start(fields[i], &state.requests[state.total_requests]);
+            state.total_requests += nreq;
         }
+        state.active = true;
+    }
 
-        HaloExchanger<T>::exchange_wait(total_reqs, requests.data());
+    static void exchange_wait(ExchangeState &state) {
+        if (!state.active) {
+            return;
+        }
+        HaloExchanger<T>::exchange_wait(state.total_requests, state.requests.data());
+        state.requests.clear();
+        state.total_requests = 0;
+        state.active = false;
     }
 
     HaloExchanger<T> &exchanger() { return exchanger_; }
@@ -421,11 +442,15 @@ template <typename T> class HaloExchanger {
 
 template <typename T> class BatchHaloExchanger {
   public:
+    struct ExchangeState {};
+
     BatchHaloExchanger(const MPIDomain &, const tensorium_RG::Strides<T> &, size_t, size_t,
                        size_t) {}
 
     void exchange_blocking(std::vector<T *> &) {}
     void exchange_all(std::vector<T *> &) {}
+    void exchange_start(std::vector<T *> &, ExchangeState &) {}
+    static void exchange_wait(ExchangeState &) {}
 };
 
 #endif // TENSORIUM_ENABLE_MPI

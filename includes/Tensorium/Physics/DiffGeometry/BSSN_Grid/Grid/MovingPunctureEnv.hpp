@@ -252,6 +252,9 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
             params.shift_eta = *parsed;
         }
     }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_SHIFT_GAMMA")) {
+        params.shift_Gamma = *parsed;
+    }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KAPPA1")) {
         if (*parsed >= 0.0)
             params.kappa1 = *parsed;
@@ -260,6 +263,8 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         params.kappa2 = *parsed;
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KAPPA3"))
         params.kappa3 = *parsed;
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KAPPA_Z"))
+        params.kappa_z = *parsed;
     params.covariant_z4 =
         detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_COVARIANT_Z4", params.covariant_z4);
     params.evolve_Z = detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_EVOLVE_Z", params.evolve_Z);

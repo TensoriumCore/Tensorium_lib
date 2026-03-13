@@ -20,10 +20,12 @@ inline double det3(double gxx, double gxy, double gxz, double gyy, double gyz, d
 }
 } // namespace algebraic_detail
 
-template <typename T> inline void enforce_algebraic_constraints(BSSNGridSoA<T> &grid) {
-    const size_t total = grid.gamma_tilde[XX].st.nx_tot * grid.gamma_tilde[XX].st.ny_tot *
-                         grid.gamma_tilde[XX].st.nz_tot;
-
+template <typename T>
+inline void enforce_algebraic_constraints_region(BSSNGridSoA<T> &grid, size_t i0, size_t i1,
+                                                 size_t j0, size_t j1, size_t k0, size_t k1) {
+    if (i0 >= i1 || j0 >= j1 || k0 >= k1) {
+        return;
+    }
     T *gxx_ptr = grid.gamma_tilde[XX].ptr();
     T *gxy_ptr = grid.gamma_tilde[XY].ptr();
     T *gxz_ptr = grid.gamma_tilde[XZ].ptr();
@@ -45,76 +47,85 @@ template <typename T> inline void enforce_algebraic_constraints(BSSNGridSoA<T> &
     T *Ayz_ptr = grid.A_tilde[YZ].ptr();
     T *Azz_ptr = grid.A_tilde[ZZ].ptr();
 
-#pragma omp parallel for
-    for (size_t idx = 0; idx < total; ++idx) {
-        double gxx = static_cast<double>(gxx_ptr[idx]);
-        double gxy = static_cast<double>(gxy_ptr[idx]);
-        double gxz = static_cast<double>(gxz_ptr[idx]);
-        double gyy = static_cast<double>(gyy_ptr[idx]);
-        double gyz = static_cast<double>(gyz_ptr[idx]);
-        double gzz = static_cast<double>(gzz_ptr[idx]);
+#pragma omp parallel for collapse(3)
+    for (size_t i = i0; i < i1; ++i)
+        for (size_t j = j0; j < j1; ++j) {
+            for (size_t k = k0; k < k1; ++k) {
+                const size_t idx = grid.gamma_tilde[XX].idx(i, j, k);
+                double gxx = static_cast<double>(gxx_ptr[idx]);
+                double gxy = static_cast<double>(gxy_ptr[idx]);
+                double gxz = static_cast<double>(gxz_ptr[idx]);
+                double gyy = static_cast<double>(gyy_ptr[idx]);
+                double gyz = static_cast<double>(gyz_ptr[idx]);
+                double gzz = static_cast<double>(gzz_ptr[idx]);
 
-        double det = algebraic_detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
-        if (det <= std::numeric_limits<double>::min())
-            det = std::numeric_limits<double>::min();
-        const double renorm = 1.0 / std::cbrt(det);
-        gxx *= renorm;
-        gxy *= renorm;
-        gxz *= renorm;
-        gyy *= renorm;
-        gyz *= renorm;
-        gzz *= renorm;
+                double det = algebraic_detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
+                if (det <= std::numeric_limits<double>::min())
+                    det = std::numeric_limits<double>::min();
+                const double renorm = 1.0 / std::cbrt(det);
+                gxx *= renorm;
+                gxy *= renorm;
+                gxz *= renorm;
+                gyy *= renorm;
+                gyz *= renorm;
+                gzz *= renorm;
 
-        const double det_scaled = algebraic_detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
-        const double inv_det =
-            (det_scaled > std::numeric_limits<double>::min()) ? (1.0 / det_scaled) : 0.0;
+                const double det_scaled = algebraic_detail::det3(gxx, gxy, gxz, gyy, gyz, gzz);
+                const double inv_det =
+                    (det_scaled > std::numeric_limits<double>::min()) ? (1.0 / det_scaled) : 0.0;
 
-        const double gixx = (gyy * gzz - gyz * gyz) * inv_det;
-        const double gixy = (gxz * gyz - gxy * gzz) * inv_det;
-        const double gixz = (gxy * gyz - gxz * gyy) * inv_det;
-        const double giyy = (gxx * gzz - gxz * gxz) * inv_det;
-        const double giyz = (gxy * gxz - gxx * gyz) * inv_det;
-        const double gizz = (gxx * gyy - gxy * gxy) * inv_det;
+                const double gixx = (gyy * gzz - gyz * gyz) * inv_det;
+                const double gixy = (gxz * gyz - gxy * gzz) * inv_det;
+                const double gixz = (gxy * gyz - gxz * gyy) * inv_det;
+                const double giyy = (gxx * gzz - gxz * gxz) * inv_det;
+                const double giyz = (gxy * gxz - gxx * gyz) * inv_det;
+                const double gizz = (gxx * gyy - gxy * gxy) * inv_det;
 
-        double Axx = static_cast<double>(Axx_ptr[idx]);
-        double Axy = static_cast<double>(Axy_ptr[idx]);
-        double Axz = static_cast<double>(Axz_ptr[idx]);
-        double Ayy = static_cast<double>(Ayy_ptr[idx]);
-        double Ayz = static_cast<double>(Ayz_ptr[idx]);
-        double Azz = static_cast<double>(Azz_ptr[idx]);
+                double Axx = static_cast<double>(Axx_ptr[idx]);
+                double Axy = static_cast<double>(Axy_ptr[idx]);
+                double Axz = static_cast<double>(Axz_ptr[idx]);
+                double Ayy = static_cast<double>(Ayy_ptr[idx]);
+                double Ayz = static_cast<double>(Ayz_ptr[idx]);
+                double Azz = static_cast<double>(Azz_ptr[idx]);
 
-        const double trace = gixx * Axx + giyy * Ayy + gizz * Azz +
-                             2.0 * (gixy * Axy + gixz * Axz + giyz * Ayz);
-        const double one_third_trace = trace / 3.0;
-        Axx -= gxx * one_third_trace;
-        Axy -= gxy * one_third_trace;
-        Axz -= gxz * one_third_trace;
-        Ayy -= gyy * one_third_trace;
-        Ayz -= gyz * one_third_trace;
-        Azz -= gzz * one_third_trace;
+                const double trace = gixx * Axx + giyy * Ayy + gizz * Azz +
+                                     2.0 * (gixy * Axy + gixz * Axz + giyz * Ayz);
+                const double one_third_trace = trace / 3.0;
+                Axx -= gxx * one_third_trace;
+                Axy -= gxy * one_third_trace;
+                Axz -= gxz * one_third_trace;
+                Ayy -= gyy * one_third_trace;
+                Ayz -= gyz * one_third_trace;
+                Azz -= gzz * one_third_trace;
 
-        gxx_ptr[idx] = static_cast<T>(gxx);
-        gxy_ptr[idx] = static_cast<T>(gxy);
-        gxz_ptr[idx] = static_cast<T>(gxz);
-        gyy_ptr[idx] = static_cast<T>(gyy);
-        gyz_ptr[idx] = static_cast<T>(gyz);
-        gzz_ptr[idx] = static_cast<T>(gzz);
+                gxx_ptr[idx] = static_cast<T>(gxx);
+                gxy_ptr[idx] = static_cast<T>(gxy);
+                gxz_ptr[idx] = static_cast<T>(gxz);
+                gyy_ptr[idx] = static_cast<T>(gyy);
+                gyz_ptr[idx] = static_cast<T>(gyz);
+                gzz_ptr[idx] = static_cast<T>(gzz);
 
-        gixx_ptr[idx] = static_cast<T>(gixx);
-        gixy_ptr[idx] = static_cast<T>(gixy);
-        gixz_ptr[idx] = static_cast<T>(gixz);
-        giyy_ptr[idx] = static_cast<T>(giyy);
-        giyz_ptr[idx] = static_cast<T>(giyz);
-        gizz_ptr[idx] = static_cast<T>(gizz);
+                gixx_ptr[idx] = static_cast<T>(gixx);
+                gixy_ptr[idx] = static_cast<T>(gixy);
+                gixz_ptr[idx] = static_cast<T>(gixz);
+                giyy_ptr[idx] = static_cast<T>(giyy);
+                giyz_ptr[idx] = static_cast<T>(giyz);
+                gizz_ptr[idx] = static_cast<T>(gizz);
 
-        Axx_ptr[idx] = static_cast<T>(Axx);
-        Axy_ptr[idx] = static_cast<T>(Axy);
-        Axz_ptr[idx] = static_cast<T>(Axz);
-        Ayy_ptr[idx] = static_cast<T>(Ayy);
-        Ayz_ptr[idx] = static_cast<T>(Ayz);
-        Azz_ptr[idx] = static_cast<T>(Azz);
-    }
+                Axx_ptr[idx] = static_cast<T>(Axx);
+                Axy_ptr[idx] = static_cast<T>(Axy);
+                Axz_ptr[idx] = static_cast<T>(Axz);
+                Ayy_ptr[idx] = static_cast<T>(Ayy);
+                Ayz_ptr[idx] = static_cast<T>(Ayz);
+                Azz_ptr[idx] = static_cast<T>(Azz);
+            }
+        }
+}
 
+template <typename T> inline void enforce_algebraic_constraints(BSSNGridSoA<T> &grid) {
+    enforce_algebraic_constraints_region(grid, 0, grid.gamma_tilde[XX].st.nx_tot, 0,
+                                         grid.gamma_tilde[XX].st.ny_tot, 0,
+                                         grid.gamma_tilde[XX].st.nz_tot);
 }
 
 } // namespace tensorium_RG::bssn

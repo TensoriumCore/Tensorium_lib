@@ -383,22 +383,30 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if (gauge_params_.chi_floor > T(0))
             apply_chi_floor(grid, gauge_params_.chi_floor);
 
-        prepare_state_for_rhs(grid);
+        const bool do_state_log = ((step_index + 1) % state_log_stride_ == 0);
+        const bool needs_post_step_prepare =
+            do_state_log || static_cast<bool>(monitor_callback_) || static_cast<bool>(snapshot_callback_);
+        if (needs_post_step_prepare) {
+            prepare_state_for_rhs(grid);
+        }
 
-        const double min_extent =
-            std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
-                      (grid.dims.nz - 1) * grid.dz});
-        const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
-        const double r_max = 0.45 * min_extent;
-
-        const bool do_state_log = (step_index % state_log_stride_ == 0);
         if (do_state_log) {
+            const double min_extent =
+                std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
+                          (grid.dims.nz - 1) * grid.dz});
+            const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
+            const double r_max = 0.45 * min_extent;
             log_gauge_diagnostics(grid, step_index);
             const double chi_cut = 1e-7;
             log_full_bssn_diagnostics(grid, step_index, r_min, r_max, chi_cut);
         }
 
         if (monitor_callback_) {
+            const double min_extent =
+                std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
+                          (grid.dims.nz - 1) * grid.dz});
+            const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
+            const double r_max = 0.45 * min_extent;
             auto        H_tmp = tensorium_RG::make_field(grid.alpha.st);
             Field3D<T>  M_tmp[3];
             Field3D<T>  C_tmp[3];
@@ -510,13 +518,6 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
     void rebuild_geometry(BSSNGridSoA<T> &grid) {
         tensorium_RG::bssn::enforce_algebraic_constraints(grid);
-        ProjectionConfig cfg;
-        cfg.padding = padding_;
-        cfg.renormalize_metric = false;
-        cfg.project_A_tilde = false;
-        cfg.recompute_inverse = true;
-        cfg.resync_contracted_gamma = false;
-        project_bssn_state(grid, cfg);
         compute_ricci_bssn(grid, grid.Ricci, false);
     }
 
@@ -777,7 +778,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     void copy_scalar_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &src, Field3D<T> &dst) {
         const T *in = src.ptr();
         T       *out = dst.ptr();
-        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
+        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
             out[idx] = in[idx];
         });
     }
@@ -786,7 +787,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                     Field3D<T> &dst, T scale) {
         const T *in = src.ptr();
         T       *out = dst.ptr();
-        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
+        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
             out[idx] += scale * in[idx];
         });
     }
@@ -796,7 +797,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         T       *out = u0.ptr();
         const T *base = u1.ptr();
         const T *k = rhs.ptr();
-        for_each_interior_index(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
+        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
             out[idx] = gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
         });
     }

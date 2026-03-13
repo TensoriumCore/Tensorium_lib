@@ -35,6 +35,7 @@ class MPIBSSNRKStepper {
   public:
     using GridType = tensorium_RG::BSSNGridSoA<T>;
     using GaugeParams = tensorium_RG::bssn::GaugeParameters<T>;
+    using InteriorRegion = tensorium_RG::bssn::InteriorRegion;
 
     /**
      * @brief Construct MPI stepper.
@@ -158,10 +159,14 @@ class MPIBSSNRKStepper {
 
         // Post-step processing
         apply_floors(grid);
-        prepare_state_for_rhs(grid);
+        const bool do_state_log = ((step_index + 1) % state_log_stride_ == 0);
+        const bool needs_post_step_prepare = do_state_log || static_cast<bool>(snapshot_callback_);
+        if (needs_post_step_prepare) {
+            prepare_state_for_rhs(grid);
+        }
 
         // Compute and report constraints
-        if (constraint_callback_ && (step_index % state_log_stride_ == 0)) {
+        if (constraint_callback_ && do_state_log) {
             auto stats = compute_constraints(grid);
             stats.allreduce(domain_);
             if (domain_.is_root()) {
@@ -169,8 +174,8 @@ class MPIBSSNRKStepper {
             }
         }
 
-        // Log diagnostics
-        if (domain_.is_root() && (step_index % state_log_stride_ == 0)) {
+        // Log diagnostics. All ranks must participate because this path does MPI_Allreduce.
+        if (do_state_log) {
             log_diagnostics(grid, step_index);
         }
 
@@ -202,56 +207,145 @@ class MPIBSSNRKStepper {
     std::function<void(const GridType&, const GlobalConstraintStats&)> constraint_callback_;
     std::function<void(const GridType&, size_t)> snapshot_callback_;
 
-    void exchange_halos(GridType& grid) {
-        boundary_.exchange_all_halos(grid);
+    static constexpr HaloFieldMask rhs_halo_fields(bool evolve_z) {
+        HaloFieldMask mask = HaloFieldAlpha | HaloFieldChi | HaloFieldK | HaloFieldTheta |
+                             HaloFieldBeta | HaloFieldB | HaloFieldTildeGamma |
+                             HaloFieldGammaTilde | HaloFieldATilde;
+        if (evolve_z) {
+            mask |= HaloFieldZ;
+        }
+        return mask;
+    }
+
+    void exchange_halos(GridType& grid, HaloFieldMask mask = HaloFieldAll) {
+        boundary_.exchange_halos(grid, mask);
+    }
+
+    static InteriorRegion total_region(const GridType& grid) {
+        return InteriorRegion{0, grid.alpha.st.nx_tot, 0, grid.alpha.st.ny_tot, 0,
+                              grid.alpha.st.nz_tot};
+    }
+
+    static InteriorRegion ricci_region(const GridType& grid) {
+        size_t I0, I1, J0, J1, K0, K1;
+        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+        return InteriorRegion{std::min(I0 + size_t(3), I1), (I1 > 3) ? I1 - 3 : I0,
+                              std::min(J0 + size_t(3), J1), (J1 > 3) ? J1 - 3 : J0,
+                              std::min(K0 + size_t(3), K1), (K1 > 3) ? K1 - 3 : K0};
+    }
+
+    static InteriorRegion shrink_region(const InteriorRegion& region, size_t padding) {
+        return InteriorRegion{
+            std::min(region.i0 + padding, region.i1),
+            (region.i1 > padding) ? region.i1 - padding : region.i0,
+            std::min(region.j0 + padding, region.j1),
+            (region.j1 > padding) ? region.j1 - padding : region.j0,
+            std::min(region.k0 + padding, region.k1),
+            (region.k1 > padding) ? region.k1 - padding : region.k0};
+    }
+
+    static InteriorRegion intersect_region(const InteriorRegion& lhs, const InteriorRegion& rhs) {
+        return InteriorRegion{std::max(lhs.i0, rhs.i0), std::min(lhs.i1, rhs.i1),
+                              std::max(lhs.j0, rhs.j0), std::min(lhs.j1, rhs.j1),
+                              std::max(lhs.k0, rhs.k0), std::min(lhs.k1, rhs.k1)};
+    }
+
+    template <typename Fn>
+    static void for_each_shell_region(const InteriorRegion& outer, const InteriorRegion& inner,
+                                      Fn&& fn) {
+        if (outer.empty()) {
+            return;
+        }
+
+        const InteriorRegion core = intersect_region(outer, inner);
+        if (core.empty()) {
+            fn(outer);
+            return;
+        }
+
+        auto emit = [&](size_t i0, size_t i1, size_t j0, size_t j1, size_t k0, size_t k1) {
+            const InteriorRegion region{i0, i1, j0, j1, k0, k1};
+            if (!region.empty()) {
+                fn(region);
+            }
+        };
+
+        emit(outer.i0, core.i0, outer.j0, outer.j1, outer.k0, outer.k1);
+        emit(core.i1, outer.i1, outer.j0, outer.j1, outer.k0, outer.k1);
+        emit(core.i0, core.i1, outer.j0, core.j0, outer.k0, outer.k1);
+        emit(core.i0, core.i1, core.j1, outer.j1, outer.k0, outer.k1);
+        emit(core.i0, core.i1, core.j0, core.j1, outer.k0, core.k0);
+        emit(core.i0, core.i1, core.j0, core.j1, core.k1, outer.k1);
     }
 
     void prepare_state_for_rhs(GridType& grid) {
         enforce_floors(grid);
         tensorium_RG::bssn::BoundaryRadiative::set_characteristic(1.0, double(boundary_dt_));
 
-        // Match the single-rank stepper: fill halos, then clamp floors again.
-        tensorium_RG::bssn::detail::apply_batch_halo<MPIBoundaryAdapter<T>>(grid);
-        enforce_floors(grid);
+        const InteriorRegion algebraic_outer = total_region(grid);
+        const InteriorRegion algebraic_core = shrink_region(algebraic_outer, domain_.ng());
+        const InteriorRegion ricci_outer = ricci_region(grid);
+        const InteriorRegion ricci_core = shrink_region(ricci_outer, domain_.ng());
 
-        // Rebuild geometry (inverse metric, Christoffels, Ricci)
-        tensorium_RG::bssn::enforce_algebraic_constraints(grid);
-        tensorium_RG::bssn::ProjectionConfig cfg;
-        cfg.padding = padding_;
-        cfg.renormalize_metric = false;
-        cfg.project_A_tilde = false;
-        cfg.recompute_inverse = true;
-        cfg.resync_contracted_gamma = false;
-        tensorium_RG::bssn::project_bssn_state(grid, cfg);
-        tensorium_RG::bssn::compute_ricci_bssn(grid, grid.Ricci, false);
+        typename MPIBoundary<T>::ExchangeState exchange_state;
+        const HaloFieldMask pre_rhs_fields = rhs_halo_fields(gauge_params_.evolve_Z);
+        boundary_.exchange_halos_start(grid, pre_rhs_fields, exchange_state);
+
+        tensorium_RG::bssn::enforce_algebraic_constraints_region(
+            grid, algebraic_core.i0, algebraic_core.i1, algebraic_core.j0, algebraic_core.j1,
+            algebraic_core.k0, algebraic_core.k1);
+        tensorium_RG::bssn::compute_ricci_bssn_region(
+            grid, grid.Ricci, ricci_core.i0, ricci_core.i1, ricci_core.j0, ricci_core.j1,
+            ricci_core.k0, ricci_core.k1, false);
+
+        boundary_.exchange_halos_finish(grid, pre_rhs_fields, exchange_state);
+        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion& region) {
+            enforce_floors_region(grid, region);
+        });
+        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion& region) {
+            tensorium_RG::bssn::enforce_algebraic_constraints_region(
+                grid, region.i0, region.i1, region.j0, region.j1, region.k0, region.k1);
+        });
+        for_each_shell_region(ricci_outer, ricci_core, [&](const InteriorRegion& region) {
+            tensorium_RG::bssn::compute_ricci_bssn_region(
+                grid, grid.Ricci, region.i0, region.i1, region.j0, region.j1, region.k0,
+                region.k1, false);
+        });
 
         // Sync Z from Gamma constraint if not evolving Z
         if (!gauge_params_.evolve_Z) {
             synchronize_z_from_gamma(grid);
-            tensorium_RG::bssn::detail::apply_batch_halo<MPIBoundaryAdapter<T>>(grid);
+            exchange_halos(grid, HaloFieldZ);
         }
     }
 
     void enforce_floors(GridType& grid) {
-        if (gauge_params_.alpha_floor <= T(0) && gauge_params_.chi_floor <= T(0)) {
+        enforce_floors_region(grid, total_region(grid));
+    }
+
+    void enforce_floors_region(GridType& grid, const InteriorRegion& region) {
+        if (region.empty() ||
+            (gauge_params_.alpha_floor <= T(0) && gauge_params_.chi_floor <= T(0))) {
             return;
         }
-
-        const size_t total = grid.alpha.st.nx_tot * grid.alpha.st.ny_tot * grid.alpha.st.nz_tot;
         T* alpha = grid.alpha.ptr();
         T* chi = grid.chi.ptr();
         const T alpha_floor = gauge_params_.alpha_floor;
         const T chi_floor = gauge_params_.chi_floor;
 
-#pragma omp parallel for
-        for (size_t idx = 0; idx < total; ++idx) {
-            if (alpha_floor > T(0) && alpha[idx] < alpha_floor) {
-                alpha[idx] = alpha_floor;
+#pragma omp parallel for collapse(3)
+        for (size_t i = region.i0; i < region.i1; ++i)
+            for (size_t j = region.j0; j < region.j1; ++j) {
+                for (size_t k = region.k0; k < region.k1; ++k) {
+                    const size_t idx = grid.alpha.idx(i, j, k);
+                    if (alpha_floor > T(0) && alpha[idx] < alpha_floor) {
+                        alpha[idx] = alpha_floor;
+                    }
+                    if (chi_floor > T(0) && chi[idx] < chi_floor) {
+                        chi[idx] = chi_floor;
+                    }
+                }
             }
-            if (chi_floor > T(0) && chi[idx] < chi_floor) {
-                chi[idx] = chi_floor;
-            }
-        }
     }
 
     void apply_floors(GridType& grid) {
@@ -404,7 +498,7 @@ class MPIBSSNRKStepper {
                              tensorium_RG::Field3D<T>& dst) {
         const T* in = src.ptr();
         T* out = dst.ptr();
-        tensorium_RG::bssn::for_each_interior_index(
+        tensorium_RG::bssn::for_each_interior_index_parallel(
             grid, padding_,
             [&](size_t, size_t, size_t, size_t idx) {
                 out[idx] = in[idx];
@@ -417,7 +511,7 @@ class MPIBSSNRKStepper {
                                    T scale) {
         const T* in = src.ptr();
         T* out = dst.ptr();
-        tensorium_RG::bssn::for_each_interior_index(
+        tensorium_RG::bssn::for_each_interior_index_parallel(
             grid, padding_,
             [&](size_t, size_t, size_t, size_t idx) {
                 out[idx] += scale * in[idx];
@@ -432,7 +526,7 @@ class MPIBSSNRKStepper {
         T* out = u0.ptr();
         const T* base = u1.ptr();
         const T* k = rhs.ptr();
-        tensorium_RG::bssn::for_each_interior_index(
+        tensorium_RG::bssn::for_each_interior_index_parallel(
             grid, padding_,
             [&](size_t, size_t, size_t, size_t idx) {
                 out[idx] = gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
@@ -500,9 +594,11 @@ class MPIBSSNRKStepper {
         min_chi = reductions_.allreduce_min(min_chi);
         max_theta = reductions_.allreduce_max(max_theta);
 
-        printf("[MPI-BSSN %04zu] t=%.4f alpha_min=%.3e chi_min=%.3e Theta_max=%.3e\n",
-               step_index, double(simulation_time_), min_alpha, min_chi, max_theta);
-        fflush(stdout);
+        if (domain_.is_root()) {
+            printf("[MPI-BSSN %04zu] t=%.4f alpha_min=%.3e chi_min=%.3e Theta_max=%.3e\n",
+                   step_index, double(simulation_time_), min_alpha, min_chi, max_theta);
+            fflush(stdout);
+        }
     }
 };
 

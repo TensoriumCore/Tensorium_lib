@@ -55,14 +55,31 @@ namespace tensorium_RG::bssn {
  * `apply_halos_grid` before invoking this routine.
  */
 template <typename T>
-void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_violation = true) {
+void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t region_i0,
+                               size_t region_i1, size_t region_j0, size_t region_j1,
+                               size_t region_k0, size_t region_k1,
+                               bool throw_on_violation = false) {
     using namespace tensorium_RG::fd;
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
-    const size_t i0 = I0 + 3, i1 = I1 - 3;
-    const size_t j0 = J0 + 3, j1 = J1 - 3;
-    const size_t k0 = K0 + 3, k1 = K1 - 3;
+    const size_t ri0 = std::min(I0 + 3, I1);
+    const size_t rj0 = std::min(J0 + 3, J1);
+    const size_t rk0 = std::min(K0 + 3, K1);
+    const size_t ri1 = (I1 > 3) ? I1 - 3 : I0;
+    const size_t rj1 = (J1 > 3) ? J1 - 3 : J0;
+    const size_t rk1 = (K1 > 3) ? K1 - 3 : K0;
+
+    const size_t i0 = std::max(region_i0, ri0);
+    const size_t j0 = std::max(region_j0, rj0);
+    const size_t k0 = std::max(region_k0, rk0);
+    const size_t i1 = std::min(region_i1, ri1);
+    const size_t j1 = std::min(region_j1, rj1);
+    const size_t k1 = std::min(region_k1, rk1);
+
+    if (i0 >= i1 || j0 >= j1 || k0 >= k1) {
+        return;
+    }
 
     const double inv_12dx = 1.0 / (60.0 * G.dx);
     const double inv_12dy = 1.0 / (60.0 * G.dy);
@@ -294,6 +311,13 @@ void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_vio
     if (throw_on_violation) {
         tensorium_RG::bssn::assert_invariants(G, "ricci", 4, true);
     }
+}
+
+template <typename T>
+void compute_ricci_bssn(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, bool throw_on_violation = true) {
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    compute_ricci_bssn_region(G, Ricci6, I0, I1, J0, J1, K0, K1, throw_on_violation);
 }
 
 } // namespace tensorium_RG::bssn

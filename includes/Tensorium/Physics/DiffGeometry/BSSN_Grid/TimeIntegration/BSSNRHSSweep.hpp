@@ -38,7 +38,7 @@ inline void evaluate_rhs_sweep_core(const BSSNGridSoA<T> &grid, Field3D<T> &rhs_
 template <typename T>
 inline void recompose_rhs_K_from_khat_core(const BSSNGridSoA<T> &grid, Field3D<T> &rhs_K,
                                            const Field3D<T> &rhs_Theta, size_t padding) {
-    for_each_interior_index(grid, padding, [&](size_t, size_t, size_t, size_t idx) {
+    for_each_interior_index_parallel(grid, padding, [&](size_t, size_t, size_t, size_t idx) {
         rhs_K.ptr()[idx] += T(2) * rhs_Theta.ptr()[idx];
     });
 }
