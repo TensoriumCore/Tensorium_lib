@@ -161,13 +161,13 @@ Two modes are implemented:
 - Direct-shift mode (`use_direct_shift_rhs=true`):
   - `beta^i` evolved directly from `Gamma`/advection/damping/harmonic couplings.
   - `B^i` RHS is set to zero.
-- Legacy B-driver mode (`use_direct_shift_rhs=false`):
+- Gamma-driver mode (`use_direct_shift_rhs=false`):
   - `beta^i` includes `beta_B_coeff * B^i` plus advection.
-  - `B^i` evolves from `rhs_Gamma`, advection, damping, and optional `Z` feedback.
+  - `B^i` evolves from `rhs_Gamma`, advection, and damping.
 
 Important practical point:
 
-- `use_direct_shift_rhs` defaults to `true` in `GaugeParameters`.
+- `use_direct_shift_rhs` defaults to `false` in `GaugeParameters`.
 
 ## 5. Geometry and Algebraic Constraints
 

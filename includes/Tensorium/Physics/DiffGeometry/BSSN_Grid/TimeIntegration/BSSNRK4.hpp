@@ -547,24 +547,15 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                     const T *p_yz = grid.gamma_tilde_inv[YZ].ptr() + idx;
                     const T *p_zz = grid.gamma_tilde_inv[ZZ].ptr() + idx;
 
-                    const T div0 =
-                        Dx_ptr(p_xx, sx, inv_12dx) + Dy_ptr(p_xy, sy, inv_12dy) + Dz_ptr(p_xz, inv_12dz);
-                    const T div1 =
-                        Dx_ptr(p_xy, sx, inv_12dx) + Dy_ptr(p_yy, sy, inv_12dy) + Dz_ptr(p_yz, inv_12dz);
-                    const T div2 =
-                        Dx_ptr(p_xz, sx, inv_12dx) + Dy_ptr(p_yz, sy, inv_12dy) + Dz_ptr(p_zz, inv_12dz);
+                    T z_over_chi[3] = {T(0), T(0), T(0)};
+                    recover_z_over_chi_from_gamma_ptr(
+                        grid.tildeGamma[0].ptr() + idx, grid.tildeGamma[1].ptr() + idx,
+                        grid.tildeGamma[2].ptr() + idx, p_xx, p_xy, p_xz, p_yy, p_yz, p_zz, sx,
+                        sy, inv_12dx, inv_12dy, inv_12dz, z_over_chi);
 
-                    const T gamma_metric0 = -div0;
-                    const T gamma_metric1 = -div1;
-                    const T gamma_metric2 = -div2;
-
-                    const T z_over_chi0 = T(0.5) * (grid.tildeGamma[0].ptr()[idx] - gamma_metric0);
-                    const T z_over_chi1 = T(0.5) * (grid.tildeGamma[1].ptr()[idx] - gamma_metric1);
-                    const T z_over_chi2 = T(0.5) * (grid.tildeGamma[2].ptr()[idx] - gamma_metric2);
-
-                    grid.Z[0].ptr()[idx] = chi_guarded * z_over_chi0;
-                    grid.Z[1].ptr()[idx] = chi_guarded * z_over_chi1;
-                    grid.Z[2].ptr()[idx] = chi_guarded * z_over_chi2;
+                    grid.Z[0].ptr()[idx] = chi_guarded * z_over_chi[0];
+                    grid.Z[1].ptr()[idx] = chi_guarded * z_over_chi[1];
+                    grid.Z[2].ptr()[idx] = chi_guarded * z_over_chi[2];
                 }
             }
         }

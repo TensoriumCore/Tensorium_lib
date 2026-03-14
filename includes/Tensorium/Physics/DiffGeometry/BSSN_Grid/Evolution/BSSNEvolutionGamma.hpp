@@ -47,6 +47,7 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                               const GaugeParameters<T> &gauge_params = {}, size_t padding = 4) {
     BSSN_PROFILE_KERNEL(Gamma);
     using namespace tensorium_RG::fd;
+    (void)Z;
     const T ko_sigma = scaled_ko_sigma(gauge_params.ko_sigma); // Adaptive KO6 knob.
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
     constexpr size_t gamma_validation_stride = 8;
@@ -100,9 +101,6 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_theta = Theta.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
-            const T *p_Z[3] = {Z[0].ptr() + idx_start, Z[1].ptr() + idx_start,
-                               Z[2].ptr() + idx_start};
-
             const T *p_ginv[6];
             const T *p_gcov[6];
             const T *p_A[6];
@@ -313,23 +311,12 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                                              A_up_matrix[1][2] * d_chi[2],
                                          A_up_matrix[2][0] * d_chi[0] + A_up_matrix[2][1] * d_chi[1] +
                                              A_up_matrix[2][2] * d_chi[2]};
-                T gamma_metric[3] = {T(0), T(0), T(0)};
-                detail::metric_inverse_divergence_ptr(p_ginv[0], p_ginv[1], p_ginv[2], p_ginv[3],
-                                                      p_ginv[4], p_ginv[5], sx, sy, inv_12dx,
-                                                      inv_12dy, inv_12dz, gamma_metric);
-                gamma_metric[0] = -gamma_metric[0];
-                gamma_metric[1] = -gamma_metric[1];
-                gamma_metric[2] = -gamma_metric[2];
-
                 T z_over_chi[3] = {T(0), T(0), T(0)};
-                for (int c = 0; c < 3; ++c) {
-                    if (gauge_params.evolve_Z) {
-                        // Stored Z is contravariant physical Z^i; convert to Z^i/chi here.
-                        z_over_chi[c] = *p_Z[c] / chi_guarded;
-                    } else {
-                        z_over_chi[c] = T(0.5) * (gamma_vec[c] - gamma_metric[c]);
-                    }
-                }
+                T gamma_metric[3] = {T(0), T(0), T(0)};
+                recover_z_over_chi_from_gamma_ptr(p_Gamma[0], p_Gamma[1], p_Gamma[2], p_ginv[0],
+                                                  p_ginv[1], p_ginv[2], p_ginv[3], p_ginv[4],
+                                                  p_ginv[5], sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                                                  z_over_chi, gamma_metric);
 
                 T gamma_driver[3] = {T(0), T(0), T(0)};
                 for (int c = 0; c < 3; ++c)
@@ -376,7 +363,6 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 for (int c = 0; c < 3; ++c) {
                     ++p_beta[c];
                     ++p_Gamma[c];
-                    ++p_Z[c];
                     ++p_rhs[c];
                 }
                 ++p_alpha;

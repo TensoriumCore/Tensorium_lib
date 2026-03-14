@@ -582,4 +582,86 @@ REGISTER_TEST("bssn.evolution.gamma_driver_no_adv",
                                 "Gamma-driver RHS w/out advection matches input");
 });
 
+REGISTER_TEST("bssn.evolution.gamma_driver_ignores_auxiliary_z",
+              "Gamma-driver B RHS does not depend on the stored auxiliary Z field", []() {
+    constexpr size_t padding = 4;
+    tensorium_RG::BSSNGridSoA<double> grid(18, 16, 14, 4, 0.3, 0.27, 0.25);
+
+    tensorium_RG::Field3D<double> rhs_Gamma[3];
+    tensorium_RG::Field3D<double> rhs_B_a[3];
+    tensorium_RG::Field3D<double> rhs_B_b[3];
+    alloc_vector_rhs(grid.tildeGamma, rhs_Gamma);
+    alloc_vector_rhs(grid.B, rhs_B_a);
+    alloc_vector_rhs(grid.B, rhs_B_b);
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.alpha.idx(i, j, k);
+                const double x = (static_cast<double>(i) - double(grid.dims.ng)) * grid.dx;
+                const double y = (static_cast<double>(j) - double(grid.dims.ng)) * grid.dy;
+                const double z = (static_cast<double>(k) - double(grid.dims.ng)) * grid.dz;
+
+                grid.beta[0].ptr()[idx] = 0.08 * x;
+                grid.beta[1].ptr()[idx] = -0.05 * y;
+                grid.beta[2].ptr()[idx] = 0.03 * z;
+
+                grid.B[0].ptr()[idx] = 0.02 + 0.01 * x - 0.005 * y + 0.002 * z;
+                grid.B[1].ptr()[idx] = -0.03 + 0.007 * x + 0.012 * y - 0.004 * z;
+                grid.B[2].ptr()[idx] = 0.01 - 0.009 * x + 0.004 * y + 0.006 * z;
+
+                grid.tildeGamma[0].ptr()[idx] = -0.2 + 0.03 * x - 0.02 * y + 0.01 * z;
+                grid.tildeGamma[1].ptr()[idx] = 0.05 + 0.02 * x + 0.015 * y - 0.005 * z;
+                grid.tildeGamma[2].ptr()[idx] = -0.08 - 0.01 * x + 0.02 * y + 0.03 * z;
+
+                grid.Z[0].ptr()[idx] = 0.5 + 0.1 * x;
+                grid.Z[1].ptr()[idx] = -0.25 + 0.08 * y;
+                grid.Z[2].ptr()[idx] = 0.4 - 0.06 * z;
+
+                rhs_Gamma[0].ptr()[idx] = 0.2 + 0.05 * x;
+                rhs_Gamma[1].ptr()[idx] = -0.1 + 0.02 * y;
+                rhs_Gamma[2].ptr()[idx] = 0.15 - 0.03 * z;
+            }
+
+    tensorium_RG::bssn::GaugeParameters<double> params;
+    params.eta = 0.9;
+    params.ko_sigma = 0.0;
+    params.use_shift_advection = false;
+    params.use_direct_shift_rhs = false;
+    params.evolve_Z = true;
+    params.kappa_z = 9.0;
+
+    tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B_a, params, padding);
+
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.alpha.idx(i, j, k);
+                grid.Z[0].ptr()[idx] = -8.0 + 0.3 * double(i);
+                grid.Z[1].ptr()[idx] = 6.0 - 0.2 * double(j);
+                grid.Z[2].ptr()[idx] = -4.0 + 0.4 * double(k);
+            }
+
+    tensorium_RG::bssn::compute_rhs_B(grid, rhs_Gamma, rhs_B_b, params, padding);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    double max_err = 0.0;
+    for (size_t i = I0 + padding; i < I1 - padding; ++i)
+        for (size_t j = J0 + padding; j < J1 - padding; ++j)
+            for (size_t k = K0 + padding; k < K1 - padding; ++k)
+                for (int c = 0; c < 3; ++c) {
+                    const size_t idx = rhs_B_a[c].idx(i, j, k);
+                    max_err =
+                        std::max(max_err, std::abs(rhs_B_a[c].ptr()[idx] - rhs_B_b[c].ptr()[idx]));
+                }
+
+    tensorium::tests::expect_le(max_err, 1e-13,
+                                "Gamma-driver B RHS is invariant under auxiliary Z changes");
+});
+
 #endif

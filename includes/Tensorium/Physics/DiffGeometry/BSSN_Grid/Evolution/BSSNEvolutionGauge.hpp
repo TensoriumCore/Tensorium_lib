@@ -53,7 +53,7 @@ template <typename T> struct GaugeParameters {
     T ssl_damping_time = T(20.0);         ///< Characteristic damping time.
     int ssl_damping_index = 1;            ///< Exponent index in the damping profile.
     T current_time = T(0.0);              ///< Runtime time provided by the RK driver.
-    bool use_direct_shift_rhs = true;     ///< Use direct beta RHS instead of B-driver.
+    bool use_direct_shift_rhs = false;    ///< Prefer the reference Gamma-driver over the direct beta RHS.
     bool evolve_Z = true;                 ///< Evolve Z_i as an independent field.
     bool frozen_Z_is_synced = false;      ///< If true and evolve_Z=false, read synchronized Z field directly.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
@@ -190,9 +190,9 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
 /**
  * @brief Assemble \f$\partial_t\beta^i\f$.
  * @details
- * - Legacy mode (`use_direct_shift_rhs=false`): \f$\partial_t\beta^i = \beta^k\partial_k\beta^i +
+ * - Gamma-driver mode (`use_direct_shift_rhs=false`): \f$\partial_t\beta^i = \beta^k\partial_k\beta^i +
  *   c_B B^i\f$.
- * - Direct-shift mode (`use_direct_shift_rhs=true`): direct shift RHS
+ * - Direct-shift mode (`use_direct_shift_rhs=true`): optional direct shift RHS
  *   \f$\partial_t\beta^i = c_\Gamma\tilde{\Gamma}^i + c_{\text{adv}}\mathcal{L}_\beta\beta^i -
  *   \eta\beta^i + c_{\alpha^2\Gamma}\alpha^2\tilde{\Gamma}^i + c_H \alpha\chi \tilde{\gamma}^{ij}
  *   (0.5\alpha\partial_j\chi-\partial_j\alpha)\f$.
@@ -525,8 +525,6 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
         const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
                                     G.tildeGamma[1].ptr() + idx_start,
                                     G.tildeGamma[2].ptr() + idx_start};
-        const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
-                           G.Z[2].ptr() + idx_start};
         const T *p_rhs_G[3] = {rhs_Gamma[0].ptr() + idx_start, rhs_Gamma[1].ptr() + idx_start,
                                rhs_Gamma[2].ptr() + idx_start};
         T       *p_rhs_B[3] = {rhs_B[0].ptr() + idx_start, rhs_B[1].ptr() + idx_start,
@@ -555,17 +553,14 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
                                KO6_axis_ptr(p_B[comp], 1);
                 const T diss_scaled = (ko_sigma / G.dx) * diss;
                 const T rhs_gamma_eff = *p_rhs_G[comp] - adv_Gamma;
-                const T z_feedback = params.evolve_Z ? (-params.kappa_z * (*p_Z[comp])) : T(0);
 
-                *p_rhs_B[comp] =
-                    rhs_gamma_eff + adv_B - eta_coeff * (*p_B[comp]) + z_feedback + diss_scaled;
+                *p_rhs_B[comp] = rhs_gamma_eff + adv_B - eta_coeff * (*p_B[comp]) + diss_scaled;
             }
 
             for (int c = 0; c < 3; ++c) {
                 ++p_beta[c];
                 ++p_B[c];
                 ++p_tildeGamma[c];
-                ++p_Z[c];
                 ++p_rhs_G[c];
                 ++p_rhs_B[c];
             }

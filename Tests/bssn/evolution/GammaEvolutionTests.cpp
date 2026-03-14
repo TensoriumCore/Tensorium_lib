@@ -6,6 +6,7 @@
 #include "../BSSNTestUtils.hpp"
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionGamma.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Evolution/BSSNEvolutionZ4C.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 
@@ -21,6 +22,12 @@ void alloc_rhs(const tensorium_RG::BSSNGridSoA<double> &grid,
         rhs[c].st = grid.tildeGamma[c].st;
         rhs[c].data = tensorium_RG::aligned_alloc_n<double>(total);
     }
+}
+
+void alloc_scalar_rhs(const tensorium_RG::Field3D<double> &src, tensorium_RG::Field3D<double> &dst) {
+    dst.st = src.st;
+    const size_t total = src.st.nx_tot * src.st.ny_tot * src.st.nz_tot;
+    dst.data = tensorium_RG::aligned_alloc_n<double>(total);
 }
 
 struct FarStats {
@@ -126,5 +133,85 @@ REGISTER_TEST("bssn.evolution.gamma_contracted", "Γ^i RHS behaves across datase
         },
         "bowen_york", 2e-2);
 });
+
+REGISTER_TEST("bssn.evolution.gamma_theta_ignore_auxiliary_z",
+              "Gamma and Theta RHS derive Z from contracted Gamma, not the stored Z field", []() {
+                  constexpr size_t padding = 4;
+                  tensorium_RG::BSSNGridSoA<double> grid(24, 22, 20, 4, 0.25, 0.22, 0.20);
+                  tensorium_RG::init::minkowski(grid, 0.0);
+
+                  size_t I0, I1, J0, J1, K0, K1;
+                  grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+                  for (size_t i = I0; i < I1; ++i)
+                      for (size_t j = J0; j < J1; ++j)
+                          for (size_t k = K0; k < K1; ++k) {
+                              const size_t idx = grid.alpha.idx(i, j, k);
+                              double       x, y, z;
+                              grid.coords(i, j, k, x, y, z);
+                              grid.alpha.ptr()[idx] = 1.0 + 5e-3 * x - 3e-3 * y;
+                              grid.beta[0].ptr()[idx] = 0.03 * y;
+                              grid.beta[1].ptr()[idx] = -0.02 * x;
+                              grid.beta[2].ptr()[idx] = 0.01 * z;
+                              grid.K.ptr()[idx] = 0.04 + 0.01 * x - 0.005 * z;
+                              grid.Theta.ptr()[idx] = -0.015 * y + 0.01 * z;
+                              grid.Z[0].ptr()[idx] = 0.1 + 0.02 * x;
+                              grid.Z[1].ptr()[idx] = -0.05 + 0.03 * y;
+                              grid.Z[2].ptr()[idx] = 0.08 - 0.01 * z;
+                          }
+
+                  tensorium_RG::Field3D<double> rhs_gamma_a[3];
+                  tensorium_RG::Field3D<double> rhs_gamma_b[3];
+                  tensorium_RG::Field3D<double> rhs_theta_a;
+                  tensorium_RG::Field3D<double> rhs_theta_b;
+                  alloc_rhs(grid, rhs_gamma_a);
+                  alloc_rhs(grid, rhs_gamma_b);
+                  alloc_scalar_rhs(grid.Theta, rhs_theta_a);
+                  alloc_scalar_rhs(grid.Theta, rhs_theta_b);
+
+                  tensorium_RG::bssn::GaugeParameters<double> params;
+                  params.evolve_Z = true;
+                  params.ko_sigma = 0.0;
+
+                  tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs_gamma_a, grid.Z, grid.Theta,
+                                                       params, padding);
+                  tensorium_RG::bssn::compute_rhs_Theta(grid, rhs_theta_a, params, padding);
+
+                  for (size_t i = I0; i < I1; ++i)
+                      for (size_t j = J0; j < J1; ++j)
+                          for (size_t k = K0; k < K1; ++k) {
+                              const size_t idx = grid.alpha.idx(i, j, k);
+                              double       x, y, z;
+                              grid.coords(i, j, k, x, y, z);
+                              grid.Z[0].ptr()[idx] = 9.0 - 0.5 * x + 0.25 * y;
+                              grid.Z[1].ptr()[idx] = -7.0 + 0.4 * y - 0.2 * z;
+                              grid.Z[2].ptr()[idx] = 5.0 + 0.3 * z + 0.1 * x;
+                          }
+
+                  tensorium_RG::bssn::compute_rhs_Gamma(grid, rhs_gamma_b, grid.Z, grid.Theta,
+                                                       params, padding);
+                  tensorium_RG::bssn::compute_rhs_Theta(grid, rhs_theta_b, params, padding);
+
+                  double max_gamma_diff = 0.0;
+                  double max_theta_diff = 0.0;
+                  for (size_t i = I0 + padding; i < I1 - padding; ++i)
+                      for (size_t j = J0 + padding; j < J1 - padding; ++j)
+                          for (size_t k = K0 + padding; k < K1 - padding; ++k) {
+                              for (int c = 0; c < 3; ++c) {
+                                  const size_t idx = rhs_gamma_a[c].idx(i, j, k);
+                                  max_gamma_diff =
+                                      std::max(max_gamma_diff, std::abs(rhs_gamma_a[c].ptr()[idx] -
+                                                                        rhs_gamma_b[c].ptr()[idx]));
+                              }
+                              const size_t idx_theta = rhs_theta_a.idx(i, j, k);
+                              max_theta_diff =
+                                  std::max(max_theta_diff, std::abs(rhs_theta_a.ptr()[idx_theta] -
+                                                                    rhs_theta_b.ptr()[idx_theta]));
+                          }
+
+                  tensorium::tests::expect_le(max_gamma_diff, 1e-13,
+                                              "Gamma RHS is invariant under auxiliary Z changes");
+                  tensorium::tests::expect_le(max_theta_diff, 1e-13,
+                                              "Theta RHS is invariant under auxiliary Z changes");
+              });
 
 #endif

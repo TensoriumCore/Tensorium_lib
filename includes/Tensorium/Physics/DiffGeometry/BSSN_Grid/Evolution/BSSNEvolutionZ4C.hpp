@@ -61,7 +61,6 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
     const T two_plus_kappa2 = T(2) + params.kappa2;
     const T two_thirds = T(2) / T(3);
     const T ko_scale = T(ko_sigma / G.dx);
-    const bool use_Z_field = params.evolve_Z || params.frozen_Z_is_synced;
 
     auto loop_ij = [&](size_t i, size_t j) {
             size_t idx_start = G.Theta.idx(i, j, k0);
@@ -71,8 +70,6 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
             const T *p_K = G.K.ptr() + idx_start;
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
-            const T *p_Z[3] = {G.Z[0].ptr() + idx_start, G.Z[1].ptr() + idx_start,
-                               G.Z[2].ptr() + idx_start};
             const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
                                         G.tildeGamma[1].ptr() + idx_start,
                                         G.tildeGamma[2].ptr() + idx_start};
@@ -125,26 +122,13 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 const T bz = *p_beta2;
                 const T chi = *p_chi;
                 const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
-                T       z_phys[3] = {T(0), T(0), T(0)};
-                if (use_Z_field) {
-                    z_phys[0] = *p_Z[0];
-                    z_phys[1] = *p_Z[1];
-                    z_phys[2] = *p_Z[2];
-                } else {
-                    T div_metric_inv[3] = {T(0), T(0), T(0)};
-                    detail::metric_inverse_divergence_ptr(
-                        p_g0, p_g1, p_g2, p_g3, p_g4, p_g5, sx, sy, inv_12dx, inv_12dy, inv_12dz,
-                        div_metric_inv);
-                    // gamma_metric is the contracted conformal Christoffel from metric derivatives.
-                    const T gamma_metric[3] = {-div_metric_inv[0], -div_metric_inv[1],
-                                               -div_metric_inv[2]};
-                    const T z_over_chi[3] = {T(0.5) * (*p_tildeGamma[0] - gamma_metric[0]),
-                                             T(0.5) * (*p_tildeGamma[1] - gamma_metric[1]),
-                                             T(0.5) * (*p_tildeGamma[2] - gamma_metric[2])};
-                    z_phys[0] = chi_guarded * z_over_chi[0];
-                    z_phys[1] = chi_guarded * z_over_chi[1];
-                    z_phys[2] = chi_guarded * z_over_chi[2];
-                }
+                // Source Theta from the evolved contracted Gamma, not from the auxiliary Z field.
+                T z_over_chi[3] = {T(0), T(0), T(0)};
+                recover_z_over_chi_from_gamma_ptr(p_tg0, p_tg1, p_tg2, p_g0, p_g1, p_g2, p_g3,
+                                                  p_g4, p_g5, sx, sy, inv_12dx, inv_12dy,
+                                                  inv_12dz, z_over_chi);
+                const T z_phys[3] = {chi_guarded * z_over_chi[0], chi_guarded * z_over_chi[1],
+                                     chi_guarded * z_over_chi[2]};
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
@@ -237,9 +221,6 @@ inline void compute_rhs_Theta(const BSSNGridSoA<T> &G, Field3D<T> &rhs_theta,
                 ++p_beta0;
                 ++p_beta1;
                 ++p_beta2;
-                ++p_Z[0];
-                ++p_Z[1];
-                ++p_Z[2];
                 ++p_tg0;
                 ++p_tg1;
                 ++p_tg2;

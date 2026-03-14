@@ -194,6 +194,29 @@ template <typename T> inline T guard_chi_div(T chi, T chi_div_floor) {
 }
 
 template <typename T>
+inline void recover_z_over_chi_from_gamma_ptr(const T *p_tildeGamma0, const T *p_tildeGamma1,
+                                              const T *p_tildeGamma2, const T *p_ginv_xx,
+                                              const T *p_ginv_xy, const T *p_ginv_xz,
+                                              const T *p_ginv_yy, const T *p_ginv_yz,
+                                              const T *p_ginv_zz, const ptrdiff_t sx,
+                                              const ptrdiff_t sy, const double inv_12dx,
+                                              const double inv_12dy, const double inv_12dz,
+                                              T z_over_chi[3], T *gamma_metric_out = nullptr) {
+    T gamma_metric_local[3] = {T(0), T(0), T(0)};
+    T *gamma_metric = gamma_metric_out ? gamma_metric_out : gamma_metric_local;
+    detail::metric_inverse_divergence_ptr(p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz,
+                                          p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                                          gamma_metric);
+    gamma_metric[0] = -gamma_metric[0];
+    gamma_metric[1] = -gamma_metric[1];
+    gamma_metric[2] = -gamma_metric[2];
+
+    z_over_chi[0] = T(0.5) * ((*p_tildeGamma0) - gamma_metric[0]);
+    z_over_chi[1] = T(0.5) * ((*p_tildeGamma1) - gamma_metric[1]);
+    z_over_chi[2] = T(0.5) * ((*p_tildeGamma2) - gamma_metric[2]);
+}
+
+template <typename T>
 inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
                                  T Z4corr[6], T chi_div_floor, const double inv_12dx,
                                  const double inv_12dy, const double inv_12dz,
@@ -225,20 +248,14 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
     const T *p_ginv_yz = G.gamma_tilde_inv[YZ].ptr() + idx;
     const T *p_ginv_zz = G.gamma_tilde_inv[ZZ].ptr() + idx;
 
-    T gamma_metric[3] = {T(0), T(0), T(0)};
-    detail::metric_inverse_divergence_ptr(p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz,
-                                          p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz,
-                                          gamma_metric);
-    gamma_metric[0] = -gamma_metric[0];
-    gamma_metric[1] = -gamma_metric[1];
-    gamma_metric[2] = -gamma_metric[2];
-
     // Keep the Ricci Z correction self-consistent with the evolved contracted Gamma,
     // matching the reference CCZ4/BSSN formulations that recover Z^i/chi from
     // \hat{Gamma}^i - Gamma^i(metric).
-    const T z_over_chi[3] = {T(0.5) * (G.tildeGamma[0].ptr()[idx] - gamma_metric[0]),
-                             T(0.5) * (G.tildeGamma[1].ptr()[idx] - gamma_metric[1]),
-                             T(0.5) * (G.tildeGamma[2].ptr()[idx] - gamma_metric[2])};
+    T z_over_chi[3] = {T(0), T(0), T(0)};
+    recover_z_over_chi_from_gamma_ptr(G.tildeGamma[0].ptr() + idx, G.tildeGamma[1].ptr() + idx,
+                                      G.tildeGamma[2].ptr() + idx, p_ginv_xx, p_ginv_xy,
+                                      p_ginv_xz, p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy,
+                                      inv_12dx, inv_12dy, inv_12dz, z_over_chi);
 
     for (int a = 0; a < 3; ++a)
         for (int b = a; b < 3; ++b) {
