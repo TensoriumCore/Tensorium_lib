@@ -59,8 +59,8 @@
  * @endcode
  */
 
+#include "MPIBSSNIntegration.hpp"
 #include "MPIContext.hpp"
 #include "MPIDomain.hpp"
 #include "MPIHaloExchange.hpp"
 #include "MPIReductions.hpp"
-#include "MPIBSSNIntegration.hpp"

@@ -5,6 +5,7 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../Geometry/BSSNGamma.hpp"
 
 /**
  * @file BSSNEvolutionCommon.hpp
@@ -217,8 +218,27 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
     g_tilde[1][2] = g_tilde[2][1] = G.gamma_tilde[YZ].ptr()[idx];
     g_tilde[2][2] = G.gamma_tilde[ZZ].ptr()[idx];
 
-    const T z_over_chi[3] = {G.Z[0].ptr()[idx] * inv_chi, G.Z[1].ptr()[idx] * inv_chi,
-                             G.Z[2].ptr()[idx] * inv_chi};
+    const T *p_ginv_xx = G.gamma_tilde_inv[XX].ptr() + idx;
+    const T *p_ginv_xy = G.gamma_tilde_inv[XY].ptr() + idx;
+    const T *p_ginv_xz = G.gamma_tilde_inv[XZ].ptr() + idx;
+    const T *p_ginv_yy = G.gamma_tilde_inv[YY].ptr() + idx;
+    const T *p_ginv_yz = G.gamma_tilde_inv[YZ].ptr() + idx;
+    const T *p_ginv_zz = G.gamma_tilde_inv[ZZ].ptr() + idx;
+
+    T gamma_metric[3] = {T(0), T(0), T(0)};
+    detail::metric_inverse_divergence_ptr(p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz,
+                                          p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                                          gamma_metric);
+    gamma_metric[0] = -gamma_metric[0];
+    gamma_metric[1] = -gamma_metric[1];
+    gamma_metric[2] = -gamma_metric[2];
+
+    // Keep the Ricci Z correction self-consistent with the evolved contracted Gamma,
+    // matching the reference CCZ4/BSSN formulations that recover Z^i/chi from
+    // \hat{Gamma}^i - Gamma^i(metric).
+    const T z_over_chi[3] = {T(0.5) * (G.tildeGamma[0].ptr()[idx] - gamma_metric[0]),
+                             T(0.5) * (G.tildeGamma[1].ptr()[idx] - gamma_metric[1]),
+                             T(0.5) * (G.tildeGamma[2].ptr()[idx] - gamma_metric[2])};
 
     for (int a = 0; a < 3; ++a)
         for (int b = a; b < 3; ++b) {

@@ -59,7 +59,6 @@ template <typename T> class HaloExchanger {
 
     ~HaloExchanger() { free_datatypes(); }
 
-    // Non-copyable
     HaloExchanger(const HaloExchanger &) = delete;
     HaloExchanger &operator=(const HaloExchanger &) = delete;
 
@@ -116,8 +115,6 @@ template <typename T> class HaloExchanger {
     tensorium_RG::Strides<T> st_;
     size_t                   nx_, ny_, nz_, ng_;
 
-    // MPI datatypes for send/recv faces
-    // [direction 0/1/2][send=0/recv=1][minus=0/plus=1]
     MPI_Datatype face_types_[3][2][2];
     bool         types_created_ = false;
 
@@ -298,7 +295,6 @@ template <typename T> class HaloExchanger {
         const int rank_minus = domain_.neighbor(minus);
         const int rank_plus = domain_.neighbor(plus);
 
-        // Tags
         const int tag_to_plus = 100 + dir * 2;
         const int tag_to_minus = 100 + dir * 2 + 1;
 

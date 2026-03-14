@@ -22,7 +22,7 @@
  */
 
 #ifdef TENSORIUM_ENABLE_MPI
-#include <mpi.h>
+#    include <mpi.h>
 #endif
 
 #include <cstdio>
@@ -54,11 +54,12 @@ class MPIContext {
      * @param argv Command line arguments.
      * @param required Thread level required (default: Funneled for OpenMP+MPI).
      */
-    MPIContext(int& argc, char**& argv, ThreadLevel required = ThreadLevel::Funneled) {
+    MPIContext(int &argc, char **&argv, ThreadLevel required = ThreadLevel::Funneled) {
         int provided = 0;
         int err = MPI_Init_thread(&argc, &argv, static_cast<int>(required), &provided);
         if (err != MPI_SUCCESS) {
-            throw std::runtime_error("MPI_Init_thread failed with error code " + std::to_string(err));
+            throw std::runtime_error("MPI_Init_thread failed with error code " +
+                                     std::to_string(err));
         }
 
         provided_level_ = static_cast<ThreadLevel>(provided);
@@ -83,11 +84,10 @@ class MPIContext {
         }
     }
 
-    // Non-copyable, non-movable (singleton-like)
-    MPIContext(const MPIContext&) = delete;
-    MPIContext& operator=(const MPIContext&) = delete;
-    MPIContext(MPIContext&&) = delete;
-    MPIContext& operator=(MPIContext&&) = delete;
+    MPIContext(const MPIContext &) = delete;
+    MPIContext &operator=(const MPIContext &) = delete;
+    MPIContext(MPIContext &&) = delete;
+    MPIContext &operator=(MPIContext &&) = delete;
 
     /// @brief Get the rank in MPI_COMM_WORLD.
     int world_rank() const noexcept { return world_rank_; }
@@ -105,8 +105,7 @@ class MPIContext {
     void barrier() const { MPI_Barrier(MPI_COMM_WORLD); }
 
     /// @brief Print message only from root process.
-    template <typename... Args>
-    void root_printf(const char* fmt, Args... args) const {
+    template <typename... Args> void root_printf(const char *fmt, Args... args) const {
         if (is_root()) {
             if constexpr (sizeof...(args) == 0) {
                 fputs(fmt, stdout);
@@ -124,10 +123,10 @@ class MPIContext {
     }
 
   private:
-    int world_rank_ = 0;
-    int world_size_ = 1;
+    int         world_rank_ = 0;
+    int         world_size_ = 1;
     ThreadLevel provided_level_ = ThreadLevel::Single;
-    bool initialized_ = false;
+    bool        initialized_ = false;
 };
 
 #else // !TENSORIUM_ENABLE_MPI
@@ -139,20 +138,19 @@ enum class ThreadLevel { Single, Funneled, Serialized, Multiple };
 
 class MPIContext {
   public:
-    MPIContext(int&, char**&, ThreadLevel = ThreadLevel::Funneled) {}
+    MPIContext(int &, char **&, ThreadLevel = ThreadLevel::Funneled) {}
     ~MPIContext() = default;
 
-    MPIContext(const MPIContext&) = delete;
-    MPIContext& operator=(const MPIContext&) = delete;
+    MPIContext(const MPIContext &) = delete;
+    MPIContext &operator=(const MPIContext &) = delete;
 
-    int world_rank() const noexcept { return 0; }
-    int world_size() const noexcept { return 1; }
-    bool is_root() const noexcept { return true; }
+    int         world_rank() const noexcept { return 0; }
+    int         world_size() const noexcept { return 1; }
+    bool        is_root() const noexcept { return true; }
     ThreadLevel provided_level() const noexcept { return ThreadLevel::Single; }
-    void barrier() const {}
+    void        barrier() const {}
 
-    template <typename... Args>
-    void root_printf(const char* fmt, Args... args) const {
+    template <typename... Args> void root_printf(const char *fmt, Args... args) const {
         printf(fmt, args...);
         fflush(stdout);
     }

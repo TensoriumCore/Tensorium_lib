@@ -30,8 +30,7 @@ namespace tensorium::mpi {
  * - Global CFL time step computation
  * - Distributed constraint monitoring
  */
-template <typename T>
-class MPIBSSNRKStepper {
+template <typename T> class MPIBSSNRKStepper {
   public:
     using GridType = tensorium_RG::BSSNGridSoA<T>;
     using GaugeParams = tensorium_RG::bssn::GaugeParameters<T>;
@@ -43,28 +42,24 @@ class MPIBSSNRKStepper {
      * @param prototype Prototype grid (used for workspace allocation).
      * @param padding Interior padding for stencils.
      */
-    MPIBSSNRKStepper(const MPIDomain& domain, const GridType& prototype, size_t padding = 4)
+    MPIBSSNRKStepper(const MPIDomain &domain, const GridType &prototype, size_t padding = 4)
         : domain_(domain),
           padding_(padding),
           reductions_(domain),
-          boundary_(domain, prototype.alpha.st,
-                    domain.local_nx(), domain.local_ny(), domain.local_nz()),
-          stage_grid_(domain.local_nx(), domain.local_ny(), domain.local_nz(),
-                      domain.ng(),
-                      static_cast<T>(domain.dx()),
-                      static_cast<T>(domain.dy()),
+          boundary_(domain, prototype.alpha.st, domain.local_nx(), domain.local_ny(),
+                    domain.local_nz()),
+          stage_grid_(domain.local_nx(), domain.local_ny(), domain.local_nz(), domain.ng(),
+                      static_cast<T>(domain.dx()), static_cast<T>(domain.dy()),
                       static_cast<T>(domain.dz())) {
 
         stage_grid_.x0 = static_cast<T>(domain.local_x0());
         stage_grid_.y0 = static_cast<T>(domain.local_y0());
         stage_grid_.z0 = static_cast<T>(domain.local_z0());
 
-        // Allocate RK stage buffers
-        for (auto& stage : stages_) {
+        for (auto &stage : stages_) {
             stage.allocate_like(prototype);
         }
 
-        // Allocate temporary field for Ricci trace
         tensorium_RG::bssn::detail::allocate_like(prototype.alpha, theta_cache_);
         tensorium_RG::bssn::detail::allocate_like(prototype.alpha, h_constraint_cache_);
         for (int q = 0; q < 3; ++q) {
@@ -72,7 +67,6 @@ class MPIBSSNRKStepper {
             tensorium_RG::bssn::detail::allocate_like(prototype.alpha, c_constraint_cache_[q]);
         }
 
-        // Set up the boundary adapter for static interface
         MPIBoundaryAdapter<T>::instance = &boundary_;
     }
 
@@ -83,26 +77,24 @@ class MPIBSSNRKStepper {
     }
 
     /// @brief Set gauge evolution parameters.
-    void set_gauge_parameters(const GaugeParams& params) {
-        gauge_params_ = params;
-    }
+    void set_gauge_parameters(const GaugeParams &params) { gauge_params_ = params; }
 
     /// @brief Set constraint monitoring callback (called after each step on root).
     void set_constraint_callback(
-        std::function<void(const GridType&, const GlobalConstraintStats&)> cb) {
+        std::function<void(const GridType &, const GlobalConstraintStats &)> cb) {
         constraint_callback_ = std::move(cb);
     }
 
     /// @brief Set snapshot callback (called after each step on every rank).
-    void set_snapshot_callback(std::function<void(const GridType&, size_t)> cb) {
+    void set_snapshot_callback(std::function<void(const GridType &, size_t)> cb) {
         snapshot_callback_ = std::move(cb);
     }
 
     /// @brief Get the MPI domain.
-    const MPIDomain& domain() const { return domain_; }
+    const MPIDomain &domain() const { return domain_; }
 
     /// @brief Get the reductions helper.
-    const Reductions& reductions() const { return reductions_; }
+    const Reductions &reductions() const { return reductions_; }
 
     /**
      * @brief Compute global CFL-limited time step.
@@ -110,7 +102,7 @@ class MPIBSSNRKStepper {
      * @param cfl CFL factor (default 0.25).
      * @return Global time step satisfying CFL across all processes.
      */
-    T compute_dt(const GridType& grid, T cfl = T(0.25)) {
+    T compute_dt(const GridType &grid, T cfl = T(0.25)) {
         return compute_global_dt_cfl(grid, domain_, cfl, padding_);
     }
 
@@ -120,49 +112,40 @@ class MPIBSSNRKStepper {
      * @param dt Time step size.
      * @param step_index Current step number (for diagnostics).
      */
-    void step(GridType& grid, T dt, size_t step_index = 0) {
-        // RK4 Butcher tableau (low-storage variant)
-        static constexpr std::array<double, 4> gam0_ref = {
-            0.0, 0.121098479554482, -3.843833699660025, 0.546370891121863};
-        static constexpr std::array<double, 4> gam1_ref = {
-            1.0, 0.721781678111411, 2.121209265338722, 0.198653035682705};
-        static constexpr std::array<double, 4> beta_ref = {
-            1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
-        static constexpr std::array<double, 4> delta_ref = {
-            1.0, 0.217683334308543, 1.065841341361089, 0.0};
+    void step(GridType &grid, T dt, size_t step_index = 0) {
+        static constexpr std::array<double, 4> gam0_ref = {0.0, 0.121098479554482,
+                                                           -3.843833699660025, 0.546370891121863};
+        static constexpr std::array<double, 4> gam1_ref = {1.0, 0.721781678111411,
+                                                           2.121209265338722, 0.198653035682705};
+        static constexpr std::array<double, 4> beta_ref = {1.193743905974738, 0.099279895495783,
+                                                           1.131678018054042, 0.310665766509336};
+        static constexpr std::array<double, 4> delta_ref = {1.0, 0.217683334308543,
+                                                            1.065841341361089, 0.0};
 
         boundary_dt_ = dt;
 
-        // Four RK4 stages
         for (int stage = 0; stage < 4; ++stage) {
-            // Copy or accumulate stage reference
             if (stage == 0) {
                 copy_state(grid, stage_grid_);
             } else {
                 accumulate_state(grid, stage_grid_, T(delta_ref[stage]));
             }
 
-            // Prepare state (enforce floors, compute geometry)
             prepare_state_for_rhs(grid);
 
-            // Evaluate RHS
             auto stage_params = gauge_params_;
             stage_params.current_time = simulation_time_;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stages_[stage], stage_params);
 
-            // Apply explicit RK update
-            apply_stage_update(grid, stage_grid_, stages_[stage],
-                               T(gam0_ref[stage]), T(gam1_ref[stage]),
-                               T(beta_ref[stage]) * dt);
+            apply_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
+                               T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
 
-            // Enforce floors
             apply_floors(grid);
         }
 
         simulation_time_ += dt;
 
-        // Post-step processing
         apply_floors(grid);
         const bool do_state_log = ((step_index + 1) % state_log_stride_ == 0);
         const bool needs_post_step_prepare = do_state_log || static_cast<bool>(snapshot_callback_);
@@ -170,7 +153,6 @@ class MPIBSSNRKStepper {
             prepare_state_for_rhs(grid);
         }
 
-        // Compute and report constraints
         if (constraint_callback_ && do_state_log) {
             auto stats = compute_constraints(grid);
             stats.allreduce(domain_);
@@ -179,7 +161,6 @@ class MPIBSSNRKStepper {
             }
         }
 
-        // Log diagnostics. All ranks must participate because this path does MPI_Allreduce.
         if (do_state_log) {
             log_diagnostics(grid, step_index);
         }
@@ -190,30 +171,28 @@ class MPIBSSNRKStepper {
     }
 
     /// @brief Set stride for state logging.
-    void set_state_log_stride(size_t stride) {
-        state_log_stride_ = std::max<size_t>(1, stride);
-    }
+    void set_state_log_stride(size_t stride) { state_log_stride_ = std::max<size_t>(1, stride); }
 
   private:
-    const MPIDomain& domain_;
-    size_t padding_;
-    Reductions reductions_;
-    MPIBoundary<T> boundary_;
+    const MPIDomain &domain_;
+    size_t           padding_;
+    Reductions       reductions_;
+    MPIBoundary<T>   boundary_;
 
-    GridType stage_grid_;
+    GridType                                stage_grid_;
     tensorium_RG::bssn::BSSNRHSWorkspace<T> stages_[4];
-    tensorium_RG::Field3D<T> theta_cache_;
-    tensorium_RG::Field3D<T> h_constraint_cache_;
-    tensorium_RG::Field3D<T> m_constraint_cache_[3];
-    tensorium_RG::Field3D<T> c_constraint_cache_[3];
+    tensorium_RG::Field3D<T>                theta_cache_;
+    tensorium_RG::Field3D<T>                h_constraint_cache_;
+    tensorium_RG::Field3D<T>                m_constraint_cache_[3];
+    tensorium_RG::Field3D<T>                c_constraint_cache_[3];
 
     GaugeParams gauge_params_{};
-    T boundary_dt_ = T(0);
-    T simulation_time_ = T(0);
-    size_t state_log_stride_ = 10;
+    T           boundary_dt_ = T(0);
+    T           simulation_time_ = T(0);
+    size_t      state_log_stride_ = 10;
 
-    std::function<void(const GridType&, const GlobalConstraintStats&)> constraint_callback_;
-    std::function<void(const GridType&, size_t)> snapshot_callback_;
+    std::function<void(const GridType &, const GlobalConstraintStats &)> constraint_callback_;
+    std::function<void(const GridType &, size_t)>                        snapshot_callback_;
 
     static constexpr HaloFieldMask rhs_halo_fields(bool evolve_z) {
         HaloFieldMask mask = HaloFieldAlpha | HaloFieldChi | HaloFieldK | HaloFieldTheta |
@@ -225,16 +204,16 @@ class MPIBSSNRKStepper {
         return mask;
     }
 
-    void exchange_halos(GridType& grid, HaloFieldMask mask = HaloFieldAll) {
+    void exchange_halos(GridType &grid, HaloFieldMask mask = HaloFieldAll) {
         boundary_.exchange_halos(grid, mask);
     }
 
-    static InteriorRegion total_region(const GridType& grid) {
-        return InteriorRegion{0, grid.alpha.st.nx_tot, 0, grid.alpha.st.ny_tot, 0,
-                              grid.alpha.st.nz_tot};
+    static InteriorRegion total_region(const GridType &grid) {
+        return InteriorRegion{0, grid.alpha.st.nx_tot, 0, grid.alpha.st.ny_tot,
+                              0, grid.alpha.st.nz_tot};
     }
 
-    static InteriorRegion ricci_region(const GridType& grid) {
+    static InteriorRegion ricci_region(const GridType &grid) {
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
         return InteriorRegion{std::min(I0 + size_t(3), I1), (I1 > 3) ? I1 - 3 : I0,
@@ -242,17 +221,16 @@ class MPIBSSNRKStepper {
                               std::min(K0 + size_t(3), K1), (K1 > 3) ? K1 - 3 : K0};
     }
 
-    static InteriorRegion shrink_region(const InteriorRegion& region, size_t padding) {
-        return InteriorRegion{
-            std::min(region.i0 + padding, region.i1),
-            (region.i1 > padding) ? region.i1 - padding : region.i0,
-            std::min(region.j0 + padding, region.j1),
-            (region.j1 > padding) ? region.j1 - padding : region.j0,
-            std::min(region.k0 + padding, region.k1),
-            (region.k1 > padding) ? region.k1 - padding : region.k0};
+    static InteriorRegion shrink_region(const InteriorRegion &region, size_t padding) {
+        return InteriorRegion{std::min(region.i0 + padding, region.i1),
+                              (region.i1 > padding) ? region.i1 - padding : region.i0,
+                              std::min(region.j0 + padding, region.j1),
+                              (region.j1 > padding) ? region.j1 - padding : region.j0,
+                              std::min(region.k0 + padding, region.k1),
+                              (region.k1 > padding) ? region.k1 - padding : region.k0};
     }
 
-    static InteriorRegion intersect_region(const InteriorRegion& lhs, const InteriorRegion& rhs) {
+    static InteriorRegion intersect_region(const InteriorRegion &lhs, const InteriorRegion &rhs) {
         return InteriorRegion{std::max(lhs.i0, rhs.i0), std::min(lhs.i1, rhs.i1),
                               std::max(lhs.j0, rhs.j0), std::min(lhs.j1, rhs.j1),
                               std::max(lhs.k0, rhs.k0), std::min(lhs.k1, rhs.k1)};
@@ -273,8 +251,8 @@ class MPIBSSNRKStepper {
     }
 
     template <typename Fn>
-    static void for_each_shell_region(const InteriorRegion& outer, const InteriorRegion& inner,
-                                      Fn&& fn) {
+    static void for_each_shell_region(const InteriorRegion &outer, const InteriorRegion &inner,
+                                      Fn &&fn) {
         if (outer.empty()) {
             return;
         }
@@ -300,7 +278,7 @@ class MPIBSSNRKStepper {
         emit(core.i0, core.i1, core.j0, core.j1, core.k1, outer.k1);
     }
 
-    void prepare_state_for_rhs(GridType& grid) {
+    void prepare_state_for_rhs(GridType &grid) {
         enforce_floors(grid);
         tensorium_RG::bssn::BoundaryRadiative::set_characteristic(1.0, double(boundary_dt_));
 
@@ -316,42 +294,39 @@ class MPIBSSNRKStepper {
         tensorium_RG::bssn::enforce_algebraic_constraints_region(
             grid, algebraic_core.i0, algebraic_core.i1, algebraic_core.j0, algebraic_core.j1,
             algebraic_core.k0, algebraic_core.k1);
-        tensorium_RG::bssn::compute_ricci_bssn_region(
-            grid, grid.Ricci, ricci_core.i0, ricci_core.i1, ricci_core.j0, ricci_core.j1,
-            ricci_core.k0, ricci_core.k1, false);
+        tensorium_RG::bssn::compute_ricci_bssn_region(grid, grid.Ricci, ricci_core.i0,
+                                                      ricci_core.i1, ricci_core.j0, ricci_core.j1,
+                                                      ricci_core.k0, ricci_core.k1, false);
 
         boundary_.exchange_halos_finish(grid, pre_rhs_fields, exchange_state);
-        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion& region) {
+        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion &region) {
             enforce_floors_region(grid, region);
         });
-        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion& region) {
+        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion &region) {
             tensorium_RG::bssn::enforce_algebraic_constraints_region(
                 grid, region.i0, region.i1, region.j0, region.j1, region.k0, region.k1);
         });
-        for_each_shell_region(ricci_outer, ricci_core, [&](const InteriorRegion& region) {
-            tensorium_RG::bssn::compute_ricci_bssn_region(
-                grid, grid.Ricci, region.i0, region.i1, region.j0, region.j1, region.k0,
-                region.k1, false);
+        for_each_shell_region(ricci_outer, ricci_core, [&](const InteriorRegion &region) {
+            tensorium_RG::bssn::compute_ricci_bssn_region(grid, grid.Ricci, region.i0, region.i1,
+                                                          region.j0, region.j1, region.k0,
+                                                          region.k1, false);
         });
 
-        // Sync Z from Gamma constraint if not evolving Z
         if (!gauge_params_.evolve_Z) {
             synchronize_z_from_gamma(grid);
             exchange_halos(grid, HaloFieldZ);
         }
     }
 
-    void enforce_floors(GridType& grid) {
-        enforce_floors_region(grid, total_region(grid));
-    }
+    void enforce_floors(GridType &grid) { enforce_floors_region(grid, total_region(grid)); }
 
-    void enforce_floors_region(GridType& grid, const InteriorRegion& region) {
+    void enforce_floors_region(GridType &grid, const InteriorRegion &region) {
         if (region.empty() ||
             (gauge_params_.alpha_floor <= T(0) && gauge_params_.chi_floor <= T(0))) {
             return;
         }
-        T* alpha = grid.alpha.ptr();
-        T* chi = grid.chi.ptr();
+        T      *alpha = grid.alpha.ptr();
+        T      *chi = grid.chi.ptr();
         const T alpha_floor = gauge_params_.alpha_floor;
         const T chi_floor = gauge_params_.chi_floor;
 
@@ -370,7 +345,7 @@ class MPIBSSNRKStepper {
             }
     }
 
-    void apply_floors(GridType& grid) {
+    void apply_floors(GridType &grid) {
         if (gauge_params_.alpha_floor > T(0)) {
             apply_smooth_floor(grid.alpha, gauge_params_.alpha_floor);
         }
@@ -379,10 +354,10 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void apply_smooth_floor(tensorium_RG::Field3D<T>& field, T floor) {
+    void apply_smooth_floor(tensorium_RG::Field3D<T> &field, T floor) {
         const size_t total = field.st.nx_tot * field.st.ny_tot * field.st.nz_tot;
-        T* ptr = field.ptr();
-        const T delta = T(1e-10);
+        T           *ptr = field.ptr();
+        const T      delta = T(1e-10);
 
 #pragma omp parallel for
         for (size_t idx = 0; idx < total; ++idx) {
@@ -391,11 +366,11 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void synchronize_z_from_gamma(GridType& grid) {
+    void synchronize_z_from_gamma(GridType &grid) {
         using namespace tensorium_RG::fd;
-        const double inv_60dx = 1.0 / (60.0 * grid.dx);
-        const double inv_60dy = 1.0 / (60.0 * grid.dy);
-        const double inv_60dz = 1.0 / (60.0 * grid.dz);
+        const double    inv_60dx = 1.0 / (60.0 * grid.dx);
+        const double    inv_60dy = 1.0 / (60.0 * grid.dy);
+        const double    inv_60dz = 1.0 / (60.0 * grid.dz);
         const ptrdiff_t sx = grid.alpha.st.sx;
         const ptrdiff_t sy = grid.alpha.st.sy;
 
@@ -407,25 +382,22 @@ class MPIBSSNRKStepper {
             for (size_t j = J0; j < J1; ++j) {
                 for (size_t k = K0; k < K1; ++k) {
                     const size_t idx = grid.alpha.idx(i, j, k);
-                    const T chi = grid.chi.ptr()[idx];
-                    const T chi_guarded = tensorium_RG::bssn::guard_chi_div(
-                        chi, gauge_params_.chi_div_floor);
+                    const T      chi = grid.chi.ptr()[idx];
+                    const T      chi_guarded =
+                        tensorium_RG::bssn::guard_chi_div(chi, gauge_params_.chi_div_floor);
 
-                    const T* p_xx = grid.gamma_tilde_inv[tensorium_RG::XX].ptr() + idx;
-                    const T* p_xy = grid.gamma_tilde_inv[tensorium_RG::XY].ptr() + idx;
-                    const T* p_xz = grid.gamma_tilde_inv[tensorium_RG::XZ].ptr() + idx;
-                    const T* p_yy = grid.gamma_tilde_inv[tensorium_RG::YY].ptr() + idx;
-                    const T* p_yz = grid.gamma_tilde_inv[tensorium_RG::YZ].ptr() + idx;
-                    const T* p_zz = grid.gamma_tilde_inv[tensorium_RG::ZZ].ptr() + idx;
+                    const T *p_xx = grid.gamma_tilde_inv[tensorium_RG::XX].ptr() + idx;
+                    const T *p_xy = grid.gamma_tilde_inv[tensorium_RG::XY].ptr() + idx;
+                    const T *p_xz = grid.gamma_tilde_inv[tensorium_RG::XZ].ptr() + idx;
+                    const T *p_yy = grid.gamma_tilde_inv[tensorium_RG::YY].ptr() + idx;
+                    const T *p_yz = grid.gamma_tilde_inv[tensorium_RG::YZ].ptr() + idx;
+                    const T *p_zz = grid.gamma_tilde_inv[tensorium_RG::ZZ].ptr() + idx;
 
-                    const T div0 = Dx_ptr(p_xx, sx, inv_60dx) +
-                                   Dy_ptr(p_xy, sy, inv_60dy) +
+                    const T div0 = Dx_ptr(p_xx, sx, inv_60dx) + Dy_ptr(p_xy, sy, inv_60dy) +
                                    Dz_ptr(p_xz, inv_60dz);
-                    const T div1 = Dx_ptr(p_xy, sx, inv_60dx) +
-                                   Dy_ptr(p_yy, sy, inv_60dy) +
+                    const T div1 = Dx_ptr(p_xy, sx, inv_60dx) + Dy_ptr(p_yy, sy, inv_60dy) +
                                    Dz_ptr(p_yz, inv_60dz);
-                    const T div2 = Dx_ptr(p_xz, sx, inv_60dx) +
-                                   Dy_ptr(p_yz, sy, inv_60dy) +
+                    const T div2 = Dx_ptr(p_xz, sx, inv_60dx) + Dy_ptr(p_yz, sy, inv_60dy) +
                                    Dz_ptr(p_zz, inv_60dz);
 
                     const T gamma_metric0 = -div0;
@@ -444,21 +416,18 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void evaluate_rhs(const GridType& grid,
-                      tensorium_RG::bssn::BSSNRHSWorkspace<T>& rhs,
-                      const GaugeParams& params) {
+    void evaluate_rhs(const GridType &grid, tensorium_RG::bssn::BSSNRHSWorkspace<T> &rhs,
+                      const GaugeParams &params) {
         auto padding_scope = interior_padding_scope();
         tensorium_RG::bssn::update_ko_scale(grid, boundary_dt_);
         tensorium_RG::bssn::evaluate_rhs_sweep_core(
-            grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta,
-            rhs.beta, rhs.B, rhs.gamma_tilde, rhs.A_tilde,
-            rhs.tildeGamma, rhs.Z, params, padding_, &theta_cache_);
+            grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B, rhs.gamma_tilde,
+            rhs.A_tilde, rhs.tildeGamma, rhs.Z, params, padding_, &theta_cache_);
         apply_rhs_sommerfeld(grid, rhs);
         tensorium_RG::bssn::recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, padding_);
     }
 
-    void apply_rhs_sommerfeld(const GridType& grid,
-                              tensorium_RG::bssn::BSSNRHSWorkspace<T>& rhs) {
+    void apply_rhs_sommerfeld(const GridType &grid, tensorium_RG::bssn::BSSNRHSWorkspace<T> &rhs) {
         if (!gauge_params_.apply_rhs_sommerfeld) {
             return;
         }
@@ -485,36 +454,30 @@ class MPIBSSNRKStepper {
         for (size_t i = i0; i < i1; ++i) {
             for (size_t j = j0; j < j1; ++j) {
                 for (size_t k = k0; k < k1; ++k) {
-                    const bool on_ix1 = domain_.is_boundary_x_minus() && (i == i0) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            0, false) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            0, false);
-                    const bool on_ox1 = domain_.is_boundary_x_plus() && (i + 1 == i1) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            0, true) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            0, true);
-                    const bool on_ix2 = domain_.is_boundary_y_minus() && (j == j0) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            1, false) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            1, false);
-                    const bool on_ox2 = domain_.is_boundary_y_plus() && (j + 1 == j1) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            1, true) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            1, true);
-                    const bool on_ix3 = domain_.is_boundary_z_minus() && (k == k0) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            2, false) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            2, false);
-                    const bool on_ox3 = domain_.is_boundary_z_plus() && (k + 1 == k1) &&
-                                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(
-                                            2, true) &&
-                                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(
-                                            2, true);
+                    const bool on_ix1 =
+                        domain_.is_boundary_x_minus() && (i == i0) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, false) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, false);
+                    const bool on_ox1 =
+                        domain_.is_boundary_x_plus() && (i + 1 == i1) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, true) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, true);
+                    const bool on_ix2 =
+                        domain_.is_boundary_y_minus() && (j == j0) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, false) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, false);
+                    const bool on_ox2 =
+                        domain_.is_boundary_y_plus() && (j + 1 == j1) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, true) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, true);
+                    const bool on_ix3 =
+                        domain_.is_boundary_z_minus() && (k == k0) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, false) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, false);
+                    const bool on_ox3 =
+                        domain_.is_boundary_z_plus() && (k + 1 == k1) &&
+                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, true) &&
+                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, true);
                     const bool on_surface =
                         on_ix1 || on_ox1 || on_ix2 || on_ox2 || on_ix3 || on_ox3;
                     if (!on_surface) {
@@ -522,7 +485,7 @@ class MPIBSSNRKStepper {
                     }
 
                     const size_t id = grid.alpha.idx(i, j, k);
-                    T x, y, z;
+                    T            x, y, z;
                     grid.coords(i, j, k, x, y, z);
                     const T r = std::sqrt(x * x + y * y + z * z);
                     const T inv_r = T(1) / std::max(r, inv_r_floor);
@@ -530,15 +493,16 @@ class MPIBSSNRKStepper {
                     const T sy = y * inv_r;
                     const T sz = z * inv_r;
 
-                    auto radial_derivative = [&](const tensorium_RG::Field3D<T>& f) -> T {
-                        const T* p = f.ptr() + id;
-                        const T dfx = (p[f.st.sx] - p[-f.st.sx]) * inv_2dx;
-                        const T dfy = (p[f.st.sy] - p[-f.st.sy]) * inv_2dy;
-                        const T dfz = (p[1] - p[-1]) * inv_2dz;
+                    auto radial_derivative = [&](const tensorium_RG::Field3D<T> &f) -> T {
+                        const T *p = f.ptr() + id;
+                        const T  dfx = (p[f.st.sx] - p[-f.st.sx]) * inv_2dx;
+                        const T  dfy = (p[f.st.sy] - p[-f.st.sy]) * inv_2dy;
+                        const T  dfz = (p[1] - p[-1]) * inv_2dz;
                         return sx * dfx + sy * dfy + sz * dfz;
                     };
 
-                    auto sommerfeld_rhs = [&](const tensorium_RG::Field3D<T>& u, T asymptotic) -> T {
+                    auto sommerfeld_rhs = [&](const tensorium_RG::Field3D<T> &u,
+                                              T                               asymptotic) -> T {
                         const T u0 = u.ptr()[id];
                         return -radial_derivative(u) + (asymptotic - u0) * inv_r;
                     };
@@ -577,7 +541,7 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void copy_state(const GridType& src, GridType& dst) {
+    void copy_state(const GridType &src, GridType &dst) {
         dst.x0 = src.x0;
         dst.y0 = src.y0;
         dst.z0 = src.z0;
@@ -600,7 +564,7 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void accumulate_state(const GridType& src, GridType& dst, T delta) {
+    void accumulate_state(const GridType &src, GridType &dst, T delta) {
         auto padding_scope = interior_padding_scope();
         accumulate_field_interior(src, src.alpha, dst.alpha, delta);
         accumulate_field_interior(src, src.chi, dst.chi, delta);
@@ -618,9 +582,9 @@ class MPIBSSNRKStepper {
         }
     }
 
-    void apply_stage_update(GridType& u0, const GridType& u1,
-                            const tensorium_RG::bssn::BSSNRHSWorkspace<T>& rhs,
-                            T gam0, T gam1, T beta_dt) {
+    void apply_stage_update(GridType &u0, const GridType &u1,
+                            const tensorium_RG::bssn::BSSNRHSWorkspace<T> &rhs, T gam0, T gam1,
+                            T beta_dt) {
         {
             auto padding_scope = interior_padding_scope();
             update_field_interior(u0, u0.alpha, u1.alpha, rhs.alpha, gam0, gam1, beta_dt);
@@ -628,66 +592,54 @@ class MPIBSSNRKStepper {
             update_field_interior(u0, u0.K, u1.K, rhs.K, gam0, gam1, beta_dt);
             update_field_interior(u0, u0.Theta, u1.Theta, rhs.Theta, gam0, gam1, beta_dt);
             for (int i = 0; i < 3; ++i) {
-                update_field_interior(u0, u0.beta[i], u1.beta[i], rhs.beta[i], gam0, gam1,
-                                      beta_dt);
+                update_field_interior(u0, u0.beta[i], u1.beta[i], rhs.beta[i], gam0, gam1, beta_dt);
                 update_field_interior(u0, u0.B[i], u1.B[i], rhs.B[i], gam0, gam1, beta_dt);
                 update_field_interior(u0, u0.tildeGamma[i], u1.tildeGamma[i], rhs.tildeGamma[i],
                                       gam0, gam1, beta_dt);
                 update_field_interior(u0, u0.Z[i], u1.Z[i], rhs.Z[i], gam0, gam1, beta_dt);
             }
             for (int s = 0; s < 6; ++s) {
-                update_field_interior(u0, u0.gamma_tilde[s], u1.gamma_tilde[s],
-                                      rhs.gamma_tilde[s], gam0, gam1, beta_dt);
-                update_field_interior(u0, u0.A_tilde[s], u1.A_tilde[s], rhs.A_tilde[s], gam0,
-                                      gam1, beta_dt);
+                update_field_interior(u0, u0.gamma_tilde[s], u1.gamma_tilde[s], rhs.gamma_tilde[s],
+                                      gam0, gam1, beta_dt);
+                update_field_interior(u0, u0.A_tilde[s], u1.A_tilde[s], rhs.A_tilde[s], gam0, gam1,
+                                      beta_dt);
             }
         }
         tensorium_RG::bssn::enforce_algebraic_constraints(u0);
     }
 
-    void copy_field_interior(const GridType& grid,
-                             const tensorium_RG::Field3D<T>& src,
-                             tensorium_RG::Field3D<T>& dst) {
-        const T* in = src.ptr();
-        T* out = dst.ptr();
+    void copy_field_interior(const GridType &grid, const tensorium_RG::Field3D<T> &src,
+                             tensorium_RG::Field3D<T> &dst) {
+        const T *in = src.ptr();
+        T       *out = dst.ptr();
         tensorium_RG::bssn::for_each_interior_index_parallel(
-            grid, padding_,
-            [&](size_t, size_t, size_t, size_t idx) {
-                out[idx] = in[idx];
-            });
+            grid, padding_, [&](size_t, size_t, size_t, size_t idx) { out[idx] = in[idx]; });
     }
 
-    void accumulate_field_interior(const GridType& grid,
-                                   const tensorium_RG::Field3D<T>& src,
-                                   tensorium_RG::Field3D<T>& dst,
-                                   T scale) {
-        const T* in = src.ptr();
-        T* out = dst.ptr();
+    void accumulate_field_interior(const GridType &grid, const tensorium_RG::Field3D<T> &src,
+                                   tensorium_RG::Field3D<T> &dst, T scale) {
+        const T *in = src.ptr();
+        T       *out = dst.ptr();
         tensorium_RG::bssn::for_each_interior_index_parallel(
             grid, padding_,
-            [&](size_t, size_t, size_t, size_t idx) {
-                out[idx] += scale * in[idx];
-            });
+            [&](size_t, size_t, size_t, size_t idx) { out[idx] += scale * in[idx]; });
     }
 
-    void update_field_interior(const GridType& grid,
-                               tensorium_RG::Field3D<T>& u0,
-                               const tensorium_RG::Field3D<T>& u1,
-                               const tensorium_RG::Field3D<T>& rhs,
-                               T gam0, T gam1, T beta_dt) {
-        T* out = u0.ptr();
-        const T* base = u1.ptr();
-        const T* k = rhs.ptr();
+    void update_field_interior(const GridType &grid, tensorium_RG::Field3D<T> &u0,
+                               const tensorium_RG::Field3D<T> &u1,
+                               const tensorium_RG::Field3D<T> &rhs, T gam0, T gam1, T beta_dt) {
+        T       *out = u0.ptr();
+        const T *base = u1.ptr();
+        const T *k = rhs.ptr();
         tensorium_RG::bssn::for_each_interior_index_parallel(
-            grid, padding_,
-            [&](size_t, size_t, size_t, size_t idx) {
+            grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
                 out[idx] = gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
             });
     }
 
-    GlobalConstraintStats compute_constraints(const GridType& grid) {
+    GlobalConstraintStats compute_constraints(const GridType &grid) {
         GlobalConstraintStats stats;
-        auto& mutable_grid = const_cast<GridType&>(grid);
+        auto                 &mutable_grid = const_cast<GridType &>(grid);
         tensorium_RG::bssn::compute_bssn_constraints(
             mutable_grid, grid.Ricci, h_constraint_cache_, m_constraint_cache_, c_constraint_cache_,
             0.0, std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
@@ -708,7 +660,7 @@ class MPIBSSNRKStepper {
         return stats;
     }
 
-    void log_diagnostics(const GridType& grid, size_t step_index) {
+    void log_diagnostics(const GridType &grid, size_t step_index) {
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
 

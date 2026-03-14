@@ -45,15 +45,12 @@ enum NeighborDir : int {
  * @brief Configuration for domain decomposition.
  */
 struct DomainConfig {
-    // Global grid dimensions (physical cells, excluding ghosts)
     size_t global_nx = 0;
     size_t global_ny = 0;
     size_t global_nz = 0;
 
-    // Number of ghost cells (same on all sides)
     size_t ng = 6;
 
-    // Process grid dimensions (0 = auto-detect via MPI_Dims_create)
     int proc_x = 0;
     int proc_y = 0;
     int proc_z = 0;
@@ -94,13 +91,11 @@ class MPIDomain {
         dims_[1] = config.proc_y;
         dims_[2] = config.proc_z;
 
-        // Let MPI choose optimal decomposition if any dimension is 0
         if (dims_[0] == 0 || dims_[1] == 0 || dims_[2] == 0) {
             int total_procs = world_size;
             MPI_Dims_create(total_procs, 3, dims_.data());
         }
 
-        // Verify process count matches
         int expected_procs = dims_[0] * dims_[1] * dims_[2];
         if (expected_procs != world_size) {
             throw std::runtime_error("Process grid " + std::to_string(dims_[0]) + "x" +
@@ -109,7 +104,6 @@ class MPIDomain {
                                      " doesn't match world size " + std::to_string(world_size));
         }
 
-        // Create Cartesian communicator
         periods_[0] = config.periodic_x ? 1 : 0;
         periods_[1] = config.periodic_y ? 1 : 0;
         periods_[2] = config.periodic_z ? 1 : 0;
@@ -118,12 +112,10 @@ class MPIDomain {
         MPI_Comm_rank(cart_comm_, &cart_rank_);
         MPI_Cart_coords(cart_comm_, cart_rank_, 3, coords_.data());
 
-        // Find neighbors (MPI_PROC_NULL if at boundary and non-periodic)
         MPI_Cart_shift(cart_comm_, 0, 1, &neighbors_[X_MINUS], &neighbors_[X_PLUS]);
         MPI_Cart_shift(cart_comm_, 1, 1, &neighbors_[Y_MINUS], &neighbors_[Y_PLUS]);
         MPI_Cart_shift(cart_comm_, 2, 1, &neighbors_[Z_MINUS], &neighbors_[Z_PLUS]);
 
-        // Compute local grid dimensions
         compute_local_extents();
     }
 
@@ -133,11 +125,9 @@ class MPIDomain {
         }
     }
 
-    // Non-copyable
     MPIDomain(const MPIDomain &) = delete;
     MPIDomain &operator=(const MPIDomain &) = delete;
 
-    // Movable
     MPIDomain(MPIDomain &&other) noexcept { swap(other); }
     MPIDomain &operator=(MPIDomain &&other) noexcept {
         if (this != &other) {
@@ -266,20 +256,16 @@ class MPIDomain {
     }
 
     void compute_local_extents() {
-        // Compute grid spacing
         dx_ = (config_.x1 - config_.x0) / static_cast<double>(config_.global_nx);
         dy_ = (config_.y1 - config_.y0) / static_cast<double>(config_.global_ny);
         dz_ = (config_.z1 - config_.z0) / static_cast<double>(config_.global_nz);
 
-        // Divide global grid among processes (handle remainder)
         auto divide_grid = [](size_t global_n, int nprocs, int coord) -> std::pair<size_t, size_t> {
             size_t base = global_n / static_cast<size_t>(nprocs);
             size_t remainder = global_n % static_cast<size_t>(nprocs);
 
-            // First 'remainder' processes get one extra cell
             size_t local_n = base + (static_cast<size_t>(coord) < remainder ? 1 : 0);
 
-            // Starting index
             size_t start =
                 base * static_cast<size_t>(coord) + std::min(static_cast<size_t>(coord), remainder);
 
@@ -297,7 +283,6 @@ class MPIDomain {
         global_j0_ = j0;
         global_k0_ = k0;
 
-        // Physical coordinate of local origin
         local_x0_ = config_.x0 + static_cast<double>(global_i0_) * dx_;
         local_y0_ = config_.y0 + static_cast<double>(global_j0_) * dy_;
         local_z0_ = config_.z0 + static_cast<double>(global_k0_) * dz_;
