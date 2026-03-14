@@ -66,6 +66,11 @@ class MPIBSSNRKStepper {
 
         // Allocate temporary field for Ricci trace
         tensorium_RG::bssn::detail::allocate_like(prototype.alpha, theta_cache_);
+        tensorium_RG::bssn::detail::allocate_like(prototype.alpha, h_constraint_cache_);
+        for (int q = 0; q < 3; ++q) {
+            tensorium_RG::bssn::detail::allocate_like(prototype.alpha, m_constraint_cache_[q]);
+            tensorium_RG::bssn::detail::allocate_like(prototype.alpha, c_constraint_cache_[q]);
+        }
 
         // Set up the boundary adapter for static interface
         MPIBoundaryAdapter<T>::instance = &boundary_;
@@ -198,6 +203,9 @@ class MPIBSSNRKStepper {
     GridType stage_grid_;
     tensorium_RG::bssn::BSSNRHSWorkspace<T> stages_[4];
     tensorium_RG::Field3D<T> theta_cache_;
+    tensorium_RG::Field3D<T> h_constraint_cache_;
+    tensorium_RG::Field3D<T> m_constraint_cache_[3];
+    tensorium_RG::Field3D<T> c_constraint_cache_[3];
 
     GaugeParams gauge_params_{};
     T boundary_dt_ = T(0);
@@ -679,38 +687,23 @@ class MPIBSSNRKStepper {
 
     GlobalConstraintStats compute_constraints(const GridType& grid) {
         GlobalConstraintStats stats;
+        auto& mutable_grid = const_cast<GridType&>(grid);
+        tensorium_RG::bssn::compute_bssn_constraints(
+            mutable_grid, grid.Ricci, h_constraint_cache_, m_constraint_cache_, c_constraint_cache_,
+            0.0, std::numeric_limits<double>::max(), 0.0, 0.0, 0.0, false);
+        auto monitor =
+            tensorium_RG::bssn::compute_constraint_monitor(grid, h_constraint_cache_, padding_);
+        tensorium_RG::bssn::populate_constraint_norms(grid, m_constraint_cache_, monitor, padding_);
 
-        size_t I0, I1, J0, J1, K0, K1;
-        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-
-        const size_t guard = std::max(padding_, size_t(2));
-        const size_t i0 = std::min(I0 + guard, I1);
-        const size_t j0 = std::min(J0 + guard, J1);
-        const size_t k0 = std::min(K0 + guard, K1);
-        const size_t i1 = (I1 > guard) ? I1 - guard : I1;
-        const size_t j1 = (J1 > guard) ? J1 - guard : J1;
-        const size_t k1 = (K1 > guard) ? K1 - guard : K1;
-
-        double sum_theta_sq = 0.0;
-        double max_theta = 0.0;
-        size_t count = 0;
-
-#pragma omp parallel for collapse(3) reduction(+:sum_theta_sq, count) reduction(max:max_theta)
-        for (size_t i = i0; i < i1; ++i) {
-            for (size_t j = j0; j < j1; ++j) {
-                for (size_t k = k0; k < k1; ++k) {
-                    const size_t idx = grid.alpha.idx(i, j, k);
-                    const double theta = std::abs(double(grid.Theta.ptr()[idx]));
-                    sum_theta_sq += theta * theta;
-                    max_theta = std::max(max_theta, theta);
-                    ++count;
-                }
-            }
-        }
-
-        stats.l2_theta = sum_theta_sq;  // Will be sqrt(sum/count) after allreduce
-        stats.max_hamiltonian = max_theta;
-        stats.total_samples = count;
+        const double samples = static_cast<double>(monitor.samples);
+        stats.l2_hamiltonian = monitor.l2_H * monitor.l2_H * samples;
+        stats.l2_momentum = monitor.l2_M * monitor.l2_M * samples;
+        stats.l2_theta = monitor.l2_theta * monitor.l2_theta * samples;
+        stats.l2_Z = monitor.l2_Z * monitor.l2_Z * samples;
+        stats.max_hamiltonian = monitor.max_H;
+        stats.max_det_drift = monitor.max_det_drift;
+        stats.max_trace_A = monitor.max_trace_A;
+        stats.total_samples = monitor.samples;
 
         return stats;
     }
@@ -721,14 +714,29 @@ class MPIBSSNRKStepper {
 
         double min_alpha = 1e100, min_chi = 1e100;
         double max_theta = 0.0;
+        size_t finite_alpha = 0;
+        size_t finite_chi = 0;
+        size_t finite_theta = 0;
 
         for (size_t i = I0; i < I1; ++i) {
             for (size_t j = J0; j < J1; ++j) {
                 for (size_t k = K0; k < K1; ++k) {
                     const size_t idx = grid.alpha.idx(i, j, k);
-                    min_alpha = std::min(min_alpha, double(grid.alpha.ptr()[idx]));
-                    min_chi = std::min(min_chi, double(grid.chi.ptr()[idx]));
-                    max_theta = std::max(max_theta, std::abs(double(grid.Theta.ptr()[idx])));
+                    const double alpha = double(grid.alpha.ptr()[idx]);
+                    const double chi = double(grid.chi.ptr()[idx]);
+                    const double theta = std::abs(double(grid.Theta.ptr()[idx]));
+                    if (std::isfinite(alpha)) {
+                        min_alpha = std::min(min_alpha, alpha);
+                        ++finite_alpha;
+                    }
+                    if (std::isfinite(chi)) {
+                        min_chi = std::min(min_chi, chi);
+                        ++finite_chi;
+                    }
+                    if (std::isfinite(theta)) {
+                        max_theta = std::max(max_theta, theta);
+                        ++finite_theta;
+                    }
                 }
             }
         }
@@ -737,6 +745,16 @@ class MPIBSSNRKStepper {
         min_alpha = reductions_.allreduce_min(min_alpha);
         min_chi = reductions_.allreduce_min(min_chi);
         max_theta = reductions_.allreduce_max(max_theta);
+        finite_alpha = reductions_.allreduce_sum(finite_alpha);
+        finite_chi = reductions_.allreduce_sum(finite_chi);
+        finite_theta = reductions_.allreduce_sum(finite_theta);
+
+        if (finite_alpha == 0)
+            min_alpha = std::numeric_limits<double>::quiet_NaN();
+        if (finite_chi == 0)
+            min_chi = std::numeric_limits<double>::quiet_NaN();
+        if (finite_theta == 0)
+            max_theta = std::numeric_limits<double>::quiet_NaN();
 
         if (domain_.is_root()) {
             printf("[MPI-BSSN %04zu] t=%.4f alpha_min=%.3e chi_min=%.3e Theta_max=%.3e\n",
