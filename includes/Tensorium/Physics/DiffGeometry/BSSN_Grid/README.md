@@ -123,17 +123,15 @@ This split is deliberate and keeps the Z4-coupled source terms consistent.
 Implemented in `Evolution/BSSNEvolutionGamma.hpp`:
 
 - Includes advection, stretching, shift-Laplacian pieces, lapse-gradient coupling, and geometric source terms.
-- Includes Z4-driven couplings (`Theta`, `Z^i`, `kappa*` parameters).
-- Uses `gamma_driver = gamma_metric + 2*kappa3*(Z/chi)` when `evolve_Z=true`.
-- If `evolve_Z=false`, `Z/chi` is reconstructed from `tildeGamma - gamma_metric`.
+- Includes Z4-driven couplings (`Theta`, reconstructed `Z/chi`, `kappa*` parameters).
+- `Z/chi` is reconstructed from `tildeGamma - gamma_metric` on the RHS path.
 
 ### 3.6 Z4 scalar and vector
 
 Implemented in `Evolution/BSSNEvolutionZ4C.hpp`:
 
-- `compute_rhs_Theta(...)` builds a geometric source from Ricci scalar, `A_tilde` contraction, `K`, and Z4 couplings, then adds damping/advection/KO.
-- `compute_rhs_Z(...)` evolves contravariant `Z^i` with momentum-like source terms, Lie/advection terms, damping, and KO.
-- If `evolve_Z=false`, `rhs_Z` is forced to zero.
+- `compute_rhs_Theta(...)` builds a geometric source from Ricci scalar, `A_tilde` contraction, `K`, and reconstructed Z4 couplings, then adds damping/advection/KO.
+- `compute_rhs_Z(...)` is diagnostic-only: the stored contravariant `Z^i` field is reconstructed from `tildeGamma` and its RHS is identically zero.
 
 ## 4. Gauge System
 
@@ -388,7 +386,7 @@ Frequently tuned knobs:
   - `lapse_oplog`, `lapse_harmonic*`, `slow_start_lapse*`
 - Z4/constraint damping:
   - `kappa1`, `kappa2`, `kappa3`, `kappa_z`
-  - `evolve_Z`
+  - `evolve_Z` compatibility knob for the auxiliary/exported `Z_i` field
 - Numerical stabilization:
   - `ko_sigma`
   - `chi_div_floor`

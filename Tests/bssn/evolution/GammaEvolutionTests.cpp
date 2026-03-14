@@ -214,4 +214,46 @@ REGISTER_TEST("bssn.evolution.gamma_theta_ignore_auxiliary_z",
                                               "Theta RHS is invariant under auxiliary Z changes");
               });
 
+REGISTER_TEST("bssn.evolution.z_rhs_is_diagnostic_only",
+              "Z_i RHS stays zero even when evolve_Z is enabled", []() {
+                  constexpr size_t padding = 4;
+                  tensorium_RG::BSSNGridSoA<double> grid(24, 22, 20, 4, 0.25, 0.22, 0.20);
+                  tensorium_RG::init::minkowski(grid, 0.0);
+
+                  size_t I0, I1, J0, J1, K0, K1;
+                  grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+                  for (size_t i = I0; i < I1; ++i)
+                      for (size_t j = J0; j < J1; ++j)
+                          for (size_t k = K0; k < K1; ++k) {
+                              const size_t idx = grid.alpha.idx(i, j, k);
+                              double       x, y, z;
+                              grid.coords(i, j, k, x, y, z);
+                              grid.Z[0].ptr()[idx] = 0.1 + 0.02 * x;
+                              grid.Z[1].ptr()[idx] = -0.05 + 0.03 * y;
+                              grid.Z[2].ptr()[idx] = 0.08 - 0.01 * z;
+                              grid.Theta.ptr()[idx] = 0.02 + 0.01 * x;
+                              grid.K.ptr()[idx] = -0.03 + 0.02 * y;
+                              grid.A_tilde[0].ptr()[idx] = 0.01 * z;
+                          }
+
+                  tensorium_RG::Field3D<double> rhs_Z[3];
+                  alloc_rhs(grid, rhs_Z);
+
+                  tensorium_RG::bssn::GaugeParameters<double> params;
+                  params.evolve_Z = true;
+
+                  tensorium_RG::bssn::compute_rhs_Z(grid, rhs_Z, params, padding);
+
+                  double max_abs = 0.0;
+                  for (size_t i = I0 + padding; i < I1 - padding; ++i)
+                      for (size_t j = J0 + padding; j < J1 - padding; ++j)
+                          for (size_t k = K0 + padding; k < K1 - padding; ++k)
+                              for (int c = 0; c < 3; ++c) {
+                                  const size_t idx = rhs_Z[c].idx(i, j, k);
+                                  max_abs = std::max(max_abs, std::abs(rhs_Z[c].ptr()[idx]));
+                              }
+
+                  tensorium::tests::expect_le(max_abs, 1e-15, "Z_i RHS is zeroed");
+              });
+
 #endif

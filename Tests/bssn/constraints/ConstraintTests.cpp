@@ -4,6 +4,7 @@
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
 
 REGISTER_TEST("bssn.constraints.minkowski", "Constraints vanish for Minkowski data", []() {
     tensorium_RG::BSSNGridSoA<double> grid(24, 24, 24, 4, 0.5, 0.5, 0.5);
@@ -52,6 +53,40 @@ REGISTER_TEST("bssn.constraints.gamma_coherence", "Gamma constraint fails on inc
                   TENSORIUM_TEST_ASSERT(gamma_violation > 10.0 * tol.gamma_tol);
 
                   tensorium_RG::bssn::assert_invariants(grid, "gamma_test", 4, tol, false);
+              });
+
+REGISTER_TEST("bssn.constraints.gamma_coherence_stepper_resync",
+              "Stepper resynchronizes auxiliary Z_i from Gamma even when evolve_Z is enabled",
+              []() {
+                  tensorium_RG::BSSNGridSoA<double> grid(24, 24, 24, 4, 0.5, 0.5, 0.5);
+                  tensorium_RG::init::minkowski(grid, 0.0);
+
+                  size_t I0, I1, J0, J1, K0, K1;
+                  grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+                  for (size_t i = I0; i < I1; ++i)
+                      for (size_t j = J0; j < J1; ++j)
+                          for (size_t k = K0; k < K1; ++k) {
+                              const size_t idx = grid.alpha.idx(i, j, k);
+                              grid.Z[0].ptr()[idx] = 10.0 + 0.1 * double(i);
+                              grid.Z[1].ptr()[idx] = -7.0 + 0.2 * double(j);
+                              grid.Z[2].ptr()[idx] = 5.0 - 0.15 * double(k);
+                          }
+
+                  tensorium_RG::bssn::GaugeParameters<double> params;
+                  params.evolve_Z = true;
+                  params.apply_rhs_sommerfeld = false;
+
+                  tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative>
+                      stepper(grid, 4);
+                  stepper.set_gauge_parameters(params);
+                  stepper.set_state_log_stride(1000000);
+
+                  stepper.step(grid, 0.01, 0);
+
+                  const auto tol = tensorium_RG::bssn::compute_invariant_tolerances(grid);
+                  const double gamma_violation = tensorium::tests::max_gamma_violation_z4c(grid, 4);
+                  tensorium::tests::expect_le(gamma_violation, 5.0 * tol.gamma_tol,
+                                              "Gamma coherence restored by stepper resync");
               });
 
 #include "GammaCoherenceNoResyncTests.cpp"

@@ -200,7 +200,7 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     rhs.beta[a].ptr()[id] = outgoing_rhs(grid.beta[a], T(0));
                     rhs.B[a].ptr()[id] = outgoing_rhs(grid.B[a], T(0));
                     rhs.tildeGamma[a].ptr()[id] = outgoing_rhs(grid.tildeGamma[a], T(0), T(1));
-                    rhs.Z[a].ptr()[id] = outgoing_rhs(grid.Z[a], T(0));
+                    rhs.Z[a].ptr()[id] = T(0);
                 }
 
                 rhs.gamma_tilde[XX].ptr()[id] = outgoing_rhs(grid.gamma_tilde[XX], T(1));
@@ -492,6 +492,8 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             do_state_log || static_cast<bool>(monitor_callback_) || static_cast<bool>(snapshot_callback_);
         if (needs_post_step_prepare) {
             prepare_state_for_rhs(grid);
+        } else {
+            synchronize_z_from_gamma_constraint(grid);
         }
 
         if (do_state_log) {
@@ -614,10 +616,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         enforce_positive_chi_alpha_pre_rhs(grid);
 
         rebuild_geometry(grid);
-        if (!gauge_params_.evolve_Z) {
-            synchronize_z_from_gamma_constraint(grid);
-            apply_halos_grid<Boundary>(grid);
-        }
+        synchronize_z_from_gamma_constraint(grid);
     }
 
     void rebuild_geometry(BSSNGridSoA<T> &grid) {

@@ -151,6 +151,8 @@ template <typename T> class MPIBSSNRKStepper {
         const bool needs_post_step_prepare = do_state_log || static_cast<bool>(snapshot_callback_);
         if (needs_post_step_prepare) {
             prepare_state_for_rhs(grid);
+        } else {
+            synchronize_z_from_gamma(grid);
         }
 
         if (constraint_callback_ && do_state_log) {
@@ -195,12 +197,10 @@ template <typename T> class MPIBSSNRKStepper {
     std::function<void(const GridType &, size_t)>                        snapshot_callback_;
 
     static constexpr HaloFieldMask rhs_halo_fields(bool evolve_z) {
+        (void)evolve_z;
         HaloFieldMask mask = HaloFieldAlpha | HaloFieldChi | HaloFieldK | HaloFieldTheta |
                              HaloFieldBeta | HaloFieldB | HaloFieldTildeGamma |
                              HaloFieldGammaTilde | HaloFieldATilde;
-        if (evolve_z) {
-            mask |= HaloFieldZ;
-        }
         return mask;
     }
 
@@ -312,10 +312,7 @@ template <typename T> class MPIBSSNRKStepper {
                                                           region.k1, false);
         });
 
-        if (!gauge_params_.evolve_Z) {
-            synchronize_z_from_gamma(grid);
-            exchange_halos(grid, HaloFieldZ);
-        }
+        synchronize_z_from_gamma(grid);
     }
 
     void enforce_floors(GridType &grid) { enforce_floors_region(grid, total_region(grid)); }

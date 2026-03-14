@@ -54,8 +54,8 @@ template <typename T> struct GaugeParameters {
     int ssl_damping_index = 1;            ///< Exponent index in the damping profile.
     T current_time = T(0.0);              ///< Runtime time provided by the RK driver.
     bool use_direct_shift_rhs = false;    ///< Prefer the reference Gamma-driver over the direct beta RHS.
-    bool evolve_Z = true;                 ///< Evolve Z_i as an independent field.
-    bool frozen_Z_is_synced = false;      ///< If true and evolve_Z=false, read synchronized Z field directly.
+    bool evolve_Z = true;                 ///< Compatibility knob: Z_i is reconstructed/diagnostic, not a driving state.
+    bool frozen_Z_is_synced = false;      ///< Compatibility flag for callers that explicitly synchronize Z_i from Gamma.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
     bool apply_rhs_sommerfeld = false;    ///< Apply Sommerfeld-like RHS corrections near boundaries.
 
