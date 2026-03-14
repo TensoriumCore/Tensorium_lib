@@ -314,6 +314,10 @@ In addition to halo filling, the RK stepper can apply a direct RHS Sommerfeld op
 
 - enabled by `GaugeParameters::apply_rhs_sommerfeld`
 - implemented in `BSSNRK4::apply_rhs_sommerfeld(...)`
+- the Z4c-sensitive fields use a specialized outgoing operator:
+  - `Theta`, `tildeGamma^i`, `A_tilde_ij`: `-(\partial_r u + u/r)`
+  - `Khat = K - 2 Theta`: `-sqrt(2) * (\partial_r Khat + Khat/r)`
+- the remaining gauge/metric auxiliary fields keep the generic radiative form with their usual asymptotic values
 
 ## 9. Initial Data Pipelines
 

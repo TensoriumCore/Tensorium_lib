@@ -422,114 +422,26 @@ template <typename T> class MPIBSSNRKStepper {
         if (!gauge_params_.apply_rhs_sommerfeld) {
             return;
         }
-
-        size_t I0, I1, J0, J1, K0, K1;
-        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-        const size_t i0 = I0;
-        const size_t j0 = J0;
-        const size_t k0 = K0;
-        const size_t i1 = I1;
-        const size_t j1 = J1;
-        const size_t k1 = K1;
-
-        if (i0 >= i1 || j0 >= j1 || k0 >= k1) {
-            return;
-        }
-
-        const T inv_2dx = T(0.5) / grid.dx;
-        const T inv_2dy = T(0.5) / grid.dy;
-        const T inv_2dz = T(0.5) / grid.dz;
-        const T inv_r_floor = T(1e-12);
-
-#pragma omp parallel for collapse(3)
-        for (size_t i = i0; i < i1; ++i) {
-            for (size_t j = j0; j < j1; ++j) {
-                for (size_t k = k0; k < k1; ++k) {
-                    const bool on_ix1 =
-                        domain_.is_boundary_x_minus() && (i == i0) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, false) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, false);
-                    const bool on_ox1 =
-                        domain_.is_boundary_x_plus() && (i + 1 == i1) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, true) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, true);
-                    const bool on_ix2 =
-                        domain_.is_boundary_y_minus() && (j == j0) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, false) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, false);
-                    const bool on_ox2 =
-                        domain_.is_boundary_y_plus() && (j + 1 == j1) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, true) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, true);
-                    const bool on_ix3 =
-                        domain_.is_boundary_z_minus() && (k == k0) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, false) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, false);
-                    const bool on_ox3 =
-                        domain_.is_boundary_z_plus() && (k + 1 == k1) &&
-                        tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, true) &&
-                        !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, true);
-                    const bool on_surface =
-                        on_ix1 || on_ox1 || on_ix2 || on_ox2 || on_ix3 || on_ox3;
-                    if (!on_surface) {
-                        continue;
-                    }
-
-                    const size_t id = grid.alpha.idx(i, j, k);
-                    T            x, y, z;
-                    grid.coords(i, j, k, x, y, z);
-                    const T r = std::sqrt(x * x + y * y + z * z);
-                    const T inv_r = T(1) / std::max(r, inv_r_floor);
-                    const T sx = x * inv_r;
-                    const T sy = y * inv_r;
-                    const T sz = z * inv_r;
-
-                    auto radial_derivative = [&](const tensorium_RG::Field3D<T> &f) -> T {
-                        const T *p = f.ptr() + id;
-                        const T  dfx = (p[f.st.sx] - p[-f.st.sx]) * inv_2dx;
-                        const T  dfy = (p[f.st.sy] - p[-f.st.sy]) * inv_2dy;
-                        const T  dfz = (p[1] - p[-1]) * inv_2dz;
-                        return sx * dfx + sy * dfy + sz * dfz;
-                    };
-
-                    auto sommerfeld_rhs = [&](const tensorium_RG::Field3D<T> &u,
-                                              T                               asymptotic) -> T {
-                        const T u0 = u.ptr()[id];
-                        return -radial_derivative(u) + (asymptotic - u0) * inv_r;
-                    };
-
-                    rhs.alpha.ptr()[id] = sommerfeld_rhs(grid.alpha, T(1));
-                    rhs.chi.ptr()[id] = sommerfeld_rhs(grid.chi, T(1));
-                    rhs.Theta.ptr()[id] = sommerfeld_rhs(grid.Theta, T(0));
-                    const T rhs_K = sommerfeld_rhs(grid.K, T(0));
-                    rhs.K.ptr()[id] = rhs_K - T(2) * rhs.Theta.ptr()[id];
-
-                    for (int a = 0; a < 3; ++a) {
-                        rhs.beta[a].ptr()[id] = sommerfeld_rhs(grid.beta[a], T(0));
-                        rhs.B[a].ptr()[id] = sommerfeld_rhs(grid.B[a], T(0));
-                        rhs.tildeGamma[a].ptr()[id] = sommerfeld_rhs(grid.tildeGamma[a], T(0));
-                        rhs.Z[a].ptr()[id] = sommerfeld_rhs(grid.Z[a], T(0));
-                    }
-
-                    rhs.gamma_tilde[tensorium_RG::XX].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::XX], T(1));
-                    rhs.gamma_tilde[tensorium_RG::XY].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::XY], T(0));
-                    rhs.gamma_tilde[tensorium_RG::XZ].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::XZ], T(0));
-                    rhs.gamma_tilde[tensorium_RG::YY].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::YY], T(1));
-                    rhs.gamma_tilde[tensorium_RG::YZ].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::YZ], T(0));
-                    rhs.gamma_tilde[tensorium_RG::ZZ].ptr()[id] =
-                        sommerfeld_rhs(grid.gamma_tilde[tensorium_RG::ZZ], T(1));
-
-                    for (int s = 0; s < 6; ++s) {
-                        rhs.A_tilde[s].ptr()[id] = sommerfeld_rhs(grid.A_tilde[s], T(0));
-                    }
-                }
-            }
-        }
+        tensorium_RG::bssn::RHSBoundaryFaceMask mask{};
+        mask.face[0][0] = domain_.is_boundary_x_minus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, false) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, false);
+        mask.face[0][1] = domain_.is_boundary_x_plus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(0, true) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(0, true);
+        mask.face[1][0] = domain_.is_boundary_y_minus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, false) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, false);
+        mask.face[1][1] = domain_.is_boundary_y_plus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(1, true) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(1, true);
+        mask.face[2][0] = domain_.is_boundary_z_minus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, false) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, false);
+        mask.face[2][1] = domain_.is_boundary_z_plus() &&
+                          tensorium_RG::bssn::BoundaryRadiative::rhs_sommerfeld_enabled(2, true) &&
+                          !tensorium_RG::bssn::BoundaryRadiative::reflective_enabled(2, true);
+        tensorium_RG::bssn::apply_z4c_rhs_boundary(grid, rhs, mask);
     }
 
     void copy_state(const GridType &src, GridType &dst) {

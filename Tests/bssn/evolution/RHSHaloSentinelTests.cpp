@@ -96,4 +96,103 @@ REGISTER_TEST("bssn.evolution.rhs_halo_sentinel", "RHS halos untouched contract"
     }
 });
 
+REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
+              "Z4c boundary helper applies outgoing Theta/Khat/Gamma/A modes", []() {
+    const size_t padding = 4;
+    Grid         grid(16, 14, 12, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+
+    auto fill_linear = [&](tensorium_RG::Field3D<double> &field, double c0, double cx, double cy,
+                           double cz) {
+        for (size_t i = 0; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k) {
+                    double x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    field.ptr()[field.idx(i, j, k)] = c0 + cx * x + cy * y + cz * z;
+                }
+    };
+
+    fill_linear(grid.alpha, 1.0, 0.02, -0.01, 0.03);
+    fill_linear(grid.chi, 1.0, -0.01, 0.015, -0.02);
+    fill_linear(grid.Theta, 0.2, 0.04, -0.03, 0.01);
+    fill_linear(grid.tildeGamma[0], -0.1, 0.03, 0.01, -0.02);
+    fill_linear(grid.tildeGamma[1], 0.05, -0.02, 0.04, 0.01);
+    fill_linear(grid.tildeGamma[2], 0.08, 0.01, -0.03, 0.05);
+    for (int s = 0; s < 6; ++s)
+        fill_linear(grid.A_tilde[s], 0.03 * double(s + 1), 0.01, -0.015, 0.02);
+
+    tensorium_RG::Field3D<double> khat_field = tensorium_RG::make_field(grid.alpha.st);
+    fill_linear(khat_field, -0.15, 0.06, 0.02, -0.04);
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.K.idx(i, j, k);
+                grid.K.ptr()[idx] = khat_field.ptr()[idx] + 2.0 * grid.Theta.ptr()[idx];
+            }
+
+    tensorium_RG::bssn::BSSNRHSWorkspace<double> rhs;
+    rhs.allocate_like(grid);
+    rhs.zero();
+
+    tensorium_RG::bssn::RHSBoundaryFaceMask mask{};
+    mask.face[0][0] = true;
+    mask.face[0][1] = false;
+    mask.face[1][0] = false;
+    mask.face[1][1] = false;
+    mask.face[2][0] = false;
+    mask.face[2][1] = false;
+
+    tensorium_RG::bssn::apply_z4c_rhs_boundary(grid, rhs, mask);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t i = I0;
+    const size_t j = J0 + 2;
+    const size_t k = K0 + 2;
+    const size_t idx = grid.alpha.idx(i, j, k);
+
+    double x, y, z;
+    grid.coords(i, j, k, x, y, z);
+    const double r = std::sqrt(x * x + y * y + z * z);
+    const double sx = x / r;
+    const double sy = y / r;
+    const double sz = z / r;
+    const double sqrt2 = std::sqrt(2.0);
+
+    auto expected_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic,
+                            double speed) {
+        const double value = field.ptr()[idx];
+        const double radial = sx * ((field.ptr()[idx + field.st.sx] - field.ptr()[idx - field.st.sx]) /
+                                    (2.0 * grid.dx)) +
+                              sy * ((field.ptr()[idx + field.st.sy] - field.ptr()[idx - field.st.sy]) /
+                                    (2.0 * grid.dy)) +
+                              sz * ((field.ptr()[idx + 1] - field.ptr()[idx - 1]) /
+                                    (2.0 * grid.dz));
+        return -speed * (radial + (value - asymptotic) / r);
+    };
+
+    const double expected_theta = expected_rhs(grid.Theta, 0.0, 1.0);
+    const double expected_khat = expected_rhs(khat_field, 0.0, sqrt2);
+    const double expected_gamma0 = expected_rhs(grid.tildeGamma[0], 0.0, 1.0);
+    const double expected_Axx = expected_rhs(grid.A_tilde[tensorium_RG::XX], 0.0, 1.0);
+
+    tensorium::tests::expect_le(std::abs(rhs.Theta.ptr()[idx] - expected_theta), 1e-12,
+                                "Theta boundary RHS matches outgoing mode");
+    tensorium::tests::expect_le(std::abs(rhs.K.ptr()[idx] - expected_khat), 1e-12,
+                                "Khat boundary RHS matches fast outgoing mode");
+    tensorium::tests::expect_le(std::abs(rhs.tildeGamma[0].ptr()[idx] - expected_gamma0), 1e-12,
+                                "Gamma boundary RHS matches outgoing mode");
+    tensorium::tests::expect_le(std::abs(rhs.A_tilde[tensorium_RG::XX].ptr()[idx] - expected_Axx),
+                                1e-12, "A_tilde boundary RHS matches outgoing mode");
+
+    const size_t interior_idx = grid.alpha.idx(I0 + 1, J0 + 2, K0 + 2);
+    tensorium::tests::expect_le(std::abs(rhs.Theta.ptr()[interior_idx]), 1e-15,
+                                "Interior RHS entry stays untouched");
+});
+
 #endif
