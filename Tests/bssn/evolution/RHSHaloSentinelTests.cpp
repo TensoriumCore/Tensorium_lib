@@ -97,7 +97,7 @@ REGISTER_TEST("bssn.evolution.rhs_halo_sentinel", "RHS halos untouched contract"
 });
 
 REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
-              "Z4c boundary helper applies outgoing Theta/Khat/Gamma/A modes", []() {
+              "Z4c boundary helper applies Athenak-like outgoing Theta/Khat/Gamma/A modes", []() {
     const size_t padding = 4;
     Grid         grid(16, 14, 12, padding, 0.5, 0.4, 0.3);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -119,6 +119,9 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
 
     fill_linear(grid.alpha, 1.0, 0.02, -0.01, 0.03);
     fill_linear(grid.chi, 1.0, -0.01, 0.015, -0.02);
+    fill_linear(grid.beta[0], 0.3, 0.01, 0.02, -0.01);
+    fill_linear(grid.B[0], -0.2, 0.03, -0.01, 0.02);
+    fill_linear(grid.gamma_tilde[tensorium_RG::XX], 1.0, 0.02, 0.01, -0.01);
     fill_linear(grid.Theta, 0.2, 0.04, -0.03, 0.01);
     fill_linear(grid.tildeGamma[0], -0.1, 0.03, 0.01, -0.02);
     fill_linear(grid.tildeGamma[1], 0.05, -0.02, 0.04, 0.01);
@@ -137,7 +140,10 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
 
     tensorium_RG::bssn::BSSNRHSWorkspace<double> rhs;
     rhs.allocate_like(grid);
-    rhs.zero();
+    poison_workspace(rhs);
+    poison_field(rhs.Theta);
+    for (int c = 0; c < 3; ++c)
+        poison_field(rhs.Z[c]);
 
     tensorium_RG::bssn::RHSBoundaryFaceMask mask{};
     mask.face[0][0] = true;
@@ -164,15 +170,23 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
     const double sz = z / r;
     const double sqrt2 = std::sqrt(2.0);
 
+    auto deriv_axis = [&](const tensorium_RG::Field3D<double> &field, ptrdiff_t stride, size_t pos,
+                          size_t lo, size_t hi, double inv_h, double inv_2h) {
+        const double *p = field.ptr() + idx;
+        if (pos == lo && lo + 2 < hi)
+            return (-1.5 * p[0] + 2.0 * p[stride] - 0.5 * p[2 * stride]) * inv_h;
+        if (pos + 1 == hi && lo + 2 < hi)
+            return (1.5 * p[0] - 2.0 * p[-stride] + 0.5 * p[-2 * stride]) * inv_h;
+        return (p[stride] - p[-stride]) * inv_2h;
+    };
+
     auto expected_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic,
                             double speed) {
         const double value = field.ptr()[idx];
-        const double radial = sx * ((field.ptr()[idx + field.st.sx] - field.ptr()[idx - field.st.sx]) /
-                                    (2.0 * grid.dx)) +
-                              sy * ((field.ptr()[idx + field.st.sy] - field.ptr()[idx - field.st.sy]) /
-                                    (2.0 * grid.dy)) +
-                              sz * ((field.ptr()[idx + 1] - field.ptr()[idx - 1]) /
-                                    (2.0 * grid.dz));
+        const double radial =
+            sx * deriv_axis(field, field.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx) +
+            sy * deriv_axis(field, field.st.sy, j, J0, J1, 1.0 / grid.dy, 0.5 / grid.dy) +
+            sz * deriv_axis(field, 1, k, K0, K1, 1.0 / grid.dz, 0.5 / grid.dz);
         return -speed * (radial + (value - asymptotic) / r);
     };
 
@@ -189,6 +203,12 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
                                 "Gamma boundary RHS matches outgoing mode");
     tensorium::tests::expect_le(std::abs(rhs.A_tilde[tensorium_RG::XX].ptr()[idx] - expected_Axx),
                                 1e-12, "A_tilde boundary RHS matches outgoing mode");
+    TENSORIUM_TEST_ASSERT(std::isfinite(rhs.Theta.ptr()[idx]));
+    TENSORIUM_TEST_ASSERT(std::isnan(rhs.alpha.ptr()[idx]));
+    TENSORIUM_TEST_ASSERT(std::isnan(rhs.chi.ptr()[idx]));
+    TENSORIUM_TEST_ASSERT(std::isnan(rhs.beta[0].ptr()[idx]));
+    TENSORIUM_TEST_ASSERT(std::isnan(rhs.B[0].ptr()[idx]));
+    TENSORIUM_TEST_ASSERT(std::isnan(rhs.gamma_tilde[tensorium_RG::XX].ptr()[idx]));
 
     const size_t interior_idx = grid.alpha.idx(I0 + 1, J0 + 2, K0 + 2);
     tensorium::tests::expect_le(std::abs(rhs.Theta.ptr()[interior_idx]), 1e-15,

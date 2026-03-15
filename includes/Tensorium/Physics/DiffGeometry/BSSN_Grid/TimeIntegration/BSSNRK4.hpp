@@ -140,6 +140,9 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
     const T inv_2dx = T(0.5) / grid.dx;
     const T inv_2dy = T(0.5) / grid.dy;
     const T inv_2dz = T(0.5) / grid.dz;
+    const T inv_dx = T(1) / grid.dx;
+    const T inv_dy = T(1) / grid.dy;
+    const T inv_dz = T(1) / grid.dz;
     const T inv_r_floor = T(1e-12);
     const T sqrt2 = std::sqrt(T(2));
 
@@ -167,11 +170,22 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                 const T sy = y * inv_r;
                 const T sz = z * inv_r;
 
-                auto radial_derivative = [&](const Field3D<T> &f) -> T {
+                auto deriv_axis = [&](const Field3D<T> &f, ptrdiff_t stride, size_t pos, size_t lo,
+                                      size_t hi, T inv_h, T inv_2h) -> T {
                     const T *p = f.ptr() + id;
-                    const T  dfx = (p[f.st.sx] - p[-f.st.sx]) * inv_2dx;
-                    const T  dfy = (p[f.st.sy] - p[-f.st.sy]) * inv_2dy;
-                    const T  dfz = (p[1] - p[-1]) * inv_2dz;
+                    if (pos == lo && lo + 2 < hi)
+                        return (-T(1.5) * p[0] + T(2) * p[stride] - T(0.5) * p[2 * stride]) *
+                               inv_h;
+                    if (pos + 1 == hi && lo + 2 < hi)
+                        return (T(1.5) * p[0] - T(2) * p[-stride] + T(0.5) * p[-2 * stride]) *
+                               inv_h;
+                    return (p[stride] - p[-stride]) * inv_2h;
+                };
+
+                auto radial_derivative = [&](const Field3D<T> &f) -> T {
+                    const T dfx = deriv_axis(f, f.st.sx, i, i0, i1, inv_dx, inv_2dx);
+                    const T dfy = deriv_axis(f, f.st.sy, j, j0, j1, inv_dy, inv_2dy);
+                    const T dfz = deriv_axis(f, 1, k, k0, k1, inv_dz, inv_2dz);
                     return sx * dfx + sy * dfy + sz * dfz;
                 };
 
@@ -186,29 +200,16 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     return -speed * (radial + (value - asymptotic) * inv_r);
                 };
 
-                rhs.alpha.ptr()[id] = outgoing_rhs(grid.alpha, T(1));
-                rhs.chi.ptr()[id] = outgoing_rhs(grid.chi, T(1));
-
-                // Z4c-like boundary treatment for the constraint-carrying fields, following the
-                // Athenak strategy: outgoing Theta/Gamma/A and a faster Khat mode.
+                // Athenak-style RHS boundary treatment applies only to the
+                // constraint-carrying Z4c subsystem: Theta/Khat/Gamma/A.
                 rhs.Theta.ptr()[id] = outgoing_rhs(grid.Theta, T(0), T(1));
                 const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
                 const T d_khat = radial_derivative(grid.K) - T(2) * radial_derivative(grid.Theta);
                 rhs.K.ptr()[id] = outgoing_rhs_value(khat, d_khat, T(0), sqrt2);
 
                 for (int a = 0; a < 3; ++a) {
-                    rhs.beta[a].ptr()[id] = outgoing_rhs(grid.beta[a], T(0));
-                    rhs.B[a].ptr()[id] = outgoing_rhs(grid.B[a], T(0));
                     rhs.tildeGamma[a].ptr()[id] = outgoing_rhs(grid.tildeGamma[a], T(0), T(1));
-                    rhs.Z[a].ptr()[id] = T(0);
                 }
-
-                rhs.gamma_tilde[XX].ptr()[id] = outgoing_rhs(grid.gamma_tilde[XX], T(1));
-                rhs.gamma_tilde[XY].ptr()[id] = outgoing_rhs(grid.gamma_tilde[XY], T(0));
-                rhs.gamma_tilde[XZ].ptr()[id] = outgoing_rhs(grid.gamma_tilde[XZ], T(0));
-                rhs.gamma_tilde[YY].ptr()[id] = outgoing_rhs(grid.gamma_tilde[YY], T(1));
-                rhs.gamma_tilde[YZ].ptr()[id] = outgoing_rhs(grid.gamma_tilde[YZ], T(0));
-                rhs.gamma_tilde[ZZ].ptr()[id] = outgoing_rhs(grid.gamma_tilde[ZZ], T(1));
 
                 for (int s = 0; s < 6; ++s)
                     rhs.A_tilde[s].ptr()[id] = outgoing_rhs(grid.A_tilde[s], T(0), T(1));

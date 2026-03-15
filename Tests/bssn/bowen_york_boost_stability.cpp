@@ -1027,6 +1027,10 @@ REGISTER_TEST(
             double alpha_min = std::numeric_limits<double>::infinity();
             double alpha_min_nonpuncture = std::numeric_limits<double>::infinity();
             double chi_min = std::numeric_limits<double>::infinity();
+            size_t bad_gauge_cells = 0;
+            size_t first_bad_i = 0, first_bad_j = 0, first_bad_k = 0;
+            double first_bad_alpha = 0.0;
+            double first_bad_chi = 0.0;
             constexpr double chi_puncture_cut = 5e-3;
             for (size_t i = i0; i < i1; ++i)
                 for (size_t j = j0; j < j1; ++j)
@@ -1035,8 +1039,18 @@ REGISTER_TEST(
                         const double alpha = double(grid.alpha.ptr()[idx]);
                         const double chi = double(grid.chi.ptr()[idx]);
                         if (!std::isfinite(alpha) || !std::isfinite(chi)) {
-                            std::cout << "[warn] non-finite gauge values at step=" << step_index
-                                      << std::endl;
+                            if (bad_gauge_cells == 0) {
+                                first_bad_i = i;
+                                first_bad_j = j;
+                                first_bad_k = k;
+                                first_bad_alpha = alpha;
+                                first_bad_chi = chi;
+                            }
+                            ++bad_gauge_cells;
+                            if (strict_guards)
+                                std::cout << "[warn] non-finite gauge values at step=" << step_index
+                                          << " first_cell=(" << i << "," << j << "," << k << ")"
+                                          << " alpha=" << alpha << " chi=" << chi << std::endl;
                             if (strict_guards)
                                 return false;
                             continue;
@@ -1046,6 +1060,14 @@ REGISTER_TEST(
                         if (chi > chi_puncture_cut)
                             alpha_min_nonpuncture = std::min(alpha_min_nonpuncture, alpha);
                     }
+            if (bad_gauge_cells > 0) {
+                std::cout << "[warn] non-finite gauge values at step=" << step_index
+                          << " bad_cells=" << bad_gauge_cells
+                          << " first_cell=(" << first_bad_i << "," << first_bad_j << ","
+                          << first_bad_k << ")"
+                          << " alpha=" << first_bad_alpha
+                          << " chi=" << first_bad_chi << std::endl;
+            }
             if (chi_min <= 0.0 ||
                 alpha_min_nonpuncture < 1e-4) {
                 std::cout << "[warn] gauge collapse alpha_min=" << alpha_min
