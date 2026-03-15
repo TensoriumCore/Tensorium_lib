@@ -17,27 +17,49 @@ namespace tensorium_RG::bssn {
 
 namespace detail {
 
+#if defined(__clang__) || defined(__GNUC__)
+#define TENSORIUM_ALWAYS_INLINE __attribute__((always_inline)) inline
+#else
+#define TENSORIUM_ALWAYS_INLINE inline
+#endif
+
 #pragma omp declare simd notinbranch
 template <int Order, typename T>
-inline void metric_inverse_divergence_ptr_order(const T *p_ginv_xx, const T *p_ginv_xy,
-                                                const T *p_ginv_xz, const T *p_ginv_yy,
-                                                const T *p_ginv_yz, const T *p_ginv_zz,
-                                                ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
-                                                double inv_12dy, double inv_12dz, T out[3]) {
+TENSORIUM_ALWAYS_INLINE void metric_inverse_divergence_components_ptr_order(
+    const T *__restrict p_ginv_xx, const T *__restrict p_ginv_xy, const T *__restrict p_ginv_xz,
+    const T *__restrict p_ginv_yy, const T *__restrict p_ginv_yz,
+    const T *__restrict p_ginv_zz, ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
+    double inv_12dy, double inv_12dz, T &out0, T &out1, T &out2) {
     using namespace tensorium_RG::fd;
-    out[0] = Dx_ptr_order<Order>(p_ginv_xx, sx, inv_12dx) +
-             Dy_ptr_order<Order>(p_ginv_xy, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_xz, inv_12dz);
-    out[1] = Dx_ptr_order<Order>(p_ginv_xy, sx, inv_12dx) +
-             Dy_ptr_order<Order>(p_ginv_yy, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_yz, inv_12dz);
-    out[2] = Dx_ptr_order<Order>(p_ginv_xz, sx, inv_12dx) +
-             Dy_ptr_order<Order>(p_ginv_yz, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_zz, inv_12dz);
+    out0 = Dx_ptr_order<Order>(p_ginv_xx, sx, inv_12dx) +
+           Dy_ptr_order<Order>(p_ginv_xy, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_xz, inv_12dz);
+    out1 = Dx_ptr_order<Order>(p_ginv_xy, sx, inv_12dx) +
+           Dy_ptr_order<Order>(p_ginv_yy, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_yz, inv_12dz);
+    out2 = Dx_ptr_order<Order>(p_ginv_xz, sx, inv_12dx) +
+           Dy_ptr_order<Order>(p_ginv_yz, sy, inv_12dy) + Dz_ptr_order<Order>(p_ginv_zz, inv_12dz);
+}
+
+#pragma omp declare simd notinbranch
+template <int Order, typename T>
+TENSORIUM_ALWAYS_INLINE void metric_inverse_divergence_ptr_order(
+    const T *__restrict p_ginv_xx, const T *__restrict p_ginv_xy, const T *__restrict p_ginv_xz,
+    const T *__restrict p_ginv_yy, const T *__restrict p_ginv_yz,
+    const T *__restrict p_ginv_zz, ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
+    double inv_12dy, double inv_12dz, T out[3]) {
+    metric_inverse_divergence_components_ptr_order<Order>(p_ginv_xx, p_ginv_xy, p_ginv_xz,
+                                                          p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy,
+                                                          inv_12dx, inv_12dy, inv_12dz, out[0],
+                                                          out[1], out[2]);
 }
 
 #pragma omp declare simd notinbranch
 template <typename T>
-inline void metric_inverse_divergence_ptr(const T *p_ginv_xx, const T *p_ginv_xy,
-                                          const T *p_ginv_xz, const T *p_ginv_yy,
-                                          const T *p_ginv_yz, const T *p_ginv_zz,
+inline void metric_inverse_divergence_ptr(const T *__restrict p_ginv_xx,
+                                          const T *__restrict p_ginv_xy,
+                                          const T *__restrict p_ginv_xz,
+                                          const T *__restrict p_ginv_yy,
+                                          const T *__restrict p_ginv_yz,
+                                          const T *__restrict p_ginv_zz,
                                           ptrdiff_t sx, ptrdiff_t sy, double inv_12dx,
                                           double inv_12dy, double inv_12dz, T out[3]) {
     if (tensorium_RG::fd::max_spatial_derivative_order() == 4) {
@@ -50,6 +72,8 @@ inline void metric_inverse_divergence_ptr(const T *p_ginv_xx, const T *p_ginv_xy
                                                inv_12dz, out);
     }
 }
+
+#undef TENSORIUM_ALWAYS_INLINE
 
 } // namespace detail
 

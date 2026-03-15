@@ -193,36 +193,62 @@ template <typename T> inline T guard_chi_div(T chi, T chi_div_floor) {
     return (chi > chi_div_floor) ? chi : chi_div_floor;
 }
 
+#if defined(__clang__) || defined(__GNUC__)
+#define TENSORIUM_ALWAYS_INLINE __attribute__((always_inline)) inline
+#else
+#define TENSORIUM_ALWAYS_INLINE inline
+#endif
+
 template <int Order, typename T>
-inline void recover_z_over_chi_from_gamma_ptr_order(const T *p_tildeGamma0, const T *p_tildeGamma1,
-                                                    const T *p_tildeGamma2, const T *p_ginv_xx,
-                                                    const T *p_ginv_xy, const T *p_ginv_xz,
-                                                    const T *p_ginv_yy, const T *p_ginv_yz,
-                                                    const T *p_ginv_zz, const ptrdiff_t sx,
-                                                    const ptrdiff_t sy, const double inv_12dx,
-                                                    const double inv_12dy, const double inv_12dz,
-                                                    T z_over_chi[3],
-                                                    T *gamma_metric_out = nullptr) {
+TENSORIUM_ALWAYS_INLINE void recover_z_over_chi_components_from_gamma_ptr_order(
+    const T *__restrict p_tildeGamma0, const T *__restrict p_tildeGamma1,
+    const T *__restrict p_tildeGamma2, const T *__restrict p_ginv_xx,
+    const T *__restrict p_ginv_xy, const T *__restrict p_ginv_xz,
+    const T *__restrict p_ginv_yy, const T *__restrict p_ginv_yz,
+    const T *__restrict p_ginv_zz, const ptrdiff_t sx, const ptrdiff_t sy,
+    const double inv_12dx, const double inv_12dy, const double inv_12dz, T &z0, T &z1, T &z2,
+    T *gamma_metric_out = nullptr) {
     T gamma_metric_local[3] = {T(0), T(0), T(0)};
     T *gamma_metric = gamma_metric_out ? gamma_metric_out : gamma_metric_local;
-    detail::metric_inverse_divergence_ptr_order<Order>(
+    detail::metric_inverse_divergence_components_ptr_order<Order>(
         p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx,
-        inv_12dy, inv_12dz, gamma_metric);
+        inv_12dy, inv_12dz, gamma_metric[0], gamma_metric[1], gamma_metric[2]);
     gamma_metric[0] = -gamma_metric[0];
     gamma_metric[1] = -gamma_metric[1];
     gamma_metric[2] = -gamma_metric[2];
 
-    z_over_chi[0] = T(0.5) * ((*p_tildeGamma0) - gamma_metric[0]);
-    z_over_chi[1] = T(0.5) * ((*p_tildeGamma1) - gamma_metric[1]);
-    z_over_chi[2] = T(0.5) * ((*p_tildeGamma2) - gamma_metric[2]);
+    z0 = T(0.5) * ((*p_tildeGamma0) - gamma_metric[0]);
+    z1 = T(0.5) * ((*p_tildeGamma1) - gamma_metric[1]);
+    z2 = T(0.5) * ((*p_tildeGamma2) - gamma_metric[2]);
 }
 
+template <int Order, typename T>
+TENSORIUM_ALWAYS_INLINE void recover_z_over_chi_from_gamma_ptr_order(
+    const T *__restrict p_tildeGamma0, const T *__restrict p_tildeGamma1,
+    const T *__restrict p_tildeGamma2, const T *__restrict p_ginv_xx,
+    const T *__restrict p_ginv_xy, const T *__restrict p_ginv_xz,
+    const T *__restrict p_ginv_yy, const T *__restrict p_ginv_yz,
+    const T *__restrict p_ginv_zz, const ptrdiff_t sx, const ptrdiff_t sy,
+    const double inv_12dx, const double inv_12dy, const double inv_12dz, T z_over_chi[3],
+    T *gamma_metric_out = nullptr) {
+    recover_z_over_chi_components_from_gamma_ptr_order<Order>(
+        p_tildeGamma0, p_tildeGamma1, p_tildeGamma2, p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy,
+        p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz, z_over_chi[0], z_over_chi[1],
+        z_over_chi[2], gamma_metric_out);
+}
+
+#undef TENSORIUM_ALWAYS_INLINE
+
 template <typename T>
-inline void recover_z_over_chi_from_gamma_ptr(const T *p_tildeGamma0, const T *p_tildeGamma1,
-                                              const T *p_tildeGamma2, const T *p_ginv_xx,
-                                              const T *p_ginv_xy, const T *p_ginv_xz,
-                                              const T *p_ginv_yy, const T *p_ginv_yz,
-                                              const T *p_ginv_zz, const ptrdiff_t sx,
+inline void recover_z_over_chi_from_gamma_ptr(const T *__restrict p_tildeGamma0,
+                                              const T *__restrict p_tildeGamma1,
+                                              const T *__restrict p_tildeGamma2,
+                                              const T *__restrict p_ginv_xx,
+                                              const T *__restrict p_ginv_xy,
+                                              const T *__restrict p_ginv_xz,
+                                              const T *__restrict p_ginv_yy,
+                                              const T *__restrict p_ginv_yz,
+                                              const T *__restrict p_ginv_zz, const ptrdiff_t sx,
                                               const ptrdiff_t sy, const double inv_12dx,
                                               const double inv_12dy, const double inv_12dz,
                                               T z_over_chi[3], T *gamma_metric_out = nullptr) {

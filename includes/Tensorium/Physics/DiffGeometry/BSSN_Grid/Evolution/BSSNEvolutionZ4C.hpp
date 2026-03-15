@@ -65,36 +65,37 @@ inline void compute_rhs_Theta_impl(const BSSNGridSoA<T> &G, Field3D<T> &rhs_thet
     auto loop_ij = [&](size_t i, size_t j) {
         size_t idx_start = G.Theta.idx(i, j, k0);
 
-        const T *p_theta = G.Theta.ptr() + idx_start;
-        const T *p_alpha = G.alpha.ptr() + idx_start;
-        const T *p_K = G.K.ptr() + idx_start;
-        const T *p_beta0 = G.beta[0].ptr() + idx_start;
-        const T *p_beta1 = G.beta[1].ptr() + idx_start;
-        const T *p_beta2 = G.beta[2].ptr() + idx_start;
-        const T *p_tg0 = G.tildeGamma[0].ptr() + idx_start;
-        const T *p_tg1 = G.tildeGamma[1].ptr() + idx_start;
-        const T *p_tg2 = G.tildeGamma[2].ptr() + idx_start;
-        const T *p_chi = G.chi.ptr() + idx_start;
-        const T *p_g0 = G.gamma_tilde_inv[0].ptr() + idx_start;
-        const T *p_g1 = G.gamma_tilde_inv[1].ptr() + idx_start;
-        const T *p_g2 = G.gamma_tilde_inv[2].ptr() + idx_start;
-        const T *p_g3 = G.gamma_tilde_inv[3].ptr() + idx_start;
-        const T *p_g4 = G.gamma_tilde_inv[4].ptr() + idx_start;
-        const T *p_g5 = G.gamma_tilde_inv[5].ptr() + idx_start;
-        const T *p_A0 = G.A_tilde[0].ptr() + idx_start;
-        const T *p_A1 = G.A_tilde[1].ptr() + idx_start;
-        const T *p_A2 = G.A_tilde[2].ptr() + idx_start;
-        const T *p_A3 = G.A_tilde[3].ptr() + idx_start;
-        const T *p_A4 = G.A_tilde[4].ptr() + idx_start;
-        const T *p_A5 = G.A_tilde[5].ptr() + idx_start;
-        const T *p_R0 = G.Ricci[0].ptr() + idx_start;
-        const T *p_R1 = G.Ricci[1].ptr() + idx_start;
-        const T *p_R2 = G.Ricci[2].ptr() + idx_start;
-        const T *p_R3 = G.Ricci[3].ptr() + idx_start;
-        const T *p_R4 = G.Ricci[4].ptr() + idx_start;
-        const T *p_R5 = G.Ricci[5].ptr() + idx_start;
-        const T *p_z4_trace = UseZ4TraceCache ? (z4_conformal_trace_cache->ptr() + idx_start) : nullptr;
-        T       *p_rhs = rhs_theta.ptr() + idx_start;
+        const T *__restrict p_theta = G.Theta.ptr() + idx_start;
+        const T *__restrict p_alpha = G.alpha.ptr() + idx_start;
+        const T *__restrict p_K = G.K.ptr() + idx_start;
+        const T *__restrict p_beta0 = G.beta[0].ptr() + idx_start;
+        const T *__restrict p_beta1 = G.beta[1].ptr() + idx_start;
+        const T *__restrict p_beta2 = G.beta[2].ptr() + idx_start;
+        const T *__restrict p_tg0 = G.tildeGamma[0].ptr() + idx_start;
+        const T *__restrict p_tg1 = G.tildeGamma[1].ptr() + idx_start;
+        const T *__restrict p_tg2 = G.tildeGamma[2].ptr() + idx_start;
+        const T *__restrict p_chi = G.chi.ptr() + idx_start;
+        const T *__restrict p_g0 = G.gamma_tilde_inv[0].ptr() + idx_start;
+        const T *__restrict p_g1 = G.gamma_tilde_inv[1].ptr() + idx_start;
+        const T *__restrict p_g2 = G.gamma_tilde_inv[2].ptr() + idx_start;
+        const T *__restrict p_g3 = G.gamma_tilde_inv[3].ptr() + idx_start;
+        const T *__restrict p_g4 = G.gamma_tilde_inv[4].ptr() + idx_start;
+        const T *__restrict p_g5 = G.gamma_tilde_inv[5].ptr() + idx_start;
+        const T *__restrict p_A0 = G.A_tilde[0].ptr() + idx_start;
+        const T *__restrict p_A1 = G.A_tilde[1].ptr() + idx_start;
+        const T *__restrict p_A2 = G.A_tilde[2].ptr() + idx_start;
+        const T *__restrict p_A3 = G.A_tilde[3].ptr() + idx_start;
+        const T *__restrict p_A4 = G.A_tilde[4].ptr() + idx_start;
+        const T *__restrict p_A5 = G.A_tilde[5].ptr() + idx_start;
+        const T *__restrict p_R0 = G.Ricci[0].ptr() + idx_start;
+        const T *__restrict p_R1 = G.Ricci[1].ptr() + idx_start;
+        const T *__restrict p_R2 = G.Ricci[2].ptr() + idx_start;
+        const T *__restrict p_R3 = G.Ricci[3].ptr() + idx_start;
+        const T *__restrict p_R4 = G.Ricci[4].ptr() + idx_start;
+        const T *__restrict p_R5 = G.Ricci[5].ptr() + idx_start;
+        const T *__restrict p_z4_trace =
+            UseZ4TraceCache ? (z4_conformal_trace_cache->ptr() + idx_start) : nullptr;
+        T *__restrict p_rhs = rhs_theta.ptr() + idx_start;
 
 #pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
@@ -107,13 +108,15 @@ inline void compute_rhs_Theta_impl(const BSSNGridSoA<T> &G, Field3D<T> &rhs_thet
             const T chi = *p_chi;
             const T chi_guarded = guard_chi_div(chi, params.chi_div_floor);
 
-            T z_over_chi[3] = {T(0), T(0), T(0)};
-            recover_z_over_chi_from_gamma_ptr_order<Order>(
+            T z_over_chi0 = T(0);
+            T z_over_chi1 = T(0);
+            T z_over_chi2 = T(0);
+            recover_z_over_chi_components_from_gamma_ptr_order<Order>(
                 p_tg0, p_tg1, p_tg2, p_g0, p_g1, p_g2, p_g3, p_g4, p_g5, sx, sy, inv_12dx,
-                inv_12dy, inv_12dz, z_over_chi);
-            const T z_phys0 = chi_guarded * z_over_chi[0];
-            const T z_phys1 = chi_guarded * z_over_chi[1];
-            const T z_phys2 = chi_guarded * z_over_chi[2];
+                inv_12dy, inv_12dz, z_over_chi0, z_over_chi1, z_over_chi2);
+            const T z_phys0 = chi_guarded * z_over_chi0;
+            const T z_phys1 = chi_guarded * z_over_chi1;
+            const T z_phys2 = chi_guarded * z_over_chi2;
 
             const T d_alpha_x = tensorium_RG::fd::Dx_ptr_order<Order>(p_alpha, sx, inv_12dx);
             const T d_alpha_y = tensorium_RG::fd::Dy_ptr_order<Order>(p_alpha, sy, inv_12dy);
