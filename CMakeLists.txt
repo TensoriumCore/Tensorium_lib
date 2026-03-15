@@ -15,6 +15,12 @@ option(USE_CUDA "Enable CUDA kernels (requires nvcc)" OFF)
 option(USE_CBLAS "Enable BLAS" ON)
 option(TENSORIUM_BSSN_PROFILE_KERNELS "Enable BSSN RHS timing instrumentation" OFF)
 option(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS "Validate on-the-fly Γ̃ symbols" OFF)
+option(TENSORIUM_ENABLE_COMPILER_OPT_REPORTS
+       "Emit compiler optimization diagnostics for successful and missed optimizations" OFF)
+option(TENSORIUM_SAVE_OPTIMIZATION_RECORD
+       "Save compiler optimization records to files when the compiler supports it" OFF)
+set(TENSORIUM_OPT_REMARK_FILTER ".*" CACHE STRING
+    "Regex filter for Clang/IntelLLVM optimization remarks when TENSORIUM_ENABLE_COMPILER_OPT_REPORTS=ON")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -125,7 +131,7 @@ if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "am
     endif()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BASE_FLAGS} ${KNL_FLAGS}")
   else()
-    set(BASE_FLAGS "-O3 -march=native -mtune=native -Wno-ignored-attributes -Rpass-analysis=tensorium-align")
+    set(BASE_FLAGS "-O3 -march=native -mtune=native -Wno-ignored-attributes")
     set(AVX_FLAGS "-mavx")
     set(AVX2_FLAGS "-mfma -mavx2")
     set(AVX512_FLAGS "-mfma -mavx512f -mavx512cd")
@@ -141,6 +147,42 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR CMAKE_SYSTEM_PROCESSOR MATCHES 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mcpu=native -Wno-ignored-attributes")
 else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mtune=native")
+endif()
+
+set(TENSORIUM_COMPILER_OPT_REPORT_FLAGS "")
+if(TENSORIUM_ENABLE_COMPILER_OPT_REPORTS)
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|IntelLLVM")
+    list(APPEND TENSORIUM_COMPILER_OPT_REPORT_FLAGS
+         "-Rpass=${TENSORIUM_OPT_REMARK_FILTER}"
+         "-Rpass-missed=${TENSORIUM_OPT_REMARK_FILTER}"
+         "-Rpass-analysis=${TENSORIUM_OPT_REMARK_FILTER}")
+    if(TENSORIUM_SAVE_OPTIMIZATION_RECORD)
+      list(APPEND TENSORIUM_COMPILER_OPT_REPORT_FLAGS -fsave-optimization-record)
+    endif()
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    list(APPEND TENSORIUM_COMPILER_OPT_REPORT_FLAGS
+         -fopt-info-optimized
+         -fopt-info-missed)
+    if(TENSORIUM_SAVE_OPTIMIZATION_RECORD)
+      if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 12)
+        list(APPEND TENSORIUM_COMPILER_OPT_REPORT_FLAGS -fsave-optimization-record)
+      else()
+        message(WARNING
+                "TENSORIUM_SAVE_OPTIMIZATION_RECORD=ON requested, but GCC ${CMAKE_CXX_COMPILER_VERSION} "
+                "does not reliably support -fsave-optimization-record; enabling stderr reports only.")
+      endif()
+    endif()
+  else()
+    message(WARNING
+            "TENSORIUM_ENABLE_COMPILER_OPT_REPORTS=ON but compiler ${CMAKE_CXX_COMPILER_ID} "
+            "has no configured optimization diagnostics flags.")
+  endif()
+
+  if(TENSORIUM_COMPILER_OPT_REPORT_FLAGS)
+    add_compile_options(${TENSORIUM_COMPILER_OPT_REPORT_FLAGS})
+    string(JOIN " " _tensorium_opt_flags_msg ${TENSORIUM_COMPILER_OPT_REPORT_FLAGS})
+    message(STATUS "Compiler optimization diagnostics enabled: ${_tensorium_opt_flags_msg}")
+  endif()
 endif()
 
 if(DEBUG)
