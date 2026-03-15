@@ -54,11 +54,11 @@ namespace tensorium_RG::bssn {
  * @warning Ricci evaluation assumes halos contain valid data for ±3 offsets.  Call
  * `apply_halos_grid` before invoking this routine.
  */
-template <typename T>
-void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t region_i0,
-                               size_t region_i1, size_t region_j0, size_t region_j1,
-                               size_t region_k0, size_t region_k1,
-                               bool throw_on_violation = false) {
+template <int Order, typename T>
+void compute_ricci_bssn_region_impl(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t region_i0,
+                                    size_t region_i1, size_t region_j0, size_t region_j1,
+                                    size_t region_k0, size_t region_k1,
+                                    bool throw_on_violation = false) {
     using namespace tensorium_RG::fd;
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
@@ -144,9 +144,9 @@ void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t reg
                 for (int a = 0; a < 3; ++a) {
                     for (int b = a; b < 3; ++b) {
                         const T     *p = p_gam[map_s[a][b]];
-                        const double dx_g = Dx_ptr(p, sx, inv_12dx);
-                        const double dy_g = Dy_ptr(p, sy, inv_12dy);
-                        const double dz_g = Dz_ptr(p, inv_12dz);
+                        const double dx_g = Dx_ptr_order<Order>(p, sx, inv_12dx);
+                        const double dy_g = Dy_ptr_order<Order>(p, sy, inv_12dy);
+                        const double dz_g = Dz_ptr_order<Order>(p, inv_12dz);
                         dg[0][a][b] = dx_g;
                         dg[0][b][a] = dx_g;
                         dg[1][a][b] = dy_g;
@@ -179,16 +179,17 @@ void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t reg
                     const double inv_chi = 1.0 / chi;
                     const double inv_chi2 = inv_chi * inv_chi;
 
-                    const double dchi[3] = {Dx_ptr(p_chi, sx, inv_12dx),
-                                            Dy_ptr(p_chi, sy, inv_12dy), Dz_ptr(p_chi, inv_12dz)};
+                    const double dchi[3] = {Dx_ptr_order<Order>(p_chi, sx, inv_12dx),
+                                            Dy_ptr_order<Order>(p_chi, sy, inv_12dy),
+                                            Dz_ptr_order<Order>(p_chi, inv_12dz)};
 
                     double hess_chi[3][3];
                     double lap_chi = 0.0;  
                     double grad_chi_sq = 0.0;
 
-                    const double d2_xx = Dxx_ptr(p_chi, sx, inv_12dx2);
-                    const double d2_yy = Dyy_ptr(p_chi, sy, inv_12dy2);
-                    const double d2_zz = Dzz_ptr(p_chi, inv_12dz2);
+                    const double d2_xx = Dxx_ptr_order<Order>(p_chi, sx, inv_12dx2);
+                    const double d2_yy = Dyy_ptr_order<Order>(p_chi, sy, inv_12dy2);
+                    const double d2_zz = Dzz_ptr_order<Order>(p_chi, inv_12dz2);
                     const double d2_xy = Dxy4_ptr(p_chi, sx, sy, inv_144dxdy);
                     const double d2_xz = Dxz4_ptr(p_chi, sx, inv_144dxdz);
                     const double d2_yz = Dyz4_ptr(p_chi, sy, inv_144dydz);
@@ -232,9 +233,9 @@ void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t reg
                     double dGt[3][3]; // d_j Gamma^i
                     for (int c = 0; c < 3; ++c) {
                         const T *p = p_Gt[c];
-                        dGt[c][0] = Dx_ptr(p, sx, inv_12dx);
-                        dGt[c][1] = Dy_ptr(p, sy, inv_12dy);
-                        dGt[c][2] = Dz_ptr(p, inv_12dz);
+                        dGt[c][0] = Dx_ptr_order<Order>(p, sx, inv_12dx);
+                        dGt[c][1] = Dy_ptr_order<Order>(p, sy, inv_12dy);
+                        dGt[c][2] = Dz_ptr_order<Order>(p, inv_12dz);
                     }
                     const double Gt_vec[3] = {*p_Gt[0], *p_Gt[1], *p_Gt[2]};
 
@@ -253,9 +254,9 @@ void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t reg
                     for (int a = 0; a < 3; ++a) {
                         for (int b = a; b < 3; ++b) {
                             const T *p_gab = p_gam[map_s[a][b]];
-                            double   lap_g = gI[0][0] * Dxx_ptr(p_gab, sx, inv_12dx2) +
-                                           gI[1][1] * Dyy_ptr(p_gab, sy, inv_12dy2) +
-                                           gI[2][2] * Dzz_ptr(p_gab, inv_12dz2) +
+                            double   lap_g = gI[0][0] * Dxx_ptr_order<Order>(p_gab, sx, inv_12dx2) +
+                                           gI[1][1] * Dyy_ptr_order<Order>(p_gab, sy, inv_12dy2) +
+                                           gI[2][2] * Dzz_ptr_order<Order>(p_gab, inv_12dz2) +
                                            2.0 * (gI[0][1] * Dxy4_ptr(p_gab, sx, sy, inv_144dxdy) +
                                                   gI[0][2] * Dxz4_ptr(p_gab, sx, inv_144dxdz) +
                                                   gI[1][2] * Dyz4_ptr(p_gab, sy, inv_144dydz));
@@ -310,6 +311,20 @@ void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t reg
 
     if (throw_on_violation) {
         tensorium_RG::bssn::assert_invariants(G, "ricci", 4, true);
+    }
+}
+
+template <typename T>
+void compute_ricci_bssn_region(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_t region_i0,
+                               size_t region_i1, size_t region_j0, size_t region_j1,
+                               size_t region_k0, size_t region_k1,
+                               bool throw_on_violation = false) {
+    if (tensorium_RG::fd::max_spatial_derivative_order() == 4) {
+        compute_ricci_bssn_region_impl<4>(G, Ricci6, region_i0, region_i1, region_j0, region_j1,
+                                          region_k0, region_k1, throw_on_violation);
+    } else {
+        compute_ricci_bssn_region_impl<6>(G, Ricci6, region_i0, region_i1, region_j0, region_j1,
+                                          region_k0, region_k1, throw_on_violation);
     }
 }
 

@@ -193,20 +193,21 @@ template <typename T> inline T guard_chi_div(T chi, T chi_div_floor) {
     return (chi > chi_div_floor) ? chi : chi_div_floor;
 }
 
-template <typename T>
-inline void recover_z_over_chi_from_gamma_ptr(const T *p_tildeGamma0, const T *p_tildeGamma1,
-                                              const T *p_tildeGamma2, const T *p_ginv_xx,
-                                              const T *p_ginv_xy, const T *p_ginv_xz,
-                                              const T *p_ginv_yy, const T *p_ginv_yz,
-                                              const T *p_ginv_zz, const ptrdiff_t sx,
-                                              const ptrdiff_t sy, const double inv_12dx,
-                                              const double inv_12dy, const double inv_12dz,
-                                              T z_over_chi[3], T *gamma_metric_out = nullptr) {
+template <int Order, typename T>
+inline void recover_z_over_chi_from_gamma_ptr_order(const T *p_tildeGamma0, const T *p_tildeGamma1,
+                                                    const T *p_tildeGamma2, const T *p_ginv_xx,
+                                                    const T *p_ginv_xy, const T *p_ginv_xz,
+                                                    const T *p_ginv_yy, const T *p_ginv_yz,
+                                                    const T *p_ginv_zz, const ptrdiff_t sx,
+                                                    const ptrdiff_t sy, const double inv_12dx,
+                                                    const double inv_12dy, const double inv_12dz,
+                                                    T z_over_chi[3],
+                                                    T *gamma_metric_out = nullptr) {
     T gamma_metric_local[3] = {T(0), T(0), T(0)};
     T *gamma_metric = gamma_metric_out ? gamma_metric_out : gamma_metric_local;
-    detail::metric_inverse_divergence_ptr(p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz,
-                                          p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz,
-                                          gamma_metric);
+    detail::metric_inverse_divergence_ptr_order<Order>(
+        p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx,
+        inv_12dy, inv_12dz, gamma_metric);
     gamma_metric[0] = -gamma_metric[0];
     gamma_metric[1] = -gamma_metric[1];
     gamma_metric[2] = -gamma_metric[2];
@@ -217,12 +218,32 @@ inline void recover_z_over_chi_from_gamma_ptr(const T *p_tildeGamma0, const T *p
 }
 
 template <typename T>
+inline void recover_z_over_chi_from_gamma_ptr(const T *p_tildeGamma0, const T *p_tildeGamma1,
+                                              const T *p_tildeGamma2, const T *p_ginv_xx,
+                                              const T *p_ginv_xy, const T *p_ginv_xz,
+                                              const T *p_ginv_yy, const T *p_ginv_yz,
+                                              const T *p_ginv_zz, const ptrdiff_t sx,
+                                              const ptrdiff_t sy, const double inv_12dx,
+                                              const double inv_12dy, const double inv_12dz,
+                                              T z_over_chi[3], T *gamma_metric_out = nullptr) {
+    if (tensorium_RG::fd::max_spatial_derivative_order() == 4) {
+        recover_z_over_chi_from_gamma_ptr_order<4>(
+            p_tildeGamma0, p_tildeGamma1, p_tildeGamma2, p_ginv_xx, p_ginv_xy, p_ginv_xz,
+            p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz, z_over_chi,
+            gamma_metric_out);
+    } else {
+        recover_z_over_chi_from_gamma_ptr_order<6>(
+            p_tildeGamma0, p_tildeGamma1, p_tildeGamma2, p_ginv_xx, p_ginv_xy, p_ginv_xz,
+            p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx, inv_12dy, inv_12dz, z_over_chi,
+            gamma_metric_out);
+    }
+}
+
+template <int Order, typename T>
 inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
                                  T Z4corr[6], T chi_div_floor, const double inv_12dx,
                                  const double inv_12dy, const double inv_12dz,
                                  const ptrdiff_t sx, const ptrdiff_t sy) {
-    using namespace tensorium_RG::fd;
-
     const size_t idx = G.alpha.idx(i, j, k);
 
     const T chi = G.chi.ptr()[idx];
@@ -230,8 +251,9 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
     const T inv_chi = T(1) / chi_guarded;
 
     const T *p_chi = G.chi.ptr() + idx;
-    const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
-                        Dz_ptr(p_chi, inv_12dz)};
+    const T d_chi[3] = {tensorium_RG::fd::Dx_ptr_order<Order>(p_chi, sx, inv_12dx),
+                        tensorium_RG::fd::Dy_ptr_order<Order>(p_chi, sy, inv_12dy),
+                        tensorium_RG::fd::Dz_ptr_order<Order>(p_chi, inv_12dz)};
 
     T g_tilde[3][3];
     g_tilde[0][0] = G.gamma_tilde[XX].ptr()[idx];
@@ -252,10 +274,10 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
     // matching the reference CCZ4/BSSN formulations that recover Z^i/chi from
     // \hat{Gamma}^i - Gamma^i(metric).
     T z_over_chi[3] = {T(0), T(0), T(0)};
-    recover_z_over_chi_from_gamma_ptr(G.tildeGamma[0].ptr() + idx, G.tildeGamma[1].ptr() + idx,
-                                      G.tildeGamma[2].ptr() + idx, p_ginv_xx, p_ginv_xy,
-                                      p_ginv_xz, p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy,
-                                      inv_12dx, inv_12dy, inv_12dz, z_over_chi);
+    recover_z_over_chi_from_gamma_ptr_order<Order>(
+        G.tildeGamma[0].ptr() + idx, G.tildeGamma[1].ptr() + idx, G.tildeGamma[2].ptr() + idx,
+        p_ginv_xx, p_ginv_xy, p_ginv_xz, p_ginv_yy, p_ginv_yz, p_ginv_zz, sx, sy, inv_12dx,
+        inv_12dy, inv_12dz, z_over_chi);
 
     for (int a = 0; a < 3; ++a)
         for (int b = a; b < 3; ++b) {
@@ -264,8 +286,22 @@ inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, si
                 z_terms += z_over_chi[m] * (g_tilde[a][m] * d_chi[b] + g_tilde[b][m] * d_chi[a] -
                                             g_tilde[a][b] * d_chi[m]);
             }
-            Z4corr[sym6(a, b)] = z_terms * inv_chi;
+            Z4corr[tensorium_RG::fd::sym6(a, b)] = z_terms * inv_chi;
         }
+}
+
+template <typename T>
+inline void compute_RicciZ4_core(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
+                                 T Z4corr[6], T chi_div_floor, const double inv_12dx,
+                                 const double inv_12dy, const double inv_12dz,
+                                 const ptrdiff_t sx, const ptrdiff_t sy) {
+    if (tensorium_RG::fd::max_spatial_derivative_order() == 4) {
+        compute_RicciZ4_core<4>(G, i, j, k, Z4corr, chi_div_floor, inv_12dx, inv_12dy, inv_12dz,
+                                sx, sy);
+    } else {
+        compute_RicciZ4_core<6>(G, i, j, k, Z4corr, chi_div_floor, inv_12dx, inv_12dy, inv_12dz,
+                                sx, sy);
+    }
 }
 
 template <typename T>

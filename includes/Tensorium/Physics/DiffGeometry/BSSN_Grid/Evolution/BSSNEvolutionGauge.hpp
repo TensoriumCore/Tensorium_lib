@@ -506,64 +506,143 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
         return;
     }
 
-    const double    inv_2dx = 1.0 / (2.0 * G.dx);
-    const double    inv_2dy = 1.0 / (2.0 * G.dy);
-    const double    inv_2dz = 1.0 / (2.0 * G.dz);
     const ptrdiff_t sx = G.B[0].st.sx;
     const ptrdiff_t sy = G.B[0].st.sy;
     const T         eta_coeff = params.effective_eta();
-    const bool      use_shift_advection = params.use_shift_advection;
+    const bool      use_shift_advection =
+        params.use_shift_advection && (params.shift_advect != T(0));
+
+    if (use_shift_advection) {
+        const double inv_2dx = 1.0 / (2.0 * G.dx);
+        const double inv_2dy = 1.0 / (2.0 * G.dy);
+        const double inv_2dz = 1.0 / (2.0 * G.dz);
+        const T      advect_coeff = params.shift_advect;
+
+        auto loop_ij = [&](size_t i, size_t j) {
+            size_t idx_start = G.B[0].idx(i, j, k0);
+
+            const T *p_beta0 = G.beta[0].ptr() + idx_start;
+            const T *p_beta1 = G.beta[1].ptr() + idx_start;
+            const T *p_beta2 = G.beta[2].ptr() + idx_start;
+            const T *p_B0 = G.B[0].ptr() + idx_start;
+            const T *p_B1 = G.B[1].ptr() + idx_start;
+            const T *p_B2 = G.B[2].ptr() + idx_start;
+            const T *p_tg0 = G.tildeGamma[0].ptr() + idx_start;
+            const T *p_tg1 = G.tildeGamma[1].ptr() + idx_start;
+            const T *p_tg2 = G.tildeGamma[2].ptr() + idx_start;
+            const T *p_rhs_G0 = rhs_Gamma[0].ptr() + idx_start;
+            const T *p_rhs_G1 = rhs_Gamma[1].ptr() + idx_start;
+            const T *p_rhs_G2 = rhs_Gamma[2].ptr() + idx_start;
+            T       *p_rhs_B0 = rhs_B[0].ptr() + idx_start;
+            T       *p_rhs_B1 = rhs_B[1].ptr() + idx_start;
+            T       *p_rhs_B2 = rhs_B[2].ptr() + idx_start;
+
+#pragma omp simd
+            for (size_t k = k0; k < k1; ++k) {
+                const T bx = *p_beta0;
+                const T by = *p_beta1;
+                const T bz = *p_beta2;
+
+                const T adv_B0 = advect_coeff *
+                                 (bx * Dx_upwind_ptr(p_B0, sx, inv_2dx, bx) +
+                                  by * Dy_upwind_ptr(p_B0, sy, inv_2dy, by) +
+                                  bz * Dz_upwind_ptr(p_B0, inv_2dz, bz));
+                const T adv_B1 = advect_coeff *
+                                 (bx * Dx_upwind_ptr(p_B1, sx, inv_2dx, bx) +
+                                  by * Dy_upwind_ptr(p_B1, sy, inv_2dy, by) +
+                                  bz * Dz_upwind_ptr(p_B1, inv_2dz, bz));
+                const T adv_B2 = advect_coeff *
+                                 (bx * Dx_upwind_ptr(p_B2, sx, inv_2dx, bx) +
+                                  by * Dy_upwind_ptr(p_B2, sy, inv_2dy, by) +
+                                  bz * Dz_upwind_ptr(p_B2, inv_2dz, bz));
+
+                const T adv_Gamma0 = advect_coeff *
+                                     (bx * Dx_upwind_ptr(p_tg0, sx, inv_2dx, bx) +
+                                      by * Dy_upwind_ptr(p_tg0, sy, inv_2dy, by) +
+                                      bz * Dz_upwind_ptr(p_tg0, inv_2dz, bz));
+                const T adv_Gamma1 = advect_coeff *
+                                     (bx * Dx_upwind_ptr(p_tg1, sx, inv_2dx, bx) +
+                                      by * Dy_upwind_ptr(p_tg1, sy, inv_2dy, by) +
+                                      bz * Dz_upwind_ptr(p_tg1, inv_2dz, bz));
+                const T adv_Gamma2 = advect_coeff *
+                                     (bx * Dx_upwind_ptr(p_tg2, sx, inv_2dx, bx) +
+                                      by * Dy_upwind_ptr(p_tg2, sy, inv_2dy, by) +
+                                      bz * Dz_upwind_ptr(p_tg2, inv_2dz, bz));
+
+                const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
+                const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
+                const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
+                const T ko_scale = ko_sigma / G.dx;
+
+                *p_rhs_B0 = (*p_rhs_G0 - adv_Gamma0) + adv_B0 - eta_coeff * (*p_B0) + ko_scale * diss0;
+                *p_rhs_B1 = (*p_rhs_G1 - adv_Gamma1) + adv_B1 - eta_coeff * (*p_B1) + ko_scale * diss1;
+                *p_rhs_B2 = (*p_rhs_G2 - adv_Gamma2) + adv_B2 - eta_coeff * (*p_B2) + ko_scale * diss2;
+
+                ++p_beta0;
+                ++p_beta1;
+                ++p_beta2;
+                ++p_B0;
+                ++p_B1;
+                ++p_B2;
+                ++p_tg0;
+                ++p_tg1;
+                ++p_tg2;
+                ++p_rhs_G0;
+                ++p_rhs_G1;
+                ++p_rhs_G2;
+                ++p_rhs_B0;
+                ++p_rhs_B1;
+                ++p_rhs_B2;
+            }
+        };
+
+        if (rhs_kernel_team_mode_enabled()) {
+#pragma omp for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_ij(i, j);
+        } else {
+#pragma omp parallel for collapse(2)
+            for (size_t i = i0; i < i1; ++i)
+                for (size_t j = j0; j < j1; ++j)
+                    loop_ij(i, j);
+        }
+        return;
+    }
 
     auto loop_ij = [&](size_t i, size_t j) {
-
         size_t idx_start = G.B[0].idx(i, j, k0);
 
-        const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
-                              G.beta[2].ptr() + idx_start};
-        const T *p_B[3] = {G.B[0].ptr() + idx_start, G.B[1].ptr() + idx_start,
-                           G.B[2].ptr() + idx_start};
-        const T *p_tildeGamma[3] = {G.tildeGamma[0].ptr() + idx_start,
-                                    G.tildeGamma[1].ptr() + idx_start,
-                                    G.tildeGamma[2].ptr() + idx_start};
-        const T *p_rhs_G[3] = {rhs_Gamma[0].ptr() + idx_start, rhs_Gamma[1].ptr() + idx_start,
-                               rhs_Gamma[2].ptr() + idx_start};
-        T       *p_rhs_B[3] = {rhs_B[0].ptr() + idx_start, rhs_B[1].ptr() + idx_start,
-                               rhs_B[2].ptr() + idx_start};
+        const T *p_B0 = G.B[0].ptr() + idx_start;
+        const T *p_B1 = G.B[1].ptr() + idx_start;
+        const T *p_B2 = G.B[2].ptr() + idx_start;
+        const T *p_rhs_G0 = rhs_Gamma[0].ptr() + idx_start;
+        const T *p_rhs_G1 = rhs_Gamma[1].ptr() + idx_start;
+        const T *p_rhs_G2 = rhs_Gamma[2].ptr() + idx_start;
+        T       *p_rhs_B0 = rhs_B[0].ptr() + idx_start;
+        T       *p_rhs_B1 = rhs_B[1].ptr() + idx_start;
+        T       *p_rhs_B2 = rhs_B[2].ptr() + idx_start;
 
+#pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
-            const T bx = *p_beta[0];
-            const T by = *p_beta[1];
-            const T bz = *p_beta[2];
+            const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
+            const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
+            const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
+            const T ko_scale = ko_sigma / G.dx;
 
-            for (int comp = 0; comp < 3; ++comp) {
-                const T adv_B = use_shift_advection
-                                    ? (params.shift_advect *
-                                       (bx * Dx_upwind_ptr(p_B[comp], sx, inv_2dx, bx) +
-                                        by * Dy_upwind_ptr(p_B[comp], sy, inv_2dy, by) +
-                                        bz * Dz_upwind_ptr(p_B[comp], inv_2dz, bz)))
-                                    : T(0);
-                const T adv_Gamma = use_shift_advection
-                                        ? (params.shift_advect *
-                                           (bx * Dx_upwind_ptr(p_tildeGamma[comp], sx, inv_2dx, bx) +
-                                            by * Dy_upwind_ptr(p_tildeGamma[comp], sy, inv_2dy, by) +
-                                            bz * Dz_upwind_ptr(p_tildeGamma[comp], inv_2dz, bz)))
-                                        : T(0);
+            *p_rhs_B0 = *p_rhs_G0 - eta_coeff * (*p_B0) + ko_scale * diss0;
+            *p_rhs_B1 = *p_rhs_G1 - eta_coeff * (*p_B1) + ko_scale * diss1;
+            *p_rhs_B2 = *p_rhs_G2 - eta_coeff * (*p_B2) + ko_scale * diss2;
 
-                const T diss = KO6_axis_ptr(p_B[comp], sx) + KO6_axis_ptr(p_B[comp], sy) +
-                               KO6_axis_ptr(p_B[comp], 1);
-                const T diss_scaled = (ko_sigma / G.dx) * diss;
-                const T rhs_gamma_eff = *p_rhs_G[comp] - adv_Gamma;
-
-                *p_rhs_B[comp] = rhs_gamma_eff + adv_B - eta_coeff * (*p_B[comp]) + diss_scaled;
-            }
-
-            for (int c = 0; c < 3; ++c) {
-                ++p_beta[c];
-                ++p_B[c];
-                ++p_tildeGamma[c];
-                ++p_rhs_G[c];
-                ++p_rhs_B[c];
-            }
+            ++p_B0;
+            ++p_B1;
+            ++p_B2;
+            ++p_rhs_G0;
+            ++p_rhs_G1;
+            ++p_rhs_G2;
+            ++p_rhs_B0;
+            ++p_rhs_B1;
+            ++p_rhs_B2;
         }
     };
 

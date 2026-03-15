@@ -54,10 +54,9 @@ inline int max_spatial_derivative_order() { return fd_spatial_order(); }
 
 // First Derivatives (Order 6)
 #pragma omp declare simd notinbranch
-template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_60dx) {
-    if (fd_spatial_order() == 4) {
-        // 4th-order centered first derivative:
-        // (-f_{i+2} + 8 f_{i+1} - 8 f_{i-1} + f_{i-2}) / (12 dx)
+template <int Order, typename T> inline double Dx_ptr_order(const T *p, ptrdiff_t sx, double inv_60dx) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2 * sx] + 8.0 * p[sx] - 8.0 * p[-sx] + p[-2 * sx]) * (5.0 * inv_60dx);
     }
     return (p[3 * sx] - 9.0 * p[2 * sx] + 45.0 * p[sx] - 45.0 * p[-sx] + 9.0 * p[-2 * sx] -
@@ -66,8 +65,9 @@ template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_
 }
 
 #pragma omp declare simd notinbranch
-template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_60dy) {
-    if (fd_spatial_order() == 4) {
+template <int Order, typename T> inline double Dy_ptr_order(const T *p, ptrdiff_t sy, double inv_60dy) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2 * sy] + 8.0 * p[sy] - 8.0 * p[-sy] + p[-2 * sy]) * (5.0 * inv_60dy);
     }
     return (p[3 * sy] - 9.0 * p[2 * sy] + 45.0 * p[sy] - 45.0 * p[-sy] + 9.0 * p[-2 * sy] -
@@ -76,19 +76,37 @@ template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_
 }
 
 #pragma omp declare simd notinbranch
-template <typename T> inline double Dz_ptr(const T *p, double inv_60dz) {
-    if (fd_spatial_order() == 4) {
+template <int Order, typename T> inline double Dz_ptr_order(const T *p, double inv_60dz) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2] + 8.0 * p[1] - 8.0 * p[-1] + p[-2]) * (5.0 * inv_60dz);
     }
     // Stride Z is always 1 in this layout
     return (p[3] - 9.0 * p[2] + 45.0 * p[1] - 45.0 * p[-1] + 9.0 * p[-2] - p[-3]) * inv_60dz;
 }
 
+#pragma omp declare simd notinbranch
+template <typename T> inline double Dx_ptr(const T *p, ptrdiff_t sx, double inv_60dx) {
+    return (fd_spatial_order() == 4) ? Dx_ptr_order<4>(p, sx, inv_60dx)
+                                     : Dx_ptr_order<6>(p, sx, inv_60dx);
+}
+
+#pragma omp declare simd notinbranch
+template <typename T> inline double Dy_ptr(const T *p, ptrdiff_t sy, double inv_60dy) {
+    return (fd_spatial_order() == 4) ? Dy_ptr_order<4>(p, sy, inv_60dy)
+                                     : Dy_ptr_order<6>(p, sy, inv_60dy);
+}
+
+#pragma omp declare simd notinbranch
+template <typename T> inline double Dz_ptr(const T *p, double inv_60dz) {
+    return (fd_spatial_order() == 4) ? Dz_ptr_order<4>(p, inv_60dz)
+                                     : Dz_ptr_order<6>(p, inv_60dz);
+}
+
 // Second Derivatives (Order 6)
-template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_180dx2) {
-    if (fd_spatial_order() == 4) {
-        // 4th-order centered second derivative:
-        // (-f_{i+2} + 16 f_{i+1} - 30 f_i + 16 f_{i-1} - f_{i-2}) / (12 dx^2)
+template <int Order, typename T> inline double Dxx_ptr_order(const T *p, ptrdiff_t sx, double inv_180dx2) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2 * sx] + 16.0 * p[sx] - 30.0 * p[0] + 16.0 * p[-sx] - p[-2 * sx]) *
                (15.0 * inv_180dx2);
     }
@@ -97,8 +115,9 @@ template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv
            inv_180dx2;
 }
 
-template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_180dy2) {
-    if (fd_spatial_order() == 4) {
+template <int Order, typename T> inline double Dyy_ptr_order(const T *p, ptrdiff_t sy, double inv_180dy2) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2 * sy] + 16.0 * p[sy] - 30.0 * p[0] + 16.0 * p[-sy] - p[-2 * sy]) *
                (15.0 * inv_180dy2);
     }
@@ -107,14 +126,30 @@ template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv
            inv_180dy2;
 }
 
-template <typename T> inline double Dzz_ptr(const T *p, double inv_180dz2) {
-    if (fd_spatial_order() == 4) {
+template <int Order, typename T> inline double Dzz_ptr_order(const T *p, double inv_180dz2) {
+    static_assert(Order == 4 || Order == 6, "Only 4th- and 6th-order derivatives are supported");
+    if constexpr (Order == 4) {
         return (-p[2] + 16.0 * p[1] - 30.0 * p[0] + 16.0 * p[-1] - p[-2]) *
                (15.0 * inv_180dz2);
     }
     return (2.0 * p[-3] - 27.0 * p[-2] + 270.0 * p[-1] - 490.0 * p[0] + 270.0 * p[1] -
             27.0 * p[2] + 2.0 * p[3]) *
            inv_180dz2;
+}
+
+template <typename T> inline double Dxx_ptr(const T *p, ptrdiff_t sx, double inv_180dx2) {
+    return (fd_spatial_order() == 4) ? Dxx_ptr_order<4>(p, sx, inv_180dx2)
+                                     : Dxx_ptr_order<6>(p, sx, inv_180dx2);
+}
+
+template <typename T> inline double Dyy_ptr(const T *p, ptrdiff_t sy, double inv_180dy2) {
+    return (fd_spatial_order() == 4) ? Dyy_ptr_order<4>(p, sy, inv_180dy2)
+                                     : Dyy_ptr_order<6>(p, sy, inv_180dy2);
+}
+
+template <typename T> inline double Dzz_ptr(const T *p, double inv_180dz2) {
+    return (fd_spatial_order() == 4) ? Dzz_ptr_order<4>(p, inv_180dz2)
+                                     : Dzz_ptr_order<6>(p, inv_180dz2);
 }
 
 // Mixed Derivatives (Order 2 - Compact)
