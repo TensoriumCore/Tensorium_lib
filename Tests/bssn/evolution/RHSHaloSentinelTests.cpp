@@ -215,4 +215,69 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
                                 "Interior RHS entry stays untouched");
 });
 
+REGISTER_TEST("bssn.evolution.constraint_halos_use_extrapolation",
+              "Constraint ghosts avoid Sommerfeld pull while gauge scalars keep it", []() {
+    const size_t padding = 4;
+    Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    tensorium_RG::bssn::BoundaryRadiative::set_characteristic(1.0, 0.0);
+    tensorium_RG::bssn::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
+                                                                     true);
+    tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
+                                                                false);
+    tensorium_RG::bssn::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    auto fill_linear = [&](tensorium_RG::Field3D<double> &field, double c0, double cx, double cy,
+                           double cz) {
+        const size_t nx_tot = field.st.nx_tot;
+        const size_t ny_tot = field.st.ny_tot;
+        const size_t nz_tot = field.st.nz_tot;
+        for (size_t i = 0; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k) {
+                    double x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    field.ptr()[field.idx(i, j, k)] = c0 + cx * x + cy * y + cz * z;
+                }
+    };
+
+    fill_linear(grid.alpha, 1.0, 0.02, -0.01, 0.00);
+    fill_linear(grid.Theta, 0.2, 0.03, 0.01, -0.02);
+    fill_linear(grid.tildeGamma[0], -0.1, 0.04, -0.02, 0.01);
+
+    tensorium_RG::bssn::BoundaryRadiative::apply_halo(grid.alpha, grid,
+                                                      tensorium_RG::bssn::BoundaryField::Alpha, 0);
+    tensorium_RG::bssn::BoundaryRadiative::apply_halo(grid.Theta, grid, tensorium_RG::bssn::BoundaryField::Theta,
+                                                      0);
+    tensorium_RG::bssn::BoundaryRadiative::apply_halo(
+        grid.tildeGamma[0], grid, tensorium_RG::bssn::BoundaryField::TildeGamma, 0);
+
+    const size_t j = J0 + 2;
+    const size_t k = K0 + 2;
+    const size_t ob1 = grid.alpha.idx(I0 - 1, j, k);
+    const size_t ob2 = grid.alpha.idx(I0 - 2, j, k);
+    const size_t ib0 = grid.alpha.idx(I0, j, k);
+    const size_t ib1 = grid.alpha.idx(I0 + 1, j, k);
+
+    const double theta_expected_1 = 2.0 * grid.Theta.ptr()[ib0] - grid.Theta.ptr()[ib1];
+    const double theta_expected_2 = 3.0 * grid.Theta.ptr()[ib0] - 2.0 * grid.Theta.ptr()[ib1];
+    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob1] - theta_expected_1), 1e-12,
+                                "Theta first ghost uses linear extrapolation");
+    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob2] - theta_expected_2), 1e-12,
+                                "Theta second ghost uses linear extrapolation");
+
+    const double gamma_expected_1 =
+        2.0 * grid.tildeGamma[0].ptr()[ib0] - grid.tildeGamma[0].ptr()[ib1];
+    tensorium::tests::expect_le(std::abs(grid.tildeGamma[0].ptr()[ob1] - gamma_expected_1), 1e-12,
+                                "TildeGamma ghost uses linear extrapolation");
+
+    const double alpha_linear_extrap = 2.0 * grid.alpha.ptr()[ib0] - grid.alpha.ptr()[ib1];
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[ob1]));
+    TENSORIUM_TEST_ASSERT(std::abs(grid.alpha.ptr()[ob1] - alpha_linear_extrap) > 1e-6);
+});
+
 #endif

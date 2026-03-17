@@ -266,9 +266,16 @@ struct BoundaryRadiative {
     template <typename T>
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                                   int component) {
-        enum class HaloMode { Sommerfeld, Outflow, Skip };
+        enum class HaloMode { Sommerfeld, Outflow, LinearExtrapolate, Skip };
         HaloMode mode = HaloMode::Sommerfeld;
         switch (which) {
+        case BoundaryField::K:
+        case BoundaryField::Theta:
+        case BoundaryField::TildeGamma:
+        case BoundaryField::ATilde:
+        case BoundaryField::Z:
+            mode = HaloMode::LinearExtrapolate;
+            break;
         case BoundaryField::GammaTildeInverse:
             mode = HaloMode::Skip;
             break;
@@ -316,17 +323,25 @@ struct BoundaryRadiative {
             ptr[ob] = T(u_inf + du * (r_ib / denom));
         };
         auto set_outflow = [&](size_t ob, size_t ib) { ptr[ob] = ptr[ib]; };
+        auto set_linear_extrapolated = [&](size_t ob, size_t ib0, size_t ib1, size_t layer) {
+            const double u0 = double(ptr[ib0]);
+            const double u1 = double(ptr[ib1]);
+            ptr[ob] = T((double(layer) + 1.0) * u0 - double(layer) * u1);
+        };
         auto set_reflective = [&](size_t ob, size_t ib_reflect, int axis) {
             const int sign = parity_sign(which, component, axis);
             ptr[ob] = T(sign) * ptr[ib_reflect];
         };
-        auto set_halo = [&](size_t ob, size_t ib, double r_ob, double r_ib,
+        auto set_halo = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,
+                            double r_ob, double r_ib,
                             bool use_sommerfeld_face, bool use_reflective_face, int axis) {
             if (use_reflective_face) {
                 set_reflective(ob, ib, axis);
                 return;
             }
-            if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
+            if (mode == HaloMode::LinearExtrapolate) {
+                set_linear_extrapolated(ob, ib0, ib1, layer);
+            } else if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
                 set_sommerfeld(ob, ib, r_ob, r_ib);
             else
                 set_outflow(ob, ib);
@@ -356,6 +371,7 @@ struct BoundaryRadiative {
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ix1)
                         set_halo(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
+                                 field.idx(I0, j, k), field.idx(I0 + 1, j, k), g,
                                  r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1, rf_ix1, 0);
 
         for (size_t g = 0; g < D.ng; ++g)
@@ -363,6 +379,7 @@ struct BoundaryRadiative {
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ox1)
                         set_halo(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
+                                 field.idx(I1 - 1, j, k), field.idx(I1 - 2, j, k), g + 1,
                                  r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1, rf_ox1, 0);
 
         for (size_t g = 1; g <= D.ng; ++g)
@@ -370,6 +387,7 @@ struct BoundaryRadiative {
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ix2)
                         set_halo(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
+                                 field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
                                  r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2, rf_ix2, 1);
 
         for (size_t g = 0; g < D.ng; ++g)
@@ -377,6 +395,7 @@ struct BoundaryRadiative {
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ox2)
                         set_halo(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
+                                 field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k), g + 1,
                                  r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k), sf_ox2, rf_ox2, 1);
 
         for (size_t g = 1; g <= D.ng; ++g)
@@ -384,6 +403,7 @@ struct BoundaryRadiative {
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
                     if (ac_ix3)
                         set_halo(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
+                                 field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
                                  r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3, rf_ix3, 2);
 
         for (size_t g = 0; g < D.ng; ++g)
@@ -391,6 +411,7 @@ struct BoundaryRadiative {
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
                     if (ac_ox3)
                         set_halo(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
+                                 field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2), g + 1,
                                  r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g), sf_ox3, rf_ox3, 2);
     }
 };
