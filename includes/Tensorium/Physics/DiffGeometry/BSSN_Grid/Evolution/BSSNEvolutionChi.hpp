@@ -94,7 +94,7 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                         KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
 
                     *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
-                             (ko_sigma / G.dx) * diss;
+                             local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
                     ++p_chi;
                     ++p_alpha;
@@ -139,7 +139,7 @@ inline void compute_rhs_chi(const BSSNGridSoA<T> &G, Field3D<T> &rhs_chi, size_t
                         KO6_axis_ptr(p_chi, sx) + KO6_axis_ptr(p_chi, sy) + KO6_axis_ptr(p_chi, 1);
 
                     *p_rhs = d_chi + (T(2.0 / 3.0)) * chi * (alpha * K - div_beta) +
-                             (ko_sigma / G.dx) * diss;
+                             local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
                     ++p_chi;
                     ++p_alpha;

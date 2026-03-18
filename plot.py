@@ -92,7 +92,8 @@ latex_requested = ("--latex" in flags) or ("--usetex" in flags) or (
 )
 if ("--no-latex" in flags) or ("--no-usetex" in flags):
     latex_requested = False
-smooth_sigma = 0.0 if no_smooth else (0.6 if constraint_mode else 1.0)
+smooth_sigma = 0.0 if (no_smooth or constraint_mode) else 1.0
+constraint_render_interpolation = "bilinear"
 
 _yt_module = None
 _yt_checked = False
@@ -272,7 +273,78 @@ def parse_float_value(name, default):
 
 
 def smooth(M, sigma=1.0):
-    return gaussian_filter(M, sigma=sigma)
+    arr = np.asarray(M, dtype=float)
+    finite = np.isfinite(arr)
+    if not np.any(finite):
+        return np.full_like(arr, np.nan, dtype=float)
+    filled = np.where(finite, arr, 0.0)
+    weights = finite.astype(float)
+    num = gaussian_filter(filled, sigma=sigma)
+    den = gaussian_filter(weights, sigma=sigma)
+    out = np.full_like(arr, np.nan, dtype=float)
+    valid = den > 1e-12
+    out[valid] = num[valid] / den[valid]
+    return out
+
+
+def mask_invalid_constraint_collar(H, Mnorm, Cnorm, max_width=32):
+    H = np.array(H, dtype=float, copy=True)
+    Mnorm = np.array(Mnorm, dtype=float, copy=True)
+    Cnorm = np.array(Cnorm, dtype=float, copy=True)
+
+    ny, nx = H.shape
+
+    def is_zero_layer(values):
+        finite = np.isfinite(values)
+        return np.all(finite) and np.all(values == 0.0)
+
+    widths = {"left": 0, "right": 0, "bottom": 0, "top": 0}
+    limit_x = min(max_width, nx // 2)
+    limit_y = min(max_width, ny // 2)
+
+    while widths["left"] < limit_x:
+        i = widths["left"]
+        if is_zero_layer(H[:, i]) and is_zero_layer(Mnorm[:, i]) and is_zero_layer(Cnorm[:, i]):
+            widths["left"] += 1
+        else:
+            break
+    while widths["right"] < limit_x:
+        i = nx - 1 - widths["right"]
+        if is_zero_layer(H[:, i]) and is_zero_layer(Mnorm[:, i]) and is_zero_layer(Cnorm[:, i]):
+            widths["right"] += 1
+        else:
+            break
+    while widths["bottom"] < limit_y:
+        j = widths["bottom"]
+        if is_zero_layer(H[j, :]) and is_zero_layer(Mnorm[j, :]) and is_zero_layer(Cnorm[j, :]):
+            widths["bottom"] += 1
+        else:
+            break
+    while widths["top"] < limit_y:
+        j = ny - 1 - widths["top"]
+        if is_zero_layer(H[j, :]) and is_zero_layer(Mnorm[j, :]) and is_zero_layer(Cnorm[j, :]):
+            widths["top"] += 1
+        else:
+            break
+
+    if widths["left"] > 0:
+        H[:, : widths["left"]] = np.nan
+        Mnorm[:, : widths["left"]] = np.nan
+        Cnorm[:, : widths["left"]] = np.nan
+    if widths["right"] > 0:
+        H[:, nx - widths["right"] :] = np.nan
+        Mnorm[:, nx - widths["right"] :] = np.nan
+        Cnorm[:, nx - widths["right"] :] = np.nan
+    if widths["bottom"] > 0:
+        H[: widths["bottom"], :] = np.nan
+        Mnorm[: widths["bottom"], :] = np.nan
+        Cnorm[: widths["bottom"], :] = np.nan
+    if widths["top"] > 0:
+        H[ny - widths["top"] :, :] = np.nan
+        Mnorm[ny - widths["top"] :, :] = np.nan
+        Cnorm[ny - widths["top"] :, :] = np.nan
+
+    return H, Mnorm, Cnorm
 
 
 def truncated_cmap(name, minval=0.0, maxval=1.0, n=256):
@@ -809,6 +881,7 @@ def update_constraints(frame_idx):
     H = df.pivot(index="y", columns="x", values="H").values
     Mnorm = df.pivot(index="y", columns="x", values="Mnorm").values
     Cnorm = df.pivot(index="y", columns="x", values="Cnorm").values
+    H, Mnorm, Cnorm = mask_invalid_constraint_collar(H, Mnorm, Cnorm)
     if smooth_sigma > 0.0:
         H_plot = smooth(H, smooth_sigma)
         Mnorm_plot = smooth(Mnorm, smooth_sigma)
@@ -864,13 +937,13 @@ def update_constraints(frame_idx):
             clog_vmin, clog_vmax = robust_clim(log_C, lo=2.0, hi=98.0, fallback=(-12.0, -1.0))
 
     ax1.imshow(
-        H_plot,
+        np.ma.masked_invalid(H_plot),
         extent=extent,
         origin="lower",
         cmap="magma",
         vmin=h_vmin,
         vmax=h_vmax,
-        interpolation="bicubic",
+        interpolation=constraint_render_interpolation,
     )
     ax1.set_title(
         tex(
@@ -887,13 +960,13 @@ def update_constraints(frame_idx):
         ax1.contour(Xg, Yg, H, levels=levels, colors="black", linewidths=0.35, alpha=0.25)
 
     ax2.imshow(
-        log_absH,
+        np.ma.masked_invalid(log_absH),
         extent=extent,
         origin="lower",
         cmap="viridis",
         vmin=hlog_vmin,
         vmax=hlog_vmax,
-        interpolation="bicubic",
+        interpolation=constraint_render_interpolation,
     )
     ax2.set_title(tex(r"$\log_{10}\!\left|\mathcal{H}\right|$", "log10(|H|)"))
     ax2.set_aspect("equal")
@@ -905,13 +978,13 @@ def update_constraints(frame_idx):
         ax2.contour(Xg, Yg, log_absH, levels=levels, colors="white", linewidths=0.35, alpha=0.35)
 
     ax3.imshow(
-        log_M,
+        np.ma.masked_invalid(log_M),
         extent=extent,
         origin="lower",
         cmap="viridis",
         vmin=mlog_vmin,
         vmax=mlog_vmax,
-        interpolation="bicubic",
+        interpolation=constraint_render_interpolation,
     )
     ax3.set_title(tex(r"$\log_{10}\!\left\|\mathcal{M}\right\|$", "log10(|M|)"))
     ax3.set_aspect("equal")
@@ -923,13 +996,13 @@ def update_constraints(frame_idx):
         ax3.contour(Xg, Yg, log_M, levels=levels, colors="white", linewidths=0.35, alpha=0.35)
 
     ax4.imshow(
-        log_C,
+        np.ma.masked_invalid(log_C),
         extent=extent,
         origin="lower",
         cmap="viridis",
         vmin=clog_vmin,
         vmax=clog_vmax,
-        interpolation="bicubic",
+        interpolation=constraint_render_interpolation,
     )
     ax4.set_title(
         tex(

@@ -60,7 +60,7 @@ inline void compute_rhs_Theta_impl(const BSSNGridSoA<T> &G, Field3D<T> &rhs_thet
 
     const T two_plus_kappa2 = T(2) + params.kappa2;
     const T two_thirds = T(2) / T(3);
-    const T ko_scale = T(scaled_ko_sigma(params.ko_sigma) / G.dx);
+    const T ko_sigma = scaled_ko_sigma(params.ko_sigma);
 
     auto loop_ij = [&](size_t i, size_t j) {
         size_t idx_start = G.Theta.idx(i, j, k0);
@@ -184,7 +184,8 @@ inline void compute_rhs_Theta_impl(const BSSNGridSoA<T> &G, Field3D<T> &rhs_thet
                            tensorium_RG::fd::KO6_axis_ptr(p_theta, sy) +
                            tensorium_RG::fd::KO6_axis_ptr(p_theta, 1);
 
-            *p_rhs = alpha * geom_source + damping + adv - Z_dot_dalpha + ko_scale * diss;
+            *p_rhs = alpha * geom_source + damping + adv - Z_dot_dalpha +
+                     local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
             ++p_theta;
             ++p_alpha;

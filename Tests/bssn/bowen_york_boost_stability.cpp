@@ -56,6 +56,8 @@ void export_constraint_slice_csv(
     const tensorium::tests::Grid &grid,
     const tensorium::tests::ConstraintScratch &constraint_scratch, size_t step,
     const std::string &output_dir) {
+    constexpr size_t kConstraintGuard = 4;
+
     std::stringstream ss;
     ss << output_dir << "/constraint_slice_" << std::setw(4) << std::setfill('0') << step
        << ".csv";
@@ -78,18 +80,28 @@ void export_constraint_slice_csv(
 
             const size_t idx = grid.alpha.idx(i, j, k);
             const size_t cidx = constraint_scratch.H.idx(i, j, k);
+            const bool   constraint_valid =
+                (i >= ng + kConstraintGuard && i + kConstraintGuard < nx + ng &&
+                 j >= ng + kConstraintGuard && j + kConstraintGuard < ny + ng);
 
             const double alpha = double(grid.alpha.ptr()[idx]);
             const double chi = double(grid.chi.ptr()[idx]);
-            const double H = double(constraint_scratch.H.ptr()[cidx]);
-            const double Mx = double(constraint_scratch.M[0].ptr()[cidx]);
-            const double My = double(constraint_scratch.M[1].ptr()[cidx]);
-            const double Mz = double(constraint_scratch.M[2].ptr()[cidx]);
+            const double nan = std::numeric_limits<double>::quiet_NaN();
+            const double H = constraint_valid ? double(constraint_scratch.H.ptr()[cidx]) : nan;
+            const double Mx =
+                constraint_valid ? double(constraint_scratch.M[0].ptr()[cidx]) : nan;
+            const double My =
+                constraint_valid ? double(constraint_scratch.M[1].ptr()[cidx]) : nan;
+            const double Mz =
+                constraint_valid ? double(constraint_scratch.M[2].ptr()[cidx]) : nan;
             const double Mnorm = std::sqrt(Mx * Mx + My * My + Mz * Mz);
 
-            const double Cx = double(constraint_scratch.C[0].ptr()[cidx]);
-            const double Cy = double(constraint_scratch.C[1].ptr()[cidx]);
-            const double Cz = double(constraint_scratch.C[2].ptr()[cidx]);
+            const double Cx =
+                constraint_valid ? double(constraint_scratch.C[0].ptr()[cidx]) : nan;
+            const double Cy =
+                constraint_valid ? double(constraint_scratch.C[1].ptr()[cidx]) : nan;
+            const double Cz =
+                constraint_valid ? double(constraint_scratch.C[2].ptr()[cidx]) : nan;
             const double Cnorm = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
 
             const double Theta = double(grid.Theta.ptr()[idx]);
@@ -816,6 +828,7 @@ REGISTER_TEST(
         tensorium_RG::fd::set_max_spatial_derivative_order(mp_env.spatial_derivative_order);
         std::cout << "[num] spatial_derivative_order=" << mp_env.spatial_derivative_order
                   << std::endl;
+        tensorium_RG::bssn::apply_boundary_configuration(mp_env);
 
         tensorium_RG::fd::set_fd_dx(cfg.spacing);
         (void)system("mkdir -p Output/viz");
@@ -907,22 +920,32 @@ REGISTER_TEST(
                   << " min_lapse_for_K=" << params.min_lapse_for_K << std::endl;
 
         const auto &bc = mp_env.boundary_faces;
-        tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(bc.rf_ix1, bc.rf_ox1, bc.rf_ix2,
-                                                                    bc.rf_ox2, bc.rf_ix3,
-                                                                    bc.rf_ox3);
-        tensorium_RG::bssn::BoundaryRadiative::set_rhs_sommerfeld_faces(
-            bc.rhs_ix1, bc.rhs_ox1, bc.rhs_ix2, bc.rhs_ox2, bc.rhs_ix3, bc.rhs_ox3);
-        std::cout << "[bc] reflective_faces="
-                  << " ix1=" << bc.rf_ix1 << " ox1=" << bc.rf_ox1
-                  << " ix2=" << bc.rf_ix2 << " ox2=" << bc.rf_ox2
-                  << " ix3=" << bc.rf_ix3 << " ox3=" << bc.rf_ox3 << std::endl;
-        std::cout << "[bc] rhs_sommerfeld_faces="
-                  << " ix1=" << bc.rhs_ix1 << " ox1=" << bc.rhs_ox1
-                  << " ix2=" << bc.rhs_ix2 << " ox2=" << bc.rhs_ox2
-                  << " ix3=" << bc.rhs_ix3 << " ox3=" << bc.rhs_ox3 << std::endl;
+        std::cout << "[bc] allow_reflective=" << mp_env.allow_reflective_bc
+                  << " fail_on_gauge_bc_mismatch=" << mp_env.fail_on_gauge_bc_mismatch
+                  << " sponge_enable=" << mp_env.sponge.enabled
+                  << " sponge_width=" << mp_env.sponge.width
+                  << " sponge_strength=" << mp_env.sponge.strength
+                  << " sponge_exponent=" << mp_env.sponge.exponent
+                  << " radiative_collar_width=" << mp_env.radiative_collar_width
+                  << " ko_boundary_width=" << mp_env.ko_boundary_width
+                  << " ko_boundary_floor=" << mp_env.ko_boundary_floor << std::endl;
+        for (int axis = 0; axis < 3; ++axis) {
+            std::cout << "[bc] "
+                      << tensorium_RG::bssn::describe_boundary_face_mode(
+                             bc, mp_env.sponge, axis, false)
+                      << std::endl;
+            std::cout << "[bc] "
+                      << tensorium_RG::bssn::describe_boundary_face_mode(
+                             bc, mp_env.sponge, axis, true)
+                      << std::endl;
+        }
 
         tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
         tensorium_RG::init::zero_z4c_fields(grid);
+        const auto bc_char = tensorium_RG::bssn::configure_boundary_characteristics_from_state(
+            grid, mp_env, params);
+        tensorium_RG::bssn::report_boundary_characteristics(
+            params, mp_env.fail_on_gauge_bc_mismatch, bc_char);
 
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
             grid, cfg.padding);

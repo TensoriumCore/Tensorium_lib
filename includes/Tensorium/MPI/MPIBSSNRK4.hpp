@@ -237,7 +237,8 @@ template <typename T> class MPIBSSNRKStepper {
     }
 
     size_t physical_boundary_padding(bool enabled) const noexcept {
-        return enabled ? padding_ : size_t(0);
+        (void)enabled;
+        return size_t(0);
     }
 
     auto interior_padding_scope() const {
@@ -410,9 +411,9 @@ template <typename T> class MPIBSSNRKStepper {
         tensorium_RG::bssn::update_ko_scale(grid, boundary_dt_);
         tensorium_RG::bssn::evaluate_rhs_sweep_core(
             grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B, rhs.gamma_tilde,
-            rhs.A_tilde, rhs.tildeGamma, rhs.Z, params, padding_, &theta_cache_);
+            rhs.A_tilde, rhs.tildeGamma, rhs.Z, params, size_t(0), &theta_cache_);
         apply_rhs_sommerfeld(grid, rhs);
-        tensorium_RG::bssn::recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, padding_);
+        tensorium_RG::bssn::recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, size_t(0));
     }
 
     void apply_rhs_sommerfeld(const GridType &grid, tensorium_RG::bssn::BSSNRHSWorkspace<T> &rhs) {

@@ -449,6 +449,11 @@ struct RunConfig {
     bool use_interpolated_init = false;
     size_t interp_seed_n = 64;
     MovingPunctureBoundaryFaces boundary_faces{};
+    MovingPunctureSpongeConfig sponge{};
+    size_t radiative_collar_width = 4;
+    size_t ko_boundary_width = 4;
+    double ko_boundary_floor = 0.0;
+    bool allow_reflective_bc = false;
     GaugeParameters<double> gauge_params{};
 };
 
@@ -475,6 +480,11 @@ RunConfig make_default_config() {
     cfg.use_interpolated_init = mp.use_interpolated_init;
     cfg.interp_seed_n = mp.interp_seed_n;
     cfg.boundary_faces = mp.boundary_faces;
+    cfg.sponge = mp.sponge;
+    cfg.radiative_collar_width = mp.radiative_collar_width;
+    cfg.ko_boundary_width = mp.ko_boundary_width;
+    cfg.ko_boundary_floor = mp.ko_boundary_floor;
+    cfg.allow_reflective_bc = mp.allow_reflective_bc;
     cfg.gauge_params = mp.gauge_params;
 
     return cfg;
@@ -584,6 +594,22 @@ int main(int argc, char** argv) {
     ctx.root_printf("Steps: %zu, CFL: %.3f\n", cfg.nsteps, cfg.cfl);
     ctx.root_printf("Viz: slice_export_stride=%zu output_dir=%s\n", cfg.slice_export_stride,
                     cfg.output_dir.c_str());
+    ctx.root_printf("BC: allow_reflective=%d sponge=%d width=%zu strength=%.3f exponent=%.3f "
+                    "radiative_collar_width=%zu ko_boundary_width=%zu ko_boundary_floor=%.3f\n",
+                    cfg.allow_reflective_bc ? 1 : 0, cfg.sponge.enabled ? 1 : 0, cfg.sponge.width,
+                    cfg.sponge.strength, cfg.sponge.exponent, cfg.radiative_collar_width,
+                    cfg.ko_boundary_width,
+                    cfg.ko_boundary_floor);
+    for (int axis = 0; axis < 3; ++axis) {
+        ctx.root_printf("BC: %s\n",
+                        tensorium_RG::bssn::describe_boundary_face_mode(
+                            cfg.boundary_faces, cfg.sponge, axis, false)
+                            .c_str());
+        ctx.root_printf("BC: %s\n",
+                        tensorium_RG::bssn::describe_boundary_face_mode(
+                            cfg.boundary_faces, cfg.sponge, axis, true)
+                            .c_str());
+    }
     ctx.root_printf("MPI processes: %d\n", ctx.world_size());
     ctx.root_printf("=====================================\n\n");
 
@@ -620,6 +646,11 @@ int main(int argc, char** argv) {
     // Initialize binary puncture data
     ctx.root_printf("\nInitializing binary puncture data...\n");
     tensorium_RG::bssn::apply_boundary_faces(cfg.boundary_faces);
+    tensorium_RG::bssn::BoundaryRadiative::set_rhs_collar_width(cfg.radiative_collar_width);
+    tensorium_RG::bssn::BoundaryRadiative::set_sponge(cfg.sponge.enabled, cfg.sponge.width,
+                                                      cfg.sponge.strength, cfg.sponge.exponent);
+    tensorium_RG::bssn::configure_ko_boundary_taper(cfg.ko_boundary_width,
+                                                    cfg.ko_boundary_floor);
     initialize_binary_puncture(*grid, cfg);
     tensorium_RG::bssn::apply_boundary_faces(cfg.boundary_faces);
 

@@ -122,7 +122,7 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
                     const T source = -T(2) * alpha * (*p_A[s]);
                     const T diss =
                         KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) + KO6_axis_ptr(p_g, 1);
-                    const T diss_scaled = (ko_sigma / G.dx) * diss;
+                    const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
                     *p_rhs[s] = adv + lie_vals[s] + source + trace_vals[s] + diss_scaled;
                 }

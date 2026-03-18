@@ -134,6 +134,8 @@ inline void for_each_interior_index_parallel(const BSSNGridSoA<T> &grid, size_t 
 
 struct KOState {
     double scale = 1.0;
+    size_t boundary_width = 0;
+    double boundary_floor = 0.0;
 };
 
 inline KOState &ko_state() {
@@ -152,8 +154,47 @@ template <typename T> inline void update_ko_scale(const BSSNGridSoA<T> &, T) {
 
 inline double current_ko_scale() { return ko_state().scale; }
 
+inline void configure_ko_boundary_taper(size_t width, double floor = 0.0) {
+    auto &state = ko_state();
+    state.boundary_width = width;
+    state.boundary_floor = std::clamp(floor, 0.0, 1.0);
+}
+
+inline size_t current_ko_boundary_width() { return ko_state().boundary_width; }
+
+inline double current_ko_boundary_floor() { return ko_state().boundary_floor; }
+
 template <typename T> inline T scaled_ko_sigma(T base_sigma) {
     return base_sigma * T(current_ko_scale());
+}
+
+template <typename T>
+inline T ko_boundary_taper(const BSSNGridSoA<T> &grid, size_t i, size_t j, size_t k) {
+    const size_t width = current_ko_boundary_width();
+    if (width == 0)
+        return T(1);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    if (I0 >= I1 || J0 >= J1 || K0 >= K1)
+        return T(1);
+
+    const size_t di = std::min(i - I0, (I1 - 1) - i);
+    const size_t dj = std::min(j - J0, (J1 - 1) - j);
+    const size_t dk = std::min(k - K0, (K1 - 1) - k);
+    const size_t dist = std::min({di, dj, dk});
+    if (dist >= width)
+        return T(1);
+
+    const double x = static_cast<double>(dist) / static_cast<double>(width);
+    const double smooth = x * x * (3.0 - 2.0 * x);
+    const double floor = current_ko_boundary_floor();
+    return T(floor + (1.0 - floor) * smooth);
+}
+
+template <typename T>
+inline T local_ko_scale(const BSSNGridSoA<T> &grid, T scaled_sigma, size_t i, size_t j, size_t k) {
+    return (scaled_sigma / grid.dx) * ko_boundary_taper(grid, i, j, k);
 }
 
 inline void sym_index_to_pair(int s, int &row, int &col) {

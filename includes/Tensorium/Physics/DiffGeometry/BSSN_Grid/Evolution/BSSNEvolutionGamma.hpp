@@ -86,7 +86,6 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], const 
 
     const ptrdiff_t sx = G.alpha.st.sx;
     const ptrdiff_t sy = G.alpha.st.sy;
-    const T         ko_scale = T(ko_sigma / G.dx);
 
     auto loop_ij = [&](size_t i, size_t j) {
         size_t idx_start = G.alpha.idx(i, j, k0);
@@ -354,9 +353,10 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], const 
                 const T diss = KO6_axis_ptr(p_Gamma[comp], sx) + KO6_axis_ptr(p_Gamma[comp], sy) +
                                KO6_axis_ptr(p_Gamma[comp], 1);
 
-                *p_rhs[comp] = adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
-                               T(2) * A_grad_alpha + source + theta_drive + chi_drive + z4_k_drive +
-                               damping + ko_scale * diss;
+                *p_rhs[comp] =
+                    adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
+                    T(2) * A_grad_alpha + source + theta_drive + chi_drive + z4_k_drive +
+                    damping + local_ko_scale(G, ko_sigma, i, j, k) * diss;
             }
 
             for (int c = 0; c < 3; ++c) {

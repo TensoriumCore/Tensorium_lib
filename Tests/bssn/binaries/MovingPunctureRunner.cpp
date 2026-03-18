@@ -182,6 +182,7 @@ int main(int argc, char **argv) {
                                             : "bowen_york")
               << " seed_n=" << cfg.interp_seed_n << std::endl;
 
+    tensorium_RG::bssn::apply_boundary_configuration(cfg);
     tensorium_RG::bssn::initialize_moving_puncture_data(grid, cfg);
 
     tensorium_RG::bssn::ProjectionConfig proj_cfg;
@@ -192,21 +193,35 @@ int main(int argc, char **argv) {
     tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
     tensorium_RG::init::zero_z4c_fields(grid);
 
-    tensorium_RG::bssn::apply_boundary_faces(cfg.boundary_faces);
-    std::cout << "[bc] reflective_faces="
-              << " ix1=" << cfg.boundary_faces.rf_ix1 << " ox1=" << cfg.boundary_faces.rf_ox1
-              << " ix2=" << cfg.boundary_faces.rf_ix2 << " ox2=" << cfg.boundary_faces.rf_ox2
-              << " ix3=" << cfg.boundary_faces.rf_ix3 << " ox3=" << cfg.boundary_faces.rf_ox3
-              << std::endl;
-    std::cout << "[bc] rhs_sommerfeld_faces="
-              << " ix1=" << cfg.boundary_faces.rhs_ix1 << " ox1=" << cfg.boundary_faces.rhs_ox1
-              << " ix2=" << cfg.boundary_faces.rhs_ix2 << " ox2=" << cfg.boundary_faces.rhs_ox2
-              << " ix3=" << cfg.boundary_faces.rhs_ix3 << " ox3=" << cfg.boundary_faces.rhs_ox3
-              << std::endl;
+    auto params = cfg.gauge_params;
+    const auto bc_char =
+        tensorium_RG::bssn::configure_boundary_characteristics_from_state(grid, cfg, params);
+
+    std::cout << "[bc] allow_reflective=" << cfg.allow_reflective_bc
+              << " fail_on_gauge_bc_mismatch=" << cfg.fail_on_gauge_bc_mismatch
+              << " sponge_enable=" << cfg.sponge.enabled
+              << " sponge_width=" << cfg.sponge.width
+              << " sponge_strength=" << cfg.sponge.strength
+              << " sponge_exponent=" << cfg.sponge.exponent
+              << " radiative_collar_width=" << cfg.radiative_collar_width
+              << " ko_boundary_width=" << cfg.ko_boundary_width
+              << " ko_boundary_floor=" << cfg.ko_boundary_floor << std::endl;
+    for (int axis = 0; axis < 3; ++axis) {
+        std::cout << "[bc] "
+                  << tensorium_RG::bssn::describe_boundary_face_mode(
+                         cfg.boundary_faces, cfg.sponge, axis, false)
+                  << std::endl;
+        std::cout << "[bc] "
+                  << tensorium_RG::bssn::describe_boundary_face_mode(
+                         cfg.boundary_faces, cfg.sponge, axis, true)
+                  << std::endl;
+    }
+    tensorium_RG::bssn::report_boundary_characteristics(
+        params, cfg.fail_on_gauge_bc_mismatch, bc_char);
 
     tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
         grid, cfg.padding);
-    stepper.set_gauge_parameters(cfg.gauge_params);
+    stepper.set_gauge_parameters(params);
     stepper.set_state_log_stride(output_stride);
     std::cout << "[log] state_log_stride=" << output_stride << std::endl;
     std::cout << "[viz] slice_export_stride=" << slice_export_stride << std::endl;

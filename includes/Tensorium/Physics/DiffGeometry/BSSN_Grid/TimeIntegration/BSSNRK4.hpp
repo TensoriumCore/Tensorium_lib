@@ -61,11 +61,25 @@ template <typename Boundary, typename = void> struct BoundaryConfigurator {
     static inline void set_characteristic(double, double) {}
 };
 
+template <typename Boundary, typename = void> struct BoundaryFieldSpeedConfigurator {
+    static inline void set(double, double, double) {}
+};
+
 template <typename Boundary>
 struct BoundaryConfigurator<Boundary, std::void_t<decltype(Boundary::set_characteristic(
                                      std::declval<double>(), std::declval<double>()))>> {
     static inline void set_characteristic(double speed, double dt) {
         Boundary::set_characteristic(speed, dt);
+    }
+};
+
+template <typename Boundary>
+struct BoundaryFieldSpeedConfigurator<
+    Boundary, std::void_t<decltype(Boundary::set_field_characteristic_speeds(
+                  std::declval<double>(), std::declval<double>(),
+                  std::declval<double>()))>> {
+    static inline void set(double gauge_speed, double z4c_speed, double khat_speed) {
+        Boundary::set_field_characteristic_speeds(gauge_speed, z4c_speed, khat_speed);
     }
 };
 
@@ -124,7 +138,7 @@ struct RHSBoundaryFaceMask {
 
 template <typename GridType, typename T>
 inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rhs,
-                                   const RHSBoundaryFaceMask &mask) {
+                                   const RHSBoundaryFaceMask &mask, size_t collar_width = 1) {
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
     const size_t i0 = I0;
@@ -136,6 +150,7 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
 
     if (i0 >= i1 || j0 >= j1 || k0 >= k1)
         return;
+    collar_width = std::max<size_t>(size_t(1), collar_width);
 
     const T inv_2dx = T(0.5) / grid.dx;
     const T inv_2dy = T(0.5) / grid.dy;
@@ -144,21 +159,18 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
     const T inv_dy = T(1) / grid.dy;
     const T inv_dz = T(1) / grid.dz;
     const T inv_r_floor = T(1e-12);
-    const T sqrt2 = std::sqrt(T(2));
-
 #pragma omp parallel for collapse(3)
     for (size_t i = i0; i < i1; ++i) {
         for (size_t j = j0; j < j1; ++j) {
             for (size_t k = k0; k < k1; ++k) {
-                const bool on_ix1 = (i == i0) && mask.enabled(0, false);
-                const bool on_ox1 = (i + 1 == i1) && mask.enabled(0, true);
-                const bool on_ix2 = (j == j0) && mask.enabled(1, false);
-                const bool on_ox2 = (j + 1 == j1) && mask.enabled(1, true);
-                const bool on_ix3 = (k == k0) && mask.enabled(2, false);
-                const bool on_ox3 = (k + 1 == k1) && mask.enabled(2, true);
-                const bool on_surface =
-                    on_ix1 || on_ox1 || on_ix2 || on_ox2 || on_ix3 || on_ox3;
-                if (!on_surface)
+                const bool in_ix1 = mask.enabled(0, false) && (i - i0 < collar_width);
+                const bool in_ox1 = mask.enabled(0, true) && (i1 - 1 - i < collar_width);
+                const bool in_ix2 = mask.enabled(1, false) && (j - j0 < collar_width);
+                const bool in_ox2 = mask.enabled(1, true) && (j1 - 1 - j < collar_width);
+                const bool in_ix3 = mask.enabled(2, false) && (k - k0 < collar_width);
+                const bool in_ox3 = mask.enabled(2, true) && (k1 - 1 - k < collar_width);
+                const bool in_collar = in_ix1 || in_ox1 || in_ix2 || in_ox2 || in_ix3 || in_ox3;
+                if (!in_collar)
                     continue;
 
                 const size_t id = grid.alpha.idx(i, j, k);
@@ -182,37 +194,129 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     return (p[stride] - p[-stride]) * inv_2h;
                 };
 
-                auto radial_derivative = [&](const Field3D<T> &f) -> T {
-                    const T dfx = deriv_axis(f, f.st.sx, i, i0, i1, inv_dx, inv_2dx);
-                    const T dfy = deriv_axis(f, f.st.sy, j, j0, j1, inv_dy, inv_2dy);
-                    const T dfz = deriv_axis(f, 1, k, k0, k1, inv_dz, inv_2dz);
-                    return sx * dfx + sy * dfy + sz * dfz;
+                auto normal_derivative = [&](const Field3D<T> &f, int axis, bool outer) -> T {
+                    const T *p = f.ptr() + id;
+                    const ptrdiff_t stride = (axis == 0) ? f.st.sx : (axis == 1 ? f.st.sy : ptrdiff_t(1));
+                    const size_t pos = (axis == 0) ? i : (axis == 1 ? j : k);
+                    const size_t lo = (axis == 0) ? i0 : (axis == 1 ? j0 : k0);
+                    const size_t hi = (axis == 0) ? i1 : (axis == 1 ? j1 : k1);
+                    const T inv_h = (axis == 0) ? inv_dx : (axis == 1 ? inv_dy : inv_dz);
+                    const T inv_2h = (axis == 0) ? inv_2dx : (axis == 1 ? inv_2dy : inv_2dz);
+
+                    if (!outer) {
+                        if (pos == lo && lo + 2 < hi)
+                            return -((-T(1.5) * p[0] + T(2) * p[stride] -
+                                      T(0.5) * p[2 * stride]) *
+                                     inv_h);
+                    } else if (pos + 1 == hi && lo + 2 < hi) {
+                        return (T(1.5) * p[0] - T(2) * p[-stride] + T(0.5) * p[-2 * stride]) *
+                               inv_h;
+                    }
+
+                    return (outer ? T(1) : T(-1)) * (p[stride] - p[-stride]) * inv_2h;
                 };
 
-                auto outgoing_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
-                                        T speed = T(1)) -> T {
-                    const T u0 = u.ptr()[id];
-                    return -speed * (radial_derivative(u) + (u0 - asymptotic) * inv_r);
+                T accum_alpha = T(0);
+                T accum_chi = T(0);
+                T accum_K = T(0);
+                T accum_Theta = T(0);
+                T accum_beta[3] = {T(0), T(0), T(0)};
+                T accum_B[3] = {T(0), T(0), T(0)};
+                T accum_tildeGamma[3] = {T(0), T(0), T(0)};
+                T accum_Z[3] = {T(0), T(0), T(0)};
+                T accum_gamma_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
+                T accum_A_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
+                int face_count = 0;
+
+                auto accumulate_face = [&](int axis, bool outer) {
+                    auto outgoing_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
+                                            T speed = T(1)) -> T {
+                        const T u0 = u.ptr()[id];
+                        return -speed * (normal_derivative(u, axis, outer) +
+                                         (u0 - asymptotic) * inv_r);
+                    };
+
+                    ++face_count;
+                    accum_alpha += outgoing_rhs(
+                        grid.alpha,
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Alpha, 0)),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Alpha)));
+                    accum_chi += outgoing_rhs(
+                        grid.chi,
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Chi, 0)),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Chi)));
+
+                    for (int a = 0; a < 3; ++a) {
+                        accum_beta[a] += outgoing_rhs(
+                            grid.beta[a],
+                            T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Beta,
+                                                                            a)),
+                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Beta)));
+                        accum_B[a] += outgoing_rhs(
+                            grid.B[a],
+                            T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::B, a)),
+                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::B)));
+                        accum_tildeGamma[a] += outgoing_rhs(
+                            grid.tildeGamma[a], T(0),
+                            T(BoundaryRadiative::characteristic_speed_for(
+                                BoundaryField::TildeGamma)));
+                        accum_Z[a] += outgoing_rhs(
+                            grid.Z[a], T(0),
+                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Z)));
+                    }
+
+                    for (int s = 0; s < 6; ++s) {
+                        accum_gamma_tilde[s] += outgoing_rhs(
+                            grid.gamma_tilde[s],
+                            T(tensorium_RG::bssn::detail::minkowski_target(
+                                BoundaryField::GammaTilde, s)),
+                            T(BoundaryRadiative::characteristic_speed_for(
+                                BoundaryField::GammaTilde)));
+                        accum_A_tilde[s] += outgoing_rhs(
+                            grid.A_tilde[s], T(0),
+                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::ATilde)));
+                    }
+
+                    accum_Theta += outgoing_rhs(
+                        grid.Theta, T(0),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Theta)));
+                    const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
+                    const T d_khat =
+                        normal_derivative(grid.K, axis, outer) -
+                        T(2) * normal_derivative(grid.Theta, axis, outer);
+                    const T khat_speed =
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::K));
+                    accum_K += -khat_speed * (d_khat + khat * inv_r);
                 };
 
-                auto outgoing_rhs_value = [&](T value, T radial, T asymptotic = T(0),
-                                              T speed = T(1)) -> T {
-                    return -speed * (radial + (value - asymptotic) * inv_r);
-                };
+                if (in_ix1)
+                    accumulate_face(0, false);
+                if (in_ox1)
+                    accumulate_face(0, true);
+                if (in_ix2)
+                    accumulate_face(1, false);
+                if (in_ox2)
+                    accumulate_face(1, true);
+                if (in_ix3)
+                    accumulate_face(2, false);
+                if (in_ox3)
+                    accumulate_face(2, true);
 
-                // Athenak-style RHS boundary treatment applies only to the
-                // constraint-carrying Z4c subsystem: Theta/Khat/Gamma/A.
-                rhs.Theta.ptr()[id] = outgoing_rhs(grid.Theta, T(0), T(1));
-                const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
-                const T d_khat = radial_derivative(grid.K) - T(2) * radial_derivative(grid.Theta);
-                rhs.K.ptr()[id] = outgoing_rhs_value(khat, d_khat, T(0), sqrt2);
-
+                const T inv_faces = T(1) / T(face_count);
+                rhs.alpha.ptr()[id] = accum_alpha * inv_faces;
+                rhs.chi.ptr()[id] = accum_chi * inv_faces;
+                rhs.K.ptr()[id] = accum_K * inv_faces;
+                rhs.Theta.ptr()[id] = accum_Theta * inv_faces;
                 for (int a = 0; a < 3; ++a) {
-                    rhs.tildeGamma[a].ptr()[id] = outgoing_rhs(grid.tildeGamma[a], T(0), T(1));
+                    rhs.beta[a].ptr()[id] = accum_beta[a] * inv_faces;
+                    rhs.B[a].ptr()[id] = accum_B[a] * inv_faces;
+                    rhs.tildeGamma[a].ptr()[id] = accum_tildeGamma[a] * inv_faces;
+                    rhs.Z[a].ptr()[id] = accum_Z[a] * inv_faces;
                 }
-
-                for (int s = 0; s < 6; ++s)
-                    rhs.A_tilde[s].ptr()[id] = outgoing_rhs(grid.A_tilde[s], T(0), T(1));
+                for (int s = 0; s < 6; ++s) {
+                    rhs.gamma_tilde[s].ptr()[id] = accum_gamma_tilde[s] * inv_faces;
+                    rhs.A_tilde[s].ptr()[id] = accum_A_tilde[s] * inv_faces;
+                }
             }
         }
     }
@@ -539,6 +643,12 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
   private:
+    size_t evolution_padding() const {
+        if constexpr (std::is_same_v<Boundary, BoundaryRadiative>)
+            return 0;
+        return padding_;
+    }
+
     size_t                                                                      padding_ = 4;
     GaugeParameters<T>                                                          gauge_params_{};
     BSSNRHSWorkspace<T>                                                         stages_[4];
@@ -667,6 +777,10 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
     void configure_boundary_characteristics() {
         constexpr double default_wave_speed = 1.0;
+        BoundaryFieldSpeedConfigurator<Boundary>::set(
+            double(gauge_params_.boundary_gauge_characteristic_speed),
+            double(gauge_params_.boundary_z4c_characteristic_speed),
+            double(gauge_params_.boundary_khat_characteristic_speed));
         BoundaryConfigurator<Boundary>::set_characteristic(default_wave_speed,
                                                            double(boundary_dt_));
     }
@@ -686,11 +800,12 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if (rhs_prep_callback_)
             rhs_prep_callback_(rhs);
         update_ko_scale(grid, boundary_dt_);
+        const size_t rhs_padding = evolution_padding();
         evaluate_rhs_sweep_core(grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B,
                                 rhs.gamma_tilde, rhs.A_tilde, rhs.tildeGamma, rhs.Z, params,
-                                padding_, &theta_ricciz4_trace_cache_);
+                                rhs_padding, &theta_ricciz4_trace_cache_);
         apply_rhs_sommerfeld(grid, rhs);
-        recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, padding_);
+        recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, rhs_padding);
     }
 
     void apply_rhs_sommerfeld(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
@@ -701,12 +816,15 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
         RHSBoundaryFaceMask mask{};
         for (int axis = 0; axis < 3; ++axis) {
-            mask.face[axis][0] = BoundaryRadiative::rhs_sommerfeld_enabled(axis, false) &&
+            mask.face[axis][0] = BoundaryRadiative::active_enabled(axis, false) &&
+                                 BoundaryRadiative::rhs_sommerfeld_enabled(axis, false) &&
                                  !BoundaryRadiative::reflective_enabled(axis, false);
-            mask.face[axis][1] = BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
+            mask.face[axis][1] = BoundaryRadiative::active_enabled(axis, true) &&
+                                 BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
                                  !BoundaryRadiative::reflective_enabled(axis, true);
         }
-        tensorium_RG::bssn::apply_z4c_rhs_boundary(grid, rhs, mask);
+        tensorium_RG::bssn::apply_z4c_rhs_boundary(
+            grid, rhs, mask, BoundaryRadiative::rhs_collar());
     }
 
     void log_gauge_diagnostics(const BSSNGridSoA<T> &grid, size_t step_index) {
@@ -788,18 +906,20 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     void copy_scalar_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &src, Field3D<T> &dst) {
         const T *in = src.ptr();
         T       *out = dst.ptr();
-        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            out[idx] = in[idx];
-        });
+        for_each_interior_index_parallel(grid, evolution_padding(),
+                                         [&](size_t, size_t, size_t, size_t idx) {
+                                             out[idx] = in[idx];
+                                         });
     }
 
     void add_scaled_scalar_interior(const BSSNGridSoA<T> &grid, const Field3D<T> &src,
                                     Field3D<T> &dst, T scale) {
         const T *in = src.ptr();
         T       *out = dst.ptr();
-        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            out[idx] += scale * in[idx];
-        });
+        for_each_interior_index_parallel(grid, evolution_padding(),
+                                         [&](size_t, size_t, size_t, size_t idx) {
+                                             out[idx] += scale * in[idx];
+                                         });
     }
 
     void update_scalar_interior(const BSSNGridSoA<T> &grid, Field3D<T> &u0, const Field3D<T> &u1,
@@ -807,9 +927,11 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         T       *out = u0.ptr();
         const T *base = u1.ptr();
         const T *k = rhs.ptr();
-        for_each_interior_index_parallel(grid, padding_, [&](size_t, size_t, size_t, size_t idx) {
-            out[idx] = gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
-        });
+        for_each_interior_index_parallel(grid, evolution_padding(),
+                                         [&](size_t, size_t, size_t, size_t idx) {
+                                             out[idx] =
+                                                 gam0 * out[idx] + gam1 * base[idx] + beta_dt * k[idx];
+                                         });
     }
 
     void copy_stage_reference(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst) {

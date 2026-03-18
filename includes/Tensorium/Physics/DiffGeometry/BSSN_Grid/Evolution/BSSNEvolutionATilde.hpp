@@ -75,7 +75,6 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
     constexpr int map_s[3][3] = {{XX, XY, XZ}, {XY, YY, YZ}, {XZ, YZ, ZZ}};
     constexpr int sym_row[6] = {0, 0, 0, 1, 1, 2};
     constexpr int sym_col[6] = {0, 1, 2, 1, 2, 2};
-    const T       ko_scale = T(ko_sigma / G.dx);
 
     auto loop_ij = [&](size_t i, size_t j) {
 
@@ -294,7 +293,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                             alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
                         const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
                                        KO6_axis_ptr(p_field, 1);
-                        const T diss_scaled = ko_scale * diss;
+                        const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
                         *p_rhs[s] = adv + lie + term_geom + term_quad + diss_scaled;
                     }

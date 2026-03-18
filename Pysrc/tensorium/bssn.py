@@ -185,8 +185,11 @@ def _env_float(name: str, default: float) -> float:
     raw = os.getenv(name)
     if raw is None:
         return default
+    normalized = raw.strip()
+    if "," in normalized:
+        normalized = normalized.replace(",", ".")
     try:
-        return float(raw)
+        return float(normalized)
     except ValueError:
         return default
 
@@ -257,19 +260,51 @@ def run_moving_puncture_interpolate_from_env() -> tuple[BSSNGrid, float]:
     project_state(grid)
     zero_z4c_fields(grid)
 
+    rhs_ix1 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX1", True)
+    rhs_ox1 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX1", True)
+    rhs_ix2 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX2", True)
+    rhs_ox2 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX2", True)
+    rhs_ix3 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX3", True)
+    rhs_ox3 = _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX3", True)
+    rf_ix1 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX1", False)
+    rf_ox1 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX1", False)
+    rf_ix2 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX2", False)
+    rf_ox2 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX2", False)
+    rf_ix3 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX3", False)
+    rf_ox3 = _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX3", False)
+    allow_reflective = _env_bool("TENSORIUM_MOVING_PUNCTURE_ALLOW_REFLECTIVE_BC", False)
+
+    face_data = [
+        ("ix1", rhs_ix1, rf_ix1),
+        ("ox1", rhs_ox1, rf_ox1),
+        ("ix2", rhs_ix2, rf_ix2),
+        ("ox2", rhs_ox2, rf_ox2),
+        ("ix3", rhs_ix3, rf_ix3),
+        ("ox3", rhs_ox3, rf_ox3),
+    ]
+    for name, rhs_enabled, reflective in face_data:
+        if reflective and not allow_reflective:
+            raise RuntimeError(
+                f"Reflective moving-puncture boundary requested on {name}. "
+                "Set TENSORIUM_MOVING_PUNCTURE_ALLOW_REFLECTIVE_BC=1 to opt in explicitly."
+            )
+
+    if rf_ix1:
+        rhs_ix1 = False
+    if rf_ox1:
+        rhs_ox1 = False
+    if rf_ix2:
+        rhs_ix2 = False
+    if rf_ox2:
+        rhs_ox2 = False
+    if rf_ix3:
+        rhs_ix3 = False
+    if rf_ox3:
+        rhs_ox3 = False
+
     set_boundary_faces(
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX1", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX1", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX2", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX2", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_IX3", False),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_RHS_SOMMERFELD_OX3", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX1", False),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX1", False),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX2", False),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX2", False),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_IX3", True),
-        _env_bool("TENSORIUM_MOVING_PUNCTURE_REFLECTIVE_OX3", False),
+        rhs_ix1, rhs_ox1, rhs_ix2, rhs_ox2, rhs_ix3, rhs_ox3,
+        rf_ix1, rf_ox1, rf_ix2, rf_ox2, rf_ix3, rf_ox3,
     )
 
     params = GaugeParameters()

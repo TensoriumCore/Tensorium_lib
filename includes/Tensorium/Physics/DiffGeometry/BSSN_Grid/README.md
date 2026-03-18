@@ -502,3 +502,18 @@ That is the authoritative behavior for current Tensorium runs.
   TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE=2 \
   ./build/Tests/TensoriumTests --test bssn.viz.moving_puncture_interpolate
 ```
+
+Moving-puncture boundary safety knobs:
+
+- `TENSORIUM_MOVING_PUNCTURE_ALLOW_REFLECTIVE_BC=1` is now required to opt into reflective faces.
+- `TENSORIUM_MOVING_PUNCTURE_FAIL_ON_GAUGE_BC_MISMATCH=1` turns the boundary characteristic
+  warning into a hard error when a face has no radiative gauge-speed budget.
+- `TENSORIUM_MOVING_PUNCTURE_ENABLE_SPONGE=0/1` toggles the outer sponge layer.
+- `TENSORIUM_MOVING_PUNCTURE_SPONGE_WIDTH`, `..._SPONGE_STRENGTH`, `..._SPONGE_EXPONENT`
+  tune the damping profile.
+- `TENSORIUM_MOVING_PUNCTURE_RADIATIVE_COLLAR_WIDTH` controls how many physical layers near each
+  radiative face are overwritten by the outgoing RHS collar instead of using ghost-fed bulk RHS.
+- `TENSORIUM_MOVING_PUNCTURE_KO_BOUNDARY_WIDTH` and `..._KO_BOUNDARY_FLOOR` taper KO near the
+  boundary to avoid filtering directly on radiative ghost closures.
+- Moving-puncture runners also log `[bc.char]` summaries that estimate face-wise gauge speeds
+  from the initial lapse profile and compare them to the configured radiative budget.

@@ -63,12 +63,15 @@ void compute_ricci_bssn_region_impl(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_
     size_t I0, I1, J0, J1, K0, K1;
     G.domain_bounds(I0, I1, J0, J1, K0, K1);
 
-    const size_t ri0 = std::min(I0 + 3, I1);
-    const size_t rj0 = std::min(J0 + 3, J1);
-    const size_t rk0 = std::min(K0 + 3, K1);
-    const size_t ri1 = (I1 > 3) ? I1 - 3 : I0;
-    const size_t rj1 = (J1 > 3) ? J1 - 3 : J0;
-    const size_t rk1 = (K1 > 3) ? K1 - 3 : K0;
+    // Ghost cells are already filled before Ricci evaluation, so the finite-difference
+    // stencil remains valid all the way to the physical faces. Leaving an extra dead
+    // collar here feeds stale curvature data into the first evolved shells.
+    const size_t ri0 = I0;
+    const size_t rj0 = J0;
+    const size_t rk0 = K0;
+    const size_t ri1 = I1;
+    const size_t rj1 = J1;
+    const size_t rk1 = K1;
 
     const size_t i0 = std::max(region_i0, ri0);
     const size_t j0 = std::max(region_j0, rj0);

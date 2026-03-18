@@ -37,6 +37,13 @@ enum class BoundaryField {
 
 namespace detail {
 
+struct SpongeProfileConfig {
+    bool enabled = false;
+    size_t width = 0;
+    double strength = 0.0;
+    double exponent = 2.0;
+};
+
 template <typename Boundary, typename T>
 inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                            int component) {
@@ -96,6 +103,7 @@ inline double minkowski_target(BoundaryField which, int component) {
     case BoundaryField::Alpha:
     case BoundaryField::Chi:
         return 1.0;
+    case BoundaryField::K:
     case BoundaryField::Beta:
     case BoundaryField::B:
     case BoundaryField::TildeGamma:
@@ -113,6 +121,79 @@ inline double minkowski_target(BoundaryField which, int component) {
     }
 }
 
+template <typename T>
+inline void apply_sponge_layer(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
+                               int component, const SpongeProfileConfig &cfg, double dt_scale,
+                               const bool (&active_face)[3][2], const bool (&reflective_face)[3][2]) {
+    if (!cfg.enabled || cfg.width == 0 || cfg.strength <= 0.0 || dt_scale <= 0.0)
+        return;
+    if (which == BoundaryField::GammaTildeInverse)
+        return;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    if (I0 >= I1 || J0 >= J1 || K0 >= K1)
+        return;
+
+    const double asymptotic = minkowski_target(which, component);
+    const double exponent = std::max(cfg.exponent, 1.0);
+    T           *ptr = field.ptr();
+
+    auto blend = [&](size_t idx, size_t layer) {
+        if (layer >= cfg.width)
+            return;
+        const double remaining =
+            static_cast<double>(cfg.width - layer) / static_cast<double>(cfg.width);
+        const double profile = std::pow(remaining, exponent);
+        const double lambda = std::clamp(cfg.strength * dt_scale * profile, 0.0, 1.0);
+        if (lambda <= 0.0)
+            return;
+        const double current = static_cast<double>(ptr[idx]);
+        ptr[idx] = static_cast<T>(current + lambda * (asymptotic - current));
+    };
+
+    const size_t width_x = std::min(cfg.width, I1 - I0);
+    const size_t width_y = std::min(cfg.width, J1 - J0);
+    const size_t width_z = std::min(cfg.width, K1 - K0);
+
+    if (active_face[0][0] && !reflective_face[0][0]) {
+        for (size_t layer = 0; layer < width_x; ++layer)
+            for (size_t j = J0; j < J1; ++j)
+                for (size_t k = K0; k < K1; ++k)
+                    blend(field.idx(I0 + layer, j, k), layer);
+    }
+    if (active_face[0][1] && !reflective_face[0][1]) {
+        for (size_t layer = 0; layer < width_x; ++layer)
+            for (size_t j = J0; j < J1; ++j)
+                for (size_t k = K0; k < K1; ++k)
+                    blend(field.idx(I1 - 1 - layer, j, k), layer);
+    }
+    if (active_face[1][0] && !reflective_face[1][0]) {
+        for (size_t layer = 0; layer < width_y; ++layer)
+            for (size_t i = I0; i < I1; ++i)
+                for (size_t k = K0; k < K1; ++k)
+                    blend(field.idx(i, J0 + layer, k), layer);
+    }
+    if (active_face[1][1] && !reflective_face[1][1]) {
+        for (size_t layer = 0; layer < width_y; ++layer)
+            for (size_t i = I0; i < I1; ++i)
+                for (size_t k = K0; k < K1; ++k)
+                    blend(field.idx(i, J1 - 1 - layer, k), layer);
+    }
+    if (active_face[2][0] && !reflective_face[2][0]) {
+        for (size_t layer = 0; layer < width_z; ++layer)
+            for (size_t i = I0; i < I1; ++i)
+                for (size_t j = J0; j < J1; ++j)
+                    blend(field.idx(i, j, K0 + layer), layer);
+    }
+    if (active_face[2][1] && !reflective_face[2][1]) {
+        for (size_t layer = 0; layer < width_z; ++layer)
+            for (size_t i = I0; i < I1; ++i)
+                for (size_t j = J0; j < J1; ++j)
+                    blend(field.idx(i, j, K1 - 1 - layer), layer);
+    }
+}
+
 } // namespace detail
 
 struct BoundaryClamp {
@@ -126,8 +207,23 @@ struct BoundaryClamp {
 };
 
 struct BoundarySponge {
+    inline static detail::SpongeProfileConfig sponge_config{true, 8, 1.0, 2.0};
+
+    static inline void set_sponge(bool enabled, size_t width, double strength, double exponent = 2.0) {
+        sponge_config.enabled = enabled;
+        sponge_config.width = width;
+        sponge_config.strength = std::max(strength, 0.0);
+        sponge_config.exponent = std::max(exponent, 1.0);
+    }
+
     template <typename T>
-    static inline void apply_physical(Field3D<T> &, const BSSNGridSoA<T> &, BoundaryField, int) {}
+    static inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
+                                      int component) {
+        constexpr bool active[3][2] = {{true, true}, {true, true}, {true, true}};
+        constexpr bool reflective[3][2] = {{false, false}, {false, false}, {false, false}};
+        detail::apply_sponge_layer(field, G, which, component, sponge_config, 1.0, active,
+                                   reflective);
+    }
 
     template <typename T>
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField, int) {
@@ -138,6 +234,10 @@ struct BoundarySponge {
 struct BoundaryRadiative {
     inline static double characteristic_speed = 1.0;
     inline static double characteristic_dt = 0.0;
+    inline static double gauge_characteristic_speed = 1.0;
+    inline static double z4c_characteristic_speed = 1.0;
+    inline static double khat_characteristic_speed = 1.4142135623730951;
+    inline static size_t rhs_collar_width = 4;
     // Per-face mask for RHS Sommerfeld-style boundary updates:
     // [axis][side], side=0 -> inner, side=1 -> outer.
     inline static bool rhs_sommerfeld_face[3][2] = {{true, true}, {true, true}, {true, true}};
@@ -146,10 +246,53 @@ struct BoundaryRadiative {
     // Per-face activity mask. In MPI, internal interfaces must be skipped entirely after halo
     // exchange so exchanged ghosts are not overwritten by fallback outflow copies.
     inline static bool active_face[3][2] = {{true, true}, {true, true}, {true, true}};
+    inline static detail::SpongeProfileConfig sponge_config{};
 
     static inline void set_characteristic(double speed, double dt) {
         characteristic_speed = std::max(speed, 1.0e-6);
         characteristic_dt = std::max(dt, 0.0);
+    }
+
+    static inline void set_field_characteristic_speeds(double gauge_speed, double z4c_speed = 1.0,
+                                                       double khat_speed = 1.4142135623730951) {
+        gauge_characteristic_speed = std::max(gauge_speed, 1.0e-6);
+        z4c_characteristic_speed = std::max(z4c_speed, 1.0e-6);
+        khat_characteristic_speed = std::max(khat_speed, 1.0e-6);
+    }
+
+    static inline void set_rhs_collar_width(size_t width) {
+        rhs_collar_width = std::max<size_t>(size_t(1), width);
+    }
+
+    [[nodiscard]] static inline size_t rhs_collar() { return rhs_collar_width; }
+
+    [[nodiscard]] static inline double characteristic_speed_for(BoundaryField which) {
+        switch (which) {
+        case BoundaryField::Alpha:
+        case BoundaryField::Chi:
+        case BoundaryField::Beta:
+        case BoundaryField::B:
+        case BoundaryField::GammaTilde:
+            return gauge_characteristic_speed;
+        case BoundaryField::K:
+            return khat_characteristic_speed;
+        case BoundaryField::Theta:
+        case BoundaryField::TildeGamma:
+        case BoundaryField::ATilde:
+        case BoundaryField::Z:
+            return z4c_characteristic_speed;
+        case BoundaryField::GammaTildeInverse:
+        default:
+            return characteristic_speed;
+        }
+    }
+
+    static inline void set_sponge(bool enabled, size_t width, double strength,
+                                  double exponent = 2.0) {
+        sponge_config.enabled = enabled;
+        sponge_config.width = width;
+        sponge_config.strength = std::max(strength, 0.0);
+        sponge_config.exponent = std::max(exponent, 1.0);
     }
 
     static inline void set_rhs_sommerfeld_faces(bool ix1, bool ox1, bool ix2, bool ox2, bool ix3,
@@ -260,29 +403,34 @@ struct BoundaryRadiative {
         }
     }
 
+    static inline bool use_sommerfeld_halo(BoundaryField which) {
+        switch (which) {
+        case BoundaryField::GammaTildeInverse:
+            return false;
+        default:
+            return true;
+        }
+    }
+
     template <typename T>
-    static inline void apply_physical(Field3D<T> &, const BSSNGridSoA<T> &, BoundaryField, int) {}
+    static inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G,
+                                      BoundaryField which, int component) {
+        // A smooth sponge layer damps the outer shell without pinning the physical boundary cell
+        // to an exact Dirichlet value. The dedicated RHS operator still handles the outgoing
+        // characteristic update on the boundary surface itself.
+        detail::apply_sponge_layer(field, G, which, component, sponge_config, characteristic_dt,
+                                   active_face, reflective_face);
+    }
 
     template <typename T>
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                                   int component) {
         enum class HaloMode { Sommerfeld, Outflow, LinearExtrapolate, Skip };
-        HaloMode mode = HaloMode::Sommerfeld;
-        switch (which) {
-        case BoundaryField::K:
-        case BoundaryField::Theta:
-        case BoundaryField::TildeGamma:
-        case BoundaryField::ATilde:
-        case BoundaryField::Z:
-            mode = HaloMode::LinearExtrapolate;
-            break;
-        case BoundaryField::GammaTildeInverse:
+        HaloMode mode = HaloMode::Outflow;
+        if (which == BoundaryField::GammaTildeInverse)
             mode = HaloMode::Skip;
-            break;
-        default:
+        else if (use_sommerfeld_halo(which))
             mode = HaloMode::Sommerfeld;
-            break;
-        }
         if (mode == HaloMode::Skip)
             return;
 
@@ -315,7 +463,7 @@ struct BoundaryRadiative {
             double u_ib = double(ptr[ib]);
             double du = u_ib - u_inf;
             const double dt_wave = characteristic_dt;
-            const double c_wave = characteristic_speed;
+            const double c_wave = characteristic_speed_for(which);
             double denom = r_ob;
             if (dt_wave > 0.0)
                 denom += c_wave * dt_wave;

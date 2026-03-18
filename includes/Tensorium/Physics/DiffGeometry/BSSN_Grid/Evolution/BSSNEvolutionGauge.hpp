@@ -58,6 +58,9 @@ template <typename T> struct GaugeParameters {
     bool frozen_Z_is_synced = false;      ///< Compatibility flag for callers that explicitly synchronize Z_i from Gamma.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
     bool apply_rhs_sommerfeld = false;    ///< Apply Sommerfeld-like RHS corrections near boundaries.
+    T boundary_gauge_characteristic_speed = T(1); ///< Gauge/metric radiative BC speed used in halo and collar updates.
+    T boundary_z4c_characteristic_speed = T(1);   ///< Theta/Gamma/A/Z radiative BC speed.
+    T boundary_khat_characteristic_speed = T(1.4142135623730951); ///< Khat radiative BC speed.
 
     inline T effective_eta() const noexcept {
         const T scale = std::max(mass_scale, std::numeric_limits<T>::epsilon());
@@ -157,7 +160,7 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
 
             const T diss = KO6_axis_ptr(p_alpha, sx) + KO6_axis_ptr(p_alpha, sy) +
                            KO6_axis_ptr(p_alpha, 1);
-            const T diss_scaled = (ko_sigma / G.dx) * diss;
+            const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss;
 
             const T lapse_K = use_theta ? Khat(K, theta) : K;
             const T f = params.lapse_oplog * params.lapse_harmonicf + params.lapse_harmonic * alpha;
@@ -292,7 +295,7 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 T rhs0 = params.shift_Gamma * gamma0 + params.shift_advect * adv0 - shift_eta * (*p_beta0);
                 rhs0 += params.shift_alpha2Gamma * alpha * alpha * gamma0;
                 rhs0 += params.shift_H * alpha * chi * gauge0;
-                *p_rhs0 = rhs0 + (ko_sigma / G.dx) * diss0;
+                *p_rhs0 = rhs0 + local_ko_scale(G, ko_sigma, i, j, k) * diss0;
 
                 // comp = 1
                 const T *p_f1 = p_beta1;
@@ -305,7 +308,7 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 T rhs1 = params.shift_Gamma * gamma1 + params.shift_advect * adv1 - shift_eta * (*p_beta1);
                 rhs1 += params.shift_alpha2Gamma * alpha * alpha * gamma1;
                 rhs1 += params.shift_H * alpha * chi * gauge1;
-                *p_rhs1 = rhs1 + (ko_sigma / G.dx) * diss1;
+                *p_rhs1 = rhs1 + local_ko_scale(G, ko_sigma, i, j, k) * diss1;
 
                 // comp = 2
                 const T *p_f2 = p_beta2;
@@ -318,7 +321,7 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 T rhs2 = params.shift_Gamma * gamma2 + params.shift_advect * adv2 - shift_eta * (*p_beta2);
                 rhs2 += params.shift_alpha2Gamma * alpha * alpha * gamma2;
                 rhs2 += params.shift_H * alpha * chi * gauge2;
-                *p_rhs2 = rhs2 + (ko_sigma / G.dx) * diss2;
+                *p_rhs2 = rhs2 + local_ko_scale(G, ko_sigma, i, j, k) * diss2;
 
                 ++p_beta0;
                 ++p_beta1;
@@ -403,9 +406,10 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                 const T diss2 =
                     KO6_axis_ptr(p_beta2, sx) + KO6_axis_ptr(p_beta2, sy) + KO6_axis_ptr(p_beta2, 1);
 
-                const T diss0_scaled = (ko_sigma / G.dx) * diss0;
-                const T diss1_scaled = (ko_sigma / G.dx) * diss1;
-                const T diss2_scaled = (ko_sigma / G.dx) * diss2;
+                const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
+                const T diss0_scaled = ko_scale * diss0;
+                const T diss1_scaled = ko_scale * diss1;
+                const T diss2_scaled = ko_scale * diss2;
 
                 *p_rhs0 = params.beta_B_coeff * (*p_B0) + params.shift_advect * adv0 + diss0_scaled;
                 *p_rhs1 = params.beta_B_coeff * (*p_B1) + params.shift_advect * adv1 + diss1_scaled;
@@ -417,9 +421,10 @@ inline void compute_rhs_beta(const BSSNGridSoA<T> &G, Field3D<T> rhs[3],
                     KO6_axis_ptr(p_beta1, sx) + KO6_axis_ptr(p_beta1, sy) + KO6_axis_ptr(p_beta1, 1);
                 const T diss2 =
                     KO6_axis_ptr(p_beta2, sx) + KO6_axis_ptr(p_beta2, sy) + KO6_axis_ptr(p_beta2, 1);
-                const T diss0_scaled = (ko_sigma / G.dx) * diss0;
-                const T diss1_scaled = (ko_sigma / G.dx) * diss1;
-                const T diss2_scaled = (ko_sigma / G.dx) * diss2;
+                const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
+                const T diss0_scaled = ko_scale * diss0;
+                const T diss1_scaled = ko_scale * diss1;
+                const T diss2_scaled = ko_scale * diss2;
 
                 *p_rhs0 = params.beta_B_coeff * (*p_B0) + diss0_scaled;
                 *p_rhs1 = params.beta_B_coeff * (*p_B1) + diss1_scaled;
@@ -572,7 +577,7 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
                 const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
                 const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
                 const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
-                const T ko_scale = ko_sigma / G.dx;
+                const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
 
                 *p_rhs_B0 = (*p_rhs_G0 - adv_Gamma0) + adv_B0 - eta_coeff * (*p_B0) + ko_scale * diss0;
                 *p_rhs_B1 = (*p_rhs_G1 - adv_Gamma1) + adv_B1 - eta_coeff * (*p_B1) + ko_scale * diss1;
@@ -628,7 +633,7 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
             const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
             const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
             const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
-            const T ko_scale = ko_sigma / G.dx;
+            const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
 
             *p_rhs_B0 = *p_rhs_G0 - eta_coeff * (*p_B0) + ko_scale * diss0;
             *p_rhs_B1 = *p_rhs_G1 - eta_coeff * (*p_B1) + ko_scale * diss1;

@@ -64,7 +64,6 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
     const ptrdiff_t sy = G.K.st.sy;
     constexpr int   sym_row[6] = {0, 0, 0, 1, 1, 2};
     constexpr int   sym_col[6] = {0, 1, 2, 1, 2, 2};
-    const T         ko_scale = T(ko_sigma / G.dx);
 
     auto loop_ij = [&](size_t i, size_t j) {
 
@@ -258,7 +257,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                 const T diss_khat = (KO6_axis_ptr(p_K, sx) - T(2) * KO6_axis_ptr(p_theta, sx)) +
                                     (KO6_axis_ptr(p_K, sy) - T(2) * KO6_axis_ptr(p_theta, sy)) +
                                     (KO6_axis_ptr(p_K, 1) - T(2) * KO6_axis_ptr(p_theta, 1));
-                const T diss_scaled = ko_scale * diss_khat;
+                const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss_khat;
 
                 *p_rhs = adv - laplacian + quad + z4c_term + diss_scaled;
 
