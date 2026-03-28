@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Evolution/BSSNEvolutionGauge.hpp"
+#include "../FMR/BSSNFixedMeshRefinement.hpp"
 #include "../InitialData/BSSNInitialData.hpp"
 #include "BSSNGridOperations.hpp"
 
@@ -15,6 +16,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace tensorium_RG::bssn {
 
@@ -76,6 +78,15 @@ struct MovingPunctureSpongeConfig {
     double exponent = 2.0;
 };
 
+struct MovingPunctureFMRConfig {
+    bool   enabled = true;
+    size_t levels = 2;
+    size_t refinement_ratio = 2;
+    size_t halo_cells = 0;
+    double finest_box_half_width = 0.0;
+    double puncture_buffer = 0.0;
+};
+
 struct MovingPunctureEnvConfig {
     size_t nx = 96;
     size_t ny = 96;
@@ -114,6 +125,7 @@ struct MovingPunctureEnvConfig {
     double                  ko_boundary_floor = 0.0;
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
+    MovingPunctureFMRConfig fmr{};
 };
 
 namespace detail {
@@ -525,7 +537,156 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
             cfg.state_log_stride = static_cast<size_t>(*parsed);
     }
 
+    cfg.fmr.enabled = detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_ENABLE_FMR", cfg.fmr.enabled);
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_FMR_LEVELS")) {
+        if (*parsed >= 0)
+            cfg.fmr.levels = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_FMR_REFINEMENT_RATIO")) {
+        if (*parsed >= 2)
+            cfg.fmr.refinement_ratio = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_FMR_HALO_CELLS")) {
+        if (*parsed >= 0)
+            cfg.fmr.halo_cells = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_FINEST_BOX_HALF_WIDTH")) {
+        if (*parsed > 0.0)
+            cfg.fmr.finest_box_half_width = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_PUNCTURE_BUFFER")) {
+        if (*parsed > 0.0)
+            cfg.fmr.puncture_buffer = *parsed;
+    }
+    if (cfg.fmr.levels == 0)
+        cfg.fmr.enabled = false;
+
     return cfg;
+}
+
+namespace detail {
+
+template <typename T>
+inline fmr::PatchBox moving_puncture_axis_aligned_patch_from_half_width(const BSSNGridSoA<T> &grid,
+                                                                        double half_width,
+                                                                        size_t clearance) {
+    auto clamp_axis = [&](double origin, double spacing, size_t cells, size_t &a0,
+                          size_t &a1) {
+        const long min_idx =
+            static_cast<long>(std::ceil((-half_width - origin) / spacing - 1.0e-12));
+        const long max_idx =
+            static_cast<long>(std::floor((half_width - origin) / spacing + 1.0e-12));
+        const long lo = std::max<long>(static_cast<long>(clearance), min_idx);
+        const long hi =
+            std::min<long>(static_cast<long>(cells) - static_cast<long>(clearance) - 1, max_idx);
+        if (hi < lo)
+            throw std::runtime_error("Requested moving-puncture FMR box does not fit on the grid");
+        a0 = static_cast<size_t>(lo);
+        a1 = static_cast<size_t>(hi + 1);
+    };
+
+    fmr::PatchBox box{};
+    clamp_axis(static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx, box.i0,
+               box.i1);
+    clamp_axis(static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny, box.j0,
+               box.j1);
+    clamp_axis(static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz, box.k0,
+               box.k1);
+    return box;
+}
+
+inline fmr::PatchBox centered_patch_from_counts(size_t parent_nx, size_t parent_ny, size_t parent_nz,
+                                                size_t patch_nx, size_t patch_ny, size_t patch_nz,
+                                                size_t clearance) {
+    auto make_axis = [&](size_t cells, size_t patch_cells, size_t &a0, size_t &a1) {
+        if (patch_cells + 2 * clearance > cells)
+            throw std::runtime_error(
+                "Requested moving-puncture FMR level exceeds the parent grid extent");
+        a0 = (cells - patch_cells) / 2;
+        a1 = a0 + patch_cells;
+        if (a0 < clearance || a1 + clearance > cells)
+            throw std::runtime_error(
+                "Requested moving-puncture FMR level leaves insufficient boundary clearance");
+    };
+
+    fmr::PatchBox box{};
+    make_axis(parent_nx, patch_nx, box.i0, box.i1);
+    make_axis(parent_ny, patch_ny, box.j0, box.j1);
+    make_axis(parent_nz, patch_nz, box.k0, box.k1);
+    return box;
+}
+
+template <typename T>
+inline double moving_puncture_axis_half_extent(T origin, T spacing, size_t cells) {
+    const double x_min = std::abs(static_cast<double>(origin));
+    const double x_max = std::abs(static_cast<double>(origin + T(cells - 1) * spacing));
+    return std::min(x_min, x_max);
+}
+
+} // namespace detail
+
+template <typename T>
+inline std::vector<fmr::LevelConfig>
+build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
+                                 const MovingPunctureEnvConfig &cfg) {
+    std::vector<fmr::LevelConfig> levels;
+    if (!cfg.fmr.enabled || cfg.fmr.levels == 0)
+        return levels;
+    if (cfg.fmr.refinement_ratio < 2)
+        throw std::invalid_argument("Moving-puncture FMR refinement ratio must be >= 2");
+
+    constexpr size_t clearance = 2;
+    const double auto_buffer =
+        (cfg.fmr.puncture_buffer > 0.0) ? cfg.fmr.puncture_buffer : std::max(2.0, 4.0 * cfg.spacing);
+    const double scale =
+        std::pow(static_cast<double>(cfg.fmr.refinement_ratio), static_cast<double>(cfg.fmr.levels - 1));
+    const double max_root_half_width = std::min(
+        {detail::moving_puncture_axis_half_extent(root_grid.x0, root_grid.dx, root_grid.dims.nx) -
+             2.0 * static_cast<double>(root_grid.dx),
+         detail::moving_puncture_axis_half_extent(root_grid.y0, root_grid.dy, root_grid.dims.ny) -
+             2.0 * static_cast<double>(root_grid.dy),
+         detail::moving_puncture_axis_half_extent(root_grid.z0, root_grid.dz, root_grid.dims.nz) -
+             2.0 * static_cast<double>(root_grid.dz)});
+    if (!(max_root_half_width > 0.0))
+        throw std::runtime_error("Moving-puncture FMR requires positive room inside the root grid");
+
+    const double auto_finest_half_width = std::max(cfg.separation + auto_buffer, 4.0 * cfg.spacing);
+    double finest_half_width =
+        (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width : auto_finest_half_width;
+    const double max_finest_half_width = max_root_half_width / std::max(1.0, scale);
+    if (cfg.fmr.finest_box_half_width > 0.0 && finest_half_width > max_finest_half_width) {
+        throw std::runtime_error(
+            "Requested moving-puncture finest FMR box is too large for the root domain");
+    }
+    finest_half_width = std::min(finest_half_width, max_finest_half_width);
+    if (!(finest_half_width > 0.0))
+        throw std::runtime_error("Computed moving-puncture finest FMR box is empty");
+
+    const double outer_half_width = finest_half_width * scale;
+    const fmr::PatchBox outer_box =
+        detail::moving_puncture_axis_aligned_patch_from_half_width(root_grid, outer_half_width,
+                                                                   clearance);
+    const size_t patch_nx = outer_box.nx();
+    const size_t patch_ny = outer_box.ny();
+    const size_t patch_nz = outer_box.nz();
+
+    levels.reserve(cfg.fmr.levels);
+    levels.push_back({outer_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+
+    size_t parent_nx = patch_nx * cfg.fmr.refinement_ratio;
+    size_t parent_ny = patch_ny * cfg.fmr.refinement_ratio;
+    size_t parent_nz = patch_nz * cfg.fmr.refinement_ratio;
+    for (size_t level = 1; level < cfg.fmr.levels; ++level) {
+        levels.push_back({detail::centered_patch_from_counts(parent_nx, parent_ny, parent_nz,
+                                                             patch_nx, patch_ny, patch_nz,
+                                                             clearance),
+                          cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+        parent_nx = patch_nx * cfg.fmr.refinement_ratio;
+        parent_ny = patch_ny * cfg.fmr.refinement_ratio;
+        parent_nz = patch_nz * cfg.fmr.refinement_ratio;
+    }
+
+    return levels;
 }
 
 template <typename T> inline void center_cell_centered_origin(BSSNGridSoA<T> &grid) {

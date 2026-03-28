@@ -1,23 +1,31 @@
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintMonitoring.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Constraints/BSSNConstraintsGrid.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <sstream>
 
 namespace {
 
-void export_slice_csv(const tensorium_RG::BSSNGridSoA<double> &grid, size_t step,
-                      const std::string &output_dir) {
+using Grid = tensorium_RG::BSSNGridSoA<double>;
+using MovingPunctureHierarchy =
+    tensorium_RG::bssn::fmr::FixedMeshRefinementHierarchy<double, tensorium_RG::bssn::BoundaryRadiative>;
+using FineBoundary = MovingPunctureHierarchy::FineBoundary;
+
+void export_slice_csv(const Grid &grid, size_t step, const std::string &output_dir) {
     std::stringstream ss;
     ss << output_dir << "/slice_" << std::setw(4) << std::setfill('0') << step << ".csv";
 
@@ -68,7 +76,79 @@ struct PuncturePlaneSample {
     bool   has_right = false;
 };
 
-PuncturePlaneSample sample_puncture_minima(const tensorium_RG::BSSNGridSoA<double> &grid) {
+struct ConstraintScratch {
+    tensorium_RG::Field3D<double> H;
+    tensorium_RG::Field3D<double> M[3];
+    tensorium_RG::Field3D<double> C[3];
+
+    explicit ConstraintScratch(const Grid &grid) : H(tensorium_RG::make_field(grid.alpha.st)) {
+        for (int q = 0; q < 3; ++q) {
+            M[q] = tensorium_RG::make_field(grid.alpha.st);
+            C[q] = tensorium_RG::make_field(grid.alpha.st);
+        }
+    }
+};
+
+tensorium_RG::bssn::ConstraintMonitorStats
+compute_constraint_stats(Grid &grid, ConstraintScratch &scratch, size_t padding) {
+    tensorium_RG::fd::set_fd_dx(grid.dx);
+    const double min_extent =
+        std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
+                  (grid.dims.nz - 1) * grid.dz});
+    const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
+    const double r_max = 0.45 * min_extent;
+    tensorium_RG::bssn::compute_bssn_constraints(grid, grid.Ricci, scratch.H, scratch.M, scratch.C,
+                                                 r_min, r_max, 0.0, 0.0, 0.0);
+    auto stats = tensorium_RG::bssn::compute_constraint_monitor(grid, scratch.H, padding);
+    tensorium_RG::bssn::populate_constraint_norms(grid, scratch.M, stats, padding);
+    return stats;
+}
+
+void initialize_moving_puncture_level(Grid &grid, const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg,
+                                      const tensorium_RG::bssn::ProjectionConfig &proj_cfg,
+                                      bool zero_z4c = true) {
+    tensorium_RG::bssn::initialize_moving_puncture_data(grid, cfg);
+    tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
+    if (zero_z4c)
+        tensorium_RG::init::zero_z4c_fields(grid);
+}
+
+size_t moving_puncture_init_blend_shell_cells(const Grid &grid,
+                                              const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg) {
+    const size_t requested =
+        std::max<size_t>(grid.dims.ng, static_cast<size_t>(std::max(2, cfg.spatial_derivative_order + 2)));
+    const size_t max_shell =
+        std::max<size_t>(size_t(1), std::min({grid.dims.nx, grid.dims.ny, grid.dims.nz}) / 4);
+    return std::min(requested, max_shell);
+}
+
+void initialize_moving_puncture_hierarchy(MovingPunctureHierarchy &hierarchy,
+                                          const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg,
+                                          const tensorium_RG::bssn::ProjectionConfig &proj_cfg) {
+    initialize_moving_puncture_level(hierarchy.root_grid(), cfg, proj_cfg, true);
+    for (size_t level = 1; level < hierarchy.num_levels(); ++level) {
+        initialize_moving_puncture_level(hierarchy.level_grid(level), cfg, proj_cfg, true);
+        const size_t shell_cells =
+            moving_puncture_init_blend_shell_cells(hierarchy.level_grid(level), cfg);
+        hierarchy.blend_level_shell_from_parent(level, shell_cells);
+        std::cout << "[fmr.init] level=" << level << " blend_shell_cells=" << shell_cells
+                  << std::endl;
+    }
+
+    hierarchy.restrict_all_levels_to_root();
+    hierarchy.apply_level_boundaries();
+}
+
+void project_hierarchy_levels(MovingPunctureHierarchy &hierarchy,
+                              const tensorium_RG::bssn::ProjectionConfig &proj_cfg) {
+    for (size_t level = 0; level < hierarchy.num_levels(); ++level)
+        tensorium_RG::bssn::project_bssn_state(hierarchy.level_grid(level), proj_cfg);
+
+    hierarchy.restrict_all_levels_to_root();
+    hierarchy.apply_level_boundaries();
+}
+
+PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
     PuncturePlaneSample sample;
 
     const size_t nx = grid.dims.nx;
@@ -113,8 +193,6 @@ PuncturePlaneSample sample_puncture_minima(const tensorium_RG::BSSNGridSoA<doubl
 } // namespace
 
 int main(int argc, char **argv) {
-    using Grid = tensorium_RG::BSSNGridSoA<double>;
-
     const auto cfg = tensorium_RG::bssn::load_moving_puncture_env();
     size_t output_stride = cfg.state_log_stride;
     size_t slice_export_stride =
@@ -143,8 +221,10 @@ int main(int argc, char **argv) {
 
     std::filesystem::create_directories("Output/viz");
 
-    Grid grid(cfg.nx, cfg.ny, cfg.nz, cfg.ng, cfg.spacing, cfg.spacing, cfg.spacing);
-    tensorium_RG::bssn::center_cell_centered_origin(grid);
+    Grid root_grid(cfg.nx, cfg.ny, cfg.nz, cfg.ng, cfg.spacing, cfg.spacing, cfg.spacing);
+    tensorium_RG::bssn::center_cell_centered_origin(root_grid);
+    const auto level_cfgs = tensorium_RG::bssn::build_moving_puncture_fmr_levels(root_grid, cfg);
+    const bool use_fmr = !level_cfgs.empty();
 
     if (cfg.print_suggested_momentum) {
         if (cfg.circular_hint.valid) {
@@ -183,19 +263,30 @@ int main(int argc, char **argv) {
               << " seed_n=" << cfg.interp_seed_n << std::endl;
 
     tensorium_RG::bssn::apply_boundary_configuration(cfg);
-    tensorium_RG::bssn::initialize_moving_puncture_data(grid, cfg);
 
     tensorium_RG::bssn::ProjectionConfig proj_cfg;
     proj_cfg.padding = 0;
     proj_cfg.renormalize_metric = true;
     proj_cfg.project_A_tilde = true;
     proj_cfg.recompute_inverse = true;
-    tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
-    tensorium_RG::init::zero_z4c_fields(grid);
+
+    std::unique_ptr<MovingPunctureHierarchy> hierarchy;
+    Grid                                    *root_state = &root_grid;
+    Grid                                    *puncture_state = &root_grid;
+    if (use_fmr) {
+        hierarchy = std::make_unique<MovingPunctureHierarchy>(root_grid, level_cfgs, cfg.padding);
+        initialize_moving_puncture_hierarchy(*hierarchy, cfg, proj_cfg);
+        root_state = &hierarchy->root_grid();
+        puncture_state = &hierarchy->level_grid(hierarchy->num_levels() - 1);
+    } else {
+        initialize_moving_puncture_level(root_grid, cfg, proj_cfg, true);
+        tensorium_RG::fd::set_fd_dx(root_grid.dx);
+        tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(root_grid);
+    }
 
     auto params = cfg.gauge_params;
     const auto bc_char =
-        tensorium_RG::bssn::configure_boundary_characteristics_from_state(grid, cfg, params);
+        tensorium_RG::bssn::configure_boundary_characteristics_from_state(*root_state, cfg, params);
 
     std::cout << "[bc] allow_reflective=" << cfg.allow_reflective_bc
               << " fail_on_gauge_bc_mismatch=" << cfg.fail_on_gauge_bc_mismatch
@@ -219,21 +310,24 @@ int main(int argc, char **argv) {
     tensorium_RG::bssn::report_boundary_characteristics(
         params, cfg.fail_on_gauge_bc_mismatch, bc_char);
 
-    tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
-        grid, cfg.padding);
-    stepper.set_gauge_parameters(params);
-    stepper.set_state_log_stride(output_stride);
+    if (use_fmr) {
+        std::cout << "[fmr] enabled=1 levels=" << (hierarchy->num_levels() - 1)
+                  << " ratio=" << cfg.fmr.refinement_ratio
+                  << " finest_dx=" << puncture_state->dx << std::endl;
+        for (size_t level = 1; level < hierarchy->num_levels(); ++level) {
+            const Grid &g = hierarchy->level_grid(level);
+            std::cout << "[fmr] level=" << level << " nx=" << g.dims.nx << " ny=" << g.dims.ny
+                      << " nz=" << g.dims.nz << " spacing=" << g.dx << " box=("
+                      << g.dims.nx * g.dx << ", " << g.dims.ny * g.dy << ", "
+                      << g.dims.nz * g.dz << ")\n";
+        }
+    } else {
+        std::cout << "[fmr] enabled=0" << std::endl;
+    }
+
     std::cout << "[log] state_log_stride=" << output_stride << std::endl;
     std::cout << "[viz] slice_export_stride=" << slice_export_stride << std::endl;
     std::cout << "[constraints] norms_stride=" << constraint_export_stride << std::endl;
-    if (slice_export_stride > 0) {
-        stepper.set_snapshot_callback([slice_export_stride](const Grid &g, size_t step) {
-            if (step % slice_export_stride == 0) {
-                std::cout << ">> Exporting slice " << step << "..." << std::endl;
-                export_slice_csv(g, step, "Output/viz");
-            }
-        });
-    }
 
     (void)std::remove("Output/viz/constraints_norms.csv");
     std::ofstream constraint_log("Output/viz/constraints_norms.csv",
@@ -294,39 +388,89 @@ int main(int argc, char **argv) {
     size_t current_step = 0;
     double current_time = 0.0;
     double current_dt = 0.0;
-    stepper.set_constraint_callback(
-        [&](const Grid &, const tensorium_RG::bssn::ConstraintMonitorStats &stats) {
-            if (constraint_export_stride == 0 || !constraint_log.is_open() ||
-                (current_step % constraint_export_stride) != 0)
-                return;
-            constraint_log << current_step << "," << current_time << "," << current_dt << ","
-                           << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
-                           << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
-                           << "," << stats.max_trace_A << "," << stats.samples << "\n";
-        });
-
 
     tensorium_RG::bssn::CFLControl<double> control;
     control.cfl = cfg.cfl;
     control.gauge_speed = cfg.gauge_speed;
 
     double t = 0.0;
-    for (size_t n = 0; n < cfg.steps; ++n) {
-        const double dt = tensorium_RG::bssn::compute_dt_cfl(grid, control, cfg.padding);
-        current_step = n;
-        current_dt = dt;
-        current_time = t + dt;
-        stepper.step(grid, dt, n);
-        t += dt;
+    if (use_fmr) {
+        hierarchy->set_gauge_parameters(params);
+        hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
+        ConstraintScratch constraint_scratch(*root_state);
 
-        const auto puncture_sample = sample_puncture_minima(grid);
-        write_puncture_row(puncture_track, n, t, puncture_sample);
-        write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+        for (size_t n = 0; n < cfg.steps; ++n) {
+            const double dt = hierarchy->compute_dt(control);
+            current_step = n;
+            current_dt = dt;
+            current_time = t + dt;
+            hierarchy->step(dt);
+            t += dt;
 
-        if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0))
-            tensorium_RG::bssn::project_bssn_state(grid, proj_cfg);
+            if (constraint_export_stride > 0 && constraint_log.is_open() &&
+                (current_step % constraint_export_stride) == 0) {
+                auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
+                constraint_log << current_step << "," << current_time << "," << current_dt << ","
+                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
+                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
+                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+            }
 
-        std::printf("dt = %.4e  step=%zu/%zu  t=%.4f\n", dt, n + 1, cfg.steps, t);
+            if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
+                std::cout << ">> Exporting finest slice " << n << "..." << std::endl;
+                export_slice_csv(*puncture_state, n, "Output/viz");
+            }
+
+            const auto puncture_sample = sample_puncture_minima(*puncture_state);
+            write_puncture_row(puncture_track, n, t, puncture_sample);
+            write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+
+            if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0))
+                project_hierarchy_levels(*hierarchy, proj_cfg);
+
+            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f\n", dt, n + 1, cfg.steps, t);
+        }
+    } else {
+        tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
+            *root_state, cfg.padding);
+        stepper.set_gauge_parameters(params);
+        stepper.set_state_log_stride(output_stride);
+        if (slice_export_stride > 0) {
+            stepper.set_snapshot_callback([slice_export_stride](const Grid &g, size_t step) {
+                if (step % slice_export_stride == 0) {
+                    std::cout << ">> Exporting slice " << step << "..." << std::endl;
+                    export_slice_csv(g, step, "Output/viz");
+                }
+            });
+        }
+        stepper.set_constraint_callback(
+            [&](const Grid &, const tensorium_RG::bssn::ConstraintMonitorStats &stats) {
+                if (constraint_export_stride == 0 || !constraint_log.is_open() ||
+                    (current_step % constraint_export_stride) != 0)
+                    return;
+                constraint_log << current_step << "," << current_time << "," << current_dt << ","
+                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
+                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
+                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+            });
+
+        for (size_t n = 0; n < cfg.steps; ++n) {
+            const double dt = tensorium_RG::bssn::compute_dt_cfl(*root_state, control, cfg.padding);
+            current_step = n;
+            current_dt = dt;
+            current_time = t + dt;
+            stepper.step(*root_state, dt, n);
+            t += dt;
+
+            const auto puncture_sample = sample_puncture_minima(*root_state);
+            write_puncture_row(puncture_track, n, t, puncture_sample);
+            write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+
+            if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0))
+                tensorium_RG::bssn::project_bssn_state(*root_state, proj_cfg);
+
+            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f\n", dt, n + 1, cfg.steps, t);
+        }
     }
 
     std::cout << "[done] steps=" << cfg.steps << " t_final=" << t << std::endl;

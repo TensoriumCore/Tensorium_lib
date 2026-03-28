@@ -37,6 +37,7 @@ set(TEST_BSSN_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/FMRHierarchyTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/CCZ4SchwarzschildStabilityTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RHSHaloSentinelTests.cpp)
 
