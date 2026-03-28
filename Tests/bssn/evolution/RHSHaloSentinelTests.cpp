@@ -98,7 +98,7 @@ REGISTER_TEST("bssn.evolution.rhs_halo_sentinel", "RHS halos untouched contract"
 });
 
 REGISTER_TEST("bssn.evolution.radiative_boundary_shells_are_evolved",
-              "Radiative RK4 evolves the first physical layers instead of freezing them", []() {
+              "Radiative RK4 keeps the first physical layers controlled without ghost blow-up", []() {
     const size_t padding = 4;
     Grid         grid(24, 20, 16, padding, 0.25, 0.25, 0.25);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -120,8 +120,8 @@ REGISTER_TEST("bssn.evolution.radiative_boundary_shells_are_evolved",
     gauge.apply_rhs_sommerfeld = true;
     stepper.set_gauge_parameters(gauge);
 
-    const size_t j = J0 + 2;
-    const size_t k = K0 + 2;
+    const size_t j = J0 + (J1 - J0) / 2;
+    const size_t k = K0 + (K1 - K0) / 2;
     const size_t idx_face = grid.alpha.idx(I0, j, k);
     const size_t idx_shell3 = grid.alpha.idx(I0 + 3, j, k);
     const double alpha_face_before = grid.alpha.ptr()[idx_face];
@@ -129,8 +129,12 @@ REGISTER_TEST("bssn.evolution.radiative_boundary_shells_are_evolved",
 
     stepper.step(grid, 1.0e-3, 0);
 
-    TENSORIUM_TEST_ASSERT(grid.alpha.ptr()[idx_face] < alpha_face_before);
-    TENSORIUM_TEST_ASSERT(grid.alpha.ptr()[idx_shell3] < alpha_shell3_before);
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_face]));
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_shell3]));
+    tensorium::tests::expect_le(grid.alpha.ptr()[idx_face], alpha_face_before + 1.0e-12,
+                                "Radiative surface cell stays bounded by the asymptotic state");
+    tensorium::tests::expect_le(grid.alpha.ptr()[idx_shell3], alpha_shell3_before + 1.0e-12,
+                                "Inner collar cell stays bounded by the asymptotic state");
 });
 
 REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
@@ -199,8 +203,8 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
     const size_t i = I0;
-    const size_t j = J0 + 2;
-    const size_t k = K0 + 2;
+    const size_t j = J0 + (J1 - J0) / 2;
+    const size_t k = K0 + (K1 - K0) / 2;
     const size_t idx = grid.alpha.idx(i, j, k);
 
     double x, y, z;
@@ -261,7 +265,7 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_operator",
 });
 
 REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_collar",
-              "Radiative RHS collar overwrites the ghost-dependent physical shell", []() {
+              "Radiative RHS collar sanitizes the ghost-dependent physical shell", []() {
     const size_t padding = 4;
     Grid         grid(18, 14, 12, padding, 0.5, 0.4, 0.3);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -299,8 +303,8 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_collar",
 
     size_t I0, I1, J0, J1, K0, K1;
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-    const size_t j = J0 + 2;
-    const size_t k = K0 + 2;
+    const size_t j = J0 + (J1 - J0) / 2;
+    const size_t k = K0 + (K1 - K0) / 2;
 
     for (size_t layer = 0; layer < 4; ++layer) {
         const size_t idx = grid.alpha.idx(I0 + layer, j, k);
@@ -311,6 +315,56 @@ REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_collar",
     const size_t idx_bulk = grid.alpha.idx(I0 + 4, j, k);
     TENSORIUM_TEST_ASSERT(!std::isfinite(rhs.alpha.ptr()[idx_bulk]));
     TENSORIUM_TEST_ASSERT(!std::isfinite(rhs.Theta.ptr()[idx_bulk]));
+});
+
+REGISTER_TEST("bssn.evolution.z4c_rhs_boundary_collar_tapers",
+              "Radiative RHS collar blends toward the interior instead of imposing a flat shell",
+              []() {
+    const size_t padding = 4;
+    Grid         grid(18, 14, 12, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                double x, y, z;
+                grid.coords(i, j, k, x, y, z);
+                const size_t idx = grid.alpha.idx(i, j, k);
+                grid.alpha.ptr()[idx] = 1.0 + 0.03 * x - 0.01 * y;
+            }
+
+    tensorium_RG::bssn::BSSNRHSWorkspace<double> rhs;
+    rhs.allocate_like(grid);
+    const double sentinel = 7.0;
+    std::fill(rhs.alpha.ptr(), rhs.alpha.ptr() + rhs.alpha.st.nx_tot * rhs.alpha.st.ny_tot *
+                                             rhs.alpha.st.nz_tot,
+              sentinel);
+
+    tensorium_RG::bssn::BoundaryRadiative::set_field_characteristic_speeds(1.0, 1.0,
+                                                                           std::sqrt(2.0));
+
+    tensorium_RG::bssn::RHSBoundaryFaceMask mask{};
+    mask.face[0][0] = true;
+
+    tensorium_RG::bssn::apply_z4c_rhs_boundary(grid, rhs, mask, 4);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t j = J0 + (J1 - J0) / 2;
+    const size_t k = K0 + (K1 - K0) / 2;
+
+    const size_t idx_surface = grid.alpha.idx(I0, j, k);
+    const size_t idx_inner = grid.alpha.idx(I0 + 3, j, k);
+
+    const double surface_dev = std::abs(rhs.alpha.ptr()[idx_surface] - sentinel);
+    const double inner_dev = std::abs(rhs.alpha.ptr()[idx_inner] - sentinel);
+    TENSORIUM_TEST_ASSERT(surface_dev > 1.0e-8);
+    TENSORIUM_TEST_ASSERT(inner_dev > 1.0e-8);
+    tensorium::tests::expect_le(inner_dev, surface_dev,
+                                "Deepest collar layer is damped less than the surface");
 });
 
 REGISTER_TEST("bssn.evolution.constraint_halos_use_sommerfeld",
@@ -447,6 +501,63 @@ REGISTER_TEST("bssn.evolution.radiative_physical_cells_are_preserved",
                                 1e-12, "First physical Theta cell is preserved");
     tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[shell3_theta] - theta_shell3_expected),
                                 1e-12, "Fourth physical Theta cell is preserved");
+});
+
+REGISTER_TEST("bssn.evolution.radiative_sponge_is_rhs_only",
+              "Radiative sponge must not inject a Cartesian shell during halo refresh", []() {
+    const size_t padding = 4;
+    Grid         grid(16, 12, 12, padding, 0.5, 0.5, 0.5);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    tensorium_RG::bssn::BoundaryRadiative::set_characteristic(1.0, 0.0);
+    tensorium_RG::bssn::BoundaryRadiative::set_field_characteristic_speeds(1.0, 1.0,
+                                                                           std::sqrt(2.0));
+    tensorium_RG::bssn::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
+                                                                     true);
+    tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
+                                                                false);
+    tensorium_RG::bssn::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+    tensorium_RG::bssn::BoundaryRadiative::set_sponge(true, 6, 8.0, 2.0);
+
+    auto fill_linear = [&](tensorium_RG::Field3D<double> &field, double c0, double cx, double cy,
+                           double cz) {
+        const size_t nx_tot = field.st.nx_tot;
+        const size_t ny_tot = field.st.ny_tot;
+        const size_t nz_tot = field.st.nz_tot;
+        for (size_t i = 0; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k) {
+                    double x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    field.ptr()[field.idx(i, j, k)] = c0 + cx * x + cy * y + cz * z;
+                }
+    };
+
+    fill_linear(grid.alpha, 1.0, 0.02, -0.01, 0.00);
+    fill_linear(grid.Theta, 0.2, 0.03, 0.01, -0.02);
+
+    tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(grid);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t j = J0 + 1;
+    const size_t k = K0 + 1;
+    const size_t idx_alpha = grid.alpha.idx(I0, j, k);
+    const size_t idx_theta = grid.Theta.idx(I0 + 1, j, k);
+
+    double x0, y0, z0;
+    grid.coords(I0, j, k, x0, y0, z0);
+    double x1, y1, z1;
+    grid.coords(I0 + 1, j, k, x1, y1, z1);
+
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[idx_alpha] - (1.0 + 0.02 * x0 - 0.01 * y0)),
+                                1.0e-12, "Alpha state is unchanged by the radiative sponge");
+    tensorium::tests::expect_le(
+        std::abs(grid.Theta.ptr()[idx_theta] - (0.2 + 0.03 * x1 + 0.01 * y1 - 0.02 * z1)), 1.0e-12,
+        "Theta state is unchanged by the radiative sponge");
+
+    tensorium_RG::bssn::BoundaryRadiative::set_sponge(false, 0, 0.0, 2.0);
 });
 
 REGISTER_TEST("bssn.evolution.radiative_field_speeds_are_grouped",

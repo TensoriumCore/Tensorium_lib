@@ -93,7 +93,10 @@ latex_requested = ("--latex" in flags) or ("--usetex" in flags) or (
 if ("--no-latex" in flags) or ("--no-usetex" in flags):
     latex_requested = False
 smooth_sigma = 0.0 if (no_smooth or constraint_mode) else 1.0
-constraint_render_interpolation = "bilinear"
+constraint_render_interpolation = _raw_flag_value("--constraint-interp") or os.getenv(
+    "TENSORIUM_PLOT_CONSTRAINT_INTERP",
+    "nearest" if constraint_mode else "bilinear",
+)
 
 _yt_module = None
 _yt_checked = False
@@ -369,6 +372,7 @@ def parse_requested_step():
             "[--data-dir=DIR] "
             "[--workers=N] [--dpi=N] "
             "[--constraints] [--tracker-drift] [--no-smooth] "
+            "[--constraint-interp=nearest|bilinear] "
             "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
             "[--no-contours] [--show]"
         )

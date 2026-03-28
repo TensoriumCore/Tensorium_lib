@@ -214,6 +214,112 @@ REGISTER_TEST("bssn.evolution.gamma_theta_ignore_auxiliary_z",
                                               "Theta RHS is invariant under auxiliary Z changes");
               });
 
+REGISTER_TEST("bssn.evolution.theta_z4_trace_cache_matches_direct_contraction",
+              "Theta RHS matches the explicit RicciZ4 trace contraction with and without cache",
+              []() {
+                  constexpr size_t padding = 4;
+                  tensorium_RG::BSSNGridSoA<double> grid(24, 22, 20, 4, 0.25, 0.22, 0.20);
+                  tensorium_RG::init::minkowski(grid, 0.0);
+
+                  size_t I0, I1, J0, J1, K0, K1;
+                  grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+                  for (size_t i = I0; i < I1; ++i)
+                      for (size_t j = J0; j < J1; ++j)
+                          for (size_t k = K0; k < K1; ++k) {
+                              const size_t idx = grid.alpha.idx(i, j, k);
+                              double       x, y, z;
+                              grid.coords(i, j, k, x, y, z);
+                              grid.alpha.ptr()[idx] = 1.0 + 0.01 * x - 0.006 * y + 0.003 * z;
+                              grid.beta[0].ptr()[idx] = 0.03 * y - 0.02 * z;
+                              grid.beta[1].ptr()[idx] = -0.025 * x + 0.015 * z;
+                              grid.beta[2].ptr()[idx] = 0.02 * x - 0.01 * y;
+                              grid.K.ptr()[idx] = 0.04 + 0.01 * x - 0.005 * z;
+                              grid.Theta.ptr()[idx] = -0.015 * y + 0.01 * z + 0.002 * x;
+                              grid.chi.ptr()[idx] =
+                                  1.0 + 0.01 * x + 0.008 * y - 0.005 * z + 0.001 * x * x;
+                              grid.tildeGamma[0].ptr()[idx] = 0.08 + 0.02 * x - 0.01 * y;
+                              grid.tildeGamma[1].ptr()[idx] = -0.05 + 0.015 * y + 0.01 * z;
+                              grid.tildeGamma[2].ptr()[idx] = 0.03 - 0.012 * x + 0.009 * z;
+                              grid.A_tilde[0].ptr()[idx] = 0.004 * x;
+                              grid.A_tilde[1].ptr()[idx] = -0.003 * y;
+                              grid.A_tilde[2].ptr()[idx] = 0.002 * z;
+                              grid.A_tilde[3].ptr()[idx] = 0.003 * (x - y);
+                              grid.A_tilde[4].ptr()[idx] = -0.002 * (y + z);
+                              grid.A_tilde[5].ptr()[idx] = 0.0015 * (z - x);
+                              grid.Ricci[0].ptr()[idx] = 0.01 + 0.002 * x;
+                              grid.Ricci[1].ptr()[idx] = -0.004 + 0.001 * y;
+                              grid.Ricci[2].ptr()[idx] = 0.003 - 0.001 * z;
+                              grid.Ricci[3].ptr()[idx] = 0.008 - 0.0015 * x;
+                              grid.Ricci[4].ptr()[idx] = -0.002 + 0.0008 * (y + z);
+                              grid.Ricci[5].ptr()[idx] = 0.006 + 0.0012 * z;
+                          }
+
+                  tensorium_RG::Field3D<double> rhs_direct;
+                  tensorium_RG::Field3D<double> rhs_cached;
+                  tensorium_RG::Field3D<double> z4_trace_cache;
+                  alloc_scalar_rhs(grid.Theta, rhs_direct);
+                  alloc_scalar_rhs(grid.Theta, rhs_cached);
+                  alloc_scalar_rhs(grid.Theta, z4_trace_cache);
+
+                  const size_t total = grid.Theta.st.nx_tot * grid.Theta.st.ny_tot * grid.Theta.st.nz_tot;
+                  std::fill(z4_trace_cache.ptr(), z4_trace_cache.ptr() + total, 0.0);
+
+                  tensorium_RG::bssn::GaugeParameters<double> params;
+                  params.ko_sigma = 0.0;
+
+                  const int saved_order = tensorium_RG::fd::max_spatial_derivative_order();
+                  for (const int order : {4, 6}) {
+                      tensorium_RG::fd::set_max_spatial_derivative_order(order);
+
+                      const double    inv_12dx = 1.0 / (60.0 * grid.dx);
+                      const double    inv_12dy = 1.0 / (60.0 * grid.dy);
+                      const double    inv_12dz = 1.0 / (60.0 * grid.dz);
+                      const ptrdiff_t sx = grid.alpha.st.sx;
+                      const ptrdiff_t sy = grid.alpha.st.sy;
+
+                      for (size_t i = I0 + padding; i < I1 - padding; ++i)
+                          for (size_t j = J0 + padding; j < J1 - padding; ++j)
+                              for (size_t k = K0 + padding; k < K1 - padding; ++k) {
+                                  double RicciZ4[6];
+                                  tensorium_RG::bssn::compute_RicciZ4_core(
+                                      grid, i, j, k, RicciZ4, params.chi_div_floor, inv_12dx,
+                                      inv_12dy, inv_12dz, sx, sy);
+
+                                  const size_t idx = z4_trace_cache.idx(i, j, k);
+                                  const double g_xx = grid.gamma_tilde_inv[0].ptr()[idx];
+                                  const double g_xy = grid.gamma_tilde_inv[1].ptr()[idx];
+                                  const double g_xz = grid.gamma_tilde_inv[2].ptr()[idx];
+                                  const double g_yy = grid.gamma_tilde_inv[3].ptr()[idx];
+                                  const double g_yz = grid.gamma_tilde_inv[4].ptr()[idx];
+                                  const double g_zz = grid.gamma_tilde_inv[5].ptr()[idx];
+                                  z4_trace_cache.ptr()[idx] =
+                                      g_xx * RicciZ4[0] + g_yy * RicciZ4[3] + g_zz * RicciZ4[5] +
+                                      2.0 * (g_xy * RicciZ4[1] + g_xz * RicciZ4[2] +
+                                             g_yz * RicciZ4[4]);
+                              }
+
+                      tensorium_RG::bssn::compute_rhs_Theta(grid, rhs_direct, params, padding);
+                      tensorium_RG::bssn::compute_rhs_Theta(grid, rhs_cached, params, padding,
+                                                            &z4_trace_cache);
+
+                      double max_diff = 0.0;
+                      for (size_t i = I0 + padding; i < I1 - padding; ++i)
+                          for (size_t j = J0 + padding; j < J1 - padding; ++j)
+                              for (size_t k = K0 + padding; k < K1 - padding; ++k) {
+                                  const size_t idx = rhs_direct.idx(i, j, k);
+                                  max_diff = std::max(
+                                      max_diff,
+                                      std::abs(rhs_direct.ptr()[idx] - rhs_cached.ptr()[idx]));
+                              }
+
+                      tensorium::tests::expect_le(
+                          max_diff, 1e-12,
+                          std::string("Theta RHS cache/direct parity (order=") +
+                              std::to_string(order) + ")");
+                  }
+                  tensorium_RG::fd::set_max_spatial_derivative_order(saved_order);
+              });
+
 REGISTER_TEST("bssn.evolution.z_rhs_is_diagnostic_only",
               "Z_i RHS stays zero even when evolve_Z is enabled", []() {
                   constexpr size_t padding = 4;

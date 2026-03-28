@@ -33,11 +33,12 @@ inline size_t clamped_upper(size_t upper, size_t guard, size_t lower) {
 }
 #endif
 
-template <typename T>
-inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
-                                    const GaugeParameters<T> &params = {}) {
+namespace detail {
+
+template <int Order, typename T>
+inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs[6],
+                                         size_t padding, const GaugeParameters<T> &params) {
     BSSN_PROFILE_KERNEL(GammaTilde);
-    using namespace tensorium_RG::fd;
     const auto region = interior_bounds(G, padding);
     const size_t i0 = region.i0;
     const size_t j0 = region.j0;
@@ -64,38 +65,55 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
 
         size_t idx_start = G.gamma_tilde[0].idx(i, j, k0);
 
-            const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
-                                  G.beta[2].ptr() + idx_start};
-            const T *p_gam[6];
-            const T *p_A[6];
-            T       *p_rhs[6];
+        const T *p_beta0 = G.beta[0].ptr() + idx_start;
+        const T *p_beta1 = G.beta[1].ptr() + idx_start;
+        const T *p_beta2 = G.beta[2].ptr() + idx_start;
+        const T *p_gam0 = G.gamma_tilde[XX].ptr() + idx_start;
+        const T *p_gam1 = G.gamma_tilde[XY].ptr() + idx_start;
+        const T *p_gam2 = G.gamma_tilde[XZ].ptr() + idx_start;
+        const T *p_gam3 = G.gamma_tilde[YY].ptr() + idx_start;
+        const T *p_gam4 = G.gamma_tilde[YZ].ptr() + idx_start;
+        const T *p_gam5 = G.gamma_tilde[ZZ].ptr() + idx_start;
+        const T *p_A0 = G.A_tilde[XX].ptr() + idx_start;
+        const T *p_A1 = G.A_tilde[XY].ptr() + idx_start;
+        const T *p_A2 = G.A_tilde[XZ].ptr() + idx_start;
+        const T *p_A3 = G.A_tilde[YY].ptr() + idx_start;
+        const T *p_A4 = G.A_tilde[YZ].ptr() + idx_start;
+        const T *p_A5 = G.A_tilde[ZZ].ptr() + idx_start;
+        T       *p_rhs0 = rhs[XX].ptr() + idx_start;
+        T       *p_rhs1 = rhs[XY].ptr() + idx_start;
+        T       *p_rhs2 = rhs[XZ].ptr() + idx_start;
+        T       *p_rhs3 = rhs[YY].ptr() + idx_start;
+        T       *p_rhs4 = rhs[YZ].ptr() + idx_start;
+        T       *p_rhs5 = rhs[ZZ].ptr() + idx_start;
+        const T *p_alpha = G.alpha.ptr() + idx_start;
 
-            for (int s = 0; s < 6; ++s) {
-                p_gam[s] = G.gamma_tilde[s].ptr() + idx_start;
-                p_A[s] = G.A_tilde[s].ptr() + idx_start;
-                p_rhs[s] = rhs[s].ptr() + idx_start;
-            }
-            const T *p_alpha = G.alpha.ptr() + idx_start;
-
+#pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
 
                 const T alpha = *p_alpha;
 
                 T d_beta[3][3];
-                for (int c = 0; c < 3; ++c) {
-                    d_beta[c][0] = Dx_ptr(p_beta[c], sx, inv_12dx);
-                    d_beta[c][1] = Dy_ptr(p_beta[c], sy, inv_12dy);
-                    d_beta[c][2] = Dz_ptr(p_beta[c], inv_12dz);
-                }
+                d_beta[0][0] = tensorium_RG::fd::Dx_ptr_order<Order>(p_beta0, sx, inv_12dx);
+                d_beta[0][1] = tensorium_RG::fd::Dy_ptr_order<Order>(p_beta0, sy, inv_12dy);
+                d_beta[0][2] = tensorium_RG::fd::Dz_ptr_order<Order>(p_beta0, inv_12dz);
+                d_beta[1][0] = tensorium_RG::fd::Dx_ptr_order<Order>(p_beta1, sx, inv_12dx);
+                d_beta[1][1] = tensorium_RG::fd::Dy_ptr_order<Order>(p_beta1, sy, inv_12dy);
+                d_beta[1][2] = tensorium_RG::fd::Dz_ptr_order<Order>(p_beta1, inv_12dz);
+                d_beta[2][0] = tensorium_RG::fd::Dx_ptr_order<Order>(p_beta2, sx, inv_12dx);
+                d_beta[2][1] = tensorium_RG::fd::Dy_ptr_order<Order>(p_beta2, sy, inv_12dy);
+                d_beta[2][2] = tensorium_RG::fd::Dz_ptr_order<Order>(p_beta2, inv_12dz);
                 const T div_beta = d_beta[0][0] + d_beta[1][1] + d_beta[2][2];
-                const T beta_vec[3] = {*p_beta[0], *p_beta[1], *p_beta[2]};
+                const T beta0 = *p_beta0;
+                const T beta1 = *p_beta1;
+                const T beta2 = *p_beta2;
 
-                const T g_xx = *p_gam[tensorium_RG::XX];
-                const T g_xy = *p_gam[tensorium_RG::XY];
-                const T g_xz = *p_gam[tensorium_RG::XZ];
-                const T g_yy = *p_gam[tensorium_RG::YY];
-                const T g_yz = *p_gam[tensorium_RG::YZ];
-                const T g_zz = *p_gam[tensorium_RG::ZZ];
+                const T g_xx = *p_gam0;
+                const T g_xy = *p_gam1;
+                const T g_xz = *p_gam2;
+                const T g_yy = *p_gam3;
+                const T g_yz = *p_gam4;
+                const T g_zz = *p_gam5;
 
                 const T lie_vals[6] = {
                     T(2) * (g_xx * d_beta[0][0] + g_xy * d_beta[1][0] + g_xz * d_beta[2][0]),
@@ -113,28 +131,75 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
                     -two_thirds * g_xz * div_beta, -two_thirds * g_yy * div_beta,
                     -two_thirds * g_yz * div_beta, -two_thirds * g_zz * div_beta};
 
-                for (int s = 0; s < 6; ++s) {
-                    const T *p_g = p_gam[s];
-                    const T  adv = beta_vec[0] * Dx_upwind_ptr(p_g, sx, inv_2dx, beta_vec[0]) +
-                                  beta_vec[1] * Dy_upwind_ptr(p_g, sy, inv_2dy, beta_vec[1]) +
-                                  beta_vec[2] * Dz_upwind_ptr(p_g, inv_2dz, beta_vec[2]);
+                const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
 
-                    const T source = -T(2) * alpha * (*p_A[s]);
-                    const T diss =
-                        KO6_axis_ptr(p_g, sx) + KO6_axis_ptr(p_g, sy) + KO6_axis_ptr(p_g, 1);
-                    const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss;
+                const T adv0 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam0, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam0, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam0, inv_2dz, beta2);
+                const T adv1 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam1, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam1, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam1, inv_2dz, beta2);
+                const T adv2 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam2, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam2, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam2, inv_2dz, beta2);
+                const T adv3 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam3, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam3, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam3, inv_2dz, beta2);
+                const T adv4 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam4, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam4, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam4, inv_2dz, beta2);
+                const T adv5 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam5, sx, inv_2dx, beta0) +
+                               beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam5, sy, inv_2dy, beta1) +
+                               beta2 * tensorium_RG::fd::Dz_upwind_ptr(p_gam5, inv_2dz, beta2);
 
-                    *p_rhs[s] = adv + lie_vals[s] + source + trace_vals[s] + diss_scaled;
-                }
+                const T diss0 = tensorium_RG::fd::KO6_axis_ptr(p_gam0, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam0, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam0, 1);
+                const T diss1 = tensorium_RG::fd::KO6_axis_ptr(p_gam1, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam1, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam1, 1);
+                const T diss2 = tensorium_RG::fd::KO6_axis_ptr(p_gam2, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam2, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam2, 1);
+                const T diss3 = tensorium_RG::fd::KO6_axis_ptr(p_gam3, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam3, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam3, 1);
+                const T diss4 = tensorium_RG::fd::KO6_axis_ptr(p_gam4, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam4, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam4, 1);
+                const T diss5 = tensorium_RG::fd::KO6_axis_ptr(p_gam5, sx) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam5, sy) +
+                                tensorium_RG::fd::KO6_axis_ptr(p_gam5, 1);
 
-                for (int c = 0; c < 3; ++c)
-                    ++p_beta[c];
-                for (int s = 0; s < 6; ++s) {
-                    ++p_gam[s];
-                    ++p_A[s];
-                    ++p_rhs[s];
-                }
-            ++p_alpha;
+                *p_rhs0 = adv0 + lie_vals[0] - T(2) * alpha * (*p_A0) + trace_vals[0] + ko_scale * diss0;
+                *p_rhs1 = adv1 + lie_vals[1] - T(2) * alpha * (*p_A1) + trace_vals[1] + ko_scale * diss1;
+                *p_rhs2 = adv2 + lie_vals[2] - T(2) * alpha * (*p_A2) + trace_vals[2] + ko_scale * diss2;
+                *p_rhs3 = adv3 + lie_vals[3] - T(2) * alpha * (*p_A3) + trace_vals[3] + ko_scale * diss3;
+                *p_rhs4 = adv4 + lie_vals[4] - T(2) * alpha * (*p_A4) + trace_vals[4] + ko_scale * diss4;
+                *p_rhs5 = adv5 + lie_vals[5] - T(2) * alpha * (*p_A5) + trace_vals[5] + ko_scale * diss5;
+
+                ++p_beta0;
+                ++p_beta1;
+                ++p_beta2;
+                ++p_gam0;
+                ++p_gam1;
+                ++p_gam2;
+                ++p_gam3;
+                ++p_gam4;
+                ++p_gam5;
+                ++p_A0;
+                ++p_A1;
+                ++p_A2;
+                ++p_A3;
+                ++p_A4;
+                ++p_A5;
+                ++p_rhs0;
+                ++p_rhs1;
+                ++p_rhs2;
+                ++p_rhs3;
+                ++p_rhs4;
+                ++p_rhs5;
+                ++p_alpha;
         }
     };
 
@@ -148,6 +213,18 @@ inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], 
         for (size_t i = i0; i < i1; ++i)
             for (size_t j = j0; j < j1; ++j)
                 loop_ij(i, j);
+    }
+}
+
+} // namespace detail
+
+template <typename T>
+inline void compute_rhs_gamma_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
+                                    const GaugeParameters<T> &params = {}) {
+    if (tensorium_RG::fd::max_spatial_derivative_order() == 4) {
+        detail::compute_rhs_gamma_tilde_impl<4>(G, rhs, padding, params);
+    } else {
+        detail::compute_rhs_gamma_tilde_impl<6>(G, rhs, padding, params);
     }
 }
 } // namespace tensorium_RG::bssn

@@ -44,6 +44,56 @@ struct SpongeProfileConfig {
     double exponent = 2.0;
 };
 
+template <typename T>
+inline bool nearest_sponge_layer(const BSSNGridSoA<T> &G, size_t i, size_t j, size_t k,
+                                 const SpongeProfileConfig &cfg,
+                                 const bool (&active_face)[3][2],
+                                 const bool (&reflective_face)[3][2], size_t &layer_out) {
+    if (!cfg.enabled || cfg.width == 0 || cfg.strength <= 0.0)
+        return false;
+
+    size_t I0, I1, J0, J1, K0, K1;
+    G.domain_bounds(I0, I1, J0, J1, K0, K1);
+    if (I0 >= I1 || J0 >= J1 || K0 >= K1)
+        return false;
+
+    const size_t width_x = std::min(cfg.width, I1 - I0);
+    const size_t width_y = std::min(cfg.width, J1 - J0);
+    const size_t width_z = std::min(cfg.width, K1 - K0);
+
+    size_t best = cfg.width;
+    const auto consider = [&](bool enabled, size_t dist, size_t width) {
+        if (!enabled || dist >= width)
+            return;
+        best = std::min(best, dist);
+    };
+
+    consider(active_face[0][0] && !reflective_face[0][0], i - I0, width_x);
+    consider(active_face[0][1] && !reflective_face[0][1], (I1 - 1) - i, width_x);
+    consider(active_face[1][0] && !reflective_face[1][0], j - J0, width_y);
+    consider(active_face[1][1] && !reflective_face[1][1], (J1 - 1) - j, width_y);
+    consider(active_face[2][0] && !reflective_face[2][0], k - K0, width_z);
+    consider(active_face[2][1] && !reflective_face[2][1], (K1 - 1) - k, width_z);
+
+    if (best >= cfg.width)
+        return false;
+    layer_out = best;
+    return true;
+}
+
+inline double sponge_profile_value(size_t layer, const SpongeProfileConfig &cfg) {
+    if (layer >= cfg.width || cfg.width == 0 || cfg.strength <= 0.0)
+        return 0.0;
+    const double remaining =
+        static_cast<double>(cfg.width - layer) / static_cast<double>(cfg.width);
+    const double exponent = std::max(cfg.exponent, 1.0);
+    return cfg.strength * std::pow(remaining, exponent);
+}
+
+inline double sponge_blend_lambda(size_t layer, const SpongeProfileConfig &cfg, double dt_scale) {
+    return std::clamp(sponge_profile_value(layer, cfg) * dt_scale, 0.0, 1.0);
+}
+
 template <typename Boundary, typename T>
 inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                            int component) {
@@ -136,62 +186,24 @@ inline void apply_sponge_layer(Field3D<T> &field, const BSSNGridSoA<T> &G, Bound
         return;
 
     const double asymptotic = minkowski_target(which, component);
-    const double exponent = std::max(cfg.exponent, 1.0);
     T           *ptr = field.ptr();
 
     auto blend = [&](size_t idx, size_t layer) {
-        if (layer >= cfg.width)
-            return;
-        const double remaining =
-            static_cast<double>(cfg.width - layer) / static_cast<double>(cfg.width);
-        const double profile = std::pow(remaining, exponent);
-        const double lambda = std::clamp(cfg.strength * dt_scale * profile, 0.0, 1.0);
+        const double lambda = sponge_blend_lambda(layer, cfg, dt_scale);
         if (lambda <= 0.0)
             return;
         const double current = static_cast<double>(ptr[idx]);
         ptr[idx] = static_cast<T>(current + lambda * (asymptotic - current));
     };
-
-    const size_t width_x = std::min(cfg.width, I1 - I0);
-    const size_t width_y = std::min(cfg.width, J1 - J0);
-    const size_t width_z = std::min(cfg.width, K1 - K0);
-
-    if (active_face[0][0] && !reflective_face[0][0]) {
-        for (size_t layer = 0; layer < width_x; ++layer)
-            for (size_t j = J0; j < J1; ++j)
-                for (size_t k = K0; k < K1; ++k)
-                    blend(field.idx(I0 + layer, j, k), layer);
-    }
-    if (active_face[0][1] && !reflective_face[0][1]) {
-        for (size_t layer = 0; layer < width_x; ++layer)
-            for (size_t j = J0; j < J1; ++j)
-                for (size_t k = K0; k < K1; ++k)
-                    blend(field.idx(I1 - 1 - layer, j, k), layer);
-    }
-    if (active_face[1][0] && !reflective_face[1][0]) {
-        for (size_t layer = 0; layer < width_y; ++layer)
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t k = K0; k < K1; ++k)
-                    blend(field.idx(i, J0 + layer, k), layer);
-    }
-    if (active_face[1][1] && !reflective_face[1][1]) {
-        for (size_t layer = 0; layer < width_y; ++layer)
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t k = K0; k < K1; ++k)
-                    blend(field.idx(i, J1 - 1 - layer, k), layer);
-    }
-    if (active_face[2][0] && !reflective_face[2][0]) {
-        for (size_t layer = 0; layer < width_z; ++layer)
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t j = J0; j < J1; ++j)
-                    blend(field.idx(i, j, K0 + layer), layer);
-    }
-    if (active_face[2][1] && !reflective_face[2][1]) {
-        for (size_t layer = 0; layer < width_z; ++layer)
-            for (size_t i = I0; i < I1; ++i)
-                for (size_t j = J0; j < J1; ++j)
-                    blend(field.idx(i, j, K1 - 1 - layer), layer);
-    }
+#pragma omp parallel for collapse(3)
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                size_t layer = 0;
+                if (!nearest_sponge_layer(G, i, j, k, cfg, active_face, reflective_face, layer))
+                    continue;
+                blend(field.idx(i, j, k), layer);
+            }
 }
 
 } // namespace detail
@@ -415,11 +427,12 @@ struct BoundaryRadiative {
     template <typename T>
     static inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G,
                                       BoundaryField which, int component) {
-        // A smooth sponge layer damps the outer shell without pinning the physical boundary cell
-        // to an exact Dirichlet value. The dedicated RHS operator still handles the outgoing
-        // characteristic update on the boundary surface itself.
-        detail::apply_sponge_layer(field, G, which, component, sponge_config, characteristic_dt,
-                                   active_face, reflective_face);
+        // Radiative runs now apply the sponge as an RHS damping term. Physical cells are left
+        // untouched here so halo refreshes do not inject a Cartesian shell into the evolved state.
+        (void)field;
+        (void)G;
+        (void)which;
+        (void)component;
     }
 
     template <typename T>

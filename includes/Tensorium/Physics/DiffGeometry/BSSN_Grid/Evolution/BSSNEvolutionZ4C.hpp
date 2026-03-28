@@ -139,11 +139,15 @@ inline void compute_rhs_Theta_impl(const BSSNGridSoA<T> &G, Field3D<T> &rhs_thet
             if constexpr (UseZ4TraceCache) {
                 R_conformal_z4 = *p_z4_trace;
             } else {
-                T RicciZ4[6];
-                compute_RicciZ4_core<Order>(G, i, j, k, RicciZ4, params.chi_div_floor, inv_12dx,
-                                            inv_12dy, inv_12dz, sx, sy);
-                R_conformal_z4 = g_xx * RicciZ4[0] + g_yy * RicciZ4[3] + g_zz * RicciZ4[5] +
-                                 T(2) * (g_xy * RicciZ4[1] + g_xz * RicciZ4[2] + g_yz * RicciZ4[4]);
+                // Contracting the Z4 Ricci correction with g^{ab} reduces analytically to
+                // -(Z^m / chi) * d_m chi / chi, so we can avoid materializing RicciZ4[ab]
+                // inside the SIMD loop.
+                const T d_chi_x = tensorium_RG::fd::Dx_ptr_order<Order>(p_chi, sx, inv_12dx);
+                const T d_chi_y = tensorium_RG::fd::Dy_ptr_order<Order>(p_chi, sy, inv_12dy);
+                const T d_chi_z = tensorium_RG::fd::Dz_ptr_order<Order>(p_chi, inv_12dz);
+                R_conformal_z4 =
+                    -(z_over_chi0 * d_chi_x + z_over_chi1 * d_chi_y + z_over_chi2 * d_chi_z) /
+                    chi_guarded;
             }
             const T R_scalar = chi_guarded * (R_conformal_base + R_conformal_z4);
 
