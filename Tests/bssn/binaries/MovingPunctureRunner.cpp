@@ -113,26 +113,90 @@ void initialize_moving_puncture_level(Grid &grid, const tensorium_RG::bssn::Movi
         tensorium_RG::init::zero_z4c_fields(grid);
 }
 
-size_t moving_puncture_init_blend_shell_cells(const Grid &grid,
-                                              const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg) {
-    const size_t requested =
-        std::max<size_t>(grid.dims.ng, static_cast<size_t>(std::max(2, cfg.spatial_derivative_order + 2)));
-    const size_t max_shell =
-        std::max<size_t>(size_t(1), std::min({grid.dims.nx, grid.dims.ny, grid.dims.nz}) / 4);
-    return std::min(requested, max_shell);
+Grid make_grid_like(const Grid &grid) {
+    Grid out(grid.dims.nx, grid.dims.ny, grid.dims.nz, grid.dims.ng, grid.dx, grid.dy, grid.dz);
+    out.x0 = grid.x0;
+    out.y0 = grid.y0;
+    out.z0 = grid.z0;
+    return out;
+}
+
+double moving_puncture_grid_half_width(const Grid &grid) {
+    const auto axis_half_width = [](double origin, double spacing, size_t cells) {
+        const double xmin = std::abs(origin - 0.5 * spacing);
+        const double xmax = std::abs(origin + (double(cells) - 0.5) * spacing);
+        return std::min(xmin, xmax);
+    };
+
+    return std::min({axis_half_width(grid.x0, grid.dx, grid.dims.nx),
+                     axis_half_width(grid.y0, grid.dy, grid.dims.ny),
+                     axis_half_width(grid.z0, grid.dz, grid.dims.nz)});
+}
+
+struct MovingPunctureInitBlendRegion {
+    double core_half_width = 0.0;
+    double transition_width = 0.0;
+    double tp_outer_half_width = 0.0;
+};
+
+MovingPunctureInitBlendRegion
+moving_puncture_init_blend_region(const Grid &grid,
+                                  const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg) {
+    const double max_half_width =
+        std::max(0.0, moving_puncture_grid_half_width(grid) - 0.5 * std::max({grid.dx, grid.dy, grid.dz}));
+    const double physical_buffer =
+        (cfg.fmr.puncture_buffer > 0.0) ? cfg.fmr.puncture_buffer : std::max(2.0, 4.0 * cfg.spacing);
+    const double requested_transition = (cfg.fmr.init_transition_width > 0.0)
+                                            ? cfg.fmr.init_transition_width
+                                            : std::max(0.5 * physical_buffer, 6.0 * std::max({grid.dx, grid.dy, grid.dz}));
+
+    const double desired_outer_half_width =
+        (cfg.fmr.init_core_half_width > 0.0) ? (cfg.fmr.init_core_half_width + requested_transition)
+                                             : (cfg.separation + physical_buffer);
+    const double tp_outer_half_width = std::clamp(desired_outer_half_width, 0.0, max_half_width);
+    const double requested_core_half_width =
+        (cfg.fmr.init_core_half_width > 0.0) ? cfg.fmr.init_core_half_width
+                                             : std::max(0.0, tp_outer_half_width - requested_transition);
+    const double core_half_width = std::clamp(requested_core_half_width, 0.0, tp_outer_half_width);
+
+    MovingPunctureInitBlendRegion region;
+    region.core_half_width = core_half_width;
+    region.transition_width = std::max(0.0, tp_outer_half_width - core_half_width);
+    region.tp_outer_half_width = tp_outer_half_width;
+    return region;
 }
 
 void initialize_moving_puncture_hierarchy(MovingPunctureHierarchy &hierarchy,
                                           const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg,
                                           const tensorium_RG::bssn::ProjectionConfig &proj_cfg) {
     initialize_moving_puncture_level(hierarchy.root_grid(), cfg, proj_cfg, true);
+    tensorium_RG::fd::set_fd_dx(hierarchy.root_grid().dx);
+    tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(hierarchy.root_grid());
+
     for (size_t level = 1; level < hierarchy.num_levels(); ++level) {
-        initialize_moving_puncture_level(hierarchy.level_grid(level), cfg, proj_cfg, true);
-        const size_t shell_cells =
-            moving_puncture_init_blend_shell_cells(hierarchy.level_grid(level), cfg);
-        hierarchy.blend_level_shell_from_parent(level, shell_cells);
-        std::cout << "[fmr.init] level=" << level << " blend_shell_cells=" << shell_cells
-                  << std::endl;
+        hierarchy.prolongate_level_from_parent(level);
+        tensorium_RG::bssn::project_bssn_state(hierarchy.level_grid(level), proj_cfg);
+
+        if (cfg.fmr.fine_levels_use_parent_init) {
+            hierarchy.apply_level_boundaries();
+            std::cout << "[fmr.init] level=" << level << " source=parent_prolongation"
+                      << std::endl;
+            continue;
+        }
+
+        Grid tp_reference = make_grid_like(hierarchy.level_grid(level));
+        initialize_moving_puncture_level(tp_reference, cfg, proj_cfg, true);
+
+        const auto region = moving_puncture_init_blend_region(hierarchy.level_grid(level), cfg);
+        hierarchy.blend_level_centered_core_from_reference(level, tp_reference,
+                                                           region.core_half_width,
+                                                           region.transition_width);
+        tensorium_RG::bssn::project_bssn_state(hierarchy.level_grid(level), proj_cfg);
+        hierarchy.apply_level_boundaries();
+
+        std::cout << "[fmr.init] level=" << level << " core_half_width=" << region.core_half_width
+                  << " transition_width=" << region.transition_width
+                  << " tp_outer_half_width=" << region.tp_outer_half_width << std::endl;
     }
 
     hierarchy.restrict_all_levels_to_root();

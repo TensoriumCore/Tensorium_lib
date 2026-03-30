@@ -212,6 +212,45 @@ REGISTER_TEST("bssn.fmr.parent_interpolation_boundary_blends_in_time",
                                                 "FMR halo time interpolation");
               });
 
+REGISTER_TEST("bssn.fmr.parent_interpolation_boundary_tracks_stage_fraction",
+              "Fine halo fills can track the RK substage time between the parent start and end states",
+              []() {
+                  Grid coarse_old = make_root_grid();
+                  Grid coarse_new = make_root_grid();
+
+                  for_each_physical(coarse_old, [&](size_t, size_t, size_t, size_t idx, double x,
+                                                    double y, double z) {
+                      coarse_old.alpha.ptr()[idx] = 1.0 + 0.1 * x - 0.05 * y + 0.02 * z;
+                  });
+                  for_each_physical(coarse_new, [&](size_t, size_t, size_t, size_t idx, double x,
+                                                    double y, double z) {
+                      coarse_new.alpha.ptr()[idx] = 1.5 - 0.03 * x + 0.07 * y - 0.04 * z;
+                  });
+
+                  Hierarchy hierarchy(coarse_old, {{fine_patch(), 2, 0}}, 4);
+                  Grid     &fine = hierarchy.level_grid(1);
+
+                  const size_t i = fine.dims.ng - 1;
+                  const size_t j = fine.dims.ng + fine.dims.ny / 2;
+                  const size_t k = fine.dims.ng + fine.dims.nz / 2;
+                  const size_t idx = fine.alpha.idx(i, j, k);
+                  fine.alpha.ptr()[idx] = -999.0;
+
+                  const typename FineBoundary::Context ctx{&coarse_old, &coarse_new, 0.25, 0.75};
+                  const tensorium_RG::bssn::fmr::ScopedParentInterpolationContext<double> scope(&ctx);
+                  FineBoundary::set_stage_fraction(0.5);
+                  tensorium_RG::bssn::apply_halos_grid<FineBoundary>(fine);
+                  FineBoundary::set_stage_fraction(1.0);
+
+                  double x, y, z;
+                  coords_any(fine, i, j, k, x, y, z);
+                  const double expected_old = 1.0 + 0.1 * x - 0.05 * y + 0.02 * z;
+                  const double expected_new = 1.5 - 0.03 * x + 0.07 * y - 0.04 * z;
+                  const double expected = 0.5 * expected_old + 0.5 * expected_new;
+                  tensorium::tests::expect_near(fine.alpha.ptr()[idx], expected, 1e-12,
+                                                "FMR halo stage-fraction interpolation");
+              });
+
 REGISTER_TEST("bssn.fmr.initial_shell_blending_matches_parent_at_interface",
               "Fine-level initialization can smoothly match the parent on a physical shell", []() {
                   Grid root = make_root_grid();
@@ -249,6 +288,51 @@ REGISTER_TEST("bssn.fmr.initial_shell_blending_matches_parent_at_interface",
                   tensorium::tests::expect_near(
                       fine.alpha.ptr()[fine.alpha.idx(deep_i, center_j, center_k)], 10.0, 1e-12,
                       "FMR shell leaves deep interior unchanged");
+              });
+
+REGISTER_TEST("bssn.fmr.centered_core_blending_keeps_parent_outer_collar",
+              "Fine-level initialization can inject a centered TP core while preserving the parent prolongation near the interface",
+              []() {
+                  Grid root(24, 24, 24, 4, 0.5, 0.5, 0.5);
+                  tensorium_RG::bssn::center_cell_centered_origin(root);
+                  tensorium_RG::init::minkowski(root, 0.0);
+                  for_each_physical(root, [&](size_t, size_t, size_t, size_t idx, double, double,
+                                              double) { root.alpha.ptr()[idx] = 1.0; });
+                  tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(root);
+
+                  const tensorium_RG::bssn::fmr::PatchBox centered_patch{8, 16, 8, 16, 8, 16};
+                  Hierarchy hierarchy(root, {{centered_patch, 2, 0}}, 4);
+                  hierarchy.prolongate_level_from_parent(1);
+                  Grid &fine = hierarchy.level_grid(1);
+
+                  Grid reference(fine.dims.nx, fine.dims.ny, fine.dims.nz, fine.dims.ng, fine.dx,
+                                 fine.dy, fine.dz);
+                  reference.x0 = fine.x0;
+                  reference.y0 = fine.y0;
+                  reference.z0 = fine.z0;
+                  tensorium_RG::init::minkowski(reference, 0.0);
+                  for_each_physical(reference, [&](size_t, size_t, size_t, size_t idx, double,
+                                                   double, double) { reference.alpha.ptr()[idx] = 10.0; });
+
+                  hierarchy.blend_level_centered_core_from_reference(1, reference, 0.5, 0.75);
+
+                  const size_t center_j = fine.dims.ng + fine.dims.ny / 2 - 1;
+                  const size_t center_k = fine.dims.ng + fine.dims.nz / 2 - 1;
+                  const size_t center_i = fine.dims.ng + fine.dims.nx / 2 - 1;
+                  tensorium::tests::expect_near(
+                      fine.alpha.ptr()[fine.alpha.idx(center_i, center_j, center_k)], 10.0, 1e-12,
+                      "FMR centered core keeps the TP reference at the center");
+
+                  const size_t transition_i = fine.dims.ng + 11;
+                  const double transition_alpha =
+                      fine.alpha.ptr()[fine.alpha.idx(transition_i, center_j, center_k)];
+                  TENSORIUM_TEST_ASSERT(transition_alpha > 1.0);
+                  TENSORIUM_TEST_ASSERT(transition_alpha < 10.0);
+
+                  const size_t outer_i = fine.dims.ng + fine.dims.nx - 1;
+                  tensorium::tests::expect_near(
+                      fine.alpha.ptr()[fine.alpha.idx(outer_i, center_j, center_k)], 1.0, 1e-12,
+                      "FMR centered core leaves the outer collar on the parent prolongation");
               });
 
 REGISTER_TEST("bssn.fmr.hierarchy_step_keeps_levels_finite",

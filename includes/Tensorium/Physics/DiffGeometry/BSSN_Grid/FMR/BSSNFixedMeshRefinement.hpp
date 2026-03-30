@@ -5,6 +5,7 @@
 #include "../TimeIntegration/BSSNRK4.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <limits>
 #include <memory>
@@ -361,6 +362,99 @@ inline void blend_shell_from_parent(const BSSNGridSoA<T> &parent, BSSNGridSoA<T>
 }
 
 template <typename T>
+inline bool same_grid_geometry(const BSSNGridSoA<T> &lhs, const BSSNGridSoA<T> &rhs) {
+    const auto near_equal = [](T a, T b) {
+        const T scale = std::max({T(1), std::abs(a), std::abs(b)});
+        return std::abs(a - b) <= T(32) * std::numeric_limits<T>::epsilon() * scale;
+    };
+
+    return lhs.dims.nx == rhs.dims.nx && lhs.dims.ny == rhs.dims.ny && lhs.dims.nz == rhs.dims.nz &&
+           lhs.dims.ng == rhs.dims.ng && near_equal(lhs.dx, rhs.dx) && near_equal(lhs.dy, rhs.dy) &&
+           near_equal(lhs.dz, rhs.dz) && near_equal(lhs.x0, rhs.x0) && near_equal(lhs.y0, rhs.y0) &&
+           near_equal(lhs.z0, rhs.z0);
+}
+
+template <typename T>
+inline void blend_field_centered_core_from_reference(const BSSNGridSoA<T> &reference,
+                                                     BSSNGridSoA<T> &target, T core_half_width,
+                                                     T transition_width, BoundaryField which,
+                                                     int component) {
+    if (core_half_width < T(0))
+        core_half_width = T(0);
+    if (transition_width < T(0))
+        transition_width = T(0);
+
+    const T outer_half_width = core_half_width + transition_width;
+    if (!(outer_half_width > T(0)))
+        return;
+
+    const Field3D<T> &src = select_field(reference, which, component);
+    Field3D<T>       &dst = select_field(target, which, component);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    target.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+#pragma omp parallel for collapse(3)
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                T x, y, z;
+                coords_any_index(target, i, j, k, x, y, z);
+                const T centered_radius = std::max({std::abs(x), std::abs(y), std::abs(z)});
+                if (centered_radius >= outer_half_width)
+                    continue;
+
+                T reference_weight = T(1);
+                if (centered_radius > core_half_width) {
+                    if (!(transition_width > T(0)))
+                        reference_weight = T(0);
+                    else {
+                        const T s = std::clamp((outer_half_width - centered_radius) / transition_width,
+                                               T(0), T(1));
+                        reference_weight = s * s * (T(3) - T(2) * s);
+                    }
+                }
+
+                const size_t idx = dst.idx(i, j, k);
+                const T dst_value = dst.ptr()[idx];
+                const T src_value = src.ptr()[idx];
+                dst.ptr()[idx] = (T(1) - reference_weight) * dst_value + reference_weight * src_value;
+            }
+}
+
+template <typename T>
+inline void blend_centered_core_from_reference(const BSSNGridSoA<T> &reference,
+                                               BSSNGridSoA<T> &target, T core_half_width,
+                                               T transition_width) {
+    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
+                                             BoundaryField::Alpha, 0);
+    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
+                                             BoundaryField::Chi, 0);
+    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
+                                             BoundaryField::K, 0);
+    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
+                                             BoundaryField::Theta, 0);
+    for (int a = 0; a < 3; ++a) {
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::Beta, a);
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::B, a);
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::TildeGamma, a);
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::Z, a);
+    }
+    for (int s = 0; s < 6; ++s) {
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::GammaTilde, s);
+        blend_field_centered_core_from_reference(reference, target, core_half_width,
+                                                 transition_width, BoundaryField::ATilde, s);
+    }
+
+    tensorium_RG::bssn::enforce_algebraic_constraints(target);
+}
+
+template <typename T>
 inline void restrict_field_average(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &parent,
                                    BoundaryField which, int component, const PatchBox &parent_box,
                                    size_t ratio) {
@@ -419,14 +513,29 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
     struct Context {
         const BSSNGridSoA<T> *coarse_old = nullptr;
         const BSSNGridSoA<T> *coarse_new = nullptr;
-        T                     lambda = T(0);
+        T                     lambda_begin = T(0);
+        T                     lambda_end = T(0);
+
+        Context() = default;
+
+        Context(const BSSNGridSoA<T> *old_state, const BSSNGridSoA<T> *new_state, T lambda)
+            : coarse_old(old_state), coarse_new(new_state), lambda_begin(lambda), lambda_end(lambda) {}
+
+        Context(const BSSNGridSoA<T> *old_state, const BSSNGridSoA<T> *new_state, T begin_lambda,
+                T end_lambda)
+            : coarse_old(old_state), coarse_new(new_state), lambda_begin(begin_lambda),
+              lambda_end(end_lambda) {}
     };
 
     inline static constexpr bool evolve_physical_cells = true;
     inline static constexpr bool radiative_rhs_collar_enabled = false;
     inline static const Context *current_context = nullptr;
+    inline static T              current_stage_fraction = T(1);
 
     static inline void set_context(const Context *ctx) { current_context = ctx; }
+    static inline void set_stage_fraction(T fraction) {
+        current_stage_fraction = std::clamp(fraction, T(0), T(1));
+    }
 
     template <typename U>
     static inline void apply_physical(Field3D<U> &field, const BSSNGridSoA<U> &grid,
@@ -462,9 +571,14 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
 
                     U x, y, z;
                     detail::coords_any_index(grid, i, j, k, x, y, z);
+                    const T lambda = std::clamp(
+                        current_context->lambda_begin +
+                            current_stage_fraction *
+                                (current_context->lambda_end - current_context->lambda_begin),
+                        T(0), T(1));
                     ptr[field.idx(i, j, k)] = detail::sample_temporal_field(
                         *current_context->coarse_old, *current_context->coarse_new,
-                        current_context->lambda, which, component, x, y, z);
+                        lambda, which, component, x, y, z);
                 }
     }
 };
@@ -578,6 +692,19 @@ class FixedMeshRefinementHierarchy {
         detail::copy_evolved_state(levels_[level]->grid, levels_[level]->snapshot);
     }
 
+    void blend_level_centered_core_from_reference(size_t level, const BSSNGridSoA<T> &reference,
+                                                  T core_half_width, T transition_width) {
+        if (level == 0 || level >= levels_.size())
+            throw std::out_of_range("FMR centered-core blending requires a valid child level");
+        if (!detail::same_grid_geometry(levels_[level]->grid, reference)) {
+            throw std::invalid_argument(
+                "FMR centered-core blending requires a reference grid with identical geometry");
+        }
+        detail::blend_centered_core_from_reference(reference, levels_[level]->grid, core_half_width,
+                                                   transition_width);
+        detail::copy_evolved_state(levels_[level]->grid, levels_[level]->snapshot);
+    }
+
     void restrict_all_levels_to_root() {
         for (size_t level = levels_.size(); level-- > 1;)
             restrict_level_to_parent(level);
@@ -654,7 +781,7 @@ class FixedMeshRefinementHierarchy {
 
         for (size_t substep = 0; substep < ratio; ++substep) {
             const typename FineBoundary::Context ctx{
-                &level.snapshot, &level.grid, (T(substep) + T(0.5)) / T(ratio)};
+                &level.snapshot, &level.grid, T(substep) / T(ratio), T(substep + 1) / T(ratio)};
             const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
             advance_level(level_idx + 1, dt_child);
         }

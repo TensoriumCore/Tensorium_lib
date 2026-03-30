@@ -65,6 +65,10 @@ template <typename Boundary, typename = void> struct BoundaryFieldSpeedConfigura
     static inline void set(double, double, double) {}
 };
 
+template <typename Boundary, typename = void> struct BoundaryStageFractionConfigurator {
+    static inline void set(double) {}
+};
+
 template <typename Boundary>
 struct BoundaryConfigurator<Boundary, std::void_t<decltype(Boundary::set_characteristic(
                                      std::declval<double>(), std::declval<double>()))>> {
@@ -81,6 +85,12 @@ struct BoundaryFieldSpeedConfigurator<
     static inline void set(double gauge_speed, double z4c_speed, double khat_speed) {
         Boundary::set_field_characteristic_speeds(gauge_speed, z4c_speed, khat_speed);
     }
+};
+
+template <typename Boundary>
+struct BoundaryStageFractionConfigurator<
+    Boundary, std::void_t<decltype(Boundary::set_stage_fraction(std::declval<double>()))>> {
+    static inline void set(double stage_fraction) { Boundary::set_stage_fraction(stage_fraction); }
 };
 
 template <typename Boundary, typename = void> struct BoundaryPhysicalEvolutionTraits {
@@ -639,6 +649,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
         static constexpr std::array<double, 4> delta_ref = {
             1.0, 0.217683334308543, 1.065841341361089, 0.0};
+        static constexpr std::array<double, 4> stage_time_ref = {0.0, 0.5, 0.5, 1.0};
 
         boundary_dt_ = dt;
         for (int stage = 0; stage < 4; ++stage) {
@@ -647,9 +658,10 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             else
                 accumulate_stage_reference(grid, stage_grid_, T(delta_ref[stage]));
 
+            BoundaryStageFractionConfigurator<Boundary>::set(stage_time_ref[stage]);
             prepare_state_for_rhs(grid);
             auto stage_params = gauge_params_;
-            stage_params.current_time = simulation_time_;
+            stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stages_[stage], stage_params);
 
@@ -661,6 +673,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                 apply_chi_floor(grid, gauge_params_.chi_floor);
         }
         simulation_time_ += dt;
+        BoundaryStageFractionConfigurator<Boundary>::set(1.0);
 
         if (gauge_params_.alpha_floor > T(0))
             apply_alpha_floor(grid, gauge_params_.alpha_floor);

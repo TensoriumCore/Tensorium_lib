@@ -83,8 +83,11 @@ struct MovingPunctureFMRConfig {
     size_t levels = 2;
     size_t refinement_ratio = 2;
     size_t halo_cells = 0;
+    bool   fine_levels_use_parent_init = true;
     double finest_box_half_width = 0.0;
     double puncture_buffer = 0.0;
+    double init_core_half_width = 0.0;
+    double init_transition_width = 0.0;
 };
 
 struct MovingPunctureEnvConfig {
@@ -550,6 +553,9 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed >= 0)
             cfg.fmr.halo_cells = static_cast<size_t>(*parsed);
     }
+    cfg.fmr.fine_levels_use_parent_init =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_FMR_FINE_LEVELS_USE_PARENT_INIT",
+                            cfg.fmr.fine_levels_use_parent_init);
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_FINEST_BOX_HALF_WIDTH")) {
         if (*parsed > 0.0)
             cfg.fmr.finest_box_half_width = *parsed;
@@ -557,6 +563,15 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_PUNCTURE_BUFFER")) {
         if (*parsed > 0.0)
             cfg.fmr.puncture_buffer = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_INIT_CORE_HALF_WIDTH")) {
+        if (*parsed > 0.0)
+            cfg.fmr.init_core_half_width = *parsed;
+    }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_INIT_TRANSITION_WIDTH")) {
+        if (*parsed > 0.0)
+            cfg.fmr.init_transition_width = *parsed;
     }
     if (cfg.fmr.levels == 0)
         cfg.fmr.enabled = false;
