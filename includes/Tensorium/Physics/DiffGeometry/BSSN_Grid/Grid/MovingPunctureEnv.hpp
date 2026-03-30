@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -84,6 +85,13 @@ struct MovingPunctureFMRConfig {
     size_t refinement_ratio = 2;
     size_t halo_cells = 0;
     bool   fine_levels_use_parent_init = true;
+    bool   move_with_punctures = false;
+    size_t regrid_interval = 0;
+    double regrid_threshold_cells = 2.0;
+    bool   tracker_recenter_on_drift = true;
+    double tracker_recenter_cells = 4.0;
+    double tracker_drift_warn_cells = 1.5;
+    double outer_box_half_width = 0.0;
     double finest_box_half_width = 0.0;
     double puncture_buffer = 0.0;
     double init_core_half_width = 0.0;
@@ -556,6 +564,32 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     cfg.fmr.fine_levels_use_parent_init =
         detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_FMR_FINE_LEVELS_USE_PARENT_INIT",
                             cfg.fmr.fine_levels_use_parent_init);
+    cfg.fmr.move_with_punctures =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_FMR_MOVE_WITH_PUNCTURES",
+                            cfg.fmr.move_with_punctures);
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_INTERVAL")) {
+        if (*parsed >= 0)
+            cfg.fmr.regrid_interval = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_THRESHOLD_CELLS")) {
+        if (*parsed > 0.0)
+            cfg.fmr.regrid_threshold_cells = *parsed;
+    }
+    cfg.fmr.tracker_recenter_on_drift =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_ON_DRIFT",
+                            cfg.fmr.tracker_recenter_on_drift);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_CELLS")) {
+        if (*parsed > 0.0)
+            cfg.fmr.tracker_recenter_cells = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_TRACKER_DRIFT_WARN_CELLS")) {
+        if (*parsed > 0.0)
+            cfg.fmr.tracker_drift_warn_cells = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_OUTER_BOX_HALF_WIDTH")) {
+        if (*parsed > 0.0)
+            cfg.fmr.outer_box_half_width = *parsed;
+    }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_FMR_FINEST_BOX_HALF_WIDTH")) {
         if (*parsed > 0.0)
             cfg.fmr.finest_box_half_width = *parsed;
@@ -582,31 +616,48 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
 namespace detail {
 
 template <typename T>
-inline fmr::PatchBox moving_puncture_axis_aligned_patch_from_half_width(const BSSNGridSoA<T> &grid,
-                                                                        double half_width,
-                                                                        size_t clearance) {
-    auto clamp_axis = [&](double origin, double spacing, size_t cells, size_t &a0,
-                          size_t &a1) {
-        const long min_idx =
-            static_cast<long>(std::ceil((-half_width - origin) / spacing - 1.0e-12));
-        const long max_idx =
-            static_cast<long>(std::floor((half_width - origin) / spacing + 1.0e-12));
-        const long lo = std::max<long>(static_cast<long>(clearance), min_idx);
-        const long hi =
-            std::min<long>(static_cast<long>(cells) - static_cast<long>(clearance) - 1, max_idx);
+inline fmr::PatchBox moving_puncture_axis_aligned_patch_from_half_width_centered(
+    const BSSNGridSoA<T> &grid, const std::array<double, 3> &center, double half_width,
+    size_t clearance) {
+    auto clamp_axis = [&](double center_coord, double origin, double spacing, size_t cells,
+                          size_t &a0, size_t &a1) {
+        long lo =
+            static_cast<long>(std::ceil(((center_coord - half_width) - origin) / spacing - 1.0e-12));
+        long hi =
+            static_cast<long>(std::floor(((center_coord + half_width) - origin) / spacing + 1.0e-12));
         if (hi < lo)
             throw std::runtime_error("Requested moving-puncture FMR box does not fit on the grid");
+
+        const long count = hi - lo + 1;
+        const long min_lo = static_cast<long>(clearance);
+        const long max_hi = static_cast<long>(cells) - static_cast<long>(clearance) - 1;
+        if (count <= 0 || count + 2 * static_cast<long>(clearance) > static_cast<long>(cells))
+            throw std::runtime_error("Requested moving-puncture FMR box does not fit on the grid");
+
+        if (lo < min_lo) {
+            const long shift = min_lo - lo;
+            lo += shift;
+            hi += shift;
+        }
+        if (hi > max_hi) {
+            const long shift = hi - max_hi;
+            lo -= shift;
+            hi -= shift;
+        }
+        if (lo < min_lo || hi > max_hi || hi < lo)
+            throw std::runtime_error("Requested moving-puncture FMR box does not fit on the grid");
+
         a0 = static_cast<size_t>(lo);
         a1 = static_cast<size_t>(hi + 1);
     };
 
     fmr::PatchBox box{};
-    clamp_axis(static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx, box.i0,
-               box.i1);
-    clamp_axis(static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny, box.j0,
-               box.j1);
-    clamp_axis(static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz, box.k0,
-               box.k1);
+    clamp_axis(center[0], static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx,
+               box.i0, box.i1);
+    clamp_axis(center[1], static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny,
+               box.j0, box.j1);
+    clamp_axis(center[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz,
+               box.k0, box.k1);
     return box;
 }
 
@@ -643,7 +694,8 @@ inline double moving_puncture_axis_half_extent(T origin, T spacing, size_t cells
 template <typename T>
 inline std::vector<fmr::LevelConfig>
 build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
-                                 const MovingPunctureEnvConfig &cfg) {
+                                 const MovingPunctureEnvConfig &cfg,
+                                 const std::array<double, 3> &center = {0.0, 0.0, 0.0}) {
     std::vector<fmr::LevelConfig> levels;
     if (!cfg.fmr.enabled || cfg.fmr.levels == 0)
         return levels;
@@ -665,40 +717,52 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
     if (!(max_root_half_width > 0.0))
         throw std::runtime_error("Moving-puncture FMR requires positive room inside the root grid");
 
-    const double auto_finest_half_width = std::max(cfg.separation + auto_buffer, 4.0 * cfg.spacing);
-    double finest_half_width =
-        (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width : auto_finest_half_width;
-    const double max_finest_half_width = max_root_half_width / std::max(1.0, scale);
-    if (cfg.fmr.finest_box_half_width > 0.0 && finest_half_width > max_finest_half_width) {
-        throw std::runtime_error(
-            "Requested moving-puncture finest FMR box is too large for the root domain");
+    double outer_half_width = 0.0;
+    double finest_half_width = 0.0;
+    if (cfg.fmr.outer_box_half_width > 0.0) {
+        outer_half_width = cfg.fmr.outer_box_half_width;
+        if (outer_half_width > max_root_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture outer FMR box is too large for the root domain");
+        }
+        finest_half_width = outer_half_width / std::max(1.0, scale);
+    } else {
+        const double auto_finest_half_width = std::max(cfg.separation + auto_buffer, 4.0 * cfg.spacing);
+        finest_half_width =
+            (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width : auto_finest_half_width;
+        const double max_finest_half_width = max_root_half_width / std::max(1.0, scale);
+        if (cfg.fmr.finest_box_half_width > 0.0 && finest_half_width > max_finest_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture finest FMR box is too large for the root domain");
+        }
+        finest_half_width = std::min(finest_half_width, max_finest_half_width);
+        outer_half_width = finest_half_width * scale;
     }
-    finest_half_width = std::min(finest_half_width, max_finest_half_width);
     if (!(finest_half_width > 0.0))
         throw std::runtime_error("Computed moving-puncture finest FMR box is empty");
 
-    const double outer_half_width = finest_half_width * scale;
-    const fmr::PatchBox outer_box =
-        detail::moving_puncture_axis_aligned_patch_from_half_width(root_grid, outer_half_width,
-                                                                   clearance);
-    const size_t patch_nx = outer_box.nx();
-    const size_t patch_ny = outer_box.ny();
-    const size_t patch_nz = outer_box.nz();
-
     levels.reserve(cfg.fmr.levels);
-    levels.push_back({outer_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+    const BSSNGridSoA<T> *parent_grid = &root_grid;
+    std::vector<std::unique_ptr<BSSNGridSoA<T>>> temporary_parents;
+    double level_half_width = outer_half_width;
 
-    size_t parent_nx = patch_nx * cfg.fmr.refinement_ratio;
-    size_t parent_ny = patch_ny * cfg.fmr.refinement_ratio;
-    size_t parent_nz = patch_nz * cfg.fmr.refinement_ratio;
-    for (size_t level = 1; level < cfg.fmr.levels; ++level) {
-        levels.push_back({detail::centered_patch_from_counts(parent_nx, parent_ny, parent_nz,
-                                                             patch_nx, patch_ny, patch_nz,
-                                                             clearance),
-                          cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
-        parent_nx = patch_nx * cfg.fmr.refinement_ratio;
-        parent_ny = patch_ny * cfg.fmr.refinement_ratio;
-        parent_nz = patch_nz * cfg.fmr.refinement_ratio;
+    for (size_t level = 0; level < cfg.fmr.levels; ++level) {
+        const fmr::PatchBox patch = detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
+            *parent_grid, center, level_half_width, clearance);
+        levels.push_back({patch, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+
+        if (level + 1 >= cfg.fmr.levels)
+            break;
+
+        const auto child = fmr::detail::make_child_geometry(*parent_grid, levels.back());
+        auto next_parent = std::make_unique<BSSNGridSoA<T>>(child.nx, child.ny, child.nz, child.ng,
+                                                            T(child.dx), T(child.dy), T(child.dz));
+        next_parent->x0 = T(child.x0);
+        next_parent->y0 = T(child.y0);
+        next_parent->z0 = T(child.z0);
+        parent_grid = next_parent.get();
+        temporary_parents.push_back(std::move(next_parent));
+        level_half_width /= static_cast<double>(cfg.fmr.refinement_ratio);
     }
 
     return levels;

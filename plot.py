@@ -124,7 +124,7 @@ if latex_requested:
             "matplotlib mathtext."
         )
 
-auto_zoom = True
+auto_zoom = False
 zoom_margin = 15.0
 zoom_min_half_width = 19.0
 
@@ -187,7 +187,7 @@ def discover_slice_entries(path):
             entries.append({"step": step, "paths": sorted(by_step[step])})
         return entries
 
-    standalone_paths = sorted(glob.glob(os.path.join(path, "slice_*.csv")))
+    standalone_paths = sorted(glob.glob(os.path.join(path, "slice_[0-9]*.csv")))
     return make_frame_entries(standalone_paths)
 
 
@@ -213,7 +213,6 @@ def load_frame_df(frame_entry):
     if {"y", "x"}.issubset(df.columns):
         df = df.sort_values(["y", "x"]).reset_index(drop=True)
     return df
-
 
 data_dir = discover_data_dir()
 slice_files = discover_slice_entries(data_dir)
@@ -640,7 +639,6 @@ def overlay_track(ax, track_slice):
     ax.scatter(
         track_slice["x_right"].iloc[-1], track_slice["y_right"].iloc[-1], color="orange", s=20
     )
-
 
 def update_regular(frame_idx):
     current_file = files[frame_idx]
