@@ -401,6 +401,87 @@ REGISTER_TEST("bssn.fmr.moving_puncture_auto_boxes_cover_the_binary",
                                                 "Moving-puncture finest spacing");
               });
 
+REGISTER_TEST("bssn.fmr.moving_puncture_outer_box_half_width_controls_nested_levels",
+              "An explicit outer refined half-width builds a geometric nested hierarchy toward the center",
+              []() {
+                  tensorium_RG::bssn::MovingPunctureEnvConfig cfg;
+                  cfg.nx = 64;
+                  cfg.ny = 64;
+                  cfg.nz = 64;
+                  cfg.spacing = 0.5;
+                  cfg.separation = 3.053395;
+                  cfg.fmr.enabled = true;
+                  cfg.fmr.levels = 3;
+                  cfg.fmr.refinement_ratio = 2;
+                  cfg.fmr.outer_box_half_width = 8.0;
+
+                  Grid root(cfg.nx, cfg.ny, cfg.nz, 4, cfg.spacing, cfg.spacing, cfg.spacing);
+                  tensorium_RG::bssn::center_cell_centered_origin(root);
+
+                  const auto levels = tensorium_RG::bssn::build_moving_puncture_fmr_levels(root, cfg);
+                  TENSORIUM_TEST_ASSERT(levels.size() == 3);
+
+                  Hierarchy hierarchy(root, levels, 4);
+                  const Grid &level1 = hierarchy.level_grid(1);
+                  const Grid &level2 = hierarchy.level_grid(2);
+                  const Grid &level3 = hierarchy.level_grid(3);
+
+                  const double h1 = 0.5 * level1.dims.nx * level1.dx;
+                  const double h2 = 0.5 * level2.dims.nx * level2.dx;
+                  const double h3 = 0.5 * level3.dims.nx * level3.dx;
+
+                  tensorium::tests::expect_near(h1, 8.0, root.dx, "Outer refined half-width");
+                  tensorium::tests::expect_near(h2, 4.0, level1.dx, "Intermediate refined half-width");
+                  tensorium::tests::expect_near(h3, 2.0, level2.dx, "Finest refined half-width");
+                  tensorium::tests::expect_near(level3.dx, root.dx / 8.0, 1e-15,
+                                                "Three-level finest spacing");
+              });
+
+REGISTER_TEST("bssn.fmr.moving_puncture_centered_levels_follow_requested_center",
+              "An explicit FMR center shifts the refined hierarchy away from the origin",
+              []() {
+                  tensorium_RG::bssn::MovingPunctureEnvConfig cfg;
+                  cfg.nx = 96;
+                  cfg.ny = 96;
+                  cfg.nz = 96;
+                  cfg.spacing = 0.25;
+                  cfg.separation = 3.053395;
+                  cfg.fmr.enabled = true;
+                  cfg.fmr.levels = 2;
+                  cfg.fmr.refinement_ratio = 2;
+                  cfg.fmr.outer_box_half_width = 6.0;
+
+                  Grid root(cfg.nx, cfg.ny, cfg.nz, 4, cfg.spacing, cfg.spacing, cfg.spacing);
+                  tensorium_RG::bssn::center_cell_centered_origin(root);
+
+                  const std::array<double, 3> center{2.5, -1.0, 0.0};
+                  const auto levels =
+                      tensorium_RG::bssn::build_moving_puncture_fmr_levels(root, cfg, center);
+                  TENSORIUM_TEST_ASSERT(levels.size() == 2);
+
+                  Hierarchy hierarchy(root, levels, 4);
+                  const Grid &level1 = hierarchy.level_grid(1);
+                  const Grid &level2 = hierarchy.level_grid(2);
+
+                  const auto center1 =
+                      std::array<double, 3>{level1.x0 + 0.5 * double(level1.dims.nx - 1) * level1.dx,
+                                            level1.y0 + 0.5 * double(level1.dims.ny - 1) * level1.dy,
+                                            level1.z0 + 0.5 * double(level1.dims.nz - 1) * level1.dz};
+                  const auto center2 =
+                      std::array<double, 3>{level2.x0 + 0.5 * double(level2.dims.nx - 1) * level2.dx,
+                                            level2.y0 + 0.5 * double(level2.dims.ny - 1) * level2.dy,
+                                            level2.z0 + 0.5 * double(level2.dims.nz - 1) * level2.dz};
+
+                  tensorium::tests::expect_near(center1[0], center[0], level1.dx,
+                                                "Outer refined level follows requested x center");
+                  tensorium::tests::expect_near(center1[1], center[1], level1.dy,
+                                                "Outer refined level follows requested y center");
+                  tensorium::tests::expect_near(center2[0], center[0], level2.dx,
+                                                "Finest refined level follows requested x center");
+                  tensorium::tests::expect_near(center2[1], center[1], level2.dy,
+                                                "Finest refined level follows requested y center");
+              });
+
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
 REGISTER_TEST("bssn.fmr.twopunctures_repeated_init_reuses_cached_solve",
               "Repeated TwoPunctures initializations with identical binary parameters stay finite",

@@ -214,6 +214,60 @@ TENSORIUM_MOVING_PUNCTURE_STEPS=12000 \
 ./build/Tests/TensoriumMovingPuncture
 ```
 
+For nested moving-puncture FMR runs, the most useful controls are:
+
+- `TENSORIUM_MOVING_PUNCTURE_FMR_LEVELS`: number of refined levels nested inside the root grid
+- `TENSORIUM_MOVING_PUNCTURE_FMR_REFINEMENT_RATIO`: refinement ratio between successive levels; `2` is the intended production setting
+- `TENSORIUM_MOVING_PUNCTURE_FMR_OUTER_BOX_HALF_WIDTH`: physical half-width of the outermost refined box
+- `TENSORIUM_MOVING_PUNCTURE_FMR_FINEST_BOX_HALF_WIDTH`: physical half-width of the finest box when sizing from the center outward
+- `TENSORIUM_MOVING_PUNCTURE_FMR_FINE_LEVELS_USE_PARENT_INIT=1`: initialize refined levels from parent prolongation instead of a second local TwoPunctures solve
+- `TENSORIUM_MOVING_PUNCTURE_FMR_MOVE_WITH_PUNCTURES=1`: re-center the refined hierarchy on the tracked puncture midpoint during evolution
+- `TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_INTERVAL`: root-step interval between regrid checks when moving boxes are enabled
+- `TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_THRESHOLD_CELLS`: minimum midpoint drift, in finest-grid cells, before rebuilding the hierarchy
+- `TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_ON_DRIFT=1`: snap the shift-integrated puncture tracker back to the slice minima if it drifts too far
+- `TENSORIUM_MOVING_PUNCTURE_TRACKER_RECENTER_CELLS`: tracker drift threshold, in finest-grid cells, for that recenter
+
+When `TENSORIUM_MOVING_PUNCTURE_FMR_OUTER_BOX_HALF_WIDTH` is set, the refined hierarchy is built geometrically toward the center. For example, `LEVELS=4`, `RATIO=2`, `OUTER_BOX_HALF_WIDTH=64` produces refined half-widths close to `64 -> 32 -> 16 -> 8`.
+
+Example multilevel run:
+
+```bash
+OMP_NUM_THREADS=24 \
+OMP_DYNAMIC=FALSE \
+TENSORIUM_MOVING_PUNCTURE_GRID_N=192 \
+TENSORIUM_MOVING_PUNCTURE_BOX_LENGTH=256.0 \
+TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT=1 \
+TENSORIUM_MOVING_PUNCTURE_ENABLE_FMR=1 \
+TENSORIUM_MOVING_PUNCTURE_FMR_LEVELS=4 \
+TENSORIUM_MOVING_PUNCTURE_FMR_REFINEMENT_RATIO=2 \
+TENSORIUM_MOVING_PUNCTURE_FMR_OUTER_BOX_HALF_WIDTH=64.0 \
+TENSORIUM_MOVING_PUNCTURE_FMR_FINE_LEVELS_USE_PARENT_INIT=1 \
+./build/Tests/TensoriumMovingPuncture
+```
+
+Example moving-box run:
+
+```bash
+OMP_NUM_THREADS=24 \
+OMP_DYNAMIC=FALSE \
+TENSORIUM_MOVING_PUNCTURE_GRID_N=160 \
+TENSORIUM_MOVING_PUNCTURE_BOX_LENGTH=64.0 \
+TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT=1 \
+TENSORIUM_MOVING_PUNCTURE_ENABLE_FMR=1 \
+TENSORIUM_MOVING_PUNCTURE_FMR_LEVELS=2 \
+TENSORIUM_MOVING_PUNCTURE_FMR_REFINEMENT_RATIO=2 \
+TENSORIUM_MOVING_PUNCTURE_FMR_OUTER_BOX_HALF_WIDTH=20.0 \
+TENSORIUM_MOVING_PUNCTURE_FMR_FINE_LEVELS_USE_PARENT_INIT=1 \
+TENSORIUM_MOVING_PUNCTURE_FMR_MOVE_WITH_PUNCTURES=1 \
+TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_INTERVAL=16 \
+TENSORIUM_MOVING_PUNCTURE_FMR_REGRID_THRESHOLD_CELLS=2.0 \
+./build/Tests/TensoriumMovingPuncture
+```
+
+The moving-puncture slice exports now also write companion geometry metadata
+(`slice_boxes_*.csv` plus per-cell bounds in `slice_*.csv`) for external
+post-processing tools. The stock `plot.py` keeps its default full-slice view.
+
 ## LLVM/MLIR plugins
 
 `Plugins/` contains optional compiler-side tooling (diagnostic/alignment pass, Clang pragma plugin, MLIR conversion experiments).
