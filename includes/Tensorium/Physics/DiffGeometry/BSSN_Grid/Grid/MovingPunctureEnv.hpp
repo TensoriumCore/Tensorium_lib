@@ -727,6 +727,18 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
         }
         finest_half_width = outer_half_width / std::max(1.0, scale);
     } else {
+        // Keep automatic patches no larger than their parent by default; otherwise
+        // "refinement" can cost more than a full-domain fine solve on the first step.
+        const double auto_outer_half_width_limit =
+            max_root_half_width / static_cast<double>(cfg.fmr.refinement_ratio);
+        const double auto_finest_half_width_limit =
+            auto_outer_half_width_limit / std::max(1.0, scale);
+        const double min_binary_half_width = std::max(cfg.separation, 4.0 * cfg.spacing);
+        if (auto_finest_half_width_limit < min_binary_half_width) {
+            throw std::runtime_error(
+                "Automatic moving-puncture FMR boxes cannot cover the binary without oversized "
+                "refined levels; reduce FMR levels or set explicit box widths");
+        }
         const double auto_finest_half_width = std::max(cfg.separation + auto_buffer, 4.0 * cfg.spacing);
         finest_half_width =
             (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width : auto_finest_half_width;
@@ -735,6 +747,8 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
             throw std::runtime_error(
                 "Requested moving-puncture finest FMR box is too large for the root domain");
         }
+        if (cfg.fmr.finest_box_half_width == 0.0)
+            finest_half_width = std::min(finest_half_width, auto_finest_half_width_limit);
         finest_half_width = std::min(finest_half_width, max_finest_half_width);
         outer_half_width = finest_half_width * scale;
     }

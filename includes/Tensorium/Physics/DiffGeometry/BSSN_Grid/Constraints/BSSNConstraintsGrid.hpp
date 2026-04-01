@@ -278,6 +278,15 @@ static inline void compute_bssn_constraints(BSSNGridSoA<T> &G, const Field3D<T> 
                                           throw_on_violation);
 }
 
+template <typename T>
+inline void compute_z4c_constraints(BSSNGridSoA<T> &G, const Field3D<T> *Ricci6, Field3D<T> &H_out,
+                                    Field3D<T> M_out[3], Field3D<T> C_out[3], double r_min,
+                                    double r_max, double xc, double yc, double zc,
+                                    bool throw_on_violation = true) {
+    compute_bssn_constraints(G, Ricci6, H_out, M_out, C_out, r_min, r_max, xc, yc, zc,
+                             throw_on_violation);
+}
+
 /**
  * @brief Convenience logger that prints Linf/L2 norms of \f$H\f$, \f$|\vec{M}|\f$, and \f$|\vec{C}|\f$ to stdout.
  */

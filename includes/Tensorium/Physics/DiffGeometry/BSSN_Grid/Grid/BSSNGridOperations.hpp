@@ -130,6 +130,8 @@ template <typename Boundary, typename T> inline void apply_batch_physical(BSSNGr
 template <typename Boundary, typename T> inline void apply_batch_halo(BSSNGridSoA<T> &G) {
     apply_halo<Boundary>(G.alpha, G, BoundaryField::Alpha, 0);
     apply_halo<Boundary>(G.chi, G, BoundaryField::Chi, 0);
+    // Keep Theta ahead of K so radiative closures can reconstruct the fast Khat mode
+    // with already-refreshed Theta ghosts.
     apply_halo<Boundary>(G.Theta, G, BoundaryField::Theta, 0);
     apply_halo<Boundary>(G.K, G, BoundaryField::K, 0);
 
@@ -449,6 +451,7 @@ struct BoundaryRadiative {
 
         const auto  &D = G.dims;
         const double u_inf = detail::minkowski_target(which, component);
+        const bool   coupled_khat = (which == BoundaryField::K);
 
         const size_t I0 = D.ng;
         const size_t I1 = D.ng + D.nx;
@@ -458,6 +461,7 @@ struct BoundaryRadiative {
         const size_t K1 = D.ng + D.nz;
 
         auto *ptr = field.ptr();
+        const T *theta_ptr = coupled_khat ? G.Theta.ptr() : nullptr;
 
         auto coord = [&](size_t i, size_t j, size_t k, double &x, double &y, double &z) {
             x = G.x0 + (double(i) - double(D.ng)) * G.dx;
@@ -473,24 +477,50 @@ struct BoundaryRadiative {
         };
 
         auto set_sommerfeld = [&](size_t ob, size_t ib, double r_ob, double r_ib) {
-            double u_ib = double(ptr[ib]);
-            double du = u_ib - u_inf;
             const double dt_wave = characteristic_dt;
             const double c_wave = characteristic_speed_for(which);
             double denom = r_ob;
             if (dt_wave > 0.0)
                 denom += c_wave * dt_wave;
             denom = std::max(denom, 1.0e-12);
+            if (coupled_khat) {
+                const double khat_ib = double(ptr[ib]) - 2.0 * double(theta_ptr[ib]);
+                const double khat_ob = khat_ib * (r_ib / denom);
+                ptr[ob] = T(khat_ob + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
+            const double u_ib = double(ptr[ib]);
+            const double du = u_ib - u_inf;
             ptr[ob] = T(u_inf + du * (r_ib / denom));
         };
-        auto set_outflow = [&](size_t ob, size_t ib) { ptr[ob] = ptr[ib]; };
+        auto set_outflow = [&](size_t ob, size_t ib) {
+            if (coupled_khat) {
+                const double khat_ib = double(ptr[ib]) - 2.0 * double(theta_ptr[ib]);
+                ptr[ob] = T(khat_ib + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
+            ptr[ob] = ptr[ib];
+        };
         auto set_linear_extrapolated = [&](size_t ob, size_t ib0, size_t ib1, size_t layer) {
+            if (coupled_khat) {
+                const double khat0 = double(ptr[ib0]) - 2.0 * double(theta_ptr[ib0]);
+                const double khat1 = double(ptr[ib1]) - 2.0 * double(theta_ptr[ib1]);
+                const double khat_ob = (double(layer) + 1.0) * khat0 - double(layer) * khat1;
+                ptr[ob] = T(khat_ob + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
             const double u0 = double(ptr[ib0]);
             const double u1 = double(ptr[ib1]);
             ptr[ob] = T((double(layer) + 1.0) * u0 - double(layer) * u1);
         };
         auto set_reflective = [&](size_t ob, size_t ib_reflect, int axis) {
             const int sign = parity_sign(which, component, axis);
+            if (coupled_khat) {
+                const double khat_reflect =
+                    double(ptr[ib_reflect]) - 2.0 * double(theta_ptr[ib_reflect]);
+                ptr[ob] = T(double(sign) * khat_reflect + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
             ptr[ob] = T(sign) * ptr[ib_reflect];
         };
         auto set_halo = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,

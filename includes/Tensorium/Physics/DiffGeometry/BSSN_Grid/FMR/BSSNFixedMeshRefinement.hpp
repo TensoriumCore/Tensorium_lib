@@ -559,27 +559,57 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
         U *ptr = field.ptr();
+        const T lambda = std::clamp(current_context->lambda_begin +
+                                        current_stage_fraction *
+                                            (current_context->lambda_end - current_context->lambda_begin),
+                                    T(0), T(1));
+        const size_t nx_tot = field.st.nx_tot;
+        const size_t ny_tot = field.st.ny_tot;
+        const size_t nz_tot = field.st.nz_tot;
+
+        auto fill_cell = [&](size_t i, size_t j, size_t k) {
+            U x, y, z;
+            detail::coords_any_index(grid, i, j, k, x, y, z);
+            ptr[field.idx(i, j, k)] = detail::sample_temporal_field(
+                *current_context->coarse_old, *current_context->coarse_new, lambda, which,
+                component, x, y, z);
+        };
 
 #pragma omp parallel for collapse(3)
-        for (size_t i = 0; i < field.st.nx_tot; ++i)
-            for (size_t j = 0; j < field.st.ny_tot; ++j)
-                for (size_t k = 0; k < field.st.nz_tot; ++k) {
-                    const bool in_physical = (i >= I0 && i < I1 && j >= J0 && j < J1 && k >= K0 &&
-                                              k < K1);
-                    if (in_physical)
-                        continue;
+        for (size_t i = 0; i < I0; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k)
+                    fill_cell(i, j, k);
 
-                    U x, y, z;
-                    detail::coords_any_index(grid, i, j, k, x, y, z);
-                    const T lambda = std::clamp(
-                        current_context->lambda_begin +
-                            current_stage_fraction *
-                                (current_context->lambda_end - current_context->lambda_begin),
-                        T(0), T(1));
-                    ptr[field.idx(i, j, k)] = detail::sample_temporal_field(
-                        *current_context->coarse_old, *current_context->coarse_new,
-                        lambda, which, component, x, y, z);
-                }
+#pragma omp parallel for collapse(3)
+        for (size_t i = I1; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k)
+                    fill_cell(i, j, k);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = 0; j < J0; ++j)
+                for (size_t k = 0; k < nz_tot; ++k)
+                    fill_cell(i, j, k);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J1; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k)
+                    fill_cell(i, j, k);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j)
+                for (size_t k = 0; k < K0; ++k)
+                    fill_cell(i, j, k);
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j)
+                for (size_t k = K1; k < nz_tot; ++k)
+                    fill_cell(i, j, k);
     }
 };
 
@@ -762,7 +792,9 @@ class FixedMeshRefinementHierarchy {
 
     void advance_level(size_t level_idx, T dt) {
         LevelState &level = *levels_[level_idx];
-        detail::copy_evolved_state(level.grid, level.snapshot);
+        const bool has_child = (level_idx + 1 < levels_.size());
+        if (has_child)
+            detail::copy_evolved_state(level.grid, level.snapshot);
 
         {
             const detail::ScopedFDSpacing spacing(level.grid.dx);
@@ -772,7 +804,7 @@ class FixedMeshRefinementHierarchy {
                 fine_steppers_[level_idx - 1]->step(level.grid, dt, level.step_count++);
         }
 
-        if (level_idx + 1 >= levels_.size())
+        if (!has_child)
             return;
 
         LevelState &child = *levels_[level_idx + 1];

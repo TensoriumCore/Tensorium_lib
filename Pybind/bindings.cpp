@@ -199,10 +199,10 @@ void fill_matrix_from_nested_vector(Matrix<T> &m, const std::vector<std::vector<
     }
 }
 
-using BSSNGridD = tensorium_RG::BSSNGridSoA<double>;
-using GaugeParamsD = tensorium_RG::bssn::GaugeParameters<double>;
-using BSSNStepperD =
-    tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative>;
+using Z4cGridD = tensorium_RG::Z4cGridSoA<double>;
+using GaugeParamsD = tensorium_RG::z4c::GaugeParameters<double>;
+using Z4cStepperD =
+    tensorium_RG::z4c::Z4cRKStepper<double, tensorium_RG::z4c::BoundaryRadiative>;
 
 inline int checked_vec_component(int component) {
     if (component < 0 || component > 2)
@@ -217,7 +217,7 @@ inline int checked_sym_component(int component) {
 }
 
 template <typename T>
-py::array_t<T> field_to_numpy(const tensorium_RG::Field3D<T> &field, const BSSNGridD &grid,
+py::array_t<T> field_to_numpy(const tensorium_RG::Field3D<T> &field, const Z4cGridD &grid,
                               bool include_halo) {
     const size_t i0 = include_halo ? 0 : grid.dims.ng;
     const size_t j0 = include_halo ? 0 : grid.dims.ng;
@@ -236,7 +236,7 @@ py::array_t<T> field_to_numpy(const tensorium_RG::Field3D<T> &field, const BSSNG
 }
 
 template <typename T>
-void numpy_to_field(tensorium_RG::Field3D<T> &field, const BSSNGridD &grid,
+void numpy_to_field(tensorium_RG::Field3D<T> &field, const Z4cGridD &grid,
                     const py::array_t<T, py::array::c_style | py::array::forcecast> &arr,
                     bool include_halo, const char *field_name) {
     auto buf = arr.request();
@@ -265,42 +265,42 @@ void numpy_to_field(tensorium_RG::Field3D<T> &field, const BSSNGridD &grid,
 
 PYBIND11_MODULE(tensorium, m) {
     py::module_ tns = m.def_submodule("tns", "High-performance math operations");
-    py::module_ bssn = m.def_submodule("bssn", "BSSN_Grid runtime bindings");
+    py::module_ z4c = m.def_submodule("z4c", "Z4c grid runtime bindings");
 
-    bssn.attr("XX") = py::int_(static_cast<int>(tensorium_RG::XX));
-    bssn.attr("XY") = py::int_(static_cast<int>(tensorium_RG::XY));
-    bssn.attr("XZ") = py::int_(static_cast<int>(tensorium_RG::XZ));
-    bssn.attr("YY") = py::int_(static_cast<int>(tensorium_RG::YY));
-    bssn.attr("YZ") = py::int_(static_cast<int>(tensorium_RG::YZ));
-    bssn.attr("ZZ") = py::int_(static_cast<int>(tensorium_RG::ZZ));
-    bssn.def("has_twopunctures_c", []() {
+    z4c.attr("XX") = py::int_(static_cast<int>(tensorium_RG::XX));
+    z4c.attr("XY") = py::int_(static_cast<int>(tensorium_RG::XY));
+    z4c.attr("XZ") = py::int_(static_cast<int>(tensorium_RG::XZ));
+    z4c.attr("YY") = py::int_(static_cast<int>(tensorium_RG::YY));
+    z4c.attr("YZ") = py::int_(static_cast<int>(tensorium_RG::YZ));
+    z4c.attr("ZZ") = py::int_(static_cast<int>(tensorium_RG::ZZ));
+    z4c.def("has_twopunctures_c", []() {
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
         return true;
 #else
         return false;
 #endif
     });
-    bssn.def("set_spatial_derivative_order",
-             [](int order) { tensorium_RG::fd::set_max_spatial_derivative_order(order); },
-             py::arg("order"));
-    bssn.def("spatial_derivative_order",
-             []() { return tensorium_RG::fd::max_spatial_derivative_order(); });
-    bssn.def("set_fd_dx", [](double dx) { tensorium_RG::fd::set_fd_dx(dx); }, py::arg("dx"));
-    bssn.def(
+    z4c.def("set_spatial_derivative_order",
+            [](int order) { tensorium_RG::fd::set_max_spatial_derivative_order(order); },
+            py::arg("order"));
+    z4c.def("spatial_derivative_order",
+            []() { return tensorium_RG::fd::max_spatial_derivative_order(); });
+    z4c.def("set_fd_dx", [](double dx) { tensorium_RG::fd::set_fd_dx(dx); }, py::arg("dx"));
+    z4c.def(
         "set_boundary_faces",
         [](bool rhs_ix1, bool rhs_ox1, bool rhs_ix2, bool rhs_ox2, bool rhs_ix3, bool rhs_ox3,
            bool rf_ix1, bool rf_ox1, bool rf_ix2, bool rf_ox2, bool rf_ix3, bool rf_ox3) {
-            tensorium_RG::bssn::BoundaryRadiative::set_rhs_sommerfeld_faces(rhs_ix1, rhs_ox1,
+            tensorium_RG::z4c::BoundaryRadiative::set_rhs_sommerfeld_faces(rhs_ix1, rhs_ox1,
                                                                              rhs_ix2, rhs_ox2,
                                                                              rhs_ix3, rhs_ox3);
-            tensorium_RG::bssn::BoundaryRadiative::set_reflective_faces(rf_ix1, rf_ox1, rf_ix2,
+            tensorium_RG::z4c::BoundaryRadiative::set_reflective_faces(rf_ix1, rf_ox1, rf_ix2,
                                                                          rf_ox2, rf_ix3, rf_ox3);
         },
         py::arg("rhs_ix1"), py::arg("rhs_ox1"), py::arg("rhs_ix2"), py::arg("rhs_ox2"),
         py::arg("rhs_ix3"), py::arg("rhs_ox3"), py::arg("rf_ix1"), py::arg("rf_ox1"),
         py::arg("rf_ix2"), py::arg("rf_ox2"), py::arg("rf_ix3"), py::arg("rf_ox3"));
 
-    py::class_<GaugeParamsD>(bssn, "GaugeParameters")
+    py::class_<GaugeParamsD>(z4c, "GaugeParameters")
         .def(py::init<>())
         .def_readwrite("beta_B_coeff", &GaugeParamsD::beta_B_coeff)
         .def_readwrite("eta", &GaugeParamsD::eta)
@@ -338,135 +338,136 @@ PYBIND11_MODULE(tensorium, m) {
         .def_readwrite("gamma_damping_uses_metric", &GaugeParamsD::gamma_damping_uses_metric)
         .def_readwrite("apply_rhs_sommerfeld", &GaugeParamsD::apply_rhs_sommerfeld);
 
-    py::class_<BSSNGridD>(bssn, "BSSNGrid")
+    py::class_<Z4cGridD>(z4c, "Z4cGrid")
         .def(py::init<size_t, size_t, size_t, size_t, double, double, double>(), py::arg("nx"),
              py::arg("ny"), py::arg("nz"), py::arg("ng"), py::arg("dx"), py::arg("dy"),
              py::arg("dz"))
-        .def_property_readonly("nx", [](const BSSNGridD &g) { return g.dims.nx; })
-        .def_property_readonly("ny", [](const BSSNGridD &g) { return g.dims.ny; })
-        .def_property_readonly("nz", [](const BSSNGridD &g) { return g.dims.nz; })
-        .def_property_readonly("ng", [](const BSSNGridD &g) { return g.dims.ng; })
-        .def_property_readonly("dx", [](const BSSNGridD &g) { return g.dx; })
-        .def_property_readonly("dy", [](const BSSNGridD &g) { return g.dy; })
-        .def_property_readonly("dz", [](const BSSNGridD &g) { return g.dz; })
-        .def_property("x0", [](const BSSNGridD &g) { return g.x0; },
-                      [](BSSNGridD &g, double v) { g.x0 = v; })
-        .def_property("y0", [](const BSSNGridD &g) { return g.y0; },
-                      [](BSSNGridD &g, double v) { g.y0 = v; })
-        .def_property("z0", [](const BSSNGridD &g) { return g.z0; },
-                      [](BSSNGridD &g, double v) { g.z0 = v; })
-        .def("set_origin", [](BSSNGridD &g, double x0, double y0, double z0) {
+        .def_property_readonly("nx", [](const Z4cGridD &g) { return g.dims.nx; })
+        .def_property_readonly("ny", [](const Z4cGridD &g) { return g.dims.ny; })
+        .def_property_readonly("nz", [](const Z4cGridD &g) { return g.dims.nz; })
+        .def_property_readonly("ng", [](const Z4cGridD &g) { return g.dims.ng; })
+        .def_property_readonly("dx", [](const Z4cGridD &g) { return g.dx; })
+        .def_property_readonly("dy", [](const Z4cGridD &g) { return g.dy; })
+        .def_property_readonly("dz", [](const Z4cGridD &g) { return g.dz; })
+        .def_property("x0", [](const Z4cGridD &g) { return g.x0; },
+                      [](Z4cGridD &g, double v) { g.x0 = v; })
+        .def_property("y0", [](const Z4cGridD &g) { return g.y0; },
+                      [](Z4cGridD &g, double v) { g.y0 = v; })
+        .def_property("z0", [](const Z4cGridD &g) { return g.z0; },
+                      [](Z4cGridD &g, double v) { g.z0 = v; })
+        .def("set_origin", [](Z4cGridD &g, double x0, double y0, double z0) {
             g.x0 = x0;
             g.y0 = y0;
             g.z0 = z0;
         })
-        .def("domain_bounds", [](const BSSNGridD &g) {
+        .def("domain_bounds", [](const Z4cGridD &g) {
             size_t i0, i1, j0, j1, k0, k1;
             g.domain_bounds(i0, i1, j0, j1, k0, k1);
             return py::make_tuple(i0, i1, j0, j1, k0, k1);
         })
-        .def("coords", [](const BSSNGridD &g, size_t i, size_t j, size_t k) {
+        .def("coords", [](const Z4cGridD &g, size_t i, size_t j, size_t k) {
             double x, y, z;
             g.coords(i, j, k, x, y, z);
             return py::make_tuple(x, y, z);
         })
-        .def("alpha", [](const BSSNGridD &g, bool include_halo) {
+        .def("alpha", [](const Z4cGridD &g, bool include_halo) {
             return field_to_numpy(g.alpha, g, include_halo);
         }, py::arg("include_halo") = false)
-        .def("chi", [](const BSSNGridD &g, bool include_halo) {
+        .def("chi", [](const Z4cGridD &g, bool include_halo) {
             return field_to_numpy(g.chi, g, include_halo);
         }, py::arg("include_halo") = false)
-        .def("K", [](const BSSNGridD &g, bool include_halo) {
+        .def("K", [](const Z4cGridD &g, bool include_halo) {
             return field_to_numpy(g.K, g, include_halo);
         }, py::arg("include_halo") = false)
-        .def("Theta", [](const BSSNGridD &g, bool include_halo) {
+        .def("Theta", [](const Z4cGridD &g, bool include_halo) {
             return field_to_numpy(g.Theta, g, include_halo);
         }, py::arg("include_halo") = false)
-        .def("beta", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("beta", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.beta[checked_vec_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("B", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("B", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.B[checked_vec_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("tildeGamma", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("tildeGamma", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.tildeGamma[checked_vec_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("Z", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("Z", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.Z[checked_vec_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("gamma_tilde", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("gamma_tilde", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.gamma_tilde[checked_sym_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("gamma_tilde_inv", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("gamma_tilde_inv", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.gamma_tilde_inv[checked_sym_component(component)], g,
                                   include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("A_tilde", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("A_tilde", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.A_tilde[checked_sym_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("Ricci", [](const BSSNGridD &g, int component, bool include_halo) {
+        .def("Ricci", [](const Z4cGridD &g, int component, bool include_halo) {
             return field_to_numpy(g.Ricci[checked_sym_component(component)], g, include_halo);
         }, py::arg("component"), py::arg("include_halo") = false)
-        .def("set_alpha", [](BSSNGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
+        .def("set_alpha", [](Z4cGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
             numpy_to_field(g.alpha, g, arr, include_halo, "alpha");
         }, py::arg("array"), py::arg("include_halo") = false)
-        .def("set_chi", [](BSSNGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
+        .def("set_chi", [](Z4cGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
             numpy_to_field(g.chi, g, arr, include_halo, "chi");
         }, py::arg("array"), py::arg("include_halo") = false)
-        .def("set_K", [](BSSNGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
+        .def("set_K", [](Z4cGridD &g, const NumpyArrayD3 &arr, bool include_halo) {
             numpy_to_field(g.K, g, arr, include_halo, "K");
         }, py::arg("array"), py::arg("include_halo") = false);
 
-    py::class_<BSSNStepperD>(bssn, "BSSNRKStepper")
-        .def(py::init<const BSSNGridD &, size_t>(), py::arg("prototype"), py::arg("padding") = 4)
-        .def("set_gauge_parameters", &BSSNStepperD::set_gauge_parameters, py::arg("params"))
-        .def("set_state_log_stride", &BSSNStepperD::set_state_log_stride, py::arg("stride"))
-        .def("step", &BSSNStepperD::step, py::arg("grid"), py::arg("dt"),
+    py::class_<Z4cStepperD>(z4c, "Z4cRKStepper")
+        .def(py::init<const Z4cGridD &, size_t>(), py::arg("prototype"), py::arg("padding") = 4)
+        .def("set_gauge_parameters", &Z4cStepperD::set_gauge_parameters, py::arg("params"))
+        .def("set_state_log_stride", &Z4cStepperD::set_state_log_stride, py::arg("stride"))
+        .def("step", &Z4cStepperD::step, py::arg("grid"), py::arg("dt"),
              py::arg("step_index") = 0);
 
-    bssn.def("compute_dt_cfl",
-             [](const BSSNGridD &grid, double cfl, double gauge_speed, size_t padding) {
-                 tensorium_RG::bssn::CFLControl<double> control;
-                 control.cfl = cfl;
-                 control.gauge_speed = gauge_speed;
-                 return tensorium_RG::bssn::compute_dt_cfl(grid, control, padding);
-             },
-             py::arg("grid"), py::arg("cfl"), py::arg("gauge_speed") = 1.0,
-             py::arg("padding") = 4);
+    z4c.def("compute_dt_cfl",
+            [](const Z4cGridD &grid, double cfl, double gauge_speed, size_t padding) {
+                tensorium_RG::z4c::CFLControl<double> control;
+                control.cfl = cfl;
+                control.gauge_speed = gauge_speed;
+                return tensorium_RG::z4c::compute_dt_cfl(grid, control, padding);
+            },
+            py::arg("grid"), py::arg("cfl"), py::arg("gauge_speed") = 1.0,
+            py::arg("padding") = 4);
 
-    bssn.def("apply_radiative_halos", [](BSSNGridD &grid) {
-        tensorium_RG::bssn::apply_halos_grid<tensorium_RG::bssn::BoundaryRadiative>(grid);
+    z4c.def("apply_radiative_halos", [](Z4cGridD &grid) {
+        tensorium_RG::z4c::apply_halos_grid<tensorium_RG::z4c::BoundaryRadiative>(grid);
     }, py::arg("grid"));
-    bssn.def("project_state", [](BSSNGridD &grid) { tensorium_RG::bssn::project_bssn_state(grid); },
-             py::arg("grid"));
-    bssn.def("zero_z4c_fields",
-             [](BSSNGridD &grid) { tensorium_RG::init::zero_z4c_fields(grid); }, py::arg("grid"));
+    z4c.def("project_z4c_state",
+            [](Z4cGridD &grid) { tensorium_RG::z4c::project_z4c_state(grid); }, py::arg("grid"));
+    z4c.attr("project_state") = z4c.attr("project_z4c_state");
+    z4c.def("zero_z4c_fields",
+            [](Z4cGridD &grid) { tensorium_RG::init::zero_z4c_fields(grid); }, py::arg("grid"));
 
-    bssn.def("minkowski",
-             [](BSSNGridD &grid, double M, double xc, double yc, double zc, double r_floor) {
-                 tensorium_RG::init::minkowski<double>(grid, M, xc, yc, zc, r_floor);
-             },
-             py::arg("grid"), py::arg("M") = 1.0, py::arg("xc") = 0.0, py::arg("yc") = 0.0,
-             py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
+    z4c.def("minkowski",
+            [](Z4cGridD &grid, double M, double xc, double yc, double zc, double r_floor) {
+                tensorium_RG::init::minkowski<double>(grid, M, xc, yc, zc, r_floor);
+            },
+            py::arg("grid"), py::arg("M") = 1.0, py::arg("xc") = 0.0, py::arg("yc") = 0.0,
+            py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
 
-    bssn.def("schwarzschild_isotropic",
-             [](BSSNGridD &grid, double M, double xc, double yc, double zc, double r_floor) {
-                 tensorium_RG::init::schwarzschild_isotropic<double>(grid, M, xc, yc, zc, r_floor);
-             },
-             py::arg("grid"), py::arg("M"), py::arg("xc") = 0.0, py::arg("yc") = 0.0,
-             py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
+    z4c.def("schwarzschild_isotropic",
+            [](Z4cGridD &grid, double M, double xc, double yc, double zc, double r_floor) {
+                tensorium_RG::init::schwarzschild_isotropic<double>(grid, M, xc, yc, zc, r_floor);
+            },
+            py::arg("grid"), py::arg("M"), py::arg("xc") = 0.0, py::arg("yc") = 0.0,
+            py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
 
-    bssn.def("kerr_schild_single",
-             [](BSSNGridD &grid, double M, double a, double xc, double yc, double zc,
-                double r_floor) {
-                 tensorium_RG::init::kerr_schild_single<double>(grid, M, a, xc, yc, zc, r_floor);
-             },
-             py::arg("grid"), py::arg("M"), py::arg("a"), py::arg("xc") = 0.0,
-             py::arg("yc") = 0.0, py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
+    z4c.def("kerr_schild_single",
+            [](Z4cGridD &grid, double M, double a, double xc, double yc, double zc,
+               double r_floor) {
+                tensorium_RG::init::kerr_schild_single<double>(grid, M, a, xc, yc, zc, r_floor);
+            },
+            py::arg("grid"), py::arg("M"), py::arg("a"), py::arg("xc") = 0.0,
+            py::arg("yc") = 0.0, py::arg("zc") = 0.0, py::arg("r_floor") = 1e-6);
 
-    bssn.def(
+    z4c.def(
         "binary_bowen_york_puncture_init",
-        [](BSSNGridD &grid, double m1, double x1, double y1, double z1,
+        [](Z4cGridD &grid, double m1, double x1, double y1, double z1,
            const std::array<double, 3> &P1, const std::array<double, 3> &S1, double m2, double x2,
            double y2, double z2, const std::array<double, 3> &P2, const std::array<double, 3> &S2,
            double r_floor) {
@@ -478,9 +479,9 @@ PYBIND11_MODULE(tensorium, m) {
         py::arg("P1"), py::arg("S1"), py::arg("m2"), py::arg("x2"), py::arg("y2"),
         py::arg("z2"), py::arg("P2"), py::arg("S2"), py::arg("r_floor") = 1e-6);
 
-    bssn.def(
+    z4c.def(
         "binary_bowen_york_puncture_interpolated_init",
-        [](BSSNGridD &grid, double m1, double x1, double y1, double z1,
+        [](Z4cGridD &grid, double m1, double x1, double y1, double z1,
            const std::array<double, 3> &P1, const std::array<double, 3> &S1, double m2, double x2,
            double y2, double z2, const std::array<double, 3> &P2, const std::array<double, 3> &S2,
            size_t interp_seed_n, double r_floor) {
@@ -493,9 +494,9 @@ PYBIND11_MODULE(tensorium, m) {
         py::arg("z2"), py::arg("P2"), py::arg("S2"), py::arg("interp_seed_n") = 64,
         py::arg("r_floor") = 1e-6);
 
-    bssn.def(
+    z4c.def(
         "binary_bowen_york_puncture_twopunctures_c_init",
-        [](BSSNGridD &grid, double m1, double x1, double y1, double z1,
+        [](Z4cGridD &grid, double m1, double x1, double y1, double z1,
            const std::array<double, 3> &P1, const std::array<double, 3> &S1, double m2, double x2,
            double y2, double z2, const std::array<double, 3> &P2, const std::array<double, 3> &S2,
            size_t interp_seed_n, double r_floor) {
@@ -527,6 +528,39 @@ PYBIND11_MODULE(tensorium, m) {
         py::arg("P1"), py::arg("S1"), py::arg("m2"), py::arg("x2"), py::arg("y2"),
         py::arg("z2"), py::arg("P2"), py::arg("S2"), py::arg("interp_seed_n") = 64,
         py::arg("r_floor") = 1e-6);
+
+    z4c.attr("BSSNGrid") = z4c.attr("Z4cGrid");
+    z4c.attr("BSSNRKStepper") = z4c.attr("Z4cRKStepper");
+    py::module_ bssn = m.def_submodule("bssn", "Compatibility alias for the Z4c runtime bindings");
+    bssn.attr("XX") = z4c.attr("XX");
+    bssn.attr("XY") = z4c.attr("XY");
+    bssn.attr("XZ") = z4c.attr("XZ");
+    bssn.attr("YY") = z4c.attr("YY");
+    bssn.attr("YZ") = z4c.attr("YZ");
+    bssn.attr("ZZ") = z4c.attr("ZZ");
+    bssn.attr("GaugeParameters") = z4c.attr("GaugeParameters");
+    bssn.attr("BSSNGrid") = z4c.attr("BSSNGrid");
+    bssn.attr("Z4cGrid") = z4c.attr("Z4cGrid");
+    bssn.attr("BSSNRKStepper") = z4c.attr("BSSNRKStepper");
+    bssn.attr("Z4cRKStepper") = z4c.attr("Z4cRKStepper");
+    bssn.attr("has_twopunctures_c") = z4c.attr("has_twopunctures_c");
+    bssn.attr("set_spatial_derivative_order") = z4c.attr("set_spatial_derivative_order");
+    bssn.attr("spatial_derivative_order") = z4c.attr("spatial_derivative_order");
+    bssn.attr("set_fd_dx") = z4c.attr("set_fd_dx");
+    bssn.attr("set_boundary_faces") = z4c.attr("set_boundary_faces");
+    bssn.attr("compute_dt_cfl") = z4c.attr("compute_dt_cfl");
+    bssn.attr("apply_radiative_halos") = z4c.attr("apply_radiative_halos");
+    bssn.attr("project_state") = z4c.attr("project_state");
+    bssn.attr("project_z4c_state") = z4c.attr("project_z4c_state");
+    bssn.attr("zero_z4c_fields") = z4c.attr("zero_z4c_fields");
+    bssn.attr("minkowski") = z4c.attr("minkowski");
+    bssn.attr("schwarzschild_isotropic") = z4c.attr("schwarzschild_isotropic");
+    bssn.attr("kerr_schild_single") = z4c.attr("kerr_schild_single");
+    bssn.attr("binary_bowen_york_puncture_init") = z4c.attr("binary_bowen_york_puncture_init");
+    bssn.attr("binary_bowen_york_puncture_interpolated_init") =
+        z4c.attr("binary_bowen_york_puncture_interpolated_init");
+    bssn.attr("binary_bowen_york_puncture_twopunctures_c_init") =
+        z4c.attr("binary_bowen_york_puncture_twopunctures_c_init");
 
     py::class_<Tensor<double, 4>>(tns, "Tensor4d")
         .def(py::init<const std::array<size_t, 4> &>(), py::arg("shape"))

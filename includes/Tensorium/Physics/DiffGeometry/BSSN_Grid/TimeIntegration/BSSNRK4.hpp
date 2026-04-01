@@ -1161,3 +1161,9 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 };
 
 } // namespace tensorium_RG::bssn
+
+namespace tensorium_RG::bssn {
+
+template <typename T, typename Boundary> using Z4cRKStepper = BSSNRKStepper<T, Boundary>;
+
+} // namespace tensorium_RG::bssn
