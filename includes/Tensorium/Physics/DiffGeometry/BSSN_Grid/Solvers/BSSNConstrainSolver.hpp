@@ -223,7 +223,6 @@ inline void solve_lichnerowicz_u_SOR(BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, 
                         const T du = uGS - u[p];
                         u[p] = u[p] + omega * du;
 
-                        // résidu discret : (Δu - rhs)
                         const T lap = idx2 * (u_xm - T(2) * u[p] + u_xp) +
                                       idy2 * (u_ym - T(2) * u[p] + u_yp) +
                                       idz2 * (u_zm - T(2) * u[p] + u_zp);
