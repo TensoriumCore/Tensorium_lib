@@ -79,6 +79,11 @@ struct MovingPunctureSpongeConfig {
     double exponent = 2.0;
 };
 
+enum class MovingPunctureFMRLayout {
+    Nested,
+    BBHSplit,
+};
+
 struct MovingPunctureFMRConfig {
     bool   enabled = true;
     size_t levels = 2;
@@ -96,6 +101,7 @@ struct MovingPunctureFMRConfig {
     double puncture_buffer = 0.0;
     double init_core_half_width = 0.0;
     double init_transition_width = 0.0;
+    MovingPunctureFMRLayout layout = MovingPunctureFMRLayout::Nested;
 };
 
 struct MovingPunctureEnvConfig {
@@ -183,7 +189,27 @@ inline bool env_bool_or(const char *name, bool fallback) {
     return parsed ? (*parsed != 0) : fallback;
 }
 
+inline std::optional<std::string> env_string_lower(const char *name) {
+    if (const char *raw = std::getenv(name)) {
+        std::string value(raw);
+        for (char &c : value)
+            c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+        return value;
+    }
+    return std::nullopt;
+}
+
 } // namespace detail
+
+inline const char *moving_puncture_fmr_layout_name(MovingPunctureFMRLayout layout) {
+    switch (layout) {
+    case MovingPunctureFMRLayout::BBHSplit:
+        return "bbh_split";
+    case MovingPunctureFMRLayout::Nested:
+    default:
+        return "nested";
+    }
+}
 
 inline const char *boundary_face_name(int axis, bool outer) {
     switch (std::clamp(axis, 0, 2)) {
@@ -607,6 +633,15 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed > 0.0)
             cfg.fmr.init_transition_width = *parsed;
     }
+    if (const auto parsed = detail::env_string_lower("TENSORIUM_MOVING_PUNCTURE_FMR_LAYOUT")) {
+        if (*parsed == "nested" || *parsed == "chain")
+            cfg.fmr.layout = MovingPunctureFMRLayout::Nested;
+        else if (*parsed == "bbh_split" || *parsed == "bbh" || *parsed == "split")
+            cfg.fmr.layout = MovingPunctureFMRLayout::BBHSplit;
+        else
+            throw std::runtime_error(
+                "Unknown moving-puncture FMR layout. Supported values: nested, bbh_split");
+    }
     if (cfg.fmr.levels == 0)
         cfg.fmr.enabled = false;
 
@@ -780,6 +815,117 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
     }
 
     return levels;
+}
+
+inline std::array<std::array<double, 3>, 2>
+moving_puncture_initial_puncture_positions(const MovingPunctureEnvConfig &cfg) {
+    if (cfg.use_interpolated_init)
+        return {{{-cfg.separation, 0.0, 0.0}, {cfg.separation, 0.0, 0.0}}};
+    return {{{0.0, cfg.separation, 0.0}, {0.0, -cfg.separation, 0.0}}};
+}
+
+template <typename T>
+inline fmr::BinaryPunctureHierarchyConfig
+build_moving_puncture_bbh_split_hierarchy_config(
+    const BSSNGridSoA<T> &root_grid, const MovingPunctureEnvConfig &cfg,
+    const std::array<double, 3> &puncture1, const std::array<double, 3> &puncture2) {
+    if (!cfg.fmr.enabled || cfg.fmr.levels == 0)
+        return {};
+    if (cfg.fmr.levels < 2) {
+        throw std::invalid_argument(
+            "BBH split FMR requires at least two refined levels: one shared level and split leaves");
+    }
+    if (cfg.fmr.refinement_ratio < 2)
+        throw std::invalid_argument("Moving-puncture BBH split refinement ratio must be >= 2");
+
+    constexpr size_t clearance = 2;
+    const double auto_buffer =
+        (cfg.fmr.puncture_buffer > 0.0) ? cfg.fmr.puncture_buffer : std::max(2.0, 4.0 * cfg.spacing);
+    const double leaf_half_width =
+        (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width
+                                              : std::max(auto_buffer, 4.0 * cfg.spacing);
+
+    const std::array<double, 3> common_center{
+        0.5 * (puncture1[0] + puncture2[0]), 0.5 * (puncture1[1] + puncture2[1]),
+        0.5 * (puncture1[2] + puncture2[2])};
+    const auto puncture_extent_from_center = [&](int axis) {
+        return std::max(std::abs(puncture1[axis] - common_center[axis]),
+                        std::abs(puncture2[axis] - common_center[axis]));
+    };
+    const double split_parent_half_width =
+        std::max({puncture_extent_from_center(0), puncture_extent_from_center(1),
+                  puncture_extent_from_center(2)}) +
+        leaf_half_width;
+
+    const size_t shared_levels = cfg.fmr.levels - 1;
+    const double shared_scale = std::pow(static_cast<double>(cfg.fmr.refinement_ratio),
+                                         static_cast<double>(shared_levels - 1));
+    const double max_root_half_width = std::min(
+        {detail::moving_puncture_axis_half_extent(root_grid.x0, root_grid.dx, root_grid.dims.nx) -
+             2.0 * static_cast<double>(root_grid.dx),
+         detail::moving_puncture_axis_half_extent(root_grid.y0, root_grid.dy, root_grid.dims.ny) -
+             2.0 * static_cast<double>(root_grid.dy),
+         detail::moving_puncture_axis_half_extent(root_grid.z0, root_grid.dz, root_grid.dims.nz) -
+             2.0 * static_cast<double>(root_grid.dz)});
+    if (!(max_root_half_width > 0.0))
+        throw std::runtime_error("Moving-puncture BBH split FMR requires positive room inside the root grid");
+
+    double outer_half_width = 0.0;
+    if (cfg.fmr.outer_box_half_width > 0.0) {
+        outer_half_width = cfg.fmr.outer_box_half_width;
+        if (outer_half_width > max_root_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture BBH split outer FMR box is too large for the root domain");
+        }
+        const double last_shared_half_width = outer_half_width / std::max(1.0, shared_scale);
+        if (last_shared_half_width + 1.0e-12 < split_parent_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture BBH split outer box is too small to contain both puncture leaves");
+        }
+    } else {
+        outer_half_width = split_parent_half_width * shared_scale;
+        if (outer_half_width > max_root_half_width) {
+            throw std::runtime_error(
+                "Automatic moving-puncture BBH split boxes exceed the root domain; reduce levels or widths");
+        }
+    }
+
+    fmr::BinaryPunctureHierarchyConfig out;
+    out.shared_levels.reserve(shared_levels);
+
+    const BSSNGridSoA<T> *parent_grid = &root_grid;
+    std::vector<std::unique_ptr<BSSNGridSoA<T>>> temporary_parents;
+    for (size_t level = 0; level < shared_levels; ++level) {
+        const double level_half_width =
+            outer_half_width / std::pow(static_cast<double>(cfg.fmr.refinement_ratio),
+                                        static_cast<double>(level));
+        const auto patch = detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
+            *parent_grid, common_center, level_half_width, clearance);
+        out.shared_levels.push_back({patch, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+
+        const auto child = fmr::detail::make_child_geometry(*parent_grid, out.shared_levels.back());
+        auto next_parent = std::make_unique<BSSNGridSoA<T>>(child.nx, child.ny, child.nz, child.ng,
+                                                            T(child.dx), T(child.dy), T(child.dz));
+        next_parent->x0 = T(child.x0);
+        next_parent->y0 = T(child.y0);
+        next_parent->z0 = T(child.z0);
+        parent_grid = next_parent.get();
+        temporary_parents.push_back(std::move(next_parent));
+    }
+
+    out.left_leaf = {detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
+                         *parent_grid, puncture1, leaf_half_width, clearance),
+                     cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+    out.right_leaf = {detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
+                          *parent_grid, puncture2, leaf_half_width, clearance),
+                      cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+
+    if (fmr::detail::patch_boxes_overlap(out.left_leaf.parent_cells, out.right_leaf.parent_cells)) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap; increase outer width or decrease finest width");
+    }
+
+    return out;
 }
 
 template <typename T> inline void center_cell_centered_origin(BSSNGridSoA<T> &grid) {

@@ -125,6 +125,70 @@ struct BoundaryRadiativeRHSTraits<
     }
 };
 
+template <typename T> class EvolvedStateSoA {
+  public:
+    GridDims   dims;
+    Strides<T> st;
+
+    Field3D<T> alpha;
+    Field3D<T> chi;
+    Field3D<T> K;
+    Field3D<T> Theta;
+
+    Field3D<T> beta[3];
+    Field3D<T> B[3];
+    Field3D<T> tildeGamma[3];
+    Field3D<T> Z[3];
+
+    Field3D<T> gamma_tilde[6];
+    Field3D<T> A_tilde[6];
+
+    T dx, dy, dz;
+
+    EvolvedStateSoA(size_t nx, size_t ny, size_t nz, size_t ng, T dx_, T dy_, T dz_)
+        : dims{nx, ny, nz, ng},
+          dx(dx_),
+          dy(dy_),
+          dz(dz_) {
+        const size_t nx_tot = nx + 2 * ng;
+        const size_t ny_tot = ny + 2 * ng;
+        const size_t nz_tot = pad_simd<T>(nz + 2 * ng);
+
+        st.nx_tot = nx_tot;
+        st.ny_tot = ny_tot;
+        st.nz_tot = nz_tot;
+
+        st.sz = 1;
+        st.sy = nz_tot;
+        st.sx = ny_tot * nz_tot;
+
+        auto alloc_field = [&](Field3D<T> &f) {
+            const size_t N = nx_tot * ny_tot * nz_tot;
+            f.data = aligned_alloc_n<T>(N);
+            f.st = st;
+        };
+
+        alloc_field(alpha);
+        alloc_field(chi);
+        alloc_field(K);
+        alloc_field(Theta);
+
+        for (int i = 0; i < 3; ++i) {
+            alloc_field(beta[i]);
+            alloc_field(B[i]);
+            alloc_field(tildeGamma[i]);
+            alloc_field(Z[i]);
+        }
+
+        for (int s = 0; s < 6; ++s) {
+            alloc_field(gamma_tilde[s]);
+            alloc_field(A_tilde[s]);
+        }
+    }
+
+    T x0 = 0, y0 = 0, z0 = 0;
+};
+
 /// @brief Stores RHS buffers for every evolved variable.
 template <typename T> struct BSSNRHSWorkspace {
     Field3D<T> alpha;
@@ -462,6 +526,8 @@ inline T compute_dt_cfl(const BSSNGridSoA<T> &grid, T cfl_factor, size_t padding
 
 template <typename T, typename Boundary> class BSSNRKStepper {
   public:
+    using StageState = EvolvedStateSoA<T>;
+
     explicit BSSNRKStepper(const BSSNGridSoA<T> &prototype, size_t padding = 4)
         : padding_(padding),
           stage_grid_(prototype.dims.nx, prototype.dims.ny, prototype.dims.nz, prototype.dims.ng,
@@ -469,8 +535,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         stage_grid_.x0 = prototype.x0;
         stage_grid_.y0 = prototype.y0;
         stage_grid_.z0 = prototype.z0;
-        for (auto &stage : stages_)
-            stage.allocate_like(prototype);
+        stage_rhs_.allocate_like(prototype);
         detail::allocate_like(prototype.alpha, theta_ricciz4_trace_cache_);
     }
 
@@ -663,9 +728,9 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             auto stage_params = gauge_params_;
             stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
-            evaluate_rhs(grid, stages_[stage], stage_params);
+            evaluate_rhs(grid, stage_rhs_, stage_params);
 
-            apply_explicit_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
+            apply_explicit_stage_update(grid, stage_grid_, stage_rhs_, T(gam0_ref[stage]),
                                         T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
             if (gauge_params_.alpha_floor > T(0))
                 apply_alpha_floor(grid, gauge_params_.alpha_floor);
@@ -748,8 +813,8 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
     size_t                                                                      padding_ = 4;
     GaugeParameters<T>                                                          gauge_params_{};
-    BSSNRHSWorkspace<T>                                                         stages_[4];
-    BSSNGridSoA<T>                                                              stage_grid_;
+    BSSNRHSWorkspace<T>                                                         stage_rhs_;
+    StageState                                                                  stage_grid_;
     Field3D<T>                                                                  theta_ricciz4_trace_cache_;
     std::function<void(const BSSNGridSoA<T> &, const ConstraintMonitorStats &)> monitor_callback_;
     std::function<void(const BSSNGridSoA<T> &, size_t)>                         snapshot_callback_;
@@ -1100,7 +1165,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                          });
     }
 
-    void copy_stage_reference(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst) {
+    void copy_stage_reference(const BSSNGridSoA<T> &src, StageState &dst) {
         dst.x0 = src.x0;
         dst.y0 = src.y0;
         dst.z0 = src.z0;
@@ -1120,7 +1185,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         }
     }
 
-    void accumulate_stage_reference(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst, T delta) {
+    void accumulate_stage_reference(const BSSNGridSoA<T> &src, StageState &dst, T delta) {
         add_scaled_scalar_interior(src, src.alpha, dst.alpha, delta);
         add_scaled_scalar_interior(src, src.chi, dst.chi, delta);
         add_scaled_scalar_interior(src, src.K, dst.K, delta);
@@ -1137,7 +1202,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         }
     }
 
-    void apply_explicit_stage_update(BSSNGridSoA<T> &u0, const BSSNGridSoA<T> &u1,
+    void apply_explicit_stage_update(BSSNGridSoA<T> &u0, const StageState &u1,
                                      const BSSNRHSWorkspace<T> &rhs, T gam0, T gam1, T beta_dt) {
         update_scalar_interior(u0, u0.alpha, u1.alpha, rhs.alpha, gam0, gam1, beta_dt);
         update_scalar_interior(u0, u0.chi, u1.chi, rhs.chi, gam0, gam1, beta_dt);

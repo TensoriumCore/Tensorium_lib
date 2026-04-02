@@ -33,6 +33,7 @@ namespace tensorium::mpi {
 template <typename T> class MPIBSSNRKStepper {
   public:
     using GridType = tensorium_RG::BSSNGridSoA<T>;
+    using StageState = tensorium_RG::bssn::EvolvedStateSoA<T>;
     using GaugeParams = tensorium_RG::bssn::GaugeParameters<T>;
     using InteriorRegion = tensorium_RG::bssn::InteriorRegion;
 
@@ -56,9 +57,7 @@ template <typename T> class MPIBSSNRKStepper {
         stage_grid_.y0 = static_cast<T>(domain.local_y0());
         stage_grid_.z0 = static_cast<T>(domain.local_z0());
 
-        for (auto &stage : stages_) {
-            stage.allocate_like(prototype);
-        }
+        stage_rhs_.allocate_like(prototype);
 
         tensorium_RG::bssn::detail::allocate_like(prototype.alpha, theta_cache_);
         tensorium_RG::bssn::detail::allocate_like(prototype.alpha, h_constraint_cache_);
@@ -136,9 +135,9 @@ template <typename T> class MPIBSSNRKStepper {
             auto stage_params = gauge_params_;
             stage_params.current_time = simulation_time_;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
-            evaluate_rhs(grid, stages_[stage], stage_params);
+            evaluate_rhs(grid, stage_rhs_, stage_params);
 
-            apply_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
+            apply_stage_update(grid, stage_grid_, stage_rhs_, T(gam0_ref[stage]),
                                T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
 
             apply_floors(grid);
@@ -181,8 +180,8 @@ template <typename T> class MPIBSSNRKStepper {
     Reductions       reductions_;
     MPIBoundary<T>   boundary_;
 
-    GridType                                stage_grid_;
-    tensorium_RG::bssn::BSSNRHSWorkspace<T> stages_[4];
+    StageState                              stage_grid_;
+    tensorium_RG::bssn::BSSNRHSWorkspace<T> stage_rhs_;
     tensorium_RG::Field3D<T>                theta_cache_;
     tensorium_RG::Field3D<T>                h_constraint_cache_;
     tensorium_RG::Field3D<T>                m_constraint_cache_[3];
@@ -442,7 +441,7 @@ template <typename T> class MPIBSSNRKStepper {
         tensorium_RG::bssn::apply_z4c_rhs_boundary(grid, rhs, mask);
     }
 
-    void copy_state(const GridType &src, GridType &dst) {
+    void copy_state(const GridType &src, StageState &dst) {
         dst.x0 = src.x0;
         dst.y0 = src.y0;
         dst.z0 = src.z0;
@@ -465,7 +464,7 @@ template <typename T> class MPIBSSNRKStepper {
         }
     }
 
-    void accumulate_state(const GridType &src, GridType &dst, T delta) {
+    void accumulate_state(const GridType &src, StageState &dst, T delta) {
         auto padding_scope = interior_padding_scope();
         accumulate_field_interior(src, src.alpha, dst.alpha, delta);
         accumulate_field_interior(src, src.chi, dst.chi, delta);
@@ -483,7 +482,7 @@ template <typename T> class MPIBSSNRKStepper {
         }
     }
 
-    void apply_stage_update(GridType &u0, const GridType &u1,
+    void apply_stage_update(GridType &u0, const StageState &u1,
                             const tensorium_RG::bssn::BSSNRHSWorkspace<T> &rhs, T gam0, T gam1,
                             T beta_dt) {
         {

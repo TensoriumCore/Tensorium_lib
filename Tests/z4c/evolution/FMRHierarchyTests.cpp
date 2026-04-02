@@ -14,6 +14,9 @@ namespace {
 using Grid = tensorium_RG::Z4cGridSoA<double>;
 using Hierarchy =
     tensorium_RG::z4c::fmr::FixedMeshRefinementHierarchy<double, tensorium_RG::z4c::BoundaryRadiative>;
+using BinaryHierarchy =
+    tensorium_RG::z4c::fmr::BinaryPunctureFixedMeshRefinementHierarchy<double,
+                                                                       tensorium_RG::z4c::BoundaryRadiative>;
 using FineBoundary =
     tensorium_RG::z4c::fmr::ParentInterpolationBoundary<double, tensorium_RG::z4c::BoundaryRadiative>;
 
@@ -517,6 +520,78 @@ REGISTER_TEST("z4c.fmr.moving_puncture_centered_levels_follow_requested_center",
                                                 "Finest refined level follows requested x center");
                   tensorium::tests::expect_near(center2[1], center[1], level2.dy,
                                                 "Finest refined level follows requested y center");
+              });
+
+REGISTER_TEST("z4c.fmr.moving_puncture_bbh_split_builds_two_fine_leaves",
+              "BBH split FMR builds one shared refined box and two puncture-centered fine leaves",
+              []() {
+                  tensorium_RG::z4c::MovingPunctureEnvConfig cfg;
+                  cfg.nx = 226;
+                  cfg.ny = 226;
+                  cfg.nz = 226;
+                  cfg.spacing = 44.0 / 226.0;
+                  cfg.separation = 3.053395;
+                  cfg.use_interpolated_init = true;
+                  cfg.fmr.enabled = true;
+                  cfg.fmr.levels = 2;
+                  cfg.fmr.refinement_ratio = 2;
+                  cfg.fmr.outer_box_half_width = 6.0;
+                  cfg.fmr.finest_box_half_width = 2.2;
+                  cfg.fmr.layout = tensorium_RG::z4c::MovingPunctureFMRLayout::BBHSplit;
+
+                  Grid root(cfg.nx, cfg.ny, cfg.nz, 4, cfg.spacing, cfg.spacing, cfg.spacing);
+                  tensorium_RG::z4c::center_cell_centered_origin(root);
+
+                  const auto punctures =
+                      tensorium_RG::z4c::moving_puncture_initial_puncture_positions(cfg);
+                  const auto hierarchy_cfg =
+                      tensorium_RG::z4c::build_moving_puncture_bbh_split_hierarchy_config(
+                          root, cfg, punctures[0], punctures[1]);
+
+                  TENSORIUM_TEST_ASSERT(hierarchy_cfg.shared_levels.size() == 1);
+
+                  BinaryHierarchy hierarchy(root, hierarchy_cfg, 4);
+                  TENSORIUM_TEST_ASSERT(hierarchy.num_levels() == 4);
+
+                  const auto shared_center =
+                      std::array<double, 3>{hierarchy.shared_level_grid(1).x0 +
+                                                0.5 * double(hierarchy.shared_level_grid(1).dims.nx - 1) *
+                                                    hierarchy.shared_level_grid(1).dx,
+                                            hierarchy.shared_level_grid(1).y0 +
+                                                0.5 * double(hierarchy.shared_level_grid(1).dims.ny - 1) *
+                                                    hierarchy.shared_level_grid(1).dy,
+                                            hierarchy.shared_level_grid(1).z0 +
+                                                0.5 * double(hierarchy.shared_level_grid(1).dims.nz - 1) *
+                                                    hierarchy.shared_level_grid(1).dz};
+                  tensorium::tests::expect_near(shared_center[0], 0.0,
+                                                hierarchy.shared_level_grid(1).dx,
+                                                "BBH split shared level stays centered on the binary");
+
+                  const auto left_center =
+                      std::array<double, 3>{hierarchy.leaf_grid(0).x0 +
+                                                0.5 * double(hierarchy.leaf_grid(0).dims.nx - 1) *
+                                                    hierarchy.leaf_grid(0).dx,
+                                            hierarchy.leaf_grid(0).y0 +
+                                                0.5 * double(hierarchy.leaf_grid(0).dims.ny - 1) *
+                                                    hierarchy.leaf_grid(0).dy,
+                                            hierarchy.leaf_grid(0).z0 +
+                                                0.5 * double(hierarchy.leaf_grid(0).dims.nz - 1) *
+                                                    hierarchy.leaf_grid(0).dz};
+                  const auto right_center =
+                      std::array<double, 3>{hierarchy.leaf_grid(1).x0 +
+                                                0.5 * double(hierarchy.leaf_grid(1).dims.nx - 1) *
+                                                    hierarchy.leaf_grid(1).dx,
+                                            hierarchy.leaf_grid(1).y0 +
+                                                0.5 * double(hierarchy.leaf_grid(1).dims.ny - 1) *
+                                                    hierarchy.leaf_grid(1).dy,
+                                            hierarchy.leaf_grid(1).z0 +
+                                                0.5 * double(hierarchy.leaf_grid(1).dims.nz - 1) *
+                                                    hierarchy.leaf_grid(1).dz};
+
+                  tensorium::tests::expect_near(left_center[0], punctures[0][0], hierarchy.leaf_grid(0).dx,
+                                                "BBH split left leaf follows left puncture");
+                  tensorium::tests::expect_near(right_center[0], punctures[1][0], hierarchy.leaf_grid(1).dx,
+                                                "BBH split right leaf follows right puncture");
               });
 
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)

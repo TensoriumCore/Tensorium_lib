@@ -5,6 +5,7 @@
 #include "../TimeIntegration/BSSNRK4.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstddef>
 #include <limits>
@@ -13,6 +14,84 @@
 #include <vector>
 
 namespace tensorium_RG::bssn::fmr {
+
+template <typename T> class EvolvedStateSoA {
+  public:
+    GridDims   dims;
+    Strides<T> st;
+
+    Field3D<T> alpha;
+    Field3D<T> chi;
+    Field3D<T> K;
+    Field3D<T> Theta;
+
+    Field3D<T> beta[3];
+    Field3D<T> B[3];
+    Field3D<T> tildeGamma[3];
+    Field3D<T> Z[3];
+
+    Field3D<T> gamma_tilde[6];
+    Field3D<T> A_tilde[6];
+
+    T dx, dy, dz;
+
+    EvolvedStateSoA(size_t nx, size_t ny, size_t nz, size_t ng, T dx_, T dy_, T dz_)
+        : dims{nx, ny, nz, ng},
+          dx(dx_),
+          dy(dy_),
+          dz(dz_) {
+        const size_t nx_tot = nx + 2 * ng;
+        const size_t ny_tot = ny + 2 * ng;
+        const size_t nz_tot = pad_simd<T>(nz + 2 * ng);
+
+        st.nx_tot = nx_tot;
+        st.ny_tot = ny_tot;
+        st.nz_tot = nz_tot;
+
+        st.sz = 1;
+        st.sy = nz_tot;
+        st.sx = ny_tot * nz_tot;
+
+        auto alloc_field = [&](Field3D<T> &f) {
+            const size_t N = nx_tot * ny_tot * nz_tot;
+            f.data = aligned_alloc_n<T>(N);
+            f.st = st;
+        };
+
+        alloc_field(alpha);
+        alloc_field(chi);
+        alloc_field(K);
+        alloc_field(Theta);
+
+        for (int i = 0; i < 3; ++i) {
+            alloc_field(beta[i]);
+            alloc_field(B[i]);
+            alloc_field(tildeGamma[i]);
+            alloc_field(Z[i]);
+        }
+
+        for (int s = 0; s < 6; ++s) {
+            alloc_field(gamma_tilde[s]);
+            alloc_field(A_tilde[s]);
+        }
+    }
+
+    inline void domain_bounds(size_t &i0, size_t &i1, size_t &j0, size_t &j1, size_t &k0,
+                              size_t &k1) const noexcept {
+        i0 = dims.ng;
+        i1 = dims.ng + dims.nx;
+        j0 = dims.ng;
+        j1 = dims.ng + dims.ny;
+        k0 = dims.ng;
+        k1 = dims.ng + dims.nz;
+    }
+
+    T x0 = 0, y0 = 0, z0 = 0;
+
+    [[nodiscard]] inline size_t total_cells() const noexcept {
+        return st.nx_tot * st.ny_tot * st.nz_tot;
+    }
+};
 
 struct PatchBox {
     size_t i0 = 0, i1 = 0;
@@ -32,6 +111,12 @@ struct LevelConfig {
     PatchBox parent_cells{};
     size_t   refinement_ratio = 2;
     size_t   halo_cells = 0;
+};
+
+struct BinaryPunctureHierarchyConfig {
+    std::vector<LevelConfig> shared_levels;
+    LevelConfig              left_leaf{};
+    LevelConfig              right_leaf{};
 };
 
 namespace detail {
@@ -56,7 +141,8 @@ template <typename T> inline void copy_field(const Field3D<T> &src, Field3D<T> &
     std::copy_n(src.ptr(), total_entries(src), dst.ptr());
 }
 
-template <typename T> inline void copy_evolved_state(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst) {
+template <typename SrcState, typename DstState>
+inline void copy_evolved_state(const SrcState &src, DstState &dst) {
     dst.x0 = src.x0;
     dst.y0 = src.y0;
     dst.z0 = src.z0;
@@ -80,8 +166,49 @@ template <typename T> inline void copy_evolved_state(const BSSNGridSoA<T> &src, 
 }
 
 template <typename T>
-inline void coords_any_index(const BSSNGridSoA<T> &grid, size_t i, size_t j, size_t k, T &x, T &y,
-                             T &z) {
+inline void copy_field_region(const Field3D<T> &src, const PatchBox &src_box, Field3D<T> &dst) {
+#pragma omp parallel for collapse(3)
+    for (size_t i = 0; i < src_box.nx(); ++i)
+        for (size_t j = 0; j < src_box.ny(); ++j)
+            for (size_t k = 0; k < src_box.nz(); ++k) {
+                const size_t src_i = src_box.i0 + i;
+                const size_t src_j = src_box.j0 + j;
+                const size_t src_k = src_box.k0 + k;
+                dst.ptr()[dst.idx(i, j, k)] = src.ptr()[src.idx(src_i, src_j, src_k)];
+            }
+}
+
+template <typename T>
+inline void copy_evolved_state_region(const BSSNGridSoA<T> &src, const PatchBox &physical_box,
+                                      EvolvedStateSoA<T> &dst) {
+    dst.x0 = src.x0 + static_cast<T>(physical_box.i0) * src.dx;
+    dst.y0 = src.y0 + static_cast<T>(physical_box.j0) * src.dy;
+    dst.z0 = src.z0 + static_cast<T>(physical_box.k0) * src.dz;
+
+    const PatchBox src_box{src.dims.ng + physical_box.i0, src.dims.ng + physical_box.i1,
+                           src.dims.ng + physical_box.j0, src.dims.ng + physical_box.j1,
+                           src.dims.ng + physical_box.k0, src.dims.ng + physical_box.k1};
+
+    copy_field_region(src.alpha, src_box, dst.alpha);
+    copy_field_region(src.chi, src_box, dst.chi);
+    copy_field_region(src.K, src_box, dst.K);
+    copy_field_region(src.Theta, src_box, dst.Theta);
+
+    for (int a = 0; a < 3; ++a) {
+        copy_field_region(src.beta[a], src_box, dst.beta[a]);
+        copy_field_region(src.B[a], src_box, dst.B[a]);
+        copy_field_region(src.tildeGamma[a], src_box, dst.tildeGamma[a]);
+        copy_field_region(src.Z[a], src_box, dst.Z[a]);
+    }
+
+    for (int s = 0; s < 6; ++s) {
+        copy_field_region(src.gamma_tilde[s], src_box, dst.gamma_tilde[s]);
+        copy_field_region(src.A_tilde[s], src_box, dst.A_tilde[s]);
+    }
+}
+
+template <typename State, typename T>
+inline void coords_any_index(const State &grid, size_t i, size_t j, size_t k, T &x, T &y, T &z) {
     const ptrdiff_t di = static_cast<ptrdiff_t>(i) - static_cast<ptrdiff_t>(grid.dims.ng);
     const ptrdiff_t dj = static_cast<ptrdiff_t>(j) - static_cast<ptrdiff_t>(grid.dims.ng);
     const ptrdiff_t dk = static_cast<ptrdiff_t>(k) - static_cast<ptrdiff_t>(grid.dims.ng);
@@ -150,8 +277,66 @@ inline Field3D<T> &select_field(BSSNGridSoA<T> &grid, BoundaryField which, int c
 }
 
 template <typename T>
-inline T sample_trilinear_field(const BSSNGridSoA<T> &src, const Field3D<T> &field, T x, T y,
-                                T z) {
+inline const Field3D<T> &select_field(const EvolvedStateSoA<T> &grid, BoundaryField which,
+                                      int component) {
+    switch (which) {
+    case BoundaryField::Alpha:
+        return grid.alpha;
+    case BoundaryField::Chi:
+        return grid.chi;
+    case BoundaryField::K:
+        return grid.K;
+    case BoundaryField::Theta:
+        return grid.Theta;
+    case BoundaryField::Beta:
+        return grid.beta[component];
+    case BoundaryField::B:
+        return grid.B[component];
+    case BoundaryField::TildeGamma:
+        return grid.tildeGamma[component];
+    case BoundaryField::GammaTilde:
+        return grid.gamma_tilde[component];
+    case BoundaryField::ATilde:
+        return grid.A_tilde[component];
+    case BoundaryField::Z:
+        return grid.Z[component];
+    case BoundaryField::GammaTildeInverse:
+        break;
+    }
+    return grid.alpha;
+}
+
+template <typename T>
+inline Field3D<T> &select_field(EvolvedStateSoA<T> &grid, BoundaryField which, int component) {
+    switch (which) {
+    case BoundaryField::Alpha:
+        return grid.alpha;
+    case BoundaryField::Chi:
+        return grid.chi;
+    case BoundaryField::K:
+        return grid.K;
+    case BoundaryField::Theta:
+        return grid.Theta;
+    case BoundaryField::Beta:
+        return grid.beta[component];
+    case BoundaryField::B:
+        return grid.B[component];
+    case BoundaryField::TildeGamma:
+        return grid.tildeGamma[component];
+    case BoundaryField::GammaTilde:
+        return grid.gamma_tilde[component];
+    case BoundaryField::ATilde:
+        return grid.A_tilde[component];
+    case BoundaryField::Z:
+        return grid.Z[component];
+    case BoundaryField::GammaTildeInverse:
+        break;
+    }
+    return grid.alpha;
+}
+
+template <typename State, typename T>
+inline T sample_trilinear_field(const State &src, const Field3D<T> &field, T x, T y, T z) {
     size_t I0, I1, J0, J1, K0, K1;
     src.domain_bounds(I0, I1, J0, J1, K0, K1);
 
@@ -209,19 +394,6 @@ inline T sample_trilinear_field(const BSSNGridSoA<T> &src, const Field3D<T> &fie
     return c0 * (T(1) - tz) + c1 * tz;
 }
 
-template <typename T>
-inline T sample_temporal_field(const BSSNGridSoA<T> &coarse_old, const BSSNGridSoA<T> &coarse_new,
-                               T lambda, BoundaryField which, int component, T x, T y, T z) {
-    const T clamped = std::clamp(lambda, T(0), T(1));
-    const T old_value =
-        sample_trilinear_field(coarse_old, select_field(coarse_old, which, component), x, y, z);
-    if (&coarse_old == &coarse_new || clamped == T(0))
-        return old_value;
-    const T new_value =
-        sample_trilinear_field(coarse_new, select_field(coarse_new, which, component), x, y, z);
-    return (T(1) - clamped) * old_value + clamped * new_value;
-}
-
 struct ChildGeometry {
     size_t nx = 0, ny = 0, nz = 0, ng = 0;
     double dx = 0.0, dy = 0.0, dz = 0.0;
@@ -266,6 +438,34 @@ inline ChildGeometry make_child_geometry(const BSSNGridSoA<T> &parent, const Lev
     child.z0 = static_cast<double>(parent.z0) + static_cast<double>(box.k0) * parent.dz -
                0.5 * static_cast<double>(parent.dz) + 0.5 * child.dz;
     return child;
+}
+
+inline PatchBox expand_patch_clamped(const PatchBox &box, size_t margin, size_t nx, size_t ny,
+                                     size_t nz) {
+    PatchBox out{};
+    out.i0 = (box.i0 > margin) ? box.i0 - margin : size_t(0);
+    out.j0 = (box.j0 > margin) ? box.j0 - margin : size_t(0);
+    out.k0 = (box.k0 > margin) ? box.k0 - margin : size_t(0);
+    out.i1 = std::min(nx, box.i1 + margin);
+    out.j1 = std::min(ny, box.j1 + margin);
+    out.k1 = std::min(nz, box.k1 + margin);
+    return out;
+}
+
+inline PatchBox merge_patch_boxes(const PatchBox &lhs, const PatchBox &rhs) {
+    if (lhs.empty())
+        return rhs;
+    if (rhs.empty())
+        return lhs;
+    return PatchBox{std::min(lhs.i0, rhs.i0), std::max(lhs.i1, rhs.i1), std::min(lhs.j0, rhs.j0),
+                    std::max(lhs.j1, rhs.j1), std::min(lhs.k0, rhs.k0), std::max(lhs.k1, rhs.k1)};
+}
+
+inline bool patch_boxes_overlap(const PatchBox &lhs, const PatchBox &rhs) noexcept {
+    if (lhs.empty() || rhs.empty())
+        return false;
+    return lhs.i0 < rhs.i1 && rhs.i0 < lhs.i1 && lhs.j0 < rhs.j1 && rhs.j0 < lhs.j1 &&
+           lhs.k0 < rhs.k1 && rhs.k0 < lhs.k1;
 }
 
 template <typename T>
@@ -510,20 +710,56 @@ inline void restrict_from_child(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &par
 } // namespace detail
 
 template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentInterpolationBoundary {
+    struct Sampler {
+        const void *state = nullptr;
+        T (*sample_at)(const void *, BoundaryField, int, T, T, T) = nullptr;
+
+        [[nodiscard]] bool valid() const noexcept { return state != nullptr && sample_at != nullptr; }
+
+        [[nodiscard]] bool same_identity(const Sampler &other) const noexcept {
+            return state == other.state && sample_at == other.sample_at;
+        }
+
+        [[nodiscard]] T sample(BoundaryField which, int component, T x, T y, T z) const {
+            return sample_at(state, which, component, x, y, z);
+        }
+    };
+
+    template <typename State>
+    static T sample_from_state(const void *opaque, BoundaryField which, int component, T x, T y,
+                               T z) {
+        const auto &state = *static_cast<const State *>(opaque);
+        return detail::sample_trilinear_field(state, detail::select_field(state, which, component),
+                                              x, y, z);
+    }
+
+    template <typename State> static Sampler make_sampler(const State *state) {
+        Sampler out{};
+        out.state = state;
+        out.sample_at = &sample_from_state<State>;
+        return out;
+    }
+
     struct Context {
-        const BSSNGridSoA<T> *coarse_old = nullptr;
-        const BSSNGridSoA<T> *coarse_new = nullptr;
-        T                     lambda_begin = T(0);
-        T                     lambda_end = T(0);
+        Sampler coarse_old{};
+        Sampler coarse_new{};
+        T       lambda_begin = T(0);
+        T       lambda_end = T(0);
 
         Context() = default;
 
-        Context(const BSSNGridSoA<T> *old_state, const BSSNGridSoA<T> *new_state, T lambda)
-            : coarse_old(old_state), coarse_new(new_state), lambda_begin(lambda), lambda_end(lambda) {}
+        template <typename OldState, typename NewState>
+        Context(const OldState *old_state, const NewState *new_state, T lambda)
+            : coarse_old(make_sampler(old_state)),
+              coarse_new(make_sampler(new_state)),
+              lambda_begin(lambda),
+              lambda_end(lambda) {}
 
-        Context(const BSSNGridSoA<T> *old_state, const BSSNGridSoA<T> *new_state, T begin_lambda,
-                T end_lambda)
-            : coarse_old(old_state), coarse_new(new_state), lambda_begin(begin_lambda),
+        template <typename OldState, typename NewState>
+        Context(const OldState *old_state, const NewState *new_state, T begin_lambda, T end_lambda)
+            : coarse_old(make_sampler(old_state)),
+              coarse_new(make_sampler(new_state)),
+              lambda_begin(begin_lambda),
               lambda_end(end_lambda) {}
     };
 
@@ -551,7 +787,7 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
             OuterBoundary::apply_halo(field, grid, which, component);
             return;
         }
-        if (current_context->coarse_old == nullptr || current_context->coarse_new == nullptr)
+        if (!current_context->coarse_old.valid() || !current_context->coarse_new.valid())
             throw std::runtime_error("FMR parent interpolation boundary is missing coarse data");
         if (which == BoundaryField::GammaTildeInverse)
             return;
@@ -570,9 +806,13 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
         auto fill_cell = [&](size_t i, size_t j, size_t k) {
             U x, y, z;
             detail::coords_any_index(grid, i, j, k, x, y, z);
-            ptr[field.idx(i, j, k)] = detail::sample_temporal_field(
-                *current_context->coarse_old, *current_context->coarse_new, lambda, which,
-                component, x, y, z);
+            const T old_value = current_context->coarse_old.sample(which, component, x, y, z);
+            if (lambda == T(0) || current_context->coarse_old.same_identity(current_context->coarse_new)) {
+                ptr[field.idx(i, j, k)] = old_value;
+                return;
+            }
+            const T new_value = current_context->coarse_new.sample(which, component, x, y, z);
+            ptr[field.idx(i, j, k)] = (T(1) - lambda) * old_value + lambda * new_value;
         };
 
 #pragma omp parallel for collapse(3)
@@ -637,25 +877,45 @@ class FixedMeshRefinementHierarchy {
     using FineBoundary = ParentInterpolationBoundary<T, OuterBoundary>;
     using FineStepper = BSSNRKStepper<T, FineBoundary>;
 
+    struct LevelPerformanceStats {
+        double snapshot_seconds = 0.0;
+        double evolve_seconds = 0.0;
+        double child_subcycling_seconds = 0.0;
+        double restriction_seconds = 0.0;
+        size_t calls = 0;
+        size_t child_substeps = 0;
+    };
+
     struct LevelState {
-        BSSNGridSoA<T> grid;
-        BSSNGridSoA<T> snapshot;
-        PatchBox       parent_cells{};
-        size_t         refinement_ratio = 1;
-        size_t         step_count = 0;
+        BSSNGridSoA<T>                     grid;
+        std::unique_ptr<EvolvedStateSoA<T>> snapshot;
+        PatchBox                           snapshot_region{};
+        PatchBox                           parent_cells{};
+        size_t                             refinement_ratio = 1;
+        size_t                             step_count = 0;
 
         LevelState(size_t nx, size_t ny, size_t nz, size_t ng, T dx, T dy, T dz, T x0, T y0,
                    T z0, const PatchBox &box, size_t ratio)
             : grid(nx, ny, nz, ng, dx, dy, dz),
-              snapshot(nx, ny, nz, ng, dx, dy, dz),
               parent_cells(box),
               refinement_ratio(ratio) {
             grid.x0 = x0;
             grid.y0 = y0;
             grid.z0 = z0;
-            snapshot.x0 = x0;
-            snapshot.y0 = y0;
-            snapshot.z0 = z0;
+        }
+
+        [[nodiscard]] bool has_snapshot() const noexcept { return static_cast<bool>(snapshot); }
+
+        EvolvedStateSoA<T> &snapshot_ref() {
+            if (!snapshot)
+                throw std::logic_error("FMR level snapshot was requested but not allocated");
+            return *snapshot;
+        }
+
+        const EvolvedStateSoA<T> &snapshot_ref() const {
+            if (!snapshot)
+                throw std::logic_error("FMR level snapshot was requested but not allocated");
+            return *snapshot;
         }
     };
 
@@ -670,12 +930,12 @@ class FixedMeshRefinementHierarchy {
             root_state.z0, PatchBox{}, size_t(1)));
         detail::copy_evolved_state(root_state, levels_.front()->grid);
         tensorium_RG::bssn::enforce_algebraic_constraints(levels_.front()->grid);
-        detail::copy_evolved_state(levels_.front()->grid, levels_.front()->snapshot);
 
         root_stepper_ = std::make_unique<RootStepper>(levels_.front()->grid, padding_);
 
         const BSSNGridSoA<T> *parent = &levels_.front()->grid;
-        for (const LevelConfig &cfg : level_configs) {
+        for (size_t cfg_index = 0; cfg_index < level_configs.size(); ++cfg_index) {
+            const LevelConfig &cfg = level_configs[cfg_index];
             const auto child = detail::make_child_geometry(*parent, cfg);
             levels_.push_back(std::make_unique<LevelState>(
                 child.nx, child.ny, child.nz, child.ng, T(child.dx), T(child.dy), T(child.dz),
@@ -684,7 +944,9 @@ class FixedMeshRefinementHierarchy {
             parent = &levels_.back()->grid;
         }
 
+        initialize_snapshots();
         initialize_nested_levels();
+        last_step_perf_.resize(levels_.size());
     }
 
     [[nodiscard]] size_t num_levels() const noexcept { return levels_.size(); }
@@ -695,16 +957,69 @@ class FixedMeshRefinementHierarchy {
     BSSNGridSoA<T> &level_grid(size_t level) { return levels_.at(level)->grid; }
     const BSSNGridSoA<T> &level_grid(size_t level) const { return levels_.at(level)->grid; }
 
+    [[nodiscard]] const std::vector<LevelPerformanceStats> &last_step_performance() const noexcept {
+        return last_step_perf_;
+    }
+
+    [[nodiscard]] static constexpr size_t allocated_grid_field_count() noexcept { return 40; }
+
+    [[nodiscard]] static constexpr size_t allocated_snapshot_field_count() noexcept { return 28; }
+
+    [[nodiscard]] static constexpr size_t allocated_stepper_field_count() noexcept {
+        // One evolved-fields stage reference, one RHS workspace for the 28 evolved fields, and one
+        // temporary scalar trace cache.
+        return 28 + 28 + 1;
+    }
+
+    [[nodiscard]] size_t level_allocated_field_count(size_t level) const noexcept {
+        // Full-resolution field bundles that scale with the level grid volume.
+        (void)level;
+        return allocated_grid_field_count() + allocated_stepper_field_count();
+    }
+
+    [[nodiscard]] size_t level_snapshot_allocated_field_count(size_t level) const noexcept {
+        return levels_[level]->has_snapshot() ? allocated_snapshot_field_count() : size_t(0);
+    }
+
+    [[nodiscard]] size_t level_snapshot_total_cells(size_t level) const noexcept {
+        return levels_[level]->has_snapshot() ? levels_[level]->snapshot_ref().total_cells()
+                                              : size_t(0);
+    }
+
+    [[nodiscard]] double level_estimated_bytes(size_t level) const noexcept {
+        const auto &grid = level_grid(level);
+        double bytes = static_cast<double>(level_allocated_field_count(level)) *
+                       static_cast<double>(grid.total_cells()) * static_cast<double>(sizeof(T));
+        bytes += static_cast<double>(level_snapshot_allocated_field_count(level)) *
+                 static_cast<double>(level_snapshot_total_cells(level)) *
+                 static_cast<double>(sizeof(T));
+        return bytes;
+    }
+
+    [[nodiscard]] double total_estimated_bytes() const noexcept {
+        double total = 0.0;
+        for (size_t level = 0; level < levels_.size(); ++level)
+            total += level_estimated_bytes(level);
+        return total;
+    }
+
     void initialize_nested_levels() {
         for (size_t level = 1; level < levels_.size(); ++level)
             prolongate_level_from_parent(level);
+    }
+
+    void initialize_snapshots() {
+        for (size_t level = 0; level + 1 < levels_.size(); ++level) {
+            allocate_snapshot_for_level(level);
+            refresh_level_snapshot(level);
+        }
     }
 
     void prolongate_level_from_parent(size_t level) {
         if (level == 0 || level >= levels_.size())
             throw std::out_of_range("FMR prolongation requires a valid child level");
         detail::prolongate_from_parent(levels_[level - 1]->grid, levels_[level]->grid);
-        detail::copy_evolved_state(levels_[level]->grid, levels_[level]->snapshot);
+        refresh_level_snapshot(level);
     }
 
     void restrict_level_to_parent(size_t level) {
@@ -712,14 +1027,14 @@ class FixedMeshRefinementHierarchy {
             throw std::out_of_range("FMR restriction requires a valid child level");
         detail::restrict_from_child(levels_[level]->grid, levels_[level - 1]->grid,
                                     levels_[level]->parent_cells, levels_[level]->refinement_ratio);
-        detail::copy_evolved_state(levels_[level - 1]->grid, levels_[level - 1]->snapshot);
+        refresh_level_snapshot(level - 1);
     }
 
     void blend_level_shell_from_parent(size_t level, size_t shell_cells) {
         if (level == 0 || level >= levels_.size())
             throw std::out_of_range("FMR shell blending requires a valid child level");
         detail::blend_shell_from_parent(levels_[level - 1]->grid, levels_[level]->grid, shell_cells);
-        detail::copy_evolved_state(levels_[level]->grid, levels_[level]->snapshot);
+        refresh_level_snapshot(level);
     }
 
     void blend_level_centered_core_from_reference(size_t level, const BSSNGridSoA<T> &reference,
@@ -732,7 +1047,7 @@ class FixedMeshRefinementHierarchy {
         }
         detail::blend_centered_core_from_reference(reference, levels_[level]->grid, core_half_width,
                                                    transition_width);
-        detail::copy_evolved_state(levels_[level]->grid, levels_[level]->snapshot);
+        refresh_level_snapshot(level);
     }
 
     void restrict_all_levels_to_root() {
@@ -781,7 +1096,10 @@ class FixedMeshRefinementHierarchy {
         return dt_root;
     }
 
-    void step(T dt_root) { advance_level(0, dt_root); }
+    void step(T dt_root) {
+        std::fill(last_step_perf_.begin(), last_step_perf_.end(), LevelPerformanceStats{});
+        advance_level(0, dt_root);
+    }
 
   private:
     size_t                                        padding_ = 4;
@@ -789,19 +1107,75 @@ class FixedMeshRefinementHierarchy {
     std::vector<std::unique_ptr<LevelState>>      levels_;
     std::unique_ptr<RootStepper>                  root_stepper_;
     std::vector<std::unique_ptr<FineStepper>>     fine_steppers_;
+    std::vector<LevelPerformanceStats>            last_step_perf_;
+
+    using Clock = std::chrono::steady_clock;
+
+    static double elapsed_seconds(const Clock::time_point &start,
+                                  const Clock::time_point &stop) {
+        return std::chrono::duration<double>(stop - start).count();
+    }
+
+    [[nodiscard]] static size_t snapshot_margin_cells(const LevelState &child) noexcept {
+        const size_t coarse_halo =
+            (child.grid.dims.ng + child.refinement_ratio - 1) / child.refinement_ratio;
+        // Keep one extra coarse cell so trilinear interpolation never clamps at the snapshot edge.
+        return coarse_halo + 1;
+    }
+
+    [[nodiscard]] PatchBox snapshot_region_for_child(size_t level) const {
+        if (level + 1 >= levels_.size())
+            throw std::out_of_range("FMR snapshot region requires a valid child level");
+        const auto &parent = *levels_[level];
+        const auto &child = *levels_[level + 1];
+        return detail::expand_patch_clamped(child.parent_cells, snapshot_margin_cells(child),
+                                            parent.grid.dims.nx, parent.grid.dims.ny,
+                                            parent.grid.dims.nz);
+    }
+
+    void allocate_snapshot_for_level(size_t level) {
+        if (level + 1 >= levels_.size())
+            return;
+
+        auto &state = *levels_[level];
+        state.snapshot_region = snapshot_region_for_child(level);
+        if (state.snapshot_region.empty())
+            throw std::runtime_error("Computed empty FMR snapshot region for parent level");
+
+        state.snapshot = std::make_unique<EvolvedStateSoA<T>>(
+            state.snapshot_region.nx(), state.snapshot_region.ny(), state.snapshot_region.nz(),
+            size_t(0), state.grid.dx, state.grid.dy, state.grid.dz);
+        state.snapshot->x0 = state.grid.x0 + static_cast<T>(state.snapshot_region.i0) * state.grid.dx;
+        state.snapshot->y0 = state.grid.y0 + static_cast<T>(state.snapshot_region.j0) * state.grid.dy;
+        state.snapshot->z0 = state.grid.z0 + static_cast<T>(state.snapshot_region.k0) * state.grid.dz;
+    }
+
+    void refresh_level_snapshot(size_t level) {
+        if (level >= levels_.size() || !levels_[level]->has_snapshot())
+            return;
+        detail::copy_evolved_state_region(levels_[level]->grid, levels_[level]->snapshot_region,
+                                          levels_[level]->snapshot_ref());
+    }
 
     void advance_level(size_t level_idx, T dt) {
         LevelState &level = *levels_[level_idx];
+        auto       &perf = last_step_perf_[level_idx];
+        ++perf.calls;
         const bool has_child = (level_idx + 1 < levels_.size());
-        if (has_child)
-            detail::copy_evolved_state(level.grid, level.snapshot);
+        if (has_child) {
+            const auto snapshot_start = Clock::now();
+            refresh_level_snapshot(level_idx);
+            perf.snapshot_seconds += elapsed_seconds(snapshot_start, Clock::now());
+        }
 
         {
+            const auto evolve_start = Clock::now();
             const detail::ScopedFDSpacing spacing(level.grid.dx);
             if (level_idx == 0)
                 root_stepper_->step(level.grid, dt, level.step_count++);
             else
                 fine_steppers_[level_idx - 1]->step(level.grid, dt, level.step_count++);
+            perf.evolve_seconds += elapsed_seconds(evolve_start, Clock::now());
         }
 
         if (!has_child)
@@ -811,14 +1185,499 @@ class FixedMeshRefinementHierarchy {
         const size_t ratio = child.refinement_ratio;
         const T      dt_child = dt / T(ratio);
 
+        const auto child_start = Clock::now();
         for (size_t substep = 0; substep < ratio; ++substep) {
+            ++perf.child_substeps;
             const typename FineBoundary::Context ctx{
-                &level.snapshot, &level.grid, T(substep) / T(ratio), T(substep + 1) / T(ratio)};
+                &level.snapshot_ref(), &level.grid, T(substep) / T(ratio), T(substep + 1) / T(ratio)};
             const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
             advance_level(level_idx + 1, dt_child);
         }
+        perf.child_subcycling_seconds += elapsed_seconds(child_start, Clock::now());
 
+        const auto restrict_start = Clock::now();
         detail::restrict_from_child(child.grid, level.grid, child.parent_cells, child.refinement_ratio);
+        perf.restriction_seconds += elapsed_seconds(restrict_start, Clock::now());
+    }
+};
+
+template <typename T, typename OuterBoundary = BoundaryRadiative>
+class BinaryPunctureFixedMeshRefinementHierarchy {
+  public:
+    using RootStepper = BSSNRKStepper<T, OuterBoundary>;
+    using FineBoundary = ParentInterpolationBoundary<T, OuterBoundary>;
+    using FineStepper = BSSNRKStepper<T, FineBoundary>;
+
+    struct LevelPerformanceStats {
+        double snapshot_seconds = 0.0;
+        double evolve_seconds = 0.0;
+        double child_subcycling_seconds = 0.0;
+        double restriction_seconds = 0.0;
+        size_t calls = 0;
+        size_t child_substeps = 0;
+    };
+
+    struct SharedLevelState {
+        BSSNGridSoA<T>                     grid;
+        std::unique_ptr<EvolvedStateSoA<T>> snapshot;
+        PatchBox                           snapshot_region{};
+        PatchBox                           parent_cells{};
+        size_t                             refinement_ratio = 1;
+        size_t                             step_count = 0;
+
+        SharedLevelState(size_t nx, size_t ny, size_t nz, size_t ng, T dx, T dy, T dz, T x0,
+                         T y0, T z0, const PatchBox &box, size_t ratio)
+            : grid(nx, ny, nz, ng, dx, dy, dz),
+              parent_cells(box),
+              refinement_ratio(ratio) {
+            grid.x0 = x0;
+            grid.y0 = y0;
+            grid.z0 = z0;
+        }
+
+        [[nodiscard]] bool has_snapshot() const noexcept { return static_cast<bool>(snapshot); }
+
+        EvolvedStateSoA<T> &snapshot_ref() {
+            if (!snapshot)
+                throw std::logic_error("BBH FMR level snapshot was requested but not allocated");
+            return *snapshot;
+        }
+
+        const EvolvedStateSoA<T> &snapshot_ref() const {
+            if (!snapshot)
+                throw std::logic_error("BBH FMR level snapshot was requested but not allocated");
+            return *snapshot;
+        }
+    };
+
+    struct LeafState {
+        BSSNGridSoA<T> grid;
+        PatchBox       parent_cells{};
+        size_t         refinement_ratio = 1;
+        size_t         step_count = 0;
+
+        LeafState(size_t nx, size_t ny, size_t nz, size_t ng, T dx, T dy, T dz, T x0, T y0, T z0,
+                  const PatchBox &box, size_t ratio)
+            : grid(nx, ny, nz, ng, dx, dy, dz),
+              parent_cells(box),
+              refinement_ratio(ratio) {
+            grid.x0 = x0;
+            grid.y0 = y0;
+            grid.z0 = z0;
+        }
+    };
+
+    explicit BinaryPunctureFixedMeshRefinementHierarchy(
+        const BSSNGridSoA<T> &root_state, const BinaryPunctureHierarchyConfig &cfg,
+        size_t padding = 4)
+        : padding_(padding) {
+        if (cfg.shared_levels.empty()) {
+            throw std::invalid_argument(
+                "BBH split FMR requires at least one shared refined level before the split leaves");
+        }
+
+        shared_levels_.reserve(cfg.shared_levels.size() + 1);
+        shared_levels_.push_back(std::make_unique<SharedLevelState>(
+            root_state.dims.nx, root_state.dims.ny, root_state.dims.nz, root_state.dims.ng,
+            root_state.dx, root_state.dy, root_state.dz, root_state.x0, root_state.y0,
+            root_state.z0, PatchBox{}, size_t(1)));
+        detail::copy_evolved_state(root_state, shared_levels_.front()->grid);
+        tensorium_RG::bssn::enforce_algebraic_constraints(shared_levels_.front()->grid);
+
+        root_stepper_ = std::make_unique<RootStepper>(shared_levels_.front()->grid, padding_);
+
+        const BSSNGridSoA<T> *parent = &shared_levels_.front()->grid;
+        for (const LevelConfig &level_cfg : cfg.shared_levels) {
+            const auto child = detail::make_child_geometry(*parent, level_cfg);
+            shared_levels_.push_back(std::make_unique<SharedLevelState>(
+                child.nx, child.ny, child.nz, child.ng, T(child.dx), T(child.dy), T(child.dz),
+                T(child.x0), T(child.y0), T(child.z0), level_cfg.parent_cells,
+                level_cfg.refinement_ratio));
+            shared_steppers_.push_back(std::make_unique<FineStepper>(shared_levels_.back()->grid,
+                                                                     padding_));
+            parent = &shared_levels_.back()->grid;
+        }
+
+        const BSSNGridSoA<T> &leaf_parent = shared_levels_.back()->grid;
+        const auto left_geom = detail::make_child_geometry(leaf_parent, cfg.left_leaf);
+        const auto right_geom = detail::make_child_geometry(leaf_parent, cfg.right_leaf);
+        if (detail::patch_boxes_overlap(cfg.left_leaf.parent_cells, cfg.right_leaf.parent_cells)) {
+            throw std::invalid_argument(
+                "BBH split FMR leaf patches overlap on their shared parent level");
+        }
+
+        leaves_.push_back(std::make_unique<LeafState>(
+            left_geom.nx, left_geom.ny, left_geom.nz, left_geom.ng, T(left_geom.dx), T(left_geom.dy),
+            T(left_geom.dz), T(left_geom.x0), T(left_geom.y0), T(left_geom.z0),
+            cfg.left_leaf.parent_cells, cfg.left_leaf.refinement_ratio));
+        leaves_.push_back(std::make_unique<LeafState>(
+            right_geom.nx, right_geom.ny, right_geom.nz, right_geom.ng, T(right_geom.dx),
+            T(right_geom.dy), T(right_geom.dz), T(right_geom.x0), T(right_geom.y0), T(right_geom.z0),
+            cfg.right_leaf.parent_cells, cfg.right_leaf.refinement_ratio));
+        leaf_steppers_.push_back(std::make_unique<FineStepper>(leaves_[0]->grid, padding_));
+        leaf_steppers_.push_back(std::make_unique<FineStepper>(leaves_[1]->grid, padding_));
+
+        initialize_snapshots();
+        initialize_nested_levels();
+        last_step_perf_.resize(num_levels());
+    }
+
+    [[nodiscard]] size_t num_levels() const noexcept { return shared_levels_.size() + leaves_.size(); }
+
+    [[nodiscard]] size_t num_shared_levels() const noexcept { return shared_levels_.size(); }
+    [[nodiscard]] size_t num_leaves() const noexcept { return leaves_.size(); }
+
+    BSSNGridSoA<T> &root_grid() { return shared_levels_.front()->grid; }
+    const BSSNGridSoA<T> &root_grid() const { return shared_levels_.front()->grid; }
+
+    BSSNGridSoA<T> &shared_level_grid(size_t level) { return shared_levels_.at(level)->grid; }
+    const BSSNGridSoA<T> &shared_level_grid(size_t level) const { return shared_levels_.at(level)->grid; }
+
+    BSSNGridSoA<T> &leaf_grid(size_t leaf) { return leaves_.at(leaf)->grid; }
+    const BSSNGridSoA<T> &leaf_grid(size_t leaf) const { return leaves_.at(leaf)->grid; }
+
+    BSSNGridSoA<T> &level_grid(size_t level) {
+        if (level < shared_levels_.size())
+            return shared_levels_.at(level)->grid;
+        return leaves_.at(level - shared_levels_.size())->grid;
+    }
+
+    const BSSNGridSoA<T> &level_grid(size_t level) const {
+        if (level < shared_levels_.size())
+            return shared_levels_.at(level)->grid;
+        return leaves_.at(level - shared_levels_.size())->grid;
+    }
+
+    [[nodiscard]] const std::vector<LevelPerformanceStats> &last_step_performance() const noexcept {
+        return last_step_perf_;
+    }
+
+    [[nodiscard]] static constexpr size_t allocated_grid_field_count() noexcept { return 40; }
+    [[nodiscard]] static constexpr size_t allocated_snapshot_field_count() noexcept { return 28; }
+    [[nodiscard]] static constexpr size_t allocated_stepper_field_count() noexcept {
+        return 28 + 28 + 1;
+    }
+
+    [[nodiscard]] size_t level_allocated_field_count(size_t level) const noexcept {
+        (void)level;
+        return allocated_grid_field_count() + allocated_stepper_field_count();
+    }
+
+    [[nodiscard]] size_t level_snapshot_allocated_field_count(size_t level) const noexcept {
+        return is_shared_level(level) && shared_levels_[level]->has_snapshot()
+                   ? allocated_snapshot_field_count()
+                   : size_t(0);
+    }
+
+    [[nodiscard]] size_t level_snapshot_total_cells(size_t level) const noexcept {
+        return is_shared_level(level) && shared_levels_[level]->has_snapshot()
+                   ? shared_levels_[level]->snapshot_ref().total_cells()
+                   : size_t(0);
+    }
+
+    [[nodiscard]] double level_estimated_bytes(size_t level) const noexcept {
+        const auto &grid = level_grid(level);
+        double bytes = static_cast<double>(level_allocated_field_count(level)) *
+                       static_cast<double>(grid.total_cells()) * static_cast<double>(sizeof(T));
+        bytes += static_cast<double>(level_snapshot_allocated_field_count(level)) *
+                 static_cast<double>(level_snapshot_total_cells(level)) *
+                 static_cast<double>(sizeof(T));
+        return bytes;
+    }
+
+    [[nodiscard]] double total_estimated_bytes() const noexcept {
+        double total = 0.0;
+        for (size_t level = 0; level < num_levels(); ++level)
+            total += level_estimated_bytes(level);
+        return total;
+    }
+
+    void initialize_nested_levels() {
+        for (size_t level = 1; level < shared_levels_.size(); ++level)
+            prolongate_shared_level_from_parent(level);
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf)
+            prolongate_leaf_from_parent(leaf);
+    }
+
+    void initialize_snapshots() {
+        for (size_t level = 0; level < shared_levels_.size(); ++level) {
+            allocate_snapshot_for_shared_level(level);
+            refresh_shared_snapshot(level);
+        }
+    }
+
+    void prolongate_shared_level_from_parent(size_t level) {
+        if (level == 0 || level >= shared_levels_.size())
+            throw std::out_of_range("BBH FMR shared prolongation requires a valid child level");
+        detail::prolongate_from_parent(shared_levels_[level - 1]->grid, shared_levels_[level]->grid);
+        refresh_shared_snapshot(level);
+    }
+
+    void prolongate_leaf_from_parent(size_t leaf) {
+        if (leaf >= leaves_.size())
+            throw std::out_of_range("BBH FMR leaf prolongation requires a valid leaf index");
+        detail::prolongate_from_parent(shared_levels_.back()->grid, leaves_[leaf]->grid);
+    }
+
+    void restrict_shared_level_to_parent(size_t level) {
+        if (level == 0 || level >= shared_levels_.size())
+            throw std::out_of_range("BBH FMR shared restriction requires a valid child level");
+        detail::restrict_from_child(shared_levels_[level]->grid, shared_levels_[level - 1]->grid,
+                                    shared_levels_[level]->parent_cells,
+                                    shared_levels_[level]->refinement_ratio);
+        refresh_shared_snapshot(level - 1);
+    }
+
+    void restrict_leaf_to_parent(size_t leaf) {
+        if (leaf >= leaves_.size())
+            throw std::out_of_range("BBH FMR leaf restriction requires a valid leaf index");
+        detail::restrict_from_child(leaves_[leaf]->grid, shared_levels_.back()->grid,
+                                    leaves_[leaf]->parent_cells, leaves_[leaf]->refinement_ratio);
+        refresh_shared_snapshot(shared_levels_.size() - 1);
+    }
+
+    void blend_shared_level_centered_core_from_reference(size_t level, const BSSNGridSoA<T> &reference,
+                                                         T core_half_width, T transition_width) {
+        if (level == 0 || level >= shared_levels_.size())
+            throw std::out_of_range("BBH FMR centered-core blending requires a valid shared level");
+        if (!detail::same_grid_geometry(shared_levels_[level]->grid, reference)) {
+            throw std::invalid_argument(
+                "BBH FMR centered-core blending requires a reference grid with identical geometry");
+        }
+        detail::blend_centered_core_from_reference(reference, shared_levels_[level]->grid,
+                                                   core_half_width, transition_width);
+        refresh_shared_snapshot(level);
+    }
+
+    void blend_leaf_centered_core_from_reference(size_t leaf, const BSSNGridSoA<T> &reference,
+                                                 T core_half_width, T transition_width) {
+        if (leaf >= leaves_.size())
+            throw std::out_of_range("BBH FMR centered-core blending requires a valid leaf index");
+        if (!detail::same_grid_geometry(leaves_[leaf]->grid, reference)) {
+            throw std::invalid_argument(
+                "BBH FMR centered-core blending requires a reference grid with identical geometry");
+        }
+        detail::blend_centered_core_from_reference(reference, leaves_[leaf]->grid, core_half_width,
+                                                   transition_width);
+    }
+
+    void restrict_all_levels_to_root() {
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf)
+            restrict_leaf_to_parent(leaf);
+        for (size_t level = shared_levels_.size(); level-- > 1;)
+            restrict_shared_level_to_parent(level);
+    }
+
+    void apply_level_boundaries() {
+        {
+            const detail::ScopedFDSpacing spacing(shared_levels_.front()->grid.dx);
+            tensorium_RG::bssn::apply_halos_grid<OuterBoundary>(shared_levels_.front()->grid);
+        }
+
+        for (size_t level = 1; level < shared_levels_.size(); ++level) {
+            const typename FineBoundary::Context ctx{&shared_levels_[level - 1]->grid,
+                                                     &shared_levels_[level - 1]->grid, T(0)};
+            const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
+            const detail::ScopedFDSpacing spacing(shared_levels_[level]->grid.dx);
+            tensorium_RG::bssn::apply_halos_grid<FineBoundary>(shared_levels_[level]->grid);
+        }
+
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf) {
+            const typename FineBoundary::Context ctx{&shared_levels_.back()->grid,
+                                                     &shared_levels_.back()->grid, T(0)};
+            const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
+            const detail::ScopedFDSpacing spacing(leaves_[leaf]->grid.dx);
+            tensorium_RG::bssn::apply_halos_grid<FineBoundary>(leaves_[leaf]->grid);
+        }
+    }
+
+    void set_gauge_parameters(const GaugeParameters<T> &params) {
+        gauge_params_ = params;
+        root_stepper_->set_gauge_parameters(params);
+        for (auto &stepper : shared_steppers_)
+            stepper->set_gauge_parameters(params);
+        for (auto &stepper : leaf_steppers_)
+            stepper->set_gauge_parameters(params);
+    }
+
+    void set_state_log_stride(size_t stride) {
+        root_stepper_->set_state_log_stride(stride);
+        for (auto &stepper : shared_steppers_)
+            stepper->set_state_log_stride(stride);
+        for (auto &stepper : leaf_steppers_)
+            stepper->set_state_log_stride(stride);
+    }
+
+    [[nodiscard]] T compute_dt(const CFLControl<T> &control) const {
+        T      dt_root = std::numeric_limits<T>::infinity();
+        size_t cumulative_ratio = 1;
+        for (size_t level = 0; level < shared_levels_.size(); ++level) {
+            const T local_dt =
+                tensorium_RG::bssn::compute_dt_cfl(shared_levels_[level]->grid, control, padding_);
+            dt_root = std::min(dt_root, local_dt * T(cumulative_ratio));
+            if (level + 1 < shared_levels_.size())
+                cumulative_ratio *= shared_levels_[level + 1]->refinement_ratio;
+        }
+
+        for (const auto &leaf : leaves_) {
+            const T local_dt = tensorium_RG::bssn::compute_dt_cfl(leaf->grid, control, padding_);
+            dt_root = std::min(dt_root, local_dt * T(cumulative_ratio * leaf->refinement_ratio));
+        }
+        return dt_root;
+    }
+
+    void step(T dt_root) {
+        std::fill(last_step_perf_.begin(), last_step_perf_.end(), LevelPerformanceStats{});
+        advance_shared_level(0, dt_root);
+    }
+
+  private:
+    size_t                                            padding_ = 4;
+    GaugeParameters<T>                                gauge_params_{};
+    std::vector<std::unique_ptr<SharedLevelState>>    shared_levels_;
+    std::vector<std::unique_ptr<LeafState>>           leaves_;
+    std::unique_ptr<RootStepper>                      root_stepper_;
+    std::vector<std::unique_ptr<FineStepper>>         shared_steppers_;
+    std::vector<std::unique_ptr<FineStepper>>         leaf_steppers_;
+    std::vector<LevelPerformanceStats>                last_step_perf_;
+
+    using Clock = std::chrono::steady_clock;
+
+    [[nodiscard]] bool is_shared_level(size_t level) const noexcept {
+        return level < shared_levels_.size();
+    }
+
+    [[nodiscard]] size_t perf_index_shared(size_t level) const noexcept { return level; }
+    [[nodiscard]] size_t perf_index_leaf(size_t leaf) const noexcept {
+        return shared_levels_.size() + leaf;
+    }
+
+    static double elapsed_seconds(const Clock::time_point &start,
+                                  const Clock::time_point &stop) {
+        return std::chrono::duration<double>(stop - start).count();
+    }
+
+    [[nodiscard]] static size_t snapshot_margin_cells(size_t ng, size_t ratio) noexcept {
+        const size_t coarse_halo = (ng + ratio - 1) / ratio;
+        return coarse_halo + 1;
+    }
+
+    [[nodiscard]] PatchBox snapshot_region_for_shared_level(size_t level) const {
+        const auto &parent = *shared_levels_[level];
+        if (level + 1 < shared_levels_.size()) {
+            const auto &child = *shared_levels_[level + 1];
+            return detail::expand_patch_clamped(
+                child.parent_cells, snapshot_margin_cells(child.grid.dims.ng, child.refinement_ratio),
+                parent.grid.dims.nx, parent.grid.dims.ny, parent.grid.dims.nz);
+        }
+
+        const auto left_box = detail::expand_patch_clamped(
+            leaves_[0]->parent_cells,
+            snapshot_margin_cells(leaves_[0]->grid.dims.ng, leaves_[0]->refinement_ratio),
+            parent.grid.dims.nx, parent.grid.dims.ny, parent.grid.dims.nz);
+        const auto right_box = detail::expand_patch_clamped(
+            leaves_[1]->parent_cells,
+            snapshot_margin_cells(leaves_[1]->grid.dims.ng, leaves_[1]->refinement_ratio),
+            parent.grid.dims.nx, parent.grid.dims.ny, parent.grid.dims.nz);
+        return detail::merge_patch_boxes(left_box, right_box);
+    }
+
+    void allocate_snapshot_for_shared_level(size_t level) {
+        auto &state = *shared_levels_[level];
+        state.snapshot_region = snapshot_region_for_shared_level(level);
+        if (state.snapshot_region.empty())
+            throw std::runtime_error("Computed empty BBH FMR snapshot region for shared level");
+
+        state.snapshot = std::make_unique<EvolvedStateSoA<T>>(
+            state.snapshot_region.nx(), state.snapshot_region.ny(), state.snapshot_region.nz(),
+            size_t(0), state.grid.dx, state.grid.dy, state.grid.dz);
+        state.snapshot->x0 = state.grid.x0 + static_cast<T>(state.snapshot_region.i0) * state.grid.dx;
+        state.snapshot->y0 = state.grid.y0 + static_cast<T>(state.snapshot_region.j0) * state.grid.dy;
+        state.snapshot->z0 = state.grid.z0 + static_cast<T>(state.snapshot_region.k0) * state.grid.dz;
+    }
+
+    void refresh_shared_snapshot(size_t level) {
+        if (level >= shared_levels_.size() || !shared_levels_[level]->has_snapshot())
+            return;
+        detail::copy_evolved_state_region(shared_levels_[level]->grid,
+                                          shared_levels_[level]->snapshot_region,
+                                          shared_levels_[level]->snapshot_ref());
+    }
+
+    void advance_leaf(size_t leaf_idx, T dt) {
+        auto       &leaf = *leaves_[leaf_idx];
+        auto       &perf = last_step_perf_[perf_index_leaf(leaf_idx)];
+        ++perf.calls;
+
+        const auto evolve_start = Clock::now();
+        const detail::ScopedFDSpacing spacing(leaf.grid.dx);
+        leaf_steppers_[leaf_idx]->step(leaf.grid, dt, leaf.step_count++);
+        perf.evolve_seconds += elapsed_seconds(evolve_start, Clock::now());
+    }
+
+    void advance_shared_level(size_t level_idx, T dt) {
+        auto       &level = *shared_levels_[level_idx];
+        auto       &perf = last_step_perf_[perf_index_shared(level_idx)];
+        ++perf.calls;
+
+        const auto snapshot_start = Clock::now();
+        refresh_shared_snapshot(level_idx);
+        perf.snapshot_seconds += elapsed_seconds(snapshot_start, Clock::now());
+
+        {
+            const auto evolve_start = Clock::now();
+            const detail::ScopedFDSpacing spacing(level.grid.dx);
+            if (level_idx == 0)
+                root_stepper_->step(level.grid, dt, level.step_count++);
+            else
+                shared_steppers_[level_idx - 1]->step(level.grid, dt, level.step_count++);
+            perf.evolve_seconds += elapsed_seconds(evolve_start, Clock::now());
+        }
+
+        if (level_idx + 1 < shared_levels_.size()) {
+            auto &child = *shared_levels_[level_idx + 1];
+            const size_t ratio = child.refinement_ratio;
+            const T      dt_child = dt / T(ratio);
+
+            const auto child_start = Clock::now();
+            for (size_t substep = 0; substep < ratio; ++substep) {
+                ++perf.child_substeps;
+                const typename FineBoundary::Context ctx{
+                    &level.snapshot_ref(), &level.grid, T(substep) / T(ratio),
+                    T(substep + 1) / T(ratio)};
+                const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
+                advance_shared_level(level_idx + 1, dt_child);
+            }
+            perf.child_subcycling_seconds += elapsed_seconds(child_start, Clock::now());
+
+            const auto restrict_start = Clock::now();
+            detail::restrict_from_child(child.grid, level.grid, child.parent_cells,
+                                        child.refinement_ratio);
+            perf.restriction_seconds += elapsed_seconds(restrict_start, Clock::now());
+            return;
+        }
+
+        const auto child_start = Clock::now();
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf) {
+            const size_t ratio = leaves_[leaf]->refinement_ratio;
+            const T      dt_child = dt / T(ratio);
+            for (size_t substep = 0; substep < ratio; ++substep) {
+                ++perf.child_substeps;
+                const typename FineBoundary::Context ctx{
+                    &level.snapshot_ref(), &level.grid, T(substep) / T(ratio),
+                    T(substep + 1) / T(ratio)};
+                const ScopedParentInterpolationContext<T, OuterBoundary> scoped_ctx(&ctx);
+                advance_leaf(leaf, dt_child);
+            }
+        }
+        perf.child_subcycling_seconds += elapsed_seconds(child_start, Clock::now());
+
+        const auto restrict_start = Clock::now();
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf) {
+            detail::restrict_from_child(leaves_[leaf]->grid, level.grid, leaves_[leaf]->parent_cells,
+                                        leaves_[leaf]->refinement_ratio);
+        }
+        perf.restriction_seconds += elapsed_seconds(restrict_start, Clock::now());
     }
 };
 

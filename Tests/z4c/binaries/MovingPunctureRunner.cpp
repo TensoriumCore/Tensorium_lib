@@ -25,9 +25,13 @@ namespace {
 using Grid = tensorium_RG::Z4cGridSoA<double>;
 using MovingPunctureHierarchy =
     tensorium_RG::z4c::fmr::FixedMeshRefinementHierarchy<double, tensorium_RG::z4c::BoundaryRadiative>;
+using BinaryMovingPunctureHierarchy =
+    tensorium_RG::z4c::fmr::BinaryPunctureFixedMeshRefinementHierarchy<double,
+                                                                       tensorium_RG::z4c::BoundaryRadiative>;
 using FineBoundary = MovingPunctureHierarchy::FineBoundary;
 
-void export_slice_boxes_csv(const Grid &grid, const MovingPunctureHierarchy *hierarchy, size_t step,
+template <typename HierarchyType>
+void export_slice_boxes_csv(const Grid &grid, const HierarchyType *hierarchy, size_t step,
                             const std::string &output_dir) {
     std::stringstream ss;
     ss << output_dir << "/slice_boxes_" << std::setw(4) << std::setfill('0') << step << ".csv";
@@ -65,7 +69,8 @@ void export_slice_boxes_csv(const Grid &grid, const MovingPunctureHierarchy *hie
         write_level(level, hierarchy->level_grid(level));
 }
 
-void export_slice_csv(const Grid &grid, const MovingPunctureHierarchy *hierarchy, size_t step,
+template <typename HierarchyType>
+void export_slice_csv(const Grid &grid, const HierarchyType *hierarchy, size_t step,
                       const std::string &output_dir) {
     std::stringstream ss;
     ss << output_dir << "/slice_" << std::setw(4) << std::setfill('0') << step << ".csv";
@@ -327,6 +332,81 @@ PuncturePlaneSample make_tracker_sample(const Grid &grid, const ShiftPunctureTra
     return sample;
 }
 
+void refresh_shift_puncture_tracker_beta_split(const Grid &left_grid, const Grid &right_grid,
+                                               ShiftPunctureTracker &tracker) {
+    if (!tracker.initialized)
+        return;
+    std::array<double, 3> b1{0.0, 0.0, 0.0};
+    std::array<double, 3> b2{0.0, 0.0, 0.0};
+    if (sample_vector3_tracker_interp(left_grid, left_grid.beta, tracker.p1, b1))
+        tracker.beta1_prev = b1;
+    if (sample_vector3_tracker_interp(right_grid, right_grid.beta, tracker.p2, b2))
+        tracker.beta2_prev = b2;
+}
+
+void initialize_shift_puncture_tracker_split(const Grid &root_grid, const Grid &left_grid,
+                                             const Grid &right_grid, ShiftPunctureTracker &tracker,
+                                             const std::array<double, 3> &p1,
+                                             const std::array<double, 3> &p2) {
+    tracker = ShiftPunctureTracker{};
+    tracker.p1 = p1;
+    tracker.p2 = p2;
+    clamp_tracker_to_domain(root_grid, tracker.p1);
+    clamp_tracker_to_domain(root_grid, tracker.p2);
+    tracker.initialized = true;
+    refresh_shift_puncture_tracker_beta_split(left_grid, right_grid, tracker);
+}
+
+void advance_shift_puncture_tracker_split(const Grid &root_grid, const Grid &left_grid,
+                                          const Grid &right_grid, ShiftPunctureTracker &tracker,
+                                          double dt) {
+    if (!tracker.initialized || !std::isfinite(dt) || dt <= 0.0)
+        return;
+
+    std::array<double, 3> b1_new = tracker.beta1_prev;
+    std::array<double, 3> b2_new = tracker.beta2_prev;
+    (void)sample_vector3_tracker_interp(left_grid, left_grid.beta, tracker.p1, b1_new);
+    (void)sample_vector3_tracker_interp(right_grid, right_grid.beta, tracker.p2, b2_new);
+
+    for (int d = 0; d < 3; ++d) {
+        tracker.p1[d] += -0.5 * dt * (tracker.beta1_prev[d] + b1_new[d]);
+        tracker.p2[d] += -0.5 * dt * (tracker.beta2_prev[d] + b2_new[d]);
+    }
+    clamp_tracker_to_domain(root_grid, tracker.p1);
+    clamp_tracker_to_domain(root_grid, tracker.p2);
+    tracker.beta1_prev = b1_new;
+    tracker.beta2_prev = b2_new;
+}
+
+PuncturePlaneSample make_tracker_sample_split(const Grid &left_grid, const Grid &right_grid,
+                                              const ShiftPunctureTracker &tracker) {
+    PuncturePlaneSample sample;
+    if (!tracker.initialized)
+        return sample;
+
+    sample.has_left =
+        sample_scalar_tracker_interp(left_grid, left_grid.alpha, tracker.p1[0], tracker.p1[1],
+                                     tracker.p1[2], sample.alpha_left) &&
+        sample_scalar_tracker_interp(left_grid, left_grid.chi, tracker.p1[0], tracker.p1[1],
+                                     tracker.p1[2], sample.chi_left);
+    if (sample.has_left) {
+        sample.x_left = tracker.p1[0];
+        sample.y_left = tracker.p1[1];
+    }
+
+    sample.has_right =
+        sample_scalar_tracker_interp(right_grid, right_grid.alpha, tracker.p2[0], tracker.p2[1],
+                                     tracker.p2[2], sample.alpha_right) &&
+        sample_scalar_tracker_interp(right_grid, right_grid.chi, tracker.p2[0], tracker.p2[1],
+                                     tracker.p2[2], sample.chi_right);
+    if (sample.has_right) {
+        sample.x_right = tracker.p2[0];
+        sample.y_right = tracker.p2[1];
+    }
+
+    return sample;
+}
+
 bool compute_tracker_drift(const PuncturePlaneSample &tracked, const PuncturePlaneSample &minima,
                            double &drift_left, double &drift_right) {
     if (!(tracked.has_left && tracked.has_right && minima.has_left && minima.has_right))
@@ -334,6 +414,62 @@ bool compute_tracker_drift(const PuncturePlaneSample &tracked, const PuncturePla
     drift_left = std::hypot(tracked.x_left - minima.x_left, tracked.y_left - minima.y_left);
     drift_right = std::hypot(tracked.x_right - minima.x_right, tracked.y_right - minima.y_right);
     return std::isfinite(drift_left) && std::isfinite(drift_right);
+}
+
+struct PunctureMinimumSample {
+    double x = std::numeric_limits<double>::quiet_NaN();
+    double y = std::numeric_limits<double>::quiet_NaN();
+    double chi = std::numeric_limits<double>::quiet_NaN();
+    double alpha = std::numeric_limits<double>::quiet_NaN();
+    bool   valid = false;
+};
+
+PunctureMinimumSample sample_grid_minimum_alpha(const Grid &grid) {
+    PunctureMinimumSample sample;
+    const size_t          nx = grid.dims.nx;
+    const size_t          ny = grid.dims.ny;
+    const size_t          ng = grid.dims.ng;
+    const size_t          k = ng + grid.dims.nz / 2;
+
+    for (size_t i = ng; i < nx + ng; ++i) {
+        for (size_t j = ng; j < ny + ng; ++j) {
+            const size_t idx = grid.alpha.idx(i, j, k);
+            const double alpha = grid.alpha.ptr()[idx];
+            const double chi = grid.chi.ptr()[idx];
+            if (!std::isfinite(alpha) || !std::isfinite(chi))
+                continue;
+            if (!sample.valid || alpha < sample.alpha) {
+                sample.valid = true;
+                sample.x = grid.x0 + (double(i) - double(ng)) * grid.dx;
+                sample.y = grid.y0 + (double(j) - double(ng)) * grid.dy;
+                sample.chi = chi;
+                sample.alpha = alpha;
+            }
+        }
+    }
+
+    return sample;
+}
+
+PuncturePlaneSample sample_puncture_minima_split(const Grid &left_grid, const Grid &right_grid) {
+    PuncturePlaneSample sample;
+    const auto left = sample_grid_minimum_alpha(left_grid);
+    const auto right = sample_grid_minimum_alpha(right_grid);
+    if (left.valid) {
+        sample.has_left = true;
+        sample.x_left = left.x;
+        sample.y_left = left.y;
+        sample.chi_left = left.chi;
+        sample.alpha_left = left.alpha;
+    }
+    if (right.valid) {
+        sample.has_right = true;
+        sample.x_right = right.x;
+        sample.y_right = right.y;
+        sample.chi_right = right.chi;
+        sample.alpha_right = right.alpha;
+    }
+    return sample;
 }
 
 struct ConstraintScratch {
@@ -549,6 +685,109 @@ rebuild_moving_puncture_hierarchy(const MovingPunctureHierarchy *previous,
     return hierarchy;
 }
 
+void initialize_moving_puncture_binary_hierarchy(
+    BinaryMovingPunctureHierarchy &hierarchy,
+    const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg,
+    const tensorium_RG::z4c::ProjectionConfig &proj_cfg) {
+    initialize_moving_puncture_level(hierarchy.root_grid(), cfg, proj_cfg, true);
+    tensorium_RG::fd::set_fd_dx(hierarchy.root_grid().dx);
+    tensorium_RG::z4c::apply_halos_grid<tensorium_RG::z4c::BoundaryRadiative>(hierarchy.root_grid());
+
+    for (size_t level = 1; level < hierarchy.num_shared_levels(); ++level) {
+        hierarchy.prolongate_shared_level_from_parent(level);
+        tensorium_RG::z4c::project_z4c_state(hierarchy.shared_level_grid(level), proj_cfg);
+
+        if (cfg.fmr.fine_levels_use_parent_init) {
+            hierarchy.apply_level_boundaries();
+            std::cout << "[fmr.init] level=" << level << " source=parent_prolongation" << std::endl;
+            continue;
+        }
+
+        Grid tp_reference = make_grid_like(hierarchy.shared_level_grid(level));
+        initialize_moving_puncture_level(tp_reference, cfg, proj_cfg, true);
+        const auto region = moving_puncture_init_blend_region(hierarchy.shared_level_grid(level), cfg);
+        hierarchy.blend_shared_level_centered_core_from_reference(level, tp_reference,
+                                                                  region.core_half_width,
+                                                                  region.transition_width);
+        tensorium_RG::z4c::project_z4c_state(hierarchy.shared_level_grid(level), proj_cfg);
+        hierarchy.apply_level_boundaries();
+        std::cout << "[fmr.init] level=" << level << " core_half_width=" << region.core_half_width
+                  << " transition_width=" << region.transition_width
+                  << " tp_outer_half_width=" << region.tp_outer_half_width << std::endl;
+    }
+
+    for (size_t leaf = 0; leaf < hierarchy.num_leaves(); ++leaf) {
+        hierarchy.prolongate_leaf_from_parent(leaf);
+        tensorium_RG::z4c::project_z4c_state(hierarchy.leaf_grid(leaf), proj_cfg);
+
+        const size_t flat_level = hierarchy.num_shared_levels() + leaf;
+        if (cfg.fmr.fine_levels_use_parent_init) {
+            hierarchy.apply_level_boundaries();
+            std::cout << "[fmr.init] level=" << flat_level << " source=parent_prolongation"
+                      << std::endl;
+            continue;
+        }
+
+        Grid tp_reference = make_grid_like(hierarchy.leaf_grid(leaf));
+        initialize_moving_puncture_level(tp_reference, cfg, proj_cfg, true);
+        const auto region = moving_puncture_init_blend_region(hierarchy.leaf_grid(leaf), cfg);
+        hierarchy.blend_leaf_centered_core_from_reference(leaf, tp_reference,
+                                                          region.core_half_width,
+                                                          region.transition_width);
+        tensorium_RG::z4c::project_z4c_state(hierarchy.leaf_grid(leaf), proj_cfg);
+        hierarchy.apply_level_boundaries();
+        std::cout << "[fmr.init] level=" << flat_level << " core_half_width=" << region.core_half_width
+                  << " transition_width=" << region.transition_width
+                  << " tp_outer_half_width=" << region.tp_outer_half_width << std::endl;
+    }
+
+    hierarchy.restrict_all_levels_to_root();
+    hierarchy.apply_level_boundaries();
+}
+
+void project_binary_hierarchy_levels(BinaryMovingPunctureHierarchy &hierarchy,
+                                     const tensorium_RG::z4c::ProjectionConfig &proj_cfg) {
+    for (size_t level = 0; level < hierarchy.num_levels(); ++level)
+        tensorium_RG::z4c::project_z4c_state(hierarchy.level_grid(level), proj_cfg);
+
+    hierarchy.restrict_all_levels_to_root();
+    hierarchy.apply_level_boundaries();
+}
+
+std::unique_ptr<BinaryMovingPunctureHierarchy>
+rebuild_moving_puncture_binary_hierarchy(
+    const BinaryMovingPunctureHierarchy *previous,
+    const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg,
+    const tensorium_RG::z4c::ProjectionConfig &proj_cfg, const std::array<double, 3> &p1,
+    const std::array<double, 3> &p2) {
+    Grid root_copy = make_grid_like(previous->root_grid());
+    tensorium_RG::z4c::fmr::detail::copy_evolved_state(previous->root_grid(), root_copy);
+
+    const auto hierarchy_cfg =
+        tensorium_RG::z4c::build_moving_puncture_bbh_split_hierarchy_config(root_copy, cfg, p1, p2);
+    auto hierarchy =
+        std::make_unique<BinaryMovingPunctureHierarchy>(root_copy, hierarchy_cfg, cfg.padding);
+
+    for (size_t level = 1; level < hierarchy->num_shared_levels(); ++level) {
+        hierarchy->prolongate_shared_level_from_parent(level);
+        if (previous != nullptr && level < previous->num_shared_levels()) {
+            inject_overlap_from_reference(previous->shared_level_grid(level),
+                                          hierarchy->shared_level_grid(level), 2);
+        }
+        tensorium_RG::z4c::project_z4c_state(hierarchy->shared_level_grid(level), proj_cfg);
+    }
+
+    for (size_t leaf = 0; leaf < hierarchy->num_leaves(); ++leaf) {
+        hierarchy->prolongate_leaf_from_parent(leaf);
+        if (previous != nullptr && leaf < previous->num_leaves())
+            inject_overlap_from_reference(previous->leaf_grid(leaf), hierarchy->leaf_grid(leaf), 2);
+        tensorium_RG::z4c::project_z4c_state(hierarchy->leaf_grid(leaf), proj_cfg);
+    }
+
+    hierarchy->apply_level_boundaries();
+    return hierarchy;
+}
+
 PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
     PuncturePlaneSample sample;
 
@@ -605,6 +844,8 @@ int main(int argc, char **argv) {
     size_t constraint_slice_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE",
                             constraint_export_stride);
+    size_t fmr_profile_stride =
+        parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_FMR_PROFILE_STRIDE", 0);
 
     for (int i = 1; i < argc; ++i) {
         if (std::strcmp(argv[i], "--output-stride") == 0 && i + 1 < argc) {
@@ -631,8 +872,22 @@ int main(int argc, char **argv) {
 
     Grid root_grid(cfg.nx, cfg.ny, cfg.nz, cfg.ng, cfg.spacing, cfg.spacing, cfg.spacing);
     tensorium_RG::z4c::center_cell_centered_origin(root_grid);
-    const auto level_cfgs = tensorium_RG::z4c::build_moving_puncture_fmr_levels(root_grid, cfg);
-    const bool use_fmr = !level_cfgs.empty();
+    const bool use_bbh_split =
+        cfg.fmr.enabled && cfg.fmr.layout == tensorium_RG::z4c::MovingPunctureFMRLayout::BBHSplit;
+    const auto initial_punctures = tensorium_RG::z4c::moving_puncture_initial_puncture_positions(cfg);
+    std::vector<tensorium_RG::z4c::fmr::LevelConfig> level_cfgs;
+    tensorium_RG::z4c::fmr::BinaryPunctureHierarchyConfig binary_hierarchy_cfg;
+    bool use_fmr = false;
+    if (cfg.fmr.enabled) {
+        if (use_bbh_split) {
+            binary_hierarchy_cfg = tensorium_RG::z4c::build_moving_puncture_bbh_split_hierarchy_config(
+                root_grid, cfg, initial_punctures[0], initial_punctures[1]);
+            use_fmr = !binary_hierarchy_cfg.shared_levels.empty();
+        } else {
+            level_cfgs = tensorium_RG::z4c::build_moving_puncture_fmr_levels(root_grid, cfg);
+            use_fmr = !level_cfgs.empty();
+        }
+    }
 
     if (cfg.print_suggested_momentum) {
         if (cfg.circular_hint.valid) {
@@ -678,14 +933,28 @@ int main(int argc, char **argv) {
     proj_cfg.project_A_tilde = true;
     proj_cfg.recompute_inverse = true;
 
-    std::unique_ptr<MovingPunctureHierarchy> hierarchy;
-    Grid                                    *root_state = &root_grid;
-    Grid                                    *puncture_state = &root_grid;
+    std::unique_ptr<MovingPunctureHierarchy>       hierarchy;
+    std::unique_ptr<BinaryMovingPunctureHierarchy> binary_hierarchy;
+    Grid                                          *root_state = &root_grid;
+    Grid                                          *puncture_state = &root_grid;
+    Grid                                          *left_puncture_state = nullptr;
+    Grid                                          *right_puncture_state = nullptr;
     if (use_fmr) {
-        hierarchy = std::make_unique<MovingPunctureHierarchy>(root_grid, level_cfgs, cfg.padding);
-        initialize_moving_puncture_hierarchy(*hierarchy, cfg, proj_cfg);
-        root_state = &hierarchy->root_grid();
-        puncture_state = &hierarchy->level_grid(hierarchy->num_levels() - 1);
+        if (use_bbh_split) {
+            binary_hierarchy =
+                std::make_unique<BinaryMovingPunctureHierarchy>(root_grid, binary_hierarchy_cfg,
+                                                                cfg.padding);
+            initialize_moving_puncture_binary_hierarchy(*binary_hierarchy, cfg, proj_cfg);
+            root_state = &binary_hierarchy->root_grid();
+            left_puncture_state = &binary_hierarchy->leaf_grid(0);
+            right_puncture_state = &binary_hierarchy->leaf_grid(1);
+            puncture_state = left_puncture_state;
+        } else {
+            hierarchy = std::make_unique<MovingPunctureHierarchy>(root_grid, level_cfgs, cfg.padding);
+            initialize_moving_puncture_hierarchy(*hierarchy, cfg, proj_cfg);
+            root_state = &hierarchy->root_grid();
+            puncture_state = &hierarchy->level_grid(hierarchy->num_levels() - 1);
+        }
     } else {
         initialize_moving_puncture_level(root_grid, cfg, proj_cfg, true);
         tensorium_RG::fd::set_fd_dx(root_grid.dx);
@@ -719,15 +988,18 @@ int main(int argc, char **argv) {
         params, cfg.fail_on_gauge_bc_mismatch, bc_char);
 
     if (use_fmr) {
-        const Grid &outer_refined = hierarchy->level_grid(1);
+        const Grid &outer_refined =
+            use_bbh_split ? binary_hierarchy->shared_level_grid(1) : hierarchy->level_grid(1);
+        const Grid &finest_refined =
+            use_bbh_split ? binary_hierarchy->leaf_grid(0) : hierarchy->level_grid(hierarchy->num_levels() - 1);
         const double outer_half_width =
             0.5 * std::min({double(outer_refined.dims.nx) * outer_refined.dx,
                             double(outer_refined.dims.ny) * outer_refined.dy,
                             double(outer_refined.dims.nz) * outer_refined.dz});
         const double finest_half_width =
-            0.5 * std::min({double(puncture_state->dims.nx) * puncture_state->dx,
-                            double(puncture_state->dims.ny) * puncture_state->dy,
-                            double(puncture_state->dims.nz) * puncture_state->dz});
+            0.5 * std::min({double(finest_refined.dims.nx) * finest_refined.dx,
+                            double(finest_refined.dims.ny) * finest_refined.dy,
+                            double(finest_refined.dims.nz) * finest_refined.dz});
         const char *sizing_mode = (cfg.fmr.outer_box_half_width > 0.0)
                                       ? "outer_half_width"
                                       : ((cfg.fmr.finest_box_half_width > 0.0)
@@ -735,15 +1007,22 @@ int main(int argc, char **argv) {
                                              : "auto");
         const char *fine_init_mode =
             cfg.fmr.fine_levels_use_parent_init ? "parent_prolongation" : "local_tp_blend";
-        std::cout << "[fmr] enabled=1 levels=" << (hierarchy->num_levels() - 1)
+        std::cout << "[fmr] enabled=1 levels="
+                  << (use_bbh_split ? (binary_hierarchy->num_levels() - 1) : (hierarchy->num_levels() - 1))
                   << " ratio=" << cfg.fmr.refinement_ratio
+                  << " layout=" << tensorium_RG::z4c::moving_puncture_fmr_layout_name(cfg.fmr.layout)
                   << " sizing=" << sizing_mode
                   << " fine_init=" << fine_init_mode
                   << " outer_half_width=" << outer_half_width
                   << " finest_half_width=" << finest_half_width
-                  << " finest_dx=" << puncture_state->dx << std::endl;
-        for (size_t level = 1; level < hierarchy->num_levels(); ++level) {
-            const Grid &g = hierarchy->level_grid(level);
+                  << " finest_dx=" << finest_refined.dx
+                  << " profile_stride=" << fmr_profile_stride << std::endl;
+        const auto bytes_to_gib = [](double bytes) {
+            return bytes / (1024.0 * 1024.0 * 1024.0);
+        };
+        const size_t level_count = use_bbh_split ? binary_hierarchy->num_levels() : hierarchy->num_levels();
+        for (size_t level = 1; level < level_count; ++level) {
+            const Grid &g = use_bbh_split ? binary_hierarchy->level_grid(level) : hierarchy->level_grid(level);
             const double half_width =
                 0.5 * std::min({double(g.dims.nx) * g.dx, double(g.dims.ny) * g.dy,
                                 double(g.dims.nz) * g.dz});
@@ -753,6 +1032,30 @@ int main(int argc, char **argv) {
                       << g.dims.nx * g.dx << ", " << g.dims.ny * g.dy << ", "
                       << g.dims.nz * g.dz << ")\n";
         }
+        for (size_t level = 0; level < level_count; ++level) {
+            const Grid &g = use_bbh_split ? binary_hierarchy->level_grid(level) : hierarchy->level_grid(level);
+            const size_t allocated_fields = use_bbh_split ? binary_hierarchy->level_allocated_field_count(level)
+                                                          : hierarchy->level_allocated_field_count(level);
+            const size_t snapshot_fields =
+                use_bbh_split ? binary_hierarchy->level_snapshot_allocated_field_count(level)
+                              : hierarchy->level_snapshot_allocated_field_count(level);
+            const size_t snapshot_cells =
+                use_bbh_split ? binary_hierarchy->level_snapshot_total_cells(level)
+                              : hierarchy->level_snapshot_total_cells(level);
+            const double estimated_bytes = use_bbh_split ? binary_hierarchy->level_estimated_bytes(level)
+                                                         : hierarchy->level_estimated_bytes(level);
+            std::cout << "[fmr.mem] level=" << level
+                      << " allocated_fields=" << allocated_fields
+                      << " total_cells=" << g.total_cells()
+                      << " snapshot_fields=" << snapshot_fields
+                      << " snapshot_cells=" << snapshot_cells
+                      << " estimated_gib=" << bytes_to_gib(estimated_bytes)
+                      << std::endl;
+        }
+        std::cout << "[fmr.mem] total_estimated_gib="
+                  << bytes_to_gib(use_bbh_split ? binary_hierarchy->total_estimated_bytes()
+                                                : hierarchy->total_estimated_bytes())
+                  << std::endl;
     } else {
         std::cout << "[fmr] enabled=0" << std::endl;
     }
@@ -821,8 +1124,14 @@ int main(int argc, char **argv) {
 
     ShiftPunctureTracker puncture_tracker;
     if (use_fmr && cfg.fmr.move_with_punctures) {
-        const auto initial_minima = sample_puncture_minima(*puncture_state);
-        initialize_shift_puncture_tracker(*puncture_state, puncture_tracker, initial_minima);
+        if (use_bbh_split) {
+            initialize_shift_puncture_tracker_split(*root_state, *left_puncture_state,
+                                                    *right_puncture_state, puncture_tracker,
+                                                    initial_punctures[0], initial_punctures[1]);
+        } else {
+            const auto initial_minima = sample_puncture_minima(*puncture_state);
+            initialize_shift_puncture_tracker(*puncture_state, puncture_tracker, initial_minima);
+        }
         std::cout << "[tracker] enabled=" << (puncture_tracker.initialized ? 1 : 0)
                   << " regrid_interval=" << cfg.fmr.regrid_interval
                   << " regrid_threshold_cells=" << cfg.fmr.regrid_threshold_cells
@@ -844,7 +1153,190 @@ int main(int argc, char **argv) {
     control.gauge_speed = cfg.gauge_speed;
 
     double t = 0.0;
-    if (use_fmr) {
+    if (use_fmr && use_bbh_split) {
+        binary_hierarchy->set_gauge_parameters(params);
+        binary_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
+        ConstraintScratch constraint_scratch(*root_state);
+        const auto elapsed_seconds = [](const auto &start, const auto &stop) {
+            return std::chrono::duration<double>(stop - start).count();
+        };
+
+        for (size_t n = 0; n < cfg.steps; ++n) {
+            const auto wall_start = std::chrono::steady_clock::now();
+            const double dt = binary_hierarchy->compute_dt(control);
+            current_step = n;
+            current_dt = dt;
+            current_time = t + dt;
+            const auto evolve_start = std::chrono::steady_clock::now();
+            binary_hierarchy->step(dt);
+            const auto evolve_stop = std::chrono::steady_clock::now();
+            t += dt;
+            const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
+            if (fmr_profile_stride > 0 && ((n + 1) % fmr_profile_stride) == 0) {
+                const auto &perf = binary_hierarchy->last_step_performance();
+                for (size_t level = 0; level < perf.size(); ++level) {
+                    const auto &stats = perf[level];
+                    const double total_seconds =
+                        stats.snapshot_seconds + stats.evolve_seconds +
+                        stats.child_subcycling_seconds + stats.restriction_seconds;
+                    std::cout << "[fmr.perf] step=" << (n + 1)
+                              << " level=" << level
+                              << " calls=" << stats.calls
+                              << " child_substeps=" << stats.child_substeps
+                              << " snapshot=" << stats.snapshot_seconds
+                              << " evolve=" << stats.evolve_seconds
+                              << " children=" << stats.child_subcycling_seconds
+                              << " restrict=" << stats.restriction_seconds
+                              << " total=" << total_seconds << std::endl;
+                }
+            }
+
+            PuncturePlaneSample puncture_sample =
+                sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
+            PuncturePlaneSample puncture_minima = puncture_sample;
+
+            if (puncture_tracker.initialized) {
+                advance_shift_puncture_tracker_split(*root_state, *left_puncture_state,
+                                                     *right_puncture_state, puncture_tracker, dt);
+                puncture_sample = make_tracker_sample_split(*left_puncture_state,
+                                                           *right_puncture_state, puncture_tracker);
+
+                double drift_left = std::numeric_limits<double>::quiet_NaN();
+                double drift_right = std::numeric_limits<double>::quiet_NaN();
+                const bool have_drift = compute_tracker_drift(puncture_sample, puncture_minima,
+                                                              drift_left, drift_right);
+                const double finest_spacing =
+                    std::max(grid_max_spacing(*left_puncture_state), grid_max_spacing(*right_puncture_state));
+                const double drift_warn_radius = cfg.fmr.tracker_drift_warn_cells * finest_spacing;
+                const double recenter_radius = cfg.fmr.tracker_recenter_cells * finest_spacing;
+
+                if (cfg.fmr.tracker_recenter_on_drift && have_drift &&
+                    (drift_left > recenter_radius || drift_right > recenter_radius)) {
+                    puncture_tracker.p1 = {puncture_minima.x_left, puncture_minima.y_left, 0.0};
+                    puncture_tracker.p2 = {puncture_minima.x_right, puncture_minima.y_right, 0.0};
+                    clamp_tracker_to_domain(*root_state, puncture_tracker.p1);
+                    clamp_tracker_to_domain(*root_state, puncture_tracker.p2);
+                    refresh_shift_puncture_tracker_beta_split(*left_puncture_state,
+                                                              *right_puncture_state,
+                                                              puncture_tracker);
+                    puncture_sample = make_tracker_sample_split(*left_puncture_state,
+                                                               *right_puncture_state,
+                                                               puncture_tracker);
+                } else if (have_drift &&
+                           (drift_left > drift_warn_radius || drift_right > drift_warn_radius) &&
+                           (n % std::max<size_t>(output_stride, size_t(1)) == 0)) {
+                    std::cout << "[tracker][warn] step=" << n << " drift_left=" << drift_left
+                              << " drift_right=" << drift_right
+                              << " warn_radius=" << drift_warn_radius << std::endl;
+                }
+
+                const bool regrid_due =
+                    cfg.fmr.regrid_interval > 0 && ((n + 1) % cfg.fmr.regrid_interval) == 0;
+                if (regrid_due) {
+                    const auto current_center = grid_center(binary_hierarchy->shared_level_grid(1));
+                    const std::array<double, 3> target_center{
+                        0.5 * (puncture_tracker.p1[0] + puncture_tracker.p2[0]),
+                        0.5 * (puncture_tracker.p1[1] + puncture_tracker.p2[1]),
+                        0.5 * (puncture_tracker.p1[2] + puncture_tracker.p2[2])};
+                    const auto current_left_center = grid_center(*left_puncture_state);
+                    const auto current_right_center = grid_center(*right_puncture_state);
+                    const double center_shift = std::hypot(target_center[0] - current_center[0],
+                                                           target_center[1] - current_center[1]);
+                    const double left_shift = std::hypot(puncture_tracker.p1[0] - current_left_center[0],
+                                                         puncture_tracker.p1[1] - current_left_center[1]);
+                    const double right_shift =
+                        std::hypot(puncture_tracker.p2[0] - current_right_center[0],
+                                   puncture_tracker.p2[1] - current_right_center[1]);
+                    const double regrid_threshold =
+                        cfg.fmr.regrid_threshold_cells *
+                        std::max(left_puncture_state->dx, right_puncture_state->dx);
+                    if (center_shift > regrid_threshold || left_shift > regrid_threshold ||
+                        right_shift > regrid_threshold) {
+                        auto next_hierarchy = rebuild_moving_puncture_binary_hierarchy(
+                            binary_hierarchy.get(), cfg, proj_cfg, puncture_tracker.p1,
+                            puncture_tracker.p2);
+                        next_hierarchy->set_gauge_parameters(params);
+                        next_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
+                        binary_hierarchy = std::move(next_hierarchy);
+                        root_state = &binary_hierarchy->root_grid();
+                        left_puncture_state = &binary_hierarchy->leaf_grid(0);
+                        right_puncture_state = &binary_hierarchy->leaf_grid(1);
+                        puncture_state = left_puncture_state;
+                        refresh_shift_puncture_tracker_beta_split(*left_puncture_state,
+                                                                  *right_puncture_state,
+                                                                  puncture_tracker);
+                        puncture_minima =
+                            sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
+                        puncture_sample = make_tracker_sample_split(*left_puncture_state,
+                                                                   *right_puncture_state,
+                                                                   puncture_tracker);
+                        std::cout << "[fmr.regrid] step=" << (n + 1)
+                                  << " center_old=(" << current_center[0] << ", " << current_center[1]
+                                  << ", " << current_center[2] << ")"
+                                  << " center_new=(" << target_center[0] << ", " << target_center[1]
+                                  << ", " << target_center[2] << ")"
+                                  << " shift=" << center_shift
+                                  << " left_shift=" << left_shift
+                                  << " right_shift=" << right_shift << std::endl;
+                    }
+                }
+            }
+
+            double constraint_seconds = 0.0;
+            const bool need_constraint_export =
+                constraint_export_stride > 0 && constraint_log.is_open() &&
+                (current_step % constraint_export_stride) == 0;
+            const bool need_constraint_slice_export =
+                export_constraint_slices && constraint_slice_stride > 0 &&
+                (current_step % constraint_slice_stride) == 0;
+            if (need_constraint_export) {
+                const auto constraint_start = std::chrono::steady_clock::now();
+                auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
+                const auto constraint_stop = std::chrono::steady_clock::now();
+                constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
+                constraint_log << current_step << "," << current_time << "," << current_dt << ","
+                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
+                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
+                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+            }
+
+            double export_seconds = 0.0;
+            if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
+                std::cout << ">> Exporting domain slice " << n << "..." << std::endl;
+                const auto export_start = std::chrono::steady_clock::now();
+                export_slice_csv(*root_state, binary_hierarchy.get(), n, "Output/viz");
+                const auto export_stop = std::chrono::steady_clock::now();
+                export_seconds += elapsed_seconds(export_start, export_stop);
+            }
+            if (need_constraint_slice_export) {
+                std::cout << ">> Exporting constraint slice " << n << "..." << std::endl;
+                const auto export_start = std::chrono::steady_clock::now();
+                compute_constraint_slice_fields(*root_state, constraint_scratch);
+                export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
+                                            constraint_scratch.C, n, "Output/viz");
+                const auto export_stop = std::chrono::steady_clock::now();
+                export_seconds += elapsed_seconds(export_start, export_stop);
+            }
+
+            write_puncture_row(puncture_track, n, t, puncture_sample);
+            write_puncture_row(puncture_track_minima, n, t, puncture_minima);
+
+            double projection_seconds = 0.0;
+            if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0)) {
+                const auto projection_start = std::chrono::steady_clock::now();
+                project_binary_hierarchy_levels(*binary_hierarchy, proj_cfg);
+                const auto projection_stop = std::chrono::steady_clock::now();
+                projection_seconds = elapsed_seconds(projection_start, projection_stop);
+            }
+
+            const auto wall_stop = std::chrono::steady_clock::now();
+            const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
+            std::printf(
+                "dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
+                dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds, constraint_seconds,
+                export_seconds, projection_seconds);
+        }
+    } else if (use_fmr) {
         hierarchy->set_gauge_parameters(params);
         hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
         ConstraintScratch constraint_scratch(*root_state);
@@ -863,6 +1355,24 @@ int main(int argc, char **argv) {
             const auto evolve_stop = std::chrono::steady_clock::now();
             t += dt;
             const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
+            if (fmr_profile_stride > 0 && ((n + 1) % fmr_profile_stride) == 0) {
+                const auto &perf = hierarchy->last_step_performance();
+                for (size_t level = 0; level < perf.size(); ++level) {
+                    const auto &stats = perf[level];
+                    const double total_seconds =
+                        stats.snapshot_seconds + stats.evolve_seconds +
+                        stats.child_subcycling_seconds + stats.restriction_seconds;
+                    std::cout << "[fmr.perf] step=" << (n + 1)
+                              << " level=" << level
+                              << " calls=" << stats.calls
+                              << " child_substeps=" << stats.child_substeps
+                              << " snapshot=" << stats.snapshot_seconds
+                              << " evolve=" << stats.evolve_seconds
+                              << " children=" << stats.child_subcycling_seconds
+                              << " restrict=" << stats.restriction_seconds
+                              << " total=" << total_seconds << std::endl;
+                }
+            }
 
             PuncturePlaneSample puncture_sample = sample_puncture_minima(*puncture_state);
             PuncturePlaneSample puncture_minima = puncture_sample;
@@ -1030,7 +1540,7 @@ int main(int argc, char **argv) {
             if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
                 std::cout << ">> Exporting slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
-                export_slice_csv(*root_state, nullptr, n, "Output/viz");
+                export_slice_csv<MovingPunctureHierarchy>(*root_state, nullptr, n, "Output/viz");
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
