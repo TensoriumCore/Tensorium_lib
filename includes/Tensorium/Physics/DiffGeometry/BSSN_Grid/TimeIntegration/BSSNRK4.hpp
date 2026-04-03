@@ -751,6 +751,10 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if (needs_post_step_prepare) {
             prepare_state_for_rhs(grid);
         } else {
+            // The next stage preparation already rebuilds the algebraic auxiliaries. When no
+            // post-step diagnostics need a full rebuild, project only once here instead of after
+            // every RK stage update.
+            tensorium_RG::bssn::enforce_algebraic_constraints(grid);
             synchronize_z_from_gamma_constraint(grid);
         }
 
@@ -1221,7 +1225,6 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             update_scalar_interior(u0, u0.A_tilde[s], u1.A_tilde[s], rhs.A_tilde[s], gam0, gam1,
                                    beta_dt);
         }
-        tensorium_RG::bssn::enforce_algebraic_constraints(u0);
     }
 };
 

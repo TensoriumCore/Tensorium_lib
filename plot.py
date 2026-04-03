@@ -372,6 +372,7 @@ def parse_requested_step():
             "[--workers=N] [--dpi=N] "
             "[--constraints] [--tracker-drift] [--no-smooth] "
             "[--constraint-interp=nearest|bilinear] "
+            "[--conformal-cmap-min=N] [--alpha-cmap-min=N] "
             "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
             "[--no-contours] [--show]"
         )
@@ -724,9 +725,14 @@ def update_regular(frame_idx):
         gamma=conformal_gamma, vmin=conformal_vmin, vmax=conformal_vmax
     )
     a_norm = colors.PowerNorm(gamma=a_gamma, vmin=a_vmin, vmax=a_vmax)
+    conformal_cmap_min = parse_float_value(
+        "--conformal-cmap-min",
+        float(os.getenv("TENSORIUM_PLOT_CONFORMAL_CMAP_MIN", "0.10")),
+    )
+    conformal_cmap = truncated_cmap("turbo", conformal_cmap_min, 1.0)
     alpha_cmap_min = parse_float_value(
         "--alpha-cmap-min",
-        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.12")),
+        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.18")),
     )
     alpha_cmap = truncated_cmap("magma", alpha_cmap_min, 1.0)
 
@@ -734,7 +740,7 @@ def update_regular(frame_idx):
         conformal_disp,
         extent=extent,
         origin="lower",
-        cmap="turbo",
+        cmap=conformal_cmap,
         norm=conformal_norm,
         interpolation="bilinear",
     )

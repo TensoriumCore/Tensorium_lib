@@ -151,6 +151,7 @@ template <typename T> class MPIBSSNRKStepper {
         if (needs_post_step_prepare) {
             prepare_state_for_rhs(grid);
         } else {
+            tensorium_RG::bssn::enforce_algebraic_constraints(grid);
             synchronize_z_from_gamma(grid);
         }
 
@@ -505,7 +506,6 @@ template <typename T> class MPIBSSNRKStepper {
                                       beta_dt);
             }
         }
-        tensorium_RG::bssn::enforce_algebraic_constraints(u0);
     }
 
     void copy_field_interior(const GridType &grid, const tensorium_RG::Field3D<T> &src,

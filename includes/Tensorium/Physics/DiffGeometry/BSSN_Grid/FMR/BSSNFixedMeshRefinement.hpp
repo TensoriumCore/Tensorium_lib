@@ -687,8 +687,9 @@ inline void restrict_field_average(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &
 }
 
 template <typename T>
-inline void restrict_from_child(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &parent,
-                                const PatchBox &parent_box, size_t ratio) {
+inline void restrict_from_child_without_constraints(const BSSNGridSoA<T> &child,
+                                                    BSSNGridSoA<T> &parent,
+                                                    const PatchBox &parent_box, size_t ratio) {
     restrict_field_average(child, parent, BoundaryField::Alpha, 0, parent_box, ratio);
     restrict_field_average(child, parent, BoundaryField::Chi, 0, parent_box, ratio);
     restrict_field_average(child, parent, BoundaryField::K, 0, parent_box, ratio);
@@ -703,7 +704,12 @@ inline void restrict_from_child(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &par
         restrict_field_average(child, parent, BoundaryField::GammaTilde, s, parent_box, ratio);
         restrict_field_average(child, parent, BoundaryField::ATilde, s, parent_box, ratio);
     }
+}
 
+template <typename T>
+inline void restrict_from_child(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &parent,
+                                const PatchBox &parent_box, size_t ratio) {
+    restrict_from_child_without_constraints(child, parent, parent_box, ratio);
     tensorium_RG::bssn::enforce_algebraic_constraints(parent);
 }
 
@@ -1673,10 +1679,13 @@ class BinaryPunctureFixedMeshRefinementHierarchy {
         perf.child_subcycling_seconds += elapsed_seconds(child_start, Clock::now());
 
         const auto restrict_start = Clock::now();
-        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf) {
-            detail::restrict_from_child(leaves_[leaf]->grid, level.grid, leaves_[leaf]->parent_cells,
-                                        leaves_[leaf]->refinement_ratio);
-        }
+        for (size_t leaf = 0; leaf < leaves_.size(); ++leaf)
+            detail::restrict_from_child_without_constraints(
+                leaves_[leaf]->grid, level.grid, leaves_[leaf]->parent_cells,
+                leaves_[leaf]->refinement_ratio);
+        // The two BBH leaves write disjoint parent boxes, so one projection of the shared parent
+        // after both restrictions is sufficient.
+        tensorium_RG::bssn::enforce_algebraic_constraints(level.grid);
         perf.restriction_seconds += elapsed_seconds(restrict_start, Clock::now());
     }
 };
