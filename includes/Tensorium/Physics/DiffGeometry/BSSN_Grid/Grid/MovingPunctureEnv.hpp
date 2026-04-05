@@ -140,6 +140,8 @@ struct MovingPunctureEnvConfig {
     size_t                  radiative_collar_width = 4;
     size_t                  ko_boundary_width = 4;
     double                  ko_boundary_floor = 0.0;
+    double                  ko_boundary_boost = 0.0;
+    double                  ko_edge_corner_boost = 0.0;
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
     MovingPunctureFMRConfig fmr{};
@@ -561,6 +563,12 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_BOUNDARY_FLOOR")) {
         cfg.ko_boundary_floor = std::clamp(*parsed, 0.0, 1.0);
     }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_BOUNDARY_BOOST")) {
+        cfg.ko_boundary_boost = std::max(*parsed, 0.0);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_EDGE_CORNER_BOOST")) {
+        cfg.ko_edge_corner_boost = std::max(*parsed, 0.0);
+    }
 
     if (params.evolve_Z) {
         std::fprintf(stderr,
@@ -980,7 +988,8 @@ inline void apply_boundary_configuration(const MovingPunctureEnvConfig &cfg) {
     BoundaryRadiative::set_rhs_collar_width(cfg.radiative_collar_width);
     BoundaryRadiative::set_sponge(cfg.sponge.enabled, cfg.sponge.width, cfg.sponge.strength,
                                   cfg.sponge.exponent);
-    configure_ko_boundary_taper(cfg.ko_boundary_width, cfg.ko_boundary_floor);
+    configure_ko_boundary_taper(cfg.ko_boundary_width, cfg.ko_boundary_floor,
+                                cfg.ko_boundary_boost, cfg.ko_edge_corner_boost);
 }
 
 struct MovingPunctureBoundaryCharacteristicSummary {

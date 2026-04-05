@@ -300,38 +300,25 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     return (p[stride] - p[-stride]) * inv_2h;
                 };
 
+                auto radial_derivative = [&](const Field3D<T> &f) -> T {
+                    const T dx = deriv_axis(f, f.st.sx, i, i0, i1, inv_dx, inv_2dx);
+                    const T dy = deriv_axis(f, f.st.sy, j, j0, j1, inv_dy, inv_2dy);
+                    const T dz = deriv_axis(f, ptrdiff_t(1), k, k0, k1, inv_dz, inv_2dz);
+                    return sx * dx + sy * dy + sz * dz;
+                };
+
                 auto normal_derivative = [&](const Field3D<T> &f, int axis, bool outer) -> T {
-                    const T *p = f.ptr() + id;
-                    const ptrdiff_t stride = (axis == 0) ? f.st.sx : (axis == 1 ? f.st.sy : ptrdiff_t(1));
+                    const ptrdiff_t stride =
+                        (axis == 0) ? f.st.sx : (axis == 1 ? f.st.sy : ptrdiff_t(1));
                     const size_t pos = (axis == 0) ? i : (axis == 1 ? j : k);
                     const size_t lo = (axis == 0) ? i0 : (axis == 1 ? j0 : k0);
                     const size_t hi = (axis == 0) ? i1 : (axis == 1 ? j1 : k1);
                     const T inv_h = (axis == 0) ? inv_dx : (axis == 1 ? inv_dy : inv_dz);
                     const T inv_2h = (axis == 0) ? inv_2dx : (axis == 1 ? inv_2dy : inv_2dz);
-
-                    if (!outer) {
-                        if (pos == lo && lo + 2 < hi)
-                            return -((-T(1.5) * p[0] + T(2) * p[stride] -
-                                      T(0.5) * p[2 * stride]) *
-                                     inv_h);
-                    } else if (pos + 1 == hi && lo + 2 < hi) {
-                        return (T(1.5) * p[0] - T(2) * p[-stride] + T(0.5) * p[-2 * stride]) *
-                               inv_h;
-                    }
-
-                    return (outer ? T(1) : T(-1)) * (p[stride] - p[-stride]) * inv_2h;
+                    const T d = deriv_axis(f, stride, pos, lo, hi, inv_h, inv_2h);
+                    return outer ? d : -d;
                 };
 
-                T accum_alpha = T(0);
-                T accum_chi = T(0);
-                T accum_K = T(0);
-                T accum_Theta = T(0);
-                T accum_beta[3] = {T(0), T(0), T(0)};
-                T accum_B[3] = {T(0), T(0), T(0)};
-                T accum_tildeGamma[3] = {T(0), T(0), T(0)};
-                T accum_Z[3] = {T(0), T(0), T(0)};
-                T accum_gamma_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
-                T accum_A_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
                 size_t nearest_layer = collar_width;
                 bool use_ix1 = false, use_ox1 = false;
                 bool use_ix2 = false, use_ox2 = false;
@@ -360,83 +347,106 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                 if (nearest_layer >= collar_width)
                     continue;
 
-                int face_count = 0;
+                const int face_count = int(use_ix1) + int(use_ox1) + int(use_ix2) + int(use_ox2) +
+                                       int(use_ix3) + int(use_ox3);
+                if (face_count == 0)
+                    continue;
 
-                auto accumulate_face = [&](int axis, bool outer) {
-                    auto outgoing_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
-                                            T speed = T(1)) -> T {
-                        const T u0 = u.ptr()[id];
-                        return -speed * (normal_derivative(u, axis, outer) +
-                                         (u0 - asymptotic) * inv_r);
-                    };
-
-                    ++face_count;
-                    accum_alpha += outgoing_rhs(
-                        grid.alpha,
-                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Alpha, 0)),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Alpha)));
-                    accum_chi += outgoing_rhs(
-                        grid.chi,
-                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Chi, 0)),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Chi)));
-
-                    for (int a = 0; a < 3; ++a) {
-                        accum_beta[a] += outgoing_rhs(
-                            grid.beta[a],
-                            T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Beta,
-                                                                            a)),
-                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Beta)));
-                        accum_B[a] += outgoing_rhs(
-                            grid.B[a],
-                            T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::B, a)),
-                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::B)));
-                        accum_tildeGamma[a] += outgoing_rhs(
-                            grid.tildeGamma[a], T(0),
-                            T(BoundaryRadiative::characteristic_speed_for(
-                                BoundaryField::TildeGamma)));
-                        accum_Z[a] += outgoing_rhs(
-                            grid.Z[a], T(0),
-                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Z)));
-                    }
-
-                    for (int s = 0; s < 6; ++s) {
-                        accum_gamma_tilde[s] += outgoing_rhs(
-                            grid.gamma_tilde[s],
-                            T(tensorium_RG::bssn::detail::minkowski_target(
-                                BoundaryField::GammaTilde, s)),
-                            T(BoundaryRadiative::characteristic_speed_for(
-                                BoundaryField::GammaTilde)));
-                        accum_A_tilde[s] += outgoing_rhs(
-                            grid.A_tilde[s], T(0),
-                            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::ATilde)));
-                    }
-
-                    accum_Theta += outgoing_rhs(
-                        grid.Theta, T(0),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Theta)));
-                    const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
-                    const T d_khat =
-                        normal_derivative(grid.K, axis, outer) -
-                        T(2) * normal_derivative(grid.Theta, axis, outer);
-                    const T khat_speed =
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::K));
-                    accum_K += -khat_speed * (d_khat + khat * inv_r);
+                auto outgoing_radial_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
+                                               T speed = T(1)) -> T {
+                    const T u0 = u.ptr()[id];
+                    return -speed * (radial_derivative(u) + (u0 - asymptotic) * inv_r);
                 };
 
-                if (use_ix1)
-                    accumulate_face(0, false);
-                if (use_ox1)
-                    accumulate_face(0, true);
-                if (use_ix2)
-                    accumulate_face(1, false);
-                if (use_ox2)
-                    accumulate_face(1, true);
-                if (use_ix3)
-                    accumulate_face(2, false);
-                if (use_ox3)
-                    accumulate_face(2, true);
+                int  boundary_axis = 0;
+                bool boundary_outer = false;
+                if (face_count == 1) {
+                    if (use_ix1) {
+                        boundary_axis = 0;
+                        boundary_outer = false;
+                    } else if (use_ox1) {
+                        boundary_axis = 0;
+                        boundary_outer = true;
+                    } else if (use_ix2) {
+                        boundary_axis = 1;
+                        boundary_outer = false;
+                    } else if (use_ox2) {
+                        boundary_axis = 1;
+                        boundary_outer = true;
+                    } else if (use_ix3) {
+                        boundary_axis = 2;
+                        boundary_outer = false;
+                    } else {
+                        boundary_axis = 2;
+                        boundary_outer = true;
+                    }
+                }
 
-                const T inv_faces = T(1) / T(face_count);
+                auto outgoing_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
+                                        T speed = T(1)) -> T {
+                    if (face_count == 1) {
+                        const T u0 = u.ptr()[id];
+                        return -speed * (normal_derivative(u, boundary_axis, boundary_outer) +
+                                         (u0 - asymptotic) * inv_r);
+                    }
+                    return outgoing_radial_rhs(u, asymptotic, speed);
+                };
+
+                const T boundary_alpha = outgoing_rhs(
+                    grid.alpha,
+                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Alpha, 0)),
+                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Alpha)));
+                const T boundary_chi = outgoing_rhs(
+                    grid.chi,
+                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Chi, 0)),
+                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Chi)));
+                T boundary_beta[3] = {T(0), T(0), T(0)};
+                T boundary_B[3] = {T(0), T(0), T(0)};
+                T boundary_tildeGamma[3] = {T(0), T(0), T(0)};
+                T boundary_Z[3] = {T(0), T(0), T(0)};
+                T boundary_gamma_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
+                T boundary_A_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
+                for (int a = 0; a < 3; ++a) {
+                    boundary_beta[a] += outgoing_rhs(
+                        grid.beta[a],
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Beta, a)),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Beta)));
+                    boundary_B[a] += outgoing_rhs(
+                        grid.B[a],
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::B, a)),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::B)));
+                    boundary_tildeGamma[a] += outgoing_rhs(
+                        grid.tildeGamma[a], T(0),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::TildeGamma)));
+                    boundary_Z[a] += outgoing_rhs(
+                        grid.Z[a], T(0),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Z)));
+                }
+                for (int s = 0; s < 6; ++s) {
+                    boundary_gamma_tilde[s] += outgoing_rhs(
+                        grid.gamma_tilde[s],
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::GammaTilde,
+                                                                        s)),
+                        T(BoundaryRadiative::characteristic_speed_for(
+                            BoundaryField::GammaTilde)));
+                    boundary_A_tilde[s] += outgoing_rhs(
+                        grid.A_tilde[s], T(0),
+                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::ATilde)));
+                }
+                const T boundary_Theta = outgoing_rhs(
+                    grid.Theta, T(0),
+                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Theta)));
+                const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
+                const T d_khat = (face_count == 1)
+                                     ? (normal_derivative(grid.K, boundary_axis, boundary_outer) -
+                                        T(2) * normal_derivative(grid.Theta, boundary_axis,
+                                                                 boundary_outer))
+                                     : (radial_derivative(grid.K) -
+                                        T(2) * radial_derivative(grid.Theta));
+                const T boundary_K =
+                    -T(BoundaryRadiative::characteristic_speed_for(BoundaryField::K)) *
+                    (d_khat + khat * inv_r);
+
                 const auto collar_weight = [&]() -> T {
                     const double x = static_cast<double>(collar_width - nearest_layer) /
                                      static_cast<double>(collar_width);
@@ -452,19 +462,19 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     *slot = (T(1) - collar_weight) * (*slot) + collar_weight * boundary_value;
                 };
 
-                blend_rhs(rhs.alpha, accum_alpha * inv_faces);
-                blend_rhs(rhs.chi, accum_chi * inv_faces);
-                blend_rhs(rhs.K, accum_K * inv_faces);
-                blend_rhs(rhs.Theta, accum_Theta * inv_faces);
+                blend_rhs(rhs.alpha, boundary_alpha);
+                blend_rhs(rhs.chi, boundary_chi);
+                blend_rhs(rhs.K, boundary_K);
+                blend_rhs(rhs.Theta, boundary_Theta);
                 for (int a = 0; a < 3; ++a) {
-                    blend_rhs(rhs.beta[a], accum_beta[a] * inv_faces);
-                    blend_rhs(rhs.B[a], accum_B[a] * inv_faces);
-                    blend_rhs(rhs.tildeGamma[a], accum_tildeGamma[a] * inv_faces);
-                    blend_rhs(rhs.Z[a], accum_Z[a] * inv_faces);
+                    blend_rhs(rhs.beta[a], boundary_beta[a]);
+                    blend_rhs(rhs.B[a], boundary_B[a]);
+                    blend_rhs(rhs.tildeGamma[a], boundary_tildeGamma[a]);
+                    blend_rhs(rhs.Z[a], boundary_Z[a]);
                 }
                 for (int s = 0; s < 6; ++s) {
-                    blend_rhs(rhs.gamma_tilde[s], accum_gamma_tilde[s] * inv_faces);
-                    blend_rhs(rhs.A_tilde[s], accum_A_tilde[s] * inv_faces);
+                    blend_rhs(rhs.gamma_tilde[s], boundary_gamma_tilde[s]);
+                    blend_rhs(rhs.A_tilde[s], boundary_A_tilde[s]);
                 }
             }
         }

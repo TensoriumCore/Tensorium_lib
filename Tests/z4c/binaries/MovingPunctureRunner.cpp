@@ -973,7 +973,9 @@ int main(int argc, char **argv) {
               << " sponge_exponent=" << cfg.sponge.exponent
               << " radiative_collar_width=" << cfg.radiative_collar_width
               << " ko_boundary_width=" << cfg.ko_boundary_width
-              << " ko_boundary_floor=" << cfg.ko_boundary_floor << std::endl;
+              << " ko_boundary_floor=" << cfg.ko_boundary_floor
+              << " ko_boundary_boost=" << cfg.ko_boundary_boost
+              << " ko_edge_corner_boost=" << cfg.ko_edge_corner_boost << std::endl;
     for (int axis = 0; axis < 3; ++axis) {
         std::cout << "[bc] "
                   << tensorium_RG::z4c::describe_boundary_face_mode(

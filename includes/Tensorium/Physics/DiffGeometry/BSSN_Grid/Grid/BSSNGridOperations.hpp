@@ -475,6 +475,9 @@ struct BoundaryRadiative {
             double r = std::sqrt(x * x + y * y + z * z);
             return (r > 1e-14) ? r : 1e-14;
         };
+        auto clamp_to_domain = [](size_t v, size_t lo, size_t hi) {
+            return std::min(std::max(v, lo), hi - 1);
+        };
 
         auto set_sommerfeld = [&](size_t ob, size_t ib, double r_ob, double r_ib) {
             const double dt_wave = characteristic_dt;
@@ -523,9 +526,9 @@ struct BoundaryRadiative {
             }
             ptr[ob] = T(sign) * ptr[ib_reflect];
         };
-        auto set_halo = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,
-                            double r_ob, double r_ib,
-                            bool use_sommerfeld_face, bool use_reflective_face, int axis) {
+        auto set_halo_fast = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,
+                                 double r_ob, double r_ib, bool use_sommerfeld_face,
+                                 bool use_reflective_face, int axis) {
             if (use_reflective_face) {
                 set_reflective(ob, ib, axis);
                 return;
@@ -534,6 +537,62 @@ struct BoundaryRadiative {
                 set_linear_extrapolated(ob, ib0, ib1, layer);
             } else if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
                 set_sommerfeld(ob, ib, r_ob, r_ib);
+            else
+                set_outflow(ob, ib);
+        };
+        auto set_halo_clamped = [&](size_t oi, size_t oj, size_t ok, int axis, bool outer,
+                                    size_t layer, bool use_sommerfeld_face,
+                                    bool use_reflective_face) {
+            size_t ci = clamp_to_domain(oi, I0, I1);
+            size_t cj = clamp_to_domain(oj, J0, J1);
+            size_t ck = clamp_to_domain(ok, K0, K1);
+            size_t ii = ci;
+            size_t ij = cj;
+            size_t ik = ck;
+            size_t i0b = ci;
+            size_t j0b = cj;
+            size_t k0b = ck;
+            size_t i1b = ci;
+            size_t j1b = cj;
+            size_t k1b = ck;
+            size_t ir = ci;
+            size_t jr = cj;
+            size_t kr = ck;
+
+            switch (axis) {
+            case 0:
+                ii = outer ? (I1 - layer) : (I0 + (layer - 1));
+                i0b = outer ? (I1 - 1) : I0;
+                i1b = outer ? (I1 - 2) : (I0 + 1);
+                ir = ii;
+                break;
+            case 1:
+                ij = outer ? (J1 - layer) : (J0 + (layer - 1));
+                j0b = outer ? (J1 - 1) : J0;
+                j1b = outer ? (J1 - 2) : (J0 + 1);
+                jr = ij;
+                break;
+            default:
+                ik = outer ? (K1 - layer) : (K0 + (layer - 1));
+                k0b = outer ? (K1 - 1) : K0;
+                k1b = outer ? (K1 - 2) : (K0 + 1);
+                kr = ik;
+                break;
+            }
+
+            const size_t ob = field.idx(oi, oj, ok);
+            const size_t ib = field.idx(ii, ij, ik);
+            const size_t ib0 = field.idx(i0b, j0b, k0b);
+            const size_t ib1 = field.idx(i1b, j1b, k1b);
+            const size_t ib_reflect = field.idx(ir, jr, kr);
+            if (use_reflective_face) {
+                set_reflective(ob, ib_reflect, axis);
+                return;
+            }
+            if (mode == HaloMode::LinearExtrapolate) {
+                set_linear_extrapolated(ob, ib0, ib1, layer);
+            } else if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
+                set_sommerfeld(ob, ib, r_of(oi, oj, ok), r_of(ii, ij, ik));
             else
                 set_outflow(ob, ib);
         };
@@ -561,49 +620,75 @@ struct BoundaryRadiative {
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ix1)
-                        set_halo(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
-                                 field.idx(I0, j, k), field.idx(I0 + 1, j, k), g,
-                                 r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1, rf_ix1, 0);
+                        set_halo_fast(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
+                                      field.idx(I0, j, k), field.idx(I0 + 1, j, k), g,
+                                      r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1,
+                                      rf_ix1, 0);
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ox1)
-                        set_halo(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
-                                 field.idx(I1 - 1, j, k), field.idx(I1 - 2, j, k), g + 1,
-                                 r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1, rf_ox1, 0);
+                        set_halo_fast(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
+                                      field.idx(I1 - 1, j, k), field.idx(I1 - 2, j, k), g + 1,
+                                      r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1,
+                                      rf_ox1, 0);
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    if (ac_ix2)
-                        set_halo(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
-                                 field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
-                                 r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2, rf_ix2, 1);
+                    if (ac_ix2) {
+                        if (i >= I0 && i < I1) {
+                            set_halo_fast(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
+                                          field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
+                                          r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2,
+                                          rf_ix2, 1);
+                        } else {
+                            set_halo_clamped(i, J0 - g, k, 1, false, g, sf_ix2, rf_ix2);
+                        }
+                    }
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    if (ac_ox2)
-                        set_halo(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
-                                 field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k), g + 1,
-                                 r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k), sf_ox2, rf_ox2, 1);
+                    if (ac_ox2) {
+                        if (i >= I0 && i < I1) {
+                            set_halo_fast(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
+                                          field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k),
+                                          g + 1, r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k),
+                                          sf_ox2, rf_ox2, 1);
+                        } else {
+                            set_halo_clamped(i, J1 + g, k, 1, true, g + 1, sf_ox2, rf_ox2);
+                        }
+                    }
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    if (ac_ix3)
-                        set_halo(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
-                                 field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
-                                 r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3, rf_ix3, 2);
+                    if (ac_ix3) {
+                        if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                            set_halo_fast(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
+                                          field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
+                                          r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3,
+                                          rf_ix3, 2);
+                        } else {
+                            set_halo_clamped(i, j, K0 - g, 2, false, g, sf_ix3, rf_ix3);
+                        }
+                    }
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    if (ac_ox3)
-                        set_halo(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
-                                 field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2), g + 1,
-                                 r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g), sf_ox3, rf_ox3, 2);
+                    if (ac_ox3) {
+                        if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                            set_halo_fast(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
+                                          field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2),
+                                          g + 1, r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g),
+                                          sf_ox3, rf_ox3, 2);
+                        } else {
+                            set_halo_clamped(i, j, K1 + g, 2, true, g + 1, sf_ox3, rf_ox3);
+                        }
+                    }
     }
 };
 

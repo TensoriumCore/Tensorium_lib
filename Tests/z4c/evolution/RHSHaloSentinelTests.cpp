@@ -138,7 +138,7 @@ REGISTER_TEST("z4c.evolution.radiative_boundary_shells_are_evolved",
 });
 
 REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
-              "Z4c boundary helper applies face-normal outgoing modes on the radiative surface",
+              "Z4c boundary helper keeps the fast face-normal operator on pure faces",
               []() {
     const size_t padding = 4;
     Grid         grid(16, 14, 12, padding, 0.5, 0.4, 0.3);
@@ -222,22 +222,28 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
         return (p[stride] - p[-stride]) * inv_2h;
     };
 
-    auto expected_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic,
-                            double speed) {
-        const double value = field.ptr()[idx];
-        const double dn = -deriv_axis(field, field.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx);
-        return -speed * (dn + (value - asymptotic) / r);
+    auto normal_derivative = [&](const tensorium_RG::Field3D<double> &field) {
+        const double d =
+            deriv_axis(field, field.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx);
+        return -d;
     };
 
-    const double expected_theta = expected_rhs(grid.Theta, 0.0, 1.0);
-    const double expected_khat = expected_rhs(khat_field, 0.0, sqrt2);
-    const double expected_alpha = expected_rhs(grid.alpha, 1.0, 1.0);
-    const double expected_chi = expected_rhs(grid.chi, 1.0, 1.0);
-    const double expected_beta0 = expected_rhs(grid.beta[0], 0.0, 1.0);
-    const double expected_B0 = expected_rhs(grid.B[0], 0.0, 1.0);
-    const double expected_gt_xx = expected_rhs(grid.gamma_tilde[tensorium_RG::XX], 1.0, 1.0);
-    const double expected_gamma0 = expected_rhs(grid.tildeGamma[0], 0.0, 1.0);
-    const double expected_Axx = expected_rhs(grid.A_tilde[tensorium_RG::XX], 0.0, 1.0);
+    auto expected_face_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic,
+                                 double speed) {
+        const double value = field.ptr()[idx];
+        return -speed * (normal_derivative(field) + (value - asymptotic) / r);
+    };
+
+    const double expected_theta = expected_face_rhs(grid.Theta, 0.0, 1.0);
+    const double expected_khat = expected_face_rhs(khat_field, 0.0, sqrt2);
+    const double expected_alpha = expected_face_rhs(grid.alpha, 1.0, 1.0);
+    const double expected_chi = expected_face_rhs(grid.chi, 1.0, 1.0);
+    const double expected_beta0 = expected_face_rhs(grid.beta[0], 0.0, 1.0);
+    const double expected_B0 = expected_face_rhs(grid.B[0], 0.0, 1.0);
+    const double expected_gt_xx =
+        expected_face_rhs(grid.gamma_tilde[tensorium_RG::XX], 1.0, 1.0);
+    const double expected_gamma0 = expected_face_rhs(grid.tildeGamma[0], 0.0, 1.0);
+    const double expected_Axx = expected_face_rhs(grid.A_tilde[tensorium_RG::XX], 0.0, 1.0);
 
     tensorium::tests::expect_le(std::abs(rhs.alpha.ptr()[idx] - expected_alpha), 1e-12,
                                 "Alpha boundary RHS matches outgoing mode");
@@ -437,6 +443,63 @@ REGISTER_TEST("z4c.evolution.constraint_halos_use_sommerfeld",
                                 std::abs(alpha_linear_extrap - 1.0) + 1e-12,
                                 "Alpha Sommerfeld ghost is pulled toward the asymptotic state");
     TENSORIUM_TEST_ASSERT(std::abs(grid.alpha.ptr()[ob1] - alpha_linear_extrap) > 1e-6);
+});
+
+REGISTER_TEST("z4c.evolution.constraint_halo_edges_clamp_transverse_coords",
+              "Radiative edge and corner ghosts are filled from clamped interior coordinates",
+              []() {
+    const size_t padding = 4;
+    Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    tensorium_RG::z4c::BoundaryRadiative::set_characteristic(1.0, 0.0);
+    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(1.0, 1.0,
+                                                                           std::sqrt(2.0));
+    tensorium_RG::z4c::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
+                                                                     true);
+    tensorium_RG::z4c::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
+                                                                false);
+    tensorium_RG::z4c::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                double x, y, z;
+                grid.coords(i, j, k, x, y, z);
+                grid.alpha.ptr()[grid.alpha.idx(i, j, k)] = 1.0 + 0.02 * x - 0.01 * y + 0.03 * z;
+            }
+
+    tensorium_RG::z4c::BoundaryRadiative::apply_halo(grid.alpha, grid,
+                                                      tensorium_RG::z4c::BoundaryField::Alpha, 0);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t k_mid = K0 + 2;
+
+    auto expected_alpha = [&](size_t oi, size_t oj, size_t ok, size_t ii, size_t ij,
+                              size_t ik) {
+        double x_ob, y_ob, z_ob;
+        double x_ib, y_ib, z_ib;
+        grid.coords(oi, oj, ok, x_ob, y_ob, z_ob);
+        grid.coords(ii, ij, ik, x_ib, y_ib, z_ib);
+        const double r_ob = std::sqrt(x_ob * x_ob + y_ob * y_ob + z_ob * z_ob);
+        const double r_ib = std::sqrt(x_ib * x_ib + y_ib * y_ib + z_ib * z_ib);
+        const double u_ib = grid.alpha.ptr()[grid.alpha.idx(ii, ij, ik)];
+        return 1.0 + (u_ib - 1.0) * (r_ib / r_ob);
+    };
+
+    const size_t edge_ob = grid.alpha.idx(I0 - 1, J0 - 1, k_mid);
+    const double edge_expected = expected_alpha(I0 - 1, J0 - 1, k_mid, I0, J0, k_mid);
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[edge_ob] - edge_expected), 1.0e-12,
+                                "Edge ghost uses clamped interior anchor");
+
+    const size_t corner_ob = grid.alpha.idx(I0 - 1, J0 - 1, K0 - 1);
+    const double corner_expected = expected_alpha(I0 - 1, J0 - 1, K0 - 1, I0, J0, K0);
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[corner_ob] - corner_expected), 1.0e-12,
+                                "Corner ghost uses fully clamped interior anchor");
 });
 
 REGISTER_TEST("z4c.evolution.khat_halo_closure_matches_fast_mode",
