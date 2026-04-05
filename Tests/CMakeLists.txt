@@ -188,6 +188,9 @@ add_executable(TensoriumMovingPuncture
 target_include_directories(TensoriumMovingPuncture PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
+if(TENSORIUM_HDF5_FOUND)
+  target_link_libraries(TensoriumMovingPuncture PRIVATE ${TENSORIUM_HDF5_LIBRARIES})
+endif()
 
 add_executable(TensoriumTests
     main.cpp
@@ -309,6 +312,9 @@ if(USE_MPI)
       ${PROJECT_SOURCE_DIR}/includes
       ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries(TensoriumMPIMovingPuncture PRIVATE MPI::MPI_CXX)
+  if(TENSORIUM_HDF5_FOUND)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${TENSORIUM_HDF5_LIBRARIES})
+  endif()
   target_compile_definitions(TensoriumMPIMovingPuncture PRIVATE
       TENSORIUM_ENABLE_MPI TENSORIUM_USE_MPI)
 

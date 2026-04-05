@@ -4,6 +4,7 @@
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
+#include "../../../includes/Tensorium/Utils/IO/export.hpp"
 
 #include <algorithm>
 #include <array>
@@ -163,6 +164,174 @@ void export_constraint_slice_csv(const Grid &grid, const tensorium_RG::Field3D<d
                  << "," << zy << "," << zz << "," << znorm << "\n";
         }
     }
+}
+
+template <typename HierarchyType>
+bool export_slice_hdf5(const Grid &grid, const HierarchyType *hierarchy, size_t step, double time,
+                       const std::string &output_dir) {
+    if (!tensorium::io::hdf5_available())
+        return false;
+
+    const size_t nx = grid.dims.nx;
+    const size_t ny = grid.dims.ny;
+    const size_t ng = grid.dims.ng;
+    const size_t k = ng + grid.dims.nz / 2;
+    std::vector<double> x(nx);
+    std::vector<double> y(ny);
+    std::vector<double> alpha(nx * ny);
+    std::vector<double> chi(nx * ny);
+    std::vector<double> mask(nx * ny);
+
+    for (size_t i = 0; i < nx; ++i)
+        x[i] = grid.x0 + double(i) * grid.dx;
+    for (size_t j = 0; j < ny; ++j)
+        y[j] = grid.y0 + double(j) * grid.dy;
+
+    for (size_t i = 0; i < nx; ++i) {
+        for (size_t j = 0; j < ny; ++j) {
+            const size_t ii = ng + i;
+            const size_t jj = ng + j;
+            const size_t idx = grid.alpha.idx(ii, jj, k);
+            const size_t flat = i * ny + j;
+            alpha[flat] = grid.alpha.ptr()[idx];
+            chi[flat] = grid.chi.ptr()[idx];
+            mask[flat] = (alpha[flat] < 0.1) ? 1.0 : 0.0;
+        }
+    }
+
+    std::stringstream ss;
+    ss << output_dir << "/slice_" << std::setw(4) << std::setfill('0') << step << ".h5";
+    tensorium::io::HDF5File file(ss.str());
+    if (!file.is_open())
+        return false;
+
+    (void)tensorium::io::write_string_attribute(file.id(), "tensorium_kind",
+                                                "moving_puncture_slice_v1");
+    (void)tensorium::io::write_scalar_attribute(file.id(), "step", static_cast<std::uint64_t>(step));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "time", time);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "nx", static_cast<std::uint64_t>(nx));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "ny", static_cast<std::uint64_t>(ny));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "dx", grid.dx);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "dy", grid.dy);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "z", grid.z0 + double(grid.dims.nz / 2) * grid.dz);
+    (void)tensorium::io::write_scalar_attribute(
+        file.id(), "level_count",
+        static_cast<std::uint64_t>(hierarchy ? hierarchy->num_levels() : 1));
+    return tensorium::io::write_vector_dataset(file.id(), "x", x) &&
+           tensorium::io::write_vector_dataset(file.id(), "y", y) &&
+           tensorium::io::write_matrix_dataset(file.id(), "alpha", nx, ny, alpha) &&
+           tensorium::io::write_matrix_dataset(file.id(), "chi", nx, ny, chi) &&
+           tensorium::io::write_matrix_dataset(file.id(), "mask", nx, ny, mask);
+}
+
+bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<double> &H,
+                                  const tensorium_RG::Field3D<double> M[3],
+                                  const tensorium_RG::Field3D<double> C[3], size_t step,
+                                  double time, const std::string &output_dir) {
+    if (!tensorium::io::hdf5_available())
+        return false;
+
+    constexpr size_t kConstraintGuard = 4;
+    const size_t nx = grid.dims.nx;
+    const size_t ny = grid.dims.ny;
+    const size_t ng = grid.dims.ng;
+    const size_t k = ng + grid.dims.nz / 2;
+
+    std::vector<double> x(nx);
+    std::vector<double> y(ny);
+    std::vector<double> alpha(nx * ny);
+    std::vector<double> chi(nx * ny);
+    std::vector<double> h(nx * ny);
+    std::vector<double> abs_h(nx * ny);
+    std::vector<double> mx(nx * ny);
+    std::vector<double> my(nx * ny);
+    std::vector<double> mz(nx * ny);
+    std::vector<double> mnorm(nx * ny);
+    std::vector<double> cx(nx * ny);
+    std::vector<double> cy(nx * ny);
+    std::vector<double> cz(nx * ny);
+    std::vector<double> cnorm(nx * ny);
+    std::vector<double> theta(nx * ny);
+    std::vector<double> zx(nx * ny);
+    std::vector<double> zy(nx * ny);
+    std::vector<double> zz(nx * ny);
+    std::vector<double> znorm(nx * ny);
+
+    for (size_t i = 0; i < nx; ++i)
+        x[i] = grid.x0 + double(i) * grid.dx;
+    for (size_t j = 0; j < ny; ++j)
+        y[j] = grid.y0 + double(j) * grid.dy;
+
+    const double nan = std::numeric_limits<double>::quiet_NaN();
+    for (size_t i = 0; i < nx; ++i) {
+        for (size_t j = 0; j < ny; ++j) {
+            const size_t ii = ng + i;
+            const size_t jj = ng + j;
+            const size_t idx = grid.alpha.idx(ii, jj, k);
+            const size_t cidx = H.idx(ii, jj, k);
+            const size_t flat = i * ny + j;
+            const bool constraint_valid =
+                (ii >= ng + kConstraintGuard && ii + kConstraintGuard < nx + ng &&
+                 jj >= ng + kConstraintGuard && jj + kConstraintGuard < ny + ng);
+
+            alpha[flat] = grid.alpha.ptr()[idx];
+            chi[flat] = grid.chi.ptr()[idx];
+            h[flat] = constraint_valid ? H.ptr()[cidx] : nan;
+            abs_h[flat] = constraint_valid ? std::abs(H.ptr()[cidx]) : nan;
+            mx[flat] = constraint_valid ? M[0].ptr()[cidx] : nan;
+            my[flat] = constraint_valid ? M[1].ptr()[cidx] : nan;
+            mz[flat] = constraint_valid ? M[2].ptr()[cidx] : nan;
+            mnorm[flat] = constraint_valid ? std::sqrt(mx[flat] * mx[flat] + my[flat] * my[flat] +
+                                                       mz[flat] * mz[flat])
+                                           : nan;
+            cx[flat] = constraint_valid ? C[0].ptr()[cidx] : nan;
+            cy[flat] = constraint_valid ? C[1].ptr()[cidx] : nan;
+            cz[flat] = constraint_valid ? C[2].ptr()[cidx] : nan;
+            cnorm[flat] = constraint_valid ? std::sqrt(cx[flat] * cx[flat] + cy[flat] * cy[flat] +
+                                                       cz[flat] * cz[flat])
+                                           : nan;
+            theta[flat] = grid.Theta.ptr()[idx];
+            zx[flat] = grid.Z[0].ptr()[idx];
+            zy[flat] = grid.Z[1].ptr()[idx];
+            zz[flat] = grid.Z[2].ptr()[idx];
+            znorm[flat] = std::sqrt(zx[flat] * zx[flat] + zy[flat] * zy[flat] + zz[flat] * zz[flat]);
+        }
+    }
+
+    std::stringstream ss;
+    ss << output_dir << "/constraint_slice_" << std::setw(4) << std::setfill('0') << step
+       << ".h5";
+    tensorium::io::HDF5File file(ss.str());
+    if (!file.is_open())
+        return false;
+
+    (void)tensorium::io::write_string_attribute(file.id(), "tensorium_kind",
+                                                "moving_puncture_constraint_slice_v1");
+    (void)tensorium::io::write_scalar_attribute(file.id(), "step", static_cast<std::uint64_t>(step));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "time", time);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "nx", static_cast<std::uint64_t>(nx));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "ny", static_cast<std::uint64_t>(ny));
+    (void)tensorium::io::write_scalar_attribute(file.id(), "dx", grid.dx);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "dy", grid.dy);
+    return tensorium::io::write_vector_dataset(file.id(), "x", x) &&
+           tensorium::io::write_vector_dataset(file.id(), "y", y) &&
+           tensorium::io::write_matrix_dataset(file.id(), "alpha", nx, ny, alpha) &&
+           tensorium::io::write_matrix_dataset(file.id(), "chi", nx, ny, chi) &&
+           tensorium::io::write_matrix_dataset(file.id(), "H", nx, ny, h) &&
+           tensorium::io::write_matrix_dataset(file.id(), "abs_H", nx, ny, abs_h) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Mx", nx, ny, mx) &&
+           tensorium::io::write_matrix_dataset(file.id(), "My", nx, ny, my) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Mz", nx, ny, mz) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Mnorm", nx, ny, mnorm) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Cx", nx, ny, cx) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Cy", nx, ny, cy) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Cz", nx, ny, cz) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Cnorm", nx, ny, cnorm) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Theta", nx, ny, theta) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Zx", nx, ny, zx) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Zy", nx, ny, zy) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Zz", nx, ny, zz) &&
+           tensorium::io::write_matrix_dataset(file.id(), "Znorm", nx, ny, znorm);
 }
 
 size_t parse_env_stride_or(const char *name, size_t fallback) {
@@ -841,6 +1010,8 @@ int main(int argc, char **argv) {
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_EXPORT_STRIDE", 5);
     bool export_constraint_slices =
         parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_CONSTRAINT_SLICES", true);
+    const bool export_hdf5 =
+        parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_HDF5", false);
     size_t constraint_slice_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE",
                             constraint_export_stride);
@@ -1067,6 +1238,8 @@ int main(int argc, char **argv) {
     std::cout << "[constraints] norms_stride=" << constraint_export_stride
               << " slice_export=" << (export_constraint_slices ? 1 : 0)
               << " slice_stride=" << constraint_slice_stride << std::endl;
+    std::cout << "[hdf5] requested=" << (export_hdf5 ? 1 : 0)
+              << " available=" << (tensorium::io::hdf5_available() ? 1 : 0) << std::endl;
 
     (void)std::remove("Output/viz/constraints_norms.csv");
     std::ofstream constraint_log("Output/viz/constraints_norms.csv",
@@ -1105,6 +1278,38 @@ int main(int argc, char **argv) {
                   << std::endl;
     }
 
+    tensorium::io::HDF5AppendTable constraint_log_h5;
+    tensorium::io::HDF5AppendTable puncture_track_h5;
+    tensorium::io::HDF5AppendTable puncture_track_minima_h5;
+    if (export_hdf5) {
+        if (tensorium::io::hdf5_available()) {
+            if (!constraint_log_h5.open(
+                    "Output/viz/constraints_norms.h5",
+                    {"step", "t", "dt", "l2_theta", "l2_Z", "l2_H", "l2_M", "max_H",
+                     "max_det_drift", "max_trace_A", "samples"})) {
+                std::cout << "[warn] could not open Output/viz/constraints_norms.h5 for writing"
+                          << std::endl;
+            }
+            if (!puncture_track_h5.open("Output/viz/puncture_track.h5",
+                                        {"step", "t", "x_left", "y_left", "chi_left",
+                                         "alpha_left", "x_right", "y_right", "chi_right",
+                                         "alpha_right"})) {
+                std::cout << "[warn] could not open Output/viz/puncture_track.h5 for writing"
+                          << std::endl;
+            }
+            if (!puncture_track_minima_h5.open(
+                    "Output/viz/puncture_track_minima.h5",
+                    {"step", "t", "x_left", "y_left", "chi_left", "alpha_left", "x_right",
+                     "y_right", "chi_right", "alpha_right"})) {
+                std::cout << "[warn] could not open Output/viz/puncture_track_minima.h5 for writing"
+                          << std::endl;
+            }
+        } else {
+            std::cout << "[warn] HDF5 export requested but this build has no HDF5 support"
+                      << std::endl;
+        }
+    }
+
     auto write_puncture_row = [&](std::ofstream &file, size_t step, double time,
                                   const PuncturePlaneSample &sample) {
         if (!file.is_open())
@@ -1122,6 +1327,24 @@ int main(int argc, char **argv) {
         } else {
             file << "nan,nan,nan,nan\n";
         }
+    };
+    auto write_puncture_row_hdf5 = [&](tensorium::io::HDF5AppendTable &file, size_t step,
+                                       double time, const PuncturePlaneSample &sample) {
+        if (!file.is_open())
+            return;
+        const double nan = std::numeric_limits<double>::quiet_NaN();
+        const std::vector<double> row = {
+            static_cast<double>(step),
+            time,
+            sample.has_left ? sample.x_left : nan,
+            sample.has_left ? sample.y_left : nan,
+            sample.has_left ? sample.chi_left : nan,
+            sample.has_left ? sample.alpha_left : nan,
+            sample.has_right ? sample.x_right : nan,
+            sample.has_right ? sample.y_right : nan,
+            sample.has_right ? sample.chi_right : nan,
+            sample.has_right ? sample.alpha_right : nan};
+        (void)file.append_row(row);
     };
 
     ShiftPunctureTracker puncture_tracker;
@@ -1300,6 +1523,12 @@ int main(int argc, char **argv) {
                                << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
                                << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
                                << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log_h5.is_open()) {
+                    (void)constraint_log_h5.append_row(
+                        {static_cast<double>(current_step), current_time, current_dt,
+                         stats.l2_theta, stats.l2_Z, stats.l2_H, stats.l2_M, stats.max_H,
+                         stats.max_det_drift, stats.max_trace_A, static_cast<double>(stats.samples)});
+                }
             }
 
             double export_seconds = 0.0;
@@ -1307,6 +1536,8 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting domain slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 export_slice_csv(*root_state, binary_hierarchy.get(), n, "Output/viz");
+                if (export_hdf5)
+                    (void)export_slice_hdf5(*root_state, binary_hierarchy.get(), n, t, "Output/viz");
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1316,12 +1547,19 @@ int main(int argc, char **argv) {
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
                 export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
                                             constraint_scratch.C, n, "Output/viz");
+                if (export_hdf5) {
+                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                       constraint_scratch.M, constraint_scratch.C,
+                                                       n, t, "Output/viz");
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
 
             write_puncture_row(puncture_track, n, t, puncture_sample);
             write_puncture_row(puncture_track_minima, n, t, puncture_minima);
+            write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
+            write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
 
             double projection_seconds = 0.0;
             if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0)) {
@@ -1457,6 +1695,12 @@ int main(int argc, char **argv) {
                                << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
                                << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
                                << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log_h5.is_open()) {
+                    (void)constraint_log_h5.append_row(
+                        {static_cast<double>(current_step), current_time, current_dt,
+                         stats.l2_theta, stats.l2_Z, stats.l2_H, stats.l2_M, stats.max_H,
+                         stats.max_det_drift, stats.max_trace_A, static_cast<double>(stats.samples)});
+                }
             }
 
             double export_seconds = 0.0;
@@ -1464,6 +1708,8 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting domain slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 export_slice_csv(*root_state, hierarchy.get(), n, "Output/viz");
+                if (export_hdf5)
+                    (void)export_slice_hdf5(*root_state, hierarchy.get(), n, t, "Output/viz");
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1473,12 +1719,19 @@ int main(int argc, char **argv) {
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
                 export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
                                             constraint_scratch.C, n, "Output/viz");
+                if (export_hdf5) {
+                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                       constraint_scratch.M, constraint_scratch.C,
+                                                       n, t, "Output/viz");
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
 
             write_puncture_row(puncture_track, n, t, puncture_sample);
             write_puncture_row(puncture_track_minima, n, t, puncture_minima);
+            write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
+            write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
 
             double projection_seconds = 0.0;
             if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0))
@@ -1519,6 +1772,8 @@ int main(int argc, char **argv) {
             const auto puncture_sample = sample_puncture_minima(*root_state);
             write_puncture_row(puncture_track, n, t, puncture_sample);
             write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+            write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
+            write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_sample);
 
             double constraint_seconds = 0.0;
             const bool need_constraint_export =
@@ -1536,6 +1791,12 @@ int main(int argc, char **argv) {
                                << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
                                << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
                                << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log_h5.is_open()) {
+                    (void)constraint_log_h5.append_row(
+                        {static_cast<double>(current_step), current_time, current_dt,
+                         stats.l2_theta, stats.l2_Z, stats.l2_H, stats.l2_M, stats.max_H,
+                         stats.max_det_drift, stats.max_trace_A, static_cast<double>(stats.samples)});
+                }
             }
 
             double export_seconds = 0.0;
@@ -1543,6 +1804,9 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 export_slice_csv<MovingPunctureHierarchy>(*root_state, nullptr, n, "Output/viz");
+                if (export_hdf5)
+                    (void)export_slice_hdf5<MovingPunctureHierarchy>(*root_state, nullptr, n, t,
+                                                                     "Output/viz");
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1552,6 +1816,11 @@ int main(int argc, char **argv) {
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
                 export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
                                             constraint_scratch.C, n, "Output/viz");
+                if (export_hdf5) {
+                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                       constraint_scratch.M, constraint_scratch.C,
+                                                       n, t, "Output/viz");
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
