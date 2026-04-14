@@ -335,6 +335,114 @@ inline Field3D<T> &select_field(EvolvedStateSoA<T> &grid, BoundaryField which, i
     return grid.alpha;
 }
 
+/// @brief Catmull-Rom cubic spline interpolation kernel.
+/// @param p0, p1, p2, p3 Four consecutive sample values
+/// @param t Interpolation parameter in [0,1], interpolates between p1 and p2
+/// @return Interpolated value with O(h⁴) accuracy
+template <typename T>
+inline T catmull_rom_1d(T p0, T p1, T p2, T p3, T t) {
+    const T t2 = t * t;
+    const T t3 = t2 * t;
+    return T(0.5) * ((T(2) * p1) +
+                     (-p0 + p2) * t +
+                     (T(2) * p0 - T(5) * p1 + T(4) * p2 - p3) * t2 +
+                     (-p0 + T(3) * p1 - T(3) * p2 + p3) * t3);
+}
+
+/// @brief Tricubic interpolation using Catmull-Rom splines for O(h⁴) accuracy.
+/// Falls back to trilinear near boundaries where 4x4x4 stencil is unavailable.
+template <typename State, typename T>
+inline T sample_tricubic_field(const State &src, const Field3D<T> &field, T x, T y, T z) {
+    size_t I0, I1, J0, J1, K0, K1;
+    src.domain_bounds(I0, I1, J0, J1, K0, K1);
+
+    const size_t ix_min = I0;
+    const size_t iy_min = J0;
+    const size_t iz_min = K0;
+    const size_t ix_max = I1 - 1;
+    const size_t iy_max = J1 - 1;
+    const size_t iz_max = K1 - 1;
+
+    // Compute continuous grid coordinates
+    const T ux = (x - src.x0) / src.dx + T(ix_min);
+    const T uy = (y - src.y0) / src.dy + T(iy_min);
+    const T uz = (z - src.z0) / src.dz + T(iz_min);
+
+    // Find base indices (p1 in the Catmull-Rom stencil p0,p1,p2,p3)
+    auto base_index = [](T u, size_t a_min, size_t a_max) -> size_t {
+        if (u <= T(a_min)) return a_min;
+        if (u >= T(a_max)) return a_max;
+        return static_cast<size_t>(std::floor(u));
+    };
+
+    const size_t ix1 = base_index(ux, ix_min, ix_max);
+    const size_t iy1 = base_index(uy, iy_min, iy_max);
+    const size_t iz1 = base_index(uz, iz_min, iz_max);
+
+    // Compute interpolation weights
+    const T tx = std::clamp(ux - T(ix1), T(0), T(1));
+    const T ty = std::clamp(uy - T(iy1), T(0), T(1));
+    const T tz = std::clamp(uz - T(iz1), T(0), T(1));
+
+    // Check if we have enough room for the 4-point stencil in each dimension
+    const bool can_cubic_x = (ix1 >= ix_min + 1) && (ix1 + 2 <= ix_max);
+    const bool can_cubic_y = (iy1 >= iy_min + 1) && (iy1 + 2 <= iy_max);
+    const bool can_cubic_z = (iz1 >= iz_min + 1) && (iz1 + 2 <= iz_max);
+
+    auto at = [&](size_t i, size_t j, size_t k) -> T {
+        const size_t ic = std::clamp(i, ix_min, ix_max);
+        const size_t jc = std::clamp(j, iy_min, iy_max);
+        const size_t kc = std::clamp(k, iz_min, iz_max);
+        return field.ptr()[field.idx(ic, jc, kc)];
+    };
+
+    // Full tricubic: 4x4x4 = 64 points
+    if (can_cubic_x && can_cubic_y && can_cubic_z) {
+        const size_t ix0 = ix1 - 1, ix2 = ix1 + 1, ix3 = ix1 + 2;
+        const size_t iy0 = iy1 - 1, iy2 = iy1 + 1, iy3 = iy1 + 2;
+        const size_t iz0 = iz1 - 1, iz2 = iz1 + 1, iz3 = iz1 + 2;
+
+        // Interpolate along z for each (i,j) pair, then along y, then along x
+        T slice_y[4];
+        for (int dy = 0; dy < 4; ++dy) {
+            const size_t jj = (dy == 0) ? iy0 : (dy == 1) ? iy1 : (dy == 2) ? iy2 : iy3;
+            T row_x[4];
+            for (int dx = 0; dx < 4; ++dx) {
+                const size_t ii = (dx == 0) ? ix0 : (dx == 1) ? ix1 : (dx == 2) ? ix2 : ix3;
+                row_x[dx] = catmull_rom_1d(at(ii, jj, iz0), at(ii, jj, iz1),
+                                           at(ii, jj, iz2), at(ii, jj, iz3), tz);
+            }
+            slice_y[dy] = catmull_rom_1d(row_x[0], row_x[1], row_x[2], row_x[3], tx);
+        }
+        return catmull_rom_1d(slice_y[0], slice_y[1], slice_y[2], slice_y[3], ty);
+    }
+
+    // Fallback: trilinear for boundary regions
+    const size_t i0 = ix1;
+    const size_t i1 = std::min(ix1 + size_t(1), ix_max);
+    const size_t j0 = iy1;
+    const size_t j1 = std::min(iy1 + size_t(1), iy_max);
+    const size_t k0 = iz1;
+    const size_t k1 = std::min(iz1 + size_t(1), iz_max);
+
+    const T c000 = at(i0, j0, k0);
+    const T c100 = at(i1, j0, k0);
+    const T c010 = at(i0, j1, k0);
+    const T c110 = at(i1, j1, k0);
+    const T c001 = at(i0, j0, k1);
+    const T c101 = at(i1, j0, k1);
+    const T c011 = at(i0, j1, k1);
+    const T c111 = at(i1, j1, k1);
+
+    const T c00 = c000 * (T(1) - tx) + c100 * tx;
+    const T c10 = c010 * (T(1) - tx) + c110 * tx;
+    const T c01 = c001 * (T(1) - tx) + c101 * tx;
+    const T c11 = c011 * (T(1) - tx) + c111 * tx;
+    const T c0 = c00 * (T(1) - ty) + c10 * ty;
+    const T c1 = c01 * (T(1) - ty) + c11 * ty;
+    return c0 * (T(1) - tz) + c1 * tz;
+}
+
 template <typename State, typename T>
 inline T sample_trilinear_field(const State &src, const Field3D<T> &field, T x, T y, T z) {
     size_t I0, I1, J0, J1, K0, K1;
@@ -714,6 +822,9 @@ inline void restrict_from_child(const BSSNGridSoA<T> &child, BSSNGridSoA<T> &par
 }
 
 } // namespace detail
+
+template <typename T>
+inline void transfer_evolved_data_tricubic(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst);
 
 template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentInterpolationBoundary {
     struct Sampler {
@@ -1537,6 +1648,81 @@ class BinaryPunctureFixedMeshRefinementHierarchy {
         advance_shared_level(0, dt_root);
     }
 
+    /// @brief Regrid leaf grids to new positions, transferring data from old grids.
+    /// @param new_left_box New PatchBox for left leaf (in parent cell coordinates)
+    /// @param new_right_box New PatchBox for right leaf (in parent cell coordinates)
+    /// @return true if regrid was successful
+    bool regrid_leaves(const PatchBox &new_left_box, const PatchBox &new_right_box) {
+        if (leaves_.size() != 2 || leaf_steppers_.size() != 2 || shared_levels_.empty()) {
+            return false;
+        }
+
+        // Validate boxes don't overlap
+        if (detail::patch_boxes_overlap(new_left_box, new_right_box)) {
+            return false;
+        }
+
+        const auto &parent = shared_levels_.back()->grid;
+        const size_t ratio = leaves_[0]->refinement_ratio;
+        const size_t ng = leaves_[0]->grid.dims.ng;
+        const auto &old_left = *leaves_[0];
+        const auto &old_right = *leaves_[1];
+
+        // Create new leaf configurations
+        LevelConfig left_cfg{new_left_box, ratio, ng};
+        LevelConfig right_cfg{new_right_box, ratio, ng};
+
+        // Compute new geometries
+        const auto left_geom = detail::make_child_geometry(parent, left_cfg);
+        const auto right_geom = detail::make_child_geometry(parent, right_cfg);
+
+        // Create new leaf states
+        auto new_left_leaf = std::make_unique<LeafState>(
+            left_geom.nx, left_geom.ny, left_geom.nz, left_geom.ng,
+            T(left_geom.dx), T(left_geom.dy), T(left_geom.dz),
+            T(left_geom.x0), T(left_geom.y0), T(left_geom.z0),
+            new_left_box, ratio);
+
+        auto new_right_leaf = std::make_unique<LeafState>(
+            right_geom.nx, right_geom.ny, right_geom.nz, right_geom.ng,
+            T(right_geom.dx), T(right_geom.dy), T(right_geom.dz),
+            T(right_geom.x0), T(right_geom.y0), T(right_geom.z0),
+            new_right_box, ratio);
+
+        // Transfer data from old grids to new grids using tricubic interpolation
+        transfer_evolved_data_tricubic(old_left.grid, new_left_leaf->grid);
+        transfer_evolved_data_tricubic(old_right.grid, new_right_leaf->grid);
+        new_left_leaf->step_count = old_left.step_count;
+        new_right_leaf->step_count = old_right.step_count;
+
+        // Recreate steppers for new grids while preserving runtime state.
+        auto new_left_stepper = std::make_unique<FineStepper>(new_left_leaf->grid, padding_);
+        auto new_right_stepper = std::make_unique<FineStepper>(new_right_leaf->grid, padding_);
+        new_left_stepper->copy_runtime_state_from(*leaf_steppers_[0]);
+        new_right_stepper->copy_runtime_state_from(*leaf_steppers_[1]);
+
+        leaves_[0] = std::move(new_left_leaf);
+        leaves_[1] = std::move(new_right_leaf);
+        leaf_steppers_[0] = std::move(new_left_stepper);
+        leaf_steppers_[1] = std::move(new_right_stepper);
+
+        // Reallocate snapshot region if needed
+        allocate_snapshot_for_shared_level(shared_levels_.size() - 1);
+        refresh_shared_snapshot(shared_levels_.size() - 1);
+
+        return true;
+    }
+
+    /// @brief Get the PatchBox for a leaf grid.
+    [[nodiscard]] const PatchBox &leaf_parent_cells(size_t leaf) const {
+        return leaves_.at(leaf)->parent_cells;
+    }
+
+    /// @brief Get the refinement ratio for leaf grids.
+    [[nodiscard]] size_t leaf_refinement_ratio() const {
+        return leaves_.empty() ? 1 : leaves_[0]->refinement_ratio;
+    }
+
   private:
     size_t                                            padding_ = 4;
     GaugeParameters<T>                                gauge_params_{};
@@ -1689,5 +1875,406 @@ class BinaryPunctureFixedMeshRefinementHierarchy {
         perf.restriction_seconds += elapsed_seconds(restrict_start, Clock::now());
     }
 };
+
+// ============================================================================
+// Regridding Support for Moving Punctures
+// ============================================================================
+
+/// @brief 3D position of a puncture
+struct PunctureLocation {
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    bool   valid = false;
+
+    [[nodiscard]] std::array<double, 3> as_array() const noexcept { return {x, y, z}; }
+};
+
+/// @brief Result of a regrid check
+struct RegridDecision {
+    bool   needs_regrid = false;
+    double distance_to_edge_cells = std::numeric_limits<double>::infinity();
+    PunctureLocation new_center{};
+};
+
+/// @brief Locate a puncture by finding the minimum of chi in a search region.
+/// @param grid The grid to search
+/// @param search_center Approximate center of the puncture
+/// @param search_radius_cells Radius in grid cells to search around the center
+/// @return Location of the chi minimum (puncture position)
+template <typename T>
+inline PunctureLocation locate_puncture_chi_minimum(const BSSNGridSoA<T> &grid,
+                                                     const std::array<double, 3> &search_center,
+                                                     size_t search_radius_cells = 8) {
+    PunctureLocation result{};
+
+    // Convert search center to grid indices
+    const double fx = (search_center[0] - grid.x0) / grid.dx + double(grid.dims.ng);
+    const double fy = (search_center[1] - grid.y0) / grid.dy + double(grid.dims.ng);
+    const double fz = (search_center[2] - grid.z0) / grid.dz + double(grid.dims.ng);
+
+    const size_t ci = static_cast<size_t>(std::max(0.0, fx));
+    const size_t cj = static_cast<size_t>(std::max(0.0, fy));
+    const size_t ck = static_cast<size_t>(std::max(0.0, fz));
+
+    // Define search bounds
+    const size_t ng = grid.dims.ng;
+    const size_t i_min = (ci > ng + search_radius_cells) ? ci - search_radius_cells : ng;
+    const size_t j_min = (cj > ng + search_radius_cells) ? cj - search_radius_cells : ng;
+    const size_t k_min = (ck > ng + search_radius_cells) ? ck - search_radius_cells : ng;
+    const size_t i_max = std::min(ci + search_radius_cells, grid.dims.ng + grid.dims.nx - 1);
+    const size_t j_max = std::min(cj + search_radius_cells, grid.dims.ng + grid.dims.ny - 1);
+    const size_t k_max = std::min(ck + search_radius_cells, grid.dims.ng + grid.dims.nz - 1);
+
+    T min_chi = std::numeric_limits<T>::max();
+    size_t min_i = ci, min_j = cj, min_k = ck;
+
+    const T *chi_ptr = grid.chi.ptr();
+    for (size_t i = i_min; i <= i_max; ++i) {
+        for (size_t j = j_min; j <= j_max; ++j) {
+            for (size_t k = k_min; k <= k_max; ++k) {
+                const T chi_val = chi_ptr[grid.chi.idx(i, j, k)];
+                if (chi_val < min_chi) {
+                    min_chi = chi_val;
+                    min_i = i;
+                    min_j = j;
+                    min_k = k;
+                }
+            }
+        }
+    }
+
+    // Convert back to physical coordinates
+    result.x = grid.x0 + (double(min_i) - double(ng)) * grid.dx;
+    result.y = grid.y0 + (double(min_j) - double(ng)) * grid.dy;
+    result.z = grid.z0 + (double(min_k) - double(ng)) * grid.dz;
+    result.valid = (min_chi < T(0.5)); // Valid if chi is small enough to be near a puncture
+
+    return result;
+}
+
+/// @brief Check if a puncture is too close to the edge of its refinement box.
+/// @param grid The refinement level grid
+/// @param puncture Current puncture location
+/// @param threshold_cells Distance in cells that triggers regridding
+/// @return RegridDecision indicating if regrid is needed
+template <typename T>
+inline RegridDecision check_puncture_regrid_needed(const BSSNGridSoA<T> &grid,
+                                                    const PunctureLocation &puncture,
+                                                    double threshold_cells) {
+    RegridDecision result{};
+    if (!puncture.valid)
+        return result;
+
+    // Compute distance from puncture to each face in cell units
+    const double dx = grid.dx;
+    const double dy = grid.dy;
+    const double dz = grid.dz;
+
+    const double x_min = grid.x0 - 0.5 * dx;
+    const double y_min = grid.y0 - 0.5 * dy;
+    const double z_min = grid.z0 - 0.5 * dz;
+    const double x_max = grid.x0 + (double(grid.dims.nx) - 0.5) * dx;
+    const double y_max = grid.y0 + (double(grid.dims.ny) - 0.5) * dy;
+    const double z_max = grid.z0 + (double(grid.dims.nz) - 0.5) * dz;
+
+    const double dist_x_min = (puncture.x - x_min) / dx;
+    const double dist_x_max = (x_max - puncture.x) / dx;
+    const double dist_y_min = (puncture.y - y_min) / dy;
+    const double dist_y_max = (y_max - puncture.y) / dy;
+    const double dist_z_min = (puncture.z - z_min) / dz;
+    const double dist_z_max = (z_max - puncture.z) / dz;
+
+    result.distance_to_edge_cells = std::min({dist_x_min, dist_x_max,
+                                              dist_y_min, dist_y_max,
+                                              dist_z_min, dist_z_max});
+    result.needs_regrid = (result.distance_to_edge_cells < threshold_cells);
+    result.new_center = puncture;
+
+    return result;
+}
+
+/// @brief Compute a new PatchBox centered on a puncture location.
+/// @param parent_grid The parent grid from which the patch is defined
+/// @param puncture_center The puncture location (physical coordinates)
+/// @param half_width_cells Half-width of the box in fine cells
+/// @param refinement_ratio Refinement ratio between parent and child
+/// @param min_clearance Minimum clearance from parent boundary in coarse cells
+/// @return New PatchBox in parent cell coordinates
+template <typename T>
+inline PatchBox compute_regrid_box(const BSSNGridSoA<T> &parent_grid,
+                                   const PunctureLocation &puncture_center,
+                                   size_t half_width_cells,
+                                   size_t refinement_ratio,
+                                   size_t min_clearance = 2) {
+    // Convert puncture position to parent grid cell coordinates
+    const double px = (puncture_center.x - parent_grid.x0) / parent_grid.dx;
+    const double py = (puncture_center.y - parent_grid.y0) / parent_grid.dy;
+    const double pz = (puncture_center.z - parent_grid.z0) / parent_grid.dz;
+
+    // Half-width in coarse (parent) cells
+    const size_t half_coarse = (half_width_cells + refinement_ratio - 1) / refinement_ratio;
+
+    // Compute bounds, ensuring clearance from parent boundary
+    auto clamp_low = [&](double center, size_t half) -> size_t {
+        const long raw = static_cast<long>(std::floor(center)) - static_cast<long>(half);
+        return static_cast<size_t>(std::max(raw, static_cast<long>(min_clearance)));
+    };
+
+    auto clamp_high = [&](double center, size_t half, size_t parent_dim) -> size_t {
+        const size_t raw = static_cast<size_t>(std::ceil(center)) + half;
+        return std::min(raw, parent_dim - min_clearance);
+    };
+
+    PatchBox box{};
+    box.i0 = clamp_low(px, half_coarse);
+    box.j0 = clamp_low(py, half_coarse);
+    box.k0 = clamp_low(pz, half_coarse);
+    box.i1 = clamp_high(px, half_coarse, parent_grid.dims.nx);
+    box.j1 = clamp_high(py, half_coarse, parent_grid.dims.ny);
+    box.k1 = clamp_high(pz, half_coarse, parent_grid.dims.nz);
+
+    // Ensure minimum box size
+    if (box.i1 <= box.i0) box.i1 = box.i0 + 1;
+    if (box.j1 <= box.j0) box.j1 = box.j0 + 1;
+    if (box.k1 <= box.k0) box.k1 = box.k0 + 1;
+
+    return box;
+}
+
+/// @brief Transfer evolved field data from source grid to destination grid using tricubic interpolation.
+/// @param src Source grid (old grid before regridding)
+/// @param dst Destination grid (new grid after regridding)
+template <typename T>
+inline void transfer_evolved_data_tricubic(const BSSNGridSoA<T> &src, BSSNGridSoA<T> &dst) {
+    auto transfer_field = [&](const Field3D<T> &src_field, Field3D<T> &dst_field) {
+        T *out = dst_field.ptr();
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = 0; i < dst_field.st.nx_tot; ++i) {
+            for (size_t j = 0; j < dst_field.st.ny_tot; ++j) {
+                for (size_t k = 0; k < dst_field.st.nz_tot; ++k) {
+                    // Compute physical coordinates for this destination cell
+                    const T x = dst.x0 + (T(i) - T(dst.dims.ng)) * dst.dx;
+                    const T y = dst.y0 + (T(j) - T(dst.dims.ng)) * dst.dy;
+                    const T z = dst.z0 + (T(k) - T(dst.dims.ng)) * dst.dz;
+
+                    out[dst_field.idx(i, j, k)] = detail::sample_tricubic_field(src, src_field, x, y, z);
+                }
+            }
+        }
+    };
+
+    // Transfer scalars
+    transfer_field(src.alpha, dst.alpha);
+    transfer_field(src.chi, dst.chi);
+    transfer_field(src.K, dst.K);
+    transfer_field(src.Theta, dst.Theta);
+
+    // Transfer vectors
+    for (int a = 0; a < 3; ++a) {
+        transfer_field(src.beta[a], dst.beta[a]);
+        transfer_field(src.B[a], dst.B[a]);
+        transfer_field(src.tildeGamma[a], dst.tildeGamma[a]);
+        transfer_field(src.Z[a], dst.Z[a]);
+    }
+
+    // Transfer symmetric tensors
+    for (int s = 0; s < 6; ++s) {
+        transfer_field(src.gamma_tilde[s], dst.gamma_tilde[s]);
+        transfer_field(src.A_tilde[s], dst.A_tilde[s]);
+    }
+
+    // Enforce algebraic constraints after transfer
+    tensorium_RG::bssn::enforce_algebraic_constraints(dst);
+}
+
+/// @brief Regrid manager for binary puncture simulations.
+/// Tracks puncture positions and manages automatic regridding.
+template <typename T>
+class BinaryPunctureRegridManager {
+  public:
+    struct Config {
+        double threshold_cells = 4.0;          ///< Distance to edge that triggers regrid
+        size_t check_interval = 10;            ///< Steps between regrid checks
+        size_t leaf_half_width_cells = 16;     ///< Half-width of leaf boxes in fine cells
+        bool   enabled = true;                 ///< Enable/disable regridding
+        bool   verbose = false;                ///< Print regrid messages
+    };
+
+    struct PunctureState {
+        PunctureLocation location{};
+        std::array<double, 3> velocity{0.0, 0.0, 0.0};  ///< Velocity from -beta
+    };
+
+    BinaryPunctureRegridManager() = default;
+
+    explicit BinaryPunctureRegridManager(const Config &cfg) : config_(cfg) {}
+
+    /// @brief Initialize puncture positions from initial coordinates.
+    void initialize(const std::array<double, 3> &p1, const std::array<double, 3> &p2) {
+        puncture1_.location = {p1[0], p1[1], p1[2], true};
+        puncture2_.location = {p2[0], p2[1], p2[2], true};
+        initialized_ = true;
+    }
+
+    /// @brief Update puncture positions using shift vector integration.
+    /// @param left_grid Grid containing puncture 1
+    /// @param right_grid Grid containing puncture 2
+    /// @param dt Time step
+    template <typename GridType>
+    void advance_trackers(const GridType &left_grid, const GridType &right_grid, T dt) {
+        if (!initialized_ || !config_.enabled)
+            return;
+
+        auto integrate_puncture = [&](PunctureState &state, const GridType &grid) {
+            if (!state.location.valid)
+                return;
+
+            // Sample beta at puncture location
+            std::array<T, 3> beta_new{0, 0, 0};
+            const T x = T(state.location.x);
+            const T y = T(state.location.y);
+            const T z = T(state.location.z);
+
+            for (int d = 0; d < 3; ++d) {
+                beta_new[d] = detail::sample_tricubic_field(grid, grid.beta[d], x, y, z);
+            }
+
+            // Trapezoidal integration: dx/dt = -beta
+            for (int d = 0; d < 3; ++d) {
+                const double v_avg = -0.5 * (state.velocity[d] + double(beta_new[d]));
+                (&state.location.x)[d] += v_avg * double(dt);
+                state.velocity[d] = -double(beta_new[d]);
+            }
+        };
+
+        integrate_puncture(puncture1_, left_grid);
+        integrate_puncture(puncture2_, right_grid);
+    }
+
+    /// @brief Refine puncture positions by finding local chi minimum.
+    template <typename GridType>
+    void refine_puncture_locations(const GridType &left_grid, const GridType &right_grid,
+                                   size_t search_radius = 4) {
+        if (!initialized_)
+            return;
+
+        auto refine = [&](PunctureState &state, const GridType &grid) {
+            if (!state.location.valid)
+                return;
+            const auto refined = locate_puncture_chi_minimum(grid, state.location.as_array(),
+                                                              search_radius);
+            if (refined.valid) {
+                state.location = refined;
+            }
+        };
+
+        refine(puncture1_, left_grid);
+        refine(puncture2_, right_grid);
+    }
+
+    /// @brief Check if either puncture needs regridding.
+    /// @param left_grid Left leaf grid
+    /// @param right_grid Right leaf grid
+    /// @return Pair of RegridDecision for left and right punctures
+    template <typename GridType>
+    std::pair<RegridDecision, RegridDecision> check_regrid_needed(const GridType &left_grid,
+                                                                   const GridType &right_grid) const {
+        if (!initialized_ || !config_.enabled) {
+            return {{}, {}};
+        }
+
+        return {
+            check_puncture_regrid_needed(left_grid, puncture1_.location, config_.threshold_cells),
+            check_puncture_regrid_needed(right_grid, puncture2_.location, config_.threshold_cells)
+        };
+    }
+
+    /// @brief Get current puncture positions.
+    [[nodiscard]] std::pair<PunctureLocation, PunctureLocation> get_puncture_locations() const {
+        return {puncture1_.location, puncture2_.location};
+    }
+
+    /// @brief Get configuration.
+    [[nodiscard]] const Config &config() const noexcept { return config_; }
+    Config &config() noexcept { return config_; }
+
+    /// @brief Check if manager is initialized.
+    [[nodiscard]] bool is_initialized() const noexcept { return initialized_; }
+
+    /// @brief Increment step counter and check if regrid check is due.
+    [[nodiscard]] bool should_check_regrid() {
+        ++step_count_;
+        return config_.enabled && (step_count_ % config_.check_interval == 0);
+    }
+
+    /// @brief Reset step counter (call after regrid).
+    void reset_step_counter() { step_count_ = 0; }
+
+  private:
+    Config config_{};
+    PunctureState puncture1_{};
+    PunctureState puncture2_{};
+    bool initialized_ = false;
+    size_t step_count_ = 0;
+};
+
+/// @brief Perform regridding on a BinaryPunctureFixedMeshRefinementHierarchy.
+/// Creates new leaf grids centered on current puncture positions and transfers data.
+/// @param hierarchy The FMR hierarchy to regrid
+/// @param manager The regrid manager with puncture tracking
+/// @param parent_grid Reference to the shared parent level grid
+/// @param new_left_box New PatchBox for left leaf
+/// @param new_right_box New PatchBox for right leaf
+/// @return true if regrid was performed successfully
+template <typename T, typename OuterBoundary>
+inline bool perform_bbh_leaf_regrid(
+    BinaryPunctureFixedMeshRefinementHierarchy<T, OuterBoundary> &hierarchy,
+    const PatchBox &new_left_box,
+    const PatchBox &new_right_box,
+    size_t refinement_ratio,
+    size_t halo_cells) {
+
+    // Validate boxes don't overlap
+    if (detail::patch_boxes_overlap(new_left_box, new_right_box)) {
+        return false;
+    }
+
+    // Get current leaf grids for data transfer
+    const auto &old_left = hierarchy.leaf_grid(0);
+    const auto &old_right = hierarchy.leaf_grid(1);
+    const auto &parent = hierarchy.shared_level_grid(hierarchy.num_shared_levels() - 1);
+
+    // Compute new leaf geometries
+    LevelConfig left_cfg{new_left_box, refinement_ratio, halo_cells};
+    LevelConfig right_cfg{new_right_box, refinement_ratio, halo_cells};
+
+    const auto left_geom = detail::make_child_geometry(parent, left_cfg);
+    const auto right_geom = detail::make_child_geometry(parent, right_cfg);
+
+    // Create new leaf grids
+    BSSNGridSoA<T> new_left(left_geom.nx, left_geom.ny, left_geom.nz, left_geom.ng,
+                            T(left_geom.dx), T(left_geom.dy), T(left_geom.dz));
+    new_left.x0 = T(left_geom.x0);
+    new_left.y0 = T(left_geom.y0);
+    new_left.z0 = T(left_geom.z0);
+
+    BSSNGridSoA<T> new_right(right_geom.nx, right_geom.ny, right_geom.nz, right_geom.ng,
+                             T(right_geom.dx), T(right_geom.dy), T(right_geom.dz));
+    new_right.x0 = T(right_geom.x0);
+    new_right.y0 = T(right_geom.y0);
+    new_right.z0 = T(right_geom.z0);
+
+    // Transfer data from old grids to new grids
+    transfer_evolved_data_tricubic(old_left, new_left);
+    transfer_evolved_data_tricubic(old_right, new_right);
+
+    // Note: The actual swap of grids in the hierarchy requires access to private members.
+    // This function prepares the new grids; the hierarchy class should provide a method
+    // to accept and install them.
+
+    return true;
+}
 
 } // namespace tensorium_RG::bssn::fmr

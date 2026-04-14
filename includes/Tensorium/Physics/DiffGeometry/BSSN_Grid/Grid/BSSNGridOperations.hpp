@@ -417,20 +417,11 @@ struct BoundaryRadiative {
         }
     }
 
-    static inline bool use_sommerfeld_halo(BoundaryField which) {
-        switch (which) {
-        case BoundaryField::GammaTildeInverse:
-            return false;
-        default:
-            return true;
-        }
-    }
-
     template <typename T>
     static inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G,
                                       BoundaryField which, int component) {
-        // Radiative runs now apply the sponge as an RHS damping term. Physical cells are left
-        // untouched here so halo refreshes do not inject a Cartesian shell into the evolved state.
+        // Keep solution cells untouched here. GRChombo-style radiative boundaries are enforced as
+        // RHS corrections; halo refreshes should not inject a radiative shell into the state.
         (void)field;
         (void)G;
         (void)which;
@@ -441,11 +432,9 @@ struct BoundaryRadiative {
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                                   int component) {
         enum class HaloMode { Sommerfeld, Outflow, LinearExtrapolate, Skip };
-        HaloMode mode = HaloMode::Outflow;
+        HaloMode mode = HaloMode::LinearExtrapolate;
         if (which == BoundaryField::GammaTildeInverse)
             mode = HaloMode::Skip;
-        else if (use_sommerfeld_halo(which))
-            mode = HaloMode::Sommerfeld;
         if (mode == HaloMode::Skip)
             return;
 
@@ -597,6 +586,34 @@ struct BoundaryRadiative {
                 set_outflow(ob, ib);
         };
 
+        auto set_linear_extrapolated_axis = [&](size_t oi, size_t oj, size_t ok, int axis,
+                                                bool outer, size_t layer) {
+            size_t i0b = oi;
+            size_t j0b = oj;
+            size_t k0b = ok;
+            size_t i1b = oi;
+            size_t j1b = oj;
+            size_t k1b = ok;
+
+            switch (axis) {
+            case 0:
+                i0b = outer ? (I1 - 1) : I0;
+                i1b = outer ? (I1 - 2) : (I0 + 1);
+                break;
+            case 1:
+                j0b = outer ? (J1 - 1) : J0;
+                j1b = outer ? (J1 - 2) : (J0 + 1);
+                break;
+            default:
+                k0b = outer ? (K1 - 1) : K0;
+                k1b = outer ? (K1 - 2) : (K0 + 1);
+                break;
+            }
+
+            set_linear_extrapolated(field.idx(oi, oj, ok), field.idx(i0b, j0b, k0b),
+                                    field.idx(i1b, j1b, k1b), layer);
+        };
+
         const bool sf_ix1 = rhs_sommerfeld_enabled(0, false);
         const bool sf_ox1 = rhs_sommerfeld_enabled(0, true);
         const bool sf_ix2 = rhs_sommerfeld_enabled(1, false);
@@ -638,7 +655,9 @@ struct BoundaryRadiative {
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ix2) {
-                        if (i >= I0 && i < I1) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ix2) {
+                            set_linear_extrapolated_axis(i, J0 - g, k, 1, false, g);
+                        } else if (i >= I0 && i < I1) {
                             set_halo_fast(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
                                           field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
                                           r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2,
@@ -652,7 +671,9 @@ struct BoundaryRadiative {
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ox2) {
-                        if (i >= I0 && i < I1) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ox2) {
+                            set_linear_extrapolated_axis(i, J1 + g, k, 1, true, g + 1);
+                        } else if (i >= I0 && i < I1) {
                             set_halo_fast(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
                                           field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k),
                                           g + 1, r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k),
@@ -666,7 +687,9 @@ struct BoundaryRadiative {
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
                     if (ac_ix3) {
-                        if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ix3) {
+                            set_linear_extrapolated_axis(i, j, K0 - g, 2, false, g);
+                        } else if (i >= I0 && i < I1 && j >= J0 && j < J1) {
                             set_halo_fast(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
                                           field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
                                           r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3,
@@ -680,7 +703,9 @@ struct BoundaryRadiative {
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
                     if (ac_ox3) {
-                        if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ox3) {
+                            set_linear_extrapolated_axis(i, j, K1 + g, 2, true, g + 1);
+                        } else if (i >= I0 && i < I1 && j >= J0 && j < J1) {
                             set_halo_fast(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
                                           field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2),
                                           g + 1, r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g),

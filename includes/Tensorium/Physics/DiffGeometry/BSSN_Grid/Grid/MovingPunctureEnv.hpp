@@ -120,6 +120,8 @@ struct MovingPunctureEnvConfig {
 
     double mass1 = 0.48847892320123;
     double mass2 = 0.48847892320123;
+    bool   tp_calculate_target_masses = false;
+    double tp_adm_tol = 1.0e-10;
     double separation = 6.10679;
     double tangential_momentum = 0.0841746;
     double user_tangential_momentum = 0.0841746;
@@ -400,6 +402,12 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed >= 24)
             cfg.interp_seed_n = static_cast<size_t>(*parsed);
     }
+    cfg.tp_calculate_target_masses = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_TP_CALCULATE_TARGET_MASSES", cfg.use_interpolated_init);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_TP_ADM_TOL")) {
+        if (*parsed > 0.0)
+            cfg.tp_adm_tol = *parsed;
+    }
 
     GaugeParameters<double> params;
     params.eta = 1.0;
@@ -426,7 +434,9 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     params.chi_floor = 1e-4;
     params.evolve_Z = false;
     params.gamma_damping_uses_metric = false;
-    params.apply_rhs_sommerfeld = true;
+    params.apply_rhs_sommerfeld = false;
+    params.apply_rhs_sommerfeld = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", params.apply_rhs_sommerfeld);
 
     cfg.strict_tp_gauge = detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_STRICT_TP_GAUGE",
                                               cfg.use_interpolated_init);
@@ -704,6 +714,91 @@ inline fmr::PatchBox moving_puncture_axis_aligned_patch_from_half_width_centered
     return box;
 }
 
+template <typename T>
+inline std::pair<fmr::PatchBox, fmr::PatchBox> moving_puncture_disjoint_split_leaf_boxes(
+    const BSSNGridSoA<T> &grid, const std::array<double, 3> &puncture1,
+    const std::array<double, 3> &puncture2, double half_width, size_t clearance) {
+    auto left_box =
+        moving_puncture_axis_aligned_patch_from_half_width_centered(grid, puncture1, half_width, clearance);
+    auto right_box =
+        moving_puncture_axis_aligned_patch_from_half_width_centered(grid, puncture2, half_width, clearance);
+    if (!fmr::detail::patch_boxes_overlap(left_box, right_box))
+        return {left_box, right_box};
+
+    const auto coord_to_cell = [](double coord, double origin, double spacing, size_t cells) -> size_t {
+        long idx = static_cast<long>(std::llround((coord - origin) / spacing));
+        idx = std::clamp(idx, 0L, static_cast<long>(cells) - 1L);
+        return static_cast<size_t>(idx);
+    };
+
+    const std::array<size_t, 3> puncture1_cells{
+        coord_to_cell(puncture1[0], static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx),
+        coord_to_cell(puncture1[1], static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny),
+        coord_to_cell(puncture1[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz),
+    };
+    const std::array<size_t, 3> puncture2_cells{
+        coord_to_cell(puncture2[0], static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx),
+        coord_to_cell(puncture2[1], static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny),
+        coord_to_cell(puncture2[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz),
+    };
+
+    int    split_axis = 0;
+    size_t max_cell_separation = 0;
+    for (int axis = 0; axis < 3; ++axis) {
+        const size_t sep =
+            (puncture1_cells[axis] > puncture2_cells[axis]) ? (puncture1_cells[axis] - puncture2_cells[axis])
+                                                            : (puncture2_cells[axis] - puncture1_cells[axis]);
+        if (sep > max_cell_separation) {
+            max_cell_separation = sep;
+            split_axis = axis;
+        }
+    }
+    if (max_cell_separation == 0) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap and cannot be separated on the shared parent level");
+    }
+
+    const bool puncture1_first = puncture1_cells[split_axis] <= puncture2_cells[split_axis];
+    auto      &first_box = puncture1_first ? left_box : right_box;
+    auto      &second_box = puncture1_first ? right_box : left_box;
+    const size_t first_cell = puncture1_first ? puncture1_cells[split_axis] : puncture2_cells[split_axis];
+    const size_t second_cell = puncture1_first ? puncture2_cells[split_axis] : puncture1_cells[split_axis];
+
+    if (first_cell >= second_cell) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap and cannot retain ordered split boxes");
+    }
+
+    const size_t split_index = first_cell + (second_cell - first_cell + 1) / 2;
+    auto         axis_bounds = [&](fmr::PatchBox &box) -> std::pair<size_t &, size_t &> {
+        if (split_axis == 0)
+            return {box.i0, box.i1};
+        if (split_axis == 1)
+            return {box.j0, box.j1};
+        return {box.k0, box.k1};
+    };
+
+    {
+        auto [first_lo, first_hi] = axis_bounds(first_box);
+        auto [second_lo, second_hi] = axis_bounds(second_box);
+        first_hi = std::min(first_hi, split_index);
+        second_lo = std::max(second_lo, split_index);
+
+        if (!(first_lo <= first_cell && first_cell < first_hi && second_lo <= second_cell &&
+              second_cell < second_hi)) {
+            throw std::runtime_error(
+                "Computed moving-puncture BBH split finest leaves overlap and adaptive clipping would exclude a puncture");
+        }
+    }
+
+    if (fmr::detail::patch_boxes_overlap(left_box, right_box)) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap even after adaptive split clipping");
+    }
+
+    return {left_box, right_box};
+}
+
 inline fmr::PatchBox centered_patch_from_counts(size_t parent_nx, size_t parent_ny, size_t parent_nz,
                                                 size_t patch_nx, size_t patch_ny, size_t patch_nz,
                                                 size_t clearance) {
@@ -921,12 +1016,10 @@ build_moving_puncture_bbh_split_hierarchy_config(
         temporary_parents.push_back(std::move(next_parent));
     }
 
-    out.left_leaf = {detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
-                         *parent_grid, puncture1, leaf_half_width, clearance),
-                     cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
-    out.right_leaf = {detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
-                          *parent_grid, puncture2, leaf_half_width, clearance),
-                      cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+    const auto [left_leaf_box, right_leaf_box] = detail::moving_puncture_disjoint_split_leaf_boxes(
+        *parent_grid, puncture1, puncture2, leaf_half_width, clearance);
+    out.left_leaf = {left_leaf_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+    out.right_leaf = {right_leaf_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
 
     if (fmr::detail::patch_boxes_overlap(out.left_leaf.parent_cells, out.right_leaf.parent_cells)) {
         throw std::runtime_error(
@@ -957,7 +1050,7 @@ inline void initialize_moving_puncture_data(BSSNGridSoA<double> &grid,
 
         tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init(
             grid, cfg.mass1, x1, y, z, P1, S1, cfg.mass2, x2, y, z, P2, S2, cfg.interp_seed_n,
-            1e-10);
+            1e-10, cfg.tp_calculate_target_masses, cfg.tp_adm_tol);
         return;
     }
 

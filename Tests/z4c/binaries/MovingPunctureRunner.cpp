@@ -4,6 +4,7 @@
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/FMR/FMRMemoryManager.hpp"
 #include "../../../includes/Tensorium/Utils/IO/export.hpp"
 
 #include <algorithm>
@@ -20,6 +21,7 @@
 #include <limits>
 #include <memory>
 #include <sstream>
+#include <string>
 
 namespace {
 
@@ -30,6 +32,30 @@ using BinaryMovingPunctureHierarchy =
     tensorium_RG::z4c::fmr::BinaryPunctureFixedMeshRefinementHierarchy<double,
                                                                        tensorium_RG::z4c::BoundaryRadiative>;
 using FineBoundary = MovingPunctureHierarchy::FineBoundary;
+
+bool point_in_grid_physical_interior(const Grid &grid, double x, double y, double z,
+                                     size_t guard_cells);
+
+template <typename HierarchyType>
+bool sample_composite_scalar(const Grid &root_grid, const HierarchyType *hierarchy,
+                             tensorium_RG::z4c::BoundaryField which, int component, double x,
+                             double y, double z, double &value, size_t guard_cells = 0) {
+    const auto sample_from_grid = [&](const Grid &grid) {
+        if (!point_in_grid_physical_interior(grid, x, y, z, guard_cells))
+            return false;
+        const auto &field = tensorium_RG::z4c::fmr::detail::select_field(grid, which, component);
+        value = tensorium_RG::z4c::fmr::detail::sample_trilinear_field(grid, field, x, y, z);
+        return std::isfinite(value);
+    };
+
+    if (hierarchy != nullptr) {
+        for (size_t level = hierarchy->num_levels(); level-- > 0;) {
+            if (sample_from_grid(hierarchy->level_grid(level)))
+                return true;
+        }
+    }
+    return sample_from_grid(root_grid);
+}
 
 template <typename HierarchyType>
 void export_slice_boxes_csv(const Grid &grid, const HierarchyType *hierarchy, size_t step,
@@ -94,9 +120,17 @@ void export_slice_csv(const Grid &grid, const HierarchyType *hierarchy, size_t s
             const double cell_xmax = x + 0.5 * grid.dx;
             const double cell_ymin = y - 0.5 * grid.dy;
             const double cell_ymax = y + 0.5 * grid.dy;
-            const size_t idx = grid.alpha.idx(i, j, k);
-            const double alpha = grid.alpha.ptr()[idx];
-            const double chi = grid.chi.ptr()[idx];
+            double alpha = std::numeric_limits<double>::quiet_NaN();
+            double chi = std::numeric_limits<double>::quiet_NaN();
+            if (!sample_composite_scalar(grid, hierarchy, tensorium_RG::z4c::BoundaryField::Alpha,
+                                         0, x, y, grid.z0 + double(grid.dims.nz / 2) * grid.dz,
+                                         alpha)) {
+                alpha = grid.alpha.ptr()[grid.alpha.idx(i, j, k)];
+            }
+            if (!sample_composite_scalar(grid, hierarchy, tensorium_RG::z4c::BoundaryField::Chi, 0,
+                                         x, y, grid.z0 + double(grid.dims.nz / 2) * grid.dz, chi)) {
+                chi = grid.chi.ptr()[grid.chi.idx(i, j, k)];
+            }
             const double mask = (alpha < 0.1) ? 1.0 : 0.0;
             file << x << "," << y << "," << (i - ng) << "," << (j - ng) << "," << cell_xmin << ","
                  << cell_xmax << "," << cell_ymin << "," << cell_ymax << "," << grid.dx << ","
@@ -191,10 +225,19 @@ bool export_slice_hdf5(const Grid &grid, const HierarchyType *hierarchy, size_t 
         for (size_t j = 0; j < ny; ++j) {
             const size_t ii = ng + i;
             const size_t jj = ng + j;
-            const size_t idx = grid.alpha.idx(ii, jj, k);
             const size_t flat = i * ny + j;
-            alpha[flat] = grid.alpha.ptr()[idx];
-            chi[flat] = grid.chi.ptr()[idx];
+            const double x_ij = x[i];
+            const double y_ij = y[j];
+            if (!sample_composite_scalar(grid, hierarchy, tensorium_RG::z4c::BoundaryField::Alpha,
+                                         0, x_ij, y_ij, grid.z0 + double(grid.dims.nz / 2) * grid.dz,
+                                         alpha[flat])) {
+                alpha[flat] = grid.alpha.ptr()[grid.alpha.idx(ii, jj, k)];
+            }
+            if (!sample_composite_scalar(grid, hierarchy, tensorium_RG::z4c::BoundaryField::Chi, 0,
+                                         x_ij, y_ij, grid.z0 + double(grid.dims.nz / 2) * grid.dz,
+                                         chi[flat])) {
+                chi[flat] = grid.chi.ptr()[grid.chi.idx(ii, jj, k)];
+            }
             mask[flat] = (alpha[flat] < 0.1) ? 1.0 : 0.0;
         }
     }
@@ -313,6 +356,8 @@ bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<
     (void)tensorium::io::write_scalar_attribute(file.id(), "ny", static_cast<std::uint64_t>(ny));
     (void)tensorium::io::write_scalar_attribute(file.id(), "dx", grid.dx);
     (void)tensorium::io::write_scalar_attribute(file.id(), "dy", grid.dy);
+    (void)tensorium::io::write_scalar_attribute(file.id(), "constraint_guard",
+                                                static_cast<std::uint64_t>(kConstraintGuard));
     return tensorium::io::write_vector_dataset(file.id(), "x", x) &&
            tensorium::io::write_vector_dataset(file.id(), "y", y) &&
            tensorium::io::write_matrix_dataset(file.id(), "alpha", nx, ny, alpha) &&
@@ -334,11 +379,136 @@ bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<
            tensorium::io::write_matrix_dataset(file.id(), "Znorm", nx, ny, znorm);
 }
 
+bool write_volume_xdmf(const std::string &xmf_path, const std::string &h5_name, size_t nx,
+                       size_t ny, size_t nz, double time) {
+    std::ofstream file(xmf_path, std::ios::out | std::ios::trunc);
+    if (!file.is_open())
+        return false;
+
+    file << std::setprecision(17);
+    file << "<?xml version=\"1.0\" ?>\n";
+    file << "<!DOCTYPE Xdmf SYSTEM \"Xdmf.dtd\" []>\n";
+    file << "<Xdmf Version=\"3.0\">\n";
+    file << "  <Domain>\n";
+    file << "    <Grid Name=\"moving_puncture_volume\" GridType=\"Uniform\">\n";
+    file << "      <Time Value=\"" << time << "\" />\n";
+    file << "      <Topology TopologyType=\"3DRectMesh\" Dimensions=\"" << (nz + 1) << " "
+         << (ny + 1) << " " << (nx + 1) << "\"/>\n";
+    file << "      <Geometry GeometryType=\"VXVYVZ\">\n";
+    file << "        <DataItem Dimensions=\"" << (nx + 1)
+         << "\" NumberType=\"Float\" Precision=\"8\" Format=\"HDF\">" << h5_name
+         << ":/x_nodes</DataItem>\n";
+    file << "        <DataItem Dimensions=\"" << (ny + 1)
+         << "\" NumberType=\"Float\" Precision=\"8\" Format=\"HDF\">" << h5_name
+         << ":/y_nodes</DataItem>\n";
+    file << "        <DataItem Dimensions=\"" << (nz + 1)
+         << "\" NumberType=\"Float\" Precision=\"8\" Format=\"HDF\">" << h5_name
+         << ":/z_nodes</DataItem>\n";
+    file << "      </Geometry>\n";
+
+    const auto write_attr = [&](const char *name) {
+        file << "      <Attribute Name=\"" << name
+             << "\" AttributeType=\"Scalar\" Center=\"Cell\">\n";
+        file << "        <DataItem Dimensions=\"" << nz << " " << ny << " " << nx
+             << "\" NumberType=\"Float\" Precision=\"8\" Format=\"HDF\">" << h5_name << ":/"
+             << name << "</DataItem>\n";
+        file << "      </Attribute>\n";
+    };
+
+    write_attr("alpha");
+    write_attr("chi");
+    write_attr("W");
+    write_attr("mask");
+
+    file << "    </Grid>\n";
+    file << "  </Domain>\n";
+    file << "</Xdmf>\n";
+    return true;
+}
+
+bool export_volume_hdf5_xdmf(const Grid &grid, size_t step, double time,
+                             const std::string &output_dir) {
+    if (!tensorium::io::hdf5_available())
+        return false;
+
+    const size_t nx = grid.dims.nx;
+    const size_t ny = grid.dims.ny;
+    const size_t nz = grid.dims.nz;
+    const size_t ng = grid.dims.ng;
+
+    std::vector<double> x_nodes(nx + 1);
+    std::vector<double> y_nodes(ny + 1);
+    std::vector<double> z_nodes(nz + 1);
+    std::vector<double> alpha(nx * ny * nz);
+    std::vector<double> chi(nx * ny * nz);
+    std::vector<double> W(nx * ny * nz);
+    std::vector<double> mask(nx * ny * nz);
+
+    for (size_t i = 0; i <= nx; ++i)
+        x_nodes[i] = grid.x0 - 0.5 * grid.dx + double(i) * grid.dx;
+    for (size_t j = 0; j <= ny; ++j)
+        y_nodes[j] = grid.y0 - 0.5 * grid.dy + double(j) * grid.dy;
+    for (size_t k = 0; k <= nz; ++k)
+        z_nodes[k] = grid.z0 - 0.5 * grid.dz + double(k) * grid.dz;
+
+    for (size_t k = 0; k < nz; ++k) {
+        for (size_t j = 0; j < ny; ++j) {
+            for (size_t i = 0; i < nx; ++i) {
+                const size_t ii = ng + i;
+                const size_t jj = ng + j;
+                const size_t kk = ng + k;
+                const size_t idx = grid.alpha.idx(ii, jj, kk);
+                const size_t flat = (k * ny + j) * nx + i;
+                alpha[flat] = grid.alpha.ptr()[idx];
+                chi[flat] = grid.chi.ptr()[idx];
+                W[flat] = std::sqrt(std::max(chi[flat], 0.0));
+                mask[flat] = (alpha[flat] < 0.1) ? 1.0 : 0.0;
+            }
+        }
+    }
+
+    std::stringstream h5_ss;
+    h5_ss << output_dir << "/volume_" << std::setw(4) << std::setfill('0') << step << ".h5";
+    tensorium::io::HDF5File h5_file(h5_ss.str());
+    if (!h5_file.is_open())
+        return false;
+
+    (void)tensorium::io::write_string_attribute(h5_file.id(), "tensorium_kind",
+                                                "moving_puncture_volume_v1");
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "step",
+                                                static_cast<std::uint64_t>(step));
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "time", time);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "nx", static_cast<std::uint64_t>(nx));
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "ny", static_cast<std::uint64_t>(ny));
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "nz", static_cast<std::uint64_t>(nz));
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "dx", grid.dx);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "dy", grid.dy);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "dz", grid.dz);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "x0", grid.x0);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "y0", grid.y0);
+    (void)tensorium::io::write_scalar_attribute(h5_file.id(), "z0", grid.z0);
+
+    const bool ok = tensorium::io::write_vector_dataset(h5_file.id(), "x_nodes", x_nodes) &&
+                    tensorium::io::write_vector_dataset(h5_file.id(), "y_nodes", y_nodes) &&
+                    tensorium::io::write_vector_dataset(h5_file.id(), "z_nodes", z_nodes) &&
+                    tensorium::io::write_tensor3_dataset(h5_file.id(), "alpha", nz, ny, nx, alpha) &&
+                    tensorium::io::write_tensor3_dataset(h5_file.id(), "chi", nz, ny, nx, chi) &&
+                    tensorium::io::write_tensor3_dataset(h5_file.id(), "W", nz, ny, nx, W) &&
+                    tensorium::io::write_tensor3_dataset(h5_file.id(), "mask", nz, ny, nx, mask);
+    if (!ok)
+        return false;
+
+    std::filesystem::path h5_path(h5_ss.str());
+    std::stringstream xmf_ss;
+    xmf_ss << output_dir << "/volume_" << std::setw(4) << std::setfill('0') << step << ".xmf";
+    return write_volume_xdmf(xmf_ss.str(), h5_path.filename().string(), nx, ny, nz, time);
+}
+
 size_t parse_env_stride_or(const char *name, size_t fallback) {
     if (const char *raw = std::getenv(name)) {
         char *end = nullptr;
         const long parsed = std::strtol(raw, &end, 10);
-        if (end != raw && parsed > 0)
+        if (end != raw && parsed >= 0)
             return static_cast<size_t>(parsed);
     }
     return fallback;
@@ -957,6 +1127,18 @@ rebuild_moving_puncture_binary_hierarchy(
     return hierarchy;
 }
 
+bool is_recoverable_bbh_split_regrid_geometry_error(const std::exception &ex) {
+    const std::string message = ex.what();
+    return message.find("finest leaves overlap") != std::string::npos ||
+           message.find("leaf patches overlap") != std::string::npos ||
+           message.find("too small to contain both puncture leaves") != std::string::npos ||
+           message.find("cannot be separated") != std::string::npos ||
+           message.find("cannot retain ordered split boxes") != std::string::npos ||
+           message.find("adaptive clipping would exclude a puncture") != std::string::npos ||
+           message.find("does not fit on the grid") != std::string::npos ||
+           message.find("exceed the root domain") != std::string::npos;
+}
+
 PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
     PuncturePlaneSample sample;
 
@@ -1010,8 +1192,12 @@ int main(int argc, char **argv) {
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_EXPORT_STRIDE", 5);
     bool export_constraint_slices =
         parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_CONSTRAINT_SLICES", true);
-    const bool export_hdf5 =
+    const bool request_hdf5_export =
         parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_HDF5", false);
+    const bool export_hdf5 = request_hdf5_export && tensorium::io::hdf5_available();
+    bool export_csv = !export_hdf5;
+    size_t volume_export_stride =
+        parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_VOLUME_EXPORT_STRIDE", 0);
     size_t constraint_slice_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE",
                             constraint_export_stride);
@@ -1027,6 +1213,8 @@ int main(int argc, char **argv) {
             constraint_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
         } else if (std::strcmp(argv[i], "--constraint-slice-stride") == 0 && i + 1 < argc) {
             constraint_slice_stride = static_cast<size_t>(std::stoul(argv[++i]));
+        } else if (std::strcmp(argv[i], "--volume-export-stride") == 0 && i + 1 < argc) {
+            volume_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
         }
     }
 
@@ -1091,6 +1279,19 @@ int main(int argc, char **argv) {
               << " momentum_rad=" << cfg.radial_momentum
               << " m1=" << cfg.mass1
               << " m2=" << cfg.mass2 << std::endl;
+    if (cfg.use_interpolated_init) {
+        std::cout << "[init] twopunctures_mass_mode="
+                  << (cfg.tp_calculate_target_masses ? "target" : "bare")
+                  << " adm_tol=" << cfg.tp_adm_tol << std::endl;
+        if (cfg.auto_circular && !cfg.tp_calculate_target_masses) {
+            std::cout << "[warn] AUTO_CIRCULAR with fixed bare masses is not the GRChombo "
+                         "TwoPunctures setup; when separation changes it can generate expanding "
+                         "trajectories. For GRChombo-like TP data, enable "
+                         "TENSORIUM_MOVING_PUNCTURE_TP_CALCULATE_TARGET_MASSES=1 and pass target "
+                         "masses via MASS/MASS1/MASS2."
+                      << std::endl;
+        }
+    }
     std::cout << "[init] mode="
               << (cfg.use_interpolated_init ? tensorium_RG::z4c::moving_puncture_interpolated_mode_name()
                                             : "bowen_york")
@@ -1233,81 +1434,133 @@ int main(int argc, char **argv) {
         std::cout << "[fmr] enabled=0" << std::endl;
     }
 
+    // Initialize FMR memory pool for reduced allocation overhead
+    tensorium_RG::z4c::fmr::FMRMemoryConfig pool_config;
+    pool_config.root_nx = cfg.nx;
+    pool_config.root_ny = cfg.ny;
+    pool_config.root_nz = cfg.nz;
+    pool_config.ghost_cells = cfg.ng;
+    pool_config.num_levels = use_fmr ? (use_bbh_split ? binary_hierarchy_cfg.shared_levels.size() + 2
+                                                       : level_cfgs.size() + 1) : 1;
+    pool_config.refinement_ratio = cfg.fmr.refinement_ratio;
+    pool_config.grids_per_level = 5;  // Current + 4 RK4 stages
+    tensorium_RG::z4c::fmr::FMRMemoryManager<double> memory_manager(pool_config);
+    std::cout << "[memory] pool_initialized=1 expected_mb="
+              << (pool_config.total_memory_bytes<double>() / (1024.0 * 1024.0))
+              << " levels=" << pool_config.num_levels << std::endl;
+
     std::cout << "[log] state_log_stride=" << output_stride << std::endl;
-    std::cout << "[viz] slice_export_stride=" << slice_export_stride << std::endl;
+    std::cout << "[viz] slice_export_stride=" << slice_export_stride
+              << " volume_export_stride=" << volume_export_stride << std::endl;
     std::cout << "[constraints] norms_stride=" << constraint_export_stride
               << " slice_export=" << (export_constraint_slices ? 1 : 0)
               << " slice_stride=" << constraint_slice_stride << std::endl;
-    std::cout << "[hdf5] requested=" << (export_hdf5 ? 1 : 0)
-              << " available=" << (tensorium::io::hdf5_available() ? 1 : 0) << std::endl;
-
-    (void)std::remove("Output/viz/constraints_norms.csv");
-    std::ofstream constraint_log("Output/viz/constraints_norms.csv",
-                                 std::ios::out | std::ios::trunc);
-    if (constraint_log.is_open()) {
-        constraint_log.setf(std::ios::unitbuf);
-        constraint_log
-            << "step,t,dt,l2_theta,l2_Z,l2_H,l2_M,max_H,max_det_drift,max_trace_A,samples\n";
-    } else {
-        std::cout << "[warn] could not open Output/viz/constraints_norms.csv for writing"
+    std::cout << "[hdf5] requested=" << (request_hdf5_export ? 1 : 0)
+              << " available=" << (tensorium::io::hdf5_available() ? 1 : 0)
+              << " active=" << (export_hdf5 ? 1 : 0)
+              << " csv_active=" << (export_csv ? 1 : 0) << std::endl;
+    if (volume_export_stride > 0 && !export_hdf5) {
+        std::cout << "[warn] volume export requested but HDF5 export is inactive; disabling volume export"
                   << std::endl;
+        volume_export_stride = 0;
     }
 
-    (void)std::remove("Output/viz/puncture_track.csv");
-    std::ofstream puncture_track("Output/viz/puncture_track.csv", std::ios::out | std::ios::trunc);
-    if (puncture_track.is_open()) {
-        puncture_track.setf(std::ios::unitbuf);
-        puncture_track << "step,t,"
-                       << "x_left,y_left,chi_left,alpha_left,"
-                       << "x_right,y_right,chi_right,alpha_right\n";
-    } else {
-        std::cout << "[warn] could not open Output/viz/puncture_track.csv for writing"
-                  << std::endl;
-    }
+    std::ofstream constraint_log;
+    std::ofstream puncture_track;
+    std::ofstream puncture_track_minima;
+    bool csv_outputs_initialized = false;
+    auto initialize_csv_outputs = [&](const char *reason) {
+        if (csv_outputs_initialized)
+            return;
+        if (reason != nullptr) {
+            std::cout << "[warn] " << reason << std::endl;
+        }
+        csv_outputs_initialized = true;
+        export_csv = true;
+        (void)std::remove("Output/viz/constraints_norms.csv");
+        constraint_log.open("Output/viz/constraints_norms.csv", std::ios::out | std::ios::trunc);
+        if (constraint_log.is_open()) {
+            constraint_log.setf(std::ios::unitbuf);
+            constraint_log
+                << "step,t,dt,l2_theta,l2_Z,l2_H,l2_M,max_H,max_det_drift,max_trace_A,samples\n";
+        } else {
+            std::cout << "[warn] could not open Output/viz/constraints_norms.csv for writing"
+                      << std::endl;
+        }
 
-    (void)std::remove("Output/viz/puncture_track_minima.csv");
-    std::ofstream puncture_track_minima("Output/viz/puncture_track_minima.csv",
-                                        std::ios::out | std::ios::trunc);
-    if (puncture_track_minima.is_open()) {
-        puncture_track_minima.setf(std::ios::unitbuf);
-        puncture_track_minima << "step,t,"
-                              << "x_left,y_left,chi_left,alpha_left,"
-                              << "x_right,y_right,chi_right,alpha_right\n";
-    } else {
-        std::cout << "[warn] could not open Output/viz/puncture_track_minima.csv for writing"
-                  << std::endl;
+        (void)std::remove("Output/viz/puncture_track.csv");
+        puncture_track.open("Output/viz/puncture_track.csv", std::ios::out | std::ios::trunc);
+        if (puncture_track.is_open()) {
+            puncture_track.setf(std::ios::unitbuf);
+            puncture_track << "step,t,"
+                           << "x_left,y_left,chi_left,alpha_left,"
+                           << "x_right,y_right,chi_right,alpha_right\n";
+        } else {
+            std::cout << "[warn] could not open Output/viz/puncture_track.csv for writing"
+                      << std::endl;
+        }
+
+        (void)std::remove("Output/viz/puncture_track_minima.csv");
+        puncture_track_minima.open("Output/viz/puncture_track_minima.csv",
+                                   std::ios::out | std::ios::trunc);
+        if (puncture_track_minima.is_open()) {
+            puncture_track_minima.setf(std::ios::unitbuf);
+            puncture_track_minima << "step,t,"
+                                  << "x_left,y_left,chi_left,alpha_left,"
+                                  << "x_right,y_right,chi_right,alpha_right\n";
+        } else {
+            std::cout << "[warn] could not open Output/viz/puncture_track_minima.csv for writing"
+                      << std::endl;
+        }
+    };
+    if (export_csv) {
+        initialize_csv_outputs(
+            request_hdf5_export && !tensorium::io::hdf5_available()
+                ? "HDF5 export requested but this build has no HDF5 support; falling back to CSV"
+                : nullptr);
     }
 
     tensorium::io::HDF5AppendTable constraint_log_h5;
     tensorium::io::HDF5AppendTable puncture_track_h5;
     tensorium::io::HDF5AppendTable puncture_track_minima_h5;
+    constexpr const char *constraint_log_h5_path = "Output/viz/constraints_norms.h5";
+    constexpr const char *puncture_track_h5_path = "Output/viz/puncture_track.h5";
+    constexpr const char *puncture_track_minima_h5_path = "Output/viz/puncture_track_minima.h5";
+    bool hdf5_log_init_failed = false;
     if (export_hdf5) {
-        if (tensorium::io::hdf5_available()) {
-            if (!constraint_log_h5.open(
-                    "Output/viz/constraints_norms.h5",
-                    {"step", "t", "dt", "l2_theta", "l2_Z", "l2_H", "l2_M", "max_H",
-                     "max_det_drift", "max_trace_A", "samples"})) {
-                std::cout << "[warn] could not open Output/viz/constraints_norms.h5 for writing"
-                          << std::endl;
-            }
-            if (!puncture_track_h5.open("Output/viz/puncture_track.h5",
-                                        {"step", "t", "x_left", "y_left", "chi_left",
-                                         "alpha_left", "x_right", "y_right", "chi_right",
-                                         "alpha_right"})) {
-                std::cout << "[warn] could not open Output/viz/puncture_track.h5 for writing"
-                          << std::endl;
-            }
-            if (!puncture_track_minima_h5.open(
-                    "Output/viz/puncture_track_minima.h5",
-                    {"step", "t", "x_left", "y_left", "chi_left", "alpha_left", "x_right",
-                     "y_right", "chi_right", "alpha_right"})) {
-                std::cout << "[warn] could not open Output/viz/puncture_track_minima.h5 for writing"
-                          << std::endl;
-            }
-        } else {
-            std::cout << "[warn] HDF5 export requested but this build has no HDF5 support"
+        (void)std::remove(constraint_log_h5_path);
+        (void)std::remove(puncture_track_h5_path);
+        (void)std::remove(puncture_track_minima_h5_path);
+
+        if (!constraint_log_h5.open(constraint_log_h5_path,
+                                    {"step", "t", "dt", "l2_theta", "l2_Z", "l2_H", "l2_M",
+                                     "max_H", "max_det_drift", "max_trace_A", "samples"})) {
+            std::cout << "[warn] could not open " << constraint_log_h5_path << " for writing"
                       << std::endl;
+            (void)std::remove(constraint_log_h5_path);
+            hdf5_log_init_failed = true;
         }
+        if (!puncture_track_h5.open(puncture_track_h5_path,
+                                    {"step", "t", "x_left", "y_left", "chi_left", "alpha_left",
+                                     "x_right", "y_right", "chi_right", "alpha_right"})) {
+            std::cout << "[warn] could not open " << puncture_track_h5_path << " for writing"
+                      << std::endl;
+            (void)std::remove(puncture_track_h5_path);
+            hdf5_log_init_failed = true;
+        }
+        if (!puncture_track_minima_h5.open(puncture_track_minima_h5_path,
+                                           {"step", "t", "x_left", "y_left", "chi_left",
+                                            "alpha_left", "x_right", "y_right", "chi_right",
+                                            "alpha_right"})) {
+            std::cout << "[warn] could not open " << puncture_track_minima_h5_path
+                      << " for writing" << std::endl;
+            (void)std::remove(puncture_track_minima_h5_path);
+            hdf5_log_init_failed = true;
+        }
+    }
+    if (export_hdf5 && hdf5_log_init_failed) {
+        initialize_csv_outputs(
+            "HDF5 append-table export initialization failed; enabling CSV diagnostics fallback");
     }
 
     auto write_puncture_row = [&](std::ofstream &file, size_t step, double time,
@@ -1378,6 +1631,7 @@ int main(int argc, char **argv) {
     control.gauge_speed = cfg.gauge_speed;
 
     double t = 0.0;
+    size_t memory_log_stride = parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_MEMORY_LOG_STRIDE", 100);
     if (use_fmr && use_bbh_split) {
         binary_hierarchy->set_gauge_parameters(params);
         binary_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
@@ -1387,6 +1641,7 @@ int main(int argc, char **argv) {
         };
 
         for (size_t n = 0; n < cfg.steps; ++n) {
+            memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
             const double dt = binary_hierarchy->compute_dt(control);
             current_step = n;
@@ -1475,41 +1730,109 @@ int main(int argc, char **argv) {
                     const double regrid_threshold =
                         cfg.fmr.regrid_threshold_cells *
                         std::max(left_puncture_state->dx, right_puncture_state->dx);
-                    if (center_shift > regrid_threshold || left_shift > regrid_threshold ||
-                        right_shift > regrid_threshold) {
-                        auto next_hierarchy = rebuild_moving_puncture_binary_hierarchy(
-                            binary_hierarchy.get(), cfg, proj_cfg, puncture_tracker.p1,
-                            puncture_tracker.p2);
-                        next_hierarchy->set_gauge_parameters(params);
-                        next_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
-                        binary_hierarchy = std::move(next_hierarchy);
-                        root_state = &binary_hierarchy->root_grid();
-                        left_puncture_state = &binary_hierarchy->leaf_grid(0);
-                        right_puncture_state = &binary_hierarchy->leaf_grid(1);
-                        puncture_state = left_puncture_state;
-                        refresh_shift_puncture_tracker_beta_split(*left_puncture_state,
-                                                                  *right_puncture_state,
-                                                                  puncture_tracker);
-                        puncture_minima =
-                            sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
-                        puncture_sample = make_tracker_sample_split(*left_puncture_state,
-                                                                   *right_puncture_state,
-                                                                   puncture_tracker);
-                        std::cout << "[fmr.regrid] step=" << (n + 1)
-                                  << " center_old=(" << current_center[0] << ", " << current_center[1]
-                                  << ", " << current_center[2] << ")"
-                                  << " center_new=(" << target_center[0] << ", " << target_center[1]
-                                  << ", " << target_center[2] << ")"
-                                  << " shift=" << center_shift
-                                  << " left_shift=" << left_shift
-                                  << " right_shift=" << right_shift << std::endl;
+
+                    // Check if only leaves need regridding (punctures moved but still within shared level)
+                    const bool leaves_need_regrid = (left_shift > regrid_threshold || right_shift > regrid_threshold);
+                    const bool shared_needs_regrid = (center_shift > regrid_threshold);
+                    bool need_full_rebuild = shared_needs_regrid || leaves_need_regrid;
+
+                    if (leaves_need_regrid && !shared_needs_regrid) {
+                        try {
+                            // Fast path: only regrid leaves using tricubic interpolation.
+                            const auto &parent_grid = binary_hierarchy->shared_level_grid(
+                                binary_hierarchy->num_shared_levels() - 1);
+                            constexpr size_t clearance = 2;
+                            const double leaf_half_width =
+                                (cfg.fmr.finest_box_half_width > 0.0)
+                                    ? cfg.fmr.finest_box_half_width
+                                    : std::max(cfg.fmr.puncture_buffer > 0.0 ? cfg.fmr.puncture_buffer
+                                                                              : 4.0 * cfg.spacing,
+                                               4.0 * cfg.spacing);
+
+                            const auto [new_left_box, new_right_box] =
+                                tensorium_RG::z4c::detail::moving_puncture_disjoint_split_leaf_boxes(
+                                    parent_grid, puncture_tracker.p1, puncture_tracker.p2,
+                                    leaf_half_width, clearance);
+
+                            if (tensorium_RG::z4c::fmr::detail::patch_boxes_overlap(new_left_box,
+                                                                                    new_right_box)) {
+                                need_full_rebuild = false;
+                                std::cout << "[fmr.regrid.fast][warn] step=" << (n + 1)
+                                          << " split leaf boxes overlap; keeping current hierarchy"
+                                          << " (reduce finest width or switch layout)" << std::endl;
+                            } else if (binary_hierarchy->regrid_leaves(new_left_box, new_right_box)) {
+                                left_puncture_state = &binary_hierarchy->leaf_grid(0);
+                                right_puncture_state = &binary_hierarchy->leaf_grid(1);
+                                puncture_state = left_puncture_state;
+                                refresh_shift_puncture_tracker_beta_split(*left_puncture_state,
+                                                                          *right_puncture_state,
+                                                                          puncture_tracker);
+                                puncture_minima = sample_puncture_minima_split(*left_puncture_state,
+                                                                               *right_puncture_state);
+                                puncture_sample = make_tracker_sample_split(*left_puncture_state,
+                                                                           *right_puncture_state,
+                                                                           puncture_tracker);
+                                need_full_rebuild = false;
+                                std::cout << "[fmr.regrid.fast] step=" << (n + 1)
+                                          << " left_shift=" << left_shift
+                                          << " right_shift=" << right_shift
+                                          << " (leaves only, tricubic transfer)" << std::endl;
+                            } else {
+                                std::cout << "[fmr.regrid.fast][warn] step=" << (n + 1)
+                                          << " fast leaf regrid was rejected; falling back to full rebuild"
+                                          << std::endl;
+                            }
+                        } catch (const std::exception &ex) {
+                            std::cout << "[fmr.regrid.fast][warn] step=" << (n + 1)
+                                      << " fast leaf regrid failed: " << ex.what()
+                                      << "; falling back to full rebuild" << std::endl;
+                        }
+                    }
+                    if (need_full_rebuild) {
+                        // Full rebuild when shared levels need to move or the fast path cannot be used.
+                        try {
+                            auto next_hierarchy = rebuild_moving_puncture_binary_hierarchy(
+                                binary_hierarchy.get(), cfg, proj_cfg, puncture_tracker.p1,
+                                puncture_tracker.p2);
+                            next_hierarchy->set_gauge_parameters(params);
+                            next_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
+                            binary_hierarchy = std::move(next_hierarchy);
+                            root_state = &binary_hierarchy->root_grid();
+                            left_puncture_state = &binary_hierarchy->leaf_grid(0);
+                            right_puncture_state = &binary_hierarchy->leaf_grid(1);
+                            puncture_state = left_puncture_state;
+                            refresh_shift_puncture_tracker_beta_split(*left_puncture_state,
+                                                                      *right_puncture_state,
+                                                                      puncture_tracker);
+                            puncture_minima =
+                                sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
+                            puncture_sample = make_tracker_sample_split(*left_puncture_state,
+                                                                       *right_puncture_state,
+                                                                       puncture_tracker);
+                            std::cout << "[fmr.regrid.full] step=" << (n + 1)
+                                      << " center_old=(" << current_center[0] << ", " << current_center[1]
+                                      << ", " << current_center[2] << ")"
+                                      << " center_new=(" << target_center[0] << ", " << target_center[1]
+                                      << ", " << target_center[2] << ")"
+                                      << " shift=" << center_shift
+                                      << " left_shift=" << left_shift
+                                      << " right_shift=" << right_shift
+                                      << " (full hierarchy rebuild)" << std::endl;
+                        } catch (const std::exception &ex) {
+                            if (!is_recoverable_bbh_split_regrid_geometry_error(ex))
+                                throw;
+                            std::cout << "[fmr.regrid.full][warn] step=" << (n + 1)
+                                      << " regrid skipped: " << ex.what()
+                                      << " ; keeping current hierarchy" << std::endl;
+                        }
                     }
                 }
             }
 
             double constraint_seconds = 0.0;
             const bool need_constraint_export =
-                constraint_export_stride > 0 && constraint_log.is_open() &&
+                constraint_export_stride > 0 &&
+                (constraint_log.is_open() || constraint_log_h5.is_open()) &&
                 (current_step % constraint_export_stride) == 0;
             const bool need_constraint_slice_export =
                 export_constraint_slices && constraint_slice_stride > 0 &&
@@ -1519,10 +1842,13 @@ int main(int argc, char **argv) {
                 auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
-                constraint_log << current_step << "," << current_time << "," << current_dt << ","
-                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
-                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
-                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log.is_open()) {
+                    constraint_log << current_step << "," << current_time << "," << current_dt
+                                   << "," << stats.l2_theta << "," << stats.l2_Z << ","
+                                   << stats.l2_H << "," << stats.l2_M << "," << stats.max_H
+                                   << "," << stats.max_det_drift << "," << stats.max_trace_A
+                                   << "," << stats.samples << "\n";
+                }
                 if (constraint_log_h5.is_open()) {
                     (void)constraint_log_h5.append_row(
                         {static_cast<double>(current_step), current_time, current_dt,
@@ -1535,9 +1861,26 @@ int main(int argc, char **argv) {
             if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
                 std::cout << ">> Exporting domain slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
-                export_slice_csv(*root_state, binary_hierarchy.get(), n, "Output/viz");
-                if (export_hdf5)
-                    (void)export_slice_hdf5(*root_state, binary_hierarchy.get(), n, t, "Output/viz");
+                bool wrote_hdf5_slice = false;
+                if (export_hdf5) {
+                    wrote_hdf5_slice =
+                        export_slice_hdf5(*root_state, binary_hierarchy.get(), n, t, "Output/viz");
+                    if (!wrote_hdf5_slice) {
+                        std::cout << "[warn] HDF5 slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_slice))
+                    export_slice_csv(*root_state, binary_hierarchy.get(), n, "Output/viz");
+                const auto export_stop = std::chrono::steady_clock::now();
+                export_seconds += elapsed_seconds(export_start, export_stop);
+            }
+            if (export_hdf5 && volume_export_stride > 0 && (n % volume_export_stride) == 0) {
+                std::cout << ">> Exporting domain volume " << n << "..." << std::endl;
+                const auto export_start = std::chrono::steady_clock::now();
+                if (!export_volume_hdf5_xdmf(*root_state, n, t, "Output/viz")) {
+                    std::cout << "[warn] HDF5 volume export failed at step " << n << std::endl;
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1545,19 +1888,30 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting constraint slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
-                export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
-                                            constraint_scratch.C, n, "Output/viz");
+                bool wrote_hdf5_constraint_slice = false;
                 if (export_hdf5) {
-                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
-                                                       constraint_scratch.M, constraint_scratch.C,
-                                                       n, t, "Output/viz");
+                    wrote_hdf5_constraint_slice =
+                        export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                     constraint_scratch.M, constraint_scratch.C,
+                                                     n, t, "Output/viz");
+                    if (!wrote_hdf5_constraint_slice) {
+                        std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
+                    export_constraint_slice_csv(*root_state, constraint_scratch.H,
+                                                constraint_scratch.M, constraint_scratch.C, n,
+                                                "Output/viz");
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
 
-            write_puncture_row(puncture_track, n, t, puncture_sample);
-            write_puncture_row(puncture_track_minima, n, t, puncture_minima);
+            if (puncture_track.is_open())
+                write_puncture_row(puncture_track, n, t, puncture_sample);
+            if (puncture_track_minima.is_open())
+                write_puncture_row(puncture_track_minima, n, t, puncture_minima);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
 
@@ -1569,12 +1923,25 @@ int main(int argc, char **argv) {
                 projection_seconds = elapsed_seconds(projection_start, projection_stop);
             }
 
+            memory_manager.end_epoch();
+
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
             std::printf(
                 "dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
                 dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds, constraint_seconds,
                 export_seconds, projection_seconds);
+
+            // Periodic memory pool statistics
+            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
+                const auto& stats = memory_manager.pool().stats();
+                std::cout << "[memory.epoch] step=" << (n + 1)
+                          << " allocs=" << stats.allocation_count.load()
+                          << " reuses=" << stats.reuse_count.load()
+                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
+                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
+                          << std::endl;
+            }
         }
     } else if (use_fmr) {
         hierarchy->set_gauge_parameters(params);
@@ -1585,6 +1952,7 @@ int main(int argc, char **argv) {
         };
 
         for (size_t n = 0; n < cfg.steps; ++n) {
+            memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
             const double dt = hierarchy->compute_dt(control);
             current_step = n;
@@ -1681,7 +2049,8 @@ int main(int argc, char **argv) {
 
             double constraint_seconds = 0.0;
             const bool need_constraint_export =
-                constraint_export_stride > 0 && constraint_log.is_open() &&
+                constraint_export_stride > 0 &&
+                (constraint_log.is_open() || constraint_log_h5.is_open()) &&
                 (current_step % constraint_export_stride) == 0;
             const bool need_constraint_slice_export =
                 export_constraint_slices && constraint_slice_stride > 0 &&
@@ -1691,10 +2060,13 @@ int main(int argc, char **argv) {
                 auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
-                constraint_log << current_step << "," << current_time << "," << current_dt << ","
-                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
-                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
-                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log.is_open()) {
+                    constraint_log << current_step << "," << current_time << "," << current_dt
+                                   << "," << stats.l2_theta << "," << stats.l2_Z << ","
+                                   << stats.l2_H << "," << stats.l2_M << "," << stats.max_H
+                                   << "," << stats.max_det_drift << "," << stats.max_trace_A
+                                   << "," << stats.samples << "\n";
+                }
                 if (constraint_log_h5.is_open()) {
                     (void)constraint_log_h5.append_row(
                         {static_cast<double>(current_step), current_time, current_dt,
@@ -1707,9 +2079,26 @@ int main(int argc, char **argv) {
             if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
                 std::cout << ">> Exporting domain slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
-                export_slice_csv(*root_state, hierarchy.get(), n, "Output/viz");
-                if (export_hdf5)
-                    (void)export_slice_hdf5(*root_state, hierarchy.get(), n, t, "Output/viz");
+                bool wrote_hdf5_slice = false;
+                if (export_hdf5) {
+                    wrote_hdf5_slice =
+                        export_slice_hdf5(*root_state, hierarchy.get(), n, t, "Output/viz");
+                    if (!wrote_hdf5_slice) {
+                        std::cout << "[warn] HDF5 slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_slice))
+                    export_slice_csv(*root_state, hierarchy.get(), n, "Output/viz");
+                const auto export_stop = std::chrono::steady_clock::now();
+                export_seconds += elapsed_seconds(export_start, export_stop);
+            }
+            if (export_hdf5 && volume_export_stride > 0 && (n % volume_export_stride) == 0) {
+                std::cout << ">> Exporting domain volume " << n << "..." << std::endl;
+                const auto export_start = std::chrono::steady_clock::now();
+                if (!export_volume_hdf5_xdmf(*root_state, n, t, "Output/viz")) {
+                    std::cout << "[warn] HDF5 volume export failed at step " << n << std::endl;
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1717,19 +2106,30 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting constraint slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
-                export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
-                                            constraint_scratch.C, n, "Output/viz");
+                bool wrote_hdf5_constraint_slice = false;
                 if (export_hdf5) {
-                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
-                                                       constraint_scratch.M, constraint_scratch.C,
-                                                       n, t, "Output/viz");
+                    wrote_hdf5_constraint_slice =
+                        export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                     constraint_scratch.M, constraint_scratch.C,
+                                                     n, t, "Output/viz");
+                    if (!wrote_hdf5_constraint_slice) {
+                        std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
+                    export_constraint_slice_csv(*root_state, constraint_scratch.H,
+                                                constraint_scratch.M, constraint_scratch.C, n,
+                                                "Output/viz");
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
 
-            write_puncture_row(puncture_track, n, t, puncture_sample);
-            write_puncture_row(puncture_track_minima, n, t, puncture_minima);
+            if (puncture_track.is_open())
+                write_puncture_row(puncture_track, n, t, puncture_sample);
+            if (puncture_track_minima.is_open())
+                write_puncture_row(puncture_track_minima, n, t, puncture_minima);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
 
@@ -1742,11 +2142,24 @@ int main(int argc, char **argv) {
                 projection_seconds = elapsed_seconds(projection_start, projection_stop);
             }
 
+            memory_manager.end_epoch();
+
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
             std::printf("dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
                         dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
                         constraint_seconds, export_seconds, projection_seconds);
+
+            // Periodic memory pool statistics
+            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
+                const auto& stats = memory_manager.pool().stats();
+                std::cout << "[memory.epoch] step=" << (n + 1)
+                          << " allocs=" << stats.allocation_count.load()
+                          << " reuses=" << stats.reuse_count.load()
+                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
+                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
+                          << std::endl;
+            }
         }
     } else {
         tensorium_RG::z4c::Z4cRKStepper<double, tensorium_RG::z4c::BoundaryRadiative> stepper(
@@ -1759,6 +2172,7 @@ int main(int argc, char **argv) {
         };
 
         for (size_t n = 0; n < cfg.steps; ++n) {
+            memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
             const double dt = tensorium_RG::z4c::compute_dt_cfl(*root_state, control, cfg.padding);
             current_step = n;
@@ -1770,14 +2184,17 @@ int main(int argc, char **argv) {
             t += dt;
 
             const auto puncture_sample = sample_puncture_minima(*root_state);
-            write_puncture_row(puncture_track, n, t, puncture_sample);
-            write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+            if (puncture_track.is_open())
+                write_puncture_row(puncture_track, n, t, puncture_sample);
+            if (puncture_track_minima.is_open())
+                write_puncture_row(puncture_track_minima, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_sample);
 
             double constraint_seconds = 0.0;
             const bool need_constraint_export =
-                constraint_export_stride > 0 && constraint_log.is_open() &&
+                constraint_export_stride > 0 &&
+                (constraint_log.is_open() || constraint_log_h5.is_open()) &&
                 (current_step % constraint_export_stride) == 0;
             const bool need_constraint_slice_export =
                 export_constraint_slices && constraint_slice_stride > 0 &&
@@ -1787,10 +2204,13 @@ int main(int argc, char **argv) {
                 auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
-                constraint_log << current_step << "," << current_time << "," << current_dt << ","
-                               << stats.l2_theta << "," << stats.l2_Z << "," << stats.l2_H << ","
-                               << stats.l2_M << "," << stats.max_H << "," << stats.max_det_drift
-                               << "," << stats.max_trace_A << "," << stats.samples << "\n";
+                if (constraint_log.is_open()) {
+                    constraint_log << current_step << "," << current_time << "," << current_dt
+                                   << "," << stats.l2_theta << "," << stats.l2_Z << ","
+                                   << stats.l2_H << "," << stats.l2_M << "," << stats.max_H
+                                   << "," << stats.max_det_drift << "," << stats.max_trace_A
+                                   << "," << stats.samples << "\n";
+                }
                 if (constraint_log_h5.is_open()) {
                     (void)constraint_log_h5.append_row(
                         {static_cast<double>(current_step), current_time, current_dt,
@@ -1803,10 +2223,27 @@ int main(int argc, char **argv) {
             if (slice_export_stride > 0 && (n % slice_export_stride) == 0) {
                 std::cout << ">> Exporting slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
-                export_slice_csv<MovingPunctureHierarchy>(*root_state, nullptr, n, "Output/viz");
-                if (export_hdf5)
-                    (void)export_slice_hdf5<MovingPunctureHierarchy>(*root_state, nullptr, n, t,
-                                                                     "Output/viz");
+                bool wrote_hdf5_slice = false;
+                if (export_hdf5) {
+                    wrote_hdf5_slice = export_slice_hdf5<MovingPunctureHierarchy>(
+                        *root_state, nullptr, n, t, "Output/viz");
+                    if (!wrote_hdf5_slice) {
+                        std::cout << "[warn] HDF5 slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_slice)) {
+                    export_slice_csv<MovingPunctureHierarchy>(*root_state, nullptr, n, "Output/viz");
+                }
+                const auto export_stop = std::chrono::steady_clock::now();
+                export_seconds += elapsed_seconds(export_start, export_stop);
+            }
+            if (export_hdf5 && volume_export_stride > 0 && (n % volume_export_stride) == 0) {
+                std::cout << ">> Exporting domain volume " << n << "..." << std::endl;
+                const auto export_start = std::chrono::steady_clock::now();
+                if (!export_volume_hdf5_xdmf(*root_state, n, t, "Output/viz")) {
+                    std::cout << "[warn] HDF5 volume export failed at step " << n << std::endl;
+                }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
             }
@@ -1814,12 +2251,21 @@ int main(int argc, char **argv) {
                 std::cout << ">> Exporting constraint slice " << n << "..." << std::endl;
                 const auto export_start = std::chrono::steady_clock::now();
                 compute_constraint_slice_fields(*root_state, constraint_scratch);
-                export_constraint_slice_csv(*root_state, constraint_scratch.H, constraint_scratch.M,
-                                            constraint_scratch.C, n, "Output/viz");
+                bool wrote_hdf5_constraint_slice = false;
                 if (export_hdf5) {
-                    (void)export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
-                                                       constraint_scratch.M, constraint_scratch.C,
-                                                       n, t, "Output/viz");
+                    wrote_hdf5_constraint_slice =
+                        export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
+                                                     constraint_scratch.M, constraint_scratch.C,
+                                                     n, t, "Output/viz");
+                    if (!wrote_hdf5_constraint_slice) {
+                        std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
+                                  << "; falling back to CSV" << std::endl;
+                    }
+                }
+                if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
+                    export_constraint_slice_csv(*root_state, constraint_scratch.H,
+                                                constraint_scratch.M, constraint_scratch.C, n,
+                                                "Output/viz");
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
@@ -1834,15 +2280,43 @@ int main(int argc, char **argv) {
                 projection_seconds = elapsed_seconds(projection_start, projection_stop);
             }
 
+            memory_manager.end_epoch();
+
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
             const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
             std::printf("dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
                         dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
                         constraint_seconds, export_seconds, projection_seconds);
+
+            // Periodic memory pool statistics
+            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
+                const auto& stats = memory_manager.pool().stats();
+                std::cout << "[memory.epoch] step=" << (n + 1)
+                          << " allocs=" << stats.allocation_count.load()
+                          << " reuses=" << stats.reuse_count.load()
+                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
+                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
+                          << std::endl;
+            }
         }
     }
 
     std::cout << "[done] steps=" << cfg.steps << " t_final=" << t << std::endl;
+
+    // Print memory pool statistics
+    const auto& pool_stats = memory_manager.pool().stats();
+    std::cout << "[memory.stats] total_allocated_mb="
+              << (pool_stats.total_allocated.load() / (1024.0 * 1024.0))
+              << " peak_usage_mb=" << (pool_stats.peak_in_use.load() / (1024.0 * 1024.0))
+              << " allocations=" << pool_stats.allocation_count.load()
+              << " reuse_count=" << pool_stats.reuse_count.load();
+    if (pool_stats.allocation_count.load() > 0) {
+        const double hit_rate = 100.0 * pool_stats.reuse_count.load() /
+                                pool_stats.allocation_count.load();
+        std::cout << " hit_rate=" << hit_rate << "%";
+    }
+    std::cout << std::endl;
+
     return 0;
 }

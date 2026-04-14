@@ -257,6 +257,41 @@ inline bool write_matrix_dataset(hdf5_handle_t file, const std::string &name, st
 #endif
 }
 
+inline bool write_tensor3_dataset(hdf5_handle_t file, const std::string &name, std::size_t dim0,
+                                  std::size_t dim1, std::size_t dim2,
+                                  const std::vector<double> &values) {
+#ifdef TENSORIUM_USE_HDF5
+    if (file < 0 || values.size() != dim0 * dim1 * dim2)
+        return false;
+    const hsize_t dims[3] = {static_cast<hsize_t>(dim0), static_cast<hsize_t>(dim1),
+                             static_cast<hsize_t>(dim2)};
+    hid_t space = H5Screate_simple(3, dims, nullptr);
+    if (space < 0)
+        return false;
+    hid_t dataset =
+        H5Dcreate2(file, name.c_str(), H5T_NATIVE_DOUBLE, space, H5P_DEFAULT, H5P_DEFAULT,
+                   H5P_DEFAULT);
+    if (dataset < 0) {
+        H5Sclose(space);
+        return false;
+    }
+    const bool ok =
+        values.empty() || H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT,
+                                   values.data()) >= 0;
+    H5Dclose(dataset);
+    H5Sclose(space);
+    return ok;
+#else
+    (void)file;
+    (void)name;
+    (void)dim0;
+    (void)dim1;
+    (void)dim2;
+    (void)values;
+    return false;
+#endif
+}
+
 class HDF5AppendTable {
   public:
     HDF5AppendTable() = default;

@@ -137,8 +137,44 @@ REGISTER_TEST("z4c.evolution.radiative_boundary_shells_are_evolved",
                                 "Inner collar cell stays bounded by the asymptotic state");
 });
 
+REGISTER_TEST("z4c.evolution.radiative_bulk_rhs_reaches_boundary_without_sommerfeld",
+              "Radiative bulk kernels evolve boundary-adjacent physical cells even when the explicit Sommerfeld pass is disabled",
+              []() {
+    const size_t padding = 4;
+    Grid         grid(24, 20, 16, padding, 0.25, 0.25, 0.25);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    tensorium_RG::z4c::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
+                                                                     true);
+    tensorium_RG::z4c::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
+                                                                false);
+    tensorium_RG::z4c::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+
+    Stepper stepper(grid, padding);
+    stepper.set_rhs_prep_callback([](auto &rhs) { poison_workspace(rhs); });
+
+    tensorium_RG::z4c::GaugeParameters<double> gauge{};
+    gauge.apply_rhs_sommerfeld = false;
+    stepper.set_gauge_parameters(gauge);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t j = J0 + (J1 - J0) / 2;
+    const size_t k = K0 + (K1 - K0) / 2;
+
+    const size_t idx_face = grid.alpha.idx(I0, j, k);
+    const size_t idx_shell3 = grid.alpha.idx(I0 + 3, j, k);
+
+    stepper.step(grid, 1.0e-3, 0);
+
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_face]));
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_shell3]));
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.chi.ptr()[idx_face]));
+    TENSORIUM_TEST_ASSERT(std::isfinite(grid.K.ptr()[idx_face]));
+});
+
 REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
-              "Z4c boundary helper keeps the fast face-normal operator on pure faces",
+              "Z4c boundary helper uses the GRChombo-style local Cartesian operator on pure faces",
               []() {
     const size_t padding = 4;
     Grid         grid(16, 14, 12, padding, 0.5, 0.4, 0.3);
@@ -187,9 +223,6 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
     for (int c = 0; c < 3; ++c)
         poison_field(rhs.Z[c]);
 
-    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(1.0, 1.0,
-                                                                           std::sqrt(2.0));
-
     tensorium_RG::z4c::RHSBoundaryFaceMask mask{};
     mask.face[0][0] = true;
     mask.face[0][1] = false;
@@ -210,7 +243,6 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
     double x, y, z;
     grid.coords(i, j, k, x, y, z);
     const double r = std::sqrt(x * x + y * y + z * z);
-    const double sqrt2 = std::sqrt(2.0);
 
     auto deriv_axis = [&](const tensorium_RG::Field3D<double> &field, ptrdiff_t stride, size_t pos,
                           size_t lo, size_t hi, double inv_h, double inv_2h) {
@@ -222,47 +254,67 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_operator",
         return (p[stride] - p[-stride]) * inv_2h;
     };
 
-    auto normal_derivative = [&](const tensorium_RG::Field3D<double> &field) {
-        const double d =
+    auto expected_face_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic) {
+        const double du_dx =
             deriv_axis(field, field.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx);
-        return -d;
-    };
-
-    auto expected_face_rhs = [&](const tensorium_RG::Field3D<double> &field, double asymptotic,
-                                 double speed) {
+        const double du_dy =
+            deriv_axis(field, field.st.sy, j, J0, J1, 1.0 / grid.dy, 0.5 / grid.dy);
+        const double du_dz =
+            deriv_axis(field, ptrdiff_t(1), k, K0, K1, 1.0 / grid.dz, 0.5 / grid.dz);
         const double value = field.ptr()[idx];
-        return -speed * (normal_derivative(field) + (value - asymptotic) / r);
+        const double projected = (du_dx * x + du_dy * y + du_dz * z) / r;
+        return -projected + (asymptotic - value) / r;
     };
 
-    const double expected_theta = expected_face_rhs(grid.Theta, 0.0, 1.0);
-    const double expected_khat = expected_face_rhs(khat_field, 0.0, sqrt2);
-    const double expected_alpha = expected_face_rhs(grid.alpha, 1.0, 1.0);
-    const double expected_chi = expected_face_rhs(grid.chi, 1.0, 1.0);
-    const double expected_beta0 = expected_face_rhs(grid.beta[0], 0.0, 1.0);
-    const double expected_B0 = expected_face_rhs(grid.B[0], 0.0, 1.0);
-    const double expected_gt_xx =
-        expected_face_rhs(grid.gamma_tilde[tensorium_RG::XX], 1.0, 1.0);
-    const double expected_gamma0 = expected_face_rhs(grid.tildeGamma[0], 0.0, 1.0);
-    const double expected_Axx = expected_face_rhs(grid.A_tilde[tensorium_RG::XX], 0.0, 1.0);
+    auto expected_khat_rhs = [&]() {
+        const double dK_dx =
+            deriv_axis(grid.K, grid.K.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx);
+        const double dK_dy =
+            deriv_axis(grid.K, grid.K.st.sy, j, J0, J1, 1.0 / grid.dy, 0.5 / grid.dy);
+        const double dK_dz =
+            deriv_axis(grid.K, ptrdiff_t(1), k, K0, K1, 1.0 / grid.dz, 0.5 / grid.dz);
+        const double dTheta_dx =
+            deriv_axis(grid.Theta, grid.Theta.st.sx, i, I0, I1, 1.0 / grid.dx, 0.5 / grid.dx);
+        const double dTheta_dy =
+            deriv_axis(grid.Theta, grid.Theta.st.sy, j, J0, J1, 1.0 / grid.dy, 0.5 / grid.dy);
+        const double dTheta_dz =
+            deriv_axis(grid.Theta, ptrdiff_t(1), k, K0, K1, 1.0 / grid.dz, 0.5 / grid.dz);
+        const double khat = khat_field.ptr()[idx];
+        const double projected =
+            ((dK_dx - 2.0 * dTheta_dx) * x + (dK_dy - 2.0 * dTheta_dy) * y +
+             (dK_dz - 2.0 * dTheta_dz) * z) /
+            r;
+        return -projected - khat / r;
+    };
+
+    const double expected_theta = expected_face_rhs(grid.Theta, 0.0);
+    const double expected_khat = expected_khat_rhs();
+    const double expected_alpha = expected_face_rhs(grid.alpha, 1.0);
+    const double expected_chi = expected_face_rhs(grid.chi, 1.0);
+    const double expected_beta0 = expected_face_rhs(grid.beta[0], 0.0);
+    const double expected_B0 = expected_face_rhs(grid.B[0], 0.0);
+    const double expected_gt_xx = expected_face_rhs(grid.gamma_tilde[tensorium_RG::XX], 1.0);
+    const double expected_gamma0 = expected_face_rhs(grid.tildeGamma[0], 0.0);
+    const double expected_Axx = expected_face_rhs(grid.A_tilde[tensorium_RG::XX], 0.0);
 
     tensorium::tests::expect_le(std::abs(rhs.alpha.ptr()[idx] - expected_alpha), 1e-12,
-                                "Alpha boundary RHS matches outgoing mode");
+                                "Alpha boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.chi.ptr()[idx] - expected_chi), 1e-12,
-                                "Chi boundary RHS matches outgoing mode");
+                                "Chi boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.beta[0].ptr()[idx] - expected_beta0), 1e-12,
-                                "Beta boundary RHS matches outgoing mode");
+                                "Beta boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.B[0].ptr()[idx] - expected_B0), 1e-12,
-                                "B boundary RHS matches outgoing mode");
+                                "B boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.gamma_tilde[tensorium_RG::XX].ptr()[idx] - expected_gt_xx),
-                                1e-12, "Gamma_tilde boundary RHS matches outgoing mode");
+                                1e-12, "Gamma_tilde boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.Theta.ptr()[idx] - expected_theta), 1e-12,
-                                "Theta boundary RHS matches outgoing mode");
+                                "Theta boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.K.ptr()[idx] - expected_khat), 1e-12,
-                                "Khat boundary RHS matches fast outgoing mode");
+                                "Khat boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.tildeGamma[0].ptr()[idx] - expected_gamma0), 1e-12,
-                                "Gamma boundary RHS matches outgoing mode");
+                                "Gamma boundary RHS matches the local Cartesian operator");
     tensorium::tests::expect_le(std::abs(rhs.A_tilde[tensorium_RG::XX].ptr()[idx] - expected_Axx),
-                                1e-12, "A_tilde boundary RHS matches outgoing mode");
+                                1e-12, "A_tilde boundary RHS matches the local Cartesian operator");
     TENSORIUM_TEST_ASSERT(std::isfinite(rhs.Theta.ptr()[idx]));
 
     const size_t interior_idx = grid.alpha.idx(I0 + 1, J0 + 2, K0 + 2);
@@ -323,9 +375,8 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_collar",
     TENSORIUM_TEST_ASSERT(!std::isfinite(rhs.Theta.ptr()[idx_bulk]));
 });
 
-REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_collar_tapers",
-              "Radiative RHS collar blends toward the interior instead of imposing a flat shell",
-              []() {
+REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_matches_grchombo_local_operator",
+              "Radiative RHS uses the GRChombo-style local Cartesian Sommerfeld operator", []() {
     const size_t padding = 4;
     Grid         grid(18, 14, 12, padding, 0.5, 0.4, 0.3);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -349,11 +400,9 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_collar_tapers",
                                              rhs.alpha.st.nz_tot,
               sentinel);
 
-    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(1.0, 1.0,
-                                                                           std::sqrt(2.0));
-
     tensorium_RG::z4c::RHSBoundaryFaceMask mask{};
     mask.face[0][0] = true;
+    mask.face[1][0] = true;
 
     tensorium_RG::z4c::apply_z4c_rhs_boundary(grid, rhs, mask, 4);
 
@@ -364,17 +413,82 @@ REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_collar_tapers",
 
     const size_t idx_surface = grid.alpha.idx(I0, j, k);
     const size_t idx_inner = grid.alpha.idx(I0 + 3, j, k);
+    const size_t idx_corner = grid.alpha.idx(I0, J0, k);
 
-    const double surface_dev = std::abs(rhs.alpha.ptr()[idx_surface] - sentinel);
-    const double inner_dev = std::abs(rhs.alpha.ptr()[idx_inner] - sentinel);
-    TENSORIUM_TEST_ASSERT(surface_dev > 1.0e-8);
-    TENSORIUM_TEST_ASSERT(inner_dev > 1.0e-8);
-    tensorium::tests::expect_le(inner_dev, surface_dev,
-                                "Deepest collar layer is damped less than the surface");
+    auto expected_alpha_rhs = [&](size_t i, size_t jj, size_t kk) {
+        double x, y, z;
+        grid.coords(i, jj, kk, x, y, z);
+        const double r = std::sqrt(x * x + y * y + z * z);
+        const double projection = 0.03 * x - 0.01 * y;
+        return -2.0 * projection / r;
+    };
+
+    tensorium::tests::expect_le(std::abs(rhs.alpha.ptr()[idx_surface] -
+                                         expected_alpha_rhs(I0, j, k)),
+                                1.0e-12,
+                                "Surface collar point follows the GRChombo Sommerfeld operator");
+    tensorium::tests::expect_le(std::abs(rhs.alpha.ptr()[idx_inner] -
+                                         expected_alpha_rhs(I0 + 3, j, k)),
+                                1.0e-12,
+                                "Inner collar point follows the GRChombo Sommerfeld operator");
+    tensorium::tests::expect_le(std::abs(rhs.alpha.ptr()[idx_corner] -
+                                         expected_alpha_rhs(I0, J0, k)),
+                                1.0e-12,
+                                "Corner collar point follows the GRChombo Sommerfeld operator");
+    TENSORIUM_TEST_ASSERT(std::abs(rhs.alpha.ptr()[idx_surface] - sentinel) > 1.0e-8);
 });
 
-REGISTER_TEST("z4c.evolution.constraint_halos_use_sommerfeld",
-              "Radiative ghosts use Sommerfeld halo fills on radiative faces", []() {
+REGISTER_TEST("z4c.evolution.z4c_rhs_boundary_ignores_characteristic_speeds",
+              "GRChombo-like RHS Sommerfeld closure is independent of Tensorium speed knobs",
+              []() {
+    const size_t padding = 4;
+    Grid         fast_grid(16, 12, 10, padding, 0.5, 0.4, 0.3);
+    Grid         slow_grid(16, 12, 10, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(fast_grid, 0.0);
+    tensorium_RG::init::minkowski(slow_grid, 0.0);
+
+    auto fill_linear = [&](Grid &grid) {
+        const size_t nx_tot = grid.alpha.st.nx_tot;
+        const size_t ny_tot = grid.alpha.st.ny_tot;
+        const size_t nz_tot = grid.alpha.st.nz_tot;
+        for (size_t i = 0; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k) {
+                    double x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    grid.alpha.ptr()[grid.alpha.idx(i, j, k)] = 1.0 + 0.02 * x - 0.01 * z;
+                }
+    };
+
+    fill_linear(fast_grid);
+    fill_linear(slow_grid);
+
+    tensorium_RG::z4c::BSSNRHSWorkspace<double> fast_rhs;
+    tensorium_RG::z4c::BSSNRHSWorkspace<double> slow_rhs;
+    fast_rhs.allocate_like(fast_grid);
+    slow_rhs.allocate_like(slow_grid);
+
+    tensorium_RG::z4c::RHSBoundaryFaceMask mask{};
+    mask.face[0][0] = true;
+
+    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(2.0, 3.0, 4.0);
+    tensorium_RG::z4c::apply_z4c_rhs_boundary(fast_grid, fast_rhs, mask, 4);
+
+    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(0.25, 0.5, 0.75);
+    tensorium_RG::z4c::apply_z4c_rhs_boundary(slow_grid, slow_rhs, mask, 4);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    fast_grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const size_t j = J0 + 2;
+    const size_t k = K0 + 2;
+    const size_t idx = fast_grid.alpha.idx(I0, j, k);
+    tensorium::tests::expect_le(std::abs(fast_rhs.alpha.ptr()[idx] - slow_rhs.alpha.ptr()[idx]),
+                                1.0e-12,
+                                "Boundary alpha RHS is independent of characteristic speeds");
+});
+
+REGISTER_TEST("z4c.evolution.radiative_solution_halos_use_linear_extrapolation",
+              "GRChombo-like radiative solution ghosts use linear extrapolation", []() {
     const size_t padding = 4;
     Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -425,28 +539,23 @@ REGISTER_TEST("z4c.evolution.constraint_halos_use_sommerfeld",
 
     const double theta_linear_1 = 2.0 * grid.Theta.ptr()[ib0] - grid.Theta.ptr()[ib1];
     const double theta_linear_2 = 3.0 * grid.Theta.ptr()[ib0] - 2.0 * grid.Theta.ptr()[ib1];
-    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob1]), std::abs(theta_linear_1) + 1e-12,
-                                "Theta Sommerfeld ghost damps more than linear extrapolation");
-    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob2]), std::abs(theta_linear_2) + 1e-3,
-                                "Second Theta Sommerfeld ghost damps more than linear extrapolation");
-    TENSORIUM_TEST_ASSERT(std::abs(grid.Theta.ptr()[ob1] - theta_linear_1) > 1e-6);
+    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob1] - theta_linear_1), 1.0e-12,
+                                "Theta ghost follows linear extrapolation");
+    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob2] - theta_linear_2), 1.0e-12,
+                                "Second Theta ghost follows linear extrapolation");
 
     const double gamma_linear_1 =
         2.0 * grid.tildeGamma[0].ptr()[ib0] - grid.tildeGamma[0].ptr()[ib1];
-    tensorium::tests::expect_le(std::abs(grid.tildeGamma[0].ptr()[ob1]),
-                                std::abs(gamma_linear_1) + 1e-12,
-                                "TildeGamma Sommerfeld ghost damps more than linear extrapolation");
-    TENSORIUM_TEST_ASSERT(std::abs(grid.tildeGamma[0].ptr()[ob1] - gamma_linear_1) > 1e-6);
+    tensorium::tests::expect_le(std::abs(grid.tildeGamma[0].ptr()[ob1] - gamma_linear_1), 1.0e-12,
+                                "TildeGamma ghost follows linear extrapolation");
 
     const double alpha_linear_extrap = 2.0 * grid.alpha.ptr()[ib0] - grid.alpha.ptr()[ib1];
-    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[ob1] - 1.0),
-                                std::abs(alpha_linear_extrap - 1.0) + 1e-12,
-                                "Alpha Sommerfeld ghost is pulled toward the asymptotic state");
-    TENSORIUM_TEST_ASSERT(std::abs(grid.alpha.ptr()[ob1] - alpha_linear_extrap) > 1e-6);
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[ob1] - alpha_linear_extrap), 1.0e-12,
+                                "Alpha ghost follows linear extrapolation");
 });
 
-REGISTER_TEST("z4c.evolution.constraint_halo_edges_clamp_transverse_coords",
-              "Radiative edge and corner ghosts are filled from clamped interior coordinates",
+REGISTER_TEST("z4c.evolution.radiative_solution_halo_edges_use_tensor_linear_extrapolation",
+              "Radiative edge and corner ghosts use sequential tensor-product extrapolation",
               []() {
     const size_t padding = 4;
     Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
@@ -479,31 +588,23 @@ REGISTER_TEST("z4c.evolution.constraint_halo_edges_clamp_transverse_coords",
     grid.domain_bounds(I0, I1, J0, J1, K0, K1);
     const size_t k_mid = K0 + 2;
 
-    auto expected_alpha = [&](size_t oi, size_t oj, size_t ok, size_t ii, size_t ij,
-                              size_t ik) {
-        double x_ob, y_ob, z_ob;
-        double x_ib, y_ib, z_ib;
-        grid.coords(oi, oj, ok, x_ob, y_ob, z_ob);
-        grid.coords(ii, ij, ik, x_ib, y_ib, z_ib);
-        const double r_ob = std::sqrt(x_ob * x_ob + y_ob * y_ob + z_ob * z_ob);
-        const double r_ib = std::sqrt(x_ib * x_ib + y_ib * y_ib + z_ib * z_ib);
-        const double u_ib = grid.alpha.ptr()[grid.alpha.idx(ii, ij, ik)];
-        return 1.0 + (u_ib - 1.0) * (r_ib / r_ob);
-    };
-
     const size_t edge_ob = grid.alpha.idx(I0 - 1, J0 - 1, k_mid);
-    const double edge_expected = expected_alpha(I0 - 1, J0 - 1, k_mid, I0, J0, k_mid);
+    double       x_edge, y_edge, z_edge;
+    grid.coords(I0 - 1, J0 - 1, k_mid, x_edge, y_edge, z_edge);
+    const double edge_expected = 1.0 + 0.02 * x_edge - 0.01 * y_edge + 0.03 * z_edge;
     tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[edge_ob] - edge_expected), 1.0e-12,
-                                "Edge ghost uses clamped interior anchor");
+                                "Edge ghost preserves linear data across both transverse axes");
 
     const size_t corner_ob = grid.alpha.idx(I0 - 1, J0 - 1, K0 - 1);
-    const double corner_expected = expected_alpha(I0 - 1, J0 - 1, K0 - 1, I0, J0, K0);
+    double       x_corner, y_corner, z_corner;
+    grid.coords(I0 - 1, J0 - 1, K0 - 1, x_corner, y_corner, z_corner);
+    const double corner_expected = 1.0 + 0.02 * x_corner - 0.01 * y_corner + 0.03 * z_corner;
     tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[corner_ob] - corner_expected), 1.0e-12,
-                                "Corner ghost uses fully clamped interior anchor");
+                                "Corner ghost preserves linear data across all three axes");
 });
 
-REGISTER_TEST("z4c.evolution.khat_halo_closure_matches_fast_mode",
-              "Radiative K ghosts are reconstructed from outgoing Khat using the Theta halo", []() {
+REGISTER_TEST("z4c.evolution.khat_halo_closure_matches_linear_extrapolation",
+              "Radiative K ghosts extrapolate Khat consistently with the Theta halo", []() {
     const size_t padding = 4;
     Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
     tensorium_RG::init::minkowski(grid, 0.0);
@@ -517,11 +618,28 @@ REGISTER_TEST("z4c.evolution.khat_halo_closure_matches_fast_mode",
                                                                 false);
     tensorium_RG::z4c::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
 
-    const size_t total = grid.alpha.st.nx_tot * grid.alpha.st.ny_tot * grid.alpha.st.nz_tot;
-    for (size_t idx = 0; idx < total; ++idx) {
-        grid.Theta.ptr()[idx] = 0.2;
-        grid.K.ptr()[idx] = 0.8; // Khat = K - 2 Theta = 0.4 everywhere.
-    }
+    const size_t nx_tot = grid.alpha.st.nx_tot;
+    const size_t ny_tot = grid.alpha.st.ny_tot;
+    const size_t nz_tot = grid.alpha.st.nz_tot;
+    auto fill_linear = [&](tensorium_RG::Field3D<double> &field, double c0, double cx) {
+        for (size_t i = 0; i < nx_tot; ++i)
+            for (size_t j = 0; j < ny_tot; ++j)
+                for (size_t k = 0; k < nz_tot; ++k) {
+                    double x, y, z;
+                    grid.coords(i, j, k, x, y, z);
+                    field.ptr()[field.idx(i, j, k)] = c0 + cx * x;
+                }
+    };
+
+    fill_linear(grid.Theta, 0.2, 0.05);
+    auto khat_field = tensorium_RG::make_field(grid.alpha.st);
+    fill_linear(khat_field, 0.4, 0.03);
+    for (size_t i = 0; i < nx_tot; ++i)
+        for (size_t j = 0; j < ny_tot; ++j)
+            for (size_t k = 0; k < nz_tot; ++k) {
+                const size_t idx = grid.K.idx(i, j, k);
+                grid.K.ptr()[idx] = khat_field.ptr()[idx] + 2.0 * grid.Theta.ptr()[idx];
+            }
 
     tensorium_RG::z4c::apply_halos_grid<tensorium_RG::z4c::BoundaryRadiative>(grid);
 
@@ -533,18 +651,18 @@ REGISTER_TEST("z4c.evolution.khat_halo_closure_matches_fast_mode",
     const size_t ob = grid.K.idx(I0 - 1, j, k);
     const size_t ib = grid.K.idx(I0, j, k);
 
-    double x_ob, y_ob, z_ob;
-    double x_ib, y_ib, z_ib;
-    grid.coords(I0 - 1, j, k, x_ob, y_ob, z_ob);
-    grid.coords(I0, j, k, x_ib, y_ib, z_ib);
-    const double r_ob = std::sqrt(x_ob * x_ob + y_ob * y_ob + z_ob * z_ob);
-    const double r_ib = std::sqrt(x_ib * x_ib + y_ib * y_ib + z_ib * z_ib);
+    const size_t ib0 = grid.K.idx(I0, j, k);
+    const size_t ib1 = grid.K.idx(I0 + 1, j, k);
+    const double expected_theta =
+        2.0 * grid.Theta.ptr()[ib0] - grid.Theta.ptr()[ib1];
     const double expected_khat =
-        0.4 * (r_ib / (r_ob + std::sqrt(2.0) * 0.25));
+        2.0 * khat_field.ptr()[ib0] - khat_field.ptr()[ib1];
     const double actual_khat = grid.K.ptr()[ob] - 2.0 * grid.Theta.ptr()[ob];
 
     tensorium::tests::expect_le(std::abs(actual_khat - expected_khat), 1.0e-12,
-                                "Khat ghost follows the fast outgoing closure");
+                                "Khat ghost follows linear extrapolation");
+    tensorium::tests::expect_le(std::abs(grid.Theta.ptr()[ob] - expected_theta), 1.0e-12,
+                                "Theta ghost follows linear extrapolation");
     TENSORIUM_TEST_ASSERT(std::abs(grid.K.ptr()[ob] - grid.K.ptr()[ib]) > 1.0e-6);
 });
 
@@ -669,27 +787,21 @@ REGISTER_TEST("z4c.evolution.radiative_sponge_is_rhs_only",
     tensorium_RG::z4c::BoundaryRadiative::set_sponge(false, 0, 0.0, 2.0);
 });
 
-REGISTER_TEST("z4c.evolution.radiative_field_speeds_are_grouped",
-              "Radiative halo closure uses separate gauge and Z4c characteristic speeds", []() {
+REGISTER_TEST("z4c.evolution.radiative_solution_halos_ignore_characteristic_speeds",
+              "GRChombo-like radiative solution ghosts do not depend on characteristic speeds",
+              []() {
     const size_t padding = 4;
-    Grid         grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
-    tensorium_RG::init::minkowski(grid, 0.0);
-
-    tensorium_RG::z4c::BoundaryRadiative::set_characteristic(1.0, 1.0);
-    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(2.0, 1.0,
-                                                                           std::sqrt(2.0));
-    tensorium_RG::z4c::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
-                                                                     true);
-    tensorium_RG::z4c::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
-                                                                false);
-    tensorium_RG::z4c::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+    Grid         fast_grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
+    Grid         slow_grid(12, 10, 8, padding, 0.5, 0.4, 0.3);
+    tensorium_RG::init::minkowski(fast_grid, 0.0);
+    tensorium_RG::init::minkowski(slow_grid, 0.0);
 
     size_t I0, I1, J0, J1, K0, K1;
-    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    fast_grid.domain_bounds(I0, I1, J0, J1, K0, K1);
     const size_t j = J0 + 2;
     const size_t k = K0 + 2;
 
-    auto fill_linear = [&](tensorium_RG::Field3D<double> &field, double c0, double cx) {
+    auto fill_linear = [&](Grid &grid, tensorium_RG::Field3D<double> &field, double c0, double cx) {
         const size_t nx_tot = field.st.nx_tot;
         const size_t ny_tot = field.st.ny_tot;
         const size_t nz_tot = field.st.nz_tot;
@@ -702,20 +814,46 @@ REGISTER_TEST("z4c.evolution.radiative_field_speeds_are_grouped",
                 }
     };
 
-    fill_linear(grid.alpha, 1.0, 0.02);
-    fill_linear(grid.Theta, 0.2, 0.02);
+    fill_linear(fast_grid, fast_grid.alpha, 1.0, 0.02);
+    fill_linear(fast_grid, fast_grid.Theta, 0.2, 0.02);
+    fill_linear(slow_grid, slow_grid.alpha, 1.0, 0.02);
+    fill_linear(slow_grid, slow_grid.Theta, 0.2, 0.02);
 
-    tensorium_RG::z4c::BoundaryRadiative::apply_halo(grid.alpha, grid,
+    tensorium_RG::z4c::BoundaryRadiative::set_characteristic(1.0, 1.0);
+    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(2.0, 1.0,
+                                                                           std::sqrt(2.0));
+    tensorium_RG::z4c::BoundaryRadiative::set_rhs_sommerfeld_faces(true, true, true, true, true,
+                                                                     true);
+    tensorium_RG::z4c::BoundaryRadiative::set_reflective_faces(false, false, false, false, false,
+                                                                false);
+    tensorium_RG::z4c::BoundaryRadiative::set_active_faces(true, true, true, true, true, true);
+    tensorium_RG::z4c::BoundaryRadiative::apply_halo(fast_grid.alpha, fast_grid,
                                                       tensorium_RG::z4c::BoundaryField::Alpha, 0);
-    tensorium_RG::z4c::BoundaryRadiative::apply_halo(grid.Theta, grid,
+    tensorium_RG::z4c::BoundaryRadiative::apply_halo(fast_grid.Theta, fast_grid,
                                                       tensorium_RG::z4c::BoundaryField::Theta, 0);
 
-    const size_t ob = grid.alpha.idx(I0 - 1, j, k);
-    const size_t ib = grid.alpha.idx(I0, j, k);
-    const double alpha_dev = std::abs(grid.alpha.ptr()[ob] - 1.0);
-    const double theta_dev = std::abs(grid.Theta.ptr()[ob]);
+    tensorium_RG::z4c::BoundaryRadiative::set_field_characteristic_speeds(0.5, 3.0, 4.0);
+    tensorium_RG::z4c::BoundaryRadiative::apply_halo(slow_grid.alpha, slow_grid,
+                                                      tensorium_RG::z4c::BoundaryField::Alpha, 0);
+    tensorium_RG::z4c::BoundaryRadiative::apply_halo(slow_grid.Theta, slow_grid,
+                                                      tensorium_RG::z4c::BoundaryField::Theta, 0);
 
-    TENSORIUM_TEST_ASSERT(alpha_dev < theta_dev);
+    const size_t ob = fast_grid.alpha.idx(I0 - 1, j, k);
+    const size_t ib0 = fast_grid.alpha.idx(I0, j, k);
+    const size_t ib1 = fast_grid.alpha.idx(I0 + 1, j, k);
+    const double alpha_expected =
+        2.0 * fast_grid.alpha.ptr()[ib0] - fast_grid.alpha.ptr()[ib1];
+    const double theta_expected =
+        2.0 * fast_grid.Theta.ptr()[ib0] - fast_grid.Theta.ptr()[ib1];
+
+    tensorium::tests::expect_le(std::abs(fast_grid.alpha.ptr()[ob] - alpha_expected), 1.0e-12,
+                                "Alpha ghost follows linear extrapolation");
+    tensorium::tests::expect_le(std::abs(fast_grid.Theta.ptr()[ob] - theta_expected), 1.0e-12,
+                                "Theta ghost follows linear extrapolation");
+    tensorium::tests::expect_le(std::abs(fast_grid.alpha.ptr()[ob] - slow_grid.alpha.ptr()[ob]),
+                                1.0e-12, "Alpha ghost is independent of characteristic speeds");
+    tensorium::tests::expect_le(std::abs(fast_grid.Theta.ptr()[ob] - slow_grid.Theta.ptr()[ob]),
+                                1.0e-12, "Theta ghost is independent of characteristic speeds");
 });
 
 REGISTER_TEST("z4c.evolution.boundary_characteristics_flag_outflow_gauge_face",

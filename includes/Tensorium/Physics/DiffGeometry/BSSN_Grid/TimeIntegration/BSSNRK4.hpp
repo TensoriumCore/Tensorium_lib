@@ -284,9 +284,6 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                 grid.coords(i, j, k, x, y, z);
                 const T r = std::sqrt(x * x + y * y + z * z);
                 const T inv_r = T(1) / std::max(r, inv_r_floor);
-                const T sx = x * inv_r;
-                const T sy = y * inv_r;
-                const T sz = z * inv_r;
 
                 auto deriv_axis = [&](const Field3D<T> &f, ptrdiff_t stride, size_t pos, size_t lo,
                                       size_t hi, T inv_h, T inv_2h) -> T {
@@ -300,106 +297,44 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                     return (p[stride] - p[-stride]) * inv_2h;
                 };
 
-                auto radial_derivative = [&](const Field3D<T> &f) -> T {
-                    const T dx = deriv_axis(f, f.st.sx, i, i0, i1, inv_dx, inv_2dx);
-                    const T dy = deriv_axis(f, f.st.sy, j, j0, j1, inv_dy, inv_2dy);
-                    const T dz = deriv_axis(f, ptrdiff_t(1), k, k0, k1, inv_dz, inv_2dz);
-                    return sx * dx + sy * dy + sz * dz;
-                };
-
-                auto normal_derivative = [&](const Field3D<T> &f, int axis, bool outer) -> T {
-                    const ptrdiff_t stride =
-                        (axis == 0) ? f.st.sx : (axis == 1 ? f.st.sy : ptrdiff_t(1));
-                    const size_t pos = (axis == 0) ? i : (axis == 1 ? j : k);
-                    const size_t lo = (axis == 0) ? i0 : (axis == 1 ? j0 : k0);
-                    const size_t hi = (axis == 0) ? i1 : (axis == 1 ? j1 : k1);
-                    const T inv_h = (axis == 0) ? inv_dx : (axis == 1 ? inv_dy : inv_dz);
-                    const T inv_2h = (axis == 0) ? inv_2dx : (axis == 1 ? inv_2dy : inv_2dz);
-                    const T d = deriv_axis(f, stride, pos, lo, hi, inv_h, inv_2h);
-                    return outer ? d : -d;
-                };
-
-                size_t nearest_layer = collar_width;
-                bool use_ix1 = false, use_ox1 = false;
-                bool use_ix2 = false, use_ox2 = false;
-                bool use_ix3 = false, use_ox3 = false;
-                auto consider_face = [&](bool enabled, size_t layer, bool &slot) {
-                    if (!enabled || layer >= collar_width)
-                        return;
-                    if (layer < nearest_layer) {
-                        nearest_layer = layer;
-                        use_ix1 = false;
-                        use_ox1 = false;
-                        use_ix2 = false;
-                        use_ox2 = false;
-                        use_ix3 = false;
-                        use_ox3 = false;
-                    }
-                    if (layer == nearest_layer)
-                        slot = true;
-                };
-                consider_face(in_ix1, i - i0, use_ix1);
-                consider_face(in_ox1, i1 - 1 - i, use_ox1);
-                consider_face(in_ix2, j - j0, use_ix2);
-                consider_face(in_ox2, j1 - 1 - j, use_ox2);
-                consider_face(in_ix3, k - k0, use_ix3);
-                consider_face(in_ox3, k1 - 1 - k, use_ox3);
-                if (nearest_layer >= collar_width)
-                    continue;
-
-                const int face_count = int(use_ix1) + int(use_ox1) + int(use_ix2) + int(use_ox2) +
-                                       int(use_ix3) + int(use_ox3);
-                if (face_count == 0)
-                    continue;
-
-                auto outgoing_radial_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
-                                               T speed = T(1)) -> T {
+                // Match GRChombo's RHS-only Sommerfeld closure: use the same local Cartesian
+                // operator on faces, edges, and corners, rather than a special radial fallback.
+                auto sommerfeld_rhs = [&](const Field3D<T> &u, T asymptotic = T(0)) -> T {
+                    const T du_dx = deriv_axis(u, u.st.sx, i, i0, i1, inv_dx, inv_2dx);
+                    const T du_dy = deriv_axis(u, u.st.sy, j, j0, j1, inv_dy, inv_2dy);
+                    const T du_dz = deriv_axis(u, ptrdiff_t(1), k, k0, k1, inv_dz, inv_2dz);
                     const T u0 = u.ptr()[id];
-                    return -speed * (radial_derivative(u) + (u0 - asymptotic) * inv_r);
+                    const T projected = (du_dx * x + du_dy * y + du_dz * z) * inv_r;
+                    return -projected + (asymptotic - u0) * inv_r;
                 };
 
-                int  boundary_axis = 0;
-                bool boundary_outer = false;
-                if (face_count == 1) {
-                    if (use_ix1) {
-                        boundary_axis = 0;
-                        boundary_outer = false;
-                    } else if (use_ox1) {
-                        boundary_axis = 0;
-                        boundary_outer = true;
-                    } else if (use_ix2) {
-                        boundary_axis = 1;
-                        boundary_outer = false;
-                    } else if (use_ox2) {
-                        boundary_axis = 1;
-                        boundary_outer = true;
-                    } else if (use_ix3) {
-                        boundary_axis = 2;
-                        boundary_outer = false;
-                    } else {
-                        boundary_axis = 2;
-                        boundary_outer = true;
-                    }
-                }
-
-                auto outgoing_rhs = [&](const Field3D<T> &u, T asymptotic = T(0),
-                                        T speed = T(1)) -> T {
-                    if (face_count == 1) {
-                        const T u0 = u.ptr()[id];
-                        return -speed * (normal_derivative(u, boundary_axis, boundary_outer) +
-                                         (u0 - asymptotic) * inv_r);
-                    }
-                    return outgoing_radial_rhs(u, asymptotic, speed);
+                auto sommerfeld_khat_rhs = [&]() -> T {
+                    const T dK_dx =
+                        deriv_axis(grid.K, grid.K.st.sx, i, i0, i1, inv_dx, inv_2dx);
+                    const T dK_dy =
+                        deriv_axis(grid.K, grid.K.st.sy, j, j0, j1, inv_dy, inv_2dy);
+                    const T dK_dz =
+                        deriv_axis(grid.K, ptrdiff_t(1), k, k0, k1, inv_dz, inv_2dz);
+                    const T dTheta_dx = deriv_axis(grid.Theta, grid.Theta.st.sx, i, i0, i1,
+                                                   inv_dx, inv_2dx);
+                    const T dTheta_dy = deriv_axis(grid.Theta, grid.Theta.st.sy, j, j0, j1,
+                                                   inv_dy, inv_2dy);
+                    const T dTheta_dz =
+                        deriv_axis(grid.Theta, ptrdiff_t(1), k, k0, k1, inv_dz, inv_2dz);
+                    const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
+                    const T projected =
+                        ((dK_dx - T(2) * dTheta_dx) * x + (dK_dy - T(2) * dTheta_dy) * y +
+                         (dK_dz - T(2) * dTheta_dz) * z) *
+                        inv_r;
+                    return -projected - khat * inv_r;
                 };
 
-                const T boundary_alpha = outgoing_rhs(
+                const T boundary_alpha = sommerfeld_rhs(
                     grid.alpha,
-                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Alpha, 0)),
-                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Alpha)));
-                const T boundary_chi = outgoing_rhs(
+                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Alpha, 0)));
+                const T boundary_chi = sommerfeld_rhs(
                     grid.chi,
-                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Chi, 0)),
-                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Chi)));
+                    T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Chi, 0)));
                 T boundary_beta[3] = {T(0), T(0), T(0)};
                 T boundary_B[3] = {T(0), T(0), T(0)};
                 T boundary_tildeGamma[3] = {T(0), T(0), T(0)};
@@ -407,74 +342,42 @@ inline void apply_z4c_rhs_boundary(const GridType &grid, BSSNRHSWorkspace<T> &rh
                 T boundary_gamma_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
                 T boundary_A_tilde[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
                 for (int a = 0; a < 3; ++a) {
-                    boundary_beta[a] += outgoing_rhs(
+                    boundary_beta[a] += sommerfeld_rhs(
                         grid.beta[a],
-                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Beta, a)),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Beta)));
-                    boundary_B[a] += outgoing_rhs(
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::Beta, a)));
+                    boundary_B[a] += sommerfeld_rhs(
                         grid.B[a],
-                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::B, a)),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::B)));
-                    boundary_tildeGamma[a] += outgoing_rhs(
-                        grid.tildeGamma[a], T(0),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::TildeGamma)));
-                    boundary_Z[a] += outgoing_rhs(
-                        grid.Z[a], T(0),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Z)));
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::B, a)));
+                    boundary_tildeGamma[a] += sommerfeld_rhs(grid.tildeGamma[a], T(0));
+                    boundary_Z[a] += sommerfeld_rhs(grid.Z[a], T(0));
                 }
                 for (int s = 0; s < 6; ++s) {
-                    boundary_gamma_tilde[s] += outgoing_rhs(
+                    boundary_gamma_tilde[s] += sommerfeld_rhs(
                         grid.gamma_tilde[s],
-                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::GammaTilde,
-                                                                        s)),
-                        T(BoundaryRadiative::characteristic_speed_for(
-                            BoundaryField::GammaTilde)));
-                    boundary_A_tilde[s] += outgoing_rhs(
-                        grid.A_tilde[s], T(0),
-                        T(BoundaryRadiative::characteristic_speed_for(BoundaryField::ATilde)));
+                        T(tensorium_RG::bssn::detail::minkowski_target(BoundaryField::GammaTilde, s)));
+                    boundary_A_tilde[s] += sommerfeld_rhs(grid.A_tilde[s], T(0));
                 }
-                const T boundary_Theta = outgoing_rhs(
-                    grid.Theta, T(0),
-                    T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Theta)));
-                const T khat = Khat(grid.K.ptr()[id], grid.Theta.ptr()[id]);
-                const T d_khat = (face_count == 1)
-                                     ? (normal_derivative(grid.K, boundary_axis, boundary_outer) -
-                                        T(2) * normal_derivative(grid.Theta, boundary_axis,
-                                                                 boundary_outer))
-                                     : (radial_derivative(grid.K) -
-                                        T(2) * radial_derivative(grid.Theta));
-                const T boundary_K =
-                    -T(BoundaryRadiative::characteristic_speed_for(BoundaryField::K)) *
-                    (d_khat + khat * inv_r);
+                const T boundary_Theta = sommerfeld_rhs(grid.Theta, T(0));
+                const T boundary_K = sommerfeld_khat_rhs();
 
-                const auto collar_weight = [&]() -> T {
-                    const double x = static_cast<double>(collar_width - nearest_layer) /
-                                     static_cast<double>(collar_width);
-                    const double smooth = std::clamp(x * x * (3.0 - 2.0 * x), 0.0, 1.0);
-                    return T(smooth);
-                }();
-                auto blend_rhs = [&](Field3D<T> &target, T boundary_value) {
+                auto overwrite_rhs = [&](Field3D<T> &target, T boundary_value) {
                     T *slot = target.ptr() + id;
-                    if (!std::isfinite(static_cast<double>(*slot))) {
-                        *slot = boundary_value;
-                        return;
-                    }
-                    *slot = (T(1) - collar_weight) * (*slot) + collar_weight * boundary_value;
+                    *slot = boundary_value;
                 };
 
-                blend_rhs(rhs.alpha, boundary_alpha);
-                blend_rhs(rhs.chi, boundary_chi);
-                blend_rhs(rhs.K, boundary_K);
-                blend_rhs(rhs.Theta, boundary_Theta);
+                overwrite_rhs(rhs.alpha, boundary_alpha);
+                overwrite_rhs(rhs.chi, boundary_chi);
+                overwrite_rhs(rhs.K, boundary_K);
+                overwrite_rhs(rhs.Theta, boundary_Theta);
                 for (int a = 0; a < 3; ++a) {
-                    blend_rhs(rhs.beta[a], boundary_beta[a]);
-                    blend_rhs(rhs.B[a], boundary_B[a]);
-                    blend_rhs(rhs.tildeGamma[a], boundary_tildeGamma[a]);
-                    blend_rhs(rhs.Z[a], boundary_Z[a]);
+                    overwrite_rhs(rhs.beta[a], boundary_beta[a]);
+                    overwrite_rhs(rhs.B[a], boundary_B[a]);
+                    overwrite_rhs(rhs.tildeGamma[a], boundary_tildeGamma[a]);
+                    overwrite_rhs(rhs.Z[a], boundary_Z[a]);
                 }
                 for (int s = 0; s < 6; ++s) {
-                    blend_rhs(rhs.gamma_tilde[s], boundary_gamma_tilde[s]);
-                    blend_rhs(rhs.A_tilde[s], boundary_A_tilde[s]);
+                    overwrite_rhs(rhs.gamma_tilde[s], boundary_gamma_tilde[s]);
+                    overwrite_rhs(rhs.A_tilde[s], boundary_A_tilde[s]);
                 }
             }
         }
@@ -561,9 +464,26 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
     void set_state_log_stride(size_t stride) { state_log_stride_ = std::max<size_t>(size_t(1), stride); }
+    [[nodiscard]] size_t state_log_stride() const noexcept { return state_log_stride_; }
 
     void set_rhs_prep_callback(std::function<void(BSSNRHSWorkspace<T> &)> cb) {
         rhs_prep_callback_ = std::move(cb);
+    }
+
+    void set_simulation_time(T time) noexcept { simulation_time_ = time; }
+    [[nodiscard]] T simulation_time() const noexcept { return simulation_time_; }
+
+    void set_boundary_dt(T dt) noexcept { boundary_dt_ = dt; }
+    [[nodiscard]] T boundary_dt() const noexcept { return boundary_dt_; }
+
+    void copy_runtime_state_from(const BSSNRKStepper &other) {
+        gauge_params_ = other.gauge_params_;
+        monitor_callback_ = other.monitor_callback_;
+        snapshot_callback_ = other.snapshot_callback_;
+        rhs_prep_callback_ = other.rhs_prep_callback_;
+        state_log_stride_ = other.state_log_stride_;
+        boundary_dt_ = other.boundary_dt_;
+        simulation_time_ = other.simulation_time_;
     }
 
     // Diagnostics function (omitted mostly unchanged for brevity in logic check, but included in
@@ -812,8 +732,9 @@ template <typename T, typename Boundary> class BSSNRKStepper {
   private:
     size_t rhs_bulk_padding() const {
         if constexpr (BoundaryPhysicalEvolutionTraits<Boundary>::value) {
-            if constexpr (BoundaryRadiativeRHSTraits<Boundary>::value)
-                return std::max(padding_, BoundaryRadiativeRHSTraits<Boundary>::collar());
+            // Radiative boundaries now evaluate the full PDE on every physical cell using the
+            // refreshed halos. Only the outermost surface receives the explicit Sommerfeld
+            // correction, which avoids evolving a 4-cell-thick Cartesian shell.
             return 0;
         }
         return padding_;
@@ -1014,8 +935,9 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                  BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
                                  !BoundaryRadiative::reflective_enabled(axis, true);
         }
+        constexpr size_t physical_surface_width = 1;
         tensorium_RG::bssn::apply_z4c_rhs_boundary(
-            grid, rhs, mask, BoundaryRadiative::rhs_collar());
+            grid, rhs, mask, physical_surface_width);
     }
 
     void apply_rhs_sponge(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {

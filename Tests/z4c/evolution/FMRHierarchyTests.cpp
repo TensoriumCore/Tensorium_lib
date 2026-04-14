@@ -117,6 +117,54 @@ REGISTER_TEST("z4c.fmr.prolongation_is_exact_for_linear_fields",
                       });
 });
 
+REGISTER_TEST("z4c.fmr.moving_puncture_env_supports_twopunctures_target_masses",
+              "Moving-puncture env can request GRChombo-style target-mass TwoPunctures solves",
+              []() {
+    const ScopedEnvVar interp("TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT", "1");
+    const ScopedEnvVar calc_target("TENSORIUM_MOVING_PUNCTURE_TP_CALCULATE_TARGET_MASSES", "1");
+    const ScopedEnvVar adm_tol("TENSORIUM_MOVING_PUNCTURE_TP_ADM_TOL", "1e-12");
+    const ScopedEnvVar mass1("TENSORIUM_MOVING_PUNCTURE_MASS1", "0.5");
+    const ScopedEnvVar mass2("TENSORIUM_MOVING_PUNCTURE_MASS2", "0.6");
+
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(cfg.use_interpolated_init);
+    TENSORIUM_TEST_ASSERT(cfg.tp_calculate_target_masses);
+    tensorium::tests::expect_near(cfg.mass1, 0.5, 1.0e-15, "mass1 env is preserved");
+    tensorium::tests::expect_near(cfg.mass2, 0.6, 1.0e-15, "mass2 env is preserved");
+    tensorium::tests::expect_near(cfg.tp_adm_tol, 1.0e-12, 1.0e-24,
+                                  "TwoPunctures adm tolerance env is preserved");
+});
+
+REGISTER_TEST("z4c.fmr.moving_puncture_env_defaults_twopunctures_to_target_masses",
+              "Interpolated moving-puncture runs default to target-mass TwoPunctures mode",
+              []() {
+    const ScopedEnvVar interp("TENSORIUM_MOVING_PUNCTURE_USE_INTERPOLATED_INIT", "1");
+
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(cfg.use_interpolated_init);
+    TENSORIUM_TEST_ASSERT(cfg.tp_calculate_target_masses);
+});
+
+REGISTER_TEST("z4c.fmr.moving_puncture_env_disables_rhs_sommerfeld_by_default",
+              "Moving-puncture preset leaves the explicit RHS Sommerfeld surface operator disabled",
+              []() {
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(!cfg.gauge_params.apply_rhs_sommerfeld);
+});
+
+REGISTER_TEST("z4c.fmr.moving_puncture_env_can_reenable_rhs_sommerfeld",
+              "Moving-puncture env can re-enable the explicit RHS Sommerfeld surface operator",
+              []() {
+    const ScopedEnvVar apply_rhs_sommerfeld("TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", "1");
+
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(cfg.gauge_params.apply_rhs_sommerfeld);
+});
+
 REGISTER_TEST("z4c.fmr.restriction_averages_linear_fields_back_to_coarse",
               "FMR restriction averages fine linear data back to the parent cells", []() {
     Grid root = make_root_grid();
