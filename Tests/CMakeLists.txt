@@ -13,7 +13,8 @@ set(TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/LinearSystemsTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/DerivateTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/SpectralTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/AllocatorTests.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/AllocatorTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/CudaScaffoldingTests.cpp)
 
 set(TEST_GRID_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/grid/DerivativeTests.cpp)
@@ -267,6 +268,12 @@ if(TWOPUNCTURES_C_TARGET)
   endforeach()
 endif()
 
+if(USE_CUDA)
+  foreach(target ${TENSORIUM_ALL_EXECUTABLES})
+    target_link_libraries(${target} PRIVATE CUDA::cudart)
+  endforeach()
+endif()
+
 add_test(NAME tensorium.tests.all COMMAND TensoriumTests)
 add_test(NAME tensorium.tests.core COMMAND TensoriumTestCore)
 add_test(NAME tensorium.tests.grid COMMAND TensoriumTestGrid)
@@ -311,6 +318,10 @@ if(USE_MPI)
   target_link_libraries(TensoriumMPIMovingPuncture PRIVATE MPI::MPI_CXX)
   target_compile_definitions(TensoriumMPIMovingPuncture PRIVATE
       TENSORIUM_ENABLE_MPI TENSORIUM_USE_MPI)
+
+  if(USE_CUDA)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE CUDA::cudart)
+  endif()
 
   if(OPENMP_LIB)
     if(OPENMP_COMPILE_FLAGS)

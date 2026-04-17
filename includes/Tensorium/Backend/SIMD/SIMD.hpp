@@ -824,6 +824,7 @@ template <> struct SimdTraits<float, avx512_t> {
     static inline reg   add(reg a, reg b) { return _mm512_add_ps(a, b); }
     static inline reg   mul(reg a, reg b) { return _mm512_mul_ps(a, b); }
     static inline reg   sub(reg a, reg b) { return _mm512_sub_ps(a, b); }
+    static inline reg   broadcast(const float *ptr) { return _mm512_set1_ps(*ptr); }
 #        if defined(__AVX512DQ__)
     static inline reg andnot(reg a, reg b) { return _mm512_andnot_ps(a, b); }
 #        else
@@ -861,6 +862,7 @@ template <> struct SimdTraits<double, avx512_t> {
     static inline reg   add(reg a, reg b) { return _mm512_add_pd(a, b); }
     static inline reg   mul(reg a, reg b) { return _mm512_mul_pd(a, b); }
     static inline reg   sub(reg a, reg b) { return _mm512_sub_pd(a, b); }
+    static inline reg   broadcast(const double *ptr) { return _mm512_set1_pd(*ptr); }
     #        if defined(__AVX512DQ__)
     static inline reg   andnot(reg a, reg b) { return _mm512_andnot_pd(a, b); }
     #        else

@@ -1,10 +1,13 @@
 #pragma once
 
 // --- BACKEND (Moteur) ---
+#include "Backend/Common/Backend.hpp"
 #include "Backend/SIMD/SIMD.hpp"
 #include "Backend/CPU_Kernels/GemmKernel_Optimized.hpp"
+#include "Backend/CUDA/Core/CudaRuntime.hpp"
 
-#ifdef TENSORIUM_USE_CUDA
+#ifdef TENSORIUM_CUDA
+    #include "Backend/CUDA/Core/VectorCuda.hpp"
     #include "Backend/CUDA/Core/MatrixCUDA.hpp"
 #endif
 
