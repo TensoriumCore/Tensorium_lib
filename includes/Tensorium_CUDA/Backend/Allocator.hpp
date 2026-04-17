@@ -42,7 +42,6 @@ template <typename T> struct CudaUnifiedAllocator {
         if (!p) return;
         cudaError_t err = cudaFree(p);
         if (err != cudaSuccess) {
-            // en release on peut silencieusement ignorer
             std::cerr << "[CUDA] cudaFree failed: "
                       << cudaGetErrorString(err) << "\n";
         }
