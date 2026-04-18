@@ -8,8 +8,10 @@
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridViews.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
 
+#include <cmath>
 #include <limits>
 
 namespace {
@@ -95,6 +97,38 @@ REGISTER_TEST("bssn.evolution.rhs_halo_sentinel", "RHS halos untouched contract"
         stepper.step(grid, dt, step);
         expect_grid_interior_finite(grid, padding);
     }
+});
+
+REGISTER_TEST("bssn.evolution.grid_view_matches_grid_layout",
+              "Grid views expose the same raw layout metadata as the host grid", []() {
+    Grid grid(10, 8, 6, 4, 0.25, 0.5, 0.75);
+    grid.x0 = -1.0;
+    grid.y0 = 2.0;
+    grid.z0 = 3.5;
+
+    const auto view = tensorium_RG::bssn::make_view(grid);
+
+    TENSORIUM_TEST_ASSERT(view.alpha.ptr() == grid.alpha.ptr());
+    TENSORIUM_TEST_ASSERT(view.gamma_tilde[tensorium_RG::XX].ptr() ==
+                          grid.gamma_tilde[tensorium_RG::XX].ptr());
+    TENSORIUM_TEST_ASSERT(view.st.sx == grid.st.sx);
+    TENSORIUM_TEST_ASSERT(view.st.sy == grid.st.sy);
+    TENSORIUM_TEST_ASSERT(view.st.sz == grid.st.sz);
+
+    size_t i0, i1, j0, j1, k0, k1;
+    view.domain_bounds(i0, i1, j0, j1, k0, k1);
+    TENSORIUM_TEST_ASSERT(i0 == grid.dims.ng);
+    TENSORIUM_TEST_ASSERT(i1 == grid.dims.ng + grid.dims.nx);
+    TENSORIUM_TEST_ASSERT(j0 == grid.dims.ng);
+    TENSORIUM_TEST_ASSERT(j1 == grid.dims.ng + grid.dims.ny);
+    TENSORIUM_TEST_ASSERT(k0 == grid.dims.ng);
+    TENSORIUM_TEST_ASSERT(k1 == grid.dims.ng + grid.dims.nz);
+
+    double x = 0.0, y = 0.0, z = 0.0;
+    view.coords(i0 + 2, j0 + 1, k0 + 3, x, y, z);
+    TENSORIUM_TEST_ASSERT(std::abs(x - (-0.5)) < 1.0e-12);
+    TENSORIUM_TEST_ASSERT(std::abs(y - 2.5) < 1.0e-12);
+    TENSORIUM_TEST_ASSERT(std::abs(z - 5.75) < 1.0e-12);
 });
 
 REGISTER_TEST("bssn.evolution.radiative_boundary_shells_are_evolved",

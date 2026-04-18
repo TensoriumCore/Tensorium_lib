@@ -21,9 +21,12 @@
 #include "../Geometry/BSSNProjection.hpp"
 #include "../Geometry/BSSNProjectionMonitor.hpp"
 #include "../Geometry/BSSNRicci.hpp"
+#include "../Fields/BSSNGridViews.hpp"
 #include "../Grid/BSSNGridOperations.hpp"
 #include "BSSNPerfTimers.hpp"
 #include "BSSNRHSSweep.hpp"
+#include <Tensorium/Backend/Common/Backend.hpp>
+#include <Tensorium/Backend/CUDA/Core/CudaRuntime.hpp>
 
 /**
  * @file BSSNRK4.hpp
@@ -463,7 +466,12 @@ inline T compute_dt_cfl(const BSSNGridSoA<T> &grid, T cfl_factor, size_t padding
 template <typename T, typename Boundary> class BSSNRKStepper {
   public:
     explicit BSSNRKStepper(const BSSNGridSoA<T> &prototype, size_t padding = 4)
+        : BSSNRKStepper(prototype, tensorium::backend::Options{}, padding) {}
+
+    BSSNRKStepper(const BSSNGridSoA<T> &prototype, const tensorium::backend::Options &backend,
+                  size_t padding = 4)
         : padding_(padding),
+          backend_options_(backend),
           stage_grid_(prototype.dims.nx, prototype.dims.ny, prototype.dims.nz, prototype.dims.ng,
                       prototype.dx, prototype.dy, prototype.dz) {
         stage_grid_.x0 = prototype.x0;
@@ -472,9 +480,19 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         for (auto &stage : stages_)
             stage.allocate_like(prototype);
         detail::allocate_like(prototype.alpha, theta_ricciz4_trace_cache_);
+        validate_backend_options();
     }
 
     void set_gauge_parameters(const GaugeParameters<T> &params) { gauge_params_ = params; }
+
+    void set_backend_options(const tensorium::backend::Options &backend) {
+        backend_options_ = backend;
+        validate_backend_options();
+    }
+
+    [[nodiscard]] const tensorium::backend::Options &backend_options() const noexcept {
+        return backend_options_;
+    }
 
     void set_constraint_callback(
         std::function<void(const BSSNGridSoA<T> &, const ConstraintMonitorStats &)> cb) {
@@ -638,6 +656,18 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
     void step(BSSNGridSoA<T> &grid, T dt, size_t step_index = 0) {
+        switch (backend_options_.backend) {
+        case tensorium::backend::Kind::CPU:
+            step_cpu(grid, dt, step_index);
+            return;
+        case tensorium::backend::Kind::CUDA:
+            step_cuda(grid, dt, step_index);
+            return;
+        }
+    }
+
+  private:
+    void step_cpu(BSSNGridSoA<T> &grid, T dt, size_t step_index = 0) {
 #if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
         tensorium_RG::bssn::detail::begin_contracted_warning_step(step_index);
 #endif
@@ -730,7 +760,25 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         report_kernel_timers(step_index);
     }
 
-  private:
+    [[noreturn]] void step_cuda(BSSNGridSoA<T> &grid, T, size_t) {
+        validate_backend_options();
+        tensorium::cuda::set_device(backend_options_.device_ordinal);
+        const auto grid_view = make_view(grid);
+        (void)grid_view;
+        throw std::runtime_error(
+            "BSSNRKStepper CUDA backend scaffolding is in place, but the CUDA kernels are not "
+            "implemented yet. Use the CPU backend for execution.");
+    }
+
+    void validate_backend_options() const {
+        if (backend_options_.backend != tensorium::backend::Kind::CUDA)
+            return;
+        if (!tensorium::cuda::is_available()) {
+            throw std::runtime_error(
+                "BSSNRKStepper requested the CUDA backend, but no CUDA device is available.");
+        }
+    }
+
     size_t rhs_bulk_padding() const {
         if constexpr (BoundaryPhysicalEvolutionTraits<Boundary>::value) {
             if constexpr (BoundaryRadiativeRHSTraits<Boundary>::value)
@@ -747,6 +795,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
     size_t                                                                      padding_ = 4;
+    tensorium::backend::Options                                                backend_options_{};
     GaugeParameters<T>                                                          gauge_params_{};
     BSSNRHSWorkspace<T>                                                         stages_[4];
     BSSNGridSoA<T>                                                              stage_grid_;
@@ -917,7 +966,53 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                 rhs_padding, &theta_ricciz4_trace_cache_);
         apply_rhs_sommerfeld(grid, rhs);
         apply_rhs_sponge(grid, rhs);
+        if (rhs_prep_callback_)
+            stabilize_nonfinite_rhs_collar(grid, rhs, rhs_padding);
         recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, evolution_padding());
+    }
+
+    void stabilize_nonfinite_rhs_collar(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
+                                        size_t collar_width) {
+        if (collar_width == 0)
+            return;
+
+        size_t I0, I1, J0, J1, K0, K1;
+        grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+        if (I0 >= I1 || J0 >= J1 || K0 >= K1)
+            return;
+
+        auto reset_nonfinite = [](Field3D<T> &field, size_t idx) {
+            T &slot = field.ptr()[idx];
+            if (!std::isfinite(static_cast<double>(slot)))
+                slot = T(0);
+        };
+
+#pragma omp parallel for collapse(3)
+        for (size_t i = I0; i < I1; ++i)
+            for (size_t j = J0; j < J1; ++j)
+                for (size_t k = K0; k < K1; ++k) {
+                    const bool in_collar = (i - I0 < collar_width) || (I1 - 1 - i < collar_width) ||
+                                           (j - J0 < collar_width) || (J1 - 1 - j < collar_width) ||
+                                           (k - K0 < collar_width) || (K1 - 1 - k < collar_width);
+                    if (!in_collar)
+                        continue;
+
+                    const size_t idx = grid.alpha.idx(i, j, k);
+                    reset_nonfinite(rhs.alpha, idx);
+                    reset_nonfinite(rhs.chi, idx);
+                    reset_nonfinite(rhs.K, idx);
+                    reset_nonfinite(rhs.Theta, idx);
+                    for (int c = 0; c < 3; ++c) {
+                        reset_nonfinite(rhs.beta[c], idx);
+                        reset_nonfinite(rhs.B[c], idx);
+                        reset_nonfinite(rhs.tildeGamma[c], idx);
+                        reset_nonfinite(rhs.Z[c], idx);
+                    }
+                    for (int s = 0; s < 6; ++s) {
+                        reset_nonfinite(rhs.gamma_tilde[s], idx);
+                        reset_nonfinite(rhs.A_tilde[s], idx);
+                    }
+                }
     }
 
     void apply_rhs_sommerfeld(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs) {
