@@ -146,6 +146,18 @@ set(TEST_OBJECT_TARGETS
     test_bssn_evolution_objs
     test_bssn_stability_objs)
 
+if(USE_CUDA)
+  add_library(tensorium_bssn_cuda_kernels STATIC
+      ${PROJECT_SOURCE_DIR}/includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/CUDA/BSSNCudaGridOps.cu)
+  target_include_directories(tensorium_bssn_cuda_kernels PUBLIC
+      ${PROJECT_SOURCE_DIR}/includes
+      ${CMAKE_CURRENT_SOURCE_DIR})
+  target_link_libraries(tensorium_bssn_cuda_kernels PUBLIC CUDA::cudart)
+  set_target_properties(tensorium_bssn_cuda_kernels PROPERTIES
+      CUDA_SEPARABLE_COMPILATION ON
+      POSITION_INDEPENDENT_CODE ON)
+endif()
+
 set(BSSN_OBJECTS
     $<TARGET_OBJECTS:test_bssn_initial_objs>
     $<TARGET_OBJECTS:test_bssn_constraints_objs>
@@ -270,7 +282,7 @@ endif()
 
 if(USE_CUDA)
   foreach(target ${TENSORIUM_ALL_EXECUTABLES})
-    target_link_libraries(${target} PRIVATE CUDA::cudart)
+    target_link_libraries(${target} PRIVATE CUDA::cudart tensorium_bssn_cuda_kernels)
   endforeach()
 endif()
 

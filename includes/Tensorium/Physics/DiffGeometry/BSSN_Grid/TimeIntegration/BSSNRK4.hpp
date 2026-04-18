@@ -17,6 +17,7 @@
 #include "../Evolution/BSSNEvolutionGauge.hpp"
 #include "../Evolution/BSSNEvolutionK.hpp"
 #include "../Evolution/BSSNEvolutionZ4C.hpp"
+#include "../CUDA/BSSNCudaGridOps.hpp"
 #include "../Geometry/BSSNAlgebraic.hpp"
 #include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../Geometry/BSSNProjection.hpp"
@@ -768,10 +769,17 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         tensorium::cuda::set_device(backend_options_.device_ordinal);
         ensure_cuda_stepper_state(grid);
         cuda_stepper_state_->grid.copy_from_host(grid);
+        cuda_stepper_state_->stage_grid.x0 = cuda_stepper_state_->grid.x0;
+        cuda_stepper_state_->stage_grid.y0 = cuda_stepper_state_->grid.y0;
+        cuda_stepper_state_->stage_grid.z0 = cuda_stepper_state_->grid.z0;
 
         const auto host_grid_view = make_view(grid);
-        const auto device_grid_view = cuda_stepper_state_->grid.view();
+        const auto device_grid_view =
+            static_cast<const BSSNGridDevice<T> &>(cuda_stepper_state_->grid).view();
         const auto device_stage_grid_view = cuda_stepper_state_->stage_grid.view();
+        tensorium_RG::bssn::cuda::copy_stage_reference(device_grid_view, device_stage_grid_view,
+                                                       evolution_padding());
+        tensorium::cuda::device_synchronize();
         (void)host_grid_view;
         (void)device_grid_view;
         (void)device_stage_grid_view;

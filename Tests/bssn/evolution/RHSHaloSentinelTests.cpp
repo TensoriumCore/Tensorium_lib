@@ -8,6 +8,7 @@
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/CUDA/BSSNCudaGridOps.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridDevice.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridViews.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
@@ -91,12 +92,45 @@ void fill_field_pattern(tensorium_RG::Field3D<double> &field, double base, doubl
         field.ptr()[idx] = base + slope * static_cast<double>(idx);
 }
 
+void fill_field_constant(tensorium_RG::Field3D<double> &field, double value) {
+    const size_t total = field.st.nx_tot * field.st.ny_tot * field.st.nz_tot;
+    for (size_t idx = 0; idx < total; ++idx)
+        field.ptr()[idx] = value;
+}
+
 void expect_field_equal(const tensorium_RG::Field3D<double> &lhs,
                         const tensorium_RG::Field3D<double> &rhs, const std::string &label) {
     const size_t total = lhs.st.nx_tot * lhs.st.ny_tot * lhs.st.nz_tot;
     TENSORIUM_TEST_ASSERT(total == rhs.st.nx_tot * rhs.st.ny_tot * rhs.st.nz_tot);
     for (size_t idx = 0; idx < total; ++idx)
         tensorium::tests::expect_near(lhs.ptr()[idx], rhs.ptr()[idx], 1.0e-12, label);
+}
+
+void expect_field_domain_equal(const Grid &grid, const tensorium_RG::Field3D<double> &lhs,
+                               const tensorium_RG::Field3D<double> &rhs, const std::string &label) {
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t idx = lhs.idx(i, j, k);
+                tensorium::tests::expect_near(lhs.ptr()[idx], rhs.ptr()[idx], 1.0e-12, label);
+            }
+}
+
+void expect_field_halo_constant(const Grid &grid, const tensorium_RG::Field3D<double> &field,
+                                double value, const std::string &label) {
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    for (size_t i = 0; i < grid.alpha.st.nx_tot; ++i)
+        for (size_t j = 0; j < grid.alpha.st.ny_tot; ++j)
+            for (size_t k = 0; k < grid.alpha.st.nz_tot; ++k) {
+                const bool in_domain = (i >= I0 && i < I1 && j >= J0 && j < J1 && k >= K0 && k < K1);
+                if (in_domain)
+                    continue;
+                const size_t idx = field.idx(i, j, k);
+                tensorium::tests::expect_near(field.ptr()[idx], value, 1.0e-12, label);
+            }
 }
 
 } // namespace
@@ -212,6 +246,92 @@ REGISTER_TEST("bssn.evolution.cuda_grid_device_roundtrip",
                            "cuda_grid_device_roundtrip A_tilde");
         expect_field_equal(roundtrip.Ricci[s], host.Ricci[s], "cuda_grid_device_roundtrip Ricci");
     }
+#endif
+});
+
+REGISTER_TEST("bssn.evolution.cuda_stage_copy_kernel_roundtrip",
+              "CUDA stage copy kernel updates the physical domain while leaving halos untouched",
+              []() {
+#ifdef TENSORIUM_CUDA
+    if (!tensorium::cuda::is_available())
+        return;
+
+    constexpr double sentinel = -99.0;
+    Grid             src(10, 8, 6, 4, 0.125, 0.25, 0.5);
+    src.x0 = -1.5;
+    src.y0 = 0.75;
+    src.z0 = 2.25;
+
+    fill_field_pattern(src.alpha, 1.0, 1.0e-3);
+    fill_field_pattern(src.chi, 0.5, -2.0e-3);
+    fill_field_pattern(src.K, -0.25, 3.0e-3);
+    fill_field_pattern(src.Theta, 0.125, -4.0e-3);
+    for (int c = 0; c < 3; ++c) {
+        fill_field_pattern(src.beta[c], 0.1 * (c + 1), 1.0e-3 * (c + 2));
+        fill_field_pattern(src.B[c], -0.2 * (c + 1), -1.5e-3 * (c + 2));
+        fill_field_pattern(src.tildeGamma[c], 0.3 * (c + 1), 2.0e-3 * (c + 3));
+        fill_field_pattern(src.Z[c], -0.4 * (c + 1), -2.5e-3 * (c + 3));
+    }
+    for (int s = 0; s < 6; ++s) {
+        fill_field_pattern(src.gamma_tilde[s], 1.0 + 0.1 * s, 5.0e-4 * (s + 1));
+        fill_field_pattern(src.A_tilde[s], -0.6 - 0.1 * s, 7.0e-4 * (s + 1));
+    }
+
+    Grid dst(src.dims.nx, src.dims.ny, src.dims.nz, src.dims.ng, src.dx, src.dy, src.dz);
+    fill_field_constant(dst.alpha, sentinel);
+    fill_field_constant(dst.chi, sentinel);
+    fill_field_constant(dst.K, sentinel);
+    fill_field_constant(dst.Theta, sentinel);
+    for (int c = 0; c < 3; ++c) {
+        fill_field_constant(dst.beta[c], sentinel);
+        fill_field_constant(dst.B[c], sentinel);
+        fill_field_constant(dst.tildeGamma[c], sentinel);
+        fill_field_constant(dst.Z[c], sentinel);
+    }
+    for (int s = 0; s < 6; ++s) {
+        fill_field_constant(dst.gamma_tilde[s], sentinel);
+        fill_field_constant(dst.gamma_tilde_inv[s], sentinel);
+        fill_field_constant(dst.A_tilde[s], sentinel);
+        fill_field_constant(dst.Ricci[s], sentinel);
+    }
+
+    tensorium_RG::bssn::BSSNGridDevice<double> src_device(src);
+    tensorium_RG::bssn::BSSNGridDevice<double> dst_device(dst);
+    src_device.copy_from_host(src);
+    dst_device.copy_from_host(dst);
+    dst_device.x0 = src.x0;
+    dst_device.y0 = src.y0;
+    dst_device.z0 = src.z0;
+
+    const auto src_view = static_cast<const tensorium_RG::bssn::BSSNGridDevice<double> &>(src_device).view();
+    tensorium_RG::bssn::cuda::copy_stage_reference(src_view, dst_device.view(), 0);
+    tensorium::cuda::device_synchronize();
+
+    Grid roundtrip(src.dims.nx, src.dims.ny, src.dims.nz, src.dims.ng, src.dx, src.dy, src.dz);
+    dst_device.copy_to_host(roundtrip);
+
+    expect_field_domain_equal(roundtrip, roundtrip.alpha, src.alpha, "cuda_stage_copy alpha");
+    expect_field_domain_equal(roundtrip, roundtrip.chi, src.chi, "cuda_stage_copy chi");
+    expect_field_domain_equal(roundtrip, roundtrip.K, src.K, "cuda_stage_copy K");
+    expect_field_domain_equal(roundtrip, roundtrip.Theta, src.Theta, "cuda_stage_copy Theta");
+    for (int c = 0; c < 3; ++c) {
+        expect_field_domain_equal(roundtrip, roundtrip.beta[c], src.beta[c], "cuda_stage_copy beta");
+        expect_field_domain_equal(roundtrip, roundtrip.B[c], src.B[c], "cuda_stage_copy B");
+        expect_field_domain_equal(roundtrip, roundtrip.tildeGamma[c], src.tildeGamma[c],
+                                  "cuda_stage_copy tildeGamma");
+        expect_field_domain_equal(roundtrip, roundtrip.Z[c], src.Z[c], "cuda_stage_copy Z");
+    }
+    for (int s = 0; s < 6; ++s) {
+        expect_field_domain_equal(roundtrip, roundtrip.gamma_tilde[s], src.gamma_tilde[s],
+                                  "cuda_stage_copy gamma_tilde");
+        expect_field_domain_equal(roundtrip, roundtrip.A_tilde[s], src.A_tilde[s],
+                                  "cuda_stage_copy A_tilde");
+    }
+
+    expect_field_halo_constant(roundtrip, roundtrip.alpha, sentinel, "cuda_stage_copy halo alpha");
+    expect_field_halo_constant(roundtrip, roundtrip.chi, sentinel, "cuda_stage_copy halo chi");
+    expect_field_halo_constant(roundtrip, roundtrip.K, sentinel, "cuda_stage_copy halo K");
+    expect_field_halo_constant(roundtrip, roundtrip.Theta, sentinel, "cuda_stage_copy halo Theta");
 #endif
 });
 
