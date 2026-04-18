@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <cstddef>
+#include <type_traits>
 
 namespace tensorium_RG::bssn::cuda {
 namespace {
@@ -37,41 +38,81 @@ inline dim3 make_launch_grid(std::size_t ni, std::size_t nj, std::size_t nk, con
                 static_cast<unsigned>((nk + block.z - 1) / block.z));
 }
 
-template <typename T> __device__ __forceinline__ void copy_state_at(BSSNGridView<const T> src,
-                                                                    BSSNGridView<T> dst,
-                                                                    std::size_t idx) {
-    dst.alpha.ptr()[idx] = src.alpha.ptr()[idx];
-    dst.chi.ptr()[idx] = src.chi.ptr()[idx];
-    dst.K.ptr()[idx] = src.K.ptr()[idx];
-    dst.Theta.ptr()[idx] = src.Theta.ptr()[idx];
+template <typename T> struct StageGridPack {
+    using value_type = std::remove_const_t<T>;
+
+    Strides<value_type> st{};
+    T                  *alpha = nullptr;
+    T                  *chi = nullptr;
+    T                  *K = nullptr;
+    T                  *Theta = nullptr;
+    T                  *beta[3] = {};
+    T                  *B[3] = {};
+    T                  *tildeGamma[3] = {};
+    T                  *Z[3] = {};
+    T                  *gamma_tilde[6] = {};
+    T                  *A_tilde[6] = {};
+
+    __host__ __device__ std::size_t idx(std::size_t i, std::size_t j, std::size_t k) const noexcept {
+        return i * st.sx + j * st.sy + k * st.sz;
+    }
+};
+
+template <typename T> StageGridPack<T> make_stage_pack(BSSNGridView<T> view) {
+    StageGridPack<T> pack;
+    pack.st = view.st;
+    pack.alpha = view.alpha.ptr();
+    pack.chi = view.chi.ptr();
+    pack.K = view.K.ptr();
+    pack.Theta = view.Theta.ptr();
     for (int c = 0; c < 3; ++c) {
-        dst.beta[c].ptr()[idx] = src.beta[c].ptr()[idx];
-        dst.B[c].ptr()[idx] = src.B[c].ptr()[idx];
-        dst.tildeGamma[c].ptr()[idx] = src.tildeGamma[c].ptr()[idx];
-        dst.Z[c].ptr()[idx] = src.Z[c].ptr()[idx];
+        pack.beta[c] = view.beta[c].ptr();
+        pack.B[c] = view.B[c].ptr();
+        pack.tildeGamma[c] = view.tildeGamma[c].ptr();
+        pack.Z[c] = view.Z[c].ptr();
     }
     for (int s = 0; s < 6; ++s) {
-        dst.gamma_tilde[s].ptr()[idx] = src.gamma_tilde[s].ptr()[idx];
-        dst.A_tilde[s].ptr()[idx] = src.A_tilde[s].ptr()[idx];
+        pack.gamma_tilde[s] = view.gamma_tilde[s].ptr();
+        pack.A_tilde[s] = view.A_tilde[s].ptr();
+    }
+    return pack;
+}
+
+template <typename T>
+__device__ __forceinline__ void copy_state_at(StageGridPack<const T> src, StageGridPack<T> dst,
+                                              std::size_t idx) {
+    dst.alpha[idx] = src.alpha[idx];
+    dst.chi[idx] = src.chi[idx];
+    dst.K[idx] = src.K[idx];
+    dst.Theta[idx] = src.Theta[idx];
+    for (int c = 0; c < 3; ++c) {
+        dst.beta[c][idx] = src.beta[c][idx];
+        dst.B[c][idx] = src.B[c][idx];
+        dst.tildeGamma[c][idx] = src.tildeGamma[c][idx];
+        dst.Z[c][idx] = src.Z[c][idx];
+    }
+    for (int s = 0; s < 6; ++s) {
+        dst.gamma_tilde[s][idx] = src.gamma_tilde[s][idx];
+        dst.A_tilde[s][idx] = src.A_tilde[s][idx];
     }
 }
 
 template <typename T>
-__device__ __forceinline__ void accumulate_state_at(BSSNGridView<const T> src, BSSNGridView<T> dst,
+__device__ __forceinline__ void accumulate_state_at(StageGridPack<const T> src, StageGridPack<T> dst,
                                                     T delta, std::size_t idx) {
-    dst.alpha.ptr()[idx] += delta * src.alpha.ptr()[idx];
-    dst.chi.ptr()[idx] += delta * src.chi.ptr()[idx];
-    dst.K.ptr()[idx] += delta * src.K.ptr()[idx];
-    dst.Theta.ptr()[idx] += delta * src.Theta.ptr()[idx];
+    dst.alpha[idx] += delta * src.alpha[idx];
+    dst.chi[idx] += delta * src.chi[idx];
+    dst.K[idx] += delta * src.K[idx];
+    dst.Theta[idx] += delta * src.Theta[idx];
     for (int c = 0; c < 3; ++c) {
-        dst.beta[c].ptr()[idx] += delta * src.beta[c].ptr()[idx];
-        dst.B[c].ptr()[idx] += delta * src.B[c].ptr()[idx];
-        dst.tildeGamma[c].ptr()[idx] += delta * src.tildeGamma[c].ptr()[idx];
-        dst.Z[c].ptr()[idx] += delta * src.Z[c].ptr()[idx];
+        dst.beta[c][idx] += delta * src.beta[c][idx];
+        dst.B[c][idx] += delta * src.B[c][idx];
+        dst.tildeGamma[c][idx] += delta * src.tildeGamma[c][idx];
+        dst.Z[c][idx] += delta * src.Z[c][idx];
     }
     for (int s = 0; s < 6; ++s) {
-        dst.gamma_tilde[s].ptr()[idx] += delta * src.gamma_tilde[s].ptr()[idx];
-        dst.A_tilde[s].ptr()[idx] += delta * src.A_tilde[s].ptr()[idx];
+        dst.gamma_tilde[s][idx] += delta * src.gamma_tilde[s][idx];
+        dst.A_tilde[s][idx] += delta * src.A_tilde[s][idx];
     }
 }
 
@@ -81,25 +122,25 @@ template <typename T> __device__ __forceinline__ T smooth_floor_device(T val, T 
 }
 
 template <typename T>
-__global__ void copy_stage_reference_kernel(BSSNGridView<const T> src, BSSNGridView<T> dst,
+__global__ void copy_stage_reference_kernel(StageGridPack<const T> src, StageGridPack<T> dst,
                                             Bounds3D bounds) {
     const std::size_t i = bounds.i0 + blockIdx.x * blockDim.x + threadIdx.x;
     const std::size_t j = bounds.j0 + blockIdx.y * blockDim.y + threadIdx.y;
     const std::size_t k = bounds.k0 + blockIdx.z * blockDim.z + threadIdx.z;
     if (i >= bounds.i1 || j >= bounds.j1 || k >= bounds.k1)
         return;
-    copy_state_at(src, dst, src.alpha.idx(i, j, k));
+    copy_state_at(src, dst, src.idx(i, j, k));
 }
 
 template <typename T>
-__global__ void accumulate_stage_reference_kernel(BSSNGridView<const T> src, BSSNGridView<T> dst,
+__global__ void accumulate_stage_reference_kernel(StageGridPack<const T> src, StageGridPack<T> dst,
                                                   T delta, Bounds3D bounds) {
     const std::size_t i = bounds.i0 + blockIdx.x * blockDim.x + threadIdx.x;
     const std::size_t j = bounds.j0 + blockIdx.y * blockDim.y + threadIdx.y;
     const std::size_t k = bounds.k0 + blockIdx.z * blockDim.z + threadIdx.z;
     if (i >= bounds.i1 || j >= bounds.j1 || k >= bounds.k1)
         return;
-    accumulate_state_at(src, dst, delta, src.alpha.idx(i, j, k));
+    accumulate_state_at(src, dst, delta, src.idx(i, j, k));
 }
 
 template <typename T> __global__ void alpha_floor_kernel(BSSNGridView<T> grid, T floor, std::size_t total) {
@@ -121,7 +162,7 @@ inline void throw_last_error(const char *context) {
 }
 
 template <typename T>
-void launch_copy_stage_reference(BSSNGridView<const T> src, BSSNGridView<T> dst,
+void launch_copy_stage_reference(StageGridPack<const T> src, StageGridPack<T> dst,
                                  const Bounds3D &bounds) {
     if (bounds.i0 >= bounds.i1 || bounds.j0 >= bounds.j1 || bounds.k0 >= bounds.k1)
         return;
@@ -133,7 +174,7 @@ void launch_copy_stage_reference(BSSNGridView<const T> src, BSSNGridView<T> dst,
 }
 
 template <typename T>
-void launch_accumulate_stage_reference(BSSNGridView<const T> src, BSSNGridView<T> dst, T delta,
+void launch_accumulate_stage_reference(StageGridPack<const T> src, StageGridPack<T> dst, T delta,
                                        const Bounds3D &bounds) {
     if (bounds.i0 >= bounds.i1 || bounds.j0 >= bounds.j1 || bounds.k0 >= bounds.k1)
         return;
@@ -159,13 +200,14 @@ void launch_floor_kernel(BSSNGridView<T> grid, T floor, Kernel kernel, const cha
 
 template <typename T>
 void copy_stage_reference(BSSNGridView<const T> src, BSSNGridView<T> dst, std::size_t padding) {
-    launch_copy_stage_reference(src, dst, interior_bounds(src, padding));
+    launch_copy_stage_reference(make_stage_pack(src), make_stage_pack(dst), interior_bounds(src, padding));
 }
 
 template <typename T>
 void accumulate_stage_reference(BSSNGridView<const T> src, BSSNGridView<T> dst, T delta,
                                 std::size_t padding) {
-    launch_accumulate_stage_reference(src, dst, delta, interior_bounds(src, padding));
+    launch_accumulate_stage_reference(make_stage_pack(src), make_stage_pack(dst), delta,
+                                      interior_bounds(src, padding));
 }
 
 template <typename T> void apply_alpha_floor(BSSNGridView<T> grid, T floor) {

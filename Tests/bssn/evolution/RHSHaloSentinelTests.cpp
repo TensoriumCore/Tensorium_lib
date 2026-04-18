@@ -118,6 +118,19 @@ void expect_field_domain_equal(const Grid &grid, const tensorium_RG::Field3D<dou
             }
 }
 
+void expect_field_domain_near(const Grid &grid, const tensorium_RG::Field3D<double> &lhs,
+                              const tensorium_RG::Field3D<double> &rhs, double tol,
+                              const std::string &label) {
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const size_t idx = lhs.idx(i, j, k);
+                tensorium::tests::expect_near(lhs.ptr()[idx], rhs.ptr()[idx], tol, label);
+            }
+}
+
 void expect_field_halo_constant(const Grid &grid, const tensorium_RG::Field3D<double> &field,
                                 double value, const std::string &label) {
     size_t I0, I1, J0, J1, K0, K1;
@@ -131,6 +144,79 @@ void expect_field_halo_constant(const Grid &grid, const tensorium_RG::Field3D<do
                 const size_t idx = field.idx(i, j, k);
                 tensorium::tests::expect_near(field.ptr()[idx], value, 1.0e-12, label);
             }
+}
+
+void seed_cuda_backend_case(Grid &grid) {
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    size_t I0, I1, J0, J1, K0, K1;
+    grid.domain_bounds(I0, I1, J0, J1, K0, K1);
+    const double denom_i = (I1 > I0 + 1) ? static_cast<double>(I1 - I0 - 1) : 1.0;
+    const double denom_j = (J1 > J0 + 1) ? static_cast<double>(J1 - J0 - 1) : 1.0;
+    const double denom_k = (K1 > K0 + 1) ? static_cast<double>(K1 - K0 - 1) : 1.0;
+
+    for (size_t i = I0; i < I1; ++i)
+        for (size_t j = J0; j < J1; ++j)
+            for (size_t k = K0; k < K1; ++k) {
+                const double u = static_cast<double>(i - I0) / denom_i;
+                const double v = static_cast<double>(j - J0) / denom_j;
+                const double w = static_cast<double>(k - K0) / denom_k;
+                const double phase = 1.3 * u - 0.9 * v + 0.7 * w;
+                const double bend = 0.5 * u * u - 0.25 * v * w;
+                const size_t idx = grid.alpha.idx(i, j, k);
+
+                grid.alpha.ptr()[idx] = 1.0 + 2.0e-2 * std::sin(phase);
+                grid.chi.ptr()[idx] = 1.0 + 1.5e-2 * std::cos(phase + 0.25);
+                grid.K.ptr()[idx] = 1.0e-3 * std::sin(2.0 * phase);
+                grid.Theta.ptr()[idx] = -5.0e-4 * std::cos(1.5 * phase);
+
+                for (int c = 0; c < 3; ++c) {
+                    grid.beta[c].ptr()[idx] = 1.0e-3 * (c + 1) * std::sin(phase + 0.2 * c);
+                    grid.B[c].ptr()[idx] = -2.5e-4 * (c + 1) * std::cos(phase - 0.15 * c);
+                    grid.tildeGamma[c].ptr()[idx] =
+                        4.0e-4 * (c + 1) * std::sin(phase + bend + 0.1 * c);
+                    grid.Z[c].ptr()[idx] = -2.0e-4 * (c + 1) * std::cos(phase - bend + 0.05 * c);
+                }
+
+                grid.gamma_tilde[tensorium_RG::XX].ptr()[idx] = 1.0 + 7.0e-4 * std::sin(phase);
+                grid.gamma_tilde[tensorium_RG::YY].ptr()[idx] =
+                    1.0 - 5.0e-4 * std::cos(phase + 0.3);
+                grid.gamma_tilde[tensorium_RG::ZZ].ptr()[idx] =
+                    1.0 + 3.5e-4 * std::sin(phase - 0.2);
+                grid.gamma_tilde[tensorium_RG::XY].ptr()[idx] = 1.5e-4 * std::sin(phase + bend);
+                grid.gamma_tilde[tensorium_RG::XZ].ptr()[idx] = -1.0e-4 * std::cos(phase - bend);
+                grid.gamma_tilde[tensorium_RG::YZ].ptr()[idx] = 1.2e-4 * std::sin(phase + 0.4);
+
+                for (int s = 0; s < 6; ++s)
+                    grid.A_tilde[s].ptr()[idx] = 1.0e-4 * (s + 1) * std::cos(phase + 0.1 * s);
+            }
+}
+
+void copy_grid_state(const Grid &src, Grid &dst) {
+    dst.x0 = src.x0;
+    dst.y0 = src.y0;
+    dst.z0 = src.z0;
+
+    const size_t total = src.alpha.st.nx_tot * src.alpha.st.ny_tot * src.alpha.st.nz_tot;
+    auto copy_field = [&](const tensorium_RG::Field3D<double> &from, tensorium_RG::Field3D<double> &to) {
+        for (size_t idx = 0; idx < total; ++idx)
+            to.ptr()[idx] = from.ptr()[idx];
+    };
+
+    copy_field(src.alpha, dst.alpha);
+    copy_field(src.chi, dst.chi);
+    copy_field(src.K, dst.K);
+    copy_field(src.Theta, dst.Theta);
+    for (int c = 0; c < 3; ++c) {
+        copy_field(src.beta[c], dst.beta[c]);
+        copy_field(src.B[c], dst.B[c]);
+        copy_field(src.tildeGamma[c], dst.tildeGamma[c]);
+        copy_field(src.Z[c], dst.Z[c]);
+    }
+    for (int s = 0; s < 6; ++s) {
+        copy_field(src.gamma_tilde[s], dst.gamma_tilde[s]);
+        copy_field(src.A_tilde[s], dst.A_tilde[s]);
+    }
 }
 
 } // namespace
@@ -335,30 +421,57 @@ REGISTER_TEST("bssn.evolution.cuda_stage_copy_kernel_roundtrip",
 #endif
 });
 
-REGISTER_TEST("bssn.evolution.cuda_backend_routes_to_stub",
-              "BSSNRKStepper routes CUDA backend requests through the device scaffold", []() {
+REGISTER_TEST("bssn.evolution.cuda_backend_matches_cpu_step",
+              "BSSNRKStepper CUDA backend follows the CPU stage flow on a perturbed gauge state",
+              []() {
 #ifdef TENSORIUM_CUDA
     if (!tensorium::cuda::is_available())
         return;
 
     const size_t padding = 4;
-    Grid         grid(16, 12, 10, padding, 0.25, 0.25, 0.25);
-    tensorium_RG::init::minkowski(grid, 0.0);
+    Grid         cpu_grid(16, 12, 10, padding, 0.25, 0.25, 0.25);
+    seed_cuda_backend_case(cpu_grid);
+    Grid gpu_grid(16, 12, 10, padding, 0.25, 0.25, 0.25);
+    copy_grid_state(cpu_grid, gpu_grid);
 
     tensorium::backend::Options backend;
     backend.backend = tensorium::backend::Kind::CUDA;
 
-    Stepper stepper(grid, backend, padding);
+    Stepper cpu_stepper(cpu_grid, padding);
+    Stepper gpu_stepper(gpu_grid, backend, padding);
 
-    bool threw = false;
-    try {
-        stepper.step(grid, 1.0e-3, 0);
-    } catch (const std::runtime_error &err) {
-        threw = true;
-        TENSORIUM_TEST_ASSERT(std::string(err.what()).find("CUDA kernels are not implemented yet") !=
-                              std::string::npos);
+    tensorium_RG::bssn::GaugeParameters<double> gauge{};
+    gauge.alpha_floor = 1.0e-6;
+    gauge.chi_floor = 1.0e-6;
+    cpu_stepper.set_gauge_parameters(gauge);
+    gpu_stepper.set_gauge_parameters(gauge);
+
+    const double dt = 1.0e-3;
+    cpu_stepper.step(cpu_grid, dt, 0);
+    gpu_stepper.step(gpu_grid, dt, 0);
+
+    expect_grid_interior_finite(cpu_grid, padding);
+    expect_grid_interior_finite(gpu_grid, padding);
+
+    constexpr double tol = 1.0e-6;
+    expect_field_domain_near(gpu_grid, gpu_grid.alpha, cpu_grid.alpha, tol, "cuda_backend alpha");
+    expect_field_domain_near(gpu_grid, gpu_grid.chi, cpu_grid.chi, tol, "cuda_backend chi");
+    expect_field_domain_near(gpu_grid, gpu_grid.K, cpu_grid.K, tol, "cuda_backend K");
+    expect_field_domain_near(gpu_grid, gpu_grid.Theta, cpu_grid.Theta, tol, "cuda_backend Theta");
+    for (int c = 0; c < 3; ++c) {
+        expect_field_domain_near(gpu_grid, gpu_grid.beta[c], cpu_grid.beta[c], tol,
+                                 "cuda_backend beta");
+        expect_field_domain_near(gpu_grid, gpu_grid.B[c], cpu_grid.B[c], tol, "cuda_backend B");
+        expect_field_domain_near(gpu_grid, gpu_grid.tildeGamma[c], cpu_grid.tildeGamma[c], tol,
+                                 "cuda_backend tildeGamma");
+        expect_field_domain_near(gpu_grid, gpu_grid.Z[c], cpu_grid.Z[c], tol, "cuda_backend Z");
     }
-    TENSORIUM_TEST_ASSERT(threw);
+    for (int s = 0; s < 6; ++s) {
+        expect_field_domain_near(gpu_grid, gpu_grid.gamma_tilde[s], cpu_grid.gamma_tilde[s], tol,
+                                 "cuda_backend gamma_tilde");
+        expect_field_domain_near(gpu_grid, gpu_grid.A_tilde[s], cpu_grid.A_tilde[s], tol,
+                                 "cuda_backend A_tilde");
+    }
 #endif
 });
 

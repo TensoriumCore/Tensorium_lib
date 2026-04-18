@@ -764,31 +764,106 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         report_kernel_timers(step_index);
     }
 
-    [[noreturn]] void step_cuda(BSSNGridSoA<T> &grid, T dt, size_t step_index) {
+    void step_cuda(BSSNGridSoA<T> &grid, T dt, size_t step_index) {
+#if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+        tensorium_RG::bssn::detail::begin_contracted_warning_step(step_index);
+#endif
+        static constexpr std::array<double, 4> gam0_ref = {
+            0.0, 0.121098479554482, -3.843833699660025, 0.546370891121863};
+        static constexpr std::array<double, 4> gam1_ref = {
+            1.0, 0.721781678111411, 2.121209265338722, 0.198653035682705};
+        static constexpr std::array<double, 4> beta_ref = {
+            1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
+        static constexpr std::array<double, 4> delta_ref = {
+            1.0, 0.217683334308543, 1.065841341361089, 0.0};
+        static constexpr std::array<double, 4> stage_time_ref = {0.0, 0.5, 0.5, 1.0};
+
         validate_backend_options();
         tensorium::cuda::set_device(backend_options_.device_ordinal);
         ensure_cuda_stepper_state(grid);
-        cuda_stepper_state_->grid.copy_from_host(grid);
-        cuda_stepper_state_->stage_grid.x0 = cuda_stepper_state_->grid.x0;
-        cuda_stepper_state_->stage_grid.y0 = cuda_stepper_state_->grid.y0;
-        cuda_stepper_state_->stage_grid.z0 = cuda_stepper_state_->grid.z0;
+        boundary_dt_ = dt;
 
-        const auto host_grid_view = make_view(grid);
-        const auto device_grid_view =
-            static_cast<const BSSNGridDevice<T> &>(cuda_stepper_state_->grid).view();
-        const auto device_stage_grid_view = cuda_stepper_state_->stage_grid.view();
-        tensorium_RG::bssn::cuda::copy_stage_reference(device_grid_view, device_stage_grid_view,
-                                                       evolution_padding());
-        tensorium::cuda::device_synchronize();
-        (void)host_grid_view;
-        (void)device_grid_view;
-        (void)device_stage_grid_view;
-        (void)dt;
-        (void)step_index;
-        throw std::runtime_error(
-            "BSSNRKStepper CUDA backend scaffolding now allocates persistent device state and "
-            "synchronizes the host grid to device memory, but the CUDA kernels are not implemented "
-            "yet. Use the CPU backend for execution.");
+        for (int stage = 0; stage < 4; ++stage) {
+            sync_host_grid_to_cuda(grid);
+            const auto device_grid_view =
+                static_cast<const BSSNGridDevice<T> &>(cuda_stepper_state_->grid).view();
+            const auto device_stage_grid_view = cuda_stepper_state_->stage_grid.view();
+            if (stage == 0) {
+                tensorium_RG::bssn::cuda::copy_stage_reference(device_grid_view,
+                                                               device_stage_grid_view,
+                                                               evolution_padding());
+            } else {
+                tensorium_RG::bssn::cuda::accumulate_stage_reference(
+                    device_grid_view, device_stage_grid_view, T(delta_ref[stage]),
+                    evolution_padding());
+            }
+            tensorium::cuda::device_synchronize();
+            cuda_stepper_state_->stage_grid.copy_to_host(stage_grid_);
+
+            BoundaryStageFractionConfigurator<Boundary>::set(stage_time_ref[stage]);
+            prepare_state_for_rhs(grid);
+            auto stage_params = gauge_params_;
+            stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
+            stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
+            evaluate_rhs(grid, stages_[stage], stage_params);
+
+            apply_explicit_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
+                                        T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
+            apply_cuda_floors(grid);
+        }
+        simulation_time_ += dt;
+        BoundaryStageFractionConfigurator<Boundary>::set(1.0);
+
+        apply_cuda_floors(grid);
+
+        const bool do_state_log = ((step_index + 1) % state_log_stride_ == 0);
+        const bool needs_post_step_prepare =
+            do_state_log || static_cast<bool>(monitor_callback_) || static_cast<bool>(snapshot_callback_);
+        if (needs_post_step_prepare) {
+            prepare_state_for_rhs(grid);
+        } else {
+            synchronize_z_from_gamma_constraint(grid);
+        }
+
+        if (do_state_log) {
+            const double min_extent =
+                std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
+                          (grid.dims.nz - 1) * grid.dz});
+            const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
+            const double r_max = 0.45 * min_extent;
+            log_gauge_diagnostics(grid, step_index);
+            const double chi_cut = 1e-7;
+            log_full_bssn_diagnostics(grid, step_index, r_min, r_max, chi_cut);
+        }
+
+        if (monitor_callback_) {
+            const double min_extent =
+                std::min({(grid.dims.nx - 1) * grid.dx, (grid.dims.ny - 1) * grid.dy,
+                          (grid.dims.nz - 1) * grid.dz});
+            const double r_min = 2.0 * std::min({grid.dx, grid.dy, grid.dz});
+            const double r_max = 0.45 * min_extent;
+            auto        H_tmp = tensorium_RG::make_field(grid.alpha.st);
+            Field3D<T>  M_tmp[3];
+            Field3D<T>  C_tmp[3];
+            for (int q = 0; q < 3; ++q) {
+                M_tmp[q] = tensorium_RG::make_field(grid.alpha.st);
+                C_tmp[q] = tensorium_RG::make_field(grid.alpha.st);
+            }
+            compute_bssn_constraints(grid, grid.Ricci, H_tmp, M_tmp, C_tmp, r_min, r_max, 0.0, 0.0,
+                                     0.0);
+            auto stats = compute_constraint_monitor(grid, H_tmp, padding_);
+            populate_constraint_norms(grid, M_tmp, stats, padding_);
+            if (monitor_callback_)
+                monitor_callback_(grid, stats);
+        }
+
+        if (snapshot_callback_)
+            snapshot_callback_(grid, step_index);
+
+#if defined(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
+        tensorium_RG::bssn::detail::finalize_contracted_warning_step();
+#endif
+        report_kernel_timers(step_index);
     }
 
     void validate_backend_options() const {
@@ -810,6 +885,29 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             return;
         cuda_stepper_state_ = std::make_unique<BSSNCUDAStepperState<T>>();
         cuda_stepper_state_->allocate_like(grid);
+    }
+
+    void sync_host_grid_to_cuda(const BSSNGridSoA<T> &grid) {
+        cuda_stepper_state_->grid.copy_from_host(grid);
+        cuda_stepper_state_->stage_grid.x0 = cuda_stepper_state_->grid.x0;
+        cuda_stepper_state_->stage_grid.y0 = cuda_stepper_state_->grid.y0;
+        cuda_stepper_state_->stage_grid.z0 = cuda_stepper_state_->grid.z0;
+    }
+
+    void apply_cuda_floors(BSSNGridSoA<T> &grid) {
+        const bool do_alpha = gauge_params_.alpha_floor > T(0);
+        const bool do_chi = gauge_params_.chi_floor > T(0);
+        if (!do_alpha && !do_chi)
+            return;
+
+        sync_host_grid_to_cuda(grid);
+        auto device_grid_view = cuda_stepper_state_->grid.view();
+        if (do_alpha)
+            tensorium_RG::bssn::cuda::apply_alpha_floor(device_grid_view, gauge_params_.alpha_floor);
+        if (do_chi)
+            tensorium_RG::bssn::cuda::apply_chi_floor(device_grid_view, gauge_params_.chi_floor);
+        tensorium::cuda::device_synchronize();
+        cuda_stepper_state_->grid.copy_to_host(grid);
     }
 
     size_t rhs_bulk_padding() const {
