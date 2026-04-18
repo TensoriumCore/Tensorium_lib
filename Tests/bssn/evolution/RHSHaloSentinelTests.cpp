@@ -8,11 +8,14 @@
 
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/MovingPunctureEnv.hpp"
+#include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridDevice.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridViews.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/TimeIntegration/BSSNRK4.hpp"
 
 #include <cmath>
 #include <limits>
+#include <stdexcept>
+#include <string>
 
 namespace {
 
@@ -82,6 +85,20 @@ void poison_workspace(tensorium_RG::bssn::BSSNRHSWorkspace<double> &rhs) {
     }
 }
 
+void fill_field_pattern(tensorium_RG::Field3D<double> &field, double base, double slope) {
+    const size_t total = field.st.nx_tot * field.st.ny_tot * field.st.nz_tot;
+    for (size_t idx = 0; idx < total; ++idx)
+        field.ptr()[idx] = base + slope * static_cast<double>(idx);
+}
+
+void expect_field_equal(const tensorium_RG::Field3D<double> &lhs,
+                        const tensorium_RG::Field3D<double> &rhs, const std::string &label) {
+    const size_t total = lhs.st.nx_tot * lhs.st.ny_tot * lhs.st.nz_tot;
+    TENSORIUM_TEST_ASSERT(total == rhs.st.nx_tot * rhs.st.ny_tot * rhs.st.nz_tot);
+    for (size_t idx = 0; idx < total; ++idx)
+        tensorium::tests::expect_near(lhs.ptr()[idx], rhs.ptr()[idx], 1.0e-12, label);
+}
+
 } // namespace
 
 REGISTER_TEST("bssn.evolution.rhs_halo_sentinel", "RHS halos untouched contract", []() {
@@ -129,6 +146,100 @@ REGISTER_TEST("bssn.evolution.grid_view_matches_grid_layout",
     TENSORIUM_TEST_ASSERT(std::abs(x - (-0.5)) < 1.0e-12);
     TENSORIUM_TEST_ASSERT(std::abs(y - 2.5) < 1.0e-12);
     TENSORIUM_TEST_ASSERT(std::abs(z - 5.75) < 1.0e-12);
+});
+
+REGISTER_TEST("bssn.evolution.cuda_grid_device_roundtrip",
+              "BSSNGridDevice preserves the host grid through a CUDA roundtrip", []() {
+#ifdef TENSORIUM_CUDA
+    if (!tensorium::cuda::is_available())
+        return;
+
+    Grid host(10, 8, 6, 4, 0.125, 0.25, 0.5);
+    host.x0 = -1.5;
+    host.y0 = 0.75;
+    host.z0 = 2.25;
+
+    fill_field_pattern(host.alpha, 1.0, 1.0e-3);
+    fill_field_pattern(host.chi, 0.5, -2.0e-3);
+    fill_field_pattern(host.K, -0.25, 3.0e-3);
+    fill_field_pattern(host.Theta, 0.125, -4.0e-3);
+    for (int c = 0; c < 3; ++c) {
+        fill_field_pattern(host.beta[c], 0.1 * (c + 1), 1.0e-3 * (c + 2));
+        fill_field_pattern(host.B[c], -0.2 * (c + 1), -1.5e-3 * (c + 2));
+        fill_field_pattern(host.tildeGamma[c], 0.3 * (c + 1), 2.0e-3 * (c + 3));
+        fill_field_pattern(host.Z[c], -0.4 * (c + 1), -2.5e-3 * (c + 3));
+    }
+    for (int s = 0; s < 6; ++s) {
+        fill_field_pattern(host.gamma_tilde[s], 1.0 + 0.1 * s, 5.0e-4 * (s + 1));
+        fill_field_pattern(host.gamma_tilde_inv[s], 0.8 + 0.2 * s, -6.0e-4 * (s + 1));
+        fill_field_pattern(host.A_tilde[s], -0.6 - 0.1 * s, 7.0e-4 * (s + 1));
+        fill_field_pattern(host.Ricci[s], 0.9 - 0.05 * s, -8.0e-4 * (s + 1));
+    }
+
+    tensorium_RG::bssn::BSSNGridDevice<double> device(host);
+    device.copy_from_host(host);
+
+    const auto device_view = device.view();
+    TENSORIUM_TEST_ASSERT(device_view.dims.nx == host.dims.nx);
+    TENSORIUM_TEST_ASSERT(device_view.st.sx == host.st.sx);
+    TENSORIUM_TEST_ASSERT(device_view.alpha.ptr() != nullptr);
+
+    Grid roundtrip(host.dims.nx, host.dims.ny, host.dims.nz, host.dims.ng, host.dx, host.dy,
+                   host.dz);
+    device.copy_to_host(roundtrip);
+
+    tensorium::tests::expect_near(roundtrip.x0, host.x0, 1.0e-12, "cuda_grid_device_roundtrip x0");
+    tensorium::tests::expect_near(roundtrip.y0, host.y0, 1.0e-12, "cuda_grid_device_roundtrip y0");
+    tensorium::tests::expect_near(roundtrip.z0, host.z0, 1.0e-12, "cuda_grid_device_roundtrip z0");
+
+    expect_field_equal(roundtrip.alpha, host.alpha, "cuda_grid_device_roundtrip alpha");
+    expect_field_equal(roundtrip.chi, host.chi, "cuda_grid_device_roundtrip chi");
+    expect_field_equal(roundtrip.K, host.K, "cuda_grid_device_roundtrip K");
+    expect_field_equal(roundtrip.Theta, host.Theta, "cuda_grid_device_roundtrip Theta");
+    for (int c = 0; c < 3; ++c) {
+        expect_field_equal(roundtrip.beta[c], host.beta[c], "cuda_grid_device_roundtrip beta");
+        expect_field_equal(roundtrip.B[c], host.B[c], "cuda_grid_device_roundtrip B");
+        expect_field_equal(roundtrip.tildeGamma[c], host.tildeGamma[c],
+                           "cuda_grid_device_roundtrip tildeGamma");
+        expect_field_equal(roundtrip.Z[c], host.Z[c], "cuda_grid_device_roundtrip Z");
+    }
+    for (int s = 0; s < 6; ++s) {
+        expect_field_equal(roundtrip.gamma_tilde[s], host.gamma_tilde[s],
+                           "cuda_grid_device_roundtrip gamma_tilde");
+        expect_field_equal(roundtrip.gamma_tilde_inv[s], host.gamma_tilde_inv[s],
+                           "cuda_grid_device_roundtrip gamma_tilde_inv");
+        expect_field_equal(roundtrip.A_tilde[s], host.A_tilde[s],
+                           "cuda_grid_device_roundtrip A_tilde");
+        expect_field_equal(roundtrip.Ricci[s], host.Ricci[s], "cuda_grid_device_roundtrip Ricci");
+    }
+#endif
+});
+
+REGISTER_TEST("bssn.evolution.cuda_backend_routes_to_stub",
+              "BSSNRKStepper routes CUDA backend requests through the device scaffold", []() {
+#ifdef TENSORIUM_CUDA
+    if (!tensorium::cuda::is_available())
+        return;
+
+    const size_t padding = 4;
+    Grid         grid(16, 12, 10, padding, 0.25, 0.25, 0.25);
+    tensorium_RG::init::minkowski(grid, 0.0);
+
+    tensorium::backend::Options backend;
+    backend.backend = tensorium::backend::Kind::CUDA;
+
+    Stepper stepper(grid, backend, padding);
+
+    bool threw = false;
+    try {
+        stepper.step(grid, 1.0e-3, 0);
+    } catch (const std::runtime_error &err) {
+        threw = true;
+        TENSORIUM_TEST_ASSERT(std::string(err.what()).find("CUDA kernels are not implemented yet") !=
+                              std::string::npos);
+    }
+    TENSORIUM_TEST_ASSERT(threw);
+#endif
 });
 
 REGISTER_TEST("bssn.evolution.radiative_boundary_shells_are_evolved",

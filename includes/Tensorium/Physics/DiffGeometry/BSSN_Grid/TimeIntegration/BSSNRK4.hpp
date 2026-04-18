@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <functional>
 #include <limits>
+#include <memory>
 #include <type_traits>
 #include <utility>
 
@@ -21,6 +22,7 @@
 #include "../Geometry/BSSNProjection.hpp"
 #include "../Geometry/BSSNProjectionMonitor.hpp"
 #include "../Geometry/BSSNRicci.hpp"
+#include "../Fields/BSSNGridDevice.hpp"
 #include "../Fields/BSSNGridViews.hpp"
 #include "../Grid/BSSNGridOperations.hpp"
 #include "BSSNPerfTimers.hpp"
@@ -487,6 +489,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
     void set_backend_options(const tensorium::backend::Options &backend) {
         backend_options_ = backend;
+        cuda_stepper_state_.reset();
         validate_backend_options();
     }
 
@@ -760,14 +763,24 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         report_kernel_timers(step_index);
     }
 
-    [[noreturn]] void step_cuda(BSSNGridSoA<T> &grid, T, size_t) {
+    [[noreturn]] void step_cuda(BSSNGridSoA<T> &grid, T dt, size_t step_index) {
         validate_backend_options();
         tensorium::cuda::set_device(backend_options_.device_ordinal);
-        const auto grid_view = make_view(grid);
-        (void)grid_view;
+        ensure_cuda_stepper_state(grid);
+        cuda_stepper_state_->grid.copy_from_host(grid);
+
+        const auto host_grid_view = make_view(grid);
+        const auto device_grid_view = cuda_stepper_state_->grid.view();
+        const auto device_stage_grid_view = cuda_stepper_state_->stage_grid.view();
+        (void)host_grid_view;
+        (void)device_grid_view;
+        (void)device_stage_grid_view;
+        (void)dt;
+        (void)step_index;
         throw std::runtime_error(
-            "BSSNRKStepper CUDA backend scaffolding is in place, but the CUDA kernels are not "
-            "implemented yet. Use the CPU backend for execution.");
+            "BSSNRKStepper CUDA backend scaffolding now allocates persistent device state and "
+            "synchronizes the host grid to device memory, but the CUDA kernels are not implemented "
+            "yet. Use the CPU backend for execution.");
     }
 
     void validate_backend_options() const {
@@ -777,6 +790,18 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             throw std::runtime_error(
                 "BSSNRKStepper requested the CUDA backend, but no CUDA device is available.");
         }
+    }
+
+    [[nodiscard]] bool cuda_state_matches_grid(const BSSNGridSoA<T> &grid) const noexcept {
+        return cuda_stepper_state_ && dims_match(cuda_stepper_state_->grid.dims, grid.dims) &&
+               strides_match(cuda_stepper_state_->grid.st, grid.st);
+    }
+
+    void ensure_cuda_stepper_state(const BSSNGridSoA<T> &grid) {
+        if (cuda_state_matches_grid(grid))
+            return;
+        cuda_stepper_state_ = std::make_unique<BSSNCUDAStepperState<T>>();
+        cuda_stepper_state_->allocate_like(grid);
     }
 
     size_t rhs_bulk_padding() const {
@@ -800,6 +825,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     BSSNRHSWorkspace<T>                                                         stages_[4];
     BSSNGridSoA<T>                                                              stage_grid_;
     Field3D<T>                                                                  theta_ricciz4_trace_cache_;
+    std::unique_ptr<BSSNCUDAStepperState<T>>                                    cuda_stepper_state_;
     std::function<void(const BSSNGridSoA<T> &, const ConstraintMonitorStats &)> monitor_callback_;
     std::function<void(const BSSNGridSoA<T> &, size_t)>                         snapshot_callback_;
     std::function<void(BSSNRHSWorkspace<T> &)>                                  rhs_prep_callback_;
