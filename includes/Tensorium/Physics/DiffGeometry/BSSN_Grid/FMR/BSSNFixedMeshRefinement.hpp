@@ -632,7 +632,13 @@ class FixedMeshRefinementHierarchy {
     explicit FixedMeshRefinementHierarchy(const BSSNGridSoA<T> &root_state,
                                           const std::vector<LevelConfig> &level_configs,
                                           size_t padding = 4)
-        : padding_(padding) {
+        : FixedMeshRefinementHierarchy(root_state, level_configs, tensorium::backend::Options{},
+                                       padding) {}
+
+    FixedMeshRefinementHierarchy(const BSSNGridSoA<T> &root_state,
+                                 const std::vector<LevelConfig> &level_configs,
+                                 const tensorium::backend::Options &backend, size_t padding = 4)
+        : padding_(padding), backend_options_(backend) {
         levels_.reserve(level_configs.size() + 1);
         levels_.push_back(std::make_unique<LevelState>(
             root_state.dims.nx, root_state.dims.ny, root_state.dims.nz, root_state.dims.ng,
@@ -642,7 +648,8 @@ class FixedMeshRefinementHierarchy {
         tensorium_RG::bssn::enforce_algebraic_constraints(levels_.front()->grid);
         detail::copy_evolved_state(levels_.front()->grid, levels_.front()->snapshot);
 
-        root_stepper_ = std::make_unique<RootStepper>(levels_.front()->grid, padding_);
+        root_stepper_ = std::make_unique<RootStepper>(levels_.front()->grid, backend_options_,
+                                                      padding_);
 
         const BSSNGridSoA<T> *parent = &levels_.front()->grid;
         for (const LevelConfig &cfg : level_configs) {
@@ -650,7 +657,8 @@ class FixedMeshRefinementHierarchy {
             levels_.push_back(std::make_unique<LevelState>(
                 child.nx, child.ny, child.nz, child.ng, T(child.dx), T(child.dy), T(child.dz),
                 T(child.x0), T(child.y0), T(child.z0), cfg.parent_cells, cfg.refinement_ratio));
-            fine_steppers_.push_back(std::make_unique<FineStepper>(levels_.back()->grid, padding_));
+            fine_steppers_.push_back(
+                std::make_unique<FineStepper>(levels_.back()->grid, backend_options_, padding_));
             parent = &levels_.back()->grid;
         }
 
@@ -738,6 +746,17 @@ class FixedMeshRefinementHierarchy {
             stepper->set_state_log_stride(stride);
     }
 
+    void set_backend_options(const tensorium::backend::Options &backend) {
+        backend_options_ = backend;
+        root_stepper_->set_backend_options(backend);
+        for (auto &stepper : fine_steppers_)
+            stepper->set_backend_options(backend);
+    }
+
+    [[nodiscard]] const tensorium::backend::Options &backend_options() const noexcept {
+        return backend_options_;
+    }
+
     [[nodiscard]] T compute_dt(const CFLControl<T> &control) const {
         T      dt_root = std::numeric_limits<T>::infinity();
         size_t cumulative_ratio = 1;
@@ -756,6 +775,7 @@ class FixedMeshRefinementHierarchy {
   private:
     size_t                                        padding_ = 4;
     GaugeParameters<T>                            gauge_params_{};
+    tensorium::backend::Options                   backend_options_{};
     std::vector<std::unique_ptr<LevelState>>      levels_;
     std::unique_ptr<RootStepper>                  root_stepper_;
     std::vector<std::unique_ptr<FineStepper>>     fine_steppers_;

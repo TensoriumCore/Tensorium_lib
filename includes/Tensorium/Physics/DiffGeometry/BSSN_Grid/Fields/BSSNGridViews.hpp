@@ -69,6 +69,26 @@ template <typename T> struct BSSNGridView {
     }
 };
 
+template <typename T> struct BSSNRHSWorkspaceView {
+    using value_type = std::remove_const_t<T>;
+
+    Strides<value_type> st{};
+    Field3DView<T>      alpha;
+    Field3DView<T>      chi;
+    Field3DView<T>      K;
+    Field3DView<T>      Theta;
+    Field3DView<T>      beta[3];
+    Field3DView<T>      B[3];
+    Field3DView<T>      gamma_tilde[6];
+    Field3DView<T>      A_tilde[6];
+    Field3DView<T>      tildeGamma[3];
+    Field3DView<T>      Z[3];
+
+    TENSORIUM_BSSN_HD size_t idx(size_t i, size_t j, size_t k) const noexcept {
+        return i * st.sx + j * st.sy + k * st.sz;
+    }
+};
+
 template <typename T> inline Field3DView<T> make_field_view(Field3D<T> &field) {
     return {field.ptr(), field.st};
 }

@@ -455,12 +455,14 @@ std::unique_ptr<MovingPunctureHierarchy>
 rebuild_moving_puncture_hierarchy(const MovingPunctureHierarchy *previous,
                                   const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg,
                                   const tensorium_RG::bssn::ProjectionConfig &proj_cfg,
+                                  const tensorium::backend::Options &backend_options,
                                   const std::array<double, 3> &center) {
     Grid root_copy = make_grid_like(previous->root_grid());
     tensorium_RG::bssn::fmr::detail::copy_evolved_state(previous->root_grid(), root_copy);
 
     const auto level_cfgs = tensorium_RG::bssn::build_moving_puncture_fmr_levels(root_copy, cfg, center);
-    auto hierarchy = std::make_unique<MovingPunctureHierarchy>(root_copy, level_cfgs, cfg.padding);
+    auto hierarchy =
+        std::make_unique<MovingPunctureHierarchy>(root_copy, level_cfgs, backend_options, cfg.padding);
 
     for (size_t level = 1; level < hierarchy->num_levels(); ++level) {
         hierarchy->prolongate_level_from_parent(level);
@@ -470,6 +472,23 @@ rebuild_moving_puncture_hierarchy(const MovingPunctureHierarchy *previous,
     }
     hierarchy->apply_level_boundaries();
     return hierarchy;
+}
+
+tensorium::backend::Options
+resolve_moving_puncture_backend(const tensorium_RG::bssn::MovingPunctureEnvConfig &cfg) {
+    auto backend = cfg.backend_options;
+    if (cfg.backend_auto) {
+        backend.backend =
+            tensorium::cuda::is_available() ? tensorium::backend::Kind::CUDA
+                                            : tensorium::backend::Kind::CPU;
+        return backend;
+    }
+
+    if (backend.backend == tensorium::backend::Kind::CUDA && !tensorium::cuda::is_available()) {
+        throw std::runtime_error(
+            "TENSORIUM_MOVING_PUNCTURE_BACKEND=cuda was requested, but no CUDA device is available.");
+    }
+    return backend;
 }
 
 PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
@@ -518,6 +537,7 @@ PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
 
 int main(int argc, char **argv) {
     const auto cfg = tensorium_RG::bssn::load_moving_puncture_env();
+    const auto backend_options = resolve_moving_puncture_backend(cfg);
     size_t output_stride = cfg.state_log_stride;
     size_t slice_export_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_SLICE_EXPORT_STRIDE", 10);
@@ -538,6 +558,13 @@ int main(int argc, char **argv) {
               << " spacing=" << cfg.spacing
               << " box=(" << cfg.nx * cfg.spacing << ", " << cfg.ny * cfg.spacing << ", "
               << cfg.nz * cfg.spacing << ")\n";
+    std::cout << "[backend] selected="
+              << tensorium::backend::to_string(backend_options.backend);
+    if (backend_options.backend == tensorium::backend::Kind::CUDA)
+        std::cout << " device=" << backend_options.device_ordinal;
+    if (cfg.backend_auto)
+        std::cout << " mode=auto";
+    std::cout << std::endl;
 
     tensorium_RG::fd::set_max_spatial_derivative_order(cfg.spatial_derivative_order);
     std::cout << "[num] spatial_derivative_order=" << cfg.spatial_derivative_order << std::endl;
@@ -598,7 +625,8 @@ int main(int argc, char **argv) {
     Grid                                    *root_state = &root_grid;
     Grid                                    *puncture_state = &root_grid;
     if (use_fmr) {
-        hierarchy = std::make_unique<MovingPunctureHierarchy>(root_grid, level_cfgs, cfg.padding);
+        hierarchy = std::make_unique<MovingPunctureHierarchy>(root_grid, level_cfgs, backend_options,
+                                                              cfg.padding);
         initialize_moving_puncture_hierarchy(*hierarchy, cfg, proj_cfg);
         root_state = &hierarchy->root_grid();
         puncture_state = &hierarchy->level_grid(hierarchy->num_levels() - 1);
@@ -817,7 +845,8 @@ int main(int argc, char **argv) {
                         cfg.fmr.regrid_threshold_cells * hierarchy->level_grid(hierarchy->num_levels() - 1).dx;
                     if (center_shift > regrid_threshold) {
                         auto next_hierarchy =
-                            rebuild_moving_puncture_hierarchy(hierarchy.get(), cfg, proj_cfg, target_center);
+                            rebuild_moving_puncture_hierarchy(hierarchy.get(), cfg, proj_cfg,
+                                                              backend_options, target_center);
                         next_hierarchy->set_gauge_parameters(params);
                         next_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
                         hierarchy = std::move(next_hierarchy);
@@ -860,7 +889,7 @@ int main(int argc, char **argv) {
         }
     } else {
         tensorium_RG::bssn::BSSNRKStepper<double, tensorium_RG::bssn::BoundaryRadiative> stepper(
-            *root_state, cfg.padding);
+            *root_state, backend_options, cfg.padding);
         stepper.set_gauge_parameters(params);
         stepper.set_state_log_stride(output_stride);
         if (slice_export_stride > 0) {

@@ -137,6 +137,8 @@ struct MovingPunctureEnvConfig {
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
     MovingPunctureFMRConfig fmr{};
+    tensorium::backend::Options backend_options{};
+    bool                        backend_auto = true;
 };
 
 namespace detail {
@@ -181,6 +183,12 @@ inline std::optional<double> env_double(const char *name) {
 inline bool env_bool_or(const char *name, bool fallback) {
     const auto parsed = env_long(name);
     return parsed ? (*parsed != 0) : fallback;
+}
+
+inline std::string ascii_lower(std::string value) {
+    for (char &ch : value)
+        ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+    return value;
 }
 
 } // namespace detail
@@ -320,6 +328,29 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_CFL")) {
         if (*parsed > 0.0)
             cfg.cfl = *parsed;
+    }
+    if (const char *raw_backend = std::getenv("TENSORIUM_MOVING_PUNCTURE_BACKEND")) {
+        const std::string backend = detail::ascii_lower(raw_backend);
+        if (backend.empty() || backend == "auto") {
+            cfg.backend_auto = true;
+        } else if (backend == "cpu") {
+            cfg.backend_auto = false;
+            cfg.backend_options.backend = tensorium::backend::Kind::CPU;
+        } else if (backend == "cuda" || backend == "gpu") {
+            cfg.backend_auto = false;
+            cfg.backend_options.backend = tensorium::backend::Kind::CUDA;
+        } else {
+            throw std::invalid_argument(
+                "TENSORIUM_MOVING_PUNCTURE_BACKEND must be one of: auto, cpu, cuda");
+        }
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_CUDA_DEVICE")) {
+        if (*parsed >= 0)
+            cfg.backend_options.device_ordinal = static_cast<int>(*parsed);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_DEVICE_ORDINAL")) {
+        if (*parsed >= 0)
+            cfg.backend_options.device_ordinal = static_cast<int>(*parsed);
     }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_GAUGE_SPEED")) {
         if (*parsed > 0.0)

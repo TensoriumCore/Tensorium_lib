@@ -113,6 +113,46 @@ template <typename T> struct BSSNRHSWorkspaceDevice {
         }
     }
 
+    [[nodiscard]] BSSNRHSWorkspaceView<T> view() noexcept {
+        BSSNRHSWorkspaceView<T> out;
+        out.st = alpha.st;
+        out.alpha = alpha.view();
+        out.chi = chi.view();
+        out.K = K.view();
+        out.Theta = Theta.view();
+        for (int c = 0; c < 3; ++c) {
+            out.beta[c] = beta[c].view();
+            out.B[c] = B[c].view();
+            out.tildeGamma[c] = tildeGamma[c].view();
+            out.Z[c] = Z[c].view();
+        }
+        for (int s = 0; s < 6; ++s) {
+            out.gamma_tilde[s] = gamma_tilde[s].view();
+            out.A_tilde[s] = A_tilde[s].view();
+        }
+        return out;
+    }
+
+    [[nodiscard]] BSSNRHSWorkspaceView<const T> view() const noexcept {
+        BSSNRHSWorkspaceView<const T> out;
+        out.st = alpha.st;
+        out.alpha = alpha.view();
+        out.chi = chi.view();
+        out.K = K.view();
+        out.Theta = Theta.view();
+        for (int c = 0; c < 3; ++c) {
+            out.beta[c] = beta[c].view();
+            out.B[c] = B[c].view();
+            out.tildeGamma[c] = tildeGamma[c].view();
+            out.Z[c] = Z[c].view();
+        }
+        for (int s = 0; s < 6; ++s) {
+            out.gamma_tilde[s] = gamma_tilde[s].view();
+            out.A_tilde[s] = A_tilde[s].view();
+        }
+        return out;
+    }
+
     [[nodiscard]] std::size_t bytes() const noexcept {
         std::size_t total = alpha.bytes() + chi.bytes() + K.bytes() + Theta.bytes();
         for (int c = 0; c < 3; ++c)
@@ -304,19 +344,19 @@ template <typename T> struct BSSNGridDevice {
 
 template <typename T> struct BSSNCUDAStepperState {
     BSSNGridDevice<T>         grid;
-    BSSNGridDevice<T>         stage_grid;
+    BSSNRHSWorkspaceDevice<T> stage_state;
     BSSNRHSWorkspaceDevice<T> rhs_workspace;
     DeviceField3D<T>          theta_ricciz4_trace_cache;
 
     void allocate_like(const BSSNGridSoA<T> &prototype) {
         grid.allocate_like(prototype);
-        stage_grid.allocate_like(prototype);
+        stage_state.allocate_like(prototype);
         rhs_workspace.allocate_like(prototype);
         theta_ricciz4_trace_cache.allocate_like(prototype.alpha);
     }
 
     [[nodiscard]] std::size_t bytes() const noexcept {
-        return grid.bytes() + stage_grid.bytes() + rhs_workspace.bytes() +
+        return grid.bytes() + stage_state.bytes() + rhs_workspace.bytes() +
                theta_ricciz4_trace_cache.bytes();
     }
 };

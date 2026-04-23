@@ -782,39 +782,51 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         tensorium::cuda::set_device(backend_options_.device_ordinal);
         ensure_cuda_stepper_state(grid);
         boundary_dt_ = dt;
+        sync_host_grid_to_cuda(grid);
 
         for (int stage = 0; stage < 4; ++stage) {
-            sync_host_grid_to_cuda(grid);
             const auto device_grid_view =
                 static_cast<const BSSNGridDevice<T> &>(cuda_stepper_state_->grid).view();
-            const auto device_stage_grid_view = cuda_stepper_state_->stage_grid.view();
+            auto       device_stage_state_view = cuda_stepper_state_->stage_state.view();
             if (stage == 0) {
                 tensorium_RG::bssn::cuda::copy_stage_reference(device_grid_view,
-                                                               device_stage_grid_view,
+                                                               device_stage_state_view,
                                                                evolution_padding());
             } else {
                 tensorium_RG::bssn::cuda::accumulate_stage_reference(
-                    device_grid_view, device_stage_grid_view, T(delta_ref[stage]),
+                    device_grid_view, device_stage_state_view, T(delta_ref[stage]),
                     evolution_padding());
             }
             tensorium::cuda::device_synchronize();
-            cuda_stepper_state_->stage_grid.copy_to_host(stage_grid_);
+
+            if (stage != 0)
+                sync_cuda_grid_to_host(grid);
 
             BoundaryStageFractionConfigurator<Boundary>::set(stage_time_ref[stage]);
             prepare_state_for_rhs(grid);
+            sync_host_grid_to_cuda(grid);
             auto stage_params = gauge_params_;
             stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stages_[stage], stage_params);
+            const bool rhs_on_device = can_use_cuda_accelerated_rhs(stage_params);
 
-            apply_explicit_stage_update(grid, stage_grid_, stages_[stage], T(gam0_ref[stage]),
-                                        T(gam1_ref[stage]), T(beta_ref[stage]) * dt);
-            apply_cuda_floors(grid);
+            const auto device_stage_state_const_view =
+                static_cast<const BSSNRHSWorkspaceDevice<T> &>(cuda_stepper_state_->stage_state)
+                    .view();
+            if (!rhs_on_device)
+                sync_host_rhs_to_cuda(stages_[stage]);
+            tensorium_RG::bssn::cuda::apply_explicit_stage_update(
+                cuda_stepper_state_->grid.view(), device_stage_state_const_view,
+                static_cast<const BSSNRHSWorkspaceDevice<T> &>(cuda_stepper_state_->rhs_workspace)
+                    .view(),
+                T(gam0_ref[stage]), T(gam1_ref[stage]), T(beta_ref[stage]) * dt,
+                evolution_padding());
+            apply_cuda_post_stage_corrections();
         }
         simulation_time_ += dt;
         BoundaryStageFractionConfigurator<Boundary>::set(1.0);
-
-        apply_cuda_floors(grid);
+        sync_cuda_grid_to_host(grid);
 
         const bool do_state_log = ((step_index + 1) % state_log_stride_ == 0);
         const bool needs_post_step_prepare =
@@ -889,25 +901,129 @@ template <typename T, typename Boundary> class BSSNRKStepper {
 
     void sync_host_grid_to_cuda(const BSSNGridSoA<T> &grid) {
         cuda_stepper_state_->grid.copy_from_host(grid);
-        cuda_stepper_state_->stage_grid.x0 = cuda_stepper_state_->grid.x0;
-        cuda_stepper_state_->stage_grid.y0 = cuda_stepper_state_->grid.y0;
-        cuda_stepper_state_->stage_grid.z0 = cuda_stepper_state_->grid.z0;
     }
 
-    void apply_cuda_floors(BSSNGridSoA<T> &grid) {
-        const bool do_alpha = gauge_params_.alpha_floor > T(0);
-        const bool do_chi = gauge_params_.chi_floor > T(0);
-        if (!do_alpha && !do_chi)
-            return;
+    void sync_cuda_grid_to_host(BSSNGridSoA<T> &grid) const { cuda_stepper_state_->grid.copy_to_host(grid); }
 
-        sync_host_grid_to_cuda(grid);
+    void sync_host_rhs_to_cuda(const BSSNRHSWorkspace<T> &rhs) {
+        cuda_stepper_state_->rhs_workspace.alpha.copy_from_host(rhs.alpha);
+        cuda_stepper_state_->rhs_workspace.chi.copy_from_host(rhs.chi);
+        cuda_stepper_state_->rhs_workspace.K.copy_from_host(rhs.K);
+        cuda_stepper_state_->rhs_workspace.Theta.copy_from_host(rhs.Theta);
+        for (int c = 0; c < 3; ++c) {
+            cuda_stepper_state_->rhs_workspace.beta[c].copy_from_host(rhs.beta[c]);
+            cuda_stepper_state_->rhs_workspace.B[c].copy_from_host(rhs.B[c]);
+            cuda_stepper_state_->rhs_workspace.tildeGamma[c].copy_from_host(rhs.tildeGamma[c]);
+            cuda_stepper_state_->rhs_workspace.Z[c].copy_from_host(rhs.Z[c]);
+        }
+        for (int s = 0; s < 6; ++s) {
+            cuda_stepper_state_->rhs_workspace.gamma_tilde[s].copy_from_host(rhs.gamma_tilde[s]);
+            cuda_stepper_state_->rhs_workspace.A_tilde[s].copy_from_host(rhs.A_tilde[s]);
+        }
+    }
+
+    void sync_host_cpu_rhs_terms_to_cuda(const BSSNRHSWorkspace<T> &rhs) {
+        for (int c = 0; c < 3; ++c)
+            cuda_stepper_state_->rhs_workspace.tildeGamma[c].copy_from_host(rhs.tildeGamma[c]);
+        for (int s = 0; s < 6; ++s) {
+            cuda_stepper_state_->rhs_workspace.gamma_tilde[s].copy_from_host(rhs.gamma_tilde[s]);
+            cuda_stepper_state_->rhs_workspace.A_tilde[s].copy_from_host(rhs.A_tilde[s]);
+        }
+    }
+
+    void sync_host_theta_trace_cache_to_cuda() {
+        cuda_stepper_state_->theta_ricciz4_trace_cache.copy_from_host(theta_ricciz4_trace_cache_);
+    }
+
+    [[nodiscard]] bool can_use_cuda_accelerated_rhs(const GaugeParameters<T> &params) const noexcept {
+        return !params.use_direct_shift_rhs;
+    }
+
+    [[nodiscard]] tensorium_RG::bssn::cuda::GaugeRHSCudaConfig<T>
+    make_cuda_gauge_rhs_config(const GaugeParameters<T> &params) const {
+        tensorium_RG::bssn::cuda::GaugeRHSCudaConfig<T> cfg;
+        cfg.ko_sigma = scaled_ko_sigma(params.ko_sigma);
+        cfg.ko_boundary_floor = T(current_ko_boundary_floor());
+        cfg.beta_B_coeff = params.beta_B_coeff;
+        cfg.eta_coeff = params.effective_eta();
+        cfg.lapse_harmonicf = params.lapse_harmonicf;
+        cfg.lapse_harmonic = params.lapse_harmonic;
+        cfg.lapse_oplog = params.lapse_oplog;
+        cfg.lapse_advect = params.lapse_advect;
+        cfg.shift_advect = params.shift_advect;
+        cfg.slow_start_lapse_factor = params.slow_start_lapse_factor();
+        cfg.spatial_order = tensorium_RG::fd::max_spatial_derivative_order();
+        cfg.ko_boundary_width = current_ko_boundary_width();
+        cfg.use_theta_in_lapse = params.use_theta_in_lapse;
+        cfg.use_shift_advection = params.use_shift_advection;
+        return cfg;
+    }
+
+    [[nodiscard]] tensorium_RG::bssn::cuda::ScalarRHSCudaConfig<T>
+    make_cuda_scalar_rhs_config(const GaugeParameters<T> &params) const {
+        tensorium_RG::bssn::cuda::ScalarRHSCudaConfig<T> cfg;
+        cfg.ko_sigma = scaled_ko_sigma(params.ko_sigma);
+        cfg.ko_boundary_floor = T(current_ko_boundary_floor());
+        cfg.kappa1 = params.kappa1;
+        cfg.kappa2 = params.kappa2;
+        cfg.chi_div_floor = params.chi_div_floor;
+        cfg.spatial_order = tensorium_RG::fd::max_spatial_derivative_order();
+        cfg.ko_boundary_width = current_ko_boundary_width();
+        cfg.covariant_z4 = params.covariant_z4;
+        return cfg;
+    }
+
+    [[nodiscard]] tensorium_RG::bssn::cuda::RHSSommerfeldCudaConfig<T>
+    make_cuda_rhs_sommerfeld_config() const {
+        tensorium_RG::bssn::cuda::RHSSommerfeldCudaConfig<T> cfg;
+        cfg.collar_width = BoundaryRadiative::rhs_collar();
+        for (int axis = 0; axis < 3; ++axis) {
+            cfg.face_enabled[axis][0] = BoundaryRadiative::active_enabled(axis, false) &&
+                                        BoundaryRadiative::rhs_sommerfeld_enabled(axis, false) &&
+                                        !BoundaryRadiative::reflective_enabled(axis, false);
+            cfg.face_enabled[axis][1] = BoundaryRadiative::active_enabled(axis, true) &&
+                                        BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
+                                        !BoundaryRadiative::reflective_enabled(axis, true);
+        }
+        cfg.alpha_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Alpha));
+        cfg.chi_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Chi));
+        cfg.K_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::K));
+        cfg.Theta_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Theta));
+        cfg.beta_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Beta));
+        cfg.B_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::B));
+        cfg.tildeGamma_speed =
+            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::TildeGamma));
+        cfg.Z_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::Z));
+        cfg.gamma_tilde_speed =
+            T(BoundaryRadiative::characteristic_speed_for(BoundaryField::GammaTilde));
+        cfg.A_tilde_speed = T(BoundaryRadiative::characteristic_speed_for(BoundaryField::ATilde));
+        return cfg;
+    }
+
+    [[nodiscard]] tensorium_RG::bssn::cuda::RHSSpongeCudaConfig<T> make_cuda_rhs_sponge_config()
+        const {
+        tensorium_RG::bssn::cuda::RHSSpongeCudaConfig<T> cfg;
+        const auto host_cfg = BoundaryRadiative::sponge_config;
+        cfg.enabled = host_cfg.enabled;
+        cfg.width = host_cfg.width;
+        cfg.strength = T(host_cfg.strength);
+        cfg.exponent = T(host_cfg.exponent);
+        for (int axis = 0; axis < 3; ++axis)
+            for (int side = 0; side < 2; ++side) {
+                cfg.active_face[axis][side] = BoundaryRadiative::active_face[axis][side];
+                cfg.reflective_face[axis][side] = BoundaryRadiative::reflective_face[axis][side];
+            }
+        return cfg;
+    }
+
+    void apply_cuda_post_stage_corrections() {
         auto device_grid_view = cuda_stepper_state_->grid.view();
-        if (do_alpha)
+        tensorium_RG::bssn::cuda::enforce_algebraic_constraints(device_grid_view);
+        if (gauge_params_.alpha_floor > T(0))
             tensorium_RG::bssn::cuda::apply_alpha_floor(device_grid_view, gauge_params_.alpha_floor);
-        if (do_chi)
+        if (gauge_params_.chi_floor > T(0))
             tensorium_RG::bssn::cuda::apply_chi_floor(device_grid_view, gauge_params_.chi_floor);
         tensorium::cuda::device_synchronize();
-        cuda_stepper_state_->grid.copy_to_host(grid);
     }
 
     size_t rhs_bulk_padding() const {
@@ -1089,6 +1205,16 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     /// @brief Invoke every RHS kernel using the provided grid snapshot.
     void evaluate_rhs(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
                       const GaugeParameters<T> &params) {
+        if (backend_options_.backend == tensorium::backend::Kind::CUDA &&
+            can_use_cuda_accelerated_rhs(params)) {
+            evaluate_rhs_cuda_accelerated(grid, rhs, params);
+            return;
+        }
+        evaluate_rhs_cpu(grid, rhs, params);
+    }
+
+    void evaluate_rhs_cpu(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
+                          const GaugeParameters<T> &params) {
         if (rhs_prep_callback_)
             rhs_prep_callback_(rhs);
         update_ko_scale(grid, boundary_dt_);
@@ -1101,6 +1227,47 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if (rhs_prep_callback_)
             stabilize_nonfinite_rhs_collar(grid, rhs, rhs_padding);
         recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, evolution_padding());
+    }
+
+    void evaluate_rhs_cuda_accelerated(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
+                                       const GaugeParameters<T> &params) {
+        if (rhs_prep_callback_)
+            rhs_prep_callback_(rhs);
+        update_ko_scale(grid, boundary_dt_);
+        const size_t rhs_padding = rhs_bulk_padding();
+        const auto   device_grid_view =
+            static_cast<const BSSNGridDevice<T> &>(cuda_stepper_state_->grid).view();
+        auto device_rhs_view = cuda_stepper_state_->rhs_workspace.view();
+
+        compute_rhs_Gamma(grid, rhs.tildeGamma, grid.Z, grid.Theta, params, rhs_padding);
+        compute_rhs_gamma_tilde(grid, rhs.gamma_tilde, rhs_padding, params);
+        compute_rhs_A_tilde(grid, rhs.A_tilde, rhs_padding, params, &theta_ricciz4_trace_cache_);
+
+        sync_host_cpu_rhs_terms_to_cuda(rhs);
+        sync_host_theta_trace_cache_to_cuda();
+        tensorium_RG::bssn::cuda::compute_gauge_rhs(
+            device_grid_view, device_rhs_view, make_cuda_gauge_rhs_config(params), rhs_padding);
+        tensorium_RG::bssn::cuda::compute_scalar_rhs(
+            device_grid_view, device_rhs_view,
+            static_cast<const DeviceField3D<T> &>(cuda_stepper_state_->theta_ricciz4_trace_cache)
+                .view(),
+            make_cuda_scalar_rhs_config(params),
+            rhs_padding);
+
+        if constexpr (BoundaryRadiativeRHSTraits<Boundary>::value) {
+            if (gauge_params_.apply_rhs_sommerfeld)
+                tensorium_RG::bssn::cuda::apply_rhs_sommerfeld(
+                    device_grid_view, device_rhs_view, make_cuda_rhs_sommerfeld_config());
+            tensorium_RG::bssn::cuda::apply_rhs_sponge(device_grid_view, device_rhs_view,
+                                                       make_cuda_rhs_sponge_config());
+        }
+        if (rhs_prep_callback_) {
+            tensorium_RG::bssn::cuda::stabilize_nonfinite_rhs_collar(device_grid_view,
+                                                                     device_rhs_view, rhs_padding);
+        }
+        tensorium_RG::bssn::cuda::recompose_rhs_K_from_khat(device_grid_view, device_rhs_view,
+                                                            evolution_padding());
+        tensorium::cuda::device_synchronize();
     }
 
     void stabilize_nonfinite_rhs_collar(const BSSNGridSoA<T> &grid, BSSNRHSWorkspace<T> &rhs,
