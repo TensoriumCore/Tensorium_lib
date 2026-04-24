@@ -19,38 +19,38 @@ set(TEST_CORE_SOURCES
 set(TEST_GRID_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/grid/DerivativeTests.cpp)
 
-set(TEST_BSSN_INITIAL_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/initial_data/InitialDataTests.cpp)
-set(TEST_BSSN_CONSTRAINT_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/ConstraintTests.cpp)
+set(TEST_Z4C_INITIAL_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/initial_data/InitialDataTests.cpp)
+set(TEST_Z4C_CONSTRAINT_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/constraints/ConstraintTests.cpp)
 if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
-    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/TildeGammaSymbolsValidationTests.cpp)
-    list(APPEND TEST_BSSN_CONSTRAINT_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/bssn/constraints/GammaSourceValidationTests.cpp)
+    list(APPEND TEST_Z4C_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/z4c/constraints/TildeGammaSymbolsValidationTests.cpp)
+    list(APPEND TEST_Z4C_CONSTRAINT_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/z4c/constraints/GammaSourceValidationTests.cpp)
 endif()
-set(TEST_BSSN_RICCI_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ricci/RicciTests.cpp)
-set(TEST_BSSN_SOLVER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/solvers/SolverTests.cpp)
-set(TEST_BSSN_EVOLUTION_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/ATildeEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/KEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GammaEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/GaugeEvolutionTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/FMRHierarchyTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/CCZ4SchwarzschildStabilityTests.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/evolution/RHSHaloSentinelTests.cpp)
+set(TEST_Z4C_RICCI_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/ricci/RicciTests.cpp)
+set(TEST_Z4C_SOLVER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/solvers/SolverTests.cpp)
+set(TEST_Z4C_EVOLUTION_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/ATildeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/KEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/GammaEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/GaugeEvolutionTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/FMRHierarchyTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/CCZ4SchwarzschildStabilityTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/RHSHaloSentinelTests.cpp)
 
-set(TEST_BSSN_STABILITY_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/minkowski_stability.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/schwarzschild_stability.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/kerr_basic.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/bowen_york_boost_stability.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/ccz4_prime_stability.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_spherical_analytic_constraints.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/brown_hyperbolicity_speeds.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/bssn/boundary_conditions.cpp)
+set(TEST_Z4C_STABILITY_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/minkowski_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/schwarzschild_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/kerr_basic.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/bowen_york_boost_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/ccz4_prime_stability.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/brown_spherical_analytic_constraints.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/brown_hyperbolicity_speeds.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/boundary_conditions.cpp)
 
 set(BENCHMARK_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core/MatrixBenchmark.cpp)
@@ -130,21 +130,21 @@ endfunction()
 
 tensorium_add_object_library(test_core_objs ${TEST_CORE_SOURCES})
 tensorium_add_object_library(test_grid_objs ${TEST_GRID_SOURCES})
-tensorium_add_object_library(test_bssn_initial_objs ${TEST_BSSN_INITIAL_SOURCES})
-tensorium_add_object_library(test_bssn_constraints_objs ${TEST_BSSN_CONSTRAINT_SOURCES})
-tensorium_add_object_library(test_bssn_ricci_objs ${TEST_BSSN_RICCI_SOURCES})
-tensorium_add_object_library(test_bssn_solvers_objs ${TEST_BSSN_SOLVER_SOURCES})
-tensorium_add_object_library(test_bssn_evolution_objs ${TEST_BSSN_EVOLUTION_SOURCES})
-tensorium_add_object_library(test_bssn_stability_objs ${TEST_BSSN_STABILITY_SOURCES})
+tensorium_add_object_library(test_z4c_initial_objs ${TEST_Z4C_INITIAL_SOURCES})
+tensorium_add_object_library(test_z4c_constraints_objs ${TEST_Z4C_CONSTRAINT_SOURCES})
+tensorium_add_object_library(test_z4c_ricci_objs ${TEST_Z4C_RICCI_SOURCES})
+tensorium_add_object_library(test_z4c_solvers_objs ${TEST_Z4C_SOLVER_SOURCES})
+tensorium_add_object_library(test_z4c_evolution_objs ${TEST_Z4C_EVOLUTION_SOURCES})
+tensorium_add_object_library(test_z4c_stability_objs ${TEST_Z4C_STABILITY_SOURCES})
 set(TEST_OBJECT_TARGETS
     test_core_objs
     test_grid_objs
-    test_bssn_initial_objs
-    test_bssn_constraints_objs
-    test_bssn_ricci_objs
-    test_bssn_solvers_objs
-    test_bssn_evolution_objs
-    test_bssn_stability_objs)
+    test_z4c_initial_objs
+    test_z4c_constraints_objs
+    test_z4c_ricci_objs
+    test_z4c_solvers_objs
+    test_z4c_evolution_objs
+    test_z4c_stability_objs)
 
 if(USE_CUDA)
   add_library(tensorium_bssn_cuda_kernels STATIC
@@ -158,56 +158,59 @@ if(USE_CUDA)
       POSITION_INDEPENDENT_CODE ON)
 endif()
 
-set(BSSN_OBJECTS
-    $<TARGET_OBJECTS:test_bssn_initial_objs>
-    $<TARGET_OBJECTS:test_bssn_constraints_objs>
-    $<TARGET_OBJECTS:test_bssn_ricci_objs>
-    $<TARGET_OBJECTS:test_bssn_solvers_objs>
-    $<TARGET_OBJECTS:test_bssn_evolution_objs>
-    $<TARGET_OBJECTS:test_bssn_stability_objs>)
+set(Z4C_OBJECTS
+    $<TARGET_OBJECTS:test_z4c_initial_objs>
+    $<TARGET_OBJECTS:test_z4c_constraints_objs>
+    $<TARGET_OBJECTS:test_z4c_ricci_objs>
+    $<TARGET_OBJECTS:test_z4c_solvers_objs>
+    $<TARGET_OBJECTS:test_z4c_evolution_objs>
+    $<TARGET_OBJECTS:test_z4c_stability_objs>)
 
 add_executable(TensoriumChiEvolutionDemo
-    bssn/binaries/BSSNChiEvolutionDemo.cpp)
+    z4c/binaries/Z4cChiEvolutionDemo.cpp)
 target_include_directories(TensoriumChiEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(TensoriumGammaEvolutionDemo
-    bssn/binaries/BSSNGammaEvolutionDemo.cpp)
+    z4c/binaries/Z4cGammaEvolutionDemo.cpp)
 target_include_directories(TensoriumGammaEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(TensoriumGaugeEvolutionDemo
-    bssn/binaries/BSSNGaugeEvolutionDemo.cpp)
+    z4c/binaries/Z4cGaugeEvolutionDemo.cpp)
 target_include_directories(TensoriumGaugeEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(TensoriumATildeEvolutionDemo
-    bssn/binaries/BSSNATildeEvolutionDemo.cpp)
+    z4c/binaries/Z4cATildeEvolutionDemo.cpp)
 target_include_directories(TensoriumATildeEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(TensoriumKEvolutionDemo
-    bssn/binaries/BSSNKEvolutionDemo.cpp)
+    z4c/binaries/Z4cKEvolutionDemo.cpp)
 target_include_directories(TensoriumKEvolutionDemo PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(TensoriumMovingPuncture
-    bssn/binaries/MovingPunctureRunner.cpp)
+    z4c/binaries/MovingPunctureRunner.cpp)
 target_include_directories(TensoriumMovingPuncture PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
+if(TENSORIUM_HDF5_FOUND)
+  target_link_libraries(TensoriumMovingPuncture PRIVATE ${TENSORIUM_HDF5_LIBRARIES})
+endif()
 
 add_executable(TensoriumTests
     main.cpp
     ${TEST_FRAMEWORK_SOURCES}
     $<TARGET_OBJECTS:test_core_objs>
     $<TARGET_OBJECTS:test_grid_objs>
-    ${BSSN_OBJECTS})
+    ${Z4C_OBJECTS})
 
 target_include_directories(TensoriumTests PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
@@ -231,12 +234,12 @@ target_include_directories(TensoriumTestGrid PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(TensoriumTestBSSN
-    bssn_main.cpp
+add_executable(TensoriumTestZ4c
+    z4c_main.cpp
     ${TEST_FRAMEWORK_SOURCES}
-    ${BSSN_OBJECTS})
+    ${Z4C_OBJECTS})
 
-target_include_directories(TensoriumTestBSSN PRIVATE
+target_include_directories(TensoriumTestZ4c PRIVATE
     ${PROJECT_SOURCE_DIR}/includes
     ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -268,7 +271,7 @@ if(FFTW3_FOUND)
   target_compile_definitions(TensoriumBenchmarks PRIVATE TENSORIUM_USE_FFTW)
 endif()
 
-set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestBSSN)
+set(TEST_EXECUTABLES TensoriumTests TensoriumTestCore TensoriumTestGrid TensoriumTestZ4c)
 set(TENSORIUM_ALL_EXECUTABLES ${TEST_EXECUTABLES} TensoriumBenchmarks
     TensoriumChiEvolutionDemo TensoriumGammaEvolutionDemo TensoriumATildeEvolutionDemo
     TensoriumKEvolutionDemo TensoriumGaugeEvolutionDemo TensoriumMovingPuncture)
@@ -289,15 +292,15 @@ endif()
 add_test(NAME tensorium.tests.all COMMAND TensoriumTests)
 add_test(NAME tensorium.tests.core COMMAND TensoriumTestCore)
 add_test(NAME tensorium.tests.grid COMMAND TensoriumTestGrid)
-add_test(NAME tensorium.tests.bssn COMMAND TensoriumTestBSSN)
+add_test(NAME tensorium.tests.z4c COMMAND TensoriumTestZ4c)
 if(TENSORIUM_BSSN_VALIDATE_TILDE_GAMMA_SYMBOLS)
   add_test(NAME gamma_source_validation
-           COMMAND TensoriumTests --test bssn.constraints.gamma_source_validation)
+           COMMAND TensoriumTests --test z4c.constraints.gamma_source_validation)
   add_test(NAME tilde_gamma_symbols
-           COMMAND TensoriumTests --test bssn.constraints.tilde_gamma_symbols_validation)
+           COMMAND TensoriumTests --test z4c.constraints.tilde_gamma_symbols_validation)
 endif()
 add_test(NAME ccz4_schwarzschild_stability
-         COMMAND TensoriumTests --test bssn.evolution.ccz4_schwarzschild_stability)
+         COMMAND TensoriumTests --test z4c.evolution.ccz4_schwarzschild_stability)
 
 if(OPENMP_LIB)
   if(APPLE AND IS_ABSOLUTE "${OPENMP_LIB}")
@@ -323,11 +326,14 @@ if(USE_MPI)
 
   # MPI-specific executables
   add_executable(TensoriumMPIMovingPuncture
-      bssn/mpi/mpi_moving_puncture.cpp)
+      z4c/mpi/mpi_moving_puncture.cpp)
   target_include_directories(TensoriumMPIMovingPuncture PRIVATE
       ${PROJECT_SOURCE_DIR}/includes
       ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries(TensoriumMPIMovingPuncture PRIVATE MPI::MPI_CXX)
+  if(TENSORIUM_HDF5_FOUND)
+    target_link_libraries(TensoriumMPIMovingPuncture PRIVATE ${TENSORIUM_HDF5_LIBRARIES})
+  endif()
   target_compile_definitions(TensoriumMPIMovingPuncture PRIVATE
       TENSORIUM_ENABLE_MPI TENSORIUM_USE_MPI)
 
@@ -401,8 +407,8 @@ endif()
 
 add_test(NAME core COMMAND TensoriumTestCore)
 add_test(NAME grid COMMAND TensoriumTestGrid)
-add_test(NAME bssn COMMAND TensoriumTestBSSN)
-add_test(NAME bssn.initial_data COMMAND TensoriumTests --test bssn.initial_data)
-add_test(NAME bssn.constraints COMMAND TensoriumTests --test bssn.constraints)
-add_test(NAME bssn.ricci COMMAND TensoriumTests --test bssn.ricci)
-add_test(NAME bssn.solvers COMMAND TensoriumTests --test bssn.solvers)
+add_test(NAME z4c COMMAND TensoriumTestZ4c)
+add_test(NAME z4c.initial_data COMMAND TensoriumTests --test z4c.initial_data)
+add_test(NAME z4c.constraints COMMAND TensoriumTests --test z4c.constraints)
+add_test(NAME z4c.ricci COMMAND TensoriumTests --test z4c.ricci)
+add_test(NAME z4c.solvers COMMAND TensoriumTests --test z4c.solvers)

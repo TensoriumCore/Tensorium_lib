@@ -130,6 +130,8 @@ template <typename Boundary, typename T> inline void apply_batch_physical(BSSNGr
 template <typename Boundary, typename T> inline void apply_batch_halo(BSSNGridSoA<T> &G) {
     apply_halo<Boundary>(G.alpha, G, BoundaryField::Alpha, 0);
     apply_halo<Boundary>(G.chi, G, BoundaryField::Chi, 0);
+    // Keep Theta ahead of K so radiative closures can reconstruct the fast Khat mode
+    // with already-refreshed Theta ghosts.
     apply_halo<Boundary>(G.Theta, G, BoundaryField::Theta, 0);
     apply_halo<Boundary>(G.K, G, BoundaryField::K, 0);
 
@@ -415,20 +417,11 @@ struct BoundaryRadiative {
         }
     }
 
-    static inline bool use_sommerfeld_halo(BoundaryField which) {
-        switch (which) {
-        case BoundaryField::GammaTildeInverse:
-            return false;
-        default:
-            return true;
-        }
-    }
-
     template <typename T>
     static inline void apply_physical(Field3D<T> &field, const BSSNGridSoA<T> &G,
                                       BoundaryField which, int component) {
-        // Radiative runs now apply the sponge as an RHS damping term. Physical cells are left
-        // untouched here so halo refreshes do not inject a Cartesian shell into the evolved state.
+        // Keep solution cells untouched here. GRChombo-style radiative boundaries are enforced as
+        // RHS corrections; halo refreshes should not inject a radiative shell into the state.
         (void)field;
         (void)G;
         (void)which;
@@ -439,16 +432,15 @@ struct BoundaryRadiative {
     static inline void apply_halo(Field3D<T> &field, const BSSNGridSoA<T> &G, BoundaryField which,
                                   int component) {
         enum class HaloMode { Sommerfeld, Outflow, LinearExtrapolate, Skip };
-        HaloMode mode = HaloMode::Outflow;
+        HaloMode mode = HaloMode::LinearExtrapolate;
         if (which == BoundaryField::GammaTildeInverse)
             mode = HaloMode::Skip;
-        else if (use_sommerfeld_halo(which))
-            mode = HaloMode::Sommerfeld;
         if (mode == HaloMode::Skip)
             return;
 
         const auto  &D = G.dims;
         const double u_inf = detail::minkowski_target(which, component);
+        const bool   coupled_khat = (which == BoundaryField::K);
 
         const size_t I0 = D.ng;
         const size_t I1 = D.ng + D.nx;
@@ -458,6 +450,7 @@ struct BoundaryRadiative {
         const size_t K1 = D.ng + D.nz;
 
         auto *ptr = field.ptr();
+        const T *theta_ptr = coupled_khat ? G.Theta.ptr() : nullptr;
 
         auto coord = [&](size_t i, size_t j, size_t k, double &x, double &y, double &z) {
             x = G.x0 + (double(i) - double(D.ng)) * G.dx;
@@ -471,31 +464,60 @@ struct BoundaryRadiative {
             double r = std::sqrt(x * x + y * y + z * z);
             return (r > 1e-14) ? r : 1e-14;
         };
+        auto clamp_to_domain = [](size_t v, size_t lo, size_t hi) {
+            return std::min(std::max(v, lo), hi - 1);
+        };
 
         auto set_sommerfeld = [&](size_t ob, size_t ib, double r_ob, double r_ib) {
-            double u_ib = double(ptr[ib]);
-            double du = u_ib - u_inf;
             const double dt_wave = characteristic_dt;
             const double c_wave = characteristic_speed_for(which);
             double denom = r_ob;
             if (dt_wave > 0.0)
                 denom += c_wave * dt_wave;
             denom = std::max(denom, 1.0e-12);
+            if (coupled_khat) {
+                const double khat_ib = double(ptr[ib]) - 2.0 * double(theta_ptr[ib]);
+                const double khat_ob = khat_ib * (r_ib / denom);
+                ptr[ob] = T(khat_ob + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
+            const double u_ib = double(ptr[ib]);
+            const double du = u_ib - u_inf;
             ptr[ob] = T(u_inf + du * (r_ib / denom));
         };
-        auto set_outflow = [&](size_t ob, size_t ib) { ptr[ob] = ptr[ib]; };
+        auto set_outflow = [&](size_t ob, size_t ib) {
+            if (coupled_khat) {
+                const double khat_ib = double(ptr[ib]) - 2.0 * double(theta_ptr[ib]);
+                ptr[ob] = T(khat_ib + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
+            ptr[ob] = ptr[ib];
+        };
         auto set_linear_extrapolated = [&](size_t ob, size_t ib0, size_t ib1, size_t layer) {
+            if (coupled_khat) {
+                const double khat0 = double(ptr[ib0]) - 2.0 * double(theta_ptr[ib0]);
+                const double khat1 = double(ptr[ib1]) - 2.0 * double(theta_ptr[ib1]);
+                const double khat_ob = (double(layer) + 1.0) * khat0 - double(layer) * khat1;
+                ptr[ob] = T(khat_ob + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
             const double u0 = double(ptr[ib0]);
             const double u1 = double(ptr[ib1]);
             ptr[ob] = T((double(layer) + 1.0) * u0 - double(layer) * u1);
         };
         auto set_reflective = [&](size_t ob, size_t ib_reflect, int axis) {
             const int sign = parity_sign(which, component, axis);
+            if (coupled_khat) {
+                const double khat_reflect =
+                    double(ptr[ib_reflect]) - 2.0 * double(theta_ptr[ib_reflect]);
+                ptr[ob] = T(double(sign) * khat_reflect + 2.0 * double(theta_ptr[ob]));
+                return;
+            }
             ptr[ob] = T(sign) * ptr[ib_reflect];
         };
-        auto set_halo = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,
-                            double r_ob, double r_ib,
-                            bool use_sommerfeld_face, bool use_reflective_face, int axis) {
+        auto set_halo_fast = [&](size_t ob, size_t ib, size_t ib0, size_t ib1, size_t layer,
+                                 double r_ob, double r_ib, bool use_sommerfeld_face,
+                                 bool use_reflective_face, int axis) {
             if (use_reflective_face) {
                 set_reflective(ob, ib, axis);
                 return;
@@ -506,6 +528,90 @@ struct BoundaryRadiative {
                 set_sommerfeld(ob, ib, r_ob, r_ib);
             else
                 set_outflow(ob, ib);
+        };
+        auto set_halo_clamped = [&](size_t oi, size_t oj, size_t ok, int axis, bool outer,
+                                    size_t layer, bool use_sommerfeld_face,
+                                    bool use_reflective_face) {
+            size_t ci = clamp_to_domain(oi, I0, I1);
+            size_t cj = clamp_to_domain(oj, J0, J1);
+            size_t ck = clamp_to_domain(ok, K0, K1);
+            size_t ii = ci;
+            size_t ij = cj;
+            size_t ik = ck;
+            size_t i0b = ci;
+            size_t j0b = cj;
+            size_t k0b = ck;
+            size_t i1b = ci;
+            size_t j1b = cj;
+            size_t k1b = ck;
+            size_t ir = ci;
+            size_t jr = cj;
+            size_t kr = ck;
+
+            switch (axis) {
+            case 0:
+                ii = outer ? (I1 - layer) : (I0 + (layer - 1));
+                i0b = outer ? (I1 - 1) : I0;
+                i1b = outer ? (I1 - 2) : (I0 + 1);
+                ir = ii;
+                break;
+            case 1:
+                ij = outer ? (J1 - layer) : (J0 + (layer - 1));
+                j0b = outer ? (J1 - 1) : J0;
+                j1b = outer ? (J1 - 2) : (J0 + 1);
+                jr = ij;
+                break;
+            default:
+                ik = outer ? (K1 - layer) : (K0 + (layer - 1));
+                k0b = outer ? (K1 - 1) : K0;
+                k1b = outer ? (K1 - 2) : (K0 + 1);
+                kr = ik;
+                break;
+            }
+
+            const size_t ob = field.idx(oi, oj, ok);
+            const size_t ib = field.idx(ii, ij, ik);
+            const size_t ib0 = field.idx(i0b, j0b, k0b);
+            const size_t ib1 = field.idx(i1b, j1b, k1b);
+            const size_t ib_reflect = field.idx(ir, jr, kr);
+            if (use_reflective_face) {
+                set_reflective(ob, ib_reflect, axis);
+                return;
+            }
+            if (mode == HaloMode::LinearExtrapolate) {
+                set_linear_extrapolated(ob, ib0, ib1, layer);
+            } else if (mode == HaloMode::Sommerfeld && use_sommerfeld_face)
+                set_sommerfeld(ob, ib, r_of(oi, oj, ok), r_of(ii, ij, ik));
+            else
+                set_outflow(ob, ib);
+        };
+
+        auto set_linear_extrapolated_axis = [&](size_t oi, size_t oj, size_t ok, int axis,
+                                                bool outer, size_t layer) {
+            size_t i0b = oi;
+            size_t j0b = oj;
+            size_t k0b = ok;
+            size_t i1b = oi;
+            size_t j1b = oj;
+            size_t k1b = ok;
+
+            switch (axis) {
+            case 0:
+                i0b = outer ? (I1 - 1) : I0;
+                i1b = outer ? (I1 - 2) : (I0 + 1);
+                break;
+            case 1:
+                j0b = outer ? (J1 - 1) : J0;
+                j1b = outer ? (J1 - 2) : (J0 + 1);
+                break;
+            default:
+                k0b = outer ? (K1 - 1) : K0;
+                k1b = outer ? (K1 - 2) : (K0 + 1);
+                break;
+            }
+
+            set_linear_extrapolated(field.idx(oi, oj, ok), field.idx(i0b, j0b, k0b),
+                                    field.idx(i1b, j1b, k1b), layer);
         };
 
         const bool sf_ix1 = rhs_sommerfeld_enabled(0, false);
@@ -531,49 +637,83 @@ struct BoundaryRadiative {
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ix1)
-                        set_halo(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
-                                 field.idx(I0, j, k), field.idx(I0 + 1, j, k), g,
-                                 r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1, rf_ix1, 0);
+                        set_halo_fast(field.idx(I0 - g, j, k), field.idx(I0 + (g - 1), j, k),
+                                      field.idx(I0, j, k), field.idx(I0 + 1, j, k), g,
+                                      r_of(I0 - g, j, k), r_of(I0 + (g - 1), j, k), sf_ix1,
+                                      rf_ix1, 0);
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t j = J0; j < J1; ++j)
                 for (size_t k = K0; k < K1; ++k)
                     if (ac_ox1)
-                        set_halo(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
-                                 field.idx(I1 - 1, j, k), field.idx(I1 - 2, j, k), g + 1,
-                                 r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1, rf_ox1, 0);
+                        set_halo_fast(field.idx(I1 + g, j, k), field.idx(I1 - 1 - g, j, k),
+                                      field.idx(I1 - 1, j, k), field.idx(I1 - 2, j, k), g + 1,
+                                      r_of(I1 + g, j, k), r_of(I1 - 1 - g, j, k), sf_ox1,
+                                      rf_ox1, 0);
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    if (ac_ix2)
-                        set_halo(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
-                                 field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
-                                 r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2, rf_ix2, 1);
+                    if (ac_ix2) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ix2) {
+                            set_linear_extrapolated_axis(i, J0 - g, k, 1, false, g);
+                        } else if (i >= I0 && i < I1) {
+                            set_halo_fast(field.idx(i, J0 - g, k), field.idx(i, J0 + (g - 1), k),
+                                          field.idx(i, J0, k), field.idx(i, J0 + 1, k), g,
+                                          r_of(i, J0 - g, k), r_of(i, J0 + (g - 1), k), sf_ix2,
+                                          rf_ix2, 1);
+                        } else {
+                            set_halo_clamped(i, J0 - g, k, 1, false, g, sf_ix2, rf_ix2);
+                        }
+                    }
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t k = K0; k < K1; ++k)
-                    if (ac_ox2)
-                        set_halo(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
-                                 field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k), g + 1,
-                                 r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k), sf_ox2, rf_ox2, 1);
+                    if (ac_ox2) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ox2) {
+                            set_linear_extrapolated_axis(i, J1 + g, k, 1, true, g + 1);
+                        } else if (i >= I0 && i < I1) {
+                            set_halo_fast(field.idx(i, J1 + g, k), field.idx(i, J1 - 1 - g, k),
+                                          field.idx(i, J1 - 1, k), field.idx(i, J1 - 2, k),
+                                          g + 1, r_of(i, J1 + g, k), r_of(i, J1 - 1 - g, k),
+                                          sf_ox2, rf_ox2, 1);
+                        } else {
+                            set_halo_clamped(i, J1 + g, k, 1, true, g + 1, sf_ox2, rf_ox2);
+                        }
+                    }
 
         for (size_t g = 1; g <= D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    if (ac_ix3)
-                        set_halo(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
-                                 field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
-                                 r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3, rf_ix3, 2);
+                    if (ac_ix3) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ix3) {
+                            set_linear_extrapolated_axis(i, j, K0 - g, 2, false, g);
+                        } else if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                            set_halo_fast(field.idx(i, j, K0 - g), field.idx(i, j, K0 + (g - 1)),
+                                          field.idx(i, j, K0), field.idx(i, j, K0 + 1), g,
+                                          r_of(i, j, K0 - g), r_of(i, j, K0 + (g - 1)), sf_ix3,
+                                          rf_ix3, 2);
+                        } else {
+                            set_halo_clamped(i, j, K0 - g, 2, false, g, sf_ix3, rf_ix3);
+                        }
+                    }
 
         for (size_t g = 0; g < D.ng; ++g)
             for (size_t i = I0 - D.ng; i < I1 + D.ng; ++i)
                 for (size_t j = J0 - D.ng; j < J1 + D.ng; ++j)
-                    if (ac_ox3)
-                        set_halo(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
-                                 field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2), g + 1,
-                                 r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g), sf_ox3, rf_ox3, 2);
+                    if (ac_ox3) {
+                        if (mode == HaloMode::LinearExtrapolate && !rf_ox3) {
+                            set_linear_extrapolated_axis(i, j, K1 + g, 2, true, g + 1);
+                        } else if (i >= I0 && i < I1 && j >= J0 && j < J1) {
+                            set_halo_fast(field.idx(i, j, K1 + g), field.idx(i, j, K1 - 1 - g),
+                                          field.idx(i, j, K1 - 1), field.idx(i, j, K1 - 2),
+                                          g + 1, r_of(i, j, K1 + g), r_of(i, j, K1 - 1 - g),
+                                          sf_ox3, rf_ox3, 2);
+                        } else {
+                            set_halo_clamped(i, j, K1 + g, 2, true, g + 1, sf_ox3, rf_ox3);
+                        }
+                    }
     }
 };
 

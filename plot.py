@@ -47,6 +47,7 @@ raw_save_png = ("--save-png" in raw_flags) or (os.getenv("TENSORIUM_PLOT_SAVE_PN
 raw_video = ("--video" in raw_flags) or (os.getenv("TENSORIUM_PLOT_VIDEO", "0") != "0")
 raw_show = ("--show" in raw_flags) or (os.getenv("TENSORIUM_PLOT_SHOW", "0") != "0")
 raw_single_frame = any(a.startswith("--single-frame-out=") for a in sys.argv[1:])
+os.environ.setdefault("HDF5_USE_FILE_LOCKING", "FALSE")
 if "MPLCONFIGDIR" not in os.environ:
     os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib-cache"
 if (raw_save_png or raw_video or raw_single_frame) and not raw_show:
@@ -58,6 +59,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.ndimage import binary_dilation, gaussian_filter
+
+try:
+    import h5py
+except Exception:
+    h5py = None
 
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 flags = {a for a in sys.argv[1:] if a.startswith("--")}
@@ -132,14 +138,50 @@ zoom_min_half_width = 19.0
 def extract_step(path):
     name = os.path.basename(path)
     patterns = (
-        r"slice_step_(\d+)_rank_\d+\.csv$",
-        r"(?:slice|constraint_slice|drift_step)_(\d+)\.csv$",
+        r"slice_step_(\d+)_rank_\d+\.(?:csv|h5)$",
+        r"(?:slice|constraint_slice|drift_step)_(\d+)\.(?:csv|h5)$",
     )
     for pattern in patterns:
         match = re.search(pattern, name)
         if match:
             return int(match.group(1))
     return None
+
+
+def is_hdf5_path(path):
+    return path.lower().endswith(".h5") or path.lower().endswith(".hdf5")
+
+
+HDF5_SIGNATURE = b"\x89HDF\r\n\x1a\n"
+_warned_invalid_hdf5_paths = set()
+
+
+def warn_invalid_hdf5(path):
+    if path in _warned_invalid_hdf5_paths:
+        return
+    _warned_invalid_hdf5_paths.add(path)
+    print(f"[warn] invalid HDF5 file ignored: {path}")
+
+
+def is_valid_hdf5_file(path):
+    if not path or not is_hdf5_path(path) or not os.path.exists(path):
+        return False
+    if h5py is not None:
+        try:
+            return bool(h5py.is_hdf5(path))
+        except Exception:
+            pass
+    try:
+        with open(path, "rb") as f:
+            return f.read(len(HDF5_SIGNATURE)) == HDF5_SIGNATURE
+    except OSError:
+        return False
+
+
+def require_h5py(path):
+    if h5py is None:
+        print(f"[ERR] fichier HDF5 detecte mais h5py est indisponible: {path}")
+        sys.exit(1)
 
 
 def discover_data_dir():
@@ -158,9 +200,19 @@ def discover_data_dir():
         if tracker_drift_mode:
             return os.path.exists(os.path.join(path, "puncture_tracker_drift.csv"))
         if constraint_mode:
-            return bool(glob.glob(os.path.join(path, "constraint_slice_*.csv")))
+            return bool(
+                glob.glob(os.path.join(path, "constraint_slice_*.csv"))
+                or any(
+                    is_valid_hdf5_file(h5_path)
+                    for h5_path in glob.glob(os.path.join(path, "constraint_slice_*.h5"))
+                )
+            )
         return bool(
             glob.glob(os.path.join(path, "slice_*.csv"))
+            or any(
+                is_valid_hdf5_file(h5_path)
+                for h5_path in glob.glob(os.path.join(path, "slice_*.h5"))
+            )
             or glob.glob(os.path.join(path, "slice_step_*_rank_*.csv"))
         )
 
@@ -175,6 +227,20 @@ def make_frame_entries(paths):
     return [{"step": extract_step(path), "paths": [path]} for path in paths]
 
 
+def collect_preferred_step_entries(path, h5_pattern, csv_pattern):
+    by_step = {}
+    for csv_path in sorted(glob.glob(os.path.join(path, csv_pattern))):
+        by_step[extract_step(csv_path)] = csv_path
+    for h5_path in sorted(glob.glob(os.path.join(path, h5_pattern))):
+        step = extract_step(h5_path)
+        if is_valid_hdf5_file(h5_path):
+            by_step[step] = h5_path
+        else:
+            warn_invalid_hdf5(h5_path)
+    steps = sorted(by_step.keys(), key=lambda x: (-1 if x is None else x))
+    return [{"step": step, "paths": [by_step[step]]} for step in steps]
+
+
 def discover_slice_entries(path):
     mpi_paths = sorted(glob.glob(os.path.join(path, "slice_step_*_rank_*.csv")))
     if mpi_paths:
@@ -187,24 +253,78 @@ def discover_slice_entries(path):
             entries.append({"step": step, "paths": sorted(by_step[step])})
         return entries
 
-    standalone_paths = sorted(glob.glob(os.path.join(path, "slice_[0-9]*.csv")))
-    return make_frame_entries(standalone_paths)
+    return collect_preferred_step_entries(path, "slice_[0-9]*.h5", "slice_[0-9]*.csv")
 
 
 def discover_constraint_entries(path):
-    return make_frame_entries(sorted(glob.glob(os.path.join(path, "constraint_slice_*.csv"))))
+    return collect_preferred_step_entries(
+        path, "constraint_slice_*.h5", "constraint_slice_*.csv"
+    )
 
 
 def frame_step(frame_entry):
     return frame_entry["step"]
 
 
+def load_hdf5_frame_df(path):
+    require_h5py(path)
+    with h5py.File(path, "r") as f:
+        x = np.asarray(f["x"], dtype=float)
+        y = np.asarray(f["y"], dtype=float)
+        X, Y = np.meshgrid(x, y, indexing="ij")
+        data = {
+            "x": X.ravel(),
+            "y": Y.ravel(),
+        }
+        if "alpha" in f:
+            data["alpha"] = np.asarray(f["alpha"], dtype=float).ravel()
+        if "chi" in f:
+            data["chi"] = np.asarray(f["chi"], dtype=float).ravel()
+        if "W" in f:
+            data["W"] = np.asarray(f["W"], dtype=float).ravel()
+        if "mask" in f:
+            data["mask"] = np.asarray(f["mask"], dtype=float).ravel()
+        for key in (
+            "H",
+            "abs_H",
+            "Mx",
+            "My",
+            "Mz",
+            "Mnorm",
+            "Cx",
+            "Cy",
+            "Cz",
+            "Cnorm",
+            "Theta",
+            "Zx",
+            "Zy",
+            "Zz",
+            "Znorm",
+        ):
+            if key in f:
+                data[key] = np.asarray(f[key], dtype=float).ravel()
+    return pd.DataFrame(data)
+
+
+def load_hdf5_table_df(path):
+    require_h5py(path)
+    with h5py.File(path, "r") as f:
+        data = {}
+        for key in f.keys():
+            arr = np.asarray(f[key])
+            if arr.ndim != 1:
+                continue
+            data[key] = arr
+    return pd.DataFrame(data)
+
+
 def load_frame_df(frame_entry):
     paths = frame_entry["paths"]
     if len(paths) == 1:
-        return pd.read_csv(paths[0])
+        path = paths[0]
+        return load_hdf5_frame_df(path) if is_hdf5_path(path) else pd.read_csv(path)
 
-    parts = [pd.read_csv(path) for path in paths]
+    parts = [load_hdf5_frame_df(path) if is_hdf5_path(path) else pd.read_csv(path) for path in paths]
     df = pd.concat(parts, ignore_index=True)
     if {"global_i", "global_j"}.issubset(df.columns):
         df = df.drop_duplicates(subset=["global_i", "global_j"], keep="last")
@@ -217,8 +337,21 @@ def load_frame_df(frame_entry):
 data_dir = discover_data_dir()
 slice_files = discover_slice_entries(data_dir)
 constraint_files = discover_constraint_entries(data_dir)
-track_file = os.path.join(data_dir, "puncture_track.csv")
-track_df = pd.read_csv(track_file) if os.path.exists(track_file) else None
+track_file_h5 = os.path.join(data_dir, "puncture_track.h5")
+track_file_csv = os.path.join(data_dir, "puncture_track.csv")
+if is_valid_hdf5_file(track_file_h5):
+    track_file = track_file_h5
+elif os.path.exists(track_file_csv):
+    track_file = track_file_csv
+else:
+    if os.path.exists(track_file_h5):
+        warn_invalid_hdf5(track_file_h5)
+    track_file = None
+track_df = (
+    load_hdf5_table_df(track_file)
+    if track_file is not None and is_hdf5_path(track_file)
+    else (pd.read_csv(track_file) if track_file is not None and os.path.exists(track_file) else None)
+)
 drift_file = os.path.join(data_dir, "puncture_tracker_drift.csv")
 drift_df = pd.read_csv(drift_file) if os.path.exists(drift_file) else None
 
@@ -237,7 +370,11 @@ if tracker_drift_mode:
     drift_df = drift_df.sort_values("step").drop_duplicates("step", keep="last").reset_index(drop=True)
 else:
     if not files:
-        wanted = "constraint_slice_*.csv" if constraint_mode else "slice_*.csv or slice_step_*_rank_*.csv"
+        wanted = (
+            "constraint_slice_*.csv or constraint_slice_*.h5"
+            if constraint_mode
+            else "slice_*.csv or slice_*.h5 or slice_step_*_rank_*.csv"
+        )
         print(f"[ERR] aucun fichier {wanted} dans {data_dir}")
         sys.exit(1)
 
@@ -372,6 +509,7 @@ def parse_requested_step():
             "[--workers=N] [--dpi=N] "
             "[--constraints] [--tracker-drift] [--no-smooth] "
             "[--constraint-interp=nearest|bilinear] "
+            "[--conformal-cmap-min=N] [--alpha-cmap-min=N] "
             "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
             "[--no-contours] [--show]"
         )
@@ -724,9 +862,14 @@ def update_regular(frame_idx):
         gamma=conformal_gamma, vmin=conformal_vmin, vmax=conformal_vmax
     )
     a_norm = colors.PowerNorm(gamma=a_gamma, vmin=a_vmin, vmax=a_vmax)
+    conformal_cmap_min = parse_float_value(
+        "--conformal-cmap-min",
+        float(os.getenv("TENSORIUM_PLOT_CONFORMAL_CMAP_MIN", "0.10")),
+    )
+    conformal_cmap = truncated_cmap("turbo", conformal_cmap_min, 1.0)
     alpha_cmap_min = parse_float_value(
         "--alpha-cmap-min",
-        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.12")),
+        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.18")),
     )
     alpha_cmap = truncated_cmap("magma", alpha_cmap_min, 1.0)
 
@@ -734,7 +877,7 @@ def update_regular(frame_idx):
         conformal_disp,
         extent=extent,
         origin="lower",
-        cmap="turbo",
+        cmap=conformal_cmap,
         norm=conformal_norm,
         interpolation="bilinear",
     )
@@ -847,7 +990,10 @@ def update_regular(frame_idx):
         ax3.text(
             0.5,
             0.5,
-            tex(r"$\mathrm{puncture\_track.csv\ absent}$", "puncture_track.csv absent"),
+            tex(
+                r"$\mathrm{puncture\_track\ (csv/h5)\ absent}$",
+                "puncture_track (csv/h5) absent",
+            ),
             transform=ax3.transAxes,
             ha="center",
             va="center",

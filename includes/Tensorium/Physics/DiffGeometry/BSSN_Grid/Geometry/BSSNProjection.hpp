@@ -217,4 +217,12 @@ template <typename T> inline void project_bssn_after_update(BSSNGridSoA<T> &G, s
     project_bssn_state(G, cfg);
 }
 
+template <typename T> inline void project_z4c_state(BSSNGridSoA<T> &G, const ProjectionConfig &cfg = {}) {
+    project_bssn_state(G, cfg);
+}
+
+template <typename T> inline void project_z4c_after_update(BSSNGridSoA<T> &G, size_t padding = 4) {
+    project_bssn_after_update(G, padding);
+}
+
 } // namespace tensorium_RG::bssn

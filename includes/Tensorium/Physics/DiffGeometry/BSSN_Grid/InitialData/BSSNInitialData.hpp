@@ -815,9 +815,11 @@ namespace detail {
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
 
 struct TwoPuncturesCacheKey {
+    bool                 give_bare_mass = true;
     double               b = 0.0;
     double               m_plus = 0.0;
     double               m_minus = 0.0;
+    double               adm_tol = 0.0;
     std::array<double, 3> P_plus = {};
     std::array<double, 3> P_minus = {};
     std::array<double, 3> S_plus = {};
@@ -834,8 +836,10 @@ struct TwoPuncturesCacheKey {
 
 inline bool twopunctures_cache_key_equal(const TwoPuncturesCacheKey &lhs,
                                          const TwoPuncturesCacheKey &rhs) {
-    return lhs.b == rhs.b && lhs.m_plus == rhs.m_plus && lhs.m_minus == rhs.m_minus &&
-           lhs.P_plus == rhs.P_plus && lhs.P_minus == rhs.P_minus && lhs.S_plus == rhs.S_plus &&
+    return lhs.give_bare_mass == rhs.give_bare_mass && lhs.b == rhs.b &&
+           lhs.m_plus == rhs.m_plus && lhs.m_minus == rhs.m_minus &&
+           lhs.adm_tol == rhs.adm_tol && lhs.P_plus == rhs.P_plus &&
+           lhs.P_minus == rhs.P_minus && lhs.S_plus == rhs.S_plus &&
            lhs.S_minus == rhs.S_minus && lhs.center_offset == rhs.center_offset &&
            lhs.npoints_A == rhs.npoints_A && lhs.npoints_B == rhs.npoints_B &&
            lhs.npoints_phi == rhs.npoints_phi && lhs.newton_tol == rhs.newton_tol &&
@@ -870,7 +874,8 @@ template <typename T>
 inline void binary_bowen_york_puncture_interpolated_init_impl(
     BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, const T P1[3], const T S1[3], T m2, T x2, T y2,
     T z2, const T P2[3], const T S2[3], size_t interp_seed_n, T r_floor,
-    bool require_twopunctures_c) {
+    bool require_twopunctures_c, bool tp_calculate_target_masses = false,
+    T tp_adm_tol = T(1.0e-10)) {
 #if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
     (void)interp_seed_n;
     (void)r_floor;
@@ -964,7 +969,6 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
                 "Newton_tol=%.3e Newton_maxit=%d TP_epsilon=%.3e verbose=%d\n",
                 tp_npoints_A, tp_npoints_B, tp_npoints_phi, tp_newton_tol, tp_newton_maxit,
                 tp_epsilon, tp_verbose);
-    std::fflush(stdout);
 
     // TwoPunctures assumes punctures at (+/- par_b, 0, 0) plus a common center offset.
     // For this path we require x-aligned punctures and identical y/z coordinates.
@@ -993,6 +997,10 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
     const T *P_minus = plus_is_second ? P1 : P2;
     const T *S_plus = plus_is_second ? S2 : S1;
     const T *S_minus = plus_is_second ? S1 : S2;
+    std::printf("[init.interpolate][cfg] mass_mode=%s m_plus=%.16g m_minus=%.16g adm_tol=%.3e\n",
+                tp_calculate_target_masses ? "target" : "bare", double(m_plus), double(m_minus),
+                double(tp_adm_tol));
+    std::fflush(stdout);
 
     const int nx = static_cast<int>(G.dims.nx);
     const int ny = static_cast<int>(G.dims.ny);
@@ -1022,9 +1030,11 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
     int imin[3] = {0, 0, 0};
     int imax[3] = {nx, ny, nz};
     int nxyz[3] = {nx, ny, nz};
-    const detail::TwoPuncturesCacheKey cache_key = {double(b),
+    const detail::TwoPuncturesCacheKey cache_key = {!tp_calculate_target_masses,
+                                                    double(b),
                                                     double(m_plus),
                                                     double(m_minus),
+                                                    double(tp_adm_tol),
                                                     {double(P_plus[0]), double(P_plus[1]),
                                                      double(P_plus[2])},
                                                     {double(P_minus[0]), double(P_minus[1]),
@@ -1049,14 +1059,21 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
 
         TwoPunctures_params_set_default();
         TwoPunctures_params_set_Int(const_cast<char *>("verbose"), tp_verbose);
-        TwoPunctures_params_set_Int(const_cast<char *>("give_bare_mass"), 1);
+        TwoPunctures_params_set_Int(const_cast<char *>("give_bare_mass"),
+                                    tp_calculate_target_masses ? 0 : 1);
         TwoPunctures_params_set_Int(const_cast<char *>("grid_setup_method"), evaluation);
         TwoPunctures_params_set_Int(const_cast<char *>("initial_lapse"), psin);
         TwoPunctures_params_set_Real(const_cast<char *>("initial_lapse_psi_exponent"), -2.0);
         TwoPunctures_params_set_Int(const_cast<char *>("conformal_state"), 1);
         TwoPunctures_params_set_Real(const_cast<char *>("par_b"), double(b));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_m_plus"), double(m_plus));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_m_minus"), double(m_minus));
+        if (tp_calculate_target_masses) {
+            TwoPunctures_params_set_Real(const_cast<char *>("target_M_plus"), double(m_plus));
+            TwoPunctures_params_set_Real(const_cast<char *>("target_M_minus"), double(m_minus));
+            TwoPunctures_params_set_Real(const_cast<char *>("adm_tol"), double(tp_adm_tol));
+        } else {
+            TwoPunctures_params_set_Real(const_cast<char *>("par_m_plus"), double(m_plus));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_m_minus"), double(m_minus));
+        }
         TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus1"), double(P_plus[0]));
         TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus2"), double(P_plus[1]));
         TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus3"), double(P_plus[2]));
@@ -1259,6 +1276,8 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
             "TwoPuncturesC support is required but this build was compiled without "
             "TENSORIUM_HAS_TWOPUNCTURES_C");
     }
+    (void)tp_calculate_target_masses;
+    (void)tp_adm_tol;
     const size_t seed_n = std::max<size_t>(24, interp_seed_n);
 
     const T Lx = G.dx * T(G.dims.nx);
@@ -1338,17 +1357,22 @@ inline void binary_bowen_york_puncture_interpolated_init(BSSNGridSoA<T> &G, T m1
                                                          const T P1[3], const T S1[3], T m2, T x2,
                                                          T y2, T z2, const T P2[3], const T S2[3],
                                                          size_t interp_seed_n = 64,
-                                                         T r_floor = T(1e-6)) {
+                                                         T r_floor = T(1e-6),
+                                                         bool tp_calculate_target_masses = false,
+                                                         T tp_adm_tol = T(1.0e-10)) {
     detail::binary_bowen_york_puncture_interpolated_init_impl(
-        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, false);
+        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, false,
+        tp_calculate_target_masses, tp_adm_tol);
 }
 
 template <typename T>
 inline void binary_bowen_york_puncture_twopunctures_c_init(
     BSSNGridSoA<T> &G, T m1, T x1, T y1, T z1, const T P1[3], const T S1[3], T m2, T x2, T y2,
-    T z2, const T P2[3], const T S2[3], size_t interp_seed_n = 64, T r_floor = T(1e-6)) {
+    T z2, const T P2[3], const T S2[3], size_t interp_seed_n = 64, T r_floor = T(1e-6),
+    bool tp_calculate_target_masses = false, T tp_adm_tol = T(1.0e-10)) {
     detail::binary_bowen_york_puncture_interpolated_init_impl(
-        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, true);
+        G, m1, x1, y1, z1, P1, S1, m2, x2, y2, z2, P2, S2, interp_seed_n, r_floor, true,
+        tp_calculate_target_masses, tp_adm_tol);
 }
 
 template <typename T>

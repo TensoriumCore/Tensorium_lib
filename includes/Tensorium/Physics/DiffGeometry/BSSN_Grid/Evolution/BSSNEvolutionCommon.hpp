@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
@@ -136,6 +137,8 @@ struct KOState {
     double scale = 1.0;
     size_t boundary_width = 0;
     double boundary_floor = 0.0;
+    double boundary_boost = 0.0;
+    double edge_corner_boost = 0.0;
 };
 
 inline KOState &ko_state() {
@@ -154,15 +157,22 @@ template <typename T> inline void update_ko_scale(const BSSNGridSoA<T> &, T) {
 
 inline double current_ko_scale() { return ko_state().scale; }
 
-inline void configure_ko_boundary_taper(size_t width, double floor = 0.0) {
+inline void configure_ko_boundary_taper(size_t width, double floor = 0.0, double boost = 0.0,
+                                        double edge_corner_boost = 0.0) {
     auto &state = ko_state();
     state.boundary_width = width;
     state.boundary_floor = std::clamp(floor, 0.0, 1.0);
+    state.boundary_boost = std::max(boost, 0.0);
+    state.edge_corner_boost = std::max(edge_corner_boost, 0.0);
 }
 
 inline size_t current_ko_boundary_width() { return ko_state().boundary_width; }
 
 inline double current_ko_boundary_floor() { return ko_state().boundary_floor; }
+
+inline double current_ko_boundary_boost() { return ko_state().boundary_boost; }
+
+inline double current_ko_edge_corner_boost() { return ko_state().edge_corner_boost; }
 
 template <typename T> inline T scaled_ko_sigma(T base_sigma) {
     return base_sigma * T(current_ko_scale());
@@ -186,10 +196,30 @@ inline T ko_boundary_taper(const BSSNGridSoA<T> &grid, size_t i, size_t j, size_
     if (dist >= width)
         return T(1);
 
-    const double x = static_cast<double>(dist) / static_cast<double>(width);
-    const double smooth = x * x * (3.0 - 2.0 * x);
+    const auto axis_wall_weight = [width](size_t d) -> double {
+        if (d >= width)
+            return 0.0;
+        const double x = static_cast<double>(d) / static_cast<double>(width);
+        const double smooth = x * x * (3.0 - 2.0 * x);
+        return 1.0 - smooth;
+    };
+
+    const double wx = axis_wall_weight(di);
+    const double wy = axis_wall_weight(dj);
+    const double wz = axis_wall_weight(dk);
+    const double wall = std::max({wx, wy, wz});
+    const double smooth = 1.0 - wall;
     const double floor = current_ko_boundary_floor();
-    return T(floor + (1.0 - floor) * smooth);
+    const double base = floor + (1.0 - floor) * smooth;
+    std::array<double, 3> weights{wx, wy, wz};
+    std::sort(weights.begin(), weights.end(), std::greater<double>());
+    // Edge/corner reinforcement should vanish on a single face. Use the second strongest wall
+    // proximity as the edge trigger and the third as the extra corner weight.
+    const double edge_weight = weights[1];
+    const double corner_weight = weights[2];
+    const double boost = current_ko_boundary_boost() * edge_weight *
+                         (1.0 + current_ko_edge_corner_boost() * corner_weight);
+    return T(base + boost);
 }
 
 template <typename T>

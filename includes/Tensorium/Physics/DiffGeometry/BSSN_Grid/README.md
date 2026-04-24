@@ -272,7 +272,7 @@ These are embedded in `BSSNRK4.hpp` and define the low-storage update.
 Per stage, the sequence is:
 
 1. Build/update stage reference state.
-2. Apply halos and rebuild geometry (`prepare_state_for_rhs`).
+2. Apply solution halos and rebuild geometry (`prepare_state_for_rhs`).
 3. Evaluate all RHS kernels.
 4. Optional RHS Sommerfeld correction on boundary surfaces.
 5. Recompose `rhs(K)` from `rhs(Khat)`.
@@ -302,20 +302,27 @@ Available boundary functors include:
 
 - per-face RHS Sommerfeld masks (`rhs_sommerfeld_face[axis][side]`)
 - per-face reflective parity masks (`reflective_face[axis][side]`)
-- characteristic speed/time updates from the stepper
+- runtime configuration of the outer-boundary collar and compatibility knobs from the stepper
 
-Vector and tensor parity on reflective faces is component-aware.
+Vector and tensor parity on reflective faces is component-aware. For non-reflective faces, the
+solution ghosts are extrapolated rather than filled with a radiative Sommerfeld state, matching the
+GRChombo-style split where outgoing behavior is imposed on the RHS instead of on the state halos.
 
 ### 8.3 RHS-level Sommerfeld correction
 
-In addition to halo filling, the RK stepper can apply a direct RHS Sommerfeld operator near boundary surfaces:
+Rather than imposing Sommerfeld data in the solution halos, the RK stepper can apply a direct RHS
+Sommerfeld operator near boundary surfaces:
 
 - enabled by `GaugeParameters::apply_rhs_sommerfeld`
 - implemented in `BSSNRK4::apply_rhs_sommerfeld(...)`
-- the Z4c-sensitive fields use a specialized outgoing operator:
-  - `Theta`, `tildeGamma^i`, `A_tilde_ij`: `-(\partial_r u + u/r)`
-  - `Khat = K - 2 Theta`: `-sqrt(2) * (\partial_r Khat + Khat/r)`
-- the remaining gauge/metric auxiliary fields keep the generic radiative form with their usual asymptotic values
+- the operator mirrors GRChombo's local Cartesian Sommerfeld form on every boundary point:
+  - `rhs(u) = -sum_i (\partial_i u) x^i / r + (u_inf - u) / r`
+  - one-sided second-order derivatives are used on the outermost grid cells
+- the bulk RHS sweep still runs on every physical cell using refreshed halos, so the explicit
+  Sommerfeld pass only replaces the outermost surface rather than a 4-cell-thick physical shell
+- `K` is still treated through `Khat = K - 2 Theta` internally, then recomposed after the RHS pass
+- Tensorium still does not evolve GRChombo-style grown-grid boundary ghosts, so the outermost
+  physical surface remains the closest analogue to GRChombo's RHS boundary fill
 
 ## 9. Initial Data Pipelines
 
