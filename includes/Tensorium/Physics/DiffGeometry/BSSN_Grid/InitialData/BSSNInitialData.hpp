@@ -1375,6 +1375,19 @@ inline void binary_bowen_york_puncture_twopunctures_c_init(
         tp_calculate_target_masses, tp_adm_tol);
 }
 
+inline void reset_twopunctures_c_backend_cache() {
+#if defined(TENSORIUM_HAS_TWOPUNCTURES_C)
+    std::lock_guard<std::mutex> backend_lock(detail::twopunctures_backend_mutex());
+    auto                       &cache = detail::twopunctures_solve_cache();
+    if (cache.data != nullptr) {
+        TwoPunctures_finalise(cache.data);
+        cache.data = nullptr;
+    }
+    cache.valid = false;
+    cache.key = {};
+#endif
+}
+
 template <typename T>
 static inline void ks_kerr_r_H_l(T x, T y, T z, T M, T a, T &r, T &H, T l[3]) {
     const T rho2 = x * x + y * y + z * z;

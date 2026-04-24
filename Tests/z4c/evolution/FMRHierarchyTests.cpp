@@ -165,6 +165,33 @@ REGISTER_TEST("z4c.fmr.moving_puncture_env_can_reenable_rhs_sommerfeld",
     TENSORIUM_TEST_ASSERT(cfg.gauge_params.apply_rhs_sommerfeld);
 });
 
+REGISTER_TEST("z4c.fmr.moving_puncture_env_parses_eccentricity_control",
+              "Moving-puncture env parses the SpECTRE-like eccentricity-control settings", []() {
+    const ScopedEnvVar enable("TENSORIUM_MOVING_PUNCTURE_ECC_CONTROL", "1");
+    const ScopedEnvVar export_trials("TENSORIUM_MOVING_PUNCTURE_ECC_EXPORT_TRIALS", "1");
+    const ScopedEnvVar iterations("TENSORIUM_MOVING_PUNCTURE_ECC_ITERATIONS", "3");
+    const ScopedEnvVar trial_steps("TENSORIUM_MOVING_PUNCTURE_ECC_TRIAL_STEPS", "900");
+    const ScopedEnvVar fit_tmin("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMIN", "4.5");
+    const ScopedEnvVar fit_tmax("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMAX", "12.0");
+    const ScopedEnvVar tangential_gain("TENSORIUM_MOVING_PUNCTURE_ECC_TANGENTIAL_GAIN", "0.8");
+    const ScopedEnvVar radial_gain("TENSORIUM_MOVING_PUNCTURE_ECC_RADIAL_GAIN", "1.2");
+
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.enabled);
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.export_trials);
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.iterations == size_t(3));
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.trial_steps == size_t(900));
+    tensorium::tests::expect_near(cfg.ecc_control.fit_tmin, 4.5, 1.0e-15,
+                                  "ecc control fit_tmin");
+    tensorium::tests::expect_near(cfg.ecc_control.fit_tmax, 12.0, 1.0e-15,
+                                  "ecc control fit_tmax");
+    tensorium::tests::expect_near(cfg.ecc_control.tangential_gain, 0.8, 1.0e-15,
+                                  "ecc control tangential gain");
+    tensorium::tests::expect_near(cfg.ecc_control.radial_gain, 1.2, 1.0e-15,
+                                  "ecc control radial gain");
+});
+
 REGISTER_TEST("z4c.fmr.restriction_averages_linear_fields_back_to_coarse",
               "FMR restriction averages fine linear data back to the parent cells", []() {
     Grid root = make_root_grid();

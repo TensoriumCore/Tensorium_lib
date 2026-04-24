@@ -1184,39 +1184,91 @@ PuncturePlaneSample sample_puncture_minima(const Grid &grid) {
 } // namespace
 
 int main(int argc, char **argv) {
-    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
-    size_t output_stride = cfg.state_log_stride;
-    size_t slice_export_stride =
+    auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+    const size_t production_steps = cfg.steps;
+    size_t base_output_stride = cfg.state_log_stride;
+    size_t base_slice_export_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_SLICE_EXPORT_STRIDE", 10);
-    size_t constraint_export_stride =
+    size_t base_constraint_export_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_EXPORT_STRIDE", 5);
-    bool export_constraint_slices =
+    bool base_export_constraint_slices =
         parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_CONSTRAINT_SLICES", true);
-    const bool request_hdf5_export =
+    const bool base_request_hdf5_export =
         parse_env_bool_or("TENSORIUM_MOVING_PUNCTURE_EXPORT_HDF5", false);
-    const bool export_hdf5 = request_hdf5_export && tensorium::io::hdf5_available();
-    bool export_csv = !export_hdf5;
-    size_t volume_export_stride =
+    const bool base_export_hdf5 =
+        base_request_hdf5_export && tensorium::io::hdf5_available();
+    const bool base_export_csv = !base_export_hdf5;
+    size_t base_volume_export_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_VOLUME_EXPORT_STRIDE", 0);
-    size_t constraint_slice_stride =
+    size_t base_constraint_slice_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE",
-                            constraint_export_stride);
-    size_t fmr_profile_stride =
+                            base_constraint_export_stride);
+    size_t base_fmr_profile_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_FMR_PROFILE_STRIDE", 0);
 
     for (int i = 1; i < argc; ++i) {
         if (std::strcmp(argv[i], "--output-stride") == 0 && i + 1 < argc) {
-            output_stride = static_cast<size_t>(std::stoul(argv[++i]));
+            base_output_stride = static_cast<size_t>(std::stoul(argv[++i]));
         } else if (std::strcmp(argv[i], "--slice-export-stride") == 0 && i + 1 < argc) {
-            slice_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
+            base_slice_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
         } else if (std::strcmp(argv[i], "--constraint-export-stride") == 0 && i + 1 < argc) {
-            constraint_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
+            base_constraint_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
         } else if (std::strcmp(argv[i], "--constraint-slice-stride") == 0 && i + 1 < argc) {
-            constraint_slice_stride = static_cast<size_t>(std::stoul(argv[++i]));
+            base_constraint_slice_stride = static_cast<size_t>(std::stoul(argv[++i]));
         } else if (std::strcmp(argv[i], "--volume-export-stride") == 0 && i + 1 < argc) {
-            volume_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
+            base_volume_export_stride = static_cast<size_t>(std::stoul(argv[++i]));
         }
     }
+
+    const bool ecc_tuning_enabled = cfg.ecc_control.enabled && cfg.ecc_control.iterations > 0;
+    if (ecc_tuning_enabled && cfg.auto_circular) {
+        std::cout << "[ecc] AUTO_CIRCULAR provided only the initial guess; eccentricity control "
+                     "takes ownership of momentum updates."
+                  << std::endl;
+        cfg.auto_circular = false;
+        cfg.user_tangential_momentum = cfg.tangential_momentum;
+    }
+
+    const size_t total_passes =
+        ecc_tuning_enabled ? (cfg.ecc_control.iterations + (cfg.ecc_control.tune_only ? 0u : 1u))
+                           : 1u;
+
+    for (size_t pass = 0; pass < total_passes; ++pass) {
+        const bool ecc_tuning_pass = ecc_tuning_enabled && pass < cfg.ecc_control.iterations;
+        const bool suppress_trial_exports = ecc_tuning_pass && !cfg.ecc_control.export_trials;
+        cfg.steps = ecc_tuning_pass ? cfg.ecc_control.trial_steps : production_steps;
+
+        size_t output_stride = base_output_stride;
+        size_t slice_export_stride = base_slice_export_stride;
+        size_t constraint_export_stride = base_constraint_export_stride;
+        bool export_constraint_slices = base_export_constraint_slices;
+        const bool request_hdf5_export =
+            suppress_trial_exports ? false : base_request_hdf5_export;
+        bool export_hdf5 = suppress_trial_exports ? false : base_export_hdf5;
+        bool export_csv = suppress_trial_exports ? false : base_export_csv;
+        size_t volume_export_stride = suppress_trial_exports ? 0 : base_volume_export_stride;
+        size_t constraint_slice_stride =
+            suppress_trial_exports ? 0 : base_constraint_slice_stride;
+        size_t fmr_profile_stride = suppress_trial_exports ? 0 : base_fmr_profile_stride;
+
+        if (suppress_trial_exports) {
+            output_stride = std::max<size_t>(cfg.steps + 1, size_t(1));
+            slice_export_stride = 0;
+            constraint_export_stride = 0;
+            export_constraint_slices = false;
+            volume_export_stride = 0;
+            constraint_slice_stride = 0;
+            std::cout << "[ecc] iteration " << (pass + 1) << "/" << cfg.ecc_control.iterations
+                      << " trial_steps=" << cfg.steps
+                      << " p_tang=" << cfg.tangential_momentum
+                      << " p_rad=" << cfg.radial_momentum << std::endl;
+        } else if (ecc_tuning_pass) {
+            std::cout << "[ecc] iteration " << (pass + 1) << "/" << cfg.ecc_control.iterations
+                      << " trial_steps=" << cfg.steps
+                      << " p_tang=" << cfg.tangential_momentum
+                      << " p_rad=" << cfg.radial_momentum
+                      << " export_trials=1" << std::endl;
+        }
 
     std::cout << "[mesh] nx=" << cfg.nx << " ny=" << cfg.ny << " nz=" << cfg.nz
               << " spacing=" << cfg.spacing
@@ -1600,6 +1652,23 @@ int main(int argc, char **argv) {
         (void)file.append_row(row);
     };
 
+    std::vector<tensorium_RG::z4c::MovingPunctureTrackPoint> ecc_track;
+    if (cfg.ecc_control.enabled)
+        ecc_track.reserve(cfg.steps + 1);
+    auto append_ecc_track = [&](double time, const PuncturePlaneSample &sample) {
+        if (!cfg.ecc_control.enabled)
+            return;
+        ecc_track.push_back(tensorium_RG::z4c::MovingPunctureTrackPoint{
+            time,
+            sample.has_left,
+            sample.has_right,
+            sample.x_left,
+            sample.y_left,
+            sample.x_right,
+            sample.y_right,
+        });
+    };
+
     ShiftPunctureTracker puncture_tracker;
     if (use_fmr && cfg.fmr.move_with_punctures) {
         if (use_bbh_split) {
@@ -1620,6 +1689,24 @@ int main(int argc, char **argv) {
             std::cout << "[tracker][warn] could not initialize puncture tracker from the finest slice minima"
                       << std::endl;
         }
+    }
+
+    {
+        PuncturePlaneSample initial_sample;
+        if (use_fmr && use_bbh_split) {
+            initial_sample = sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
+            if (puncture_tracker.initialized)
+                initial_sample = make_tracker_sample_split(*left_puncture_state,
+                                                           *right_puncture_state,
+                                                           puncture_tracker);
+        } else if (use_fmr) {
+            initial_sample = sample_puncture_minima(*puncture_state);
+            if (puncture_tracker.initialized)
+                initial_sample = make_tracker_sample(*puncture_state, puncture_tracker);
+        } else {
+            initial_sample = sample_puncture_minima(*root_state);
+        }
+        append_ecc_track(0.0, initial_sample);
     }
 
     size_t current_step = 0;
@@ -1914,6 +2001,7 @@ int main(int argc, char **argv) {
                 write_puncture_row(puncture_track_minima, n, t, puncture_minima);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
+            append_ecc_track(t, puncture_sample);
 
             double projection_seconds = 0.0;
             if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0)) {
@@ -2132,6 +2220,7 @@ int main(int argc, char **argv) {
                 write_puncture_row(puncture_track_minima, n, t, puncture_minima);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
+            append_ecc_track(t, puncture_sample);
 
             double projection_seconds = 0.0;
             if (cfg.projection_stride > 0 && ((n + 1) % cfg.projection_stride == 0))
@@ -2190,6 +2279,7 @@ int main(int argc, char **argv) {
                 write_puncture_row(puncture_track_minima, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
             write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_sample);
+            append_ecc_track(t, puncture_sample);
 
             double constraint_seconds = 0.0;
             const bool need_constraint_export =
@@ -2317,6 +2407,56 @@ int main(int argc, char **argv) {
         std::cout << " hit_rate=" << hit_rate << "%";
     }
     std::cout << std::endl;
+
+    if (ecc_tuning_pass) {
+        const auto fit =
+            tensorium_RG::z4c::fit_moving_puncture_eccentricity(ecc_track, cfg.ecc_control);
+        if (!fit.valid) {
+            std::cout << "[ecc][warn] iteration " << (pass + 1)
+                      << " failed to fit eccentricity from the puncture track; "
+                         "keeping the current momenta and stopping the tuning loop."
+                      << std::endl;
+            break;
+        }
+
+        const auto update = tensorium_RG::z4c::suggest_moving_puncture_momentum_update(
+            fit, cfg.mass1, cfg.mass2, cfg.tangential_momentum, cfg.radial_momentum,
+            cfg.ecc_control);
+        std::cout << "[ecc] iteration " << (pass + 1)
+                  << " e=" << fit.eccentricity
+                  << " fit_tmin=" << fit.fit_tmin
+                  << " fit_tmax=" << fit.fit_tmax
+                  << " samples=" << fit.used_samples
+                  << " phase_advance=" << fit.phase_advance
+                  << " omega=" << fit.orbital_frequency
+                  << " r_mean=" << fit.mean_separation
+                  << " drift=" << fit.secular_rdot
+                  << " a_cos=" << fit.cos_coefficient
+                  << " b_sin=" << fit.sin_coefficient
+                  << " rmse=" << fit.fit_rmse << std::endl;
+        if (!update.valid) {
+            std::cout << "[ecc][warn] iteration " << (pass + 1)
+                      << " produced an invalid momentum update; "
+                         "keeping the current momenta and stopping the tuning loop."
+                      << std::endl;
+            break;
+        }
+
+        std::cout << "[ecc] update"
+                  << " delta_p_tang=" << update.delta_tangential_momentum
+                  << " delta_p_rad=" << update.delta_radial_momentum
+                  << " p_tang_next=" << update.new_tangential_momentum
+                  << " p_rad_next=" << update.new_radial_momentum << std::endl;
+        cfg.tangential_momentum = update.new_tangential_momentum;
+        cfg.user_tangential_momentum = update.new_tangential_momentum;
+        cfg.radial_momentum = update.new_radial_momentum;
+        if (cfg.use_interpolated_init) {
+            tensorium_RG::init::reset_twopunctures_c_backend_cache();
+            std::cout << "[ecc] reset TwoPunctures backend cache for the next pass" << std::endl;
+        }
+        continue;
+    }
+    }
 
     return 0;
 }

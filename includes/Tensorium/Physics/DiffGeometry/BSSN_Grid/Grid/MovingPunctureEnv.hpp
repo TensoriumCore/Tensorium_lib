@@ -3,6 +3,7 @@
 #include "../Evolution/BSSNEvolutionGauge.hpp"
 #include "../FMR/BSSNFixedMeshRefinement.hpp"
 #include "../InitialData/BSSNInitialData.hpp"
+#include "MovingPunctureEccentricityControl.hpp"
 #include "BSSNGridOperations.hpp"
 
 #include <algorithm>
@@ -147,6 +148,7 @@ struct MovingPunctureEnvConfig {
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
     MovingPunctureFMRConfig fmr{};
+    MovingPunctureEccentricityControlConfig ecc_control{};
 };
 
 namespace detail {
@@ -590,6 +592,55 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_STATE_LOG_STRIDE")) {
         if (*parsed > 0)
             cfg.state_log_stride = static_cast<size_t>(*parsed);
+    }
+
+    cfg.ecc_control.enabled =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_ECC_CONTROL", cfg.ecc_control.enabled);
+    cfg.ecc_control.tune_only =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_ECC_TUNE_ONLY", cfg.ecc_control.tune_only);
+    cfg.ecc_control.export_trials = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_ECC_EXPORT_TRIALS", cfg.ecc_control.export_trials);
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_ECC_ITERATIONS")) {
+        if (*parsed >= 0)
+            cfg.ecc_control.iterations = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_ECC_TRIAL_STEPS")) {
+        if (*parsed > 0)
+            cfg.ecc_control.trial_steps = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMIN"))
+        cfg.ecc_control.fit_tmin = *parsed;
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMAX"))
+        cfg.ecc_control.fit_tmax = *parsed;
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_START_FRACTION")) {
+        cfg.ecc_control.fit_start_fraction = std::clamp(*parsed, 0.0, 0.95);
+    }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_END_FRACTION")) {
+        cfg.ecc_control.fit_end_fraction = std::clamp(*parsed, 0.05, 1.0);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_ECC_MIN_SAMPLES")) {
+        if (*parsed >= 8)
+            cfg.ecc_control.min_samples = static_cast<size_t>(*parsed);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_TANGENTIAL_GAIN")) {
+        if (*parsed > 0.0)
+            cfg.ecc_control.tangential_gain = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_RADIAL_GAIN")) {
+        if (*parsed > 0.0)
+            cfg.ecc_control.radial_gain = *parsed;
+    }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_MAX_FRAC_DELTA_TANGENTIAL")) {
+        if (*parsed > 0.0)
+            cfg.ecc_control.max_fractional_tangential_update = *parsed;
+    }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_ECC_MAX_ABS_DELTA_RADIAL")) {
+        if (*parsed > 0.0)
+            cfg.ecc_control.max_absolute_radial_update = *parsed;
     }
 
     cfg.fmr.enabled = detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_ENABLE_FMR", cfg.fmr.enabled);
