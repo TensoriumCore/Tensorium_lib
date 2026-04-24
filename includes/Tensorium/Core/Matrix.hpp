@@ -6,6 +6,7 @@
 #include "../Utils/MathUtils/MathsUtils.hpp"
 #include "Vector.hpp"
 #include <Tensorium/Backend/CPU_Kernels/GemmKernel_Optimized.hpp>
+#include <Tensorium/Backend/CPU_Kernels/GemmKernel_Skylake.hpp>
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -244,7 +245,11 @@ template <typename K, bool RowMajor = false> class Matrix {
             const K *B = mat.data.data();
             K       *C = result.data.data();
 
+            #if defined(TENSORIUM_X86) && defined(__AVX512F__)
+            tensorium::GemmKernelSkylake<K> kernel;
+            #else
             tensorium::GemmKernelBigger<K> kernel;
+            #endif
             kernel.matmul(const_cast<K *>(A), const_cast<K *>(B), C, static_cast<int>(rows),
                           static_cast<int>(mat.cols), static_cast<int>(cols));
 #endif

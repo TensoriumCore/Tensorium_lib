@@ -3,7 +3,7 @@
 dist/
 __pycache__/
 .venv/
-
+*.h5
 # Build / CMake
 build/
 build-*/

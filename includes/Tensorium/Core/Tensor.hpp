@@ -92,7 +92,9 @@ template <typename K, std::size_t Rank> class Tensor {
         static_assert(Rank == 3, "Rank mismatch in resize()");
 
         dimensions = {d0, d1, d2};
-        data.resize(d0 * d1 * d2, K(0));
+        update_strides();
+        total_size = d0 * d1 * d2;
+        data.resize(total_size, K(0));
     }
     ///@{
     K &operator()(const std::array<size_t, Rank> &indices) {
@@ -163,22 +165,9 @@ template <typename K, std::size_t Rank> class Tensor {
      */
     inline size_t
     flatten_index_simd(const size_t *indices, const size_t *strides) const {
-        using Simd = simd::SimdTraits<size_t, DefaultISA>;
-        using reg = typename Simd::reg;
-        constexpr size_t W = Simd::width / sizeof(size_t);
-
         size_t acc = 0;
-        size_t i = 0;
-
-        for (; i + W - 1 < Rank; i += W) {
-            reg idx = Simd::load(&indices[i]);
-            reg str = Simd::load(&strides[i]);
-            reg prod = Simd::mul(idx, str);
-            acc += detail::reduce_sum(prod);
-        }
-        for (; i < Rank; ++i)
+        for (size_t i = 0; i < Rank; ++i)
             acc += indices[i] * strides[i];
-
         return acc;
     }
 

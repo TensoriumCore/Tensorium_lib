@@ -50,7 +50,8 @@ tensorium::Matrix<K> mul_mat_reference(const tensorium::Matrix<K> &A,
 }
 
 int run_matrix_benchmark() {
-    std::vector<std::size_t> sizes = {1024, 2048, 4096};
+    std::vector<std::size_t> sizes = {1024, 2048, 4096, 8192, 16384};
+    const std::size_t        validation_size = 128;
     const std::string        csv_path = "matrix_bench_results.csv";
 
     std::ofstream csv(csv_path);
@@ -62,6 +63,39 @@ int run_matrix_benchmark() {
 #endif
 
     std::cout << "Benchmarking GEMM performance...\n";
+
+    {
+        Matrix<float> A(validation_size, validation_size);
+        Matrix<float> B(validation_size, validation_size);
+
+        std::mt19937                          rng(42);
+        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+        for (std::size_t i = 0; i < validation_size; ++i)
+            for (std::size_t j = 0; j < validation_size; ++j) {
+                A(i, j) = dist(rng);
+                B(i, j) = dist(rng);
+            }
+
+        Matrix<float> C_kernel = mul_mat(A, B);
+        Matrix<float> C_ref = mul_mat_reference(A, B);
+
+        double max_abs_diff = 0.0;
+        double sq_norm = 0.0;
+        for (std::size_t col = 0; col < validation_size; ++col) {
+            for (std::size_t row = 0; row < validation_size; ++row) {
+                const std::size_t idx = col * validation_size + row;
+                const double      diff = double(C_ref.data[idx] - C_kernel.data[idx]);
+                max_abs_diff = std::max(max_abs_diff, std::abs(diff));
+                sq_norm += diff * diff;
+            }
+        }
+
+        std::cout << "[Validation naive GEMM, N = " << validation_size << "]\n";
+        std::cout << "Max |C_kernel - C_ref| : " << max_abs_diff << "\n";
+        std::cout << "||C_kernel - C_ref||_F = " << std::sqrt(sq_norm) << "\n";
+        std::cout << "Sample C_kernel(0,0): " << C_kernel(0, 0) << "\n";
+        std::cout << "Sample C_ref(0,0)   : " << C_ref(0, 0) << "\n\n";
+    }
 
     for (std::size_t N : sizes) {
         Matrix<float> A(N, N);

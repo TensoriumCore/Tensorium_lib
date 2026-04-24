@@ -79,6 +79,11 @@ struct MovingPunctureSpongeConfig {
     double exponent = 2.0;
 };
 
+enum class MovingPunctureFMRLayout {
+    Nested,
+    BBHSplit,
+};
+
 struct MovingPunctureFMRConfig {
     bool   enabled = true;
     size_t levels = 2;
@@ -96,6 +101,7 @@ struct MovingPunctureFMRConfig {
     double puncture_buffer = 0.0;
     double init_core_half_width = 0.0;
     double init_transition_width = 0.0;
+    MovingPunctureFMRLayout layout = MovingPunctureFMRLayout::Nested;
 };
 
 struct MovingPunctureEnvConfig {
@@ -114,6 +120,8 @@ struct MovingPunctureEnvConfig {
 
     double mass1 = 0.48847892320123;
     double mass2 = 0.48847892320123;
+    bool   tp_calculate_target_masses = false;
+    double tp_adm_tol = 1.0e-10;
     double separation = 6.10679;
     double tangential_momentum = 0.0841746;
     double user_tangential_momentum = 0.0841746;
@@ -134,9 +142,13 @@ struct MovingPunctureEnvConfig {
     size_t                  radiative_collar_width = 4;
     size_t                  ko_boundary_width = 4;
     double                  ko_boundary_floor = 0.0;
+    double                  ko_boundary_boost = 0.0;
+    double                  ko_edge_corner_boost = 0.0;
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
     MovingPunctureFMRConfig fmr{};
+    tensorium::backend::Options backend_options{};
+    bool                        backend_auto = true;
 };
 
 namespace detail {
@@ -183,7 +195,29 @@ inline bool env_bool_or(const char *name, bool fallback) {
     return parsed ? (*parsed != 0) : fallback;
 }
 
+inline std::string ascii_lower(std::string value) {
+    for (char &ch : value)
+        ch = static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+    return value;
+}
+
+inline std::optional<std::string> env_string_lower(const char *name) {
+    if (const char *raw = std::getenv(name))
+        return ascii_lower(raw);
+    return std::nullopt;
+}
+
 } // namespace detail
+
+inline const char *moving_puncture_fmr_layout_name(MovingPunctureFMRLayout layout) {
+    switch (layout) {
+    case MovingPunctureFMRLayout::BBHSplit:
+        return "bbh_split";
+    case MovingPunctureFMRLayout::Nested:
+    default:
+        return "nested";
+    }
+}
 
 inline const char *boundary_face_name(int axis, bool outer) {
     switch (std::clamp(axis, 0, 2)) {
@@ -321,6 +355,29 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed > 0.0)
             cfg.cfl = *parsed;
     }
+    if (const char *raw_backend = std::getenv("TENSORIUM_MOVING_PUNCTURE_BACKEND")) {
+        const std::string backend = detail::ascii_lower(raw_backend);
+        if (backend.empty() || backend == "auto") {
+            cfg.backend_auto = true;
+        } else if (backend == "cpu") {
+            cfg.backend_auto = false;
+            cfg.backend_options.backend = tensorium::backend::Kind::CPU;
+        } else if (backend == "cuda" || backend == "gpu") {
+            cfg.backend_auto = false;
+            cfg.backend_options.backend = tensorium::backend::Kind::CUDA;
+        } else {
+            throw std::invalid_argument(
+                "TENSORIUM_MOVING_PUNCTURE_BACKEND must be one of: auto, cpu, cuda");
+        }
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_CUDA_DEVICE")) {
+        if (*parsed >= 0)
+            cfg.backend_options.device_ordinal = static_cast<int>(*parsed);
+    }
+    if (const auto parsed = detail::env_long("TENSORIUM_MOVING_PUNCTURE_DEVICE_ORDINAL")) {
+        if (*parsed >= 0)
+            cfg.backend_options.device_ordinal = static_cast<int>(*parsed);
+    }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_GAUGE_SPEED")) {
         if (*parsed > 0.0)
             cfg.gauge_speed = *parsed;
@@ -372,6 +429,12 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed >= 24)
             cfg.interp_seed_n = static_cast<size_t>(*parsed);
     }
+    cfg.tp_calculate_target_masses = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_TP_CALCULATE_TARGET_MASSES", cfg.use_interpolated_init);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_TP_ADM_TOL")) {
+        if (*parsed > 0.0)
+            cfg.tp_adm_tol = *parsed;
+    }
 
     GaugeParameters<double> params;
     params.eta = 1.0;
@@ -398,7 +461,9 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     params.chi_floor = 1e-4;
     params.evolve_Z = false;
     params.gamma_damping_uses_metric = false;
-    params.apply_rhs_sommerfeld = true;
+    params.apply_rhs_sommerfeld = false;
+    params.apply_rhs_sommerfeld = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", params.apply_rhs_sommerfeld);
 
     cfg.strict_tp_gauge = detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_STRICT_TP_GAUGE",
                                               cfg.use_interpolated_init);
@@ -535,6 +600,12 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_BOUNDARY_FLOOR")) {
         cfg.ko_boundary_floor = std::clamp(*parsed, 0.0, 1.0);
     }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_BOUNDARY_BOOST")) {
+        cfg.ko_boundary_boost = std::max(*parsed, 0.0);
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_EDGE_CORNER_BOOST")) {
+        cfg.ko_edge_corner_boost = std::max(*parsed, 0.0);
+    }
 
     if (params.evolve_Z) {
         std::fprintf(stderr,
@@ -607,6 +678,15 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         if (*parsed > 0.0)
             cfg.fmr.init_transition_width = *parsed;
     }
+    if (const auto parsed = detail::env_string_lower("TENSORIUM_MOVING_PUNCTURE_FMR_LAYOUT")) {
+        if (*parsed == "nested" || *parsed == "chain")
+            cfg.fmr.layout = MovingPunctureFMRLayout::Nested;
+        else if (*parsed == "bbh_split" || *parsed == "bbh" || *parsed == "split")
+            cfg.fmr.layout = MovingPunctureFMRLayout::BBHSplit;
+        else
+            throw std::runtime_error(
+                "Unknown moving-puncture FMR layout. Supported values: nested, bbh_split");
+    }
     if (cfg.fmr.levels == 0)
         cfg.fmr.enabled = false;
 
@@ -659,6 +739,91 @@ inline fmr::PatchBox moving_puncture_axis_aligned_patch_from_half_width_centered
     clamp_axis(center[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz,
                box.k0, box.k1);
     return box;
+}
+
+template <typename T>
+inline std::pair<fmr::PatchBox, fmr::PatchBox> moving_puncture_disjoint_split_leaf_boxes(
+    const BSSNGridSoA<T> &grid, const std::array<double, 3> &puncture1,
+    const std::array<double, 3> &puncture2, double half_width, size_t clearance) {
+    auto left_box =
+        moving_puncture_axis_aligned_patch_from_half_width_centered(grid, puncture1, half_width, clearance);
+    auto right_box =
+        moving_puncture_axis_aligned_patch_from_half_width_centered(grid, puncture2, half_width, clearance);
+    if (!fmr::detail::patch_boxes_overlap(left_box, right_box))
+        return {left_box, right_box};
+
+    const auto coord_to_cell = [](double coord, double origin, double spacing, size_t cells) -> size_t {
+        long idx = static_cast<long>(std::llround((coord - origin) / spacing));
+        idx = std::clamp(idx, 0L, static_cast<long>(cells) - 1L);
+        return static_cast<size_t>(idx);
+    };
+
+    const std::array<size_t, 3> puncture1_cells{
+        coord_to_cell(puncture1[0], static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx),
+        coord_to_cell(puncture1[1], static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny),
+        coord_to_cell(puncture1[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz),
+    };
+    const std::array<size_t, 3> puncture2_cells{
+        coord_to_cell(puncture2[0], static_cast<double>(grid.x0), static_cast<double>(grid.dx), grid.dims.nx),
+        coord_to_cell(puncture2[1], static_cast<double>(grid.y0), static_cast<double>(grid.dy), grid.dims.ny),
+        coord_to_cell(puncture2[2], static_cast<double>(grid.z0), static_cast<double>(grid.dz), grid.dims.nz),
+    };
+
+    int    split_axis = 0;
+    size_t max_cell_separation = 0;
+    for (int axis = 0; axis < 3; ++axis) {
+        const size_t sep =
+            (puncture1_cells[axis] > puncture2_cells[axis]) ? (puncture1_cells[axis] - puncture2_cells[axis])
+                                                            : (puncture2_cells[axis] - puncture1_cells[axis]);
+        if (sep > max_cell_separation) {
+            max_cell_separation = sep;
+            split_axis = axis;
+        }
+    }
+    if (max_cell_separation == 0) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap and cannot be separated on the shared parent level");
+    }
+
+    const bool puncture1_first = puncture1_cells[split_axis] <= puncture2_cells[split_axis];
+    auto      &first_box = puncture1_first ? left_box : right_box;
+    auto      &second_box = puncture1_first ? right_box : left_box;
+    const size_t first_cell = puncture1_first ? puncture1_cells[split_axis] : puncture2_cells[split_axis];
+    const size_t second_cell = puncture1_first ? puncture2_cells[split_axis] : puncture1_cells[split_axis];
+
+    if (first_cell >= second_cell) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap and cannot retain ordered split boxes");
+    }
+
+    const size_t split_index = first_cell + (second_cell - first_cell + 1) / 2;
+    auto         axis_bounds = [&](fmr::PatchBox &box) -> std::pair<size_t &, size_t &> {
+        if (split_axis == 0)
+            return {box.i0, box.i1};
+        if (split_axis == 1)
+            return {box.j0, box.j1};
+        return {box.k0, box.k1};
+    };
+
+    {
+        auto [first_lo, first_hi] = axis_bounds(first_box);
+        auto [second_lo, second_hi] = axis_bounds(second_box);
+        first_hi = std::min(first_hi, split_index);
+        second_lo = std::max(second_lo, split_index);
+
+        if (!(first_lo <= first_cell && first_cell < first_hi && second_lo <= second_cell &&
+              second_cell < second_hi)) {
+            throw std::runtime_error(
+                "Computed moving-puncture BBH split finest leaves overlap and adaptive clipping would exclude a puncture");
+        }
+    }
+
+    if (fmr::detail::patch_boxes_overlap(left_box, right_box)) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap even after adaptive split clipping");
+    }
+
+    return {left_box, right_box};
 }
 
 inline fmr::PatchBox centered_patch_from_counts(size_t parent_nx, size_t parent_ny, size_t parent_nz,
@@ -727,6 +892,18 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
         }
         finest_half_width = outer_half_width / std::max(1.0, scale);
     } else {
+        // Keep automatic patches no larger than their parent by default; otherwise
+        // "refinement" can cost more than a full-domain fine solve on the first step.
+        const double auto_outer_half_width_limit =
+            max_root_half_width / static_cast<double>(cfg.fmr.refinement_ratio);
+        const double auto_finest_half_width_limit =
+            auto_outer_half_width_limit / std::max(1.0, scale);
+        const double min_binary_half_width = std::max(cfg.separation, 4.0 * cfg.spacing);
+        if (auto_finest_half_width_limit < min_binary_half_width) {
+            throw std::runtime_error(
+                "Automatic moving-puncture FMR boxes cannot cover the binary without oversized "
+                "refined levels; reduce FMR levels or set explicit box widths");
+        }
         const double auto_finest_half_width = std::max(cfg.separation + auto_buffer, 4.0 * cfg.spacing);
         finest_half_width =
             (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width : auto_finest_half_width;
@@ -735,6 +912,8 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
             throw std::runtime_error(
                 "Requested moving-puncture finest FMR box is too large for the root domain");
         }
+        if (cfg.fmr.finest_box_half_width == 0.0)
+            finest_half_width = std::min(finest_half_width, auto_finest_half_width_limit);
         finest_half_width = std::min(finest_half_width, max_finest_half_width);
         outer_half_width = finest_half_width * scale;
     }
@@ -768,6 +947,115 @@ build_moving_puncture_fmr_levels(const BSSNGridSoA<T> &root_grid,
     return levels;
 }
 
+inline std::array<std::array<double, 3>, 2>
+moving_puncture_initial_puncture_positions(const MovingPunctureEnvConfig &cfg) {
+    if (cfg.use_interpolated_init)
+        return {{{-cfg.separation, 0.0, 0.0}, {cfg.separation, 0.0, 0.0}}};
+    return {{{0.0, cfg.separation, 0.0}, {0.0, -cfg.separation, 0.0}}};
+}
+
+template <typename T>
+inline fmr::BinaryPunctureHierarchyConfig
+build_moving_puncture_bbh_split_hierarchy_config(
+    const BSSNGridSoA<T> &root_grid, const MovingPunctureEnvConfig &cfg,
+    const std::array<double, 3> &puncture1, const std::array<double, 3> &puncture2) {
+    if (!cfg.fmr.enabled || cfg.fmr.levels == 0)
+        return {};
+    if (cfg.fmr.levels < 2) {
+        throw std::invalid_argument(
+            "BBH split FMR requires at least two refined levels: one shared level and split leaves");
+    }
+    if (cfg.fmr.refinement_ratio < 2)
+        throw std::invalid_argument("Moving-puncture BBH split refinement ratio must be >= 2");
+
+    constexpr size_t clearance = 2;
+    const double auto_buffer =
+        (cfg.fmr.puncture_buffer > 0.0) ? cfg.fmr.puncture_buffer : std::max(2.0, 4.0 * cfg.spacing);
+    const double leaf_half_width =
+        (cfg.fmr.finest_box_half_width > 0.0) ? cfg.fmr.finest_box_half_width
+                                              : std::max(auto_buffer, 4.0 * cfg.spacing);
+
+    const std::array<double, 3> common_center{
+        0.5 * (puncture1[0] + puncture2[0]), 0.5 * (puncture1[1] + puncture2[1]),
+        0.5 * (puncture1[2] + puncture2[2])};
+    const auto puncture_extent_from_center = [&](int axis) {
+        return std::max(std::abs(puncture1[axis] - common_center[axis]),
+                        std::abs(puncture2[axis] - common_center[axis]));
+    };
+    const double split_parent_half_width =
+        std::max({puncture_extent_from_center(0), puncture_extent_from_center(1),
+                  puncture_extent_from_center(2)}) +
+        leaf_half_width;
+
+    const size_t shared_levels = cfg.fmr.levels - 1;
+    const double shared_scale = std::pow(static_cast<double>(cfg.fmr.refinement_ratio),
+                                         static_cast<double>(shared_levels - 1));
+    const double max_root_half_width = std::min(
+        {detail::moving_puncture_axis_half_extent(root_grid.x0, root_grid.dx, root_grid.dims.nx) -
+             2.0 * static_cast<double>(root_grid.dx),
+         detail::moving_puncture_axis_half_extent(root_grid.y0, root_grid.dy, root_grid.dims.ny) -
+             2.0 * static_cast<double>(root_grid.dy),
+         detail::moving_puncture_axis_half_extent(root_grid.z0, root_grid.dz, root_grid.dims.nz) -
+             2.0 * static_cast<double>(root_grid.dz)});
+    if (!(max_root_half_width > 0.0))
+        throw std::runtime_error("Moving-puncture BBH split FMR requires positive room inside the root grid");
+
+    double outer_half_width = 0.0;
+    if (cfg.fmr.outer_box_half_width > 0.0) {
+        outer_half_width = cfg.fmr.outer_box_half_width;
+        if (outer_half_width > max_root_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture BBH split outer FMR box is too large for the root domain");
+        }
+        const double last_shared_half_width = outer_half_width / std::max(1.0, shared_scale);
+        if (last_shared_half_width + 1.0e-12 < split_parent_half_width) {
+            throw std::runtime_error(
+                "Requested moving-puncture BBH split outer box is too small to contain both puncture leaves");
+        }
+    } else {
+        outer_half_width = split_parent_half_width * shared_scale;
+        if (outer_half_width > max_root_half_width) {
+            throw std::runtime_error(
+                "Automatic moving-puncture BBH split boxes exceed the root domain; reduce levels or widths");
+        }
+    }
+
+    fmr::BinaryPunctureHierarchyConfig out;
+    out.shared_levels.reserve(shared_levels);
+
+    const BSSNGridSoA<T> *parent_grid = &root_grid;
+    std::vector<std::unique_ptr<BSSNGridSoA<T>>> temporary_parents;
+    for (size_t level = 0; level < shared_levels; ++level) {
+        const double level_half_width =
+            outer_half_width / std::pow(static_cast<double>(cfg.fmr.refinement_ratio),
+                                        static_cast<double>(level));
+        const auto patch = detail::moving_puncture_axis_aligned_patch_from_half_width_centered(
+            *parent_grid, common_center, level_half_width, clearance);
+        out.shared_levels.push_back({patch, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells});
+
+        const auto child = fmr::detail::make_child_geometry(*parent_grid, out.shared_levels.back());
+        auto next_parent = std::make_unique<BSSNGridSoA<T>>(child.nx, child.ny, child.nz, child.ng,
+                                                            T(child.dx), T(child.dy), T(child.dz));
+        next_parent->x0 = T(child.x0);
+        next_parent->y0 = T(child.y0);
+        next_parent->z0 = T(child.z0);
+        parent_grid = next_parent.get();
+        temporary_parents.push_back(std::move(next_parent));
+    }
+
+    const auto [left_leaf_box, right_leaf_box] = detail::moving_puncture_disjoint_split_leaf_boxes(
+        *parent_grid, puncture1, puncture2, leaf_half_width, clearance);
+    out.left_leaf = {left_leaf_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+    out.right_leaf = {right_leaf_box, cfg.fmr.refinement_ratio, cfg.fmr.halo_cells};
+
+    if (fmr::detail::patch_boxes_overlap(out.left_leaf.parent_cells, out.right_leaf.parent_cells)) {
+        throw std::runtime_error(
+            "Computed moving-puncture BBH split finest leaves overlap; increase outer width or decrease finest width");
+    }
+
+    return out;
+}
+
 template <typename T> inline void center_cell_centered_origin(BSSNGridSoA<T> &grid) {
     grid.x0 = -0.5 * grid.dx * static_cast<T>(grid.dims.nx) + 0.5 * grid.dx;
     grid.y0 = -0.5 * grid.dy * static_cast<T>(grid.dims.ny) + 0.5 * grid.dy;
@@ -789,7 +1077,7 @@ inline void initialize_moving_puncture_data(BSSNGridSoA<double> &grid,
 
         tensorium_RG::init::binary_bowen_york_puncture_twopunctures_c_init(
             grid, cfg.mass1, x1, y, z, P1, S1, cfg.mass2, x2, y, z, P2, S2, cfg.interp_seed_n,
-            1e-10);
+            1e-10, cfg.tp_calculate_target_masses, cfg.tp_adm_tol);
         return;
     }
 
@@ -820,7 +1108,8 @@ inline void apply_boundary_configuration(const MovingPunctureEnvConfig &cfg) {
     BoundaryRadiative::set_rhs_collar_width(cfg.radiative_collar_width);
     BoundaryRadiative::set_sponge(cfg.sponge.enabled, cfg.sponge.width, cfg.sponge.strength,
                                   cfg.sponge.exponent);
-    configure_ko_boundary_taper(cfg.ko_boundary_width, cfg.ko_boundary_floor);
+    configure_ko_boundary_taper(cfg.ko_boundary_width, cfg.ko_boundary_floor,
+                                cfg.ko_boundary_boost, cfg.ko_edge_corner_boost);
 }
 
 struct MovingPunctureBoundaryCharacteristicSummary {

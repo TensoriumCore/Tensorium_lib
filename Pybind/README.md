@@ -73,25 +73,25 @@ PY
   - `tns.compute_christoffel`
   - `tns.compute_riemann_tensor`
   - Ricci contraction/scalar helpers
-- BSSN grid initial-data bindings:
-  - `bssn.BSSNGrid`
-  - `bssn.minkowski`
-  - `bssn.schwarzschild_isotropic`
-  - `bssn.kerr_schild_single`
-  - `bssn.binary_bowen_york_puncture_init`
-  - `bssn.binary_bowen_york_puncture_interpolated_init`
-  - `bssn.binary_bowen_york_puncture_twopunctures_c_init`
+- Z4c grid initial-data bindings:
+  - `z4c.Z4cGrid`
+  - `z4c.minkowski`
+  - `z4c.schwarzschild_isotropic`
+  - `z4c.kerr_schild_single`
+  - `z4c.binary_bowen_york_puncture_init`
+  - `z4c.binary_bowen_york_puncture_interpolated_init`
+  - `z4c.binary_bowen_york_puncture_twopunctures_c_init`
 - NumPy conversion helpers are available on bound classes via
   - `Class.from_numpy(...)`
   - `instance.to_numpy()`
 
-## BSSN quick start
+## Z4c quick start
 
 ```bash
 python3 - <<'PY'
 import tensorium
-g = tensorium.bssn.BSSNGrid(24, 24, 24, 4, 0.25, 0.25, 0.25)
-tensorium.bssn.minkowski(g)
+g = tensorium.z4c.Z4cGrid(24, 24, 24, 4, 0.25, 0.25, 0.25)
+tensorium.z4c.minkowski(g)
 alpha = g.alpha()
 print(alpha.shape, alpha.min(), alpha.max())
 PY
@@ -109,7 +109,7 @@ Runtime check:
 ```bash
 python3 - <<'PY'
 import tensorium
-print("two_punctures_c:", tensorium.bssn.has_twopunctures_c())
+print("two_punctures_c:", tensorium.z4c.has_twopunctures_c())
 PY
 ```
 
@@ -118,8 +118,8 @@ Explicit TwoPuncturesC init:
 ```bash
 python3 - <<'PY'
 import tensorium
-g = tensorium.bssn.BSSNGrid(64, 64, 64, 4, 0.125, 0.125, 0.125)
-tensorium.bssn.binary_bowen_york_puncture_twopunctures_c_init(
+g = tensorium.z4c.Z4cGrid(64, 64, 64, 4, 0.125, 0.125, 0.125)
+tensorium.z4c.binary_bowen_york_puncture_twopunctures_c_init(
     g,
     0.5, -1.0, 0.0, 0.0, [0.1, 0.0, 0.0], [0.0, 0.0, 0.0],
     0.5,  1.0, 0.0, 0.0, [-0.1, 0.0, 0.0], [0.0, 0.0, 0.0],
@@ -152,6 +152,6 @@ PY
 
 ## Not Yet Exposed
 
-- `BSSN_Grid` steppers and gauge runtime controls
+- `Z4c` steppers and gauge runtime controls
 - MPI-distributed paths and CUDA backends
 - High-level Python orchestration APIs for full NR runs

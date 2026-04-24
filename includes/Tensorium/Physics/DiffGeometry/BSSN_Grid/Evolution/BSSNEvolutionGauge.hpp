@@ -58,9 +58,9 @@ template <typename T> struct GaugeParameters {
     bool frozen_Z_is_synced = false;      ///< Compatibility flag for callers that explicitly synchronize Z_i from Gamma.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
     bool apply_rhs_sommerfeld = false;    ///< Apply Sommerfeld-like RHS corrections near boundaries.
-    T boundary_gauge_characteristic_speed = T(1); ///< Gauge/metric radiative BC speed used in halo and collar updates.
-    T boundary_z4c_characteristic_speed = T(1);   ///< Theta/Gamma/A/Z radiative BC speed.
-    T boundary_khat_characteristic_speed = T(1.4142135623730951); ///< Khat radiative BC speed.
+    T boundary_gauge_characteristic_speed = T(1); ///< Legacy/compatibility knob retained for radiative-boundary configuration.
+    T boundary_z4c_characteristic_speed = T(1);   ///< Legacy/compatibility knob retained for radiative-boundary configuration.
+    T boundary_khat_characteristic_speed = T(1.4142135623730951); ///< Legacy/compatibility knob retained for radiative-boundary configuration.
 
     inline T effective_eta() const noexcept {
         const T scale = std::max(mass_scale, std::numeric_limits<T>::epsilon());

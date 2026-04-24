@@ -33,6 +33,249 @@ template <typename T> class GemmKernelBigger {
 };
 } // namespace tensorium
 
+#elif defined(TENSORIUM_X86) && defined(__AVX512F__) && defined(TENSORIUM_USE_EXPERIMENTAL_AVX512_GEMM)
+namespace tensorium {
+template <typename T> class GemmKernelBigger {
+  public:
+    using Simd = simd::SimdTraits<T, DefaultISA>;
+    using reg = typename Simd::reg;
+
+    static constexpr int SimdWidth = Simd::width;
+    static constexpr int MR = SimdWidth * 2;
+    static constexpr int NR = 6;
+
+#        define KC 512
+#        define MC 384
+#        define NC 4096
+
+    static int thread_count() {
+#        ifdef _OPENMP
+        return omp_get_max_threads();
+#        else
+        unsigned int count = std::thread::hardware_concurrency();
+        return count == 0 ? 1 : static_cast<int>(count);
+#        endif
+    }
+
+    inline void safe_store_overwrite(T *dst, reg val, int rows_left) {
+        if (rows_left >= SimdWidth) {
+            Simd::storeu(dst, val);
+        } else {
+            alignas(Simd::alignment) T temp[SimdWidth];
+            Simd::storeu(temp, val);
+            for (int i = 0; i < rows_left; ++i)
+                dst[i] = temp[i];
+        }
+    }
+
+    inline void safe_store_accumulate(T *dst, reg val, int rows_left) {
+        if (rows_left >= SimdWidth) {
+            Simd::storeu(dst, Simd::add(Simd::loadu(dst), val));
+        } else {
+            alignas(Simd::alignment) T temp[SimdWidth];
+            Simd::storeu(temp, val);
+            for (int i = 0; i < rows_left; ++i)
+                dst[i] += temp[i];
+        }
+    }
+
+    inline void fma_loop_generic(T *&blockA_packed, T *&blockB_packed, reg *a0, reg *a1, reg *b,
+                                 int kc, reg *c00, reg *c01, reg *c10, reg *c11, reg *c20, reg *c21,
+                                 reg *c30, reg *c31, reg *c40, reg *c41, reg *c50, reg *c51,
+                                 int nr_cols) {
+        for (int p = 0; p < kc; ++p) {
+            *a0 = Simd::loadu(blockA_packed);
+            *a1 = Simd::loadu(blockA_packed + SimdWidth);
+            if (nr_cols >= 1) {
+                *b = Simd::broadcast(blockB_packed);
+                *c00 = Simd::fmadd(*a0, *b, *c00);
+                *c01 = Simd::fmadd(*a1, *b, *c01);
+            }
+            if (nr_cols >= 2) {
+                *b = Simd::broadcast(blockB_packed + 1);
+                *c10 = Simd::fmadd(*a0, *b, *c10);
+                *c11 = Simd::fmadd(*a1, *b, *c11);
+            }
+            if (nr_cols >= 3) {
+                *b = Simd::broadcast(blockB_packed + 2);
+                *c20 = Simd::fmadd(*a0, *b, *c20);
+                *c21 = Simd::fmadd(*a1, *b, *c21);
+            }
+            if (nr_cols >= 4) {
+                *b = Simd::broadcast(blockB_packed + 3);
+                *c30 = Simd::fmadd(*a0, *b, *c30);
+                *c31 = Simd::fmadd(*a1, *b, *c31);
+            }
+            if (nr_cols >= 5) {
+                *b = Simd::broadcast(blockB_packed + 4);
+                *c40 = Simd::fmadd(*a0, *b, *c40);
+                *c41 = Simd::fmadd(*a1, *b, *c41);
+            }
+            if (nr_cols >= 6) {
+                *b = Simd::broadcast(blockB_packed + 5);
+                *c50 = Simd::fmadd(*a0, *b, *c50);
+                *c51 = Simd::fmadd(*a1, *b, *c51);
+            }
+            blockA_packed += MR;
+            blockB_packed += NR;
+        }
+    }
+
+    inline void kernel_micro_init(T *blockA, T *blockB, T *C, int mr, int nr, int kc, int M) {
+        reg c00 = {}, c01 = {}, c10 = {}, c11 = {}, c20 = {}, c21 = {}, c30 = {}, c31 = {},
+            c40 = {}, c41 = {}, c50 = {}, c51 = {};
+        reg b_reg = {}, a0_reg = {}, a1_reg = {};
+        fma_loop_generic(blockA, blockB, &a0_reg, &a1_reg, &b_reg, kc, &c00, &c01, &c10, &c11, &c20,
+                         &c21, &c30, &c31, &c40, &c41, &c50, &c51, nr);
+        if (nr >= 1) {
+            safe_store_overwrite(C, c00, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + SimdWidth, c01, mr - SimdWidth);
+        }
+        if (nr >= 2) {
+            safe_store_overwrite(C + M, c10, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + M + SimdWidth, c11, mr - SimdWidth);
+        }
+        if (nr >= 3) {
+            safe_store_overwrite(C + 2 * M, c20, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + 2 * M + SimdWidth, c21, mr - SimdWidth);
+        }
+        if (nr >= 4) {
+            safe_store_overwrite(C + 3 * M, c30, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + 3 * M + SimdWidth, c31, mr - SimdWidth);
+        }
+        if (nr >= 5) {
+            safe_store_overwrite(C + 4 * M, c40, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + 4 * M + SimdWidth, c41, mr - SimdWidth);
+        }
+        if (nr >= 6) {
+            safe_store_overwrite(C + 5 * M, c50, mr);
+            if (mr > SimdWidth)
+                safe_store_overwrite(C + 5 * M + SimdWidth, c51, mr - SimdWidth);
+        }
+    }
+
+    inline void kernel_micro_accum(T *blockA, T *blockB, T *C, int mr, int nr, int kc, int M) {
+        reg c00 = {}, c01 = {}, c10 = {}, c11 = {}, c20 = {}, c21 = {}, c30 = {}, c31 = {},
+            c40 = {}, c41 = {}, c50 = {}, c51 = {};
+        reg b_reg = {}, a0_reg = {}, a1_reg = {};
+        fma_loop_generic(blockA, blockB, &a0_reg, &a1_reg, &b_reg, kc, &c00, &c01, &c10, &c11, &c20,
+                         &c21, &c30, &c31, &c40, &c41, &c50, &c51, nr);
+        if (nr >= 1) {
+            safe_store_accumulate(C, c00, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + SimdWidth, c01, mr - SimdWidth);
+        }
+        if (nr >= 2) {
+            safe_store_accumulate(C + M, c10, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + M + SimdWidth, c11, mr - SimdWidth);
+        }
+        if (nr >= 3) {
+            safe_store_accumulate(C + 2 * M, c20, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + 2 * M + SimdWidth, c21, mr - SimdWidth);
+        }
+        if (nr >= 4) {
+            safe_store_accumulate(C + 3 * M, c30, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + 3 * M + SimdWidth, c31, mr - SimdWidth);
+        }
+        if (nr >= 5) {
+            safe_store_accumulate(C + 4 * M, c40, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + 4 * M + SimdWidth, c41, mr - SimdWidth);
+        }
+        if (nr >= 6) {
+            safe_store_accumulate(C + 5 * M, c50, mr);
+            if (mr > SimdWidth)
+                safe_store_accumulate(C + 5 * M + SimdWidth, c51, mr - SimdWidth);
+        }
+    }
+
+    inline void pack_panelB(T *B, T *buffer, int nr, int kc, int K) {
+        for (int p = 0; p < kc; ++p) {
+            for (int j = 0; j < nr; ++j)
+                *buffer++ = B[j * K + p];
+            for (int j = nr; j < NR; ++j)
+                *buffer++ = 0;
+        }
+    }
+
+    inline void pack_panelA(T *A, T *buffer, int mr, int kc, int M) {
+        for (int p = 0; p < kc; ++p) {
+            for (int i = 0; i < mr; ++i)
+                *buffer++ = A[p * M + i];
+            for (int i = mr; i < MR; ++i)
+                *buffer++ = 0;
+        }
+    }
+
+    inline void pack_blockB(T *B, std::vector<T> &packed_B, int nc, int kc, int K) {
+        packed_B.resize(((nc + NR - 1) / NR) * NR * kc);
+        for (int j = 0; j < nc; j += NR) {
+            int nr = std::min(NR, nc - j);
+            pack_panelB(&B[j * K], &packed_B[(j / NR) * NR * kc], nr, kc, K);
+        }
+    }
+
+    inline void pack_blockA(T *A, std::vector<T> &packed_A, int mc, int kc, int M) {
+        packed_A.resize(((mc + MR - 1) / MR) * MR * kc);
+        for (int i = 0; i < mc; i += MR) {
+            int mr = std::min(MR, mc - i);
+            pack_panelA(&A[i], &packed_A[(i / MR) * MR * kc], mr, kc, M);
+        }
+    }
+
+    inline void matmul(T *A, T *B, T *C, int M, int N, int K) {
+        std::vector<T> packed_B;
+        const int      threads = thread_count();
+
+        for (int j = 0; j < N; j += NC) {
+            int nc = std::min(NC, N - j);
+
+            for (int p = 0; p < K; p += KC) {
+                int kc = std::min(KC, K - p);
+                pack_blockB(&B[j * K + p], packed_B, nc, kc, K);
+
+#                    ifdef _OPENMP
+#                        pragma omp parallel num_threads(threads)
+#                    endif
+                {
+                    std::vector<T> packed_A;
+
+#                    ifdef _OPENMP
+#                        pragma omp for schedule(static)
+#                    endif
+                    for (int i = 0; i < M; i += MC) {
+                        int mc = std::min(MC, M - i);
+                        pack_blockA(&A[i + p * M], packed_A, mc, kc, M);
+
+                        for (int jr = 0; jr < nc; jr += NR) {
+                            int nr = std::min(NR, nc - jr);
+                            for (int ir = 0; ir < mc; ir += MR) {
+                                int mr = std::min(MR, mc - ir);
+                                T  *blockA = &packed_A[(ir / MR) * MR * kc];
+                                T  *blockB = &packed_B[(jr / NR) * NR * kc];
+                                T  *tileC = &C[(j + jr) * M + (i + ir)];
+                                if (p == 0)
+                                    kernel_micro_init(blockA, blockB, tileC, mr, nr, kc, M);
+                                else
+                                    kernel_micro_accum(blockA, blockB, tileC, mr, nr, kc, M);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+} // namespace tensorium
+
 #elif defined(TENSORIUM_X86) || defined(TENSORIUM_ARM)
 namespace tensorium {
 template <typename T> class GemmKernelBigger {

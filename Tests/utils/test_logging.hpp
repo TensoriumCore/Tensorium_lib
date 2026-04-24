@@ -29,7 +29,7 @@ class TestLogger {
         stream_ << "step,dt,max_H,max_gamma,min_alpha,max_det_drift,max_trace_A\n";
     }
 
-    void write_step(size_t step, double dt, const tensorium_RG::bssn::ConstraintMonitorStats &stats,
+    void write_step(size_t step, double dt, const tensorium_RG::z4c::ConstraintMonitorStats &stats,
                     double max_gamma, double min_alpha) {
         if (!enabled())
             return;

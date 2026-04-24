@@ -145,10 +145,19 @@ template <typename T> class BSSNGridSoA {
      * masks.  All users share the same conventions documented in @ref BSSN_Grid.
      */
     inline void coords(size_t i, size_t j, size_t k, T &x, T &y, T &z) const noexcept {
-        x = x0 + (i - dims.ng) * dx;
-        y = y0 + (j - dims.ng) * dy;
-        z = z0 + (k - dims.ng) * dz;
+        x = x0 + (static_cast<T>(i) - static_cast<T>(dims.ng)) * dx;
+        y = y0 + (static_cast<T>(j) - static_cast<T>(dims.ng)) * dy;
+        z = z0 + (static_cast<T>(k) - static_cast<T>(dims.ng)) * dz;
+    }
+
+    [[nodiscard]] inline size_t total_cells() const noexcept {
+        return st.nx_tot * st.ny_tot * st.nz_tot;
     }
 };
+
+template <typename T> using Z4cGridSoA = BSSNGridSoA<T>;
+
+namespace bssn {}
+namespace z4c = bssn;
 
 } // namespace tensorium_RG

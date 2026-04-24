@@ -38,4 +38,7 @@ template <typename T> struct BSSNVariables {
     BSSNVariables() : gamma_tilde({3, 3}), gamma_tilde_inv({3, 3}) {}
 };
 
+template <typename T> using Z4cADMVariables = ADMVariables<T>;
+template <typename T> using Z4cVariables = BSSNVariables<T>;
+
 } // namespace tensorium_RG::bssn
