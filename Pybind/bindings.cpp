@@ -1,4 +1,5 @@
 #define TENSORIUM_FORCE_NO_CBLAS 1
+
 #include "../includes/Tensorium/Tensorium.hpp"
 #include "../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Fields/BSSNGridSoA.hpp"
 #include "../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Grid/BSSNGridOperations.hpp"
@@ -14,7 +15,6 @@
 
 namespace py = pybind11;
 using namespace tensorium;
-
 namespace {
 
 using NumpyArrayD = py::array_t<double, py::array::c_style | py::array::forcecast>;
