@@ -147,22 +147,22 @@ REGISTER_TEST("z4c.fmr.moving_puncture_env_defaults_twopunctures_to_target_masse
     TENSORIUM_TEST_ASSERT(cfg.tp_calculate_target_masses);
 });
 
-REGISTER_TEST("z4c.fmr.moving_puncture_env_disables_rhs_sommerfeld_by_default",
-              "Moving-puncture preset leaves the explicit RHS Sommerfeld surface operator disabled",
+REGISTER_TEST("z4c.fmr.moving_puncture_env_enables_rhs_sommerfeld_by_default",
+              "Moving-puncture preset enables the explicit RHS Sommerfeld surface operator",
               []() {
-    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
-
-    TENSORIUM_TEST_ASSERT(!cfg.gauge_params.apply_rhs_sommerfeld);
-});
-
-REGISTER_TEST("z4c.fmr.moving_puncture_env_can_reenable_rhs_sommerfeld",
-              "Moving-puncture env can re-enable the explicit RHS Sommerfeld surface operator",
-              []() {
-    const ScopedEnvVar apply_rhs_sommerfeld("TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", "1");
-
     const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
 
     TENSORIUM_TEST_ASSERT(cfg.gauge_params.apply_rhs_sommerfeld);
+});
+
+REGISTER_TEST("z4c.fmr.moving_puncture_env_can_disable_rhs_sommerfeld",
+              "Moving-puncture env can disable the explicit RHS Sommerfeld surface operator",
+              []() {
+    const ScopedEnvVar apply_rhs_sommerfeld("TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", "0");
+
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(!cfg.gauge_params.apply_rhs_sommerfeld);
 });
 
 REGISTER_TEST("z4c.fmr.moving_puncture_env_parses_eccentricity_control",

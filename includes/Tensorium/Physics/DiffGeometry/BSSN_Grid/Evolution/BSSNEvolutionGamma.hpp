@@ -349,6 +349,9 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], const 
                 const T chi_drive = -T(3) * alpha * A_grad_chi_over_chi;
                 const T z4_k_drive = -T(4) / T(3) * alpha * K_val * z_over_chi[comp];
                 const T damping = -T(2) * kappa1_lapse * z_over_chi[comp];
+                const T christoffel_lapse_damping =
+                    -gauge_params.christoffel_lapse_damping * alpha * T(2) *
+                    z_over_chi[comp];
 
                 const T diss = KO6_axis_ptr(p_Gamma[comp], sx) + KO6_axis_ptr(p_Gamma[comp], sy) +
                                KO6_axis_ptr(p_Gamma[comp], 1);
@@ -356,7 +359,8 @@ inline void compute_rhs_Gamma(const BSSNGridSoA<T> &G, Field3D<T> rhs[3], const 
                 *p_rhs[comp] =
                     adv - gamma_beta + stretch + hess_contr[comp] + grad_div_term -
                     T(2) * A_grad_alpha + source + theta_drive + chi_drive + z4_k_drive +
-                    damping + local_ko_scale(G, ko_sigma, i, j, k) * diss;
+                    damping + christoffel_lapse_damping +
+                    local_ko_scale(G, ko_sigma, i, j, k) * diss;
             }
 
             for (int c = 0; c < 3; ++c) {

@@ -52,11 +52,17 @@ template <typename T> struct GaugeParameters {
     T ssl_damping_amp = T(0.6);           ///< Amplitude of slow-start lapse damping.
     T ssl_damping_time = T(20.0);         ///< Characteristic damping time.
     int ssl_damping_index = 1;            ///< Exponent index in the damping profile.
+    bool slow_start_lapse_article = false; ///< Use NR102/IMPT additive lapse damping.
+    T slow_start_lapse_h = T(0.8);         ///< NR102 h coefficient.
+    T slow_start_lapse_sigma = T(20.0);    ///< NR102 Gaussian timescale.
     T current_time = T(0.0);              ///< Runtime time provided by the RK driver.
     bool use_direct_shift_rhs = false;    ///< Prefer the reference Gamma-driver over the direct beta RHS.
     bool evolve_Z = true;                 ///< Compatibility knob: Z_i is reconstructed/diagnostic, not a driving state.
     bool frozen_Z_is_synced = false;      ///< Compatibility flag for callers that explicitly synchronize Z_i from Gamma.
     bool gamma_damping_uses_metric = false; ///< Dampen using (Gamma - Gamma(metric)).
+    T christoffel_lapse_damping = T(0);   ///< Positive chi adds -chi*alpha*G^i to d_t Gamma^i.
+    T metric_christoffel_damping = T(0);  ///< k_gamma term for d_t gamma_tilde_ij.
+    bool gamma_driver_uses_filtered_gamma_rhs = false; ///< If true, B^i consumes d_t Gamma^i after Gamma KO.
     bool apply_rhs_sommerfeld = false;    ///< Apply Sommerfeld-like RHS corrections near boundaries.
     T boundary_gauge_characteristic_speed = T(1); ///< Legacy/compatibility knob retained for radiative-boundary configuration.
     T boundary_z4c_characteristic_speed = T(1);   ///< Legacy/compatibility knob retained for radiative-boundary configuration.
@@ -87,6 +93,14 @@ template <typename T> struct GaugeParameters {
             x_pow *= x;
         const T factor = T(1) - ssl_damping_amp * std::exp(-x_pow);
         return std::clamp(factor, T(0), T(1));
+    }
+
+    inline T article_slow_start_lapse_coefficient() const noexcept {
+        if (!slow_start_lapse_article)
+            return T(0);
+        const T sigma = std::max(slow_start_lapse_sigma, std::numeric_limits<T>::epsilon());
+        const T x = std::max(current_time, T(0));
+        return slow_start_lapse_h * std::exp(-(x * x) / (T(2) * sigma * sigma));
     }
 };
 
@@ -140,6 +154,7 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
         size_t idx_start = G.alpha.idx(i, j, k0);
 
         const T *p_alpha = G.alpha.ptr() + idx_start;
+        const T *p_chi = G.chi.ptr() + idx_start;
         const T *p_K = G.K.ptr() + idx_start;
         const T *p_theta = use_theta ? (G.Theta.ptr() + idx_start) : nullptr;
         const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
@@ -148,6 +163,7 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
 
         for (size_t k = k0; k < k1; ++k) {
             const T alpha = *p_alpha;
+            const T chi = *p_chi;
             const T K = *p_K;
             const T theta = use_theta ? *p_theta : T(0);
             const T bx = *p_beta[0];
@@ -164,9 +180,14 @@ inline void compute_rhs_alpha(const BSSNGridSoA<T> &G, Field3D<T> &rhs_alpha, si
 
             const T lapse_K = use_theta ? Khat(K, theta) : K;
             const T f = params.lapse_oplog * params.lapse_harmonicf + params.lapse_harmonic * alpha;
-            *p_rhs = params.lapse_advect * advection - ssl_factor * f * alpha * lapse_K + diss_scaled;
+            const T W = std::sqrt(std::max(chi, T(0)));
+            const T article_slow_start =
+                params.article_slow_start_lapse_coefficient() * W * (alpha - W);
+            *p_rhs = params.lapse_advect * advection - ssl_factor * f * alpha * lapse_K -
+                     article_slow_start + diss_scaled;
 
             ++p_alpha;
+            ++p_chi;
             ++p_K;
             ++p_rhs;
             if (use_theta)
@@ -574,14 +595,29 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
                                       by * Dy_upwind_ptr(p_tg2, sy, inv_2dy, by) +
                                       bz * Dz_upwind_ptr(p_tg2, inv_2dz, bz));
 
+                const T gamma_diss0 =
+                    KO6_axis_ptr(p_tg0, sx) + KO6_axis_ptr(p_tg0, sy) + KO6_axis_ptr(p_tg0, 1);
+                const T gamma_diss1 =
+                    KO6_axis_ptr(p_tg1, sx) + KO6_axis_ptr(p_tg1, sy) + KO6_axis_ptr(p_tg1, 1);
+                const T gamma_diss2 =
+                    KO6_axis_ptr(p_tg2, sx) + KO6_axis_ptr(p_tg2, sy) + KO6_axis_ptr(p_tg2, 1);
                 const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
                 const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
                 const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
                 const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
+                const T gamma_rhs0 =
+                    *p_rhs_G0 -
+                    (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss0);
+                const T gamma_rhs1 =
+                    *p_rhs_G1 -
+                    (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss1);
+                const T gamma_rhs2 =
+                    *p_rhs_G2 -
+                    (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss2);
 
-                *p_rhs_B0 = (*p_rhs_G0 - adv_Gamma0) + adv_B0 - eta_coeff * (*p_B0) + ko_scale * diss0;
-                *p_rhs_B1 = (*p_rhs_G1 - adv_Gamma1) + adv_B1 - eta_coeff * (*p_B1) + ko_scale * diss1;
-                *p_rhs_B2 = (*p_rhs_G2 - adv_Gamma2) + adv_B2 - eta_coeff * (*p_B2) + ko_scale * diss2;
+                *p_rhs_B0 = (gamma_rhs0 - adv_Gamma0) + adv_B0 - eta_coeff * (*p_B0) + ko_scale * diss0;
+                *p_rhs_B1 = (gamma_rhs1 - adv_Gamma1) + adv_B1 - eta_coeff * (*p_B1) + ko_scale * diss1;
+                *p_rhs_B2 = (gamma_rhs2 - adv_Gamma2) + adv_B2 - eta_coeff * (*p_B2) + ko_scale * diss2;
 
                 ++p_beta0;
                 ++p_beta1;
@@ -621,6 +657,9 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
         const T *p_B0 = G.B[0].ptr() + idx_start;
         const T *p_B1 = G.B[1].ptr() + idx_start;
         const T *p_B2 = G.B[2].ptr() + idx_start;
+        const T *p_tg0 = G.tildeGamma[0].ptr() + idx_start;
+        const T *p_tg1 = G.tildeGamma[1].ptr() + idx_start;
+        const T *p_tg2 = G.tildeGamma[2].ptr() + idx_start;
         const T *p_rhs_G0 = rhs_Gamma[0].ptr() + idx_start;
         const T *p_rhs_G1 = rhs_Gamma[1].ptr() + idx_start;
         const T *p_rhs_G2 = rhs_Gamma[2].ptr() + idx_start;
@@ -630,18 +669,36 @@ inline void compute_rhs_B(const BSSNGridSoA<T> &G, const Field3D<T> rhs_Gamma[3]
 
 #pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
+            const T gamma_diss0 =
+                KO6_axis_ptr(p_tg0, sx) + KO6_axis_ptr(p_tg0, sy) + KO6_axis_ptr(p_tg0, 1);
+            const T gamma_diss1 =
+                KO6_axis_ptr(p_tg1, sx) + KO6_axis_ptr(p_tg1, sy) + KO6_axis_ptr(p_tg1, 1);
+            const T gamma_diss2 =
+                KO6_axis_ptr(p_tg2, sx) + KO6_axis_ptr(p_tg2, sy) + KO6_axis_ptr(p_tg2, 1);
             const T diss0 = KO6_axis_ptr(p_B0, sx) + KO6_axis_ptr(p_B0, sy) + KO6_axis_ptr(p_B0, 1);
             const T diss1 = KO6_axis_ptr(p_B1, sx) + KO6_axis_ptr(p_B1, sy) + KO6_axis_ptr(p_B1, 1);
             const T diss2 = KO6_axis_ptr(p_B2, sx) + KO6_axis_ptr(p_B2, sy) + KO6_axis_ptr(p_B2, 1);
             const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
+            const T gamma_rhs0 =
+                *p_rhs_G0 -
+                (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss0);
+            const T gamma_rhs1 =
+                *p_rhs_G1 -
+                (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss1);
+            const T gamma_rhs2 =
+                *p_rhs_G2 -
+                (params.gamma_driver_uses_filtered_gamma_rhs ? T(0) : ko_scale * gamma_diss2);
 
-            *p_rhs_B0 = *p_rhs_G0 - eta_coeff * (*p_B0) + ko_scale * diss0;
-            *p_rhs_B1 = *p_rhs_G1 - eta_coeff * (*p_B1) + ko_scale * diss1;
-            *p_rhs_B2 = *p_rhs_G2 - eta_coeff * (*p_B2) + ko_scale * diss2;
+            *p_rhs_B0 = gamma_rhs0 - eta_coeff * (*p_B0) + ko_scale * diss0;
+            *p_rhs_B1 = gamma_rhs1 - eta_coeff * (*p_B1) + ko_scale * diss1;
+            *p_rhs_B2 = gamma_rhs2 - eta_coeff * (*p_B2) + ko_scale * diss2;
 
             ++p_B0;
             ++p_B1;
             ++p_B2;
+            ++p_tg0;
+            ++p_tg1;
+            ++p_tg2;
             ++p_rhs_G0;
             ++p_rhs_G1;
             ++p_rhs_G2;

@@ -98,7 +98,56 @@ latex_requested = ("--latex" in flags) or ("--usetex" in flags) or (
 )
 if ("--no-latex" in flags) or ("--no-usetex" in flags):
     latex_requested = False
-smooth_sigma = 0.0 if (no_smooth or constraint_mode) else 1.0
+
+
+def parse_early_float_flag(name, env_name, default):
+    raw = _raw_flag_value(name)
+    if raw is None:
+        raw = os.getenv(env_name)
+    if raw is None:
+        return float(default)
+    try:
+        value = float(raw)
+    except ValueError:
+        print(f"[warn] invalid {name}/{env_name}={raw!r}; using {default}")
+        return float(default)
+    return value
+
+
+def parse_early_int_flag(name, env_name, default):
+    raw = _raw_flag_value(name)
+    if raw is None:
+        raw = os.getenv(env_name)
+    if raw is None:
+        return int(default)
+    try:
+        value = int(raw)
+    except ValueError:
+        print(f"[warn] invalid {name}/{env_name}={raw!r}; using {default}")
+        return int(default)
+    return value
+
+
+smooth_sigma_default = max(
+    0.0,
+    parse_early_float_flag(
+        "--smooth-sigma",
+        "TENSORIUM_PLOT_SMOOTH_SIGMA",
+        0.65,
+    ),
+)
+smooth_sigma = 0.0 if (no_smooth or constraint_mode) else smooth_sigma_default
+field_vmin_quantile = min(
+    0.20,
+    max(
+        0.0,
+        parse_early_float_flag(
+            "--field-vmin-quantile",
+            "TENSORIUM_PLOT_FIELD_VMIN_QUANTILE",
+            0.002,
+        ),
+    ),
+)
 constraint_render_interpolation = _raw_flag_value("--constraint-interp") or os.getenv(
     "TENSORIUM_PLOT_CONSTRAINT_INTERP",
     "nearest" if constraint_mode else "bilinear",
@@ -507,7 +556,8 @@ def parse_requested_step():
             "[--frames-dir=DIR] [--video-file=FILE.mp4] [--video-codec=auto|libx264|h264_videotoolbox] "
             "[--data-dir=DIR] "
             "[--workers=N] [--dpi=N] "
-            "[--constraints] [--tracker-drift] [--no-smooth] "
+            "[--constraints] [--tracker-drift] [--no-smooth] [--smooth-sigma=N] "
+            "[--field-vmin-quantile=N] [--horizon-dilation=N] "
             "[--constraint-interp=nearest|bilinear] "
             "[--conformal-cmap-min=N] [--alpha-cmap-min=N] "
             "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
@@ -680,13 +730,15 @@ def profile_quantiles(A, field_name, quantiles):
     return np.quantile(finite, q), "numpy"
 
 
-def profiled_clim(A, field_name, vmax_floor, vmax_cap, default_gamma):
-    qs, source = profile_quantiles(A, field_name, [0.02, 0.50, 0.995])
+def profiled_clim(A, field_name, vmax_floor, vmax_cap, default_gamma, vmin_quantile=None):
+    if vmin_quantile is None:
+        vmin_quantile = field_vmin_quantile
+    qs, source = profile_quantiles(A, field_name, [vmin_quantile, 0.50, 0.995])
     if qs is None:
         return 0.0, max(vmax_floor, 1.0), default_gamma, source
 
-    q02, q50, q995 = [float(v) for v in qs]
-    vmin = max(0.0, q02)
+    qmin, q50, q995 = [float(v) for v in qs]
+    vmin = max(0.0, qmin)
     vmax = q995
     if not np.isfinite(vmax) or vmax <= 0.0:
         vmax = float(np.max(A[np.isfinite(A)]))
@@ -819,7 +871,16 @@ def update_regular(frame_idx):
         if np.isfinite(horizon_alpha_cutoff) and horizon_alpha_cutoff >= 0.0:
             horizon_mask = horizon_mask | (np.isfinite(alpha) & (alpha <= horizon_alpha_cutoff))
         if np.any(horizon_mask):
-            horizon_mask = binary_dilation(horizon_mask, iterations=1)
+            horizon_dilation = max(
+                0,
+                parse_early_int_flag(
+                    "--horizon-dilation",
+                    "TENSORIUM_PLOT_HORIZON_DILATION",
+                    0,
+                ),
+            )
+            if horizon_dilation > 0:
+                horizon_mask = binary_dilation(horizon_mask, iterations=horizon_dilation)
         horizon_overlay_alpha = 0.94 * horizon_mask.astype(float)
     else:
         horizon_overlay_alpha = np.zeros_like(alpha_disp)
@@ -849,10 +910,22 @@ def update_regular(frame_idx):
             )
         else:
             conformal_vmin, conformal_vmax = horizon_clim(
-                conformal_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.8, vmax_cap=1.2
+                conformal_disp,
+                lo=100.0 * field_vmin_quantile,
+                hi=99.7,
+                fallback=(0.0, 1.0),
+                vmin_floor=0.0,
+                vmax_floor=0.8,
+                vmax_cap=1.2,
             )
             a_vmin, a_vmax = horizon_clim(
-                alpha_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.7, vmax_cap=1.1
+                alpha_disp,
+                lo=100.0 * field_vmin_quantile,
+                hi=99.7,
+                fallback=(0.0, 1.0),
+                vmin_floor=0.0,
+                vmax_floor=0.7,
+                vmax_cap=1.1,
             )
             conformal_gamma, a_gamma = 0.55, 0.62
             conformal_source = "numpy"

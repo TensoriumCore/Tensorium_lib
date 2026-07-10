@@ -5,6 +5,7 @@
 #include "../TimeIntegration/BSSNRK4.hpp"
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <cstddef>
@@ -589,7 +590,7 @@ inline void prolongate_field_from_parent(const BSSNGridSoA<T> &parent, BSSNGridS
                 T x, y, z;
                 coords_any_index(child, i, j, k, x, y, z);
                 out[dst.idx(i, j, k)] =
-                    sample_trilinear_field(parent, select_field(parent, which, component), x, y, z);
+                    sample_tricubic_field(parent, select_field(parent, which, component), x, y, z);
             }
 }
 
@@ -638,7 +639,7 @@ inline void blend_field_shell_from_parent(const BSSNGridSoA<T> &parent, BSSNGrid
                 T x, y, z;
                 coords_any_index(child, i, j, k, x, y, z);
                 const T parent_value =
-                    sample_trilinear_field(parent, select_field(parent, which, component), x, y, z);
+                    sample_tricubic_field(parent, select_field(parent, which, component), x, y, z);
                 const size_t idx = dst.idx(i, j, k);
                 const T child_value = dst.ptr()[idx];
 
@@ -683,10 +684,11 @@ inline bool same_grid_geometry(const BSSNGridSoA<T> &lhs, const BSSNGridSoA<T> &
 }
 
 template <typename T>
-inline void blend_field_centered_core_from_reference(const BSSNGridSoA<T> &reference,
-                                                     BSSNGridSoA<T> &target, T core_half_width,
-                                                     T transition_width, BoundaryField which,
-                                                     int component) {
+inline void blend_field_core_from_reference(const BSSNGridSoA<T> &reference,
+                                            BSSNGridSoA<T> &target,
+                                            const std::array<T, 3> &center,
+                                            T core_half_width, T transition_width,
+                                            BoundaryField which, int component) {
     if (core_half_width < T(0))
         core_half_width = T(0);
     if (transition_width < T(0))
@@ -708,7 +710,9 @@ inline void blend_field_centered_core_from_reference(const BSSNGridSoA<T> &refer
             for (size_t k = K0; k < K1; ++k) {
                 T x, y, z;
                 coords_any_index(target, i, j, k, x, y, z);
-                const T centered_radius = std::max({std::abs(x), std::abs(y), std::abs(z)});
+                const T centered_radius =
+                    std::max({std::abs(x - center[0]), std::abs(y - center[1]),
+                              std::abs(z - center[2])});
                 if (centered_radius >= outer_half_width)
                     continue;
 
@@ -731,35 +735,43 @@ inline void blend_field_centered_core_from_reference(const BSSNGridSoA<T> &refer
 }
 
 template <typename T>
-inline void blend_centered_core_from_reference(const BSSNGridSoA<T> &reference,
-                                               BSSNGridSoA<T> &target, T core_half_width,
-                                               T transition_width) {
-    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
-                                             BoundaryField::Alpha, 0);
-    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
-                                             BoundaryField::Chi, 0);
-    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
-                                             BoundaryField::K, 0);
-    blend_field_centered_core_from_reference(reference, target, core_half_width, transition_width,
-                                             BoundaryField::Theta, 0);
+inline void blend_core_from_reference(const BSSNGridSoA<T> &reference, BSSNGridSoA<T> &target,
+                                      const std::array<T, 3> &center, T core_half_width,
+                                      T transition_width) {
+    blend_field_core_from_reference(reference, target, center, core_half_width, transition_width,
+                                    BoundaryField::Alpha, 0);
+    blend_field_core_from_reference(reference, target, center, core_half_width, transition_width,
+                                    BoundaryField::Chi, 0);
+    blend_field_core_from_reference(reference, target, center, core_half_width, transition_width,
+                                    BoundaryField::K, 0);
+    blend_field_core_from_reference(reference, target, center, core_half_width, transition_width,
+                                    BoundaryField::Theta, 0);
     for (int a = 0; a < 3; ++a) {
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::Beta, a);
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::B, a);
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::TildeGamma, a);
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::Z, a);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::Beta, a);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::B, a);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::TildeGamma, a);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::Z, a);
     }
     for (int s = 0; s < 6; ++s) {
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::GammaTilde, s);
-        blend_field_centered_core_from_reference(reference, target, core_half_width,
-                                                 transition_width, BoundaryField::ATilde, s);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::GammaTilde, s);
+        blend_field_core_from_reference(reference, target, center, core_half_width,
+                                        transition_width, BoundaryField::ATilde, s);
     }
 
     tensorium_RG::bssn::enforce_algebraic_constraints(target);
+}
+
+template <typename T>
+inline void blend_centered_core_from_reference(const BSSNGridSoA<T> &reference,
+                                               BSSNGridSoA<T> &target, T core_half_width,
+                                               T transition_width) {
+    blend_core_from_reference(reference, target, std::array<T, 3>{T(0), T(0), T(0)},
+                              core_half_width, transition_width);
 }
 
 template <typename T>
@@ -846,8 +858,8 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
     static T sample_from_state(const void *opaque, BoundaryField which, int component, T x, T y,
                                T z) {
         const auto &state = *static_cast<const State *>(opaque);
-        return detail::sample_trilinear_field(state, detail::select_field(state, which, component),
-                                              x, y, z);
+        return detail::sample_tricubic_field(state, detail::select_field(state, which, component),
+                                             x, y, z);
     }
 
     template <typename State> static Sampler make_sampler(const State *state) {
@@ -1568,14 +1580,21 @@ class BinaryPunctureFixedMeshRefinementHierarchy {
 
     void blend_leaf_centered_core_from_reference(size_t leaf, const BSSNGridSoA<T> &reference,
                                                  T core_half_width, T transition_width) {
+        blend_leaf_core_from_reference(leaf, reference, std::array<T, 3>{T(0), T(0), T(0)},
+                                       core_half_width, transition_width);
+    }
+
+    void blend_leaf_core_from_reference(size_t leaf, const BSSNGridSoA<T> &reference,
+                                        const std::array<T, 3> &center, T core_half_width,
+                                        T transition_width) {
         if (leaf >= leaves_.size())
             throw std::out_of_range("BBH FMR centered-core blending requires a valid leaf index");
         if (!detail::same_grid_geometry(leaves_[leaf]->grid, reference)) {
             throw std::invalid_argument(
                 "BBH FMR centered-core blending requires a reference grid with identical geometry");
         }
-        detail::blend_centered_core_from_reference(reference, leaves_[leaf]->grid, core_half_width,
-                                                   transition_width);
+        detail::blend_core_from_reference(reference, leaves_[leaf]->grid, center,
+                                          core_half_width, transition_width);
     }
 
     void restrict_all_levels_to_root() {

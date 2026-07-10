@@ -144,9 +144,8 @@ void export_slice_csv(const Grid &grid, const HierarchyType *hierarchy, size_t s
 void export_constraint_slice_csv(const Grid &grid, const tensorium_RG::Field3D<double> &H,
                                  const tensorium_RG::Field3D<double> M[3],
                                  const tensorium_RG::Field3D<double> C[3], size_t step,
-                                 const std::string &output_dir) {
-    constexpr size_t kConstraintGuard = 4;
-
+                                 const std::string &output_dir,
+                                 size_t constraint_guard_cells) {
     std::stringstream ss;
     ss << output_dir << "/constraint_slice_" << std::setw(4) << std::setfill('0') << step
        << ".csv";
@@ -161,6 +160,8 @@ void export_constraint_slice_csv(const Grid &grid, const tensorium_RG::Field3D<d
     const size_t ny = grid.dims.ny;
     const size_t ng = grid.dims.ng;
     const size_t k = ng + grid.dims.nz / 2;
+    const size_t constraint_guard =
+        std::min(constraint_guard_cells, std::min(nx, ny) / size_t(2));
 
     for (size_t i = ng; i < nx + ng; ++i) {
         for (size_t j = ng; j < ny + ng; ++j) {
@@ -170,8 +171,8 @@ void export_constraint_slice_csv(const Grid &grid, const tensorium_RG::Field3D<d
             const size_t idx = grid.alpha.idx(i, j, k);
             const size_t cidx = H.idx(i, j, k);
             const bool constraint_valid =
-                (i >= ng + kConstraintGuard && i + kConstraintGuard < nx + ng &&
-                 j >= ng + kConstraintGuard && j + kConstraintGuard < ny + ng);
+                (i >= ng + constraint_guard && i + constraint_guard < nx + ng &&
+                 j >= ng + constraint_guard && j + constraint_guard < ny + ng);
 
             const double alpha = grid.alpha.ptr()[idx];
             const double chi = grid.chi.ptr()[idx];
@@ -270,15 +271,17 @@ bool export_slice_hdf5(const Grid &grid, const HierarchyType *hierarchy, size_t 
 bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<double> &H,
                                   const tensorium_RG::Field3D<double> M[3],
                                   const tensorium_RG::Field3D<double> C[3], size_t step,
-                                  double time, const std::string &output_dir) {
+                                  double time, const std::string &output_dir,
+                                  size_t constraint_guard_cells) {
     if (!tensorium::io::hdf5_available())
         return false;
 
-    constexpr size_t kConstraintGuard = 4;
     const size_t nx = grid.dims.nx;
     const size_t ny = grid.dims.ny;
     const size_t ng = grid.dims.ng;
     const size_t k = ng + grid.dims.nz / 2;
+    const size_t constraint_guard =
+        std::min(constraint_guard_cells, std::min(nx, ny) / size_t(2));
 
     std::vector<double> x(nx);
     std::vector<double> y(ny);
@@ -314,8 +317,8 @@ bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<
             const size_t cidx = H.idx(ii, jj, k);
             const size_t flat = i * ny + j;
             const bool constraint_valid =
-                (ii >= ng + kConstraintGuard && ii + kConstraintGuard < nx + ng &&
-                 jj >= ng + kConstraintGuard && jj + kConstraintGuard < ny + ng);
+                (ii >= ng + constraint_guard && ii + constraint_guard < nx + ng &&
+                 jj >= ng + constraint_guard && jj + constraint_guard < ny + ng);
 
             alpha[flat] = grid.alpha.ptr()[idx];
             chi[flat] = grid.chi.ptr()[idx];
@@ -357,7 +360,7 @@ bool export_constraint_slice_hdf5(const Grid &grid, const tensorium_RG::Field3D<
     (void)tensorium::io::write_scalar_attribute(file.id(), "dx", grid.dx);
     (void)tensorium::io::write_scalar_attribute(file.id(), "dy", grid.dy);
     (void)tensorium::io::write_scalar_attribute(file.id(), "constraint_guard",
-                                                static_cast<std::uint64_t>(kConstraintGuard));
+                                                static_cast<std::uint64_t>(constraint_guard));
     return tensorium::io::write_vector_dataset(file.id(), "x", x) &&
            tensorium::io::write_vector_dataset(file.id(), "y", y) &&
            tensorium::io::write_matrix_dataset(file.id(), "alpha", nx, ny, alpha) &&
@@ -811,6 +814,78 @@ PuncturePlaneSample sample_puncture_minima_split(const Grid &left_grid, const Gr
     return sample;
 }
 
+PunctureMinimumSample sample_grid_minimum_alpha_near(const Grid &grid,
+                                                     const std::array<double, 3> &center,
+                                                     size_t radius_cells) {
+    PunctureMinimumSample sample;
+    const size_t          nx = grid.dims.nx;
+    const size_t          ny = grid.dims.ny;
+    const size_t          ng = grid.dims.ng;
+    const size_t          k = ng + grid.dims.nz / 2;
+
+    const auto coord_to_physical_index = [&](double coord, double origin, double spacing,
+                                             size_t n) -> size_t {
+        if (n == 0 || !(std::isfinite(coord) && std::isfinite(origin) && spacing > 0.0))
+            return size_t(0);
+        const double rel = std::round((coord - origin) / spacing);
+        const double clamped = std::clamp(rel, 0.0, double(n - 1));
+        return static_cast<size_t>(clamped);
+    };
+
+    const size_t ic = coord_to_physical_index(center[0], double(grid.x0), double(grid.dx), nx);
+    const size_t jc = coord_to_physical_index(center[1], double(grid.y0), double(grid.dy), ny);
+    const size_t r = std::max<size_t>(radius_cells, size_t(1));
+    const size_t i_begin = ng + ((ic > r) ? (ic - r) : size_t(0));
+    const size_t j_begin = ng + ((jc > r) ? (jc - r) : size_t(0));
+    const size_t i_end = ng + std::min(nx, ic + r + size_t(1));
+    const size_t j_end = ng + std::min(ny, jc + r + size_t(1));
+
+    for (size_t i = i_begin; i < i_end; ++i) {
+        for (size_t j = j_begin; j < j_end; ++j) {
+            const size_t idx = grid.alpha.idx(i, j, k);
+            const double alpha = grid.alpha.ptr()[idx];
+            const double chi = grid.chi.ptr()[idx];
+            if (!std::isfinite(alpha) || !std::isfinite(chi))
+                continue;
+            if (!sample.valid || alpha < sample.alpha) {
+                sample.valid = true;
+                sample.x = grid.x0 + (double(i) - double(ng)) * grid.dx;
+                sample.y = grid.y0 + (double(j) - double(ng)) * grid.dy;
+                sample.chi = chi;
+                sample.alpha = alpha;
+            }
+        }
+    }
+
+    return sample;
+}
+
+PuncturePlaneSample sample_puncture_minima_near_tracker(const Grid &grid,
+                                                        const ShiftPunctureTracker &tracker,
+                                                        size_t radius_cells) {
+    PuncturePlaneSample sample;
+    if (!tracker.initialized)
+        return sample;
+
+    const auto left = sample_grid_minimum_alpha_near(grid, tracker.p1, radius_cells);
+    const auto right = sample_grid_minimum_alpha_near(grid, tracker.p2, radius_cells);
+    if (left.valid) {
+        sample.has_left = true;
+        sample.x_left = left.x;
+        sample.y_left = left.y;
+        sample.chi_left = left.chi;
+        sample.alpha_left = left.alpha;
+    }
+    if (right.valid) {
+        sample.has_right = true;
+        sample.x_right = right.x;
+        sample.y_right = right.y;
+        sample.chi_right = right.chi;
+        sample.alpha_right = right.alpha;
+    }
+    return sample;
+}
+
 struct ConstraintScratch {
     tensorium_RG::Field3D<double> H;
     tensorium_RG::Field3D<double> M[3];
@@ -912,16 +987,17 @@ void inject_overlap_from_reference(const Grid &reference, Grid &target, size_t g
     tensorium_RG::z4c::enforce_algebraic_constraints(target);
 }
 
-double moving_puncture_grid_half_width(const Grid &grid) {
-    const auto axis_half_width = [](double origin, double spacing, size_t cells) {
-        const double xmin = std::abs(origin - 0.5 * spacing);
-        const double xmax = std::abs(origin + (double(cells) - 0.5) * spacing);
-        return std::min(xmin, xmax);
+double moving_puncture_grid_half_width(const Grid &grid,
+                                       const std::array<double, 3> &center = {0.0, 0.0, 0.0}) {
+    const auto axis_half_width = [](double origin, double spacing, size_t cells, double center_coord) {
+        const double xmin = origin - 0.5 * spacing;
+        const double xmax = origin + (double(cells) - 0.5) * spacing;
+        return std::min(std::abs(center_coord - xmin), std::abs(xmax - center_coord));
     };
 
-    return std::min({axis_half_width(grid.x0, grid.dx, grid.dims.nx),
-                     axis_half_width(grid.y0, grid.dy, grid.dims.ny),
-                     axis_half_width(grid.z0, grid.dz, grid.dims.nz)});
+    return std::min({axis_half_width(grid.x0, grid.dx, grid.dims.nx, center[0]),
+                     axis_half_width(grid.y0, grid.dy, grid.dims.ny, center[1]),
+                     axis_half_width(grid.z0, grid.dz, grid.dims.nz, center[2])});
 }
 
 struct MovingPunctureInitBlendRegion {
@@ -932,9 +1008,11 @@ struct MovingPunctureInitBlendRegion {
 
 MovingPunctureInitBlendRegion
 moving_puncture_init_blend_region(const Grid &grid,
-                                  const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg) {
+                                  const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg,
+                                  const std::array<double, 3> &center = {0.0, 0.0, 0.0}) {
     const double max_half_width =
-        std::max(0.0, moving_puncture_grid_half_width(grid) - 0.5 * std::max({grid.dx, grid.dy, grid.dz}));
+        std::max(0.0, moving_puncture_grid_half_width(grid, center) -
+                          0.5 * std::max({grid.dx, grid.dy, grid.dz}));
     const double physical_buffer =
         (cfg.fmr.puncture_buffer > 0.0) ? cfg.fmr.puncture_buffer : std::max(2.0, 4.0 * cfg.spacing);
     const double requested_transition = (cfg.fmr.init_transition_width > 0.0)
@@ -1028,6 +1106,8 @@ void initialize_moving_puncture_binary_hierarchy(
     BinaryMovingPunctureHierarchy &hierarchy,
     const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg,
     const tensorium_RG::z4c::ProjectionConfig &proj_cfg) {
+    const auto initial_punctures = tensorium_RG::z4c::moving_puncture_initial_puncture_positions(cfg);
+
     initialize_moving_puncture_level(hierarchy.root_grid(), cfg, proj_cfg, true);
     tensorium_RG::fd::set_fd_dx(hierarchy.root_grid().dx);
     tensorium_RG::z4c::apply_halos_grid<tensorium_RG::z4c::BoundaryRadiative>(hierarchy.root_grid());
@@ -1069,10 +1149,12 @@ void initialize_moving_puncture_binary_hierarchy(
 
         Grid tp_reference = make_grid_like(hierarchy.leaf_grid(leaf));
         initialize_moving_puncture_level(tp_reference, cfg, proj_cfg, true);
-        const auto region = moving_puncture_init_blend_region(hierarchy.leaf_grid(leaf), cfg);
-        hierarchy.blend_leaf_centered_core_from_reference(leaf, tp_reference,
-                                                          region.core_half_width,
-                                                          region.transition_width);
+        const auto &leaf_center = initial_punctures[leaf];
+        const auto region = moving_puncture_init_blend_region(hierarchy.leaf_grid(leaf), cfg,
+                                                              leaf_center);
+        hierarchy.blend_leaf_core_from_reference(leaf, tp_reference, leaf_center,
+                                                 region.core_half_width,
+                                                 region.transition_width);
         tensorium_RG::z4c::project_z4c_state(hierarchy.leaf_grid(leaf), proj_cfg);
         hierarchy.apply_level_boundaries();
         std::cout << "[fmr.init] level=" << flat_level << " core_half_width=" << region.core_half_width
@@ -1203,6 +1285,8 @@ int main(int argc, char **argv) {
     size_t base_constraint_slice_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_SLICE_STRIDE",
                             base_constraint_export_stride);
+    size_t base_constraint_guard_cells =
+        parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_CONSTRAINT_GUARD_CELLS", 4);
     size_t base_fmr_profile_stride =
         parse_env_stride_or("TENSORIUM_MOVING_PUNCTURE_FMR_PROFILE_STRIDE", 0);
 
@@ -1249,6 +1333,7 @@ int main(int argc, char **argv) {
         size_t volume_export_stride = suppress_trial_exports ? 0 : base_volume_export_stride;
         size_t constraint_slice_stride =
             suppress_trial_exports ? 0 : base_constraint_slice_stride;
+        size_t constraint_guard_cells = base_constraint_guard_cells;
         size_t fmr_profile_stride = suppress_trial_exports ? 0 : base_fmr_profile_stride;
 
         if (suppress_trial_exports) {
@@ -1331,6 +1416,45 @@ int main(int argc, char **argv) {
               << " momentum_rad=" << cfg.radial_momentum
               << " m1=" << cfg.mass1
               << " m2=" << cfg.mass2 << std::endl;
+    const size_t effective_radiative_collar =
+        cfg.gauge_params.apply_rhs_sommerfeld ? std::max<size_t>(cfg.radiative_collar_width, 4)
+                                              : size_t(0);
+    std::cout << "[gauge] apply_rhs_sommerfeld="
+              << (cfg.gauge_params.apply_rhs_sommerfeld ? 1 : 0)
+              << " rhs_collar_width=" << cfg.radiative_collar_width
+              << " effective_rhs_collar=" << effective_radiative_collar << std::endl;
+    std::cout << "[gauge] strict_tp_gauge=" << (cfg.strict_tp_gauge ? 1 : 0)
+              << " shift_eta=" << cfg.gauge_params.shift_eta
+              << " eta=" << cfg.gauge_params.eta
+              << " beta_B_coeff=" << cfg.gauge_params.beta_B_coeff
+              << " use_shift_advection=" << (cfg.gauge_params.use_shift_advection ? 1 : 0)
+              << " shift_advect=" << cfg.gauge_params.shift_advect
+              << " lapse_advect=" << cfg.gauge_params.lapse_advect
+              << " ko_sigma=" << cfg.gauge_params.ko_sigma
+              << " kappa1=" << cfg.gauge_params.kappa1
+              << " kappa2=" << cfg.gauge_params.kappa2
+              << " kappa3=" << cfg.gauge_params.kappa3
+              << " kappa_z=" << cfg.gauge_params.kappa_z
+              << " christoffel_lapse_damping=" << cfg.gauge_params.christoffel_lapse_damping
+              << " metric_christoffel_damping=" << cfg.gauge_params.metric_christoffel_damping
+              << " gamma_driver_filtered_rhs="
+              << (cfg.gauge_params.gamma_driver_uses_filtered_gamma_rhs ? 1 : 0)
+              << " slow_start_lapse=" << (cfg.gauge_params.slow_start_lapse_article ? 1 : 0)
+              << " slow_start_h=" << cfg.gauge_params.slow_start_lapse_h
+              << " slow_start_sigma=" << cfg.gauge_params.slow_start_lapse_sigma
+              << " covariant_z4=" << (cfg.gauge_params.covariant_z4 ? 1 : 0)
+              << " evolve_Z=" << (cfg.gauge_params.evolve_Z ? 1 : 0) << std::endl;
+    if (cfg.use_interpolated_init && cfg.strict_tp_gauge) {
+        std::cout << "[gauge][warn] STRICT_TP_GAUGE is active for interpolated init; it "
+                     "overrides SHIFT_ETA, KO_SIGMA, SHIFT_GAMMA, and shift-advection defaults. "
+                     "Set TENSORIUM_MOVING_PUNCTURE_STRICT_TP_GAUGE=0 for NR102-like runs."
+                  << std::endl;
+    }
+    if (cfg.gauge_params.apply_rhs_sommerfeld && cfg.radiative_collar_width < 4) {
+        std::cout << "[bc][warn] RADIATIVE_COLLAR_WIDTH < 4; using effective_rhs_collar=4 "
+                     "to keep high-order RHS stencils off extrapolated ghosts."
+                  << std::endl;
+    }
     if (cfg.use_interpolated_init) {
         std::cout << "[init] twopunctures_mass_mode="
                   << (cfg.tp_calculate_target_masses ? "target" : "bare")
@@ -1399,7 +1523,9 @@ int main(int argc, char **argv) {
               << " ko_boundary_width=" << cfg.ko_boundary_width
               << " ko_boundary_floor=" << cfg.ko_boundary_floor
               << " ko_boundary_boost=" << cfg.ko_boundary_boost
-              << " ko_edge_corner_boost=" << cfg.ko_edge_corner_boost << std::endl;
+              << " ko_edge_corner_boost=" << cfg.ko_edge_corner_boost
+              << " cako=" << (cfg.enable_cako ? 1 : 0)
+              << " ko_curvature_floor=" << cfg.ko_curvature_floor << std::endl;
     for (int axis = 0; axis < 3; ++axis) {
         std::cout << "[bc] "
                   << tensorium_RG::z4c::describe_boundary_face_mode(
@@ -1486,27 +1612,33 @@ int main(int argc, char **argv) {
         std::cout << "[fmr] enabled=0" << std::endl;
     }
 
-    // Initialize FMR memory pool for reduced allocation overhead
-    tensorium_RG::z4c::fmr::FMRMemoryConfig pool_config;
-    pool_config.root_nx = cfg.nx;
-    pool_config.root_ny = cfg.ny;
-    pool_config.root_nz = cfg.nz;
-    pool_config.ghost_cells = cfg.ng;
-    pool_config.num_levels = use_fmr ? (use_bbh_split ? binary_hierarchy_cfg.shared_levels.size() + 2
-                                                       : level_cfgs.size() + 1) : 1;
-    pool_config.refinement_ratio = cfg.fmr.refinement_ratio;
-    pool_config.grids_per_level = 5;  // Current + 4 RK4 stages
-    tensorium_RG::z4c::fmr::FMRMemoryManager<double> memory_manager(pool_config);
-    std::cout << "[memory] pool_initialized=1 expected_mb="
-              << (pool_config.total_memory_bytes<double>() / (1024.0 * 1024.0))
-              << " levels=" << pool_config.num_levels << std::endl;
+    // Initialize FMR memory pool only when refinement levels are actually active.
+    tensorium_RG::z4c::fmr::FMRMemoryManager<double> memory_manager;
+    if (use_fmr) {
+        tensorium_RG::z4c::fmr::FMRMemoryConfig pool_config;
+        pool_config.root_nx = cfg.nx;
+        pool_config.root_ny = cfg.ny;
+        pool_config.root_nz = cfg.nz;
+        pool_config.ghost_cells = cfg.ng;
+        pool_config.num_levels = use_bbh_split ? binary_hierarchy_cfg.shared_levels.size() + 2
+                                               : level_cfgs.size() + 1;
+        pool_config.refinement_ratio = cfg.fmr.refinement_ratio;
+        pool_config.grids_per_level = 5;  // Current + 4 RK4 stages
+        memory_manager.configure(pool_config);
+        std::cout << "[memory] pool_initialized=1 expected_mb="
+                  << (pool_config.total_memory_bytes<double>() / (1024.0 * 1024.0))
+                  << " levels=" << pool_config.num_levels << std::endl;
+    } else {
+        std::cout << "[memory] pool_initialized=0 reason=no_fmr" << std::endl;
+    }
 
     std::cout << "[log] state_log_stride=" << output_stride << std::endl;
     std::cout << "[viz] slice_export_stride=" << slice_export_stride
               << " volume_export_stride=" << volume_export_stride << std::endl;
     std::cout << "[constraints] norms_stride=" << constraint_export_stride
               << " slice_export=" << (export_constraint_slices ? 1 : 0)
-              << " slice_stride=" << constraint_slice_stride << std::endl;
+              << " slice_stride=" << constraint_slice_stride
+              << " guard_cells=" << constraint_guard_cells << std::endl;
     std::cout << "[hdf5] requested=" << (request_hdf5_export ? 1 : 0)
               << " available=" << (tensorium::io::hdf5_available() ? 1 : 0)
               << " active=" << (export_hdf5 ? 1 : 0)
@@ -1689,6 +1821,15 @@ int main(int argc, char **argv) {
             std::cout << "[tracker][warn] could not initialize puncture tracker from the finest slice minima"
                       << std::endl;
         }
+    } else if (!use_fmr) {
+        initialize_shift_puncture_tracker_split(*root_state, *root_state, *root_state,
+                                                puncture_tracker, initial_punctures[0],
+                                                initial_punctures[1]);
+        std::cout << "[tracker] enabled=" << (puncture_tracker.initialized ? 1 : 0)
+                  << " mode=shift_no_fmr"
+                  << " recenter_on_drift=" << (cfg.fmr.tracker_recenter_on_drift ? 1 : 0)
+                  << " recenter_cells=" << cfg.fmr.tracker_recenter_cells
+                  << " drift_warn_cells=" << cfg.fmr.tracker_drift_warn_cells << std::endl;
     }
 
     {
@@ -1705,6 +1846,8 @@ int main(int argc, char **argv) {
                 initial_sample = make_tracker_sample(*puncture_state, puncture_tracker);
         } else {
             initial_sample = sample_puncture_minima(*root_state);
+            if (puncture_tracker.initialized)
+                initial_sample = make_tracker_sample(*root_state, puncture_tracker);
         }
         append_ecc_track(0.0, initial_sample);
     }
@@ -1926,7 +2069,9 @@ int main(int argc, char **argv) {
                 (current_step % constraint_slice_stride) == 0;
             if (need_constraint_export) {
                 const auto constraint_start = std::chrono::steady_clock::now();
-                auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
+                auto stats = compute_constraint_stats(
+                    *root_state, constraint_scratch,
+                    std::max(cfg.padding, constraint_guard_cells));
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
                 if (constraint_log.is_open()) {
@@ -1980,7 +2125,7 @@ int main(int argc, char **argv) {
                     wrote_hdf5_constraint_slice =
                         export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
                                                      constraint_scratch.M, constraint_scratch.C,
-                                                     n, t, "Output/viz");
+                                                     n, t, "Output/viz", constraint_guard_cells);
                     if (!wrote_hdf5_constraint_slice) {
                         std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
                                   << "; falling back to CSV" << std::endl;
@@ -1989,7 +2134,7 @@ int main(int argc, char **argv) {
                 if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
                     export_constraint_slice_csv(*root_state, constraint_scratch.H,
                                                 constraint_scratch.M, constraint_scratch.C, n,
-                                                "Output/viz");
+                                                "Output/viz", constraint_guard_cells);
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
@@ -2145,7 +2290,9 @@ int main(int argc, char **argv) {
                 (current_step % constraint_slice_stride) == 0;
             if (need_constraint_export) {
                 const auto constraint_start = std::chrono::steady_clock::now();
-                auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
+                auto stats = compute_constraint_stats(
+                    *root_state, constraint_scratch,
+                    std::max(cfg.padding, constraint_guard_cells));
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
                 if (constraint_log.is_open()) {
@@ -2199,7 +2346,7 @@ int main(int argc, char **argv) {
                     wrote_hdf5_constraint_slice =
                         export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
                                                      constraint_scratch.M, constraint_scratch.C,
-                                                     n, t, "Output/viz");
+                                                     n, t, "Output/viz", constraint_guard_cells);
                     if (!wrote_hdf5_constraint_slice) {
                         std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
                                   << "; falling back to CSV" << std::endl;
@@ -2208,7 +2355,7 @@ int main(int argc, char **argv) {
                 if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
                     export_constraint_slice_csv(*root_state, constraint_scratch.H,
                                                 constraint_scratch.M, constraint_scratch.C, n,
-                                                "Output/viz");
+                                                "Output/viz", constraint_guard_cells);
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);
@@ -2272,13 +2419,47 @@ int main(int argc, char **argv) {
             const auto evolve_stop = std::chrono::steady_clock::now();
             t += dt;
 
-            const auto puncture_sample = sample_puncture_minima(*root_state);
+            PuncturePlaneSample puncture_sample = sample_puncture_minima(*root_state);
+            PuncturePlaneSample puncture_minima = puncture_sample;
+            if (puncture_tracker.initialized) {
+                advance_shift_puncture_tracker(*root_state, puncture_tracker, dt);
+                puncture_sample = make_tracker_sample(*root_state, puncture_tracker);
+
+                const size_t local_min_radius_cells =
+                    static_cast<size_t>(std::ceil(std::max(6.0, cfg.fmr.tracker_recenter_cells)));
+                puncture_minima = sample_puncture_minima_near_tracker(
+                    *root_state, puncture_tracker, local_min_radius_cells);
+
+                double drift_left = std::numeric_limits<double>::quiet_NaN();
+                double drift_right = std::numeric_limits<double>::quiet_NaN();
+                const bool have_drift = compute_tracker_drift(puncture_sample, puncture_minima,
+                                                              drift_left, drift_right);
+                const double drift_warn_radius =
+                    cfg.fmr.tracker_drift_warn_cells * grid_max_spacing(*root_state);
+                const double recenter_radius =
+                    cfg.fmr.tracker_recenter_cells * grid_max_spacing(*root_state);
+                if (cfg.fmr.tracker_recenter_on_drift && have_drift &&
+                    (drift_left > recenter_radius || drift_right > recenter_radius)) {
+                    puncture_tracker.p1 = {puncture_minima.x_left, puncture_minima.y_left, 0.0};
+                    puncture_tracker.p2 = {puncture_minima.x_right, puncture_minima.y_right, 0.0};
+                    clamp_tracker_to_domain(*root_state, puncture_tracker.p1);
+                    clamp_tracker_to_domain(*root_state, puncture_tracker.p2);
+                    refresh_shift_puncture_tracker_beta(*root_state, puncture_tracker);
+                    puncture_sample = make_tracker_sample(*root_state, puncture_tracker);
+                } else if (have_drift &&
+                           (drift_left > drift_warn_radius || drift_right > drift_warn_radius) &&
+                           (n % std::max<size_t>(output_stride, size_t(1)) == 0)) {
+                    std::cout << "[tracker][warn] step=" << n << " drift_left=" << drift_left
+                              << " drift_right=" << drift_right
+                              << " warn_radius=" << drift_warn_radius << std::endl;
+                }
+            }
             if (puncture_track.is_open())
                 write_puncture_row(puncture_track, n, t, puncture_sample);
             if (puncture_track_minima.is_open())
-                write_puncture_row(puncture_track_minima, n, t, puncture_sample);
+                write_puncture_row(puncture_track_minima, n, t, puncture_minima);
             write_puncture_row_hdf5(puncture_track_h5, n, t, puncture_sample);
-            write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_sample);
+            write_puncture_row_hdf5(puncture_track_minima_h5, n, t, puncture_minima);
             append_ecc_track(t, puncture_sample);
 
             double constraint_seconds = 0.0;
@@ -2291,7 +2472,9 @@ int main(int argc, char **argv) {
                 (current_step % constraint_slice_stride) == 0;
             if (need_constraint_export) {
                 const auto constraint_start = std::chrono::steady_clock::now();
-                auto stats = compute_constraint_stats(*root_state, constraint_scratch, cfg.padding);
+                auto stats = compute_constraint_stats(
+                    *root_state, constraint_scratch,
+                    std::max(cfg.padding, constraint_guard_cells));
                 const auto constraint_stop = std::chrono::steady_clock::now();
                 constraint_seconds = elapsed_seconds(constraint_start, constraint_stop);
                 if (constraint_log.is_open()) {
@@ -2346,7 +2529,7 @@ int main(int argc, char **argv) {
                     wrote_hdf5_constraint_slice =
                         export_constraint_slice_hdf5(*root_state, constraint_scratch.H,
                                                      constraint_scratch.M, constraint_scratch.C,
-                                                     n, t, "Output/viz");
+                                                     n, t, "Output/viz", constraint_guard_cells);
                     if (!wrote_hdf5_constraint_slice) {
                         std::cout << "[warn] HDF5 constraint-slice export failed at step " << n
                                   << "; falling back to CSV" << std::endl;
@@ -2355,7 +2538,7 @@ int main(int argc, char **argv) {
                 if (export_csv || (export_hdf5 && !wrote_hdf5_constraint_slice)) {
                     export_constraint_slice_csv(*root_state, constraint_scratch.H,
                                                 constraint_scratch.M, constraint_scratch.C, n,
-                                                "Output/viz");
+                                                "Output/viz", constraint_guard_cells);
                 }
                 const auto export_stop = std::chrono::steady_clock::now();
                 export_seconds += elapsed_seconds(export_start, export_stop);

@@ -138,6 +138,8 @@ struct KOState {
     double boundary_floor = 0.0;
     double boundary_boost = 0.0;
     double edge_corner_boost = 0.0;
+    bool curvature_adjusted = false;
+    double curvature_floor = 0.0;
 };
 
 inline KOState &ko_state() {
@@ -165,6 +167,12 @@ inline void configure_ko_boundary_taper(size_t width, double floor = 0.0, double
     state.edge_corner_boost = std::max(edge_corner_boost, 0.0);
 }
 
+inline void configure_curvature_adjusted_ko(bool enabled, double floor = 0.0) {
+    auto &state = ko_state();
+    state.curvature_adjusted = enabled;
+    state.curvature_floor = std::clamp(floor, 0.0, 1.0);
+}
+
 inline size_t current_ko_boundary_width() { return ko_state().boundary_width; }
 
 inline double current_ko_boundary_floor() { return ko_state().boundary_floor; }
@@ -172,6 +180,10 @@ inline double current_ko_boundary_floor() { return ko_state().boundary_floor; }
 inline double current_ko_boundary_boost() { return ko_state().boundary_boost; }
 
 inline double current_ko_edge_corner_boost() { return ko_state().edge_corner_boost; }
+
+inline bool current_ko_curvature_adjusted() { return ko_state().curvature_adjusted; }
+
+inline double current_ko_curvature_floor() { return ko_state().curvature_floor; }
 
 template <typename T> inline T scaled_ko_sigma(T base_sigma) {
     return base_sigma * T(current_ko_scale());
@@ -223,7 +235,14 @@ inline T ko_boundary_taper(const BSSNGridSoA<T> &grid, size_t i, size_t j, size_
 
 template <typename T>
 inline T local_ko_scale(const BSSNGridSoA<T> &grid, T scaled_sigma, size_t i, size_t j, size_t k) {
-    return (scaled_sigma / grid.dx) * ko_boundary_taper(grid, i, j, k);
+    T curvature_factor = T(1);
+    if (current_ko_curvature_adjusted()) {
+        const size_t idx = grid.chi.idx(i, j, k);
+        const T chi = grid.chi.ptr()[idx];
+        const T W = std::sqrt(std::max(chi, T(0)));
+        curvature_factor = std::max(W, T(current_ko_curvature_floor()));
+    }
+    return (scaled_sigma / grid.dx) * curvature_factor * ko_boundary_taper(grid, i, j, k);
 }
 
 inline void sym_index_to_pair(int s, int &row, int &col) {

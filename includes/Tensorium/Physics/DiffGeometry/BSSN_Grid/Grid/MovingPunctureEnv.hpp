@@ -74,9 +74,9 @@ struct MovingPunctureBoundaryFaces {
 };
 
 struct MovingPunctureSpongeConfig {
-    bool enabled = true;
+    bool enabled = false;
     size_t width = 12;
-    double strength = 4.0;
+    double strength = 0.15;
     double exponent = 2.0;
 };
 
@@ -145,6 +145,8 @@ struct MovingPunctureEnvConfig {
     double                  ko_boundary_floor = 0.0;
     double                  ko_boundary_boost = 0.0;
     double                  ko_edge_corner_boost = 0.0;
+    bool                    enable_cako = false;
+    double                  ko_curvature_floor = 0.0;
     bool                    allow_reflective_bc = false;
     bool                    fail_on_gauge_bc_mismatch = false;
     MovingPunctureFMRConfig fmr{};
@@ -430,13 +432,19 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     params.use_theta_in_lapse = true;
     params.ko_sigma = 1.0;
     params.slow_start_lapse = false;
+    params.slow_start_lapse_article = false;
+    params.slow_start_lapse_h = 0.8;
+    params.slow_start_lapse_sigma = 20.0;
     params.min_lapse_for_K = 1e-4;
     params.max_K_squared = 1e4;
     params.alpha_floor = 1e-4;
     params.chi_floor = 1e-4;
     params.evolve_Z = false;
     params.gamma_damping_uses_metric = false;
-    params.apply_rhs_sommerfeld = false;
+    params.christoffel_lapse_damping = 0.0;
+    params.metric_christoffel_damping = 0.0;
+    params.gamma_driver_uses_filtered_gamma_rhs = false;
+    params.apply_rhs_sommerfeld = true;
     params.apply_rhs_sommerfeld = detail::env_bool_or(
         "TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", params.apply_rhs_sommerfeld);
 
@@ -451,6 +459,17 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_SHIFT_GAMMA")) {
         params.shift_Gamma = *parsed;
     }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_CHRISTOFFEL_LAPSE_DAMPING")) {
+        if (*parsed >= 0.0)
+            params.christoffel_lapse_damping = *parsed;
+    }
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_K_GAMMA")) {
+        params.metric_christoffel_damping = *parsed;
+    }
+    params.gamma_driver_uses_filtered_gamma_rhs = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_GAMMA_DRIVER_FILTERED_RHS",
+        params.gamma_driver_uses_filtered_gamma_rhs);
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KAPPA1")) {
         if (*parsed >= 0.0)
             params.kappa1 = *parsed;
@@ -471,6 +490,17 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_SIGMA")) {
         if (*parsed >= 0.0)
             params.ko_sigma = *parsed;
+    }
+    params.slow_start_lapse_article = detail::env_bool_or(
+        "TENSORIUM_MOVING_PUNCTURE_SLOW_START_LAPSE", params.slow_start_lapse_article);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_SLOW_START_LAPSE_H")) {
+        if (*parsed >= 0.0)
+            params.slow_start_lapse_h = *parsed;
+    }
+    if (const auto parsed =
+            detail::env_double("TENSORIUM_MOVING_PUNCTURE_SLOW_START_LAPSE_SIGMA")) {
+        if (*parsed > 0.0)
+            params.slow_start_lapse_sigma = *parsed;
     }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_ALPHA_FLOOR")) {
         if (*parsed >= 0.0)
@@ -506,6 +536,7 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
         params.lapse_advect = 1.0;
         params.use_theta_in_lapse = true;
         params.slow_start_lapse = false;
+        params.slow_start_lapse_article = false;
         params.ko_sigma = 1.0;
         params.alpha_floor = std::max(params.alpha_floor, 1e-4);
         params.chi_floor = std::max(params.chi_floor, 1e-4);
@@ -580,6 +611,11 @@ inline MovingPunctureEnvConfig load_moving_puncture_env() {
     }
     if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_EDGE_CORNER_BOOST")) {
         cfg.ko_edge_corner_boost = std::max(*parsed, 0.0);
+    }
+    cfg.enable_cako =
+        detail::env_bool_or("TENSORIUM_MOVING_PUNCTURE_ENABLE_CAKO", cfg.enable_cako);
+    if (const auto parsed = detail::env_double("TENSORIUM_MOVING_PUNCTURE_KO_CURVATURE_FLOOR")) {
+        cfg.ko_curvature_floor = std::clamp(*parsed, 0.0, 1.0);
     }
 
     if (params.evolve_Z) {
@@ -1134,6 +1170,7 @@ inline void apply_boundary_configuration(const MovingPunctureEnvConfig &cfg) {
                                   cfg.sponge.exponent);
     configure_ko_boundary_taper(cfg.ko_boundary_width, cfg.ko_boundary_floor,
                                 cfg.ko_boundary_boost, cfg.ko_edge_corner_boost);
+    configure_curvature_adjusted_ko(cfg.enable_cako, cfg.ko_curvature_floor);
 }
 
 struct MovingPunctureBoundaryCharacteristicSummary {

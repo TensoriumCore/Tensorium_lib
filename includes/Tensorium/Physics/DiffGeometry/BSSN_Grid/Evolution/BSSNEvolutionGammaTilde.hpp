@@ -2,6 +2,7 @@
 
 #include "../Derivatives/BSSNGridDerivatives.hpp"
 #include "../Fields/BSSNGridSoA.hpp"
+#include "../Geometry/BSSNCHristoffelTilde.hpp"
 #include "../TimeIntegration/BSSNPerfTimers.hpp"
 #include "BSSNEvolutionCommon.hpp"
 #include "BSSNEvolutionGauge.hpp"
@@ -74,6 +75,15 @@ inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs
         const T *p_gam3 = G.gamma_tilde[YY].ptr() + idx_start;
         const T *p_gam4 = G.gamma_tilde[YZ].ptr() + idx_start;
         const T *p_gam5 = G.gamma_tilde[ZZ].ptr() + idx_start;
+        const T *p_ginv0 = G.gamma_tilde_inv[XX].ptr() + idx_start;
+        const T *p_ginv1 = G.gamma_tilde_inv[XY].ptr() + idx_start;
+        const T *p_ginv2 = G.gamma_tilde_inv[XZ].ptr() + idx_start;
+        const T *p_ginv3 = G.gamma_tilde_inv[YY].ptr() + idx_start;
+        const T *p_ginv4 = G.gamma_tilde_inv[YZ].ptr() + idx_start;
+        const T *p_ginv5 = G.gamma_tilde_inv[ZZ].ptr() + idx_start;
+        const T *p_Gamma0 = G.tildeGamma[0].ptr() + idx_start;
+        const T *p_Gamma1 = G.tildeGamma[1].ptr() + idx_start;
+        const T *p_Gamma2 = G.tildeGamma[2].ptr() + idx_start;
         const T *p_A0 = G.A_tilde[XX].ptr() + idx_start;
         const T *p_A1 = G.A_tilde[XY].ptr() + idx_start;
         const T *p_A2 = G.A_tilde[XZ].ptr() + idx_start;
@@ -88,7 +98,6 @@ inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs
         T       *p_rhs5 = rhs[ZZ].ptr() + idx_start;
         const T *p_alpha = G.alpha.ptr() + idx_start;
 
-#pragma omp simd
         for (size_t k = k0; k < k1; ++k) {
 
                 const T alpha = *p_alpha;
@@ -132,6 +141,72 @@ inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs
                     -two_thirds * g_yz * div_beta, -two_thirds * g_zz * div_beta};
 
                 const T ko_scale = local_ko_scale(G, ko_sigma, i, j, k);
+                T metric_christoffel[6] = {T(0), T(0), T(0), T(0), T(0), T(0)};
+                if (params.metric_christoffel_damping != T(0)) {
+                    const auto gamma_constraint_at_offset = [&](ptrdiff_t offset, T C[3]) {
+                        T z_over_chi[3] = {T(0), T(0), T(0)};
+                        recover_z_over_chi_from_gamma_ptr_order<Order>(
+                            p_Gamma0 + offset, p_Gamma1 + offset, p_Gamma2 + offset,
+                            p_ginv0 + offset, p_ginv1 + offset, p_ginv2 + offset,
+                            p_ginv3 + offset, p_ginv4 + offset, p_ginv5 + offset, sx, sy,
+                            inv_12dx, inv_12dy, inv_12dz, z_over_chi);
+                        C[0] = T(2) * z_over_chi[0];
+                        C[1] = T(2) * z_over_chi[1];
+                        C[2] = T(2) * z_over_chi[2];
+                    };
+
+                    T C[3], Cp[3], Cm[3];
+                    gamma_constraint_at_offset(0, C);
+                    T dC[3][3];
+                    gamma_constraint_at_offset(sx, Cp);
+                    gamma_constraint_at_offset(-sx, Cm);
+                    for (int c = 0; c < 3; ++c)
+                        dC[0][c] = (Cp[c] - Cm[c]) * T(inv_2dx);
+                    gamma_constraint_at_offset(sy, Cp);
+                    gamma_constraint_at_offset(-sy, Cm);
+                    for (int c = 0; c < 3; ++c)
+                        dC[1][c] = (Cp[c] - Cm[c]) * T(inv_2dy);
+                    gamma_constraint_at_offset(1, Cp);
+                    gamma_constraint_at_offset(-1, Cm);
+                    for (int c = 0; c < 3; ++c)
+                        dC[2][c] = (Cp[c] - Cm[c]) * T(inv_2dz);
+
+                    const T *p_gam_arr[6] = {p_gam0, p_gam1, p_gam2, p_gam3, p_gam4, p_gam5};
+                    const T *p_ginv_arr[6] = {p_ginv0, p_ginv1, p_ginv2,
+                                              p_ginv3, p_ginv4, p_ginv5};
+                    T Gamma_conn[3][3][3];
+                    tensorium_RG::bssn::compute_tildeGamma_symbols_ptr(
+                        p_gam_arr, p_ginv_arr, sx, sy, inv_12dx, inv_12dy, inv_12dz,
+                        Gamma_conn);
+
+                    T covD[3][3];
+                    for (int up = 0; up < 3; ++up) {
+                        for (int dir = 0; dir < 3; ++dir) {
+                            T conn = T(0);
+                            for (int m = 0; m < 3; ++m)
+                                conn += Gamma_conn[up][dir][m] * C[m];
+                            covD[up][dir] = dC[dir][up] + conn;
+                        }
+                    }
+
+                    const T g_lower[3][3] = {{g_xx, g_xy, g_xz},
+                                             {g_xy, g_yy, g_yz},
+                                             {g_xz, g_yz, g_zz}};
+                    const auto metric_term = [&](int a, int b) {
+                        T sum = T(0);
+                        for (int kc = 0; kc < 3; ++kc)
+                            sum += T(0.5) *
+                                   (g_lower[kc][a] * covD[kc][b] +
+                                    g_lower[kc][b] * covD[kc][a]);
+                        return params.metric_christoffel_damping * alpha * sum;
+                    };
+                    metric_christoffel[XX] = metric_term(0, 0);
+                    metric_christoffel[XY] = metric_term(0, 1);
+                    metric_christoffel[XZ] = metric_term(0, 2);
+                    metric_christoffel[YY] = metric_term(1, 1);
+                    metric_christoffel[YZ] = metric_term(1, 2);
+                    metric_christoffel[ZZ] = metric_term(2, 2);
+                }
 
                 const T adv0 = beta0 * tensorium_RG::fd::Dx_upwind_ptr(p_gam0, sx, inv_2dx, beta0) +
                                beta1 * tensorium_RG::fd::Dy_upwind_ptr(p_gam0, sy, inv_2dy, beta1) +
@@ -171,12 +246,18 @@ inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs
                                 tensorium_RG::fd::KO6_axis_ptr(p_gam5, sy) +
                                 tensorium_RG::fd::KO6_axis_ptr(p_gam5, 1);
 
-                *p_rhs0 = adv0 + lie_vals[0] - T(2) * alpha * (*p_A0) + trace_vals[0] + ko_scale * diss0;
-                *p_rhs1 = adv1 + lie_vals[1] - T(2) * alpha * (*p_A1) + trace_vals[1] + ko_scale * diss1;
-                *p_rhs2 = adv2 + lie_vals[2] - T(2) * alpha * (*p_A2) + trace_vals[2] + ko_scale * diss2;
-                *p_rhs3 = adv3 + lie_vals[3] - T(2) * alpha * (*p_A3) + trace_vals[3] + ko_scale * diss3;
-                *p_rhs4 = adv4 + lie_vals[4] - T(2) * alpha * (*p_A4) + trace_vals[4] + ko_scale * diss4;
-                *p_rhs5 = adv5 + lie_vals[5] - T(2) * alpha * (*p_A5) + trace_vals[5] + ko_scale * diss5;
+                *p_rhs0 = adv0 + lie_vals[0] - T(2) * alpha * (*p_A0) + trace_vals[0] +
+                          metric_christoffel[XX] + ko_scale * diss0;
+                *p_rhs1 = adv1 + lie_vals[1] - T(2) * alpha * (*p_A1) + trace_vals[1] +
+                          metric_christoffel[XY] + ko_scale * diss1;
+                *p_rhs2 = adv2 + lie_vals[2] - T(2) * alpha * (*p_A2) + trace_vals[2] +
+                          metric_christoffel[XZ] + ko_scale * diss2;
+                *p_rhs3 = adv3 + lie_vals[3] - T(2) * alpha * (*p_A3) + trace_vals[3] +
+                          metric_christoffel[YY] + ko_scale * diss3;
+                *p_rhs4 = adv4 + lie_vals[4] - T(2) * alpha * (*p_A4) + trace_vals[4] +
+                          metric_christoffel[YZ] + ko_scale * diss4;
+                *p_rhs5 = adv5 + lie_vals[5] - T(2) * alpha * (*p_A5) + trace_vals[5] +
+                          metric_christoffel[ZZ] + ko_scale * diss5;
 
                 ++p_beta0;
                 ++p_beta1;
@@ -187,6 +268,15 @@ inline void compute_rhs_gamma_tilde_impl(const BSSNGridSoA<T> &G, Field3D<T> rhs
                 ++p_gam3;
                 ++p_gam4;
                 ++p_gam5;
+                ++p_ginv0;
+                ++p_ginv1;
+                ++p_ginv2;
+                ++p_ginv3;
+                ++p_ginv4;
+                ++p_ginv5;
+                ++p_Gamma0;
+                ++p_Gamma1;
+                ++p_Gamma2;
                 ++p_A0;
                 ++p_A1;
                 ++p_A2;

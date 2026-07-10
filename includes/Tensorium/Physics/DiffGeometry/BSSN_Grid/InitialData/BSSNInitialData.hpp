@@ -831,6 +831,7 @@ struct TwoPuncturesCacheKey {
     double                newton_tol = 0.0;
     int                   newton_maxit = 0;
     double                epsilon = 0.0;
+    double                tiny = 0.0;
     int                   verbose = 0;
 };
 
@@ -844,7 +845,7 @@ inline bool twopunctures_cache_key_equal(const TwoPuncturesCacheKey &lhs,
            lhs.npoints_A == rhs.npoints_A && lhs.npoints_B == rhs.npoints_B &&
            lhs.npoints_phi == rhs.npoints_phi && lhs.newton_tol == rhs.newton_tol &&
            lhs.newton_maxit == rhs.newton_maxit && lhs.epsilon == rhs.epsilon &&
-           lhs.verbose == rhs.verbose;
+           lhs.tiny == rhs.tiny && lhs.verbose == rhs.verbose;
 }
 
 struct TwoPuncturesSolveCache {
@@ -927,6 +928,8 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
         parse_env_int("TENSORIUM_MOVING_PUNCTURE_TP_NEWTON_MAXIT", 5, 1);
     const double tp_epsilon =
         parse_env_real("TENSORIUM_MOVING_PUNCTURE_TP_EPSILON", 1.0e-6, 1.0e-16);
+    const double tp_tiny =
+        parse_env_real("TENSORIUM_MOVING_PUNCTURE_TP_TINY", 0.0, 0.0);
     int omp_threads = 1;
     if (const char *threads_env = std::getenv("OMP_NUM_THREADS")) {
         const int parsed = std::atoi(threads_env);
@@ -966,9 +969,9 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
 #endif
     );
     std::printf("[init.interpolate][cfg] npoints_A=%d npoints_B=%d npoints_phi=%d "
-                "Newton_tol=%.3e Newton_maxit=%d TP_epsilon=%.3e verbose=%d\n",
+                "Newton_tol=%.3e Newton_maxit=%d TP_epsilon=%.3e TP_Tiny=%.3e verbose=%d\n",
                 tp_npoints_A, tp_npoints_B, tp_npoints_phi, tp_newton_tol, tp_newton_maxit,
-                tp_epsilon, tp_verbose);
+                tp_epsilon, tp_tiny, tp_verbose);
 
     // TwoPunctures assumes punctures at (+/- par_b, 0, 0) plus a common center offset.
     // For this path we require x-aligned punctures and identical y/z coordinates.
@@ -1051,62 +1054,69 @@ inline void binary_bowen_york_puncture_interpolated_init_impl(
                                                     tp_newton_tol,
                                                     tp_newton_maxit,
                                                     tp_epsilon,
+                                                    tp_tiny,
                                                     tp_verbose};
 
     {
         std::lock_guard<std::mutex> backend_lock(detail::twopunctures_backend_mutex());
         auto                       &cache = detail::twopunctures_solve_cache();
+        const bool                  reused_solve = cache.valid;
 
-        TwoPunctures_params_set_default();
-        TwoPunctures_params_set_Int(const_cast<char *>("verbose"), tp_verbose);
-        TwoPunctures_params_set_Int(const_cast<char *>("give_bare_mass"),
-                                    tp_calculate_target_masses ? 0 : 1);
-        TwoPunctures_params_set_Int(const_cast<char *>("grid_setup_method"), evaluation);
-        TwoPunctures_params_set_Int(const_cast<char *>("initial_lapse"), psin);
-        TwoPunctures_params_set_Real(const_cast<char *>("initial_lapse_psi_exponent"), -2.0);
-        TwoPunctures_params_set_Int(const_cast<char *>("conformal_state"), 1);
-        TwoPunctures_params_set_Real(const_cast<char *>("par_b"), double(b));
-        if (tp_calculate_target_masses) {
-            TwoPunctures_params_set_Real(const_cast<char *>("target_M_plus"), double(m_plus));
-            TwoPunctures_params_set_Real(const_cast<char *>("target_M_minus"), double(m_minus));
-            TwoPunctures_params_set_Real(const_cast<char *>("adm_tol"), double(tp_adm_tol));
-        } else {
-            TwoPunctures_params_set_Real(const_cast<char *>("par_m_plus"), double(m_plus));
-            TwoPunctures_params_set_Real(const_cast<char *>("par_m_minus"), double(m_minus));
+        if (reused_solve && !detail::twopunctures_cache_key_equal(cache.key, cache_key)) {
+            restore_tp_omp_env();
+            throw std::runtime_error(
+                "TwoPuncturesC backend cannot rebuild with different parameters in the "
+                "same process after FMR cache initialization; restart the executable");
         }
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus1"), double(P_plus[0]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus2"), double(P_plus[1]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus3"), double(P_plus[2]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus1"), double(P_minus[0]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus2"), double(P_minus[1]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus3"), double(P_minus[2]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus1"), double(S_plus[0]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus2"), double(S_plus[1]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus3"), double(S_plus[2]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus1"), double(S_minus[0]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus2"), double(S_minus[1]));
-        TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus3"), double(S_minus[2]));
-        TwoPunctures_params_set_Real(const_cast<char *>("center_offset1"), double(center_x));
-        TwoPunctures_params_set_Real(const_cast<char *>("center_offset2"), double(center_y));
-        TwoPunctures_params_set_Real(const_cast<char *>("center_offset3"), double(center_z));
-        // Match the GRChombo BinaryBH TwoPunctures defaults.
-        TwoPunctures_params_set_Int(const_cast<char *>("npoints_A"), tp_npoints_A);
-        TwoPunctures_params_set_Int(const_cast<char *>("npoints_B"), tp_npoints_B);
-        TwoPunctures_params_set_Int(const_cast<char *>("npoints_phi"), tp_npoints_phi);
-        TwoPunctures_params_set_Real(const_cast<char *>("Newton_tol"), tp_newton_tol);
-        TwoPunctures_params_set_Int(const_cast<char *>("Newton_maxit"), tp_newton_maxit);
-        TwoPunctures_params_set_Real(const_cast<char *>("TP_epsilon"), tp_epsilon);
+
+        if (!reused_solve) {
+            // TwoPuncturesC appends defaults to a global parameter table. Re-adding defaults
+            // for cached FMR interpolation calls eventually trips its fixed NPARAMS limit.
+            TwoPunctures_params_set_default();
+            TwoPunctures_params_set_Int(const_cast<char *>("verbose"), tp_verbose);
+            TwoPunctures_params_set_Int(const_cast<char *>("give_bare_mass"),
+                                        tp_calculate_target_masses ? 0 : 1);
+            TwoPunctures_params_set_Int(const_cast<char *>("grid_setup_method"), evaluation);
+            TwoPunctures_params_set_Int(const_cast<char *>("initial_lapse"), psin);
+            TwoPunctures_params_set_Real(const_cast<char *>("initial_lapse_psi_exponent"), -2.0);
+            TwoPunctures_params_set_Int(const_cast<char *>("conformal_state"), 1);
+            TwoPunctures_params_set_Real(const_cast<char *>("par_b"), double(b));
+            if (tp_calculate_target_masses) {
+                TwoPunctures_params_set_Real(const_cast<char *>("target_M_plus"), double(m_plus));
+                TwoPunctures_params_set_Real(const_cast<char *>("target_M_minus"), double(m_minus));
+                TwoPunctures_params_set_Real(const_cast<char *>("adm_tol"), double(tp_adm_tol));
+            } else {
+                TwoPunctures_params_set_Real(const_cast<char *>("par_m_plus"), double(m_plus));
+                TwoPunctures_params_set_Real(const_cast<char *>("par_m_minus"), double(m_minus));
+            }
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus1"), double(P_plus[0]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus2"), double(P_plus[1]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_plus3"), double(P_plus[2]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus1"), double(P_minus[0]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus2"), double(P_minus[1]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_P_minus3"), double(P_minus[2]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus1"), double(S_plus[0]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus2"), double(S_plus[1]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_plus3"), double(S_plus[2]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus1"), double(S_minus[0]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus2"), double(S_minus[1]));
+            TwoPunctures_params_set_Real(const_cast<char *>("par_S_minus3"), double(S_minus[2]));
+            TwoPunctures_params_set_Real(const_cast<char *>("center_offset1"), double(center_x));
+            TwoPunctures_params_set_Real(const_cast<char *>("center_offset2"), double(center_y));
+            TwoPunctures_params_set_Real(const_cast<char *>("center_offset3"), double(center_z));
+            // Match the GRChombo BinaryBH TwoPunctures defaults.
+            TwoPunctures_params_set_Int(const_cast<char *>("npoints_A"), tp_npoints_A);
+            TwoPunctures_params_set_Int(const_cast<char *>("npoints_B"), tp_npoints_B);
+            TwoPunctures_params_set_Int(const_cast<char *>("npoints_phi"), tp_npoints_phi);
+            TwoPunctures_params_set_Real(const_cast<char *>("Newton_tol"), tp_newton_tol);
+            TwoPunctures_params_set_Int(const_cast<char *>("Newton_maxit"), tp_newton_maxit);
+            TwoPunctures_params_set_Real(const_cast<char *>("TP_epsilon"), tp_epsilon);
+            TwoPunctures_params_set_Real(const_cast<char *>("TP_Tiny"), tp_tiny);
+        }
 
         ini_data *tp_data = nullptr;
-        const bool reused_solve = cache.valid;
         const double t_solve_begin = now_s();
         if (reused_solve) {
-            if (!detail::twopunctures_cache_key_equal(cache.key, cache_key)) {
-                restore_tp_omp_env();
-                throw std::runtime_error(
-                    "TwoPuncturesC backend cannot rebuild with different parameters in the "
-                    "same process after FMR cache initialization; restart the executable");
-            }
             std::printf("[init.interpolate][step 2/7] reusing cached TwoPunctures spectral "
                         "solve...\n");
             tp_data = cache.data;

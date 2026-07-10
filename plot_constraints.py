@@ -3,11 +3,23 @@ import argparse
 import os
 import sys
 
+os.environ.setdefault("HDF5_USE_FILE_LOCKING", "FALSE")
 if "MPLCONFIGDIR" not in os.environ:
     os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib-cache"
+if "--show" not in sys.argv[1:]:
+    os.environ.setdefault("MPLBACKEND", "Agg")
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
+try:
+    import h5py
+except Exception:
+    h5py = None
+
+
+DEFAULT_CSV = "Output/viz/constraints_norms.csv"
+DEFAULT_H5 = "Output/viz/constraints_norms.h5"
 
 
 def parse_args():
@@ -22,9 +34,14 @@ def parse_args():
         help="Optional maximum step to display (e.g. `python3 plot_constraints.py 500`).",
     )
     parser.add_argument(
+        "--input",
         "--csv",
-        default="Output/viz/constraints_norms.csv",
-        help="Path to constraints CSV file.",
+        dest="input_path",
+        default=None,
+        help=(
+            "Path to constraints CSV or HDF5 file. "
+            "Defaults to Output/viz/constraints_norms.csv if present, else .h5."
+        ),
     )
     parser.add_argument(
         "--out",
@@ -45,16 +62,70 @@ def parse_args():
     return parser.parse_args()
 
 
+def default_input_path():
+    if os.path.exists(DEFAULT_CSV):
+        return DEFAULT_CSV
+    if os.path.exists(DEFAULT_H5):
+        return DEFAULT_H5
+    return DEFAULT_CSV
+
+
+def is_hdf5_path(path):
+    return path.lower().endswith((".h5", ".hdf5"))
+
+
+def load_hdf5_constraints(path):
+    if h5py is None:
+        raise RuntimeError(
+            f"{path} is HDF5, but Python package 'h5py' is not available."
+        )
+
+    columns = {}
+    with h5py.File(path, "r") as h5:
+        for name, obj in h5.items():
+            if not isinstance(obj, h5py.Dataset):
+                continue
+            values = obj[()]
+            if getattr(values, "ndim", 0) == 0:
+                values = [values.item()]
+            else:
+                values = values.reshape(-1)
+            columns[name] = values
+
+    if not columns:
+        raise RuntimeError(f"No datasets found in HDF5 file: {path}")
+
+    lengths = {name: len(values) for name, values in columns.items()}
+    unique_lengths = set(lengths.values())
+    if len(unique_lengths) != 1:
+        detail = ", ".join(f"{name}={length}" for name, length in sorted(lengths.items()))
+        raise RuntimeError(f"HDF5 datasets have inconsistent lengths: {detail}")
+
+    return pd.DataFrame(columns)
+
+
+def load_constraints(path):
+    if is_hdf5_path(path):
+        return load_hdf5_constraints(path)
+    return pd.read_csv(path)
+
+
 def main():
     args = parse_args()
+    input_path = args.input_path or default_input_path()
 
-    if not os.path.exists(args.csv):
-        print(f"[ERR] Missing file: {args.csv}")
+    if not os.path.exists(input_path):
+        print(f"[ERR] Missing file: {input_path}")
         return 1
 
-    df = pd.read_csv(args.csv)
+    try:
+        df = load_constraints(input_path)
+    except Exception as exc:
+        print(f"[ERR] Could not read {input_path}: {exc}")
+        return 1
+
     if df.empty:
-        print(f"[ERR] Empty CSV: {args.csv}")
+        print(f"[ERR] Empty constraints file: {input_path}")
         return 1
 
     required = [
@@ -70,9 +141,10 @@ def main():
     ]
     missing = [c for c in required if c not in df.columns]
     if missing:
-        print(f"[ERR] Missing columns in CSV: {', '.join(missing)}")
+        print(f"[ERR] Missing columns in {input_path}: {', '.join(missing)}")
         return 1
 
+    df = df.sort_values("step").reset_index(drop=True)
     if args.max_step is not None:
         df = df[df["step"] <= args.max_step].copy()
         if df.empty:
@@ -125,6 +197,7 @@ def main():
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
     fig.savefig(args.out, dpi=180)
+    print(f"[OK ] read {input_path}")
     print(f"[OK ] saved {args.out}")
 
     if args.show:

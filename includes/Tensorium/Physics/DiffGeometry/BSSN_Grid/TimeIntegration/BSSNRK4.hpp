@@ -732,12 +732,52 @@ template <typename T, typename Boundary> class BSSNRKStepper {
   private:
     size_t rhs_bulk_padding() const {
         if constexpr (BoundaryPhysicalEvolutionTraits<Boundary>::value) {
-            // Radiative boundaries now evaluate the full PDE on every physical cell using the
-            // refreshed halos. Only the outermost surface receives the explicit Sommerfeld
-            // correction, which avoids evolving a 4-cell-thick Cartesian shell.
+            // Radiative boundaries use per-face padding via boundary_rhs_padding().
             return 0;
         }
         return padding_;
+    }
+
+    static constexpr size_t required_radiative_stencil_collar() noexcept {
+        // The widest RHS stencil is the upwind advection stencil, which reaches four cells
+        // one-sided. The Tensorium physical Sommerfeld collar must cover that region, otherwise
+        // bulk cells consume extrapolated ghosts before the RHS boundary operator replaces them.
+        return size_t(4);
+    }
+
+    size_t effective_radiative_rhs_collar() const {
+        if constexpr (!BoundaryRadiativeRHSTraits<Boundary>::value)
+            return size_t(0);
+        return std::max(BoundaryRadiativeRHSTraits<Boundary>::collar(),
+                        required_radiative_stencil_collar());
+    }
+
+    struct BoundaryRhsPadding {
+        bool active = false;
+        size_t lower[3] = {0, 0, 0};
+        size_t upper[3] = {0, 0, 0};
+    };
+
+    BoundaryRhsPadding boundary_rhs_padding() const {
+        BoundaryRhsPadding out{};
+        if constexpr (!BoundaryRadiativeRHSTraits<Boundary>::value)
+            return out;
+        if (!gauge_params_.apply_rhs_sommerfeld)
+            return out;
+
+        const size_t collar = effective_radiative_rhs_collar();
+        for (int axis = 0; axis < 3; ++axis) {
+            const bool lower_active = BoundaryRadiative::active_enabled(axis, false) &&
+                                      BoundaryRadiative::rhs_sommerfeld_enabled(axis, false) &&
+                                      !BoundaryRadiative::reflective_enabled(axis, false);
+            const bool upper_active = BoundaryRadiative::active_enabled(axis, true) &&
+                                      BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
+                                      !BoundaryRadiative::reflective_enabled(axis, true);
+            out.lower[axis] = lower_active ? collar : size_t(0);
+            out.upper[axis] = upper_active ? collar : size_t(0);
+            out.active = out.active || lower_active || upper_active;
+        }
+        return out;
     }
 
     size_t evolution_padding() const {
@@ -832,13 +872,13 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         if constexpr (BoundaryRadiativeRHSTraits<Boundary>::value) {
             size_t I0, I1, J0, J1, K0, K1;
             grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-            const size_t pad = rhs_bulk_padding();
-            const size_t i0 = std::min(I0 + pad, I1);
-            const size_t i1 = (I1 > pad) ? I1 - pad : I1;
-            const size_t j0 = std::min(J0 + pad, J1);
-            const size_t j1 = (J1 > pad) ? J1 - pad : J1;
-            const size_t k0 = std::min(K0 + pad, K1);
-            const size_t k1 = (K1 > pad) ? K1 - pad : K1;
+            const auto pad = boundary_rhs_padding();
+            const size_t i0 = std::min(I0 + pad.lower[0], I1);
+            const size_t i1 = (I1 > pad.upper[0]) ? I1 - pad.upper[0] : I1;
+            const size_t j0 = std::min(J0 + pad.lower[1], J1);
+            const size_t j1 = (J1 > pad.upper[1]) ? J1 - pad.upper[1] : J1;
+            const size_t k0 = std::min(K0 + pad.lower[2], K1);
+            const size_t k1 = (K1 > pad.upper[2]) ? K1 - pad.upper[2] : K1;
             if (i0 < i1 && j0 < j1 && k0 < k1)
                 compute_ricci_bssn_region(grid, grid.Ricci, i0, i1, j0, j1, k0, k1, false);
         } else {
@@ -912,9 +952,19 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             rhs_prep_callback_(rhs);
         update_ko_scale(grid, boundary_dt_);
         const size_t rhs_padding = rhs_bulk_padding();
-        evaluate_rhs_sweep_core(grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B,
-                                rhs.gamma_tilde, rhs.A_tilde, rhs.tildeGamma, rhs.Z, params,
-                                rhs_padding, &theta_ricciz4_trace_cache_);
+        const auto boundary_padding = boundary_rhs_padding();
+        if (boundary_padding.active) {
+            ScopedInteriorPaddingOverride boundary_scope(
+                boundary_padding.lower[0], boundary_padding.upper[0], boundary_padding.lower[1],
+                boundary_padding.upper[1], boundary_padding.lower[2], boundary_padding.upper[2]);
+            evaluate_rhs_sweep_core(grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B,
+                                    rhs.gamma_tilde, rhs.A_tilde, rhs.tildeGamma, rhs.Z, params,
+                                    rhs_padding, &theta_ricciz4_trace_cache_);
+        } else {
+            evaluate_rhs_sweep_core(grid, rhs.alpha, rhs.chi, rhs.K, rhs.Theta, rhs.beta, rhs.B,
+                                    rhs.gamma_tilde, rhs.A_tilde, rhs.tildeGamma, rhs.Z, params,
+                                    rhs_padding, &theta_ricciz4_trace_cache_);
+        }
         apply_rhs_sommerfeld(grid, rhs);
         apply_rhs_sponge(grid, rhs);
         recompose_rhs_K_from_khat_core(grid, rhs.K, rhs.Theta, evolution_padding());
@@ -935,7 +985,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
                                  BoundaryRadiative::rhs_sommerfeld_enabled(axis, true) &&
                                  !BoundaryRadiative::reflective_enabled(axis, true);
         }
-        constexpr size_t physical_surface_width = 1;
+        const size_t physical_surface_width = effective_radiative_rhs_collar();
         tensorium_RG::bssn::apply_z4c_rhs_boundary(
             grid, rhs, mask, physical_surface_width);
     }
