@@ -34,19 +34,222 @@ def _ensure_tex_binaries_in_path():
 _ensure_tex_binaries_in_path()
 
 
+_VALUE_OPTIONS = {
+    "--alpha-cmap-min",
+    "--alpha-gamma",
+    "--alpha-vmax",
+    "--alpha-vmin",
+    "--conformal-cmap-min",
+    "--conformal-gamma",
+    "--constraint-interp",
+    "--csv-dir",
+    "--data-dir",
+    "--domain-zoom",
+    "--dpi",
+    "--field-interp",
+    "--fps",
+    "--frames-dir",
+    "--horizon-alpha-cutoff",
+    "--horizon-dilate",
+    "--puncture-marker-size",
+    "--single-frame-out",
+    "--smooth-sigma",
+    "--video-codec",
+    "--video-file",
+    "--workers",
+    "--xlim",
+    "--ylim",
+    "--zoom-margin",
+    "--zoom-min-half-width",
+}
+
+
+_HELP_TEXT = """\
+Usage: python3 plot.py [STEP] [OPTIONS]
+
+Plot Tensorium field, constraint, or puncture-tracker data. If STEP is omitted,
+the latest available step is selected. Value options accept both
+"--option VALUE" and "--option=VALUE" forms.
+
+Positional argument:
+  STEP                          Integer simulation step to plot. With --animate
+                                or --video, frames from the first step through
+                                STEP are processed. Default: latest step.
+
+General options:
+  -h, --help                    Show this help message and exit.
+  --data-dir DIR                Read data from DIR. Default: auto-detect under
+                                Output/viz or Output/vis.
+  --csv-dir DIR                 Alias for --data-dir (also accepts HDF5 data).
+  --constraints                 Plot constraint fields instead of evolution
+                                fields. Mutually exclusive with --tracker-drift.
+  --tracker-drift               Plot puncture tracker drift data. Mutually
+                                exclusive with --constraints.
+  --show                        Display the interactive plot even when files are
+                                also being exported.
+
+Animation and export options:
+  --animate                     Animate all frames through the selected STEP.
+  --save-png                    Export PNG frames.
+  --video                       Export PNG frames and encode an MP4 video.
+  --frames-dir DIR              PNG output directory. Default:
+                                DATA_DIR/{fields|constraints|tracker_drift}_frames.
+  --video-file FILE             Video output path. Default:
+                                DATA_DIR/{fields|constraints|tracker_drift}.mp4.
+  --video-codec CODEC           FFmpeg encoder: auto, libx264,
+                                h264_videotoolbox, or another installed encoder.
+                                Default: auto.
+  --fps N                       Video frame rate; values below 1 become 1.
+                                Default: 24.
+  --dpi N                       PNG resolution; values below 72 become 72.
+                                Default: 170.
+  --workers N                   Parallel PNG rendering processes; values below
+                                1 become 1. Default: 1.
+  --single-frame-out FILE       Render only the selected frame to FILE and exit.
+                                Primarily used by parallel rendering workers.
+
+Field rendering options:
+  --smooth-sigma FLOAT          Gaussian smoothing sigma; must be >= 0.
+                                Default: 0 (also forced to 0 for constraints).
+  --no-smooth                   Disable smoothing, overriding --smooth-sigma.
+  --field-interp METHOD         Field image interpolation: none, nearest,
+                                bilinear, bicubic, hanning, or lanczos.
+                                Default: nearest.
+  --constraint-interp METHOD    Matplotlib interpolation used for constraint
+                                images (for example nearest or bilinear).
+                                Default in constraint mode: nearest.
+  --no-auto-clim                Disable automatic color limits and use fixed
+                                limits.
+  --yt-colors                   Use yt profiles for automatic color scaling.
+                                Default: enabled.
+  --no-yt-colors                Use NumPy instead of yt for color scaling.
+  --latex, --usetex             Render text with LaTeX when its binaries exist.
+                                Default: enabled.
+  --no-latex, --no-usetex       Use Matplotlib mathtext instead of LaTeX.
+  --no-contours                 Disable contour overlays.
+
+Horizon and puncture overlays:
+  --horizon-overlay             Shade cells inside the horizon mask.
+  --horizon-alpha-cutoff FLOAT  Also mark cells with alpha <= FLOAT as horizon
+                                cells; a negative value disables this test.
+                                Default: -1.
+  --horizon-dilate N            Dilate the horizon mask by N grid cells; must be
+                                >= 0. Default: 0.
+  --puncture-markers            Show current puncture markers on field plots.
+                                Default: disabled.
+  --no-puncture-markers         Hide current puncture markers.
+  --puncture-marker-size FLOAT  Puncture marker area; must be > 0. Default: 38.
+
+Color controls:
+  --conformal-cmap-min FLOAT    Lower fraction of the turbo colormap; values are
+                                clipped to [0, 1]. Default: 0.02.
+  --conformal-gamma FLOAT       Conformal-field PowerNorm gamma; must be > 0.
+                                Default: selected automatically.
+  --alpha-cmap-min FLOAT        Lower fraction of the magma colormap; values are
+                                clipped to [0, 1]. Default: 0.04.
+  --alpha-vmin FLOAT            Manual lower alpha color limit. Default: 0.
+  --alpha-vmax FLOAT            Manual upper alpha color limit. Default: auto.
+  --alpha-gamma FLOAT           Alpha PowerNorm gamma; must be > 0.
+                                Default: selected automatically.
+
+Zoom controls:
+  --auto-zoom                   Center the view on the current puncture pair.
+  --domain-zoom FLOAT           Additional centered zoom factor; values below 1
+                                become 1. Default: 1.
+  --zoom-margin FLOAT           Margin around an auto-zoomed puncture pair.
+                                Default: 15.
+  --zoom-min-half-width FLOAT   Minimum auto-zoom half-width. Default: 19.
+  --xlim MIN,MAX                Set explicit finite x-axis limits with MIN < MAX.
+                                A colon may be used instead of a comma.
+  --ylim MIN,MAX                Set explicit finite y-axis limits with MIN < MAX.
+                                A colon may be used instead of a comma.
+"""
+
+
+def _split_cli_args(argv):
+    flags = set()
+    values = {}
+    positionals = []
+    i = 0
+    while i < len(argv):
+        token = argv[i]
+        if token.startswith("--"):
+            if "=" in token:
+                name, value = token.split("=", 1)
+                flags.add(name)
+                values[name] = value
+            elif token in _VALUE_OPTIONS:
+                flags.add(token)
+                if i + 1 < len(argv) and not argv[i + 1].startswith("--"):
+                    values[token] = argv[i + 1]
+                    i += 1
+                else:
+                    values[token] = ""
+            else:
+                flags.add(token)
+        else:
+            positionals.append(token)
+        i += 1
+    return flags, values, positionals
+
+
+_cli_flags, _cli_values, _cli_positionals = _split_cli_args(sys.argv[1:])
+if "-h" in sys.argv[1:] or "--help" in _cli_flags:
+    print(_HELP_TEXT, end="")
+    sys.exit(0)
+
+
 def _raw_flag_value(name):
-    prefix = name + "="
-    for token in sys.argv[1:]:
-        if token.startswith(prefix):
-            return token[len(prefix):]
-    return None
+    value = _cli_values.get(name)
+    return value if value else None
 
 
-raw_flags = {a for a in sys.argv[1:] if a.startswith("--")}
+def _raw_float_value(name, env_name, default):
+    raw = _raw_flag_value(name) or os.getenv(env_name)
+    if raw is None:
+        return default
+    try:
+        return float(raw)
+    except ValueError:
+        print(f"[ERR] Invalid value for {name}: {raw}")
+        sys.exit(1)
+
+
+def _raw_int_value(name, env_name, default):
+    raw = _raw_flag_value(name) or os.getenv(env_name)
+    if raw is None:
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        print(f"[ERR] Invalid value for {name}: {raw}")
+        sys.exit(1)
+
+
+def _raw_range_value(name, env_name):
+    raw = _raw_flag_value(name) or os.getenv(env_name)
+    if not raw:
+        return None
+    parts = re.split(r"[:,]", raw)
+    if len(parts) != 2:
+        print(f"[ERR] Invalid range for {name}: {raw}. Expected MIN,MAX.")
+        sys.exit(1)
+    try:
+        lo, hi = float(parts[0]), float(parts[1])
+    except ValueError:
+        print(f"[ERR] Invalid range for {name}: {raw}. Expected numeric MIN,MAX.")
+        sys.exit(1)
+    if not np.isfinite([lo, hi]).all() or hi <= lo:
+        print(f"[ERR] Invalid range for {name}: {raw}. Expected finite MIN < MAX.")
+        sys.exit(1)
+    return lo, hi
+
+
+raw_flags = _cli_flags
 raw_save_png = ("--save-png" in raw_flags) or (os.getenv("TENSORIUM_PLOT_SAVE_PNG", "0") != "0")
 raw_video = ("--video" in raw_flags) or (os.getenv("TENSORIUM_PLOT_VIDEO", "0") != "0")
 raw_show = ("--show" in raw_flags) or (os.getenv("TENSORIUM_PLOT_SHOW", "0") != "0")
-raw_single_frame = any(a.startswith("--single-frame-out=") for a in sys.argv[1:])
+raw_single_frame = _raw_flag_value("--single-frame-out") is not None
 os.environ.setdefault("HDF5_USE_FILE_LOCKING", "FALSE")
 if "MPLCONFIGDIR" not in os.environ:
     os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib-cache"
@@ -65,8 +268,8 @@ try:
 except Exception:
     h5py = None
 
-args = [a for a in sys.argv[1:] if not a.startswith("--")]
-flags = {a for a in sys.argv[1:] if a.startswith("--")}
+args = _cli_positionals
+flags = _cli_flags
 
 constraint_mode = ("--constraints" in flags) or (
     os.getenv("TENSORIUM_PLOT_CONSTRAINTS", "0") != "0"
@@ -98,11 +301,50 @@ latex_requested = ("--latex" in flags) or ("--usetex" in flags) or (
 )
 if ("--no-latex" in flags) or ("--no-usetex" in flags):
     latex_requested = False
-smooth_sigma = 0.0 if (no_smooth or constraint_mode) else 1.0
+smooth_sigma = (
+    0.0
+    if (no_smooth or constraint_mode)
+    else _raw_float_value("--smooth-sigma", "TENSORIUM_PLOT_SMOOTH_SIGMA", 0.0)
+)
+if smooth_sigma < 0.0:
+    print(f"[ERR] Invalid value for --smooth-sigma: {smooth_sigma}. Expected >= 0.")
+    sys.exit(1)
+regular_render_interpolation = (
+    _raw_flag_value("--field-interp") or os.getenv("TENSORIUM_PLOT_FIELD_INTERP", "nearest")
+).strip().lower()
+valid_regular_interpolations = {
+    "none",
+    "nearest",
+    "bilinear",
+    "bicubic",
+    "hanning",
+    "lanczos",
+}
+if regular_render_interpolation not in valid_regular_interpolations:
+    print(
+        f"[ERR] Invalid value for --field-interp: {regular_render_interpolation}. "
+        f"Expected one of {sorted(valid_regular_interpolations)}."
+    )
+    sys.exit(1)
 constraint_render_interpolation = _raw_flag_value("--constraint-interp") or os.getenv(
     "TENSORIUM_PLOT_CONSTRAINT_INTERP",
     "nearest" if constraint_mode else "bilinear",
 )
+horizon_dilate = _raw_int_value("--horizon-dilate", "TENSORIUM_PLOT_HORIZON_DILATE", 0)
+if horizon_dilate < 0:
+    print(f"[ERR] Invalid value for --horizon-dilate: {horizon_dilate}. Expected >= 0.")
+    sys.exit(1)
+puncture_markers_mode = ("--puncture-markers" in flags) or (
+    os.getenv("TENSORIUM_PLOT_PUNCTURE_MARKERS", "0") != "0"
+)
+if "--no-puncture-markers" in flags:
+    puncture_markers_mode = False
+puncture_marker_size = _raw_float_value(
+    "--puncture-marker-size", "TENSORIUM_PLOT_PUNCTURE_MARKER_SIZE", 38.0
+)
+if puncture_marker_size <= 0.0:
+    print(f"[ERR] Invalid value for --puncture-marker-size: {puncture_marker_size}. Expected > 0.")
+    sys.exit(1)
 
 _yt_module = None
 _yt_checked = False
@@ -130,9 +372,16 @@ if latex_requested:
             "matplotlib mathtext."
         )
 
-auto_zoom = False
-zoom_margin = 15.0
-zoom_min_half_width = 19.0
+auto_zoom = ("--auto-zoom" in flags) or (os.getenv("TENSORIUM_PLOT_AUTO_ZOOM", "0") != "0")
+domain_zoom = max(1.0, _raw_float_value("--domain-zoom", "TENSORIUM_PLOT_DOMAIN_ZOOM", 1.0))
+zoom_margin = _raw_float_value("--zoom-margin", "TENSORIUM_PLOT_ZOOM_MARGIN", 15.0)
+zoom_min_half_width = _raw_float_value(
+    "--zoom-min-half-width",
+    "TENSORIUM_PLOT_ZOOM_MIN_HALF_WIDTH",
+    19.0,
+)
+manual_xlim = _raw_range_value("--xlim", "TENSORIUM_PLOT_XLIM")
+manual_ylim = _raw_range_value("--ylim", "TENSORIUM_PLOT_YLIM")
 
 
 def extract_step(path):
@@ -180,12 +429,17 @@ def is_valid_hdf5_file(path):
 
 def require_h5py(path):
     if h5py is None:
-        print(f"[ERR] fichier HDF5 detecte mais h5py est indisponible: {path}")
+        print(f"[ERR] HDF5 file detected but h5py is unavailable: {path}")
         sys.exit(1)
 
 
 def discover_data_dir():
-    explicit_dir = _raw_flag_value("--data-dir") or os.getenv("TENSORIUM_PLOT_DATA_DIR")
+    explicit_dir = (
+        _raw_flag_value("--csv-dir")
+        or _raw_flag_value("--data-dir")
+        or os.getenv("TENSORIUM_PLOT_CSV_DIR")
+        or os.getenv("TENSORIUM_PLOT_DATA_DIR")
+    )
     if explicit_dir:
         return explicit_dir
 
@@ -337,35 +591,44 @@ def load_frame_df(frame_entry):
 data_dir = discover_data_dir()
 slice_files = discover_slice_entries(data_dir)
 constraint_files = discover_constraint_entries(data_dir)
-track_file_h5 = os.path.join(data_dir, "puncture_track.h5")
-track_file_csv = os.path.join(data_dir, "puncture_track.csv")
-if is_valid_hdf5_file(track_file_h5):
-    track_file = track_file_h5
-elif os.path.exists(track_file_csv):
-    track_file = track_file_csv
-else:
-    if os.path.exists(track_file_h5):
-        warn_invalid_hdf5(track_file_h5)
-    track_file = None
-track_df = (
-    load_hdf5_table_df(track_file)
-    if track_file is not None and is_hdf5_path(track_file)
-    else (pd.read_csv(track_file) if track_file is not None and os.path.exists(track_file) else None)
-)
+
+
+def discover_table_file(base_name):
+    h5_path = os.path.join(data_dir, f"{base_name}.h5")
+    csv_path = os.path.join(data_dir, f"{base_name}.csv")
+    if is_valid_hdf5_file(h5_path):
+        return h5_path
+    if os.path.exists(csv_path):
+        return csv_path
+    if os.path.exists(h5_path):
+        warn_invalid_hdf5(h5_path)
+    return None
+
+
+def load_optional_table(path):
+    if path is None or not os.path.exists(path):
+        return None
+    return load_hdf5_table_df(path) if is_hdf5_path(path) else pd.read_csv(path)
+
+
+track_file = discover_table_file("puncture_track")
+minima_track_file = discover_table_file("puncture_track_minima")
+track_df = load_optional_table(track_file)
+minima_track_df = load_optional_table(minima_track_file)
 drift_file = os.path.join(data_dir, "puncture_tracker_drift.csv")
 drift_df = pd.read_csv(drift_file) if os.path.exists(drift_file) else None
 
 if constraint_mode and tracker_drift_mode:
-    print("[ERR] --constraints et --tracker-drift sont exclusifs.")
+    print("[ERR] --constraints and --tracker-drift are mutually exclusive.")
     sys.exit(1)
 
 files = [] if tracker_drift_mode else (constraint_files if constraint_mode else slice_files)
 if tracker_drift_mode:
     if drift_df is None or drift_df.empty:
-        print(f"[ERR] fichier manquant ou vide: {drift_file}")
+        print(f"[ERR] Missing or empty file: {drift_file}")
         sys.exit(1)
     if "step" not in drift_df.columns:
-        print(f"[ERR] colonne 'step' absente dans {drift_file}")
+        print(f"[ERR] Missing 'step' column in {drift_file}")
         sys.exit(1)
     drift_df = drift_df.sort_values("step").drop_duplicates("step", keep="last").reset_index(drop=True)
 else:
@@ -375,7 +638,7 @@ else:
             if constraint_mode
             else "slice_*.csv or slice_*.h5 or slice_step_*_rank_*.csv"
         )
-        print(f"[ERR] aucun fichier {wanted} dans {data_dir}")
+        print(f"[ERR] No {wanted} files found in {data_dir}")
         sys.exit(1)
 
 if tracker_drift_mode:
@@ -388,11 +651,8 @@ else:
 
 
 def parse_flag_value(name, default):
-    prefix = name + "="
-    for token in sys.argv[1:]:
-        if token.startswith(prefix):
-            return token[len(prefix):]
-    return default
+    value = _cli_values.get(name)
+    return value if value else default
 
 
 def parse_int_value(name, default):
@@ -502,17 +762,7 @@ def parse_requested_step():
     if len(args) == 0:
         return None
     if len(args) > 1:
-        print(
-            "Usage: python3 plot.py [step] [--animate] [--save-png] [--video] [--fps=N] "
-            "[--frames-dir=DIR] [--video-file=FILE.mp4] [--video-codec=auto|libx264|h264_videotoolbox] "
-            "[--data-dir=DIR] "
-            "[--workers=N] [--dpi=N] "
-            "[--constraints] [--tracker-drift] [--no-smooth] "
-            "[--constraint-interp=nearest|bilinear] "
-            "[--conformal-cmap-min=N] [--alpha-cmap-min=N] "
-            "[--no-auto-clim] [--yt-colors|--no-yt-colors] [--latex|--no-latex] "
-            "[--no-contours] [--show]"
-        )
+        print("[ERR] Too many positional arguments. Use -h or --help for usage information.")
         sys.exit(1)
     try:
         return int(args[0])
@@ -756,27 +1006,160 @@ def puncture_zoom_window(extent, track_slice):
     return x_min, x_max, y_min, y_max
 
 
-def overlay_track(ax, track_slice):
+def clamp_interval(lo, hi, domain_lo, domain_hi):
+    width = hi - lo
+    domain_width = domain_hi - domain_lo
+    if width >= domain_width:
+        return domain_lo, domain_hi
+    if lo < domain_lo:
+        hi += domain_lo - lo
+        lo = domain_lo
+    if hi > domain_hi:
+        lo -= hi - domain_hi
+        hi = domain_hi
+    return lo, hi
+
+
+def resolve_zoom_window(extent, base_window=None):
+    has_manual_zoom = manual_xlim is not None or manual_ylim is not None
+    if base_window is None and domain_zoom <= 1.0 and not has_manual_zoom:
+        return None
+
+    x_min, x_max, y_min, y_max = base_window or (extent[0], extent[1], extent[2], extent[3])
+
+    if domain_zoom > 1.0:
+        cx = 0.5 * (x_min + x_max)
+        cy = 0.5 * (y_min + y_max)
+        half_x = 0.5 * (x_max - x_min) / domain_zoom
+        half_y = 0.5 * (y_max - y_min) / domain_zoom
+        x_min, x_max = clamp_interval(cx - half_x, cx + half_x, extent[0], extent[1])
+        y_min, y_max = clamp_interval(cy - half_y, cy + half_y, extent[2], extent[3])
+
+    if manual_xlim is not None:
+        x_min, x_max = manual_xlim
+    if manual_ylim is not None:
+        y_min, y_max = manual_ylim
+
+    return x_min, x_max, y_min, y_max
+
+
+def current_track_row(track_slice):
+    if track_slice is None or track_slice.empty:
+        return None
+    return track_slice.iloc[-1]
+
+
+def finite_track_point(row, side):
+    if row is None:
+        return None
+    try:
+        x = float(row[f"x_{side}"])
+        y = float(row[f"y_{side}"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if not np.isfinite([x, y]).all():
+        return None
+    return x, y
+
+
+def draw_marker_pair(ax, row, marker="x", size=38.0, alpha=1.0):
+    ms = max(3.0, float(np.sqrt(size)))
+    for side, color in (("left", "cyan"), ("right", "orange")):
+        point = finite_track_point(row, side)
+        if point is None:
+            continue
+        x, y = point
+        if marker == "o":
+            ax.plot(
+                x,
+                y,
+                marker="o",
+                linestyle="None",
+                markersize=ms,
+                markerfacecolor="none",
+                markeredgecolor=color,
+                markeredgewidth=1.5,
+                alpha=alpha,
+                zorder=13,
+            )
+        else:
+            ax.plot(
+                x,
+                y,
+                marker="x",
+                linestyle="None",
+                markersize=ms,
+                markeredgewidth=1.4,
+                color=color,
+                alpha=alpha,
+                zorder=15,
+            )
+
+
+def overlay_current_punctures(ax, track_row, minima_row):
+    if not puncture_markers_mode:
+        return
+    if minima_row is not None:
+        if track_row is not None:
+            draw_marker_pair(ax, track_row, marker="o", size=0.75 * puncture_marker_size, alpha=0.85)
+        draw_marker_pair(ax, minima_row, marker="x", size=puncture_marker_size, alpha=1.0)
+    elif track_row is not None:
+        draw_marker_pair(ax, track_row, marker="x", size=puncture_marker_size, alpha=1.0)
+
+
+def draw_low_contours(ax, Xg, Yg, field, percentiles, color, linewidth=0.45, alpha=0.46):
+    finite = field[np.isfinite(field)]
+    if finite.size == 0:
+        return
+    levels = np.unique(np.percentile(finite, percentiles))
+    if levels.size == 0:
+        return
+    ax.contour(
+        Xg,
+        Yg,
+        field,
+        levels=levels,
+        colors=color,
+        linewidths=linewidth,
+        alpha=alpha,
+        zorder=9,
+    )
+
+
+def overlay_track(
+    ax,
+    track_slice,
+    left_color="deepskyblue",
+    right_color="orange",
+    linestyle="-",
+    linewidth=1.0,
+    alpha=0.85,
+    marker="o",
+):
     if track_slice is None or track_slice.empty:
         return
     ax.plot(
         track_slice["x_left"],
         track_slice["y_left"],
-        color="deepskyblue",
-        linewidth=1.0,
-        alpha=0.85,
+        color=left_color,
+        linestyle=linestyle,
+        linewidth=linewidth,
+        alpha=alpha,
     )
     ax.plot(
         track_slice["x_right"],
         track_slice["y_right"],
-        color="orange",
-        linewidth=1.0,
-        alpha=0.85,
+        color=right_color,
+        linestyle=linestyle,
+        linewidth=linewidth,
+        alpha=alpha,
     )
-    ax.scatter(track_slice["x_left"].iloc[-1], track_slice["y_left"].iloc[-1], color="cyan", s=20)
-    ax.scatter(
-        track_slice["x_right"].iloc[-1], track_slice["y_right"].iloc[-1], color="orange", s=20
-    )
+    current = current_track_row(track_slice)
+    for side, color in (("left", left_color), ("right", right_color)):
+        point = finite_track_point(current, side)
+        if point is None:
+            continue
+        ax.scatter(point[0], point[1], color=color, marker=marker, s=20, zorder=12)
 
 def update_regular(frame_idx):
     current_file = files[frame_idx]
@@ -818,8 +1201,8 @@ def update_regular(frame_idx):
         )
         if np.isfinite(horizon_alpha_cutoff) and horizon_alpha_cutoff >= 0.0:
             horizon_mask = horizon_mask | (np.isfinite(alpha) & (alpha <= horizon_alpha_cutoff))
-        if np.any(horizon_mask):
-            horizon_mask = binary_dilation(horizon_mask, iterations=1)
+        if horizon_dilate > 0 and np.any(horizon_mask):
+            horizon_mask = binary_dilation(horizon_mask, iterations=horizon_dilate)
         horizon_overlay_alpha = 0.94 * horizon_mask.astype(float)
     else:
         horizon_overlay_alpha = np.zeros_like(alpha_disp)
@@ -858,18 +1241,54 @@ def update_regular(frame_idx):
             conformal_source = "numpy"
             a_source = "numpy"
 
+    # These horizon-like fields have a physical floor at zero; percentile vmin
+    # makes the low-value wells look wider and merge too early.
+    conformal_vmin = 0.0
+    a_vmin = 0.0
+
+    conformal_gamma_override = _raw_float_value(
+        "--conformal-gamma", "TENSORIUM_PLOT_CONFORMAL_GAMMA", None
+    )
+    alpha_vmin_override = _raw_float_value("--alpha-vmin", "TENSORIUM_PLOT_ALPHA_VMIN", None)
+    alpha_vmax_override = _raw_float_value("--alpha-vmax", "TENSORIUM_PLOT_ALPHA_VMAX", None)
+    alpha_gamma_override = _raw_float_value("--alpha-gamma", "TENSORIUM_PLOT_ALPHA_GAMMA", None)
+    if conformal_gamma_override is not None:
+        if conformal_gamma_override <= 0.0:
+            print(f"[ERR] Invalid value for --conformal-gamma: {conformal_gamma_override}. Expected > 0.")
+            sys.exit(1)
+        conformal_gamma = conformal_gamma_override
+        conformal_source = "manual"
+    if alpha_vmin_override is not None:
+        a_vmin = alpha_vmin_override
+        a_source = "manual"
+    if alpha_vmax_override is not None:
+        a_vmax = alpha_vmax_override
+        a_source = "manual"
+    if alpha_gamma_override is not None:
+        if alpha_gamma_override <= 0.0:
+            print(f"[ERR] Invalid value for --alpha-gamma: {alpha_gamma_override}. Expected > 0.")
+            sys.exit(1)
+        a_gamma = alpha_gamma_override
+        a_source = "manual"
+    if a_vmax <= a_vmin:
+        print(
+            f"[ERR] invalid alpha color range: vmin={a_vmin}, vmax={a_vmax}. "
+            "Expected alpha-vmin < alpha-vmax."
+        )
+        sys.exit(1)
+
     conformal_norm = colors.PowerNorm(
         gamma=conformal_gamma, vmin=conformal_vmin, vmax=conformal_vmax
     )
     a_norm = colors.PowerNorm(gamma=a_gamma, vmin=a_vmin, vmax=a_vmax)
     conformal_cmap_min = parse_float_value(
         "--conformal-cmap-min",
-        float(os.getenv("TENSORIUM_PLOT_CONFORMAL_CMAP_MIN", "0.10")),
+        float(os.getenv("TENSORIUM_PLOT_CONFORMAL_CMAP_MIN", "0.02")),
     )
     conformal_cmap = truncated_cmap("turbo", conformal_cmap_min, 1.0)
     alpha_cmap_min = parse_float_value(
         "--alpha-cmap-min",
-        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.18")),
+        float(os.getenv("TENSORIUM_PLOT_ALPHA_CMAP_MIN", "0.04")),
     )
     alpha_cmap = truncated_cmap("magma", alpha_cmap_min, 1.0)
 
@@ -879,7 +1298,8 @@ def update_regular(frame_idx):
         origin="lower",
         cmap=conformal_cmap,
         norm=conformal_norm,
-        interpolation="bilinear",
+        interpolation=regular_render_interpolation,
+        resample=False,
     )
     ax1.imshow(
         np.zeros_like(conformal_disp),
@@ -910,18 +1330,7 @@ def update_regular(frame_idx):
     ax1.set_ylabel(tex(r"$y$", "y"))
     ax1.grid(True, color="white", linestyle="--", linewidth=0.4, alpha=0.35)
     if not contours_off:
-        finite_conformal = conformal_field[np.isfinite(conformal_field)]
-        if finite_conformal.size > 0:
-            conformal_q = np.percentile(finite_conformal, [5.0, 15.0, 30.0])
-            ax1.contour(
-                Xg,
-                Yg,
-                conformal_field,
-                levels=np.unique(conformal_q),
-                colors="white",
-                linewidths=0.55,
-                alpha=0.6,
-            )
+        draw_low_contours(ax1, Xg, Yg, conformal_field, [1.0, 3.0, 8.0], "white")
 
     ax2.imshow(
         alpha_disp,
@@ -929,7 +1338,8 @@ def update_regular(frame_idx):
         origin="lower",
         cmap=alpha_cmap,
         norm=a_norm,
-        interpolation="bilinear",
+        interpolation=regular_render_interpolation,
+        resample=False,
     )
     ax2.imshow(
         np.zeros_like(alpha_disp),
@@ -952,16 +1362,19 @@ def update_regular(frame_idx):
     ax2.set_ylabel(tex(r"$y$", "y"))
     ax2.grid(True, color="white", linestyle="--", linewidth=0.4, alpha=0.35)
     if not contours_off:
-        finite_a = alpha[np.isfinite(alpha)]
-        if finite_a.size > 0:
-            a_q = np.percentile(finite_a, [5.0, 15.0, 30.0])
-            ax2.contour(Xg, Yg, alpha, levels=np.unique(a_q), colors="cyan", linewidths=0.55, alpha=0.55)
+        draw_low_contours(ax2, Xg, Yg, alpha, [1.0, 3.0, 8.0], "cyan", alpha=0.48)
 
     zoom_window = None
     track_slice = None
+    minima_track_slice = None
+    track_row = None
+    minima_row = None
+    has_trajectory = False
     if track_df is not None and not track_df.empty:
         track_slice = track_df[track_df["step"] <= step]
         if not track_slice.empty:
+            has_trajectory = True
+            track_row = current_track_row(track_slice)
             ax3.plot(
                 track_slice["x_left"],
                 track_slice["y_left"],
@@ -976,16 +1389,40 @@ def update_regular(frame_idx):
                 linewidth=1.6,
                 label=tex(r"$\mathcal{P}_{\mathrm{R}}$", "Puncture right"),
             )
-            ax3.scatter(track_slice["x_left"].iloc[-1], track_slice["y_left"].iloc[-1], color="tab:cyan", s=28)
-            ax3.scatter(
-                track_slice["x_right"].iloc[-1],
-                track_slice["y_right"].iloc[-1],
-                color="tab:orange",
-                s=28,
+            draw_marker_pair(ax3, track_row, marker="o", size=28.0, alpha=1.0)
+    if minima_track_df is not None and not minima_track_df.empty:
+        minima_track_slice = minima_track_df[minima_track_df["step"] <= step]
+        if not minima_track_slice.empty:
+            has_trajectory = True
+            minima_row = current_track_row(minima_track_slice)
+            ax3.plot(
+                minima_track_slice["x_left"],
+                minima_track_slice["y_left"],
+                color="tab:cyan",
+                linestyle="--",
+                linewidth=1.1,
+                alpha=0.9,
+                label=tex(r"$\chi\mathrm{-min}_{\mathrm{L}}$", "min left"),
             )
-            ax3.legend(loc="upper right")
-            if auto_zoom:
-                zoom_window = puncture_zoom_window(extent, track_slice)
+            ax3.plot(
+                minima_track_slice["x_right"],
+                minima_track_slice["y_right"],
+                color="tab:orange",
+                linestyle="--",
+                linewidth=1.1,
+                alpha=0.9,
+                label=tex(r"$\chi\mathrm{-min}_{\mathrm{R}}$", "min right"),
+            )
+            draw_marker_pair(ax3, minima_row, marker="x", size=34.0, alpha=1.0)
+
+    overlay_current_punctures(ax1, track_row, minima_row)
+    overlay_current_punctures(ax2, track_row, minima_row)
+
+    if has_trajectory:
+        ax3.legend(loc="upper right")
+        if auto_zoom:
+            zoom_source = minima_track_slice if minima_track_slice is not None and not minima_track_slice.empty else track_slice
+            zoom_window = puncture_zoom_window(extent, zoom_source)
     else:
         ax3.text(
             0.5,
@@ -999,6 +1436,7 @@ def update_regular(frame_idx):
             va="center",
         )
 
+    zoom_window = resolve_zoom_window(extent, zoom_window)
     if zoom_window is not None:
         x_min, x_max, y_min, y_max = zoom_window
         ax1.set_xlim(x_min, x_max)
@@ -1011,7 +1449,21 @@ def update_regular(frame_idx):
         ax3.set_xlim(extent[0], extent[1])
         ax3.set_ylim(extent[2], extent[3])
 
-    ax3.set_title(tex(r"$\mathrm{Puncture\ Trajectories}$", "Puncture Trajectories"))
+    separation = None
+    sep_row = minima_row if minima_row is not None else track_row
+    left_point = finite_track_point(sep_row, "left")
+    right_point = finite_track_point(sep_row, "right")
+    if left_point is not None and right_point is not None:
+        separation = float(np.hypot(right_point[0] - left_point[0], right_point[1] - left_point[1]))
+    if separation is None:
+        ax3.set_title(tex(r"$\mathrm{Puncture\ Trajectories}$", "Puncture Trajectories"))
+    else:
+        ax3.set_title(
+            tex(
+                rf"$\mathrm{{Puncture\ Trajectories}}\quad d={separation:.3g}$",
+                f"Puncture Trajectories  d={separation:.3g}",
+            )
+        )
     ax3.set_aspect("equal")
     ax3.set_xlabel(tex(r"$x$", "x"))
     ax3.set_ylabel(tex(r"$y$", "y"))
@@ -1168,14 +1620,33 @@ def update_constraints(frame_idx):
 
     zoom_window = None
     track_slice = None
+    minima_track_slice = None
     if track_df is not None and not track_df.empty:
         track_slice = track_df[track_df["step"] <= step]
-        if auto_zoom and not track_slice.empty:
-            zoom_window = puncture_zoom_window(extent, track_slice)
+    if minima_track_df is not None and not minima_track_df.empty:
+        minima_track_slice = minima_track_df[minima_track_df["step"] <= step]
+    if auto_zoom:
+        zoom_source = None
+        if minima_track_slice is not None and not minima_track_slice.empty:
+            zoom_source = minima_track_slice
+        elif track_slice is not None and not track_slice.empty:
+            zoom_source = track_slice
+        if zoom_source is not None:
+            zoom_window = puncture_zoom_window(extent, zoom_source)
 
+    zoom_window = resolve_zoom_window(extent, zoom_window)
     for ax in (ax1, ax2, ax3, ax4):
         if track_slice is not None and not track_slice.empty:
             overlay_track(ax, track_slice)
+        if minima_track_slice is not None and not minima_track_slice.empty:
+            overlay_track(
+                ax,
+                minima_track_slice,
+                linestyle="--",
+                linewidth=0.9,
+                alpha=0.9,
+                marker="x",
+            )
         if zoom_window is not None:
             x_min, x_max, y_min, y_max = zoom_window
             ax.set_xlim(x_min, x_max)
@@ -1324,10 +1795,10 @@ def resolve_step_index(requested_step, step_to_index):
             kind = "tracker_drift"
         else:
             kind = "constraint_slice" if constraint_mode else "slice"
-        print(f"[ERR] {kind} step={requested_step} introuvable.")
+        print(f"[ERR] {kind} step={requested_step} was not found.")
         if available_steps:
             print(
-                f"Steps disponibles: {available_steps[0]} .. {available_steps[-1]} "
+                f"Available steps: {available_steps[0]} .. {available_steps[-1]} "
                 f"(n={len(available_steps)})"
             )
         sys.exit(1)
@@ -1365,6 +1836,41 @@ def build_child_render_command(step, out_path, dpi):
         cmd.append("--tracker-drift")
     if constraint_mode:
         cmd.append("--constraints")
+    if horizon_overlay_mode:
+        cmd.append("--horizon-overlay")
+    if puncture_markers_mode:
+        cmd.append("--puncture-markers")
+    else:
+        cmd.append("--no-puncture-markers")
+    if auto_zoom:
+        cmd.append("--auto-zoom")
+    if domain_zoom > 1.0:
+        cmd.append(f"--domain-zoom={domain_zoom}")
+    if zoom_margin != 15.0:
+        cmd.append(f"--zoom-margin={zoom_margin}")
+    if zoom_min_half_width != 19.0:
+        cmd.append(f"--zoom-min-half-width={zoom_min_half_width}")
+    if manual_xlim is not None:
+        cmd.append(f"--xlim={manual_xlim[0]},{manual_xlim[1]}")
+    if manual_ylim is not None:
+        cmd.append(f"--ylim={manual_ylim[0]},{manual_ylim[1]}")
+    for name in (
+        "--alpha-vmin",
+        "--alpha-vmax",
+        "--alpha-gamma",
+        "--alpha-cmap-min",
+        "--conformal-cmap-min",
+        "--conformal-gamma",
+        "--constraint-interp",
+        "--field-interp",
+        "--horizon-alpha-cutoff",
+        "--horizon-dilate",
+        "--puncture-marker-size",
+        "--smooth-sigma",
+    ):
+        value = _raw_flag_value(name)
+        if value is not None:
+            cmd.append(f"{name}={value}")
     if no_smooth:
         cmd.append("--no-smooth")
     if no_auto_clim:
@@ -1454,7 +1960,7 @@ def choose_video_codec(ffmpeg, requested_codec):
 def build_video_with_ffmpeg(frames_dir, out_file, fps, requested_codec="auto"):
     ffmpeg = shutil.which("ffmpeg")
     if ffmpeg is None:
-        print("[ERR] ffmpeg introuvable. Installe ffmpeg pour exporter la video.")
+        print("[ERR] ffmpeg was not found. Install ffmpeg to export video.")
         return False
 
     out_parent = os.path.dirname(out_file)
@@ -1491,17 +1997,17 @@ def build_video_with_ffmpeg(frames_dir, out_file, fps, requested_codec="auto"):
 
     # Robust fallback: if GPU codec fails, retry with libx264.
     if codec != "libx264":
-        print(f"[warn] codec {codec} a echoue, fallback libx264")
+        print(f"[warn] codec {codec} failed; falling back to libx264")
         proc2 = run_encode("libx264")
         if proc2.returncode == 0:
             print(f"[OK ] video: {out_file} (codec=libx264)")
             return True
-        print("[ERR] ffmpeg a echoue (codec primaire + fallback):")
+        print("[ERR] ffmpeg failed with both the primary codec and the fallback:")
         print(proc.stdout)
         print(proc2.stdout)
         return False
 
-    print("[ERR] ffmpeg a echoue:")
+    print("[ERR] ffmpeg failed:")
     print(proc.stdout)
     return False
 
@@ -1557,7 +2063,7 @@ if save_png_mode or video_mode:
     print(f"[OK ] PNG export: {len(written)} frames in {frames_dir}")
     if video_mode:
         if len(written) < 2:
-            print("[warn] video non creee: il faut au moins 2 frames.")
+            print("[warn] Video was not created: at least 2 frames are required.")
         else:
             build_video_with_ffmpeg(frames_dir, video_file, fps, video_codec)
 

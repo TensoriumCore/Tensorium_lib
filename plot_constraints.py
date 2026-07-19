@@ -10,6 +10,33 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
+DEFAULT_CSV = "Output/viz/constraints_norms.csv"
+DEFAULT_OUT = "Output/viz/constraints_norms.png"
+
+
+def option_was_provided(argv, name):
+    prefix = name + "="
+    return any(token == name or token.startswith(prefix) for token in argv)
+
+
+def resolve_csv_dir(args):
+    if not args.csv_dir:
+        return args
+
+    csv_provided = option_was_provided(sys.argv[1:], "--csv")
+    out_provided = option_was_provided(sys.argv[1:], "--out")
+
+    if not csv_provided:
+        args.csv = os.path.join(args.csv_dir, os.path.basename(DEFAULT_CSV))
+    elif not os.path.isabs(args.csv) and not os.path.dirname(args.csv):
+        args.csv = os.path.join(args.csv_dir, args.csv)
+
+    if not out_provided:
+        args.out = os.path.join(args.csv_dir, os.path.basename(DEFAULT_OUT))
+
+    return args
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Plot BSSN constraint norms exported during moving puncture runs."
@@ -23,12 +50,19 @@ def parse_args():
     )
     parser.add_argument(
         "--csv",
-        default="Output/viz/constraints_norms.csv",
+        default=DEFAULT_CSV,
         help="Path to constraints CSV file.",
     )
     parser.add_argument(
+        "--csv-dir",
+        "--data-dir",
+        dest="csv_dir",
+        default=None,
+        help="Directory containing constraints_norms.csv.",
+    )
+    parser.add_argument(
         "--out",
-        default="Output/viz/constraints_norms.png",
+        default=DEFAULT_OUT,
         help="Output image path.",
     )
     parser.add_argument(
@@ -42,7 +76,7 @@ def parse_args():
         action="store_true",
         help="Display the figure interactively after saving.",
     )
-    return parser.parse_args()
+    return resolve_csv_dir(parser.parse_args())
 
 
 def main():
