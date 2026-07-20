@@ -37,17 +37,11 @@ namespace tensorium_RG {
  * - Zero-cost reset for temporal reuse
  */
 
-// ============================================================================
-// Forward declarations
-// ============================================================================
 
 template <typename T> class PooledBlock;
 template <typename T> class MemoryPool;
 template <typename T> class ArenaAllocator;
 
-// ============================================================================
-// Pool Statistics
-// ============================================================================
 
 struct PoolStats {
     std::atomic<size_t> total_allocated{0};     ///< Total bytes allocated from system
@@ -80,9 +74,6 @@ struct PoolStats {
     }
 };
 
-// ============================================================================
-// Aligned Arena - Single contiguous aligned memory block
-// ============================================================================
 
 /**
  * @brief A single contiguous block of aligned memory.
@@ -190,9 +181,6 @@ private:
     std::atomic<size_t> offset_{0};
 };
 
-// ============================================================================
-// Slab - Fixed-size block pool for specific grid dimensions
-// ============================================================================
 
 /**
  * @brief Pool of fixed-size blocks for a specific grid configuration.
@@ -333,9 +321,6 @@ private:
     std::mutex mutex_;
 };
 
-// ============================================================================
-// Memory Pool - Main interface for grid allocations
-// ============================================================================
 
 /**
  * @brief High-level memory pool for BSSN/FMR grid allocations.
@@ -492,9 +477,6 @@ private:
     PoolStats stats_;
 };
 
-// ============================================================================
-// Global Pool Access
-// ============================================================================
 
 /**
  * @brief Get the global memory pool instance.
@@ -506,9 +488,6 @@ inline MemoryPool<T>& global_pool() {
     return instance;
 }
 
-// ============================================================================
-// Pool-aware unique pointer
-// ============================================================================
 
 /**
  * @brief Deleter that returns memory to the pool.
@@ -548,9 +527,6 @@ inline pooled_ptr<T> pool_alloc(MemoryPool<T>& pool, size_t n) {
     return pooled_ptr<T>(ptr, PoolDeleter<T>{n, &pool});
 }
 
-// ============================================================================
-// Scoped Pool Reset
-// ============================================================================
 
 /**
  * @brief RAII wrapper to reset pool at scope exit.
