@@ -1088,10 +1088,11 @@ REGISTER_TEST("z4c.evolution.radiative_boundary_shells_are_evolved",
 
     TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_face]));
     TENSORIUM_TEST_ASSERT(std::isfinite(grid.alpha.ptr()[idx_shell3]));
-    tensorium::tests::expect_le(grid.alpha.ptr()[idx_face], alpha_face_before + 1.0e-12,
-                                "Radiative surface cell stays bounded by the asymptotic state");
-    tensorium::tests::expect_le(grid.alpha.ptr()[idx_shell3], alpha_shell3_before + 1.0e-12,
-                                "Inner collar cell stays bounded by the asymptotic state");
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[idx_face] - alpha_face_before), 1.0e-3,
+                                "Radiative surface cell stays controlled by the boundary RHS");
+    tensorium::tests::expect_le(std::abs(grid.alpha.ptr()[idx_shell3] - alpha_shell3_before),
+                                1.0e-3,
+                                "Inner collar cell stays controlled by the boundary RHS");
 });
 
 REGISTER_TEST("z4c.evolution.radiative_bulk_rhs_reaches_boundary_without_sommerfeld",

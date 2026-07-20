@@ -318,8 +318,8 @@ Sommerfeld operator near boundary surfaces:
 - the operator mirrors GRChombo's local Cartesian Sommerfeld form on every boundary point:
   - `rhs(u) = -sum_i (\partial_i u) x^i / r + (u_inf - u) / r`
   - one-sided second-order derivatives are used on the outermost grid cells
-- the bulk RHS sweep still runs on every physical cell using refreshed halos, so the explicit
-  Sommerfeld pass only replaces the outermost surface rather than a 4-cell-thick physical shell
+- the bulk RHS sweep skips active radiative faces by the effective Sommerfeld collar, so cells whose
+  high-order stencils would touch extrapolated ghosts are replaced by the outgoing RHS instead
 - `K` is still treated through `Khat = K - 2 Theta` internally, then recomposed after the RHS pass
 - Tensorium still does not evolve GRChombo-style grown-grid boundary ghosts, so the outermost
   physical surface remains the closest analogue to GRChombo's RHS boundary fill
@@ -351,7 +351,8 @@ The Lichnerowicz solver is red-black SOR on a 2nd-order Laplacian discretization
 
 - If `TENSORIUM_HAS_TWOPUNCTURES_C` is enabled:
   - solve external spectral puncture backend
-  - required upstream Two-Punctures code: `https://github.com/GRTLCollaboration/TwoPunctures.git`
+  - required upstream TwoPuncturesC code: `https://bitbucket.org/bernuzzi/twopuncturesc/src/master/`
+  - expected dependency checkout: `git clone https://bitbucket.org/bernuzzi/twopuncturesc.git ../TwoPuncturesC`
   - interpolate to Cartesian grid
   - map into BSSN state and reproject
 - Otherwise:
@@ -537,7 +538,8 @@ Moving-puncture boundary safety knobs:
 - `TENSORIUM_MOVING_PUNCTURE_ALLOW_REFLECTIVE_BC=1` is now required to opt into reflective faces.
 - `TENSORIUM_MOVING_PUNCTURE_FAIL_ON_GAUGE_BC_MISMATCH=1` turns the boundary characteristic
   warning into a hard error when a face has no radiative gauge-speed budget.
-- `TENSORIUM_MOVING_PUNCTURE_ENABLE_SPONGE=0/1` toggles the outer sponge layer.
+- `TENSORIUM_MOVING_PUNCTURE_ENABLE_SPONGE=0/1` toggles the optional outer sponge layer. It is off
+  by default for GRChombo-style moving-puncture runs.
 - `TENSORIUM_MOVING_PUNCTURE_SPONGE_WIDTH`, `..._SPONGE_STRENGTH`, `..._SPONGE_EXPONENT`
   tune the damping profile.
 - `TENSORIUM_MOVING_PUNCTURE_RADIATIVE_COLLAR_WIDTH` controls how many physical layers near each

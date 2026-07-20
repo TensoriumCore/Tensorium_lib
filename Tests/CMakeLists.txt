@@ -39,6 +39,7 @@ set(TEST_Z4C_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/GammaEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/GaugeEvolutionTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/FMRHierarchyTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/MovingPunctureEccentricityControlTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/CCZ4SchwarzschildStabilityTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/RHSHaloSentinelTests.cpp)
 

@@ -147,22 +147,49 @@ REGISTER_TEST("z4c.fmr.moving_puncture_env_defaults_twopunctures_to_target_masse
     TENSORIUM_TEST_ASSERT(cfg.tp_calculate_target_masses);
 });
 
-REGISTER_TEST("z4c.fmr.moving_puncture_env_disables_rhs_sommerfeld_by_default",
-              "Moving-puncture preset leaves the explicit RHS Sommerfeld surface operator disabled",
+REGISTER_TEST("z4c.fmr.moving_puncture_env_enables_rhs_sommerfeld_by_default",
+              "Moving-puncture preset enables the explicit RHS Sommerfeld surface operator",
               []() {
+    const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
+
+    TENSORIUM_TEST_ASSERT(cfg.gauge_params.apply_rhs_sommerfeld);
+});
+
+REGISTER_TEST("z4c.fmr.moving_puncture_env_can_disable_rhs_sommerfeld",
+              "Moving-puncture env can disable the explicit RHS Sommerfeld surface operator",
+              []() {
+    const ScopedEnvVar apply_rhs_sommerfeld("TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", "0");
+
     const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
 
     TENSORIUM_TEST_ASSERT(!cfg.gauge_params.apply_rhs_sommerfeld);
 });
 
-REGISTER_TEST("z4c.fmr.moving_puncture_env_can_reenable_rhs_sommerfeld",
-              "Moving-puncture env can re-enable the explicit RHS Sommerfeld surface operator",
-              []() {
-    const ScopedEnvVar apply_rhs_sommerfeld("TENSORIUM_MOVING_PUNCTURE_APPLY_RHS_SOMMERFELD", "1");
+REGISTER_TEST("z4c.fmr.moving_puncture_env_parses_eccentricity_control",
+              "Moving-puncture env parses the SpECTRE-like eccentricity-control settings", []() {
+    const ScopedEnvVar enable("TENSORIUM_MOVING_PUNCTURE_ECC_CONTROL", "1");
+    const ScopedEnvVar export_trials("TENSORIUM_MOVING_PUNCTURE_ECC_EXPORT_TRIALS", "1");
+    const ScopedEnvVar iterations("TENSORIUM_MOVING_PUNCTURE_ECC_ITERATIONS", "3");
+    const ScopedEnvVar trial_steps("TENSORIUM_MOVING_PUNCTURE_ECC_TRIAL_STEPS", "900");
+    const ScopedEnvVar fit_tmin("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMIN", "4.5");
+    const ScopedEnvVar fit_tmax("TENSORIUM_MOVING_PUNCTURE_ECC_FIT_TMAX", "12.0");
+    const ScopedEnvVar tangential_gain("TENSORIUM_MOVING_PUNCTURE_ECC_TANGENTIAL_GAIN", "0.8");
+    const ScopedEnvVar radial_gain("TENSORIUM_MOVING_PUNCTURE_ECC_RADIAL_GAIN", "1.2");
 
     const auto cfg = tensorium_RG::z4c::load_moving_puncture_env();
 
-    TENSORIUM_TEST_ASSERT(cfg.gauge_params.apply_rhs_sommerfeld);
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.enabled);
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.export_trials);
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.iterations == size_t(3));
+    TENSORIUM_TEST_ASSERT(cfg.ecc_control.trial_steps == size_t(900));
+    tensorium::tests::expect_near(cfg.ecc_control.fit_tmin, 4.5, 1.0e-15,
+                                  "ecc control fit_tmin");
+    tensorium::tests::expect_near(cfg.ecc_control.fit_tmax, 12.0, 1.0e-15,
+                                  "ecc control fit_tmax");
+    tensorium::tests::expect_near(cfg.ecc_control.tangential_gain, 0.8, 1.0e-15,
+                                  "ecc control tangential gain");
+    tensorium::tests::expect_near(cfg.ecc_control.radial_gain, 1.2, 1.0e-15,
+                                  "ecc control radial gain");
 });
 
 REGISTER_TEST("z4c.fmr.restriction_averages_linear_fields_back_to_coarse",

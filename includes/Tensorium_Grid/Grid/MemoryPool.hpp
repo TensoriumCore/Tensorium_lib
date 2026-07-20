@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <deque>
 #include <memory>
 #include <mutex>
 #include <new>
@@ -306,7 +307,7 @@ private:
     }
 
     void grow(size_t num_blocks) {
-        const size_t arena_size = block_size_ * num_blocks;
+        const size_t arena_size = aligned_block_size() * num_blocks;
         arenas_.emplace_back(arena_size);
         auto& arena = arenas_.back();
 
@@ -319,9 +320,14 @@ private:
         }
     }
 
+    [[nodiscard]] size_t aligned_block_size() const noexcept {
+        const size_t elem_alignment = std::max<size_t>(size_t(1), TENSORIUM_ALIGN / sizeof(T));
+        return ((block_size_ + elem_alignment - size_t(1)) / elem_alignment) * elem_alignment;
+    }
+
     size_t block_size_;
     std::vector<AlignedArena<T>> arenas_;
-    std::vector<Block> blocks_;
+    std::deque<Block> blocks_;
     Block* free_list_ = nullptr;
     size_t active_count_ = 0;
     std::mutex mutex_;
@@ -354,7 +360,8 @@ public:
         std::lock_guard<std::mutex> lock(mutex_);
 
         for (const auto& [size, count] : sizes) {
-            auto& slab = get_or_create_slab_unlocked(size);
+            const size_t aligned_size = align_size(size);
+            auto& slab = get_or_create_slab_unlocked(aligned_size);
             // Pre-warm by acquiring and releasing
             std::vector<T*> blocks;
             blocks.reserve(count);
@@ -364,7 +371,7 @@ public:
             for (T* ptr : blocks) {
                 slab.release(ptr);
             }
-            stats_.total_allocated.fetch_add(size * count * sizeof(T),
+            stats_.total_allocated.fetch_add(aligned_size * count * sizeof(T),
                                               std::memory_order_relaxed);
         }
         stats_.arena_count.store(slabs_.size(), std::memory_order_relaxed);

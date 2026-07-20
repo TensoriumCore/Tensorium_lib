@@ -46,6 +46,7 @@ _VALUE_OPTIONS = {
     "--data-dir",
     "--domain-zoom",
     "--dpi",
+    "--field-vmin-quantile",
     "--field-interp",
     "--fps",
     "--frames-dir",
@@ -115,6 +116,9 @@ Field rendering options:
   --field-interp METHOD         Field image interpolation: none, nearest,
                                 bilinear, bicubic, hanning, or lanczos.
                                 Default: nearest.
+  --field-vmin-quantile FLOAT   Lower percentile fraction used for field color
+                                scaling when yt colors are disabled.
+                                Clipped to [0, 0.20]. Default: 0.002.
   --constraint-interp METHOD    Matplotlib interpolation used for constraint
                                 images (for example nearest or bilinear).
                                 Default in constraint mode: nearest.
@@ -326,6 +330,17 @@ if regular_render_interpolation not in valid_regular_interpolations:
         f"Expected one of {sorted(valid_regular_interpolations)}."
     )
     sys.exit(1)
+field_vmin_quantile = min(
+    0.20,
+    max(
+        0.0,
+        _raw_float_value(
+            "--field-vmin-quantile",
+            "TENSORIUM_PLOT_FIELD_VMIN_QUANTILE",
+            0.002,
+        ),
+    ),
+)
 constraint_render_interpolation = _raw_flag_value("--constraint-interp") or os.getenv(
     "TENSORIUM_PLOT_CONSTRAINT_INTERP",
     "nearest" if constraint_mode else "bilinear",
@@ -930,13 +945,15 @@ def profile_quantiles(A, field_name, quantiles):
     return np.quantile(finite, q), "numpy"
 
 
-def profiled_clim(A, field_name, vmax_floor, vmax_cap, default_gamma):
-    qs, source = profile_quantiles(A, field_name, [0.02, 0.50, 0.995])
+def profiled_clim(A, field_name, vmax_floor, vmax_cap, default_gamma, vmin_quantile=None):
+    if vmin_quantile is None:
+        vmin_quantile = field_vmin_quantile
+    qs, source = profile_quantiles(A, field_name, [vmin_quantile, 0.50, 0.995])
     if qs is None:
         return 0.0, max(vmax_floor, 1.0), default_gamma, source
 
-    q02, q50, q995 = [float(v) for v in qs]
-    vmin = max(0.0, q02)
+    qmin, q50, q995 = [float(v) for v in qs]
+    vmin = max(0.0, qmin)
     vmax = q995
     if not np.isfinite(vmax) or vmax <= 0.0:
         vmax = float(np.max(A[np.isfinite(A)]))
@@ -1232,10 +1249,22 @@ def update_regular(frame_idx):
             )
         else:
             conformal_vmin, conformal_vmax = horizon_clim(
-                conformal_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.8, vmax_cap=1.2
+                conformal_disp,
+                lo=100.0 * field_vmin_quantile,
+                hi=99.7,
+                fallback=(0.0, 1.0),
+                vmin_floor=0.0,
+                vmax_floor=0.8,
+                vmax_cap=1.2,
             )
             a_vmin, a_vmax = horizon_clim(
-                alpha_disp, lo=1.0, hi=99.7, fallback=(0.0, 1.0), vmin_floor=0.0, vmax_floor=0.7, vmax_cap=1.1
+                alpha_disp,
+                lo=100.0 * field_vmin_quantile,
+                hi=99.7,
+                fallback=(0.0, 1.0),
+                vmin_floor=0.0,
+                vmax_floor=0.7,
+                vmax_cap=1.1,
             )
             conformal_gamma, a_gamma = 0.55, 0.62
             conformal_source = "numpy"

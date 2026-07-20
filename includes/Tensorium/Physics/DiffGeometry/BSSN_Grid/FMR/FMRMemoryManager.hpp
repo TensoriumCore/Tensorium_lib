@@ -4,7 +4,9 @@
 #include "BSSNFixedMeshRefinement.hpp"
 
 #include <chrono>
+#include <cstdio>
 #include <memory>
+#include <tuple>
 #include <vector>
 
 /**
