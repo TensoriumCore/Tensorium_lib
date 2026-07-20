@@ -22,6 +22,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace {
 
@@ -919,6 +920,54 @@ void compute_constraint_slice_fields(Grid &grid, ConstraintScratch &scratch) {
     tensorium_RG::z4c::compute_z4c_constraints(grid, grid.Ricci, scratch.H, scratch.M, scratch.C,
                                                0.0, std::numeric_limits<double>::max(), 0.0, 0.0,
                                                0.0, false);
+}
+
+
+template <typename TimePoint>
+double elapsed_seconds(const TimePoint &start, const TimePoint &stop) {
+    return std::chrono::duration<double>(stop - start).count();
+}
+
+template <typename PerformanceRange>
+void log_fmr_step_performance(size_t step, size_t stride, const PerformanceRange &perf) {
+    if (stride == 0 || (step % stride) != 0)
+        return;
+    for (size_t level = 0; level < perf.size(); ++level) {
+        const auto &stats = perf[level];
+        const double total_seconds = stats.snapshot_seconds + stats.evolve_seconds +
+                                     stats.child_subcycling_seconds + stats.restriction_seconds;
+        std::cout << "[fmr.perf] step=" << step
+                  << " level=" << level
+                  << " calls=" << stats.calls
+                  << " child_substeps=" << stats.child_substeps
+                  << " snapshot=" << stats.snapshot_seconds
+                  << " evolve=" << stats.evolve_seconds
+                  << " children=" << stats.child_subcycling_seconds
+                  << " restrict=" << stats.restriction_seconds
+                  << " total=" << total_seconds << std::endl;
+    }
+}
+
+void log_step_timing(double dt, size_t step, size_t total_steps, double time, double wall_seconds,
+                     double evolve_seconds, double constraint_seconds, double export_seconds,
+                     double projection_seconds) {
+    std::printf(
+        "dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
+        dt, step, total_steps, time, wall_seconds, evolve_seconds, constraint_seconds,
+        export_seconds, projection_seconds);
+}
+
+void log_memory_epoch_stats(const tensorium_RG::z4c::fmr::FMRMemoryManager<double> &memory_manager,
+                            size_t step, size_t stride) {
+    if (stride == 0 || (step % stride) != 0)
+        return;
+    const auto &stats = memory_manager.pool().stats();
+    std::cout << "[memory.epoch] step=" << step
+              << " allocs=" << stats.allocation_count.load()
+              << " reuses=" << stats.reuse_count.load()
+              << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
+              << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
+              << std::endl;
 }
 
 void initialize_moving_puncture_level(Grid &grid, const tensorium_RG::z4c::MovingPunctureEnvConfig &cfg,
@@ -1866,10 +1915,6 @@ int main(int argc, char **argv) {
         binary_hierarchy->set_gauge_parameters(params);
         binary_hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
         ConstraintScratch constraint_scratch(*root_state);
-        const auto elapsed_seconds = [](const auto &start, const auto &stop) {
-            return std::chrono::duration<double>(stop - start).count();
-        };
-
         for (size_t n = 0; n < cfg.steps; ++n) {
             memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
@@ -1882,24 +1927,8 @@ int main(int argc, char **argv) {
             const auto evolve_stop = std::chrono::steady_clock::now();
             t += dt;
             const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
-            if (fmr_profile_stride > 0 && ((n + 1) % fmr_profile_stride) == 0) {
-                const auto &perf = binary_hierarchy->last_step_performance();
-                for (size_t level = 0; level < perf.size(); ++level) {
-                    const auto &stats = perf[level];
-                    const double total_seconds =
-                        stats.snapshot_seconds + stats.evolve_seconds +
-                        stats.child_subcycling_seconds + stats.restriction_seconds;
-                    std::cout << "[fmr.perf] step=" << (n + 1)
-                              << " level=" << level
-                              << " calls=" << stats.calls
-                              << " child_substeps=" << stats.child_substeps
-                              << " snapshot=" << stats.snapshot_seconds
-                              << " evolve=" << stats.evolve_seconds
-                              << " children=" << stats.child_subcycling_seconds
-                              << " restrict=" << stats.restriction_seconds
-                              << " total=" << total_seconds << std::endl;
-                }
-            }
+            log_fmr_step_performance(n + 1, fmr_profile_stride,
+                                     binary_hierarchy->last_step_performance());
 
             PuncturePlaneSample puncture_sample =
                 sample_puncture_minima_split(*left_puncture_state, *right_puncture_state);
@@ -2160,30 +2189,15 @@ int main(int argc, char **argv) {
 
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
-            std::printf(
-                "dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
-                dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds, constraint_seconds,
-                export_seconds, projection_seconds);
+            log_step_timing(dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
+                            constraint_seconds, export_seconds, projection_seconds);
 
-            // Periodic memory pool statistics
-            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
-                const auto& stats = memory_manager.pool().stats();
-                std::cout << "[memory.epoch] step=" << (n + 1)
-                          << " allocs=" << stats.allocation_count.load()
-                          << " reuses=" << stats.reuse_count.load()
-                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
-                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
-                          << std::endl;
-            }
+            log_memory_epoch_stats(memory_manager, n + 1, memory_log_stride);
         }
     } else if (use_fmr) {
         hierarchy->set_gauge_parameters(params);
         hierarchy->set_state_log_stride(std::numeric_limits<size_t>::max());
         ConstraintScratch constraint_scratch(*root_state);
-        const auto elapsed_seconds = [](const auto &start, const auto &stop) {
-            return std::chrono::duration<double>(stop - start).count();
-        };
-
         for (size_t n = 0; n < cfg.steps; ++n) {
             memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
@@ -2196,24 +2210,8 @@ int main(int argc, char **argv) {
             const auto evolve_stop = std::chrono::steady_clock::now();
             t += dt;
             const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
-            if (fmr_profile_stride > 0 && ((n + 1) % fmr_profile_stride) == 0) {
-                const auto &perf = hierarchy->last_step_performance();
-                for (size_t level = 0; level < perf.size(); ++level) {
-                    const auto &stats = perf[level];
-                    const double total_seconds =
-                        stats.snapshot_seconds + stats.evolve_seconds +
-                        stats.child_subcycling_seconds + stats.restriction_seconds;
-                    std::cout << "[fmr.perf] step=" << (n + 1)
-                              << " level=" << level
-                              << " calls=" << stats.calls
-                              << " child_substeps=" << stats.child_substeps
-                              << " snapshot=" << stats.snapshot_seconds
-                              << " evolve=" << stats.evolve_seconds
-                              << " children=" << stats.child_subcycling_seconds
-                              << " restrict=" << stats.restriction_seconds
-                              << " total=" << total_seconds << std::endl;
-                }
-            }
+            log_fmr_step_performance(n + 1, fmr_profile_stride,
+                                     hierarchy->last_step_performance());
 
             PuncturePlaneSample puncture_sample = sample_puncture_minima(*puncture_state);
             PuncturePlaneSample puncture_minima = puncture_sample;
@@ -2382,20 +2380,10 @@ int main(int argc, char **argv) {
 
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
-            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
-                        dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
-                        constraint_seconds, export_seconds, projection_seconds);
+            log_step_timing(dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
+                            constraint_seconds, export_seconds, projection_seconds);
 
-            // Periodic memory pool statistics
-            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
-                const auto& stats = memory_manager.pool().stats();
-                std::cout << "[memory.epoch] step=" << (n + 1)
-                          << " allocs=" << stats.allocation_count.load()
-                          << " reuses=" << stats.reuse_count.load()
-                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
-                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
-                          << std::endl;
-            }
+            log_memory_epoch_stats(memory_manager, n + 1, memory_log_stride);
         }
     } else {
         tensorium_RG::z4c::Z4cRKStepper<double, tensorium_RG::z4c::BoundaryRadiative> stepper(
@@ -2403,10 +2391,6 @@ int main(int argc, char **argv) {
         stepper.set_gauge_parameters(params);
         stepper.set_state_log_stride(output_stride);
         ConstraintScratch constraint_scratch(*root_state);
-        const auto elapsed_seconds = [](const auto &start, const auto &stop) {
-            return std::chrono::duration<double>(stop - start).count();
-        };
-
         for (size_t n = 0; n < cfg.steps; ++n) {
             memory_manager.begin_epoch();
             const auto wall_start = std::chrono::steady_clock::now();
@@ -2558,20 +2542,10 @@ int main(int argc, char **argv) {
             const auto wall_stop = std::chrono::steady_clock::now();
             const double wall_seconds = elapsed_seconds(wall_start, wall_stop);
             const double evolve_seconds = elapsed_seconds(evolve_start, evolve_stop);
-            std::printf("dt = %.4e  step=%zu/%zu  t=%.4f  wall=%.3fs  evolve=%.3fs  constraints=%.3fs  export=%.3fs  projection=%.3fs\n",
-                        dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
-                        constraint_seconds, export_seconds, projection_seconds);
+            log_step_timing(dt, n + 1, cfg.steps, t, wall_seconds, evolve_seconds,
+                            constraint_seconds, export_seconds, projection_seconds);
 
-            // Periodic memory pool statistics
-            if (memory_log_stride > 0 && ((n + 1) % memory_log_stride) == 0) {
-                const auto& stats = memory_manager.pool().stats();
-                std::cout << "[memory.epoch] step=" << (n + 1)
-                          << " allocs=" << stats.allocation_count.load()
-                          << " reuses=" << stats.reuse_count.load()
-                          << " in_use_mb=" << (stats.total_in_use.load() / (1024.0 * 1024.0))
-                          << " peak_mb=" << (stats.peak_in_use.load() / (1024.0 * 1024.0))
-                          << std::endl;
-            }
+            log_memory_epoch_stats(memory_manager, n + 1, memory_log_stride);
         }
     }
 
