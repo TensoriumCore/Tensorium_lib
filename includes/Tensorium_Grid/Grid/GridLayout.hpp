@@ -7,7 +7,6 @@
 
 namespace tensorium_RG {
 
-// Forward declaration for pool support
 template <typename T> class MemoryPool;
 
 #ifndef TENSORIUM_ALIGN
@@ -87,7 +86,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
             for (size_t k = K0; k < K1; ++k)
                 f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
     }
-
     for (size_t g = 0; g < D.ng; ++g) {
         const size_t isrc = I0 + g;
         const size_t idst = I1 + g;
@@ -95,7 +93,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
             for (size_t k = K0; k < K1; ++k)
                 f.ptr()[f.idx(idst, j, k)] = f.ptr()[f.idx(isrc, j, k)];
     }
-
     for (size_t g = 0; g < D.ng; ++g) {
         const size_t jsrc = J1 - 1 - g;
         const size_t jdst = J0 - 1 - g;
@@ -103,7 +100,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
             for (size_t k = K0; k < K1; ++k)
                 f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
     }
-
     for (size_t g = 0; g < D.ng; ++g) {
         const size_t jsrc = J0 + g;
         const size_t jdst = J1 + g;
@@ -111,7 +107,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
             for (size_t k = K0; k < K1; ++k)
                 f.ptr()[f.idx(i, jdst, k)] = f.ptr()[f.idx(i, jsrc, k)];
     }
-
     for (size_t g = 0; g < D.ng; ++g) {
         const size_t ksrc = K1 - 1 - g;
         const size_t kdst = K0 - 1 - g;
@@ -119,7 +114,6 @@ template <typename T> inline void halo_periodic(Field3D<T> &f, const GridDims &D
             for (size_t j = J0; j < J1; ++j)
                 f.ptr()[f.idx(i, j, kdst)] = f.ptr()[f.idx(i, j, ksrc)];
     }
-
     for (size_t g = 0; g < D.ng; ++g) {
         const size_t ksrc = K0 + g;
         const size_t kdst = K1 + g;
@@ -206,14 +200,12 @@ template <typename T> inline void halo_linear_extrapolate_full(Field3D<T> &f, co
             const T slope_low = v_in - v_next;
             for (size_t s = 1; s <= D.ng; ++s)
                 set(I0 - s, j, k, v_in + slope_low * static_cast<T>(s));
-
             const T v_hi = get(I1 - 1, j, k);
             const T v_prev = get(I1 - 2, j, k);
             const T slope_high = v_hi - v_prev;
             for (size_t s = 1; s <= D.ng; ++s)
                 set(I1 - 1 + s, j, k, v_hi + slope_high * static_cast<T>(s));
         }
-
     for (size_t i = 0; i < nxTot; ++i)
         for (size_t k = 0; k < nzTot; ++k) {
             const T v_in = get(i, J0, k);
@@ -228,7 +220,6 @@ template <typename T> inline void halo_linear_extrapolate_full(Field3D<T> &f, co
             for (size_t s = 1; s <= D.ng; ++s)
                 set(i, J1 - 1 + s, k, v_hi + slope_high * static_cast<T>(s));
         }
-
     for (size_t i = 0; i < nxTot; ++i)
         for (size_t j = 0; j < nyTot; ++j) {
             const T v_in = get(i, j, K0);
