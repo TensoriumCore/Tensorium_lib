@@ -1,7 +1,11 @@
 ![Nouveau projet](https://github.com/user-attachments/assets/5f75f1f9-999d-410b-971e-ba3bd5e8b5e9)
 # Tensorium_lib
 
-Tensorium_lib is a C++17 scientific computing library focused on high-performance CPU kernels and numerical relativity workflows.
+Tensorium_lib is a C++17 scientific computing library for high-performance numerical relativity on CPUs. It provides the numerical infrastructure required to evolve dynamical spacetimes using the BSSN and Z4c formulations, including 4/6 order finite-difference spatial operators, Runge–Kutta 4 time integration, Kreis-Oliger numerical dissipation and constraint evaluation. 
+
+The library has been used to construct and evolve black-hole spacetimes, from single Schwarzschild punctures to binary moving-puncture configurations (binary Black holes merge), while monitoring the Hamiltonian and momentum constraints, conformal-metric consistency, and convergence of the numerical solution.
+
+Its low-level kernels are designed around explicit memory layouts, SIMD vectorization, multithreading, memory cache and pools and scalable domain decomposition, with the long-term goal of becoming a compact high-performance infrastructure for numerical spacetime evolution, constraint-preserving schemes, gravitational-wave extraction, mesh refinement, and heterogeneous HPC backends.
 
 ## Current scope
 

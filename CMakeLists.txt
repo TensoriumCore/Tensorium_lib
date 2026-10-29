@@ -102,15 +102,12 @@ if (USE_CUDA)
   if (NOT CUDAToolkit_FOUND)
     message(FATAL_ERROR "USE_CUDA=ON but CUDA toolkit not found")
   endif()
-
   add_compile_definitions(TENSORIUM_CUDA)
-
   if (CUDAToolkit_NVCC_EXECUTABLE AND NOT CMAKE_CUDA_COMPILER)
     set(CMAKE_CUDA_COMPILER "${CUDAToolkit_NVCC_EXECUTABLE}" CACHE FILEPATH "CUDA compiler" FORCE)
   endif()
 
   enable_language(CUDA)
-
   set(CMAKE_CUDA_ARCHITECTURES 60 61 70 75 80 86 90)
   string(JOIN "_" TENSORIUM_CUDA_ARCH_LIST ${CMAKE_CUDA_ARCHITECTURES})
   add_compile_definitions(TENSORIUM_CUDA_ARCH_LIST="${TENSORIUM_CUDA_ARCH_LIST}")
@@ -123,9 +120,7 @@ if (USE_CUDA)
 else()
   add_compile_definitions(TENSORIUM_NO_CUDA)
 endif()
-
 include_directories(${CMAKE_SOURCE_DIR}/includes)
-
 set(TENSORIUM_HDF5_FOUND FALSE)
 set(TENSORIUM_HDF5_LIBRARIES "")
 if(USE_HDF5)
@@ -286,15 +281,12 @@ endif()
 if(USE_KNL AND TENSORIUM_HAVE_HBWMALLOC_H AND TENSORIUM_HBW_LIB)
   link_libraries(${TENSORIUM_HBW_LIB})
 endif()
-
 if(BUILD_PLUGINS)
   add_subdirectory(Plugins)
 endif()
-
 if(BUILD_PYBIND)
   add_subdirectory(Pybind)
 endif()
-
 if(BUILD_TESTS)
   enable_testing()
   add_subdirectory(Tests)
