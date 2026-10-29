@@ -531,6 +531,7 @@ inline ChildGeometry make_child_geometry(const BSSNGridSoA<T> &parent, const Lev
     const size_t ratio = cfg.refinement_ratio;
     const double inv_ratio = 1.0 / static_cast<double>(ratio);
     const size_t ng = (cfg.halo_cells == 0) ? parent.dims.ng : cfg.halo_cells;
+    validate_evolution_ghost_width(ng);
 
     ChildGeometry child;
     child.nx = box.nx() * ratio;
@@ -899,7 +900,7 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
 
     static inline void set_context(const Context *ctx) { current_context = ctx; }
     static inline void set_stage_fraction(T fraction) {
-        current_stage_fraction = std::clamp(fraction, T(0), T(1));
+        current_stage_fraction = fraction;
     }
 
     template <typename U>
@@ -924,10 +925,11 @@ template <typename T, typename OuterBoundary = BoundaryRadiative> struct ParentI
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
         U *ptr = field.ptr();
-        const T lambda = std::clamp(current_context->lambda_begin +
-                                        current_stage_fraction *
-                                            (current_context->lambda_end - current_context->lambda_begin),
-                                    T(0), T(1));
+        // The low-storage RK scheme has a stage beyond the end of a substep. The last
+        // fine substep therefore needs linear extrapolation past the parent end state.
+        const T lambda = current_context->lambda_begin +
+                         current_stage_fraction *
+                             (current_context->lambda_end - current_context->lambda_begin);
         const size_t nx_tot = field.st.nx_tot;
         const size_t ny_tot = field.st.ny_tot;
         const size_t nz_tot = field.st.nz_tot;

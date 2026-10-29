@@ -17,7 +17,7 @@
  * \f[
  * \partial_t \hat{K} = \beta^i\partial_i \hat{K} - \gamma^{ij}D_i D_j \alpha +
  * \alpha(\tilde{A}_{ij}\tilde{A}^{ij} + \tfrac{1}{3}K^2) +
- * \alpha\kappa_1(1-\kappa_2)\Theta.
+ * \alpha\kappa_1(1-\kappa_2)\Theta + 2Z^i\partial_i\alpha.
  * \f]
  */
 
@@ -137,6 +137,16 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
 
                 const T d_alpha[3] = {Dx_ptr(p_alpha, sx, inv_12dx), Dy_ptr(p_alpha, sy, inv_12dy),
                                       Dz_ptr(p_alpha, inv_12dz)};
+                T z_over_chi[3];
+                const size_t idx = G.K.idx(i, j, k);
+                recover_z_over_chi_from_gamma_ptr(
+                    G.tildeGamma[0].ptr() + idx, G.tildeGamma[1].ptr() + idx,
+                    G.tildeGamma[2].ptr() + idx, p_gam_inv[0], p_gam_inv[1], p_gam_inv[2],
+                    p_gam_inv[3], p_gam_inv[4], p_gam_inv[5], sx, sy, inv_12dx, inv_12dy,
+                    inv_12dz, z_over_chi);
+                const T z_dot_dalpha = chi_guarded * (z_over_chi[0] * d_alpha[0] +
+                                                       z_over_chi[1] * d_alpha[1] +
+                                                       z_over_chi[2] * d_alpha[2]);
                 const T d_chi[3] = {Dx_ptr(p_chi, sx, inv_12dx), Dy_ptr(p_chi, sy, inv_12dy),
                                     Dz_ptr(p_chi, inv_12dz)};
 
@@ -259,7 +269,7 @@ inline void compute_rhs_K(const BSSNGridSoA<T> &G, Field3D<T> &rhs_K, size_t pad
                                     (KO6_axis_ptr(p_K, 1) - T(2) * KO6_axis_ptr(p_theta, 1));
                 const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss_khat;
 
-                *p_rhs = adv - laplacian + quad + z4c_term + diss_scaled;
+                *p_rhs = adv - laplacian + quad + z4c_term + T(2) * z_dot_dalpha + diss_scaled;
 
                 ++p_K;
                 ++p_alpha;

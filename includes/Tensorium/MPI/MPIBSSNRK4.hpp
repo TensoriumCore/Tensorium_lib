@@ -20,6 +20,21 @@
 
 namespace tensorium::mpi {
 
+template <typename T>
+inline const MPIDomain &validate_mpi_evolution_domain(
+    const MPIDomain &domain, const tensorium_RG::BSSNGridSoA<T> &prototype) {
+    tensorium_RG::bssn::validate_evolution_ghost_width(domain.ng());
+    if (prototype.dims.ng != domain.ng() || prototype.dims.nx != domain.local_nx() ||
+        prototype.dims.ny != domain.local_ny() || prototype.dims.nz != domain.local_nz())
+        throw std::invalid_argument("MPI grid dimensions and ghost width must match the domain");
+    const auto &process_grid = domain.dims();
+    if (domain.global_nx() / size_t(process_grid[0]) < domain.ng() ||
+        domain.global_ny() / size_t(process_grid[1]) < domain.ng() ||
+        domain.global_nz() / size_t(process_grid[2]) < domain.ng())
+        throw std::invalid_argument("MPI local grid dimensions must be at least the ghost width");
+    return domain;
+}
+
 /**
  * @brief MPI-aware RK4 stepper for distributed BSSN evolution.
  * @tparam T Floating-point type (float or double).
@@ -44,7 +59,7 @@ template <typename T> class MPIBSSNRKStepper {
      * @param padding Interior padding for stencils.
      */
     MPIBSSNRKStepper(const MPIDomain &domain, const GridType &prototype, size_t padding = 4)
-        : domain_(domain),
+        : domain_(validate_mpi_evolution_domain(domain, prototype)),
           padding_(padding),
           reductions_(domain),
           boundary_(domain, prototype.alpha.st, domain.local_nx(), domain.local_ny(),
@@ -112,6 +127,7 @@ template <typename T> class MPIBSSNRKStepper {
      * @param step_index Current step number (for diagnostics).
      */
     void step(GridType &grid, T dt, size_t step_index = 0) {
+        validate_mpi_evolution_domain(domain_, grid);
         static constexpr std::array<double, 4> gam0_ref = {0.0, 0.121098479554482,
                                                            -3.843833699660025, 0.546370891121863};
         static constexpr std::array<double, 4> gam1_ref = {1.0, 0.721781678111411,
@@ -133,7 +149,7 @@ template <typename T> class MPIBSSNRKStepper {
             prepare_state_for_rhs(grid);
 
             auto stage_params = gauge_params_;
-            stage_params.current_time = simulation_time_;
+            stage_params.current_time = simulation_time_ + T(tensorium_RG::bssn::rk_stage_times[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stage_rhs_, stage_params);
 
@@ -216,24 +232,7 @@ template <typename T> class MPIBSSNRKStepper {
     static InteriorRegion ricci_region(const GridType &grid) {
         size_t I0, I1, J0, J1, K0, K1;
         grid.domain_bounds(I0, I1, J0, J1, K0, K1);
-        return InteriorRegion{std::min(I0 + size_t(3), I1), (I1 > 3) ? I1 - 3 : I0,
-                              std::min(J0 + size_t(3), J1), (J1 > 3) ? J1 - 3 : J0,
-                              std::min(K0 + size_t(3), K1), (K1 > 3) ? K1 - 3 : K0};
-    }
-
-    static InteriorRegion shrink_region(const InteriorRegion &region, size_t padding) {
-        return InteriorRegion{std::min(region.i0 + padding, region.i1),
-                              (region.i1 > padding) ? region.i1 - padding : region.i0,
-                              std::min(region.j0 + padding, region.j1),
-                              (region.j1 > padding) ? region.j1 - padding : region.j0,
-                              std::min(region.k0 + padding, region.k1),
-                              (region.k1 > padding) ? region.k1 - padding : region.k0};
-    }
-
-    static InteriorRegion intersect_region(const InteriorRegion &lhs, const InteriorRegion &rhs) {
-        return InteriorRegion{std::max(lhs.i0, rhs.i0), std::min(lhs.i1, rhs.i1),
-                              std::max(lhs.j0, rhs.j0), std::min(lhs.j1, rhs.j1),
-                              std::max(lhs.k0, rhs.k0), std::min(lhs.k1, rhs.k1)};
+        return InteriorRegion{I0, I1, J0, J1, K0, K1};
     }
 
     size_t physical_boundary_padding(bool enabled) const noexcept {
@@ -251,67 +250,23 @@ template <typename T> class MPIBSSNRKStepper {
             physical_boundary_padding(domain_.is_boundary_z_plus()));
     }
 
-    template <typename Fn>
-    static void for_each_shell_region(const InteriorRegion &outer, const InteriorRegion &inner,
-                                      Fn &&fn) {
-        if (outer.empty()) {
-            return;
-        }
-
-        const InteriorRegion core = intersect_region(outer, inner);
-        if (core.empty()) {
-            fn(outer);
-            return;
-        }
-
-        auto emit = [&](size_t i0, size_t i1, size_t j0, size_t j1, size_t k0, size_t k1) {
-            const InteriorRegion region{i0, i1, j0, j1, k0, k1};
-            if (!region.empty()) {
-                fn(region);
-            }
-        };
-
-        emit(outer.i0, core.i0, outer.j0, outer.j1, outer.k0, outer.k1);
-        emit(core.i1, outer.i1, outer.j0, outer.j1, outer.k0, outer.k1);
-        emit(core.i0, core.i1, outer.j0, core.j0, outer.k0, outer.k1);
-        emit(core.i0, core.i1, core.j1, outer.j1, outer.k0, outer.k1);
-        emit(core.i0, core.i1, core.j0, core.j1, outer.k0, core.k0);
-        emit(core.i0, core.i1, core.j0, core.j1, core.k1, outer.k1);
-    }
-
     void prepare_state_for_rhs(GridType &grid) {
         enforce_floors(grid);
         tensorium_RG::bssn::BoundaryRadiative::set_characteristic(1.0, double(boundary_dt_));
 
         const InteriorRegion algebraic_outer = total_region(grid);
-        const InteriorRegion algebraic_core = shrink_region(algebraic_outer, domain_.ng());
         const InteriorRegion ricci_outer = ricci_region(grid);
-        const InteriorRegion ricci_core = shrink_region(ricci_outer, domain_.ng());
-
-        typename MPIBoundary<T>::ExchangeState exchange_state;
         const HaloFieldMask pre_rhs_fields = rhs_halo_fields(gauge_params_.evolve_Z);
-        boundary_.exchange_halos_start(grid, pre_rhs_fields, exchange_state);
-
+        // A phased X/Y/Z exchange propagates edge and corner values needed by mixed
+        // derivatives. Complete it before projection writes the send buffers.
+        boundary_.exchange_halos(grid, pre_rhs_fields);
+        enforce_floors_region(grid, algebraic_outer);
         tensorium_RG::bssn::enforce_algebraic_constraints_region(
-            grid, algebraic_core.i0, algebraic_core.i1, algebraic_core.j0, algebraic_core.j1,
-            algebraic_core.k0, algebraic_core.k1);
-        tensorium_RG::bssn::compute_ricci_bssn_region(grid, grid.Ricci, ricci_core.i0,
-                                                      ricci_core.i1, ricci_core.j0, ricci_core.j1,
-                                                      ricci_core.k0, ricci_core.k1, false);
-
-        boundary_.exchange_halos_finish(grid, pre_rhs_fields, exchange_state);
-        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion &region) {
-            enforce_floors_region(grid, region);
-        });
-        for_each_shell_region(algebraic_outer, algebraic_core, [&](const InteriorRegion &region) {
-            tensorium_RG::bssn::enforce_algebraic_constraints_region(
-                grid, region.i0, region.i1, region.j0, region.j1, region.k0, region.k1);
-        });
-        for_each_shell_region(ricci_outer, ricci_core, [&](const InteriorRegion &region) {
-            tensorium_RG::bssn::compute_ricci_bssn_region(grid, grid.Ricci, region.i0, region.i1,
-                                                          region.j0, region.j1, region.k0,
-                                                          region.k1, false);
-        });
+            grid, algebraic_outer.i0, algebraic_outer.i1, algebraic_outer.j0, algebraic_outer.j1,
+            algebraic_outer.k0, algebraic_outer.k1);
+        tensorium_RG::bssn::compute_ricci_bssn_region(
+            grid, grid.Ricci, ricci_outer.i0, ricci_outer.i1, ricci_outer.j0, ricci_outer.j1,
+            ricci_outer.k0, ricci_outer.k1, false);
 
         synchronize_z_from_gamma(grid);
     }

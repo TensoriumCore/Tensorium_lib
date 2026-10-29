@@ -30,7 +30,8 @@ template <typename T> struct GaugeParameters {
     T kappa2 = T(0.0);
     T kappa3 = T(1.0);
     T kappa_z = T(1.0);
-    bool covariant_z4 = true;         ///< If true use kappa1 (not lapse*kappa1) in Z4 damping.
+    bool covariant_z4 = true;         ///< Legacy name: true rescales kappa1 by 1/alpha in damping;
+                                      ///< false uses the unrescaled CCZ4 equations' alpha*kappa1.
     T chi_div_floor = T(-1000.0);     ///< Guard for divisions by chi: use max(chi, chi_div_floor).
     T ko_sigma = T(0.0);              ///< KO6 filter strength.
     T min_lapse_for_K = T(5e-3);      ///< Floor applied when sourcing the K quadratic term.

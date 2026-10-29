@@ -798,7 +798,7 @@ __device__ __forceinline__ void compute_scalar_rhs_at(StageGridPack<const T> gri
     const T diss_khat = (ko6_axis_ptr(p_K, sx) - T(2) * ko6_axis_ptr(p_theta, sx)) +
                         (ko6_axis_ptr(p_K, sy) - T(2) * ko6_axis_ptr(p_theta, sy)) +
                         (ko6_axis_ptr(p_K, 1) - T(2) * ko6_axis_ptr(p_theta, 1));
-    rhs.K[idx] = adv_khat - laplacian + quad + z4c_term + ko_scale * diss_khat;
+    rhs.K[idx] = adv_khat - laplacian + quad + z4c_term + T(2) * Z_dot_dalpha + ko_scale * diss_khat;
 
     rhs.Z[0][idx] = T(0);
     rhs.Z[1][idx] = T(0);

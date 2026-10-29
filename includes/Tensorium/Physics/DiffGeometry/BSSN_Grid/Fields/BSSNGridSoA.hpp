@@ -57,8 +57,8 @@ template <typename T> class BSSNGridSoA {
     /**
      * @brief Construct a grid with halo-aware allocation.
      * @param nx,ny,nz Number of physical cells along x/y/z.
-     * @param ng Halo/ghost width in cells (must be ≥2 to support the 4th-order stencils documented
-     *           in `Derivatives/BSSNGridDerivatives.hpp`).
+     * @param ng Halo/ghost width in cells. A complete evolution requires at least four ghosts;
+     *           individual operations may require fewer depending on their stencil and region.
      * @param dx_,dy_,dz_ Grid spacing in each direction.
      *
      * The constructor pads the fastest-varying (z) dimension to SIMD-friendly widths through

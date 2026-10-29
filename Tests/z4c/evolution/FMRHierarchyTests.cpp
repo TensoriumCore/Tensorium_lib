@@ -327,6 +327,21 @@ REGISTER_TEST("z4c.fmr.parent_interpolation_boundary_tracks_stage_fraction",
                   const double expected = 0.5 * expected_old + 0.5 * expected_new;
                   tensorium::tests::expect_near(fine.alpha.ptr()[idx], expected, 1e-12,
                                                 "FMR halo stage-fraction interpolation");
+
+                  const typename FineBoundary::Context last_substep{&coarse_old, &coarse_new,
+                                                                    0.5, 1.0};
+                  {
+                      const tensorium_RG::z4c::fmr::ScopedParentInterpolationContext<double>
+                          last_scope(&last_substep);
+                      const double stage = tensorium_RG::bssn::rk_stage_times[1];
+                      FineBoundary::set_stage_fraction(stage);
+                      tensorium_RG::z4c::apply_halos_grid<FineBoundary>(fine);
+                      const double lambda = 0.5 + 0.5 * stage;
+                      const double extrapolated = (1.0 - lambda) * expected_old + lambda * expected_new;
+                      tensorium::tests::expect_near(fine.alpha.ptr()[idx], extrapolated, 1e-12,
+                                                    "FMR halo extrapolates beyond parent end time");
+                  }
+                  FineBoundary::set_stage_fraction(1.0);
               });
 
 REGISTER_TEST("z4c.fmr.initial_shell_blending_matches_parent_at_interface",

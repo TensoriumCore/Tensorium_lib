@@ -15,7 +15,8 @@
  * @details Implements the trace-free part of
  * \f[
  * (\partial_t-\mathcal{L}_\beta)\tilde{A}_{ij} = \chi\left[-D_iD_j\alpha + \alpha
- * R_{ij}\right]^{TF} + \alpha (K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})
+ * (R_{ij}+D_i Z_j+D_j Z_i)\right]^{TF} +
+ * \alpha ((K-2\Theta)\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})
  * \f]
  * where \f$D_i\f$ is the physical covariant derivative.  The code reconstructs the physical metric
  * \f$\gamma_{ij}=\chi^{-1}\tilde{\gamma}_{ij}\f$ and Christoffels to evaluate the covariant Hessian
@@ -29,7 +30,7 @@ namespace tensorium_RG::bssn {
  * @details
  * - `lie` implements the \f$\mathcal{L}_\beta\tilde{A}_{ij}\f$ term.
  * - `term_geom` corresponds to \f$\chi[-D_iD_j\alpha + \alpha R_{ij}]^{TF}\f$.
- * - `term_quad` implements \f$\alpha(K\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})\f$.
+ * - `term_quad` implements \f$\alpha((K-2\Theta)\tilde{A}_{ij} - 2\tilde{A}_{ik}\tilde{A}^k_{\ j})\f$.
  */
 template <typename T>
 inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size_t padding = 4,
@@ -84,6 +85,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
             const T *p_alpha = G.alpha.ptr() + idx_start;
             const T *p_chi = G.chi.ptr() + idx_start;
             const T *p_K = G.K.ptr() + idx_start;
+            const T *p_theta = G.Theta.ptr() + idx_start;
 
             const T *p_beta[3] = {G.beta[0].ptr() + idx_start, G.beta[1].ptr() + idx_start,
                                   G.beta[2].ptr() + idx_start};
@@ -290,7 +292,8 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
 
                         const T term_geom = chi * S_tf[a][b];
                         const T term_quad =
-                            alpha * (K * A_mat[a][b] - T(2) * A_contracted[a][b]);
+                            alpha * ((K - T(2) * (*p_theta)) * A_mat[a][b] -
+                                     T(2) * A_contracted[a][b]);
                         const T diss = KO6_axis_ptr(p_field, sx) + KO6_axis_ptr(p_field, sy) +
                                        KO6_axis_ptr(p_field, 1);
                         const T diss_scaled = local_ko_scale(G, ko_sigma, i, j, k) * diss;
@@ -302,6 +305,7 @@ inline void compute_rhs_A_tilde(const BSSNGridSoA<T> &G, Field3D<T> rhs[6], size
                 ++p_alpha;
                 ++p_chi;
                 ++p_K;
+                ++p_theta;
                 for (int c = 0; c < 3; ++c)
                     ++p_beta[c];
                 for (int s = 0; s < 6; ++s) {

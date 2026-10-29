@@ -6,6 +6,53 @@
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/Geometry/BSSNProjection.hpp"
 #include "../../../includes/Tensorium/Physics/DiffGeometry/BSSN_Grid/InitialData/BSSNInitialData.hpp"
 
+namespace {
+double conformal_ricci_error(double h) {
+    using namespace tensorium_RG;
+    constexpr size_t n = 12, ng = 4, point = ng + 5;
+    constexpr double a = 0.7;
+    Z4cGridSoA<double> grid(n, n, n, ng, h, h, h);
+    for (size_t i = 0; i < grid.st.nx_tot; ++i)
+        for (size_t j = 0; j < grid.st.ny_tot; ++j)
+            for (size_t k = 0; k < grid.st.nz_tot; ++k) {
+                const size_t id = grid.chi.idx(i, j, k);
+                const double x = 0.3 + (double(i) - double(point)) * h;
+                grid.chi.ptr()[id] = std::exp(-2 * a * x);
+                for (int s = 0; s < 6; ++s) {
+                    const double value = (s == XX || s == YY || s == ZZ) ? 1.0 : 0.0;
+                    grid.gamma_tilde[s].ptr()[id] = grid.gamma_tilde_inv[s].ptr()[id] = value;
+                }
+                for (int c = 0; c < 3; ++c)
+                    grid.tildeGamma[c].ptr()[id] = 0.0;
+            }
+    bssn::compute_ricci_bssn(grid, grid.Ricci, false);
+    const auto id = grid.chi.idx(point, point, point);
+    const double exact[6] = {0.0, 0.0, 0.0, -a*a, 0.0, -a*a};
+    double max_error = 0.0;
+    for (int s = 0; s < 6; ++s) {
+        const double value = grid.Ricci[s].ptr()[id];
+        TENSORIUM_TEST_ASSERT(std::isfinite(value));
+        max_error = std::max(max_error, std::abs(value - exact[s]));
+    }
+    return max_error;
+}
+} // namespace
+
+REGISTER_TEST("z4c.ricci.conformal_factor_convergence",
+              "Ricci converges to a non-flat conformally flat analytic metric", []() {
+    const int saved = tensorium_RG::fd::max_spatial_derivative_order();
+    struct Restore { int order; ~Restore() { tensorium_RG::fd::set_max_spatial_derivative_order(order); } } restore{saved};
+    for (int order : {4, 6}) {
+        tensorium_RG::fd::set_max_spatial_derivative_order(order);
+        const double coarse = conformal_ricci_error(0.4);
+        const double medium = conformal_ricci_error(0.2);
+        const double fine = conformal_ricci_error(0.1);
+        const double ratio = order == 4 ? 12.0 : 40.0;
+        TENSORIUM_TEST_ASSERT(coarse > ratio * medium);
+        TENSORIUM_TEST_ASSERT(medium > ratio * fine);
+    }
+});
+
 REGISTER_TEST("z4c.ricci.anisotropic_analytic",
               "Ricci agrees with an anisotropic analytic metric and its rotation", []() {
     using namespace tensorium_RG;

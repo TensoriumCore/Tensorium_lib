@@ -18,15 +18,16 @@ void compute_tildeGamma_symbols(const BSSNGridSoA<T> &G, size_t i, size_t j, siz
  * otherwise, operators are 6th-order accurate centered differences that require three guard cells on
  * each side:
  * \f[
- * \partial_x f_{i,j,k} = \frac{-f_{i+3,j,k} + 9 f_{i+2,j,k} - 45 f_{i+1,j,k} + 45 f_{i-1,j,k}
- *                              - 9 f_{i-2,j,k} + f_{i-3,j,k}}
+ * \partial_x f_{i,j,k} = \frac{f_{i+3,j,k} - 9 f_{i+2,j,k} + 45 f_{i+1,j,k} - 45 f_{i-1,j,k}
+ *                              + 9 f_{i-2,j,k} - f_{i-3,j,k}}
  *                             {60\,\Delta x}.
  * \f]
  * Second derivatives follow the standard 6th-order \f$(2,-27,270,-490,270,-27,2)/180\f$ stencil, and
  * mixed derivatives use either the classical 2nd-order cross operator (`Dxy`, `Dxz`, `Dyz`) or the 4th-order
  * tensor-product version (`Dxy4`, `Dxz4`, `Dyz4`) when Ricci evaluations demand higher accuracy.
- * Upwinded advection relies on biased 3-point formulas activated according to the sign of the local
- * shift. Kreiss–Oliger dissipation implements the 6th-order filter used to stabilize high-frequency
+ * Upwinded advection uses sixth-order biased seven-point stencils, reaching four cells in one
+ * direction, selected according to the local shift. Kreiss–Oliger dissipation implements the
+ * 6th-order filter used to stabilize high-frequency
  * numerical noise in hyperbolic systems.
  *
  * @note These operators assume uniform spacing along each axis and share the units and conventions

@@ -41,6 +41,9 @@ set(TEST_Z4C_EVOLUTION_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/FMRHierarchyTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/MovingPunctureEccentricityControlTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/CCZ4SchwarzschildStabilityTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/CCZ4ReferenceTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/BoundaryConvergenceTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/RKStageTimeTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/z4c/evolution/RHSHaloSentinelTests.cpp)
 
 set(TEST_Z4C_STABILITY_SOURCES
@@ -366,6 +369,14 @@ if(USE_MPI)
   add_test(NAME mpi.moving_puncture
            COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2
                    $<TARGET_FILE:TensoriumMPIMovingPuncture> --nx 64 --steps 10)
+
+  add_executable(TensoriumMPIHaloCorners z4c/mpi/mpi_halo_corners.cpp)
+  target_include_directories(TensoriumMPIHaloCorners PRIVATE ${PROJECT_SOURCE_DIR}/includes)
+  target_compile_definitions(TensoriumMPIHaloCorners PRIVATE TENSORIUM_ENABLE_MPI TENSORIUM_USE_MPI)
+  target_link_libraries(TensoriumMPIHaloCorners PRIVATE MPI::MPI_CXX)
+  add_test(NAME mpi.halo_corners
+           COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 4
+                   $<TARGET_FILE:TensoriumMPIHaloCorners>)
 endif()
 
 find_library(TENSORIUM_MEMKIND_LIB NAMES memkind)

@@ -10,7 +10,9 @@ headers so you can verify behavior directly.
 ## 1. Scope and Design Goals
 
 `BSSN_Grid` is a structured-grid, finite-difference numerical relativity module for vacuum
-Einstein evolution in a BSSN/Z4c-style formulation.
+Einstein evolution using a conformal Z4 formulation. The mathematical reference being adopted
+is the second-order CCZ4 formulation used by [SpECTRE](https://spectre-code.org/structCcz4_1_1fd_1_1SoTimeDerivative.html).
+The complete system and boundary conditions have not yet been validated against SpECTRE.
 
 What it currently targets:
 
@@ -51,11 +53,12 @@ At each cell, the evolved variables are:
   - `beta^i` (shift)
   - `B^i` (Gamma-driver auxiliary)
   - `tildeGamma^i` (contracted conformal connection)
-  - `Z^i` (Z4 vector, contravariant)
 - Symmetric tensors in packed 6-component form:
   - `gamma_tilde_ij`
-  - `gamma_tilde^ij`
   - `A_tilde_ij`
+
+`gamma_tilde^ij` is a derived inverse-metric cache. `Z^i` is reconstructed from the
+evolved connection for diagnostics; it is not an independent driving state.
 
 ### 2.2 Packed symmetric index convention
 
@@ -83,8 +86,10 @@ Helper routines:
 
 ## 3. Mathematical Formulation in Code
 
-The subsystem is BSSN with Z4c-driven terms added in the evolved connection and constraints.
-The exact algebra follows the kernel implementations; this section summarizes the principal form.
+The target reference is [Dumbser et al., equations (4a)–(4i)](https://arxiv.org/html/1707.09910),
+as cited by SpECTRE's second-order CCZ4 implementation. Tensorium stores `chi = phi^2`
+and evolves physical `K`; its Khat intermediate is recomposed before the state update.
+The following sections describe the current kernels, not a claim of complete equivalence.
 
 ### 3.1 Conformal factor
 
@@ -105,7 +110,7 @@ Implemented in `Evolution/BSSNEvolutionGammaTilde.hpp`:
 Implemented in `Evolution/BSSNEvolutionATilde.hpp`:
 
 - Uses the trace-free combination of `chi[-D_i D_j alpha + alpha R_ij]`
-- Adds quadratic term `alpha (K A_tilde_ij - 2 A_tilde_{ik} A_tilde^k_j)`
+- Adds quadratic term `alpha ((K - 2 Theta) A_tilde_ij - 2 A_tilde_{ik} A_tilde^k_j)`
 - Includes Lie/advection transport and KO dissipation
 - Adds Z4 Ricci correction via `compute_RicciZ4(...)`
 
@@ -113,10 +118,14 @@ Implemented in `Evolution/BSSNEvolutionATilde.hpp`:
 
 Implemented in `Evolution/BSSNEvolutionK.hpp` and recomposed in `TimeIntegration/BSSNRK4.hpp`:
 
-- The kernel computes RHS for `Khat = K - 2 Theta`.
+- The kernel computes RHS for `Khat = K - 2 Theta`, including `2 Z^i d_i alpha`.
 - The stepper later reconstructs `RHS(K) = RHS(Khat) + 2*RHS(Theta)`.
 
-This split is deliberate and keeps the Z4-coupled source terms consistent.
+The lapse-gradient term cancels the corresponding contribution from `2*RHS(Theta)`,
+as required by the physical K equation of CCZ4.
+With the legacy setting `covariant_z4=false`, damping uses the unrescaled `alpha*kappa1`
+coefficient in the reference equations. Setting it to `true` instead uses `kappa1`,
+equivalent away from zero lapse to replacing the reference parameter by `kappa1/alpha`.
 
 ### 3.5 Contracted connection evolution
 
@@ -266,6 +275,10 @@ The stepper uses the fixed 4-stage coefficient arrays:
 - `delta_ref`
 
 These are embedded in `BSSNRK4.hpp` and define the low-storage update.
+Their stage times are `0`, `1.193743905974738`, `0.431401321780805`, and `1` times the
+step size. The second stage is beyond the end of the current step. Fine-grid parent halos
+use linear temporal interpolation, or extrapolation when this stage extends beyond the
+available parent end state; this interpolation does not provide fourth-order temporal accuracy.
 
 ### 7.3 Stage pipeline
 
@@ -285,6 +298,12 @@ Post-step, diagnostics and constraint monitors are evaluated.
 ## 8. Halos and Boundary Conditions
 
 Implemented in `Grid/BSSNGridOperations.hpp`.
+
+Evolution requires at least four ghost cells per face: the sixth-order upwind advection
+stencil reaches four cells in one direction. The RK steppers reject narrower halos, and FMR
+rejects a fine-level override below this width. MPI local extents must also be at least as
+large as the halo width. The MPI evolution path performs phased blocking exchanges along
+the axes so that mixed derivatives can consume exchanged edge and corner data.
 
 ### 8.1 Boundary functors
 
@@ -307,6 +326,11 @@ Available boundary functors include:
 Vector and tensor parity on reflective faces is component-aware. For non-reflective faces, the
 solution ghosts are extrapolated rather than filled with a radiative Sommerfeld state, matching the
 GRChombo-style split where outgoing behavior is imposed on the RHS instead of on the state halos.
+The present extrapolation is linear and does not give a consistent centered second derivative at
+the first physical cell for general smooth data: for `u=1+x^2`, the fourth-order stencil gives
+`-1/6` instead of `2`, independently of grid spacing. Do not infer boundary convergence from the
+interior stencil order. When the RHS Sommerfeld collar is enabled on a face, the bulk RHS there
+is replaced; other paths that consume these ghosts require separate validation.
 
 ### 8.3 RHS-level Sommerfeld correction
 
@@ -323,6 +347,12 @@ Sommerfeld operator near boundary surfaces:
 - `K` is still treated through `Khat = K - 2 Theta` internally, then recomposed after the RHS pass
 - Tensorium still does not evolve GRChombo-style grown-grid boundary ghosts, so the outermost
   physical surface remains the closest analogue to GRChombo's RHS boundary fill
+
+The local operator has been checked for second-order convergence on a prescribed spherical
+outgoing wave at Cartesian faces, edges, and corners. This is not a reflection test of the
+coupled CCZ4 evolution and does not establish constraint-preserving boundary conditions.
+SpECTRE's documented CCZ4 Sommerfeld treatment applies the RHS condition at the outermost
+interior points of a spherical domain; Tensorium's four-cell Cartesian collar is not identical.
 
 ## 9. Initial Data Pipelines
 

@@ -6,6 +6,7 @@
 #include <functional>
 #include <limits>
 #include <memory>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -38,6 +39,17 @@
  */
 
 namespace tensorium_RG::bssn {
+
+// Abscissae of the low-storage RK scheme used below, derived from its stage coefficients.
+inline constexpr std::array<double, 4> rk_stage_times = {
+    0.0, 1.193743905974738, 0.431401321780805, 1.0};
+
+inline constexpr size_t evolution_ghost_width = 4;
+
+inline void validate_evolution_ghost_width(size_t ng) {
+    if (ng < evolution_ghost_width)
+        throw std::invalid_argument("BSSN/Z4c evolution requires at least four ghost cells");
+}
 
 namespace detail {
 
@@ -456,6 +468,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
           backend_options_(backend),
           stage_grid_(prototype.dims.nx, prototype.dims.ny, prototype.dims.nz, prototype.dims.ng,
                       prototype.dx, prototype.dy, prototype.dz) {
+        validate_evolution_ghost_width(prototype.dims.ng);
         stage_grid_.x0 = prototype.x0;
         stage_grid_.y0 = prototype.y0;
         stage_grid_.z0 = prototype.z0;
@@ -655,6 +668,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
     }
 
     void step(BSSNGridSoA<T> &grid, T dt, size_t step_index = 0) {
+        validate_evolution_ghost_width(grid.dims.ng);
         switch (backend_options_.backend) {
         case tensorium::backend::Kind::CPU:
             step_cpu(grid, dt, step_index);
@@ -678,7 +692,6 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
         static constexpr std::array<double, 4> delta_ref = {
             1.0, 0.217683334308543, 1.065841341361089, 0.0};
-        static constexpr std::array<double, 4> stage_time_ref = {0.0, 0.5, 0.5, 1.0};
 
         boundary_dt_ = dt;
         for (int stage = 0; stage < 4; ++stage) {
@@ -687,10 +700,10 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             else
                 accumulate_stage_reference(grid, stage_grid_, T(delta_ref[stage]));
 
-            BoundaryStageFractionConfigurator<Boundary>::set(stage_time_ref[stage]);
+            BoundaryStageFractionConfigurator<Boundary>::set(rk_stage_times[stage]);
             prepare_state_for_rhs(grid);
             auto stage_params = gauge_params_;
-            stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
+            stage_params.current_time = simulation_time_ + T(rk_stage_times[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stage_rhs_, stage_params);
 
@@ -775,7 +788,6 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             1.193743905974738, 0.099279895495783, 1.131678018054042, 0.310665766509336};
         static constexpr std::array<double, 4> delta_ref = {
             1.0, 0.217683334308543, 1.065841341361089, 0.0};
-        static constexpr std::array<double, 4> stage_time_ref = {0.0, 0.5, 0.5, 1.0};
 
         validate_backend_options();
         tensorium::cuda::set_device(backend_options_.device_ordinal);
@@ -801,11 +813,11 @@ template <typename T, typename Boundary> class BSSNRKStepper {
             if (stage != 0)
                 sync_cuda_grid_to_host(grid);
 
-            BoundaryStageFractionConfigurator<Boundary>::set(stage_time_ref[stage]);
+            BoundaryStageFractionConfigurator<Boundary>::set(rk_stage_times[stage]);
             prepare_state_for_rhs(grid);
             sync_host_grid_to_cuda(grid);
             auto stage_params = gauge_params_;
-            stage_params.current_time = simulation_time_ + T(stage_time_ref[stage]) * dt;
+            stage_params.current_time = simulation_time_ + T(rk_stage_times[stage]) * dt;
             stage_params.frozen_Z_is_synced = !stage_params.evolve_Z;
             evaluate_rhs(grid, stage_rhs_, stage_params);
             const bool rhs_on_device = can_use_cuda_accelerated_rhs(stage_params);
@@ -1037,7 +1049,7 @@ template <typename T, typename Boundary> class BSSNRKStepper {
         // The widest RHS stencil is the upwind advection stencil, which reaches four cells
         // one-sided. The Tensorium physical Sommerfeld collar must cover that region, otherwise
         // bulk cells consume extrapolated ghosts before the RHS boundary operator replaces them.
-        return size_t(4);
+        return evolution_ghost_width;
     }
 
     size_t effective_radiative_rhs_collar() const {

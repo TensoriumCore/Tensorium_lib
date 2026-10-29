@@ -125,25 +125,29 @@ template <typename T> class BSSNHaloExchanger {
      */
     void exchange_all(tensorium_RG::BSSNGridSoA<T> &grid) {
         auto fields = collect_fields(grid, HaloFieldAll);
-        exchanger_.exchange_all(fields);
+        exchanger_.exchange_blocking(fields);
     }
 
     void exchange_all_start(tensorium_RG::BSSNGridSoA<T> &grid, ExchangeState &state) {
         auto fields = collect_fields(grid, HaloFieldAll);
-        exchanger_.exchange_start(fields, state);
+        // The split API remains available, but BSSN exchanges must propagate corners
+        // axis by axis and finish before callers mutate any send buffers.
+        exchanger_.exchange_blocking(fields);
+        state = ExchangeState{};
     }
 
     void exchange_all_wait(ExchangeState &state) { exchanger_.exchange_wait(state); }
 
     void exchange(tensorium_RG::BSSNGridSoA<T> &grid, HaloFieldMask mask) {
         auto fields = collect_fields(grid, mask);
-        exchanger_.exchange_all(fields);
+        exchanger_.exchange_blocking(fields);
     }
 
     void exchange_start(tensorium_RG::BSSNGridSoA<T> &grid, HaloFieldMask mask,
                         ExchangeState &state) {
         auto fields = collect_fields(grid, mask);
-        exchanger_.exchange_start(fields, state);
+        exchanger_.exchange_blocking(fields);
+        state = ExchangeState{};
     }
 
     const MPIDomain &domain() const { return domain_; }
@@ -233,12 +237,14 @@ class MPIBoundary {
      * @brief Exchange halos for all fields.
      */
     void exchange_all_halos(tensorium_RG::BSSNGridSoA<T> &grid) {
-        ExchangeState state;
-        exchange_all_halos_start(grid, state);
-        exchange_all_halos_finish(grid, state);
+        // Physical ghosts are needed as send data where a physical face intersects an MPI face.
+        apply_physical_bc_all_fields(grid, HaloFieldAll);
+        exchanger_.exchange_all(grid);
+        apply_physical_bc_all_fields(grid, HaloFieldAll);
     }
 
     void exchange_all_halos_start(tensorium_RG::BSSNGridSoA<T> &grid, ExchangeState &state) {
+        apply_physical_bc_all_fields(grid, HaloFieldAll);
         exchanger_.exchange_all_start(grid, state);
     }
 
@@ -248,13 +254,14 @@ class MPIBoundary {
     }
 
     void exchange_halos(tensorium_RG::BSSNGridSoA<T> &grid, HaloFieldMask mask) {
-        ExchangeState state;
-        exchange_halos_start(grid, mask, state);
-        exchange_halos_finish(grid, mask, state);
+        apply_physical_bc_all_fields(grid, mask);
+        exchanger_.exchange(grid, mask);
+        apply_physical_bc_all_fields(grid, mask);
     }
 
     void exchange_halos_start(tensorium_RG::BSSNGridSoA<T> &grid, HaloFieldMask mask,
                               ExchangeState &state) {
+        apply_physical_bc_all_fields(grid, mask);
         exchanger_.exchange_start(grid, mask, state);
     }
 
@@ -334,11 +341,11 @@ class MPIBoundary {
                                        0);
         if (halo_mask_has(mask, HaloFieldChi))
             apply_physical_bc_at_edges(grid.chi, grid, tensorium_RG::bssn::BoundaryField::Chi, 0);
-        if (halo_mask_has(mask, HaloFieldK))
-            apply_physical_bc_at_edges(grid.K, grid, tensorium_RG::bssn::BoundaryField::K, 0);
         if (halo_mask_has(mask, HaloFieldTheta))
             apply_physical_bc_at_edges(grid.Theta, grid, tensorium_RG::bssn::BoundaryField::Theta,
                                        0);
+        if (halo_mask_has(mask, HaloFieldK))
+            apply_physical_bc_at_edges(grid.K, grid, tensorium_RG::bssn::BoundaryField::K, 0);
 
         for (int i = 0; i < 3; ++i) {
             if (halo_mask_has(mask, HaloFieldBeta))
