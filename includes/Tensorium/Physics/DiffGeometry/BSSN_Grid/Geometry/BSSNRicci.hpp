@@ -16,9 +16,9 @@
  * \f[
  * \begin{aligned}
  * \tilde{R}_{ij} &= -\tfrac{1}{2}\tilde{\gamma}^{mn}\partial_m\partial_n\tilde{\gamma}_{ij}
- *  + \tilde{\gamma}_{k(i}\partial_{j)}\tilde{\Gamma}^k + \tilde{\Gamma}^k\tilde{\Gamma}_{kij}
- *  + \tilde{\gamma}^{mn}\left(2\tilde{\Gamma}^k_{m(i}\tilde{\Gamma}_{j)kn} -
- * \tilde{\Gamma}^k_{ij}\tilde{\Gamma}_{kmn}\right),\\ R^{\chi}_{ij} &=
+ *  + \tilde{\gamma}_{k(i}\partial_{j)}\tilde{\Gamma}^k + \tilde{\Gamma}^k\tilde{\Gamma}_{(ij)k}
+ *  + \tilde{\gamma}^{mn}\left(2\tilde{\Gamma}^k_{m(i}\tilde{\Gamma}_{j)kn} +
+ * \tilde{\Gamma}^k_{in}\tilde{\Gamma}_{kmj}\right),\\ R^{\chi}_{ij} &=
  * \tfrac{1}{2}\chi^{-1}\left(\tilde{D}_i\tilde{D}_j\chi +
  * \tilde{\gamma}_{ij}\tilde{D}^k\tilde{D}_k\chi\right)
  *   - \tfrac{1}{4}\chi^{-2}\tilde{D}_i\chi\,\tilde{D}_j\chi
@@ -270,7 +270,8 @@ void compute_ricci_bssn_region_impl(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_
 
                             double t3 = 0.0;
                             for (int k = 0; k < 3; ++k)
-                                t3 += 0.5 * Gt_vec[k] * G_low[k][a][b];
+                                t3 += 0.5 * Gt_vec[k] *
+                                      (G_low[a][b][k] + G_low[b][a][k]);
 
                             double t4 = 0.0;
                             for (int l = 0; l < 3; ++l) {
@@ -278,8 +279,9 @@ void compute_ricci_bssn_region_impl(BSSNGridSoA<T> &G, Field3D<T> *Ricci6, size_
                                     double g_inv_lm = gI[l][m];
                                     double inner = 0.0;
                                     for (int k = 0; k < 3; ++k) {
-                                        inner += 2.0 * G_up[k][l][a] * G_low[k][b][m] -
-                                                 G_up[k][a][b] * G_low[k][l][m];
+                                        inner += G_up[k][l][a] * G_low[b][k][m] +
+                                                 G_up[k][l][b] * G_low[a][k][m] +
+                                                 G_up[k][a][m] * G_low[k][l][b];
                                     }
                                     t4 += g_inv_lm * inner;
                                 }
